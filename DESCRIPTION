@@ -1,0 +1,28 @@
+
+Package: IOBR
+Type: Package
+Title: Immune Oncology Bioinformatics Research
+Version: 1.3.0
+Author: Dongqiang Zeng, Rongfang Shen, Zilan Ye
+Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
+Description: Integrated functions to conduct comprehensive analysis of immuno-oncology
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Depends: 
+   tidyverse,
+   survival,
+   survminer,
+   limma,
+   GSVA,
+   e1071,
+   preprocessCore,
+   ggplot2,
+   ggpubr
+Imports: 
+   EPIC, 
+   MCPcounter,
+   xCell
+   
+    
