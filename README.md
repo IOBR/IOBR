@@ -1,6 +1,4 @@
-# IOBR
-
--Immune Oncology Bioinformatics Research
+# IOBR: Immune Oncology Bioinformatics Research
 =======
 IOBR is a R package to perform Tumor microenvironment evaluation, signature estimation. Main advantages:
 - Provides functionality to estimate signature score (PCA, ssGSEA or z-score)
