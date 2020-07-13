@@ -25,7 +25,7 @@ tme_deconvolution_methods
 # SVM               lsei 
 # "svm_ref"         "lsei_ref" 
 # Example
-lm22<-deconvo_tme(eset = eset_crc,project = "TCGA-CRC",method = "cibersort",arrays = F)
+lm22<-deconvo_tme(eset = eset_crc, project = "TCGA-CRC", method = "cibersort", arrays = F)
 ```
 
 subgroup survival analyses
@@ -33,11 +33,17 @@ subgroup survival analyses
 help("subgroup_survival")
 ##source data and filter NA
 data(subgroup_data)
-input <- subgroup_data %>% filter(time > 0) %>% filter(!is.na(status)) %>% filter(!is.na(AJCC_stage))
+input <- subgroup_data %>% 
+   filter(time > 0) %>% 
+   filter(!is.na(status)) %>% 
+   filter(!is.na(AJCC_stage))
 dim(input)
 ##for binary variable
-data1 <- subgroup_survival(pdata = input,time ="time", status = "status",
-                                    variable = c("ProjectID", "AJCC_stage"), object ="score_binary" )
+data1 <- subgroup_survival(pdata = input,
+                           time ="time", 
+                           status = "status",
+                           variable = c("ProjectID", "AJCC_stage"), 
+                           object ="score_binary" )
 data1
 # P     HR                           CI_low_0.95  CI_up_0.95
 # ProjectID_Dataset1 0.0000 3.0901      1.8648     5.1205
