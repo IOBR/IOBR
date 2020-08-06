@@ -1,0 +1,71 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# IOBR: Immune Oncology Bioinformatics Research
+
+IOBR is a R package to perform Tumor microenvironment evaluation, signature estimation.
+
+## Main advantages:
+- Provides functionality to estimate signature score (PCA, ssGSEA or z-score)
+- Integrated prevalent methodologies to deconvolute microenvironment, such as CIBERSORT, EPIC, ESTIMATE, xCell
+- Functions to visulize TME data.
+- Identify TME relevant signatures.
+- Functions to perform batch analyses for prognostic and predictive biomarkers
+
+The package is not yet on CRAN. You can install from Github:
+
+```{r eval=F, echo=T}
+# install.packages("devtools")
+devtools::install_github("DongqiangZeng0808/IOBR")
+```
+```{r}
+library('IOBR')
+```
+
+Main documentation is on the `deconvo_tme` function in the package:
+
+- support methods
+```{r}
+tme_deconvolution_methods
+```
+- quick start
+```{r eval=F, echo=T}
+# Example
+lm22<-deconvo_tme(eset = eset_crc, project = "TCGA-CRC", method = "cibersort", arrays = F)
+```
+
+subgroup survival analyses
+```{r}
+help("subgroup_survival")
+##source data and filter NA
+data(subgroup_data)
+input <- subgroup_data %>% 
+   filter(time > 0) %>% 
+   filter(!is.na(status)) %>% 
+   filter(!is.na(AJCC_stage))
+dim(input)
+##for binary variable
+data1 <- subgroup_survival(pdata = input,
+                           time ="time", 
+                           status = "status",
+                           variable = c("ProjectID", "AJCC_stage"), 
+                           object ="score_binary" )
+data1
+```
+
+References
+---------
+Contact:
+E-mail any questions to dongqiangzeng0808@gmail.com
