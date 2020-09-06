@@ -20,7 +20,7 @@ Title This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
 ips_crc <- IPS_calculation(project = "TCGA-COAD", eset = eset_crc, plot = FALSE)
-假如要画图的话
+鍋囧瑕佺敾鍥剧殑璇㤼㹤
 file to deposit resluts
-首先构建图的储存文件夹
+棣栧厛鏋勫缓鍥剧殑鍌ㄥ瓨鏂囦欢澶戼㸹
 }

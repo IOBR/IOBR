@@ -14,9 +14,8 @@
 #' @param perm Set permutations for statistical analysis (≥100 permutations recommended).
 #' @return
 #' @export
-#' @import limSolve
-#' @import limma
-#' @import preprocessCore
+#' @importFrom limSolve lsei
+#' @importFrom preprocessCore normalize.quantiles
 #' @import e1071
 #' @import parallel
 #' @examples

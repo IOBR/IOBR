@@ -4,7 +4,7 @@
 \alias{deconvo_epic}
 \title{DeconvolVe immune microenvironment using EPIC: FOR RANseq mostly}
 \usage{
-deconvo_epic(eset, project, tumor)
+deconvo_epic(eset, project = NULL, tumor)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}

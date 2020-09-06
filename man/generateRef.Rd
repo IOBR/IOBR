@@ -15,6 +15,9 @@ generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR)
 
 \item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
 }
+\value{
+
+}
 \description{
 Title
 }

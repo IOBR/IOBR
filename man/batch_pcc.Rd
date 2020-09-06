@@ -17,6 +17,9 @@ batch_pcc(data, target, feature, method = "pearson", interference)
 
 \item{interference}{a numeric vector, matrix or data frame; variabes used to control when calculate the correlation between interesting variables.}
 }
+\value{
+
+}
 \description{
 batch_pcc() provide a batch way to calculate the partial correlation coefficient between target gene and others when
 controlling a third variable
@@ -26,7 +29,7 @@ controlling a third variable
 data("tcga_crc_exp")
 data("tcga_crc_purity")
 tcga_crc_exp <- t(tcga_crc_exp)
-tcga_crc_exp <- data.frame(array = stringr：：str_sub(rownames(tcga_crc_exp), 1, 15), tcga_crc_exp)
+tcga_crc_exp <- data.frame(array = stringr锛氾細str_sub(rownames(tcga_crc_exp), 1, 15), tcga_crc_exp)
 dat <- merge(tcga_crc_purity, tcga_crc_exp, by = "array")
 TP53cor <- batch_pcc(data = dat, target = "TP53",
 feature = colnames(dat)[3:100], method = "pearson", interference = dat$purity)

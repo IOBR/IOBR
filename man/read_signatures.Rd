@@ -4,8 +4,7 @@
 \alias{read_signatures}
 \title{Reading signature gene matrix as list}
 \usage{
-read_signatures(file_name, save_signature = FALSE,
-  output_name = "signatures")
+read_signatures(file_name, save_signature = FALSE, output_name = "signatures")
 }
 \arguments{
 \item{file_name}{the file name of csv file with signature name as column name and genes in row}

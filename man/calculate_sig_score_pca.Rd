@@ -4,8 +4,13 @@
 \alias{calculate_sig_score_pca}
 \title{Calculating signature score using PCA method}
 \usage{
-calculate_sig_score_pca(pdata, eset, signature, mini_gene_count,
-  column_of_sample)
+calculate_sig_score_pca(
+  pdata,
+  eset,
+  signature,
+  mini_gene_count,
+  column_of_sample
+)
 }
 \arguments{
 \item{pdata}{phenotype data of input sample;

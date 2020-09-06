@@ -4,8 +4,13 @@
 \alias{calculate_sig_score_integration}
 \title{Calculating signature score using Integration method}
 \usage{
-calculate_sig_score_integration(pdata, eset, signature,
-  mini_gene_count = 2, column_of_sample)
+calculate_sig_score_integration(
+  pdata,
+  eset,
+  signature,
+  mini_gene_count = 2,
+  column_of_sample
+)
 }
 \arguments{
 \item{pdata}{phenotype data of input sample;

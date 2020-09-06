@@ -5,7 +5,8 @@
 #' @param mode mode "oneVSothers" or "pairs"; two modes for identifying significantly differentially expressed genes
 #' @param FDR character vector; cell type class of the samples
 #' @param dat data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.
-#' @import DESeq2
+#' @importFrom  DESeq2 DESeqDataSetFromMatrix
+#' @importFrom  DESeq2 DESeq
 #'
 #' @return
 #' @export
@@ -62,7 +63,7 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
     return(tmp)
   })
   median_value <- t(dat) %>% as.data.frame() %>%
-    split(., pheno) %>% map(function(x)colMedians(as.matrix(x)))
+    split(., pheno) %>% map(function(x) colMedians(as.matrix(x)))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 

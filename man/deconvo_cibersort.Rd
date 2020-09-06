@@ -4,7 +4,7 @@
 \alias{deconvo_cibersort}
 \title{DeconvolVe immune microenvironment using CIBERSORT}
 \usage{
-deconvo_cibersort(eset, project, arrays, absolute = FALSE, perm = 1000)
+deconvo_cibersort(eset, project = NULL, arrays, absolute = FALSE, perm = 1000)
 }
 \arguments{
 \item{eset}{expression set with gene symbol at rowname, sample ID at column}

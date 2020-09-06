@@ -4,8 +4,13 @@
 \alias{anno_eset}
 \title{Annotating gene expression matrix and remove duplicated genes}
 \usage{
-anno_eset(eset, annotation, symbol = "symbol", probe = "probe_id",
-  method = "mean")
+anno_eset(
+  eset,
+  annotation,
+  symbol = "symbol",
+  probe = "probe_id",
+  method = "mean"
+)
 }
 \arguments{
 \item{eset}{gene expression matrix with probe or ensembl, entrez id in the rownames}

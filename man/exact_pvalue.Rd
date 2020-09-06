@@ -13,6 +13,9 @@ exact_pvalue(x, y, method)
 
 \item{method}{method used to conduct correlation analysis}
 }
+\value{
+
+}
 \description{
 Calculate exact p value of correlation
 }

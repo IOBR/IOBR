@@ -4,8 +4,14 @@
 \alias{deconvo_constru_sig}
 \title{Estimate the fraction of cell types using defined reference genes}
 \usage{
-deconvo_constru_sig(eset, reference, scale_reference = TRUE,
-  method = "svm", arrays = TRUE, perm = 500)
+deconvo_constru_sig(
+  eset,
+  reference,
+  scale_reference = TRUE,
+  method = "svm",
+  arrays = TRUE,
+  perm = 500
+)
 }
 \arguments{
 \item{eset}{expression data with matched gene id of reference}
@@ -19,6 +25,9 @@ deconvo_constru_sig(eset, reference, scale_reference = TRUE,
 \item{arrays}{a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.}
 
 \item{perm}{Set permutations for statistical analysis (≥100 permutations recommended).}
+}
+\value{
+
 }
 \description{
 Estimate the fraction of cell types using defined reference genes

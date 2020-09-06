@@ -4,8 +4,14 @@
 \alias{CIBERSORT}
 \title{CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.}
 \usage{
-CIBERSORT(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute,
-  abs_method = "sig.score")
+CIBERSORT(
+  sig_matrix = lm22,
+  mixture_file,
+  perm,
+  QN = TRUE,
+  absolute,
+  abs_method = "sig.score"
+)
 }
 \arguments{
 \item{sig_matrix}{Cell type GEP barcode matrix: row 1 = sample labels; column 1 = gene symbols; no missing values; default =LM22.txt download from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)}

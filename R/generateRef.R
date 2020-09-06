@@ -4,9 +4,8 @@
 #' @param pheno character vector; cell type class of the samples
 #' @param mode "oneVSothers" or "pairs"; two modes for identifying significantly differentially expressed genes
 #' @param FDR numeric; genes with BH adjust p value < FDR are considered significant.
-#' @import limma
 #' @import tidyverse
-#' @import matrixStats
+#' @import stringr
 #' @import purrr
 #'
 #' @return

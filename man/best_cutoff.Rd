@@ -4,8 +4,7 @@
 \alias{best_cutoff}
 \title{Extract best cut-off and add new binary object to data frame}
 \usage{
-best_cutoff(pdata, variable, time = "time", status = "status",
-  PrintResult = T)
+best_cutoff(pdata, variable, time = "time", status = "status", PrintResult = T)
 }
 \arguments{
 \item{pdata}{phenotype data with surcival information and features}

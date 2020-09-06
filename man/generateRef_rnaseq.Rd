@@ -17,6 +17,9 @@ generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 
 \item{dat}{data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.}
 }
+\value{
+
+}
 \description{
 Title
 }

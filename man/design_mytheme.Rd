@@ -4,8 +4,15 @@
 \alias{design_mytheme}
 \title{Design my ggplpt2 theme}
 \usage{
-design_mytheme(plot_title_size = 2, axis_title_size = 2,
-  axis_text_size = 12, axis_angle = 60, hjust = 1)
+design_mytheme(
+  plot_title_size = 2,
+  axis_title_size = 2,
+  axis_text_size = 12,
+  axis_angle = 60,
+  hjust = 1,
+  legend.position = "bottom",
+  legend.direction = "horizontal"
+)
 }
 \arguments{
 \item{plot_title_size}{title size}

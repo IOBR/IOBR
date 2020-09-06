@@ -4,7 +4,9 @@
 \name{signature_score_calculation_methods}
 \alias{signature_score_calculation_methods}
 \title{List of supported signature score calculation methods}
-\format{An object of class \code{character} of length 4.}
+\format{
+An object of class \code{character} of length 4.
+}
 \usage{
 signature_score_calculation_methods
 }

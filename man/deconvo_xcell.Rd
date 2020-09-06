@@ -4,7 +4,7 @@
 \alias{deconvo_xcell}
 \title{DeconvolVe immune microenvironment using xCell}
 \usage{
-deconvo_xcell(eset, project, arrays)
+deconvo_xcell(eset, project = NULL, arrays)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}

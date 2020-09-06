@@ -4,13 +4,15 @@
 \name{tme_deconvolution_methods}
 \alias{tme_deconvolution_methods}
 \title{Collection of tumor mircoenvironmet cell fraction deconvolution methods.}
-\format{An object of class \code{character} of length 9.}
+\format{
+An object of class \code{character} of length 11.
+}
 \usage{
 tme_deconvolution_methods
 }
 \description{
 The methods currently supported are
-`mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svm`,`lsei`
+`mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svm`,`lsei`,`timer`,`quantiseq`
 }
 \details{
 The object is a named vector. The names correspond to the display name of the method,

@@ -4,7 +4,7 @@
 \alias{deconvo_mcpcounter}
 \title{DeconvolVe immune microenvironment using MCP-counter}
 \usage{
-deconvo_mcpcounter(eset, project)
+deconvo_mcpcounter(eset, project = NULL)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}

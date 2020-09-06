@@ -4,8 +4,13 @@
 \alias{lasso_select}
 \title{Constructing predictive or prognostic modle}
 \usage{
-lasso_select(x, y, type = c("binary", "survival"), nfold = 10,
-  lambda = c("lambda.min", "lambda.1se"))
+lasso_select(
+  x,
+  y,
+  type = c("binary", "survival"),
+  nfold = 10,
+  lambda = c("lambda.min", "lambda.1se")
+)
 }
 \arguments{
 \item{x}{input matrix.Rownames should be features like gene symbols or cgi, colnames be samples}
@@ -17,6 +22,9 @@ lasso_select(x, y, type = c("binary", "survival"), nfold = 10,
 \item{nfold}{number of nfold for cross-validation - default is 10}
 
 \item{lambda}{"lambda.min" or "lambda.1se"}
+}
+\value{
+
 }
 \description{
 Constructing predictive or prognostic modle

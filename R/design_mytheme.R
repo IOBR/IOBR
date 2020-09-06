@@ -9,7 +9,10 @@
 #' @param axis_title_size axis title size
 #' @param axis_text_size axis text size
 #' @param axis_angle  axis angle
+#' @param legend.position
+#' @param legend.direction
 #' @param hjust horizontal justification
+#'
 #' @author Dongqiang Zeng
 #' @return mytheme
 #' @export
@@ -17,7 +20,8 @@
 #' @examples
 design_mytheme<-function( plot_title_size = 2,axis_title_size = 2,
                           axis_text_size = 12, axis_angle = 60,
-                          hjust = 1){
+                          hjust = 1,legend.position = "bottom",
+                          legend.direction="horizontal"){
 
   mytheme<-ggplot2:: theme_light()+   ###theme_bw()
    ggplot2:: theme(plot.title=element_text(size=rel(plot_title_size),hjust=0.5),
@@ -31,8 +35,8 @@ design_mytheme<-function( plot_title_size = 2,axis_title_size = 2,
           axis.line=element_line(color="black",size=1.0))+theme(
             legend.key.size=unit(.3,"inches"),
             legend.title=element_blank(),
-            legend.position="bottom",#"none","left","right","bottom","top",or #c(0.5,1)
-            legend.direction="horizontal",# "vertical"
+            legend.position= legend.position,#"none","left","right","bottom","top",or #c(0.5,1)
+            legend.direction= legend.direction,# "vertical"
             legend.justification=c(.5,.5),#"center" or two-element numeric vector
             legend.box="horizontal",#"horizontal",
             legend.box.just="top",

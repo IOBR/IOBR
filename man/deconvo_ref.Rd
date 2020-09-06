@@ -4,8 +4,15 @@
 \alias{deconvo_ref}
 \title{Estimate the fraction of cell types using defined reference genes}
 \usage{
-deconvo_ref(eset, project, arrays, method = "svm", perm, reference,
-  scale_reference)
+deconvo_ref(
+  eset,
+  project = NULL,
+  arrays,
+  method = "svm",
+  perm,
+  reference,
+  scale_reference
+)
 }
 \arguments{
 \item{eset}{expression data with matched gene id of reference}
@@ -20,9 +27,14 @@ deconvo_ref(eset, project, arrays, method = "svm", perm, reference,
 
 \item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction.}
 }
+\value{
+
+}
 \description{
 Estimate the fraction of cell types using defined reference genes
 }
 \author{
 Dongqiang Zeng
+
+Rongfang Shen
 }

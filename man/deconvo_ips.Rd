@@ -4,7 +4,7 @@
 \alias{deconvo_ips}
 \title{DeconvolVe immune microenvironment using IPS}
 \usage{
-deconvo_ips(eset, project, plot)
+deconvo_ips(eset, project = NULL, plot)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}

@@ -4,9 +4,21 @@
 \alias{deconvo_tme}
 \title{Deconvolve Tumor microenvironment on a transcriptomic dataset}
 \usage{
-deconvo_tme(eset, project, method = tme_deconvolution_methods,
-  arrays = FALSE, tumor = TRUE, perm = 1000, reference,
-  scale_reference, plot = FALSE, platform = "affymetrix", ...)
+deconvo_tme(
+  eset,
+  project,
+  method = tme_deconvolution_methods,
+  arrays = FALSE,
+  tumor = TRUE,
+  perm = 1000,
+  reference,
+  scale_reference,
+  plot = FALSE,
+  scale_mrna,
+  group_list = NULL,
+  platform = "affymetrix",
+  ...
+)
 }
 \arguments{
 \item{eset}{A gene expression matrix or a Biobase ExpressionSet.
@@ -15,13 +27,13 @@ Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sa
 \item{project}{project name used to distinguish different datasets}
 
 \item{method}{a string specifying the method.
-Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svm`,`lsei`;}
+Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.}
 
 \item{arrays}{Runs methods in a mode optimized for microarray data.
-Currently affects CIBERSORT, svm and xCell.}
+Currently affects `CIBERSORT`, `svm` and `xCell`.}
 
 \item{tumor}{logical. use a signature matrix/procedure optimized for tumor samples,
-if supported by the method. Currently affects EPIC}
+if supported by the method. Currently affects `EPIC`}
 
 \item{perm}{set permutations for statistical analysis (≥100 permutations recommended).
 Currently affects `CIBERSORT` and `svm_ref`}
@@ -32,13 +44,18 @@ Currently affects `CIBERSORT` and `svm_ref`}
 
 \item{plot}{Currently affects `IPS` method}
 
+\item{scale_mrna}{logical. If FALSE, disable correction for mRNA content of different cell types.
+This is supported by methods that compute an absolute score (EPIC and quanTIseq)}
+
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"
 Currently affects `ESTIMATE` method}
 
 \item{...}{arguments passed to the respective method}
+
+\item{indications}{Currently affects `TIMER` method}
 }
 \value{
-`data.frame` with `sample name` as first column and other column with the
+`data.frame` with `ID` as first column and other column with the
     calculated cell fractions for each sample.
 }
 \description{

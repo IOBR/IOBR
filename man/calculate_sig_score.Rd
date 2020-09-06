@@ -4,10 +4,17 @@
 \alias{calculate_sig_score}
 \title{Calculating signature score  on a gene expression dataset}
 \usage{
-calculate_sig_score(pdata = NULL, eset,
-  signature = signature_collection, method = "pca",
-  mini_gene_count = 3, column_of_sample = "ID",
-  print_gene_propotion = FALSE, print_filtered_signatures = FALSE, ...)
+calculate_sig_score(
+  pdata = NULL,
+  eset,
+  signature = signature_collection,
+  method = "pca",
+  mini_gene_count = 3,
+  column_of_sample = "ID",
+  print_gene_propotion = FALSE,
+  print_filtered_signatures = FALSE,
+  ...
+)
 }
 \arguments{
 \item{pdata}{phenotype data of input sample}

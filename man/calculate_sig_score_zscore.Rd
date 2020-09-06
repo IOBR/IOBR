@@ -4,8 +4,13 @@
 \alias{calculate_sig_score_zscore}
 \title{Calculating signature score using z-score method}
 \usage{
-calculate_sig_score_zscore(pdata, eset, signature, mini_gene_count,
-  column_of_sample)
+calculate_sig_score_zscore(
+  pdata,
+  eset,
+  signature,
+  mini_gene_count,
+  column_of_sample
+)
 }
 \arguments{
 \item{pdata}{phenotype data of input sample;

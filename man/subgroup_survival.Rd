@@ -4,8 +4,13 @@
 \alias{subgroup_survival}
 \title{Title Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis}
 \usage{
-subgroup_survival(pdata, time_name = "time", status_name = "status",
-  variables, object)
+subgroup_survival(
+  pdata,
+  time_name = "time",
+  status_name = "status",
+  variables,
+  object
+)
 }
 \arguments{
 \item{pdata}{data combine variables, follow up time, and outcome;}

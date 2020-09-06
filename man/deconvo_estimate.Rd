@@ -4,7 +4,7 @@
 \alias{deconvo_estimate}
 \title{Calculation of stromal, immune, and ESTIMATE scores}
 \usage{
-deconvo_estimate(eset, project, platform = "affymetrix")
+deconvo_estimate(eset, project = NULL, platform = "affymetrix")
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
@@ -12,6 +12,9 @@ deconvo_estimate(eset, project, platform = "affymetrix")
 \item{project}{project name used to distinguish different datasets}
 
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"}
+}
+\value{
+
 }
 \description{
 Calculation of stromal, immune, and ESTIMATE scores

@@ -179,7 +179,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' head(cibersort)
 #'
 
-CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN=TRUE, absolute, abs_method='sig.score'){
+CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute, abs_method='sig.score'){
 
 
   if(absolute && abs_method != 'no.sumto1' && abs_method != 'sig.score')

@@ -4,8 +4,13 @@
 \alias{calculate_sig_score_ssgsea}
 \title{Calculating signature score using ssGSEA method}
 \usage{
-calculate_sig_score_ssgsea(pdata, eset, signature, mini_gene_count,
-  column_of_sample)
+calculate_sig_score_ssgsea(
+  pdata,
+  eset,
+  signature,
+  mini_gene_count,
+  column_of_sample
+)
 }
 \arguments{
 \item{pdata}{phenotype data of input sample;

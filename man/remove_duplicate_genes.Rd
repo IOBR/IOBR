@@ -13,6 +13,9 @@ remove_duplicate_genes(eset, column_of_symbol, method = "mean")
 
 \item{method}{method used to filter duplicate genes; default is mean value}
 }
+\value{
+
+}
 \description{
 Remove duplicate gene symbol on a gene expression data
 }

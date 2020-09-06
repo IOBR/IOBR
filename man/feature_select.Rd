@@ -4,8 +4,14 @@
 \alias{feature_select}
 \title{Feature selection}
 \usage{
-feature_select(x, y, method = c("cor", "dif"), family = c("spearman",
-  "pearson"), cutoff = NULL, padjcut = NULL)
+feature_select(
+  x,
+  y,
+  method = c("cor", "dif"),
+  family = c("spearman", "pearson"),
+  cutoff = NULL,
+  padjcut = NULL
+)
 }
 \arguments{
 \item{x}{input matrix.Rownames should be features like gene symbols or cgi, colnames be samples}
@@ -19,6 +25,9 @@ feature_select(x, y, method = c("cor", "dif"), family = c("spearman",
 \item{cutoff}{Numeric. Estimate and log2FC cutoff value for correlation analysis and limma dif analysis.}
 
 \item{padjcut}{Numeric. Adjust P value cutoff.}
+}
+\value{
+
 }
 \description{
 Feature selection
