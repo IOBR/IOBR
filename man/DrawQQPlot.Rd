@@ -2,7 +2,7 @@
 % Please edit documentation in R/timer.R
 \name{DrawQQPlot}
 \alias{DrawQQPlot}
-\title{Title}
+\title{Draw QQ Plot}
 \usage{
 DrawQQPlot(cancer.exp, immune.exp, name = "")
 }
@@ -13,5 +13,5 @@ DrawQQPlot(cancer.exp, immune.exp, name = "")
 
 }
 \description{
-Title
+Draw QQ Plot
 }

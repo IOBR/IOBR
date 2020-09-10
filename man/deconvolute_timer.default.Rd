@@ -2,16 +2,16 @@
 % Please edit documentation in R/timer.R
 \name{deconvolute_timer.default}
 \alias{deconvolute_timer.default}
-\title{Title}
+\title{deconvolute tumor microenvironment using timer}
 \usage{
 deconvolute_timer.default(args)
 }
 \arguments{
-\item{args}{}
+\item{args}{environment}
 }
 \value{
 
 }
 \description{
-Title
+deconvolute tumor microenvironment using timer
 }

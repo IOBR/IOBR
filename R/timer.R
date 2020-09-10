@@ -8,22 +8,22 @@
 #' from http://cistrome.org/TIMER/download.html.
 #'
 #' The method is described in Li et al. Genome Biology 2016;17(1):174., PMID 27549193.
-#'
-#' @import sva
-#' @importFrom BiocParallel bpparam
-#'
-#' @name timer
-NULL
 
+
+#' TimerINFO
+#'
+#' @param string
+#'
+#' @return
+#' @export
+#'
+#' @examples
 TimerINFO <- function(string) {
   message(sprintf('## %s\n', string))
 }
 
-TimerINFO('Loading Timer Utilities')
 
 
-# immuneCuratedData <- system.file("extdata", "timer", "precalculated", "immune.expression.curated.RData",
-#                                  package="IOBR", mustWork = TRUE)
 
 #' TIMER signatures are cancer specific. This is the list of available cancer types.
 #'
@@ -33,47 +33,8 @@ timer_available_cancers <- c('kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kir
                          'ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca',
                          'uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol')
 
-# LoadImmuneGeneExpression <- function() {
-#   ## Load gene expression data for immune cells
-#
-#   ## Returns:
-#   ##   A data frame of expression data for immune cells
-#   ##   (cols for immune cell sample, rows for "gene name;probe ID")
-#   if (file.exists(immuneCuratedData)) {
-#     ## See below: list(genes=curated.ref.genes, celltypes=curated.cell.types)
-#     curated.data <- get(load(immuneCuratedData))
-#     return(curated.data)
-#   }
-#
-#   exp <- get(load(system.file("extdata", "timer", "immune_datasets", "HPCTimmune.Rdata")))
-#
-#   ##----- Select single reference samples of pre-selected immune cell types -----##
-#   B_cell <- 362:385
-#   T_cell.CD4 <- grep('T_cell.CD4',colnames(exp))
-#   T_cell.CD8 <- grep('T_cell.CD8',colnames(exp))
-#   NK <- 328:331
-#   Neutrophil <- 344:361
-#   Macrophage <- 66:80
-#   DC <- 151:238
-#
-#   curated.ref <- exp[, c(B_cell, T_cell.CD4, T_cell.CD8,
-#                          NK, Neutrophil, Macrophage, DC)]
-#
-#   curated.cell.types <- colnames(curated.ref)
-#   names(curated.cell.types) <- c(rep('B_cell', length(B_cell)),
-#                                  rep('T_cell.CD4', length(T_cell.CD4)),
-#                                  rep('T_cell.CD8', length(T_cell.CD8)),
-#                                  rep('NK', length(NK)),
-#                                  rep('Neutrophil', length(Neutrophil)),
-#                                  rep('Macrophage', length(Macrophage)),
-#                                  rep('DC', length(DC)))
-#   curated.ref.genes <- ConvertImmuneProbeToRefgene(curated.ref)
-#   ret <- list(genes=curated.ref.genes, celltypes=curated.cell.types)
-#   save(ret,file=immuneCuratedData)
-#   return(ret)
-# }
 
-#' Title
+#' Remove batch effect of expression set
 #'
 #' @param cancer.exp
 #' @param immune.exp
@@ -122,9 +83,16 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 }
 
 
+
+
 #' process batch table and check cancer types.
 #'
 #' @param args environment
+#'
+#' @return
+#' @export
+#'
+#' @examples
 check_cancer_types <- function(args) {
   if (length(args$batch) != 0) {
     TimerINFO("Enter batch mode\n")
@@ -144,12 +112,18 @@ check_cancer_types <- function(args) {
 }
 
 
+
+
 #' Constrained regression method implemented in Abbas et al., 2009
 #'
 #' @param XX immume expression data
 #' @param YY cancer expression data
-#' @param w ?
+#' @param w
 #'
+#' @return
+#' @export
+#'
+#' @examples
 GetFractions.Abbas <- function(XX, YY, w=NA){
   ss.remove=c()
   ss.names=colnames(XX)
@@ -173,7 +147,7 @@ GetFractions.Abbas <- function(XX, YY, w=NA){
   return(tmp.F)
 }
 
-#' Title
+#' Convert Rowname To Loci
 #'
 #' @param cancerGeneExpression
 #'
@@ -211,7 +185,7 @@ ParseInputExpression <- function(path) {
 }
 
 
-#' Title
+#' Draw QQ Plot
 #'
 #' @param cancer.exp
 #' @param immune.exp
@@ -236,7 +210,7 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
   abline(fit, col="blue")
 }
 
-#' Title
+#' Get Outlier Genes
 #'
 #' @param cancers
 #'
@@ -260,10 +234,10 @@ GetOutlierGenes <- function (cancers) {
 }
 
 
-#change -20200903
-#' Title
+
+#' deconvolute tumor microenvironment using timer
 #'
-#' @param args
+#' @param args environment
 #'
 #' @return
 #' @export
@@ -283,7 +257,7 @@ deconvolute_timer.default = function(args) {
   immune.geneExpression <- immune$genes
   immune.cellTypes <- immune$celltypes
 
-  message(immune$celltypes)
+  # message(immune$celltypes)
 
   outlier.genes <- sort(GetOutlierGenes(cancers))
 
@@ -347,40 +321,3 @@ deconvolute_timer.default = function(args) {
   return(abundance.score.matrix)
 }
 
-
-
-#
-# ConvertImmuneProbeToRefgene <- function(curated.ref){
-#   ##----- function to preprocess the reference dataset, not necessary if the processed data "curated.ref.genes.Rdata" is available -----##
-#
-#   tmpDD <- data.frame(curated.ref)
-#   tmpDD <- tmpDD[order(rownames(tmpDD)), ]
-#   ## sort the immune expression data by rownames
-#
-#   colnames(tmpDD) <- gsub('\\.', '_', colnames(tmpDD))
-#   genes <- sapply(strsplit(rownames(tmpDD), ';'), function(x) x[[1]])
-#   ## remove the probe ID, only keep gene names
-#
-#   tmpDD <- cbind(genes, tmpDD)
-#   tmpDD <- tmpDD[order(genes), ]
-#   ## sort by gene names
-#
-#   tmp0 <- c()
-#   cnt <- 0
-#
-#   TimerINFO('Aggregating immune expression data')
-#
-#   for(i in colnames(tmpDD)[2:ncol(tmpDD)]){
-#     ## start from the second column (the first column is gene information)
-#     cat(sprintf("(%d of %d) %s\n", cnt, ncol(tmpDD) - 1 ,i))
-#     tmp <- sqldf(paste('select max(', i, ') from tmpDD group by genes', sep=''))
-#     ## select the maximum probe expression level when a gene has multiple probes
-#
-#     if(length(tmp0) == 0) tmp0 <- tmp else tmp0 <- cbind(tmp0, tmp)
-#     cnt <- cnt + 1
-#   }
-#   colnames(tmp0) <- colnames(tmpDD)[2:ncol(tmpDD)]
-#   rownames(tmp0) <- unique(tmpDD[, 1])
-#   curated.ref.genes <- tmp0
-#   return(curated.ref.genes)
-# }

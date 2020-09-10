@@ -2,7 +2,7 @@
 % Please edit documentation in R/timer.R
 \name{GetOutlierGenes}
 \alias{GetOutlierGenes}
-\title{Title}
+\title{Get Outlier Genes}
 \usage{
 GetOutlierGenes(cancers)
 }
@@ -13,5 +13,5 @@ GetOutlierGenes(cancers)
 
 }
 \description{
-Title
+Get Outlier Genes
 }

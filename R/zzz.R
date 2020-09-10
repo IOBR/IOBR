@@ -11,11 +11,11 @@
                 "  For help: https://github.com/DongqiangZeng0808/", pkgname, "\n\n")
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
-                    " Tumor microenvironment characterization in gastric cancer identifies prognostic\n",
-                    " and imunotherapeutically relevant gene signatures.","\n",
-                    " Cancer Immunology Research, 2019, 7(5), 737-750", "\n",
-                    " DOI: 10.1158/2326-6066.CIR-18-0436 ","\n" ,
-                    " PMID: 30842092","\n",
+                    " DQ Zeng, RF Shen, ZL Ye, Y Xiong, JN Wu, WJ Liao\n",
+                    " IOBR: an R package for integrating multi-omics data and Immuno-Oncology\n",
+                    " XXXX, 2020", "\n",
+                    " DOI:   ","\n" ,
+                    " PMID:  ","\n",
                     "===========================================================================")
 
   packageStartupMessage(paste0(msg, citation))

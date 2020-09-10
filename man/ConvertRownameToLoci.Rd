@@ -2,7 +2,7 @@
 % Please edit documentation in R/timer.R
 \name{ConvertRownameToLoci}
 \alias{ConvertRownameToLoci}
-\title{Title}
+\title{Convert Rowname To Loci}
 \usage{
 ConvertRownameToLoci(cancerGeneExpression)
 }
@@ -13,5 +13,5 @@ ConvertRownameToLoci(cancerGeneExpression)
 
 }
 \description{
-Title
+Convert Rowname To Loci
 }
