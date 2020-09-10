@@ -369,7 +369,7 @@ deconvo_timer = function(eset,project = NULL,indications = NULL) {
   lapply(unique(indications), function(ind) {
     tmp_file = tempfile()
     tmp_mat = eset[, indications == ind, drop=FALSE] %>% as_tibble(rownames = "gene_symbol")
-    write_tsv(tmp_mat, tmp_file)
+    readr:: write_tsv(tmp_mat, tmp_file)
     cat(paste0(tmp_file, ",", ind, "\n"), file=args$batch, append=TRUE)
   })
   # reorder results to be consistent with input matrix
@@ -438,7 +438,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #'
 #' @param eset A gene expression matrix or a Biobase ExpressionSet.
 #'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different datasets, default is NULL
 #' @param method a string specifying the method.
 #' Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.
 #' @param tumor logical. use a signature matrix/procedure optimized for tumor samples,
@@ -466,7 +466,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @examples
 #'
 deconvo_tme = function(eset,
-                       project,
+                       project = NULL,
                        method = tme_deconvolution_methods,
                        arrays = FALSE,
                        tumor = TRUE,

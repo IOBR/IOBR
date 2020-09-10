@@ -6,8 +6,8 @@
 #' Title This R-script can be used to calculate Immunophenoscore (IPS)
 #'
 #' @param project
-#' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the first columns;
-#' expression values (i.e. log2(TPM+1) for each sample in the other columns
+#' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
+#' expression values (i.e. log2(TPM+1) for each sample in columns
 #' @param plot default = FALSE;Needs packages ggplot2,grid,gridExtra
 #'
 #' @return IPS score data frame
@@ -16,8 +16,8 @@
 #' @import ggplot2
 #' @import grid
 #' @examples
-#' ips_crc <- IPS_calculation(project = "TCGA-COAD", eset = eset_crc, plot = FALSE)
-IPS_calculation<-function(project, eset, plot ){
+#'
+IPS_calculation<-function(project, eset, plot){
 
 
   #normalize gene expression matrix
@@ -36,51 +36,10 @@ IPS_calculation<-function(project, eset, plot ){
   ################################################
 
 
-  ## calculate Immunophenoscore
-  ipsmap<- function (x) {
-    if (x<=0) {
-      ips<-0
-    } else {
-      if (x>=3) {
-        ips<-10
-      } else {
-        ips<-round(x*10/3, digits=0)
-      }
-    }
-    return(ips)
-  }
-
   ## Assign colors
   my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 1000)
-  mapcolors<-function (x) {
-    za<-NULL
-    if (x>=3) {
-      za=1000
-    } else {
-      if (x<=-3) {
-        za=1
-      } else {
-        za=round(166.5*x+500.5,digits=0)
-      }
-    }
-    return(my_palette[za])
-  }
+
   my_palette2 <- colorRampPalette(c("black", "white"))(n = 1000)
-  mapbw<-function (x) {
-    za2<-NULL
-    if (x>=2) {
-      za2=1000
-    } else {
-      if (x<=-2) {
-        za2=1
-      } else {
-        za2=round(249.75*x+500.5,digits=0)
-      }
-    }
-    return(my_palette2[za2])
-  }
-
-
   ## Read IPS genes and corresponding weights from tab-delimited text file "IPS_genes.txt"
   # For different
   IPSG<-ips_gene_set

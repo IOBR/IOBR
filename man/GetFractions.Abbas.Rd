@@ -11,7 +11,10 @@ GetFractions.Abbas(XX, YY, w = NA)
 
 \item{YY}{cancer expression data}
 
-\item{w}{?}
+\item{w}{}
+}
+\value{
+
 }
 \description{
 Constrained regression method implemented in Abbas et al., 2009

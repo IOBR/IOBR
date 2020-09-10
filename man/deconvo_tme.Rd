@@ -6,7 +6,7 @@
 \usage{
 deconvo_tme(
   eset,
-  project,
+  project = NULL,
   method = tme_deconvolution_methods,
   arrays = FALSE,
   tumor = TRUE,
@@ -24,7 +24,7 @@ deconvo_tme(
 \item{eset}{A gene expression matrix or a Biobase ExpressionSet.
 Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different datasets, default is NULL}
 
 \item{method}{a string specifying the method.
 Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.}

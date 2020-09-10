@@ -2,7 +2,7 @@
 % Please edit documentation in R/timer.R
 \name{RemoveBatchEffect}
 \alias{RemoveBatchEffect}
-\title{Title}
+\title{Remove batch effect of expression set}
 \usage{
 RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 }
@@ -13,5 +13,5 @@ RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 
 }
 \description{
-Title
+Remove batch effect of expression set
 }
