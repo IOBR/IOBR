@@ -1,4 +1,4 @@
-# IOBR: Immune Oncology Bioinformatics Research
+# IOBR: Immuno-Oncology Bioinformatics Research
 
 IOBR is a R package to perform Tumor microenvironment evaluation, signature estimation.
 
@@ -34,14 +34,11 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 
 ```
 
-
 The package is not yet on CRAN. You can install from Github:
 ```{r}
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
 ```
-
-
 
 ## IOBR简介
 
@@ -117,15 +114,12 @@ head(xcell)
 
 ```
 
-
 方法5：使用ESTIMATE计算肿瘤纯度和免疫、间质评分
 ```{r}
 estimate<-deconvo_tme(eset = eset_crc,method = "estimate")
 head(estimate)
 
 ```
-
-
 
 方法6：使用TIMER解析肿瘤微环境
 ```{r,message=FALSE, warning=FALSE}
@@ -146,7 +140,6 @@ ips<-deconvo_tme(eset = eset_crc,method = "ips",plot= FALSE)
 head(ips)
 ```
 
-
 合并所有的解析结果用于后续的分析
 ```{r}
 tme_combine<-cibersort %>% 
@@ -164,7 +157,6 @@ colnames(tme_combine)
 ## Signature score 的评估
 IOBR集合了共256个已经发表的Signature gene sets：包括肿瘤微环境相关的，肿瘤代谢相关、m6A, 外泌体相关的, 微卫星不稳定, 三级淋巴结评分等，可通过函数'signatures_sci'获取到signature的出处；通过'signature_collection'可以获取到每个signature gene;
 
-
 查看有哪些signature
 ```{r}
 #微环境相关的signature
@@ -177,7 +169,6 @@ names(signature_star)
 names(signature_collection)[1:20]
 
 ```
-
 
 ### 评估肿瘤微环境相关的signature-(使用PCA方法）
 ```{r}
@@ -207,7 +198,6 @@ sig_meta<-calculate_sig_score(pdata = NULL,eset = eset_crc,
 sig_meta[1:5,1:10]
 ```
 
-
 ### 计算所有收集的signature score（综合三种的方法： PCA, ssGSEA和z-score）
 ```{r,message=FALSE}
 sig_res<-calculate_sig_score(pdata = NULL,eset = eset_crc,
@@ -216,8 +206,6 @@ sig_res<-calculate_sig_score(pdata = NULL,eset = eset_crc,
                                  mini_gene_count = 2)
 sig_res[1:5,1:10]
 ```
-
-
 
 ### IOBR还集合了GO, KEGG, HALLMARK, REACTOME的signature gene sets
 
@@ -230,3 +218,7 @@ sig_hallmark<-calculate_sig_score(pdata = NULL,
                              mini_gene_count = 2)
 sig_hallmark[1:5,1:10]
 ```
+References
+---------
+Contact:
+E-mail any questions to dongqiangzeng0808@gmail.com
