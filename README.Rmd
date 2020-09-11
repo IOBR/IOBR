@@ -197,7 +197,7 @@ sig_tme[1:5,1:10]
 ```
 
 ### 评估肿瘤微环境相关的signature-（使用ssGSEA方法）
-```{r,message=FALSE,echo=FALSE}
+```{r,message=FALSE}
 sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_crc,
                                  signature = signature_tme,
                                  method = "ssgsea",
@@ -217,7 +217,7 @@ sig_meta[1:5,1:10]
 
 
 ### 计算所有收集的signature score（综合三种的方法： PCA, ssGSEA和z-score）
-```{r,message=FALSE,echo=FALSE}
+```{r,message=FALSE}
 sig_res<-calculate_sig_score(pdata = NULL,eset = eset_crc,
                                  signature = signature_collection,
                                  method = "integration",
@@ -230,7 +230,7 @@ sig_res[1:5,1:10]
 ### IOBR还集合了GO, KEGG, HALLMARK, REACTOME的signature gene sets
 
 建议使用ssGSEA的方法进行评估,如果样本量比较大且signature比较多，运行时间会比较长，
-```{r,message=FALSE,echo=FALSE}
+```{r,message=FALSE}
 sig_hallmark<-calculate_sig_score(pdata = NULL,
                              eset = eset_crc,
                              signature = hallmark ,
