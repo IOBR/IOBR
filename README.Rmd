@@ -27,7 +27,7 @@ IOBR is a R package to perform Tumor microenvironment evaluation, signature esti
 - 5.IOBR集合了批量可视化分组特征的方法；
 
 
-![](IOBR_pipeline.png)
+![](man/figures/IOBR-Package.png)
 
 
 ## 安装依赖包
@@ -69,6 +69,17 @@ if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
 ```
 
+加载包
+
+```{r, warning=FALSE,message=FALSE}
+library(IOBR) 
+library(EPIC)
+library(estimate) 
+library(MCPcounter)
+library(tidyverse)
+Sys.setenv(LANGUAGE = "en") #显示英文报错信息
+options(stringsAsFactors = FALSE) #禁止chr转成factor
+```
 
 ## 解析肿瘤微环境
 
@@ -94,29 +105,27 @@ help(deconvo_tme)
 
 方法1：使用CIBERSORT解析肿瘤微环境
 ```{r}
-cibersort<-deconvo_tme(eset = eset_crc,method = "cibersort",arrays = FALSE,perm = 500 )
+#默认进行1000次permutation, 这里为了节约时间设成了100
+cibersort<-deconvo_tme(eset = eset_crc,method = "cibersort",arrays = FALSE,perm = 100 )
 head(cibersort)
 ```
 方法2：使用EPIC解析肿瘤微环境
 ```{r}
 epic<-deconvo_tme(eset = eset_crc,method = "epic",arrays = FALSE)
 head(epic)
-
 ```
 
 方法3：使用EPIC解析肿瘤微环境
 ```{r}
 mcp<-deconvo_tme(eset = eset_crc,method = "mcpcounter")
 head(mcp)
-
 ```
 
 
 方法4：使用xCell解析肿瘤微环境
-```{r,message=FALSE}
+```{r,message=FALSE,echo=FALSE}
 xcell<-deconvo_tme(eset = eset_crc,method = "xcell",arrays = FALSE)
 head(xcell)
-
 ```
 
 
@@ -124,23 +133,20 @@ head(xcell)
 ```{r}
 estimate<-deconvo_tme(eset = eset_crc,method = "estimate")
 head(estimate)
-
 ```
 
 
 
 方法6：使用TIMER解析肿瘤微环境
-```{r,message=FALSE, warning=FALSE}
+```{r,echo = F,message=FALSE, warning=FALSE}
 timer<-deconvo_tme(eset = eset_crc,method = "timer",group_list = rep("coad",dim(eset_crc)[2]))
 head(timer)
-
 ```
 
 方法7：使用quanTIseq解析肿瘤微环境
 ```{r}
 quantiseq<-deconvo_tme(eset = eset_crc, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE,method = "quantiseq")
 head(quantiseq)
-
 ```
 方法8：使用IPS评估肿瘤免疫表型
 ```{r,message=FALSE}
@@ -191,7 +197,7 @@ sig_tme[1:5,1:10]
 ```
 
 ### 评估肿瘤微环境相关的signature-（使用ssGSEA方法）
-```{r,message=FALSE}
+```{r,message=FALSE,echo=FALSE}
 sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_crc,
                                  signature = signature_tme,
                                  method = "ssgsea",
@@ -211,7 +217,7 @@ sig_meta[1:5,1:10]
 
 
 ### 计算所有收集的signature score（综合三种的方法： PCA, ssGSEA和z-score）
-```{r,message=FALSE}
+```{r,message=FALSE,echo=FALSE}
 sig_res<-calculate_sig_score(pdata = NULL,eset = eset_crc,
                                  signature = signature_collection,
                                  method = "integration",
@@ -224,7 +230,7 @@ sig_res[1:5,1:10]
 ### IOBR还集合了GO, KEGG, HALLMARK, REACTOME的signature gene sets
 
 建议使用ssGSEA的方法进行评估,如果样本量比较大且signature比较多，运行时间会比较长，
-```{r,message=FALSE}
+```{r,message=FALSE,echo=FALSE}
 sig_hallmark<-calculate_sig_score(pdata = NULL,
                              eset = eset_crc,
                              signature = hallmark ,
