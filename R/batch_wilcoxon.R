@@ -17,12 +17,20 @@
 batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Low"), feature = feature){
 
   feature<-feature[feature%in%colnames(data)]
-
   #change-name-of-group
   colnames(data)[which(colnames(data)==target)]<-"group"
+
+  data<-data[,c("group",feature)]
+
+  data<-data %>%
+    filter(!is.na(.$group)) %>%
+    filter(!.$group=="NA")
+  #####################################
+
   aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"],var.equal = F))
 
-  result_mean<-data %>% group_by(.$group) %>%
+  result_mean<-data %>%
+    group_by(.$group) %>%
     summarise_if(is.numeric,mean) %>%
     column_to_rownames(.,var = ".$group") %>%
     as.data.frame() %>%
