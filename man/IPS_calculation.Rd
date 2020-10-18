@@ -7,8 +7,8 @@
 IPS_calculation(project, eset, plot)
 }
 \arguments{
-\item{eset}{expression data from tab-delimited text file, with official human gene symbols (HGNC) in the first columns;
-expression values (i.e. log2(TPM+1) for each sample in the other columns}
+\item{eset}{expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
+expression values (i.e. log2(TPM+1) for each sample in columns}
 
 \item{plot}{default = FALSE;Needs packages ggplot2,grid,gridExtra}
 }
@@ -19,7 +19,7 @@ IPS score data frame
 Title This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
-ips_crc <- IPS_calculation(project = "TCGA-COAD", eset = eset_crc, plot = FALSE)
+
 鍋囧瑕佺敾鍥剧殑璇㤼㹤
 file to deposit resluts
 棣栧厛鏋勫缓鍥剧殑鍌ㄥ瓨鏂囦欢澶戼㸹
