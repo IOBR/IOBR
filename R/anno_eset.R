@@ -21,11 +21,16 @@ anno_eset<- function(eset,annotation,symbol = "symbol", probe = "probe_id",metho
   colnames(annotation)[which(colnames(annotation)==probe)]<-"probe_id"
   annotation<-annotation[,c("probe_id","symbol")]
   annotation<-annotation[!annotation$symbol=="NA_NA",]
+  annotation<-annotation[!is.na(annotation$symbol),]
 
   message(paste0("Row number of original eset: "))
   message(paste0(">>>>  ",dim(eset)[1]))
 
   annotation<-annotation[!is.na(annotation$symbol),]
+
+  anno_count<-length(rownames(eset)[rownames(eset)%in%annotation$probe_id])/length(rownames(eset))
+  message(paste0(paste0(sprintf(">>> %1.2f%%", 100*anno_count)," of probe in expression set was annotated")))
+
   annotation<-annotation[annotation$probe_id%in%rownames(eset),]
   eset<-eset[rownames(eset)%in%annotation$probe_id,]
 
@@ -37,6 +42,7 @@ anno_eset<- function(eset,annotation,symbol = "symbol", probe = "probe_id",metho
   eset<-as.data.frame(eset)
   rownames(eset)<-NULL
 
+  symbol<-"symbol"
   dups <- dim(eset)[1] - length(unique(eset[,symbol]))
 
   if(dups==0){
@@ -64,7 +70,7 @@ anno_eset<- function(eset,annotation,symbol = "symbol", probe = "probe_id",metho
   quit<-is.na(eset[,1])
   eset=eset[!quit,]
 
-  message(paste0("Row number of filtered eset: "))
+  message(paste0("Row number after filtering duplicated gene symbol: "))
   message(paste0(">>>>  ",dim(eset)[1]))
 
   return(eset)

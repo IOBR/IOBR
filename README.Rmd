@@ -27,7 +27,7 @@ IOBR is a R package to perform Tumor microenvironment evaluation, signature esti
 - 5.IOBR集合了批量可视化分组特征的方法；
 
 
-![](IOBR_pipeline.png)
+![IOBR logo](./man/figures/IOBR_pipeline.png)
 
 
 ## 安装依赖包
