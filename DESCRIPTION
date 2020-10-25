@@ -1,7 +1,7 @@
 Package: IOBR
 Type: Package
 Title: Immune Oncology Bioinformatics Research
-Version: 0.99.0
+Version: 0.99.1
 Author: Dongqiang Zeng, Rongfang Shen, Zilan Ye, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
 Description: Integrated functions to conduct comprehensive analysis of immuno-oncology
