@@ -113,8 +113,10 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
     }else if(palette == 3){
       mypal<- mypal[10:20]
     }
-    print(paste0("'", mypal,"'",collapse = ", "))
-    scales:: show_col(mypal)
+    if(show_col){
+      print(paste0("'", mypal,"'",collapse = ", "))
+      scales:: show_col(mypal)
+    }
 
   }
 

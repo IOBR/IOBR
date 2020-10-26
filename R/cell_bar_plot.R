@@ -48,7 +48,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.posit
       ggtitle(paste0(title))+
       theme(plot.title=element_text(size=rel(2),hjust=0.5),
             axis.text.x= element_text(face="plain",angle=0,hjust = 1,color="black"),
-            axis.text.y= element_text(face="plain",angle=60,hjust = 1,color="black"))+
+            axis.text.y= element_text(face="plain",angle= 30,hjust = 1,color="black"))+
       theme(legend.title = element_blank(),
             legend.position= legend.position,
             legend.direction= legend.direction,
@@ -68,7 +68,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.posit
       ggtitle(paste0(title))+
       theme(plot.title=element_text(size=rel(2),hjust=0.5),
             axis.text.x= element_text(face="plain",angle=0,hjust = 1,color="black"),
-            axis.text.y= element_text(face="plain",angle=60,hjust = 1,color="black"))+
+            axis.text.y= element_text(face="plain",angle=30,hjust = 1,color="black"))+
       theme(legend.title = element_blank(),
             legend.position= legend.position,
             legend.direction= legend.direction,

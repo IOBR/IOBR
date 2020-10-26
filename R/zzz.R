@@ -11,8 +11,9 @@
                 "  For help: https://github.com/DongqiangZeng0808/", pkgname, "\n\n")
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
-                    " DQ Zeng, RF Shen, ZL Ye, Y Xiong, JN Wu, WJ Liao\n",
-                    " IOBR: an R package for integrating multi-omics data and Immuno-Oncology\n",
+                    " DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu  WJ Liao\n",
+                    " IOBR: Multi-omics analysis process integrating tumor microenvironment \n",
+                    " and tumor signature. \n",
                     " XXXX, 2020", "\n",
                     " DOI:   ","\n" ,
                     " PMID:  ","\n",
