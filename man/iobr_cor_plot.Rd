@@ -16,7 +16,7 @@ iobr_cor_plot(
   index = 1,
   panel = panel_for_signature,
   category = "signature",
-  signature_groups = signature_group,
+  signature_group = sig_group,
   ProjectID = "TCGA-STAD",
   palette_box = "nrc",
   palette_corplot = "pheatmap",
@@ -44,7 +44,7 @@ iobr_cor_plot(
 
 \item{index}{index use to order the file name}
 
-\item{panel}{panel for signature group `signature_group` or signature gene `gene_group`}
+\item{panel}{panel for signature group `sig_group`}
 
 \item{category}{`signature` or `gene`}
 

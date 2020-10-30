@@ -1,17 +1,16 @@
 
 
 
-# IOBR::signature_group
-################################
-# paste0("'",names(signature_group),"'",collapse = ", ")
-#' @export
-panel_for_signature<-c('immune_signature', 'xcell', 'epic_quantiseq', 'danaher_cell', 'fatty_acid_sig', 'hif_sig', 'cholesterol_sig', 'tme', 'timer', 'sig_pca', 'metabolism', 'iobiomarker', 'immu_supp', 'immu_exhau', 'immu_exclu', 'hif', 'hallmark5', 'hallmark4', 'hallmark3', 'hallmark2', 'hallmark1', 'fatty_acid_sig', 'EMT', 'cibersort2', 'cibersort1', 'cholesterol_sig')
-
-# paste0("'",names(signature_collection),"'",collapse = ", ")
-#' @export
-panel_for_gene<-c('CD_8_T_effector', 'DDR', 'APM', 'Immune_Checkpoint','EMT1', 'EMT2', 'EMT3',
-                  'T_cell_inflamed_GEP_Ayers_et_al','Nature_metabolism_Hypoxia', 'Winter_hypoxia_signature',
-                  'Hu_hypoxia_signature', 'Molecular_Cancer_m6A', 'MT_exosome')
+# paste0("'",names(sig_group),"'",collapse = ", ")
+# panel_for_signature<-c('tumor_signature', 'EMT', 'io_biomarkers', 'immu_microenvironment', 'immu_suppression', 'immu_exclusion', 'immu_exhaustion', 'TCR_BCR', 'tme_signatures1', 'tme_signatures2', 'Bcells', 'Tcells', 'DCs', 'Macrophages', 'Neutrophils', 'Monocytes', 'CAFs', 'NK', 'tme_cell_types', 'CIBERSORT', 'MCPcounter', 'EPIC', 'xCell', 'quanTIseq', 'ESTIMATE', 'IPS', 'TIMER', 'fatty_acid_metabolism', 'hypoxia_signature', 'cholesterol_metabolism', 'Metabolism', 'hallmark', 'hallmark1', 'hallmark2', 'hallmark3', 'Rooney_et_al', 'Bindea_et_al', 'Li_et_al', 'Peng_et_al')
+# use_data(panel_for_signature,overwrite = T)
+# # paste0("'",names(signature_collection),"'",collapse = ", ")
+# panel_for_gene<-c('CD_8_T_effector', 'DDR', 'APM', 'Immune_Checkpoint','EMT1', 'EMT2', 'EMT3',
+#                   'T_cell_inflamed_GEP_Ayers_et_al',"TMEscoreA_CIR","TMEscoreB_CIR",
+#                   'Nature_metabolism_Hypoxia', 'Winter_hypoxia_signature',
+#                   'Hu_hypoxia_signature', 'Molecular_Cancer_m6A', 'MT_exosome',"Ferroptosis")
+# use_data(panel_for_gene,overwrite = T)
+#####################################
 
 ####################################
 #' Integrative correlation between phenotype and features
@@ -25,8 +24,8 @@ panel_for_gene<-c('CD_8_T_effector', 'DDR', 'APM', 'Immune_Checkpoint','EMT1', '
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
 #' @param padj_cutoff
 #' @param index index use to order the file name
-#' @param panel panel for signature group `signature_group` or signature gene `gene_group`
-#' @param signature_groups
+#' @param panel panel for signature group `sig_group`
+#' @param signature_group
 #' @param category `signature` or `gene`
 #' @param ProjectID
 #' @param feature_limit
@@ -54,7 +53,7 @@ iobr_cor_plot<-function(pdata_group,
                          index = 1,
                          panel = panel_for_signature,
                          category = "signature",
-                         signature_groups = signature_group,
+                         signature_group = sig_group,
                          ProjectID = "TCGA-STAD",
                          palette_box = "nrc",
                          palette_corplot = "pheatmap",
@@ -77,9 +76,10 @@ iobr_cor_plot<-function(pdata_group,
     pdata_group$group2<-ifelse(pdata_group[,target]>=mean(pdata_group[,target]),"High","Low")
   }
 
-  q1<-quantile(pdata[,target],probs = 1/3)
-  q2<-quantile(pdata[,target],probs = 2/3)
+
   if(is_target_continuous&!"group3"%in%colnames(pdata_group)){
+    q1<-quantile(pdata[,target],probs = 1/3)
+    q2<-quantile(pdata[,target],probs = 2/3)
     pdata_group$group3<-ifelse(pdata_group[,target]<=q1,"Low",ifelse(pdata_group[,target]>=q2,"High","Middle"))
   }
 
@@ -93,7 +93,8 @@ iobr_cor_plot<-function(pdata_group,
   }
 
   if(category == "signature"){
-    group_list<-signature_groups
+    group_list<-signature_group
+    panel<-names(signature_group)
     feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",unique(unlist(group_list)))]
     title.y<-"Signature score"
     title.x<-"Signatures"
@@ -123,10 +124,15 @@ iobr_cor_plot<-function(pdata_group,
   pf[,scale_begin:ncol(pf)]<-scale( pf[,scale_begin:ncol(pf)],center = T,scale = T)
 
 
+  if(!class(signature_group)=="list") stop(">>> Input must be a list.")
   ####################################################################
   for (x in 1:length(panel)) {
+
     index_i<- which(names(group_list)==panel[x])[1]
     group_name<-names(group_list)[index_i]
+
+    print(paste0(">>>  Preprocessing ", group_name))
+
     features<-group_list[[index_i]]
     features<-features[features%in%colnames(pf)]
     if(length(features)<= 2) next
@@ -138,6 +144,9 @@ iobr_cor_plot<-function(pdata_group,
       if(is_target_continuous==FALSE){
 
         eset<-pf[,colnames(pf)%in%c(group,features)]
+
+        if(group == "group3") eset<-eset[!eset$group3=="Middle",]
+
         res<- batch_wilcoxon(data = eset,target = group,feature = setdiff(colnames(eset),group))
         good_features<-high_var_fea(result = res,target = "sig_names",
                                             name_padj = "p.adj",padj_cutoff = padj_cutoff,
@@ -169,9 +178,14 @@ iobr_cor_plot<-function(pdata_group,
 
     # pf_long[-grep(pf_long$variables,pattern = target),]
 
-    pf_long<-remove_names(data = pf_long,
-                             variable = "variables",patterns_to_na = patterns_to_na,
-                             patterns_space = c("\\_"))
+    if(tolower(group_name)%in%gsub(patterns_to_na,pattern = "\\_",replacement = "")){
+      pf_long<-remove_names(input_df = pf_long,
+                               variable = "variables",
+                               patterns_to_na = patterns_to_na,
+                               patterns_space = c("\\_"))
+    }
+
+    pf_long$variables<-gsub(pf_long$variables,pattern = "\\_",replacement = " ")
 
     pf_long$variables<-substring(pf_long$variables,1,character_limit)
 
@@ -250,6 +264,7 @@ iobr_cor_plot<-function(pdata_group,
         .column = ID,
         .row = variables,
         .value = value,
+        # column_title = group_name,
         # annotation = group2,
         palette_value = heatmap_col,
         show_column_names = show_heatmap_col_name) %>%
@@ -281,14 +296,16 @@ iobr_cor_plot<-function(pdata_group,
                          col = colorRampPalette(col)(50))
       dev.off()
       ########################################
-      lab_size<- 10 - max(nchar(pf_long_group$variables))/8
-      tl_cex<- 15 - max(nchar(pf_long_group$variables))/6
+      lab_size<- 13 - max(nchar(pf_long_group$variables))/4 #size of coefficient
+      tl_cex<- 20 - max(nchar(pf_long_group$variables))/9  #size of signature name
       p<-ggcorrplot::ggcorrplot(bbcor$r, hc.order = TRUE, type = "lower", p.mat = bbcor$P, lab = TRUE,
-                                pch.cex = 5,
+                                pch.cex = 4.3,
                                 lab_size = lab_size,
                                 tl.cex =tl_cex,
                                 title = names(group_list)[index_i],
-                                ggtheme = ggplot2::theme_bw, colors = col)
+                                ggtheme = ggplot2::theme_bw,
+                                colors = col)+
+        theme(plot.title=element_text(size=rel(2.5),hjust=0.5))
       ######################################
       ggsave(p,filename = paste0("1-",x,"-5-",ProjectID,"-",group_name,
                                  "-associated-",category, "-corplot.pdf"),
