@@ -2,7 +2,7 @@ Package: IOBR
 Type: Package
 Title: Immune Oncology Bioinformatics Research
 Version: 0.99.1
-Author: Dongqiang Zeng, Rongfang Shen, Zilan Ye, Yi Xiong
+Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
 Description: Integrated functions to conduct comprehensive analysis of immuno-oncology
 License: MIT
@@ -20,6 +20,7 @@ Depends:
     preprocessCore,
     ggplot2,
     ggpubr,
+    tidyHeatmap,
     R (>= 3.6)
 Imports: 
    EPIC, 

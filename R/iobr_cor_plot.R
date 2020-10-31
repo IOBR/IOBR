@@ -61,7 +61,8 @@ iobr_cor_plot<-function(pdata_group,
                          feature_limit = 26,
                          character_limit = 30,
                          show_heatmap_col_name = FALSE,
-                         show_col = FALSE){
+                         show_col = FALSE,
+                         show_plot = FALSE){
 
 
   file_store<-paste0(index,"-1-",ProjectID,"-",target,"-relevant-",category)
@@ -71,6 +72,7 @@ iobr_cor_plot<-function(pdata_group,
   pdata_group<-as.data.frame(pdata_group)
   colnames(pdata_group)[which(colnames(pdata_group)==id1)]<-"ID"
 
+  if(is_target_continuous) pdata_group[,target]<-as.numeric(pdata_group[,target])
 
   if(is_target_continuous&!"group2"%in%colnames(pdata_group)){
     pdata_group$group2<-ifelse(pdata_group[,target]>=mean(pdata_group[,target]),"High","Low")
@@ -78,10 +80,14 @@ iobr_cor_plot<-function(pdata_group,
 
 
   if(is_target_continuous&!"group3"%in%colnames(pdata_group)){
-    q1<-quantile(pdata[,target],probs = 1/3)
-    q2<-quantile(pdata[,target],probs = 2/3)
+    q1<-quantile(pdata_group[,target],probs = 1/3)
+    q2<-quantile(pdata_group[,target],probs = 2/3)
     pdata_group$group3<-ifelse(pdata_group[,target]<=q1,"Low",ifelse(pdata_group[,target]>=q2,"High","Middle"))
   }
+
+  # pdata_group<-pdata_group[!is.na(pdata_group[,group]),]
+  # pdata_group<-pdata_group[!pdata_group[,group]=="NA",]
+
 
   feature_matrix<-as.data.frame(feature_matrix)
   colnames(feature_matrix)[which(colnames(feature_matrix)==id2)]<-"ID"
@@ -237,6 +243,7 @@ iobr_cor_plot<-function(pdata_group,
     group_box<-sym(target_binary)
     pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),size= 2.6, label.y = max_variables-0.3)
     pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",size=7, label.y = max_variables-0.5 )
+    if(show_plot) print(pp1)
     ###################################################
     plot_width<-length(features)*0.5+3
     plot_height<- 4 + max(nchar(pf_long_group$variables))*0.1
@@ -258,19 +265,22 @@ iobr_cor_plot<-function(pdata_group,
     ####################################################
     heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col)
     ####################################################
-    pf_long_group %>%
+    pp<-pf_long_group %>%
       group_by(target_group) %>%
-    tidyHeatmap:: heatmap(
+      tidyHeatmap:: heatmap(
         .column = ID,
         .row = variables,
         .value = value,
         # column_title = group_name,
         # annotation = group2,
         palette_value = heatmap_col,
-        show_column_names = show_heatmap_col_name) %>%
-      tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",
-                                   target,"-",group_name, "-tidyheatmap.pdf"),
-                            width = 8,height = height_heatmap)
+        show_column_names = show_heatmap_col_name)
+
+    if(show_plot) print(pp)
+
+     pp %>%  tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",
+                                        target,"-",group_name, "-tidyheatmap.pdf"),
+                                 width = 8,height = height_heatmap)
     ####################################################
     if(is_target_continuous ==TRUE& length(group_list[[index_i]])<= 20){
 
@@ -311,6 +321,7 @@ iobr_cor_plot<-function(pdata_group,
                                  "-associated-",category, "-corplot.pdf"),
              width = 12,height = 12.8,
              path = file_store)
+      if(show_plot) print(p)
       ####################################
     }
 
