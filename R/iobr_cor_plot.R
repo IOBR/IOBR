@@ -17,22 +17,21 @@
 #'
 #' @param pdata_group pdata
 #' @param id1 column of identifier of pdata
-#' @param feature_matrix feature matrix
+#' @param feature_matrix feature matrix with first column as `id2`
 #' @param id2 column of identifier of feature matrix
 #' @param target column of target variables
 #' @param group column used to differentiate patient groups
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
-#' @param padj_cutoff
+#' @param padj_cutoff cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`
 #' @param index index use to order the file name
-#' @param panel panel for signature group `sig_group`
-#' @param signature_group
+#' @param signature_group for signature group `sig_group`, for gene_group `signature_collection` or `signature_tme`
 #' @param category `signature` or `gene`
-#' @param ProjectID
-#' @param feature_limit
-#' @param character_limit
-#' @param palette_box
-#' @param palette_corplot
-#' @param palette_heatmap
+#' @param ProjectID names to define the file names
+#' @param feature_limit maximal number features to plot
+#' @param character_limit maximal number of feature characters
+#' @param palette_box palette for box plot
+#' @param palette_corplot palette for cor-plot
+#' @param palette_heatmap palette for heatmap
 #' @param show_heatmap_col_name logical variable, if TRUE, tidyheatmap will print the column name
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
 #'
@@ -51,7 +50,6 @@ iobr_cor_plot<-function(pdata_group,
                          is_target_continuous = TRUE,
                          padj_cutoff = 1,
                          index = 1,
-                         panel = panel_for_signature,
                          category = "signature",
                          signature_group = sig_group,
                          ProjectID = "TCGA-STAD",
@@ -106,7 +104,8 @@ iobr_cor_plot<-function(pdata_group,
     title.x<-"Signatures"
   }
   if(category == "gene"){
-    group_list<-signature_collection[names(signature_collection)%in%panel]
+    group_list<-signature_collection[names(signature_collection)%in%names(signature_group)]
+    panel<-names(signature_group)
     feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",unique(unlist(group_list)))]
     title.y<-"Gene expression"
     title.x<-"Signature genes"
@@ -137,7 +136,7 @@ iobr_cor_plot<-function(pdata_group,
     index_i<- which(names(group_list)==panel[x])[1]
     group_name<-names(group_list)[index_i]
 
-    print(paste0(">>>  Preprocessing ", group_name))
+    print(paste0(">>>  Preprocessing signature: ", group_name))
 
     features<-group_list[[index_i]]
     features<-features[features%in%colnames(pf)]
@@ -184,14 +183,15 @@ iobr_cor_plot<-function(pdata_group,
 
     # pf_long[-grep(pf_long$variables,pattern = target),]
 
-    if(tolower(group_name)%in%gsub(patterns_to_na,pattern = "\\_",replacement = "")){
+    patterns<-tolower(gsub(patterns_to_na,pattern = "\\_",replacement = ""))
+    if(tolower(group_name)%in%patterns){
       pf_long<-remove_names(input_df = pf_long,
-                               variable = "variables",
-                               patterns_to_na = patterns_to_na,
-                               patterns_space = c("\\_"))
+                            variable = "variables",
+                            patterns_to_na = patterns_to_na,
+                            patterns_space = c("\\_"))
     }
 
-    pf_long$variables<-gsub(pf_long$variables,pattern = "\\_",replacement = " ")
+    # pf_long$variables<-gsub(pf_long$variables,pattern = "\\_",replacement = " ")
 
     pf_long$variables<-substring(pf_long$variables,1,character_limit)
 
@@ -287,6 +287,15 @@ iobr_cor_plot<-function(pdata_group,
       #------corrplot---------------------------------
       pf_cor<-pf[,colnames(pf)%in%c(target,features)]
 
+
+      if(tolower(group_name)%in%patterns){
+        patterns<-tolower(gsub(patterns_to_na,pattern = "\\_",replacement = ""))
+        pf_cor<-remove_names(input_df = pf_cor,
+                              variable = "colnames",
+                              patterns_to_na = patterns_to_na,
+                              patterns_space = NULL)
+      }
+
       bbcor <-Hmisc:: rcorr(as.matrix(pf_cor),type = "spearman")
 
       ###################################
@@ -301,10 +310,17 @@ iobr_cor_plot<-function(pdata_group,
       corrplot::corrplot(bbcor$r, type="lower", order="hclust",
                          p.mat = bbcor$P, sig.level = 0.05,tl.srt=45,
                          tl.col = "black",tl.cex = 1.3,
-                         addrect=3,rect.col = "black",
+                         addrect=2,rect.col = "black",
                          rect.lwd = 3,
                          col = colorRampPalette(col)(50))
       dev.off()
+      corrplot::corrplot(bbcor$r, type="lower", order="hclust",
+                         p.mat = bbcor$P, sig.level = 0.05,tl.srt=45,
+                         tl.col = "black",tl.cex = 1,
+                         addrect=2,rect.col = "black",
+                         rect.lwd = 3,
+                         col = colorRampPalette(col)(50))
+      # if(show_plot) print(pp)
       ########################################
       lab_size<- 13 - max(nchar(pf_long_group$variables))/4 #size of coefficient
       tl_cex<- 20 - max(nchar(pf_long_group$variables))/9  #size of signature name
@@ -321,7 +337,7 @@ iobr_cor_plot<-function(pdata_group,
                                  "-associated-",category, "-corplot.pdf"),
              width = 12,height = 12.8,
              path = file_store)
-      if(show_plot) print(p)
+
       ####################################
     }
 

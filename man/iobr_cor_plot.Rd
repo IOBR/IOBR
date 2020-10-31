@@ -14,7 +14,6 @@ iobr_cor_plot(
   is_target_continuous = TRUE,
   padj_cutoff = 1,
   index = 1,
-  panel = panel_for_signature,
   category = "signature",
   signature_group = sig_group,
   ProjectID = "TCGA-STAD",
@@ -33,7 +32,7 @@ iobr_cor_plot(
 
 \item{id1}{column of identifier of pdata}
 
-\item{feature_matrix}{feature matrix}
+\item{feature_matrix}{feature matrix with first column as `id2`}
 
 \item{id2}{column of identifier of feature matrix}
 
@@ -43,11 +42,25 @@ iobr_cor_plot(
 
 \item{is_target_continuous}{logical variable, if TRUE, new group will be generated based on the average or the third percentile}
 
+\item{padj_cutoff}{cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`}
+
 \item{index}{index use to order the file name}
 
-\item{panel}{panel for signature group `sig_group`}
-
 \item{category}{`signature` or `gene`}
+
+\item{signature_group}{for signature group `sig_group`, for gene_group `signature_collection` or `signature_tme`}
+
+\item{ProjectID}{names to define the file names}
+
+\item{palette_box}{palette for box plot}
+
+\item{palette_corplot}{palette for cor-plot}
+
+\item{palette_heatmap}{palette for heatmap}
+
+\item{feature_limit}{maximal number features to plot}
+
+\item{character_limit}{maximal number of feature characters}
 
 \item{show_heatmap_col_name}{logical variable, if TRUE, tidyheatmap will print the column name}
 

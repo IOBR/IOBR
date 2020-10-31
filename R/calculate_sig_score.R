@@ -75,8 +75,11 @@ calculate_sig_score_pca<-function(pdata,
     tmp <- eset[genes, , drop=FALSE]
     pdata[, sig] <- sigScore(tmp,methods = "PCA")
   }
-  if ("TMEscoreA"%in%goi &"TMEscoreB" %in% goi) {
-    pdata[,"TMEscore"]<-pdata[,"TMEscoreA"]-pdata[,"TMEscoreB"]
+  if ("TMEscoreA_CIR"%in%goi &"TMEscoreB_CIR" %in% goi) {
+    pdata[,"TMEscore_CIR"]<-pdata[,"TMEscoreA_CIR"]-pdata[,"TMEscoreB_CIR"]
+  }
+  if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
+    pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
   return(pdata)
 }
@@ -136,8 +139,11 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
     tmp <- eset[genes, , drop=FALSE]
     pdata[, sig] <- sigScore(tmp,methods = "zscore")
   }
-  if ("TMEscoreA"%in%goi &"TMEscoreB" %in% goi) {
-    pdata[,"TMEscore"]<-pdata[,"TMEscoreA"]-pdata[,"TMEscoreB"]
+  if ("TMEscoreA_CIR"%in%goi &"TMEscoreB_CIR" %in% goi) {
+    pdata[,"TMEscore_CIR"]<-pdata[,"TMEscoreA_CIR"]-pdata[,"TMEscoreB_CIR"]
+  }
+  if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
+    pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
   return(pdata)
 }
@@ -187,9 +193,12 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
   res<-as.data.frame(t(res))
   res<-rownames_to_column(res,var = "ID")
 
-  #假如TMEscoreAB在signature中，同时计算TMEscore
-  if ("TMEscoreA"%in%colnames(res) & "TMEscoreB"%in%colnames(res)) {
-    res[,"TMEscore"]<-res[,"TMEscoreA"] - res[,"TMEscoreB"]
+  if ("TMEscoreA_CIR"%in%colnames(res) & "TMEscoreB_CIR"%in%colnames(res)) {
+    res[,"TMEscore_CIR"]<-res[,"TMEscoreA_CIR"] - res[,"TMEscoreB_CIR"]
+  }
+
+  if ("TMEscoreA_plus"%in%colnames(res) & "TMEscoreB_plus"%in%colnames(res)) {
+    res[,"TMEscore_plus"]<-res[,"TMEscoreA_plus"] - res[,"TMEscoreB_plus"]
   }
 
   pdata<-merge(pdata,res,by ="ID",all.x = T,all.y = F)
@@ -254,8 +263,11 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
     pdata[, paste(sig,"_PCA",sep = "")] <- sigScore(tmp,methods = "PCA")
   }
   ############################
-  if ("TMEscoreA"%in%goi &"TMEscoreB" %in% goi) {
-    pdata[,"TMEscore_PCA"]<-pdata[,"TMEscoreA_PCA"]-pdata[,"TMEscoreB_PCA"]
+  if ("TMEscoreA_CIR"%in%goi &"TMEscoreB_CIR" %in% goi) {
+    pdata[,"TMEscore_CIR_PCA"]<-pdata[,"TMEscoreA_CIR_PCA"]-pdata[,"TMEscoreB_CIR_PCA"]
+  }
+  if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
+    pdata[,"TMEscore_plus_PCA"]<-pdata[,"TMEscoreA_plus_PCA"]-pdata[,"TMEscoreB_plus_PCA"]
   }
   ############################
   message(paste0("\n", ">>>Step 2: Calculating signature score using z-score method"))
@@ -266,8 +278,11 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
     tmp <- eset1[genes, , drop=FALSE]
     pdata[, paste(sig,"_zscore",sep = "")] <- sigScore(tmp,methods = "z-score")
   }
-  if ("TMEscoreA"%in%goi &"TMEscoreB" %in% goi) {
-    pdata[,"TMEscore_zscore"]<-pdata[,"TMEscoreA_zscore"]-pdata[,"TMEscoreB_zscore"]
+  if ("TMEscoreA_CIR"%in%goi &"TMEscoreB_CIR" %in% goi) {
+    pdata[,"TMEscore_CIR_zscore"]<-pdata[,"TMEscoreA_CIR_zscore"]-pdata[,"TMEscoreB_CIR_zscore"]
+  }
+  if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
+    pdata[,"TMEscore_plus_zscore"]<-pdata[,"TMEscoreA_plus_zscore"]-pdata[,"TMEscoreB_plus_zscore"]
   }
   ############################
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
@@ -277,8 +292,11 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
                   min.sz=5,
                   ssgsea.norm=T)
   res<-as.data.frame(t(res))
-  if ("TMEscoreA"%in% colnames(res) & "TMEscoreB"%in%colnames(res)) {
-    res[,"TMEscore"]<-res[,"TMEscoreA"] - res[,"TMEscoreB"]
+  if ("TMEscoreA_CIR"%in% colnames(res) & "TMEscoreB_CIR"%in%colnames(res)) {
+    res[,"TMEscore_CIR"]<-res[,"TMEscoreA_CIR"] - res[,"TMEscoreB_CIR"]
+  }
+  if ("TMEscoreA_plus"%in% colnames(res) & "TMEscoreB_plus"%in%colnames(res)) {
+    res[,"TMEscore_plus"]<-res[,"TMEscoreA_plus"] - res[,"TMEscoreB_plus"]
   }
   #############################
   colnames(res)<-paste0(colnames(res),"_ssGSEA")

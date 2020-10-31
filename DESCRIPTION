@@ -21,6 +21,7 @@ Depends:
     ggplot2,
     ggpubr,
     tidyHeatmap,
+    tidyverse,
     R (>= 3.6)
 Imports: 
    EPIC, 
