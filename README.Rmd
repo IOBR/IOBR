@@ -27,7 +27,7 @@ IOBR is a R package to perform Tumor microenvironment evaluation, signature esti
 - 5.IOBR集合了批量可视化分组特征的方法；
 
 
-![IOBR logo](./man/figures/IOBR_pipeline.png)
+![IOBR logo](./man/figures/IOBR-Package.png)
 
 
 ## 安装依赖包
@@ -64,9 +64,10 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 
 
 The package is not yet on CRAN. You can install from Github:
-```{r}
+```{r,message=FALSE,warning=FALSE}
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
+library(IOBR)
 ```
 
 
@@ -83,7 +84,7 @@ tme_deconvolution_methods
 
 ```{r}
 # 查看数据
-eset_crc[1:5,1:5]
+eset_stad[1:5,1:5]
 ```
 
 查看函数具体的参数
@@ -94,19 +95,19 @@ help(deconvo_tme)
 
 方法1：使用CIBERSORT解析肿瘤微环境
 ```{r}
-cibersort<-deconvo_tme(eset = eset_crc,method = "cibersort",arrays = FALSE,perm = 500 )
+cibersort<-deconvo_tme(eset = eset_stad,method = "cibersort",arrays = FALSE,perm = 500 )
 head(cibersort)
 ```
 方法2：使用EPIC解析肿瘤微环境
 ```{r}
-epic<-deconvo_tme(eset = eset_crc,method = "epic",arrays = FALSE)
+epic<-deconvo_tme(eset = eset_stad,method = "epic",arrays = FALSE)
 head(epic)
 
 ```
 
 方法3：使用EPIC解析肿瘤微环境
 ```{r}
-mcp<-deconvo_tme(eset = eset_crc,method = "mcpcounter")
+mcp<-deconvo_tme(eset = eset_stad,method = "mcpcounter")
 head(mcp)
 
 ```
@@ -114,7 +115,7 @@ head(mcp)
 
 方法4：使用xCell解析肿瘤微环境
 ```{r,message=FALSE}
-xcell<-deconvo_tme(eset = eset_crc,method = "xcell",arrays = FALSE)
+xcell<-deconvo_tme(eset = eset_stad,method = "xcell",arrays = FALSE)
 head(xcell)
 
 ```
@@ -122,7 +123,7 @@ head(xcell)
 
 方法5：使用ESTIMATE计算肿瘤纯度和免疫、间质评分
 ```{r}
-estimate<-deconvo_tme(eset = eset_crc,method = "estimate")
+estimate<-deconvo_tme(eset = eset_stad,method = "estimate")
 head(estimate)
 
 ```
@@ -131,20 +132,20 @@ head(estimate)
 
 方法6：使用TIMER解析肿瘤微环境
 ```{r,message=FALSE, warning=FALSE}
-timer<-deconvo_tme(eset = eset_crc,method = "timer",group_list = rep("coad",dim(eset_crc)[2]))
+timer<-deconvo_tme(eset = eset_stad,method = "timer",group_list = rep("coad",dim(eset_stad)[2]))
 head(timer)
 
 ```
 
 方法7：使用quanTIseq解析肿瘤微环境
 ```{r}
-quantiseq<-deconvo_tme(eset = eset_crc, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE,method = "quantiseq")
+quantiseq<-deconvo_tme(eset = eset_stad, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE,method = "quantiseq")
 head(quantiseq)
 
 ```
 方法8：使用IPS评估肿瘤免疫表型
 ```{r,message=FALSE}
-ips<-deconvo_tme(eset = eset_crc,method = "ips",plot= FALSE)
+ips<-deconvo_tme(eset = eset_stad,method = "ips",plot= FALSE)
 head(ips)
 ```
 
@@ -183,7 +184,7 @@ names(signature_collection)[1:20]
 
 ### 评估肿瘤微环境相关的signature-(使用PCA方法）
 ```{r}
-sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_crc,
+sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_stad,
                              signature = signature_tme,
                              method = "pca",
                              mini_gene_count = 2)
@@ -192,7 +193,7 @@ sig_tme[1:5,1:10]
 
 ### 评估肿瘤微环境相关的signature-（使用ssGSEA方法）
 ```{r,message=FALSE}
-sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_crc,
+sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_stad,
                                  signature = signature_tme,
                                  method = "ssgsea",
                                  mini_gene_count = 5)
@@ -202,7 +203,7 @@ sig_tme[1:5,1:10]
 
 ### 评估代谢相关的signature
 ```{r}
-sig_meta<-calculate_sig_score(pdata = NULL,eset = eset_crc,
+sig_meta<-calculate_sig_score(pdata = NULL,eset = eset_stad,
                                  signature = signature_metabolism,
                                  method = "pca",
                                  mini_gene_count = 2)
@@ -212,7 +213,7 @@ sig_meta[1:5,1:10]
 
 ### 计算所有收集的signature score（综合三种的方法： PCA, ssGSEA和z-score）
 ```{r,message=FALSE}
-sig_res<-calculate_sig_score(pdata = NULL,eset = eset_crc,
+sig_res<-calculate_sig_score(pdata = NULL,eset = eset_stad,
                                  signature = signature_collection,
                                  method = "integration",
                                  mini_gene_count = 2)
@@ -226,7 +227,7 @@ sig_res[1:5,1:10]
 建议使用ssGSEA的方法进行评估,如果样本量比较大且signature比较多，运行时间会比较长，
 ```{r,message=FALSE}
 sig_hallmark<-calculate_sig_score(pdata = NULL,
-                             eset = eset_crc,
+                             eset = eset_stad,
                              signature = hallmark ,
                              method = "ssgsea",
                              mini_gene_count = 2)

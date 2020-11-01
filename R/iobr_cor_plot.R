@@ -1,17 +1,6 @@
 
 
 
-# paste0("'",names(sig_group),"'",collapse = ", ")
-# panel_for_signature<-c('tumor_signature', 'EMT', 'io_biomarkers', 'immu_microenvironment', 'immu_suppression', 'immu_exclusion', 'immu_exhaustion', 'TCR_BCR', 'tme_signatures1', 'tme_signatures2', 'Bcells', 'Tcells', 'DCs', 'Macrophages', 'Neutrophils', 'Monocytes', 'CAFs', 'NK', 'tme_cell_types', 'CIBERSORT', 'MCPcounter', 'EPIC', 'xCell', 'quanTIseq', 'ESTIMATE', 'IPS', 'TIMER', 'fatty_acid_metabolism', 'hypoxia_signature', 'cholesterol_metabolism', 'Metabolism', 'hallmark', 'hallmark1', 'hallmark2', 'hallmark3', 'Rooney_et_al', 'Bindea_et_al', 'Li_et_al', 'Peng_et_al')
-# use_data(panel_for_signature,overwrite = T)
-# # paste0("'",names(signature_collection),"'",collapse = ", ")
-# panel_for_gene<-c('CD_8_T_effector', 'DDR', 'APM', 'Immune_Checkpoint','EMT1', 'EMT2', 'EMT3',
-#                   'T_cell_inflamed_GEP_Ayers_et_al',"TMEscoreA_CIR","TMEscoreB_CIR",
-#                   'Nature_metabolism_Hypoxia', 'Winter_hypoxia_signature',
-#                   'Hu_hypoxia_signature', 'Molecular_Cancer_m6A', 'MT_exosome',"Ferroptosis")
-# use_data(panel_for_gene,overwrite = T)
-#####################################
-
 ####################################
 #' Integrative correlation between phenotype and features
 #'
@@ -19,7 +8,7 @@
 #' @param id1 column of identifier of pdata
 #' @param feature_matrix feature matrix with first column as `id2`
 #' @param id2 column of identifier of feature matrix
-#' @param target column of target variables
+#' @param target default is NULL, column of target variables if target is continuous
 #' @param group column used to differentiate patient groups
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
 #' @param padj_cutoff cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`
@@ -34,6 +23,7 @@
 #' @param palette_heatmap palette for heatmap
 #' @param show_heatmap_col_name logical variable, if TRUE, tidyheatmap will print the column name
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
+#' @param show_plot logical variable, if TRUE, plots will be print
 #'
 #' @author Dongqiang Zeng
 #' @return
@@ -45,7 +35,7 @@ iobr_cor_plot<-function(pdata_group,
                          id1 = "ID",
                          feature_matrix,
                          id2 = "ID",
-                         target,
+                         target = NULL,
                          group = "group3",
                          is_target_continuous = TRUE,
                          padj_cutoff = 1,
@@ -62,20 +52,25 @@ iobr_cor_plot<-function(pdata_group,
                          show_col = FALSE,
                          show_plot = FALSE){
 
+  if(!is.null(target)){
+    file_store<-paste0(index,"-1-",ProjectID,"-",target,"-relevant-",category)
+  }else{
+    file_store<-paste0(index,"-1-",ProjectID,"-",group,"-relevant-",category)
+  }
 
-  file_store<-paste0(index,"-1-",ProjectID,"-",target,"-relevant-",category)
   if ( ! file.exists(file_store) ) dir.create(file_store)
   abspath<-paste(getwd(),"/",file_store,"/",sep ="" )
 
+  if(is.null(names(signature_group))) signature_group<-list('signature' = signature_group)
+  ##################################################
   pdata_group<-as.data.frame(pdata_group)
   colnames(pdata_group)[which(colnames(pdata_group)==id1)]<-"ID"
 
-  if(is_target_continuous) pdata_group[,target]<-as.numeric(pdata_group[,target])
+  if(!is.null(target)&is_target_continuous) pdata_group[,target]<-as.numeric(pdata_group[,target])
 
   if(is_target_continuous&!"group2"%in%colnames(pdata_group)){
     pdata_group$group2<-ifelse(pdata_group[,target]>=mean(pdata_group[,target]),"High","Low")
   }
-
 
   if(is_target_continuous&!"group3"%in%colnames(pdata_group)){
     q1<-quantile(pdata_group[,target],probs = 1/3)
@@ -83,17 +78,26 @@ iobr_cor_plot<-function(pdata_group,
     pdata_group$group3<-ifelse(pdata_group[,target]<=q1,"Low",ifelse(pdata_group[,target]>=q2,"High","Middle"))
   }
 
+  if(!is.null(target)&is_target_continuous){
+    pdata_group<-pdata_group[,c("ID",target,"group2","group3")]
+  }else{
+    pdata_group<-pdata_group[,c("ID",group)]
+  }
+
   # pdata_group<-pdata_group[!is.na(pdata_group[,group]),]
   # pdata_group<-pdata_group[!pdata_group[,group]=="NA",]
-
+  #####################################################
 
   feature_matrix<-as.data.frame(feature_matrix)
   colnames(feature_matrix)[which(colnames(feature_matrix)==id2)]<-"ID"
   feature_selected<-feature_manipulation(data = feature_matrix,feature = setdiff(colnames(feature_matrix),"ID"))
   feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",feature_selected)]
 
-  if(target%in%colnames(feature_matrix)){
-    feature_matrix<-feature_matrix[,-which(colnames(feature_matrix)==target)]
+  if(!is.null(target)){
+    if(target%in%colnames(feature_matrix)){
+      feature_matrix<-feature_matrix[,-which(colnames(feature_matrix)==target)]
+    }
+
   }
 
   if(category == "signature"){
@@ -136,7 +140,7 @@ iobr_cor_plot<-function(pdata_group,
     index_i<- which(names(group_list)==panel[x])[1]
     group_name<-names(group_list)[index_i]
 
-    print(paste0(">>>  Preprocessing signature: ", group_name))
+    print(paste0(">>>  Processing signature: ", group_name))
 
     features<-group_list[[index_i]]
     features<-features[features%in%colnames(pf)]
@@ -160,10 +164,13 @@ iobr_cor_plot<-function(pdata_group,
       }else if(is_target_continuous==TRUE){
         eset<-pf[,colnames(pf)%in%c(target,features)]
         res<- batch_cor(data = eset,target = target,feature = setdiff(colnames(eset),target),method = "spearman")
-        good_features<-high_var_fea(result = res,target = "sig_names",
-                                            name_padj = "p.adj",padj_cutoff = padj_cutoff,
-                                            name_logfc = "statistic",logfc_cutoff  = 0,
-                                            n = feature_limit/2)
+        good_features<-high_var_fea(result = res,
+                                    target = "sig_names",
+                                    name_padj = "p.adj",
+                                    padj_cutoff = padj_cutoff,
+                                    name_logfc = "statistic",
+                                    logfc_cutoff  = 0,
+                                    n = feature_limit/2)
       }
       if(length(good_features)<=2){
         good_features<-res$sig_names[1:6]
@@ -174,12 +181,18 @@ iobr_cor_plot<-function(pdata_group,
 
     }
 
-    pf_inter<-as_tibble(pf[,c(setdiff(colnames(pdata_group),target),target,features)])
+    if(!is.null(target)){
+      pf_inter<-as_tibble(pf[,c(setdiff(colnames(pdata_group),target),target,features)])
 
-    if(target%in%colnames(pf_inter)) index_i_target<-which(colnames(pf_inter)==target)
+      if(target%in%colnames(pf_inter)) index_i_target<-which(colnames(pf_inter)==target)
 
-    pf_long <-pivot_longer(pf_inter, c(index_i_target + 1):ncol(pf_inter),
-                           names_to = "variables",values_to = "value")
+      pf_long <- tidyr::pivot_longer(pf_inter, c(index_i_target + 1):ncol(pf_inter),
+                                     names_to = "variables",values_to = "value")
+    }else{
+      pf_inter<-as_tibble(pf[,c("ID",group,features)])
+      pf_long <- tidyr::pivot_longer(pf_inter, 3:ncol(pf_inter),
+                                     names_to = "variables",values_to = "value")
+    }
 
     # pf_long[-grep(pf_long$variables,pattern = target),]
 
@@ -195,11 +208,10 @@ iobr_cor_plot<-function(pdata_group,
 
     pf_long$variables<-substring(pf_long$variables,1,character_limit)
 
-
     if(group == "group3"){
       target_binary<-"group3"
       pf_long_group<-pf_long[!pf_long$group3=="Middle",]
-    }else if(group =="best_cutoff") {
+    }else if(group =="best_cutoff"&!is.null(target)) {
       target_binary<-paste0(target,"_binary")
       pf_long_group<-pf_long
     }else if(group=="group2"){
@@ -236,22 +248,31 @@ iobr_cor_plot<-function(pdata_group,
               legend.justification=c(.5,.5),
               legend.box="horizontal",
               legend.box.just="top",
-              legend.text=element_text(colour="black",size=10,face = "plain")#("plain", "italic", "bold", "bold.italic")
-            )
+              legend.text=element_text(colour="black",size=10,face = "plain"))
     #################################################
     max_variables <- max(pf_long_group$value)
     group_box<-sym(target_binary)
-    pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),size= 2.6, label.y = max_variables-0.3)
-    pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",size=7, label.y = max_variables-0.5 )
+    pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),
+                              size= 2.6, label.y = max_variables-0.3)
+    pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",
+                              size=7, label.y = max_variables-0.5 )
     if(show_plot) print(pp1)
     ###################################################
     plot_width<-length(features)*0.5+3
     plot_height<- 4 + max(nchar(pf_long_group$variables))*0.1
     ###################################################
-    ggsave(pp1,filename =paste0("1-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.pdf"),
-           width = plot_width,height = plot_height,path = file_store)
-    ggsave(pp2,filename =paste0("1-",x,"-2-",ProjectID,"-",target,"-",group_name,"-box.pdf"),
-           width = plot_width,height = plot_height,path = file_store)
+
+    if(!is.null(target)){
+      ggsave(pp1,filename =paste0("1-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.pdf"),
+             width = plot_width,height = plot_height,path = file_store)
+      ggsave(pp2,filename =paste0("1-",x,"-2-",ProjectID,"-",target,"-",group_name,"-box.pdf"),
+             width = plot_width,height = plot_height,path = file_store)
+    }else{
+      ggsave(pp1,filename =paste0("1-",x,"-1-",ProjectID,"-",group,"-",group_name,"-pvalue-box.pdf"),
+             width = plot_width,height = plot_height,path = file_store)
+      ggsave(pp2,filename =paste0("1-",x,"-2-",ProjectID,"-",group,"-",group_name,"-box.pdf"),
+             width = plot_width,height = plot_height,path = file_store)
+    }
     ####################################################
 
     #---heatmap------------------------
@@ -278,15 +299,13 @@ iobr_cor_plot<-function(pdata_group,
 
     if(show_plot) print(pp)
 
-     pp %>%  tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",
-                                        target,"-",group_name, "-tidyheatmap.pdf"),
+     pp %>%  tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",group_name, "-tidyheatmap.pdf"),
                                  width = 8,height = height_heatmap)
     ####################################################
     if(is_target_continuous ==TRUE& length(group_list[[index_i]])<= 20){
 
       #------corrplot---------------------------------
       pf_cor<-pf[,colnames(pf)%in%c(target,features)]
-
 
       if(tolower(group_name)%in%patterns){
         patterns<-tolower(gsub(patterns_to_na,pattern = "\\_",replacement = ""))
@@ -320,7 +339,6 @@ iobr_cor_plot<-function(pdata_group,
                          addrect=2,rect.col = "black",
                          rect.lwd = 3,
                          col = colorRampPalette(col)(50))
-      # if(show_plot) print(pp)
       ########################################
       lab_size<- 13 - max(nchar(pf_long_group$variables))/4 #size of coefficient
       tl_cex<- 20 - max(nchar(pf_long_group$variables))/9  #size of signature name

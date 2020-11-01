@@ -9,7 +9,7 @@ iobr_cor_plot(
   id1 = "ID",
   feature_matrix,
   id2 = "ID",
-  target,
+  target = NULL,
   group = "group3",
   is_target_continuous = TRUE,
   padj_cutoff = 1,
