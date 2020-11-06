@@ -1,11 +1,8 @@
 
 
-
-
-
-#' Reading signature gene matrix as list
+#' Transform signature gene data into list format
 #'
-#' @param file_name the file name of csv file with signature name as column name and genes in row
+#' @param sig_data signature data with signature name as column name and genes in row, using `NA` to substitude the missing value
 #' @param save_signature logical, save siganture list as RData
 #' @param output_name string of name to save signature RData
 #'
@@ -13,20 +10,17 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' mysignature<-read_signatures(file_name = "signatures.csv",save_signature = TRUE,output_name = "mysignatures")
+format_signatures<-function(sig_data,save_signature = FALSE, output_name = "signatures"){
 
-read_signatures<-function(file_name,save_signature = FALSE, output_name = "signatures"){
-
-
-  #creat-signature-file-before using this function: csv file using NA to substitde the missing value
-  mysig<-read.csv(paste0(file_name),header = T)
-  message(paste0(">>> There are ",dim(mysig)[2], "  signatures >>>" ))
-
+  message(paste0(">>> There are ",dim(sig_data)[2], "  signatures >>>" ))
+  
+  sig_data<-as.data.frame(sig_data)
+  sig_data[sig_data=="NA"]<-NA
   #'reading each column and transfer it to a list
-  bb<-as.list(NULL);bb
-  for (i in 1:ncol(mysig)) {
-    aa<-as.character(mysig[,i])
-    aa<-list(aa);names(aa)<-names(mysig[i])
+  bb<-as.list(NULL)
+  for (i in 1:ncol(sig_data)) {
+    aa<-as.character(sig_data[,i])
+    aa<-list(aa);names(aa)<-names(sig_data[i])
     bb<-append(bb,aa)
   }
   bb<-lapply(bb,function(x) na.omit(x))
@@ -34,9 +28,10 @@ read_signatures<-function(file_name,save_signature = FALSE, output_name = "signa
   bb<-lapply(bb,function(x) unique(x))
   #' standerdized the name of list
   names(bb)<-gsub(names(bb),pattern = "\\.",replacement = "_")
+  names(bb)<-gsub(names(bb),pattern = "\\ ",replacement = "_")
+  names(bb)<-gsub(names(bb),pattern = "\\-",replacement = "_")
   # ########################################
   my_signatures<-bb
-  print(my_signatures[1:3])
   ##########################################
   if(save_signature == TRUE){
     save(my_signatures,file = paste0(output_name,".RData"))
