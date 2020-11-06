@@ -36,7 +36,7 @@ BinomialModel <- function(x, y,seed = "123456", scale = TRUE, train_ratio = 0.7,
 
   message(paste0("\n", ">>> Running ", "LASSO"))
   set.seed(seed)
-  lasso_model <- cv.glmnet(x = train.x, y = train.y, family = "binomial",
+  lasso_model <-glmnet:: cv.glmnet(x = train.x, y = train.y, family = "binomial",
                            type.measure = "class", alpha = 1,  nfolds = nfold)
   lasso_result <- RegressionResult(train.x = train.x, train.y = train.y,
                                    test.x = test.x, test.y = test.y, model = lasso_model)
@@ -44,7 +44,7 @@ BinomialModel <- function(x, y,seed = "123456", scale = TRUE, train_ratio = 0.7,
   message(paste0("\n", ">>> Running ", "RIDGE REGRESSION"))
 
   set.seed(seed)
-  ridge_model <- cv.glmnet(x = train.x, y = train.y, family = "binomial",
+  ridge_model <-glmnet:: cv.glmnet(x = train.x, y = train.y, family = "binomial",
                            type.measure = "class", alpha = 0, nfolds = nfold)
   ridge_result <- RegressionResult(train.x = train.x, train.y = train.y,
                                    test.x = test.x, test.y = test.y, model = ridge_model)
@@ -61,7 +61,7 @@ BinomialModel <- function(x, y,seed = "123456", scale = TRUE, train_ratio = 0.7,
   set.seed(seed)
   AlphaLambda <- Enet(train.x, train.y, lambdamax, nfold = nfold)
   set.seed(seed)
-  enet_model <- glmnet(x = train.x, y = train.y, family = "binomial",
+  enet_model <-glmnet:: glmnet(x = train.x, y = train.y, family = "binomial",
                        type.measure = "class",
                        alpha = AlphaLambda$chose_alpha, lambda = AlphaLambda$chose_lambda)
   enet_result <- RegressionResult(train.x = train.x, train.y = train.y,
@@ -75,6 +75,17 @@ BinomialModel <- function(x, y,seed = "123456", scale = TRUE, train_ratio = 0.7,
 
 
 #######################################################
+#' Title
+#'
+#' @param x
+#' @param y
+#' @param scale
+#' @param type
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ProcessingData <- function(x, y, scale = scale, type = "binomial"){
   x$ID <- as.character(x$ID)
   y$ID <- as.character(y$ID)
@@ -111,6 +122,18 @@ ProcessingData <- function(x, y, scale = scale, type = "binomial"){
 }
 
 
+#' Title
+#'
+#' @param train.x
+#' @param train.y
+#' @param test.x
+#' @param test.y
+#' @param model
+#'
+#' @return
+#' @export
+#'
+#' @examples
 RegressionResult <- function(train.x, train.y, test.x, test.y, model){
   coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
   coefs <- data.frame(feature = rownames(coefs), lambda.min =coefs[, 1], lambda.1se = coefs[, 2])
@@ -138,12 +161,34 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
   list(chose_alpha = chose_alpha, chose_lambda = chose_lambda)
 }
 
+#' Title
+#'
+#' @param model
+#' @param newx
+#' @param s
+#' @param acture.y
+#'
+#' @return
+#' @export
+#'
+#' @examples
 BinomialAUC <- function(model, newx, s, acture.y){
   pred <- predict(model, newx = newx, s = s, type = "class")
   auc <- as.numeric(pROC::roc(predictor = as.numeric(pred[, 1]), response = acture.y)$auc)
   return(auc)
 }
 
+#' Title
+#'
+#' @param x
+#' @param y
+#' @param train_ratio
+#' @param type
+#'
+#' @return
+#' @export
+#'
+#' @examples
 SplitTrainTest <- function(x, y, train_ratio = 0.7, type){
   sizes <- round(nrow(x) * train_ratio)
   train_sample <- sample(1:nrow(x), size = sizes, replace = F)

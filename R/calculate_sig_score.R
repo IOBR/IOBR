@@ -24,7 +24,8 @@ signature_score_calculation_methods= c("PCA" = "pca",
 #'
 #' @param pdata phenotype data of input sample;
 #' if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset
-#' @param eset normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
+#' @param eset normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
+#' Gene expression data should be scale before signature score estimation
 #' @param signature List of gene signatures;
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.

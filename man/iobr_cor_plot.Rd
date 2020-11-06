@@ -36,7 +36,7 @@ iobr_cor_plot(
 
 \item{id2}{column of identifier of feature matrix}
 
-\item{target}{column of target variables}
+\item{target}{default is NULL, column of target variables if target is continuous}
 
 \item{group}{column used to differentiate patient groups}
 
@@ -65,6 +65,8 @@ iobr_cor_plot(
 \item{show_heatmap_col_name}{logical variable, if TRUE, tidyheatmap will print the column name}
 
 \item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
+
+\item{show_plot}{logical variable, if TRUE, plots will be print}
 }
 \value{
 
