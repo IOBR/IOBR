@@ -2,33 +2,51 @@
 % Please edit documentation in R/find_mutations.R
 \name{find_mutations}
 \alias{find_mutations}
-\title{Title}
+\title{Searching for mutations related to signature score}
 \usage{
 find_mutations(
   mutation_matrix,
   signature_matrix,
   id_signature_matrix = "ID",
   signature,
-  mutation_freq = 0.05,
+  min_mut_freq = 0.05,
   plot = TRUE,
   method = "multi",
   save_path = NULL,
-  palette = "paired3"
+  palette = "paired3",
+  show_plot = TRUE,
+  show_col = FALSE
 )
 }
 \arguments{
-\item{method}{}
+\item{mutation_matrix}{mutation matrix with sample name in the row and genes in the column}
+
+\item{signature_matrix}{signature data frame with identifier and target signature}
+
+\item{id_signature_matrix}{column name of identifier}
+
+\item{signature}{name of target signature}
+
+\item{min_mut_freq}{minimum frequency of mutation}
+
+\item{plot}{logical variable, if TRUE, plot will be save in the `save_path`}
+
+\item{method}{`multi` or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `Wilcoxon` will be performed}
+
+\item{save_path}{path to save plot and statistical analyses}
+
+\item{palette}{palette of box plot}
+
+\item{show_plot}{logical variable, if TRUE, plot will be printed.}
+
+\item{show_col}{show code of palette}
 }
 \value{
 
 }
 \description{
-Title
+Searching for mutations related to signature score
 }
-\examples{
-choose top 10 genes
-willcoxon test
-choose top 10 genes
-willcoxon test
-choose top 10 genes
+\author{
+Dongqiang Zeng
 }

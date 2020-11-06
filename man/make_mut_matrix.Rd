@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_mut_matrix.R
 \name{make_mut_matrix}
 \alias{make_mut_matrix}
-\title{Title}
+\title{Make mutation matrix using maf data}
 \usage{
 make_mut_matrix(
   maf = NULL,
@@ -16,25 +16,28 @@ make_mut_matrix(
 )
 }
 \arguments{
-\item{maf}{}
+\item{maf}{file name of maf data}
 
-\item{maf_data}{}
+\item{maf_data}{if maf data had beed loaded, this argument will be applied}
 
-\item{isTCGA}{}
+\item{isTCGA}{logical variable,}
 
-\item{category}{}
+\item{category}{if category is `multi`, four mutation matrix will be generated: all, snp, indel and frameshift}
 
-\item{Tumor_Sample_Barcode}{}
+\item{Tumor_Sample_Barcode}{column name of tumor sample}
 
-\item{Hugo_Symbol}{}
+\item{Hugo_Symbol}{column name of gene symbol}
 
-\item{Variant_Classification}{}
+\item{Variant_Classification}{column name of variant classification: Frame_Shift_Del}
 
-\item{Variant_Type}{}
+\item{Variant_Type}{column name of variant type: SNP, INS, DEL}
 }
 \value{
 
 }
 \description{
-Title
+Make mutation matrix using maf data
+}
+\author{
+Dongqian Zeng
 }
