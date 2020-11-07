@@ -232,7 +232,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
 calculate_sig_score_integration<-function(pdata, eset, signature,
                                           mini_gene_count = 2,
                                           column_of_sample){
-  message(paste0("\n", ">>> Calculating signature score with Integration methods"))
+  message(paste0("\n", ">>> Calculating signature score using Integration methods"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
   ###########################

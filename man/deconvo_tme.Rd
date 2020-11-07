@@ -66,6 +66,4 @@ Deconvolve Tumor microenvironment on a transcriptomic dataset
 }
 \author{
 Dongqiang Zeng, Rongfang Shen
-
-Dongqiang Zeng
 }

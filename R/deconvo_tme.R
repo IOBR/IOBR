@@ -462,7 +462,6 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @author Dongqiang Zeng, Rongfang Shen
 #' @name deconvo_tme
 #' @export deconvo_tme
-#' @author Dongqiang Zeng
 #' @examples
 #'
 deconvo_tme = function(eset,

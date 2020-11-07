@@ -13,36 +13,35 @@ knitr::opts_chunk$set(
 )
 ```
 
-# IOBR: Immune Oncology Bioinformatics Research
+# IOBR: Immuno-Oncology Bioinformatics Research
 
-IOBR is a R package to perform Tumor microenvironment evaluation, signature estimation.
+IOBR is an R package to perform comprehensive analysis of tumor microenvironment and signatures for immuno-oncology.
 
+## 1 Introduction and Installation
 
-## IOBR简介
+### 1.1 Introduction
 
-- 1.IOBR集合了8种已经发表的肿瘤微环境解析方法：`CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`; 
-- 2.IOBR集合了共256个已经发表的Signature gene sets：包括肿瘤微环境相关的，肿瘤代谢相关、m6A, 外泌体相关的, 微卫星不稳定, 三级淋巴结评分等，可通过函数 `signatures_sci` 获取到signature的出处；通过 `signature_collection` 可以获取到每个signature gene;
-- 3.IOBR集合了三种方法用于上述signature评分的计算，包括`PCA`,`z-score`,`ssGSEA`;
-- 4.IOBR集合了多种方法用于变量转化和批量生存分析和统计学分析的方法；
-- 5.IOBR集合了批量可视化分组特征的方法；
+- 1.IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
+- 2.IOBR collects 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
+- 3.IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
+- 4.IOBR integrates multiple approaches for variable transition, visulization, batch survival analysis, and statistical analysis.
+- 5.IOBR also integrates methods for batch visualization of subgroup characteristics. 
 
 
 ![IOBR logo](./man/figures/IOBR-Package.png)
 
+### 1.2 Installation
+Before installing IOBR, please install all dependencies by executing the following command in R console:
 
-## 安装依赖包
-IOBR依赖包较多，包括：tibble, survival, survminer, limma, limSolve, GSVA, e1071, preprocessCore, ggplot2, ggpubr;
+The dependencies including `tibble`, `survival`, `survminer`, `limma`, `limSolve`, `GSVA`, `e1071`, `preprocessCore`, `ggplot2` and `ggpubr`.
 
 ```{r}
 options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
-
 if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
-
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', 
           'ggpubr',"devtools")
-
 for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
@@ -62,50 +61,79 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 
 ```
 
-
-The package is not yet on CRAN. You can install from Github:
-```{r,message=FALSE,warning=FALSE}
+The package is not yet on CRAN. You can install it from Github:
+```{r}
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
-library(IOBR)
+```
+
+## 1.3 Library R packages
+
+```{r message=FALSE, warning=FALSE}
+library(IOBR) 
+library(EPIC)
+library(estimate) 
+library(MCPcounter)
+Sys.setenv(LANGUAGE = "en") # The error message would be present in English.
+options(stringsAsFactors = FALSE) #To avoid transiting character into factor.
 ```
 
 
-## 解析肿瘤微环境
+## 2 TME deconvolution
 
-### 可选择的肿瘤微环境解析方法
+### 2.1 Availabie methods to decode TME contexture
 
 ```{r}
 tme_deconvolution_methods
-#每种方法所对应选择的参数
+# Return available parameter options of deconvolution methods
 ```
 
-输入文件为100例TCGA-CAOD的RNAseq数据,已采用log2(TPM)进行标准化。
+If you use this package in your work, please cite both our package and the method(s) you are using.
+
+#### Licenses of the deconvolution methods
+| method | license | citation |
+|--------|---------|----------|
+| [CIBERSORT](https://cibersort.stanford.edu/) | free for non-commerical use only | Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.  https://doi.org/10.1038/nmeth.3337 |
+| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | free ([GPL2.0](	https://bioinformatics.mdanderson.org/estimate/)) | Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612. http://doi.org/10.1038/ncomms3612 |
+| [quanTIseq](http://icbi.at/software/quantiseq/doc/index.html) | free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md)) | Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. https://doi.org/10.1186/s13073-019-0638-6 |
+| [TIMER](http://cistrome.org/TIMER/) | free ([GPL 2.0](http://cistrome.org/TIMER/download.html)) | Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.  https://doi.org/10.1186/s13059-016-1028-7 |
+| [IPS](https://github.com/icbi-lab/Immunophenogram) | free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE)) | P. Charoentong et al., Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017). https://doi.org/10.1016/j.celrep.2016.12.019 |
+| [MCPCounter](https://github.com/ebecht/MCPcounter) | free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License)) | Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218. https://doi.org/10.1186/s13059-016-1070-5 |
+| [xCell](http://xcell.ucsf.edu/) | free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. https://doi.org/10.1186/s13059-017-1349-1 |
+| [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/) | free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. https://doi.org/10.7554/eLife.26476 |
+
+
+The input data is a matrix (log2(TMP+1) transformed) containing 98 TCGA-STAD samples, with genes in rows and samples in columns. The rownames must be HGNC symbols and the colnames must be sample names.
 
 ```{r}
-# 查看数据
+# Check data 
 eset_stad[1:5,1:5]
 ```
 
-查看函数具体的参数
+Check detail parameters of the function
 ```{r}
 help(deconvo_tme)
 ```
 
 
-方法1：使用CIBERSORT解析肿瘤微环境
-```{r}
-cibersort<-deconvo_tme(eset = eset_stad,method = "cibersort",arrays = FALSE,perm = 500 )
+#### 2.1.1 Method 1: Use CIBERSORT to decode the TME contexture.
+```{r,fig.width= 8.5, fig.height=6}
+cibersort<-deconvo_tme(eset = eset_stad,method = "cibersort",arrays = FALSE,perm = 200 )
 head(cibersort)
+res<-cell_bar_plot(input = cibersort[1:12,], title = "CIBERSORT Cell Fraction")
 ```
-方法2：使用EPIC解析肿瘤微环境
+
+
+#### 2.1.2 Method 2: Use EPIC to decode the TME contexture.
 ```{r}
+help(deconvo_epic)
 epic<-deconvo_tme(eset = eset_stad,method = "epic",arrays = FALSE)
 head(epic)
 
 ```
 
-方法3：使用EPIC解析肿瘤微环境
+
+#### 2.1.3 Method 3: Use MCPcounter to decode the TME contexture. 
 ```{r}
 mcp<-deconvo_tme(eset = eset_stad,method = "mcpcounter")
 head(mcp)
@@ -113,7 +141,7 @@ head(mcp)
 ```
 
 
-方法4：使用xCell解析肿瘤微环境
+#### 2.1.4 Method 4: Use xCELL to decode the TME contexture.
 ```{r,message=FALSE}
 xcell<-deconvo_tme(eset = eset_stad,method = "xcell",arrays = FALSE)
 head(xcell)
@@ -121,36 +149,38 @@ head(xcell)
 ```
 
 
-方法5：使用ESTIMATE计算肿瘤纯度和免疫、间质评分
-```{r}
+#### 2.1.5 Method 5: Use ESTIMATE to estimate tumor purity, and generate immune score and stromal score.
+```{r,message=FALSE,warning=FALSE}
 estimate<-deconvo_tme(eset = eset_stad,method = "estimate")
 head(estimate)
 
 ```
 
 
-
-方法6：使用TIMER解析肿瘤微环境
+#### 2.1.6 Method 6: Use TIMER to decode the TME contexture.
 ```{r,message=FALSE, warning=FALSE}
-timer<-deconvo_tme(eset = eset_stad,method = "timer",group_list = rep("coad",dim(eset_stad)[2]))
+timer<-deconvo_tme(eset = eset_stad,method = "timer",group_list = rep("stad",dim(eset_stad)[2]))
 head(timer)
 
 ```
 
-方法7：使用quanTIseq解析肿瘤微环境
-```{r}
+
+#### 2.1.7 Method 7: Use quanTIseq to decode the TME contexture.
+```{r,fig.width= 8, fig.height=6}
 quantiseq<-deconvo_tme(eset = eset_stad, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE,method = "quantiseq")
 head(quantiseq)
-
+res<-cell_bar_plot(input = quantiseq[1:12,], title = "quanTIseq Cell Fraction")
 ```
-方法8：使用IPS评估肿瘤免疫表型
+
+
+#### 2.1.8 Method 8: Use IPS to estimate immune phenotype.
 ```{r,message=FALSE}
 ips<-deconvo_tme(eset = eset_stad,method = "ips",plot= FALSE)
 head(ips)
 ```
 
 
-合并所有的解析结果用于后续的分析
+#### 2.1.9 Combine the above deconvolution results for subsequent analyses.   
 ```{r}
 tme_combine<-cibersort %>% 
   inner_join(.,mcp,by = "ID") %>% 
@@ -164,78 +194,282 @@ dim(tme_combine)
 colnames(tme_combine)
 ```
 
-## Signature score 的评估
-IOBR集合了共256个已经发表的Signature gene sets：包括肿瘤微环境相关的，肿瘤代谢相关、m6A, 外泌体相关的, 微卫星不稳定, 三级淋巴结评分等，可通过函数'signatures_sci'获取到signature的出处；通过'signature_collection'可以获取到每个signature gene;
+
+## 3 Signature score estimation
+
+IOBR integrates 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
 
 
-查看有哪些signature
+### 3.1 Obtain the included signatures
 ```{r}
-#微环境相关的signature
+library(IOBR)
+#TME associated signatures
 names(signature_tme)[1:20]
-#代谢相关的signature
+#Metabolism related signatures
 names(signature_metabolism)[1:20]
-#与基础研究相关的signature: 比如m6A, 外泌体
-names(signature_star)
-#signature 集合
+#Signatures associated with biomedical basic research: such as m6A and exosomes
+names(signature_tumor)
+#signature collection including all aforementioned signatures 
 names(signature_collection)[1:20]
 
 ```
 
 
-### 评估肿瘤微环境相关的signature-(使用PCA方法）
+### 3.2 Methods for signature calculation
+
+### 3.2.1 Calculate TME associated signatures-(through PCA method)
 ```{r}
-sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_stad,
+sig_tme<-calculate_sig_score(pdata = NULL,
+                             eset = eset_stad,
                              signature = signature_tme,
                              method = "pca",
                              mini_gene_count = 2)
 sig_tme[1:5,1:10]
 ```
 
-### 评估肿瘤微环境相关的signature-（使用ssGSEA方法）
+### 3.2.2 Calculate TME associated signatures-(through ssGSEA method)
 ```{r,message=FALSE}
-sig_tme<-calculate_sig_score(pdata = NULL,eset = eset_stad,
-                                 signature = signature_tme,
-                                 method = "ssgsea",
-                                 mini_gene_count = 5)
+sig_tme<-calculate_sig_score(pdata = NULL,
+                             eset = eset_stad,
+                             signature = signature_tme,
+                             method = "ssgsea",
+                             mini_gene_count = 5)
 sig_tme[1:5,1:10]
 ```
 
 
-### 评估代谢相关的signature
+### 3.2.3 Calculate metabolism related signatures
 ```{r}
-sig_meta<-calculate_sig_score(pdata = NULL,eset = eset_stad,
-                                 signature = signature_metabolism,
-                                 method = "pca",
-                                 mini_gene_count = 2)
+sig_meta<-calculate_sig_score(pdata = NULL,
+                              eset = eset_stad,
+                              signature = signature_metabolism,
+                              method = "pca",
+                              mini_gene_count = 2)
 sig_meta[1:5,1:10]
 ```
 
 
-### 计算所有收集的signature score（综合三种的方法： PCA, ssGSEA和z-score）
+### 3.2.4 Calculate all collected signature scores (integrating three methods: PCA, ssGSEA and z-score)
 ```{r,message=FALSE}
-sig_res<-calculate_sig_score(pdata = NULL,eset = eset_stad,
-                                 signature = signature_collection,
-                                 method = "integration",
-                                 mini_gene_count = 2)
+sig_res<-calculate_sig_score(pdata = NULL,
+                             eset = eset_stad,
+                             signature = signature_collection,
+                             method = "integration",
+                             mini_gene_count = 2)
 sig_res[1:5,1:10]
 ```
 
 
+### 3.2.5 The signature gene sets derived from GO, KEGG, HALLMARK and REACTOME datasets.
 
-### IOBR还集合了GO, KEGG, HALLMARK, REACTOME的signature gene sets
-
-建议使用ssGSEA的方法进行评估,如果样本量比较大且signature比较多，运行时间会比较长，
+IOBR also enrolls the signature gene sets, containing GO, KEGG, HALLMARK and REACTOME gene sets obtained from [MsigDB](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H). The ssGSEA method is recommended for these signature estimation. It may take a while for the code to run, if input a large sample data or to calculate a large number of signatures.  
 ```{r,message=FALSE}
 sig_hallmark<-calculate_sig_score(pdata = NULL,
-                             eset = eset_stad,
-                             signature = hallmark ,
-                             method = "ssgsea",
-                             mini_gene_count = 2)
+                                  eset = eset_stad,
+                                  signature = hallmark,
+                                  method = "ssgsea",
+                                  mini_gene_count = 2)
 sig_hallmark[1:5,1:10]
 ```
 
-### IOBR提供了多个批量统计分析、数据过滤和转化的方法：包括生存分析，批量寻找最佳cutoff,批量生存分析，批量统计检验等功能
-subgroup survival analyses
+
+## 4 Find phenotype relevant signatures
+
+### 4.1 这里利用IMvigor210的免疫治疗数据来批量分析与phenotype相关的signature
+```{r}
+## 加载IOBR中已经计算好的signature和 Cell fraction
+head(imvigor210_sig)
+
+#患者治疗反应数据和生存结局
+head(imvigor210_pdata)
+```
+
+### 4.2 使用sig_group来批量可视化与治疗反应相关的signature
+```{r}
+#signature group包含这些大类
+names(sig_group)
+
+# 与肿瘤相关的signature
+names(sig_group)[1]
+sig_group[[1]]
+
+# 与免疫治疗标志物相关的signature
+names(sig_group)[3]
+sig_group[[3]]
+
+# 与免疫抑制相关的signature
+names(sig_group)[5]
+sig_group[[5]]
+```
+
+### 4.3 构建分组信息批量查看免疫治疗反应与选择的signature group的关系
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+pdata_group<-imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR","BOR_binary")]
+res<-iobr_cor_plot(pdata_group = pdata_group,
+                   id1 = "ID",
+                   feature_matrix = imvigor210_sig,
+                   id2 = "ID",
+                   target= NULL,
+                   group = "BOR_binary",
+                   is_target_continuous = FALSE,
+                   padj_cutoff = 1,
+                   index = 1,
+                   category = "signature",
+                   signature_group =sig_group[c(1,3,5)],
+                   ProjectID = "IMvigor210",
+                   palette_box = "paired1",
+                   palette_corplot = "pheatmap",
+                   palette_heatmap = 1,
+                   feature_limit = 26,
+                   character_limit = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col = FALSE,
+                   show_plot = TRUE)
+```
+
+### 4.4 计算与治疗反应相关的signature genes
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+
+#构建表达矩阵的输入文件
+imvigor210_eset[1:5,1:6]
+eset_input<-rownames_to_column(as.data.frame(t(imvigor210_eset)),var = "ID")
+
+res<-iobr_cor_plot(pdata_group = pdata_group,
+                   id1 = "ID",
+                   feature_matrix = eset_input,
+                   id2 = "ID",
+                   target= NULL,
+                   group = "BOR_binary",
+                   is_target_continuous = FALSE,
+                   padj_cutoff = 1,
+                   index = 1,
+                   category = "signature",
+                   signature_group =signature_collection[c(1:3)],
+                   ProjectID = "IMvigor210",
+                   palette_box = "paired1",
+                   palette_corplot = "pheatmap",
+                   palette_heatmap = 1,
+                   feature_limit = 26,
+                   character_limit = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col = FALSE,
+                   show_plot = TRUE)
+```
+
+## 5 分析与目标signature相关的signatures
+
+### 5.1 构建pdata_group作为患者的表型数据
+
+```{r}
+#数据已经储存在`imvigor210_pdata`中
+head(imvigor210_pdata)
+pdata_group<-as.data.frame(imvigor210_pdata[,c("ID","Pan_F_TBRs")])
+pdata_group$Pan_F_TBRs<-scale(as.numeric(pdata_group$Pan_F_TBRs))
+head(pdata_group)
+```
+
+### 5.2 分析与Pan-F-TBRs相关的signatures
+`Pan-F-TBRs`是2018年Nature上一篇研究免疫驱逐的评分: S. Mariathasan et al., TGFbeta attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544-548 (2018). 我们可以使用计算出来的signature来批量分析和可视化这个免疫驱逐评分与其他`signature`和`cell fraction` 的关系，并探索可能影响该生物过程的其他分子标志物。
+
+
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+res<-iobr_cor_plot(pdata_group = pdata_group,
+                   id1 = "ID",
+                   feature_matrix = imvigor210_sig,
+                   id2 = "ID",
+                   target= "Pan_F_TBRs",
+                   group = "group3",
+                   is_target_continuous = TRUE,
+                   padj_cutoff = 1,
+                   index = 1,
+                   category = "signature",
+                   signature_group =sig_group[1:2],
+                   ProjectID = "IMvigor210",
+                   palette_box = "set2",
+                   palette_corplot = "pheatmap",
+                   palette_heatmap = 2,
+                   feature_limit = 26,
+                   character_limit = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col = FALSE,
+                   show_plot = TRUE)
+
+```
+
+
+### 5.3 分析与Pan-F-TBRs相关的免疫细胞浸润情况
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+names(sig_group)
+res<-iobr_cor_plot(pdata_group = pdata_group,
+                   id1 = "ID",
+                   feature_matrix = imvigor210_sig,
+                   id2 = "ID",
+                   target= "Pan_F_TBRs",
+                   group = "group3",
+                   is_target_continuous = TRUE,
+                   padj_cutoff = 1,
+                   index = 1,
+                   category = "signature",
+                   signature_group =sig_group[20:24],
+                   ProjectID = "IMvigor210",
+                   palette_box = "jco",
+                   palette_corplot = "pheatmap",
+                   palette_heatmap = 3,
+                   feature_limit = 26,
+                   character_limit = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col = FALSE,
+                   show_plot = TRUE)
+
+```
+
+
+## 6 Seraching for mutations related to signature
+
+### 6.1 Format mutation matrix using MAF data. 这里使用了TCGA-STAD的数据为例.
+MAF data was obtained from [UCSC Xena website](https://api.gdc.cancer.gov/data/c06465a3-50e7-46f7-b2dd-7bd654ca206b)
+
+```{r}
+help("make_mut_matrix")
+
+maf_file<-"TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
+#使用MAF的数据将每个患者的每个基因转化成二分类变量（有或者无突变）
+mut_list<-make_mut_matrix(maf = maf_file,
+                          isTCGA = T, 
+                          category = "multi")
+#如下所示，如果上述方法选择”multi", 结果将产生四个data frame, 分别计算了每个基因的所有突变，或者只计算SNP, indel 和 frameshift,
+names(mut_list)
+mut_list$all[1:5,1:10]
+```
+
+
+
+### 6.2 使用sig_group来批量可视化与治疗反应相关的signature
+```{r,fig.width=18,fig.height=12,warning=FALSE, message=FALSE}
+#'将要分析的突变数据转化为等级变量矩阵----------
+mut<-mut_list$snp
+max(mut)
+#如果突变矩阵中单个基因的最大突变数据大于4，将会把突变数量按照以下规则进行转化
+# mut[mut>=3&mut<=5]<-3
+# mut[mut>5]<-4
+##########################
+res<-find_mutations(mutation_matrix = mut, 
+                    signature_matrix = tcga_stad_sig,
+                    id_signature_matrix = "ID",
+                    signature = "CD_8_T_effector",
+                    min_mut_freq = 0.01,
+                    plot = TRUE,
+                    method = "multi",
+                    save_path = paste0("CD_8_T_effector-relevant-mutations"),
+                    palette = "jama",
+                    show_plot = T)
+
+```
+
+## 7 其他批量分析方法
+IOBR提供了多个批量统计分析、数据过滤和转化的方法：包括生存分析，批量寻找最佳cutoff,批量生存分析，批量统计检验等功能
+
+### 7.1 subgroup survival analyses
 ```{r}
 help("subgroup_survival")
 ##source data and filter NA
