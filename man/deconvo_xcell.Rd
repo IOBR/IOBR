@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_xcell}
 \alias{deconvo_xcell}
-\title{DeconvolVe immune microenvironment using xCell}
+\title{Decoding immune microenvironment using xCell}
 \usage{
 deconvo_xcell(eset, project = NULL, arrays)
 }
@@ -17,10 +17,10 @@ deconvo_xcell(eset, project = NULL, arrays)
 xCell with immune cell fractions
 }
 \description{
-DeconvolVe immune microenvironment using xCell
+Decoding immune microenvironment using xCell
 }
 \examples{
-xcell_result<-deconvo_xcell(eset = eset_ec,project = "GSE62254")
+xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD")
 
 }
 \author{

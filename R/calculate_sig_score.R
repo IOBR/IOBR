@@ -31,7 +31,7 @@ signature_score_calculation_methods= c("PCA" = "pca",
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
 #'
 #' @author Dongqiang Zeng
-#' @return matrix;pdata and signature scores for gene sets; signatures in columns, samples in rows
+#' @return signature scores for gene sets; signatures in columns, samples in rows
 #' @export
 #'
 #' @examples
@@ -43,14 +43,15 @@ calculate_sig_score_pca<-function(pdata,
 
   message(paste0("\n", ">>> Calculating signature score with PCA method"))
 
-  #creat pdata
+  #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
+  }else{
+    pdata<-as.data.frame(pdata)
+    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   }
-
   #match phenotype data and gene expression set
   ###########################
-  colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   pdata<-pdata[pdata$ID%in%colnames(eset),]
   eset<-eset[,colnames(eset)%in%pdata$ID]
   eset<-eset[,match(pdata$ID,colnames(eset))]
@@ -112,13 +113,15 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
 
   message(paste0("\n", ">>> Calculating signature score with z-score method"))
 
-  #creat pdata
+  #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
+  }else{
+    pdata<-as.data.frame(pdata)
+    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   }
   #match phenotype data and gene expression set
   ###########################
-  colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   pdata<-pdata[pdata$ID%in%colnames(eset),]
   eset<-eset[,colnames(eset)%in%pdata$ID]
   eset<-eset[,match(pdata$ID,colnames(eset))]
@@ -165,7 +168,6 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
-#' @import GSVA
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
@@ -180,10 +182,19 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
   if(mini_gene_count<=5) mini_gene_count <- 5
   ############################
 
-  #creat pdata
+  #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
+  }else{
+    pdata<-as.data.frame(pdata)
+    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   }
+  #match phenotype data and gene expression set
+  ###########################
+  pdata<-pdata[pdata$ID%in%colnames(eset),]
+  eset<-eset[,colnames(eset)%in%pdata$ID]
+  eset<-eset[,match(pdata$ID,colnames(eset))]
+  ##############################
   ##############################
   res <- GSVA:: gsva(as.matrix(eset),
                      signature,
@@ -224,7 +235,6 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
-#' @import GSVA
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
@@ -232,17 +242,19 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
 calculate_sig_score_integration<-function(pdata, eset, signature,
                                           mini_gene_count = 2,
                                           column_of_sample){
-  message(paste0("\n", ">>> Calculating signature score using Integration methods"))
+  message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
   ###########################
   #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
+  }else{
+    pdata<-as.data.frame(pdata)
+    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   }
   #match phenotype data and gene expression set
   ###########################
-  colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
   pdata<-pdata[pdata$ID%in%colnames(eset),]
   eset<-eset[,colnames(eset)%in%pdata$ID]
   eset<-eset[,match(pdata$ID,colnames(eset))]
@@ -287,7 +299,7 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   }
   ############################
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
-  res <- gsva(as.matrix(eset), signature,
+  res <-GSVA::gsva(as.matrix(eset), signature,
                   method="ssgsea",
                   kcdf="Gaussian", #标准化好的所有基因表达矩阵都推荐使用Gaussian
                   min.sz=5,
@@ -329,7 +341,8 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
 #' @author Dongqiang Zeng
 #' @examples
 #'
-calculate_sig_score<-function(pdata = NULL, eset,
+calculate_sig_score<-function(pdata = NULL,
+                              eset,
                               signature = signature_collection,
                               method = "pca",
                               mini_gene_count = 3,

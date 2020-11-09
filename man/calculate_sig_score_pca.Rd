@@ -26,7 +26,7 @@ Gene expression data should be scale before signature score estimation}
 \item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
 }
 \value{
-matrix;pdata and signature scores for gene sets; signatures in columns, samples in rows
+signature scores for gene sets; signatures in columns, samples in rows
 }
 \description{
 Calculating signature score using PCA method

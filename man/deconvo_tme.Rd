@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_tme}
 \alias{deconvo_tme}
-\title{Deconvolve Tumor microenvironment on a transcriptomic dataset}
+\title{Deconvoluting Tumor microenvironment on a transcriptomic dataset}
 \usage{
 deconvo_tme(
   eset,
@@ -21,10 +21,10 @@ deconvo_tme(
 )
 }
 \arguments{
-\item{eset}{A gene expression matrix or a Biobase ExpressionSet.
+\item{eset}{A gene expression matrix
 Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.}
 
-\item{project}{project name used to distinguish different datasets, default is NULL}
+\item{project}{project name used to distinguish different data sets, default is NULL}
 
 \item{method}{a string specifying the method.
 Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.}
@@ -59,7 +59,7 @@ Currently affects `ESTIMATE` method}
     calculated cell fractions for each sample.
 }
 \description{
-Deconvolve Tumor microenvironment on a transcriptomic dataset
+Deconvoluting Tumor microenvironment on a transcriptomic dataset
 }
 \examples{
 

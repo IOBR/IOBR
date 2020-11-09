@@ -12,12 +12,12 @@
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
                     " DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu  WJ Liao\n",
-                    " IOBR: Multi-omics analysis process integrating tumor microenvironment \n",
-                    " and signatures. \n",
+                    " IOBR: Comprehensive analysis of tumor microenvironment and signatures\n",
+                    " for immuno-oncology. \n",
                     # " XXXX, 2020", "\n",
                     # " DOI:   ","\n" ,
                     # " PMID:  ","\n",
-                    "===========================================================================")
+                    "==========================================================================")
 
   packageStartupMessage(paste0(msg, citation))
 }
@@ -27,6 +27,5 @@
 
 .onLoad <- function(libname, pkgname) {
 
-  invisible(suppressPackageStartupMessages(sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "ComplexHeatmap",
-             "ggpubr","limma","limSolve","preprocessCore","e1071","GSVA","tidyHeatmap"),requireNamespace, quietly = TRUE)))
+  invisible(suppressPackageStartupMessages(sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "ComplexHeatmap","ggpubr","limma","limSolve","preprocessCore","e1071","GSVA","tidyHeatmap"),requireNamespace, quietly = TRUE)))
 }

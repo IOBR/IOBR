@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_epic}
 \alias{deconvo_epic}
-\title{DeconvolVe immune microenvironment using EPIC: FOR RANseq mostly}
+\title{Estimating immune microenvironment using EPIC: FOR RANseq mostly}
 \usage{
 deconvo_epic(eset, project = NULL, tumor)
 }
@@ -17,10 +17,10 @@ deconvo_epic(eset, project = NULL, tumor)
 EPIC with immune cell fractions
 }
 \description{
-DeconvolVe immune microenvironment using EPIC: FOR RANseq mostly
+Estimating immune microenvironment using EPIC: FOR RANseq mostly
 }
 \examples{
-epic_result<-deconvo_epic(eset = eset,project = "GSE62254",tumor = TRUE)
+epic_result<-deconvo_epic(eset = eset_stad,project = "TCGA-STAD",tumor = TRUE)
 
 }
 \author{

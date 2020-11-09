@@ -6,8 +6,8 @@
 #'
 #' @param pdata_group pdata
 #' @param id1 column of identifier of pdata
-#' @param feature_matrix feature matrix with first column as `id2`
-#' @param id2 column of identifier of feature matrix
+#' @param feature_data feature data with first column as `id2`
+#' @param id2 column of identifier of feature data
 #' @param target default is NULL, column of target variables if target is continuous
 #' @param group column used to differentiate patient groups
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
@@ -21,7 +21,7 @@
 #' @param palette_box palette for box plot
 #' @param palette_corplot palette for cor-plot
 #' @param palette_heatmap palette for heatmap
-#' @param show_heatmap_col_name logical variable, if TRUE, tidyheatmap will print the column name
+#' @param show_heatmap_col_name logical variable, if TRUE, `tidyheatmap` will print the column name
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
 #' @param show_plot logical variable, if TRUE, plots will be print
 #'
@@ -33,7 +33,7 @@
 #'
 iobr_cor_plot<-function(pdata_group,
                          id1 = "ID",
-                         feature_matrix,
+                         feature_data,
                          id2 = "ID",
                          target = NULL,
                          group = "group3",
@@ -88,14 +88,19 @@ iobr_cor_plot<-function(pdata_group,
   # pdata_group<-pdata_group[!pdata_group[,group]=="NA",]
   #####################################################
 
-  feature_matrix<-as.data.frame(feature_matrix)
-  colnames(feature_matrix)[which(colnames(feature_matrix)==id2)]<-"ID"
-  feature_selected<-feature_manipulation(data = feature_matrix,feature = setdiff(colnames(feature_matrix),"ID"))
-  feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",feature_selected)]
+  if(category=="gene"){
+    #Gene expression data should be transposed
+    feature_data<-tibble::rownames_to_column(as.data.frame(t(feature_data)),var = "ID")
+  }
+
+  feature_data<-as.data.frame(feature_data)
+  colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
+  feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
+  feature_data<-feature_data[,colnames(feature_data)%in%c("ID",feature_selected)]
 
   if(!is.null(target)){
-    if(target%in%colnames(feature_matrix)){
-      feature_matrix<-feature_matrix[,-which(colnames(feature_matrix)==target)]
+    if(target%in%colnames(feature_data)){
+      feature_data<-feature_data[,-which(colnames(feature_data)==target)]
     }
 
   }
@@ -103,32 +108,32 @@ iobr_cor_plot<-function(pdata_group,
   if(category == "signature"){
     group_list<-signature_group
     panel<-names(signature_group)
-    feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",unique(unlist(group_list)))]
+    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
     title.y<-"Signature score"
     title.x<-"Signatures"
   }
   if(category == "gene"){
     group_list<-signature_collection[names(signature_collection)%in%names(signature_group)]
     panel<-names(signature_group)
-    feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",unique(unlist(group_list)))]
+    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
     title.y<-"Gene expression"
     title.x<-"Signature genes"
   }
 
 
-  feature_max <- max(feature_matrix[,colnames(feature_matrix)%in%feature_selected])
+  feature_max <- max(feature_data[,colnames(feature_data)%in%feature_selected])
   if(category == "gene"& feature_max > 50){
-    rownames(feature_matrix)<-NULL
-    feature_matrix<-column_to_rownames(feature_matrix,var = "ID")
-    feature_matrix<-log2(feature_matrix)
+    rownames(feature_data)<-NULL
+    feature_data<-column_to_rownames(feature_data,var = "ID")
+    feature_data<-log2(feature_data)
 
-    feature_matrix<-rownames_to_column(feature_matrix,var = "ID")
-    feature_selected<-feature_manipulation(data = feature_matrix,feature = setdiff(colnames(feature_matrix),"ID"))
-    feature_matrix<-feature_matrix[,colnames(feature_matrix)%in%c("ID",feature_selected)]
-    feature_matrix<-as.data.frame(feature_matrix)
+    feature_data<-rownames_to_column(feature_data,var = "ID")
+    feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
+    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",feature_selected)]
+    feature_data<-as.data.frame(feature_data)
   }
 
-  pf<-merge(pdata_group,feature_matrix,by = "ID",all = F)
+  pf<-merge(pdata_group,feature_data,by = "ID",all = F)
   scale_begin<-length(colnames(pdata_group))+1
   pf[,scale_begin:ncol(pf)]<-scale( pf[,scale_begin:ncol(pf)],center = T,scale = T)
 
@@ -226,8 +231,7 @@ iobr_cor_plot<-function(pdata_group,
 
     color_box<-palettes(category = "box",palette = palette_box, show_col = show_col)
     ######################################################
-    p <-ggboxplot(pf_long_group, x = "variables", y = "value",
-                  fill =  target_binary)+
+    p <-ggboxplot(pf_long_group, x = "variables", y = "value",fill =  target_binary)+
       scale_fill_manual(values= color_box)+
       ylab(paste0(title.y))+
       # xlab("")+
@@ -256,7 +260,11 @@ iobr_cor_plot<-function(pdata_group,
                               size= 2.6, label.y = max_variables-0.3)
     pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",
                               size=7, label.y = max_variables-0.5 )
-    if(show_plot) print(pp1)
+    if(show_plot&length(features)<13){
+      print(pp1)
+    }else if(show_plot&length(features)>13){
+      print(pp2)
+    }
     ###################################################
     plot_width<-length(features)*0.5+3
     plot_height<- 4 + max(nchar(pf_long_group$variables))*0.1

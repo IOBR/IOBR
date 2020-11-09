@@ -2,20 +2,22 @@
 % Please edit documentation in R/feature_manipulation.R
 \name{feature_manipulation}
 \alias{feature_manipulation}
-\title{Filtered features with multiple methods}
+\title{Filtering features using multiple methods}
 \usage{
-feature_manipulation(data = data, feature = feature)
+feature_manipulation(data = data, feature = feature, print_result = FALSE)
 }
 \arguments{
 \item{data}{data with features in the columns}
 
 \item{feature}{features with NA or Infinity value}
+
+\item{print_result}{logical variables, if TRUE, feature detail will be printed in the console}
 }
 \value{
 filtered features
 }
 \description{
-Filtered features with multiple methods
+Filtering features using multiple methods
 }
 \author{
 Dongqiang Zeng

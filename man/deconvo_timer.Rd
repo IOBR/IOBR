@@ -2,15 +2,15 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_timer}
 \alias{deconvo_timer}
-\title{Deconvolute using the TIMER technique
+\title{Deconvoluting using the TIMER technique
 Unlike the other methods, TIMER needs the specification of the cancer type for each sample.}
 \usage{
 deconvo_timer(eset, project = NULL, indications = NULL)
 }
 \arguments{
-\item{eset}{a m x n matrix with m genes and n samples}
+\item{eset}{gene matrix}
 
-\item{project}{default is NULL}
+\item{project}{default is NULL, project name used to distinguish different data sets}
 
 \item{indications}{a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'}
 }
@@ -18,7 +18,7 @@ deconvo_timer(eset, project = NULL, indications = NULL)
 
 }
 \description{
-Deconvolute using the TIMER technique
+Deconvoluting using the TIMER technique
 Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 }
 \examples{

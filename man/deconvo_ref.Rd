@@ -17,6 +17,8 @@ deconvo_ref(
 \arguments{
 \item{eset}{expression data with matched gene id of reference}
 
+\item{project}{project name used to distinguish different datasets}
+
 \item{arrays}{a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.}
 
 \item{method}{deconvolution method. must be "svm" or "lsei"}

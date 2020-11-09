@@ -3,7 +3,7 @@
 \docType{data}
 \name{tme_deconvolution_methods}
 \alias{tme_deconvolution_methods}
-\title{Collection of tumor mircoenvironmet cell fraction deconvolution methods.}
+\title{Collection of tumor microenvironment cell fraction deconvolution methods.}
 \format{
 An object of class \code{character} of length 11.
 }

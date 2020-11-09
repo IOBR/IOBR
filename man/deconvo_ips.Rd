@@ -2,23 +2,23 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_ips}
 \alias{deconvo_ips}
-\title{DeconvolVe immune microenvironment using IPS}
+\title{Calculating immune phenotype score using IPS}
 \usage{
 deconvo_ips(eset, project = NULL, plot)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different data sets}
 }
 \value{
 IPS data frame
 }
 \description{
-DeconvolVe immune microenvironment using IPS
+Calculating immune phenotype score using IPS
 }
 \examples{
-ips_result<-deconvo_ips(eset = eset_ec,project = "GSE62254")
+ips_result<-deconvo_ips(eset = eset_stad,project = "TCGA-STAD")
 
 }
 \author{

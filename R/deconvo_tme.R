@@ -3,7 +3,7 @@
 
 
 
-#' Collection of tumor mircoenvironmet cell fraction deconvolution methods.
+#' Collection of tumor microenvironment cell fraction deconvolution methods.
 #'
 #' The methods currently supported are
 #' `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svm`,`lsei`,`timer`,`quantiseq`
@@ -28,7 +28,7 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
 
 
 
-#' DeconvolVe immune microenvironment using xCell
+#' Decoding immune microenvironment using xCell
 #'
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different datasets
@@ -38,7 +38,7 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' xcell_result<-deconvo_xcell(eset = eset_ec,project = "GSE62254")
+#' xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD")
 #'
 deconvo_xcell<-function(eset,project = NULL,arrays){
 
@@ -64,7 +64,7 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
 
 
 
-#' DeconvolVe immune microenvironment using MCP-counter
+#' Estimating immune microenvironment using MCP-counter
 #'
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different datasets
@@ -74,7 +74,7 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' mcp_result<-deconvo_mcpcounter(eset = eset_ec,project = "GSE62254")
+#' mcp_result<-deconvo_mcpcounter(eset = eset_stad,project = "TCGA-STAD")
 #'
 deconvo_mcpcounter<-function(eset,project = NULL){
 
@@ -106,7 +106,7 @@ deconvo_mcpcounter<-function(eset,project = NULL){
 
 
 
-#' DeconvolVe immune microenvironment using EPIC: FOR RANseq mostly
+#' Estimating immune microenvironment using EPIC: FOR RANseq mostly
 #'
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different datasets
@@ -117,7 +117,7 @@ deconvo_mcpcounter<-function(eset,project = NULL){
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' epic_result<-deconvo_epic(eset = eset,project = "GSE62254",tumor = TRUE)
+#' epic_result<-deconvo_epic(eset = eset_stad,project = "TCGA-STAD",tumor = TRUE)
 #'
 deconvo_epic<-function(eset,project = NULL,tumor){
 
@@ -150,7 +150,7 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 
 
 
-#' DeconvolVe immune microenvironment using CIBERSORT
+#' Decoding immune microenvironment using CIBERSORT
 #'
 #' CIBERSORT is only freely available to academic users.
 #' A license an the binary can be obtained from https://cibersort.stanford.edu.
@@ -165,7 +165,7 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 #' @export
 #'
 #' @examples
-#' cibersort_result<-deconvo_cibersort(eset = eset,project = "ACRG",arrays = TRUE,absolute = FALSE, perm = 500)
+#' cibersort_result<-deconvo_cibersort(eset = eset_stad,project = "TCGA-STAD",arrays = TRUE,absolute = FALSE, perm = 500)
 
 
 deconvo_cibersort<-function(eset, project = NULL, arrays, absolute = FALSE, perm = 1000){
@@ -208,10 +208,10 @@ deconvo_cibersort<-function(eset, project = NULL, arrays, absolute = FALSE, perm
 
 
 
-#' DeconvolVe immune microenvironment using IPS
+#' Calculating immune phenotype score using IPS
 #'
 #' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different data sets
 #' @return IPS data frame
 #' @export
 #' @import ggplot2
@@ -219,7 +219,7 @@ deconvo_cibersort<-function(eset, project = NULL, arrays, absolute = FALSE, perm
 #' @import grid
 #' @author Dongqiang Zeng
 #' @examples
-#' ips_result<-deconvo_ips(eset = eset_ec,project = "GSE62254")
+#' ips_result<-deconvo_ips(eset = eset_stad,project = "TCGA-STAD")
 #'
 deconvo_ips<-function(eset,project = NULL,plot){
 
@@ -299,7 +299,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' Estimate the fraction of cell types using defined reference genes
 #'
 #' @param eset expression data with matched gene id of reference
-#' @param project
+#' @param project project name used to distinguish different datasets
 #' @param arrays a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.
 #' @param method deconvolution method. must be "svm" or "lsei"
 #' @param perm  permutation to run CIBERSORT
@@ -347,11 +347,11 @@ deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,reference,s
 }
 
 
-#' Deconvolute using the TIMER technique
+#' Deconvoluting using the TIMER technique
 #' Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 #'
-#' @param eset a m x n matrix with m genes and n samples
-#' @param project default is NULL
+#' @param eset  gene matrix
+#' @param project default is NULL, project name used to distinguish different data sets
 #' @param indications a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'
 #'
 #' @return
@@ -394,13 +394,13 @@ deconvo_timer = function(eset,project = NULL,indications = NULL) {
 
 
 
-#' Deconvolute using the quanTIseq technique
+#' Deconvoluting micrornvironment using the quanTIseq technique
 #'
-#' @param eset a m x n matrix with m genes and n samples
-#' @param tumor logistic
-#' @param arrays microarray
-#' @param scale_mrna
-#' @param project
+#' @param eset  gene expression data
+#' @param tumor logistic variable
+#' @param arrays logistic variable, is data generated from microarray
+#' @param scale_mrna logistic variable
+#' @param project default is NULL, project name used to distinguish different data sets
 #'
 #' @return
 #' @export
@@ -434,11 +434,11 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 
 
 
-#' Deconvolve Tumor microenvironment on a transcriptomic dataset
+#' Deconvoluting Tumor microenvironment on a transcriptomic dataset
 #'
-#' @param eset A gene expression matrix or a Biobase ExpressionSet.
+#' @param eset A gene expression matrix
 #'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.
-#' @param project project name used to distinguish different datasets, default is NULL
+#' @param project project name used to distinguish different data sets, default is NULL
 #' @param method a string specifying the method.
 #' Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.
 #' @param tumor logical. use a signature matrix/procedure optimized for tumor samples,

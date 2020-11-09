@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_cibersort}
 \alias{deconvo_cibersort}
-\title{DeconvolVe immune microenvironment using CIBERSORT}
+\title{Decoding immune microenvironment using CIBERSORT}
 \usage{
 deconvo_cibersort(eset, project = NULL, arrays, absolute = FALSE, perm = 1000)
 }
@@ -25,7 +25,7 @@ CIBERSORT is only freely available to academic users.
 A license an the binary can be obtained from https://cibersort.stanford.edu.
 }
 \examples{
-cibersort_result<-deconvo_cibersort(eset = eset,project = "ACRG",arrays = TRUE,absolute = FALSE, perm = 500)
+cibersort_result<-deconvo_cibersort(eset = eset_stad,project = "TCGA-STAD",arrays = TRUE,absolute = FALSE, perm = 500)
 }
 \author{
 Dongqiang Zeng

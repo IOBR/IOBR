@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_mcpcounter}
 \alias{deconvo_mcpcounter}
-\title{DeconvolVe immune microenvironment using MCP-counter}
+\title{Estimating immune microenvironment using MCP-counter}
 \usage{
 deconvo_mcpcounter(eset, project = NULL)
 }
@@ -15,10 +15,10 @@ deconvo_mcpcounter(eset, project = NULL)
 MCP-counter with immune cell fractions
 }
 \description{
-DeconvolVe immune microenvironment using MCP-counter
+Estimating immune microenvironment using MCP-counter
 }
 \examples{
-mcp_result<-deconvo_mcpcounter(eset = eset_ec,project = "GSE62254")
+mcp_result<-deconvo_mcpcounter(eset = eset_stad,project = "TCGA-STAD")
 
 }
 \author{

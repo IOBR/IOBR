@@ -7,7 +7,7 @@
 iobr_cor_plot(
   pdata_group,
   id1 = "ID",
-  feature_matrix,
+  feature_data,
   id2 = "ID",
   target = NULL,
   group = "group3",
@@ -32,9 +32,9 @@ iobr_cor_plot(
 
 \item{id1}{column of identifier of pdata}
 
-\item{feature_matrix}{feature matrix with first column as `id2`}
+\item{feature_data}{feature data with first column as `id2`}
 
-\item{id2}{column of identifier of feature matrix}
+\item{id2}{column of identifier of feature data}
 
 \item{target}{default is NULL, column of target variables if target is continuous}
 
@@ -62,7 +62,7 @@ iobr_cor_plot(
 
 \item{character_limit}{maximal number of feature characters}
 
-\item{show_heatmap_col_name}{logical variable, if TRUE, tidyheatmap will print the column name}
+\item{show_heatmap_col_name}{logical variable, if TRUE, `tidyheatmap` will print the column name}
 
 \item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
 

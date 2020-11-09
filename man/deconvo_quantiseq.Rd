@@ -2,22 +2,24 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_quantiseq}
 \alias{deconvo_quantiseq}
-\title{Deconvolute using the quanTIseq technique}
+\title{Deconvoluting micrornvironment using the quanTIseq technique}
 \usage{
 deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 }
 \arguments{
-\item{eset}{a m x n matrix with m genes and n samples}
+\item{eset}{gene expression data}
 
-\item{project}{}
+\item{project}{default is NULL, project name used to distinguish different data sets}
 
-\item{tumor}{logistic}
+\item{tumor}{logistic variable}
 
-\item{arrays}{microarray}
+\item{arrays}{logistic variable, is data generated from microarray}
+
+\item{scale_mrna}{logistic variable}
 }
 \value{
 
 }
 \description{
-Deconvolute using the quanTIseq technique
+Deconvoluting micrornvironment using the quanTIseq technique
 }
