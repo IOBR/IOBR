@@ -83,6 +83,7 @@ calculate_sig_score_pca<-function(pdata,
   if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
     pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
+  pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
@@ -149,6 +150,7 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
   if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
     pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
+  pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
@@ -214,6 +216,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
   }
 
   pdata<-merge(pdata,res,by ="ID",all.x = T,all.y = F)
+  pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
@@ -315,6 +318,7 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   colnames(res)<-paste0(colnames(res),"_ssGSEA")
   res<-rownames_to_column(res,var = "ID")
   pdata<-merge(pdata,res,by="ID",all.x = T,all.y = T)
+  pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
 

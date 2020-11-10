@@ -504,6 +504,7 @@ deconvo_tme = function(eset,
 
                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei",scale_reference,perm,...) )
 
+  res<-tibble::as_tibble(res)
   return(res)
 }
 
