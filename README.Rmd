@@ -24,7 +24,7 @@ IOBR is an R package to perform comprehensive analysis of tumor microenvironment
 - 1.IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
 - 2.IOBR collects 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
 - 3.IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
-- 4.IOBR integrates multiple approaches for variable transition, visulization, batch survival analysis, and statistical analysis.
+- 4.IOBR integrates multiple approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis.
 - 5.IOBR also integrates methods for batch visualization of subgroup characteristics. 
 
 
@@ -330,6 +330,7 @@ res<-iobr_cor_plot(pdata_group = pdata_group,
                    show_heatmap_col_name = FALSE,
                    show_col = FALSE,
                    show_plot = TRUE)
+head(res,n=10)
 ```
 
 ### 4.4 Estemate the expression of response relevant signature genes.
@@ -351,12 +352,13 @@ res<-iobr_cor_plot(pdata_group = pdata_group,
                    ProjectID = "IMvigor210",
                    palette_box = "paired1",
                    palette_corplot = "pheatmap",
-                   palette_heatmap = 3,
+                   palette_heatmap = 4,
                    feature_limit = 26,
                    character_limit = 30,
                    show_heatmap_col_name = FALSE,
                    show_col = FALSE,
                    show_plot = TRUE)
+head(res,n=10)
 ```
 
 ## 5 Analyze signatures relevant to target signature.
@@ -398,7 +400,7 @@ res<-iobr_cor_plot(pdata_group = pdata_group,
                    show_heatmap_col_name = FALSE,
                    show_col = FALSE,
                    show_plot = TRUE)
-
+head(res,n=10)
 ```
 
 
@@ -425,6 +427,7 @@ res<-iobr_cor_plot(pdata_group = pdata_group,
                    show_heatmap_col_name = FALSE,
                    show_col = FALSE,
                    show_plot = TRUE)
+head(res,n=10)
 
 ```
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateRef.R
 \name{generateRef}
 \alias{generateRef}
-\title{Title}
+\title{Generating signature matrix for CIBERSORT algorithm}
 \usage{
 generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR)
 }
@@ -19,7 +19,7 @@ generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR)
 
 }
 \description{
-Title
+Generating signature matrix for CIBERSORT algorithm
 }
 \examples{
 data("Stromal_v2.pheno")

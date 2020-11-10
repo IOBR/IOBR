@@ -1,6 +1,6 @@
 Package: IOBR
 Type: Package
-Title: Immune Oncology Bioinformatics Research
+Title: Immune Oncology Biological Research
 Version: 0.99.1
 Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
@@ -26,5 +26,6 @@ Depends:
 Imports: 
    EPIC, 
    MCPcounter,
-   estimate
+   estimate,
+   matrixStats
 BugReports: https://github.com/DongqiangZeng0808/IOBR/issues

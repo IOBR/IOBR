@@ -1,4 +1,4 @@
-#' Title
+#' Generating signature matrix for CIBERSORT algorithm
 #'
 #' @param dat data frame or matrix; gene probes in the row and samples in the column
 #' @param pheno character vector; cell type class of the samples
@@ -33,7 +33,7 @@ generateRef <- function(dat, pheno, mode = c("oneVSothers", "pairs"), FDR){
     purrr::map(function(x)arrange(x, desc(logFC)))
 
   median_value <- t(dat) %>% as.data.frame() %>%
-    split(., pheno) %>% map(function(x)colMedians(as.matrix(x)))
+    split(., pheno) %>% map(function(x) matrixStats::colMedians(as.matrix(x)))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
