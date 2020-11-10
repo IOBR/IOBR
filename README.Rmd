@@ -348,7 +348,7 @@ res<-iobr_cor_plot(pdata_group = pdata_group,
                    padj_cutoff = 1,
                    index = 1,
                    category = "gene",
-                   signature_group =signature_collection[c(1:3)],
+                   signature_group =signature_collection[c(1:2,4)],
                    ProjectID = "IMvigor210",
                    palette_box = "paired1",
                    palette_corplot = "pheatmap",
@@ -475,10 +475,12 @@ res<-find_mutations(mutation_matrix = mut,
 ```
 
 ## 7 Other methods for batch analysis 
-IOBR provide multiple batch analysis functions for statical analysis, data operation and transformation. Batch survival analysis, for example, could batch analyze the best cutoff value for subsequent batch survival analysis, varied batch statistical tests, etc.
+IOBR provide multiple batch analytical functions for statistical analysis, data operation and transformation. Batch survival analysis, for example, could batch analyze the best cutoff value for subsequent batch survival analysis, varied batch statistical tests, etc.
+
 ### 7.1 subgroup survival analyses
+
 ```{r}
-help("subgroup_survival")
+
 ##loading data and filter NA
 data(subgroup_data)
 input <- subgroup_data %>% 
@@ -494,6 +496,19 @@ data1 <- subgroup_survival(pdata = input,
                            object ="score_binary" )
 data1
 ```
+
+### 7.2 Batch survival analysis
+```{r}
+data("pdata_sig_tme")
+
+input <- pdata_sig_tme %>% 
+   filter(time > 0) %>% 
+   filter(!is.na(status))
+res <- batch_surv(pdata = input, variable = c(277:ncol(input)), time = "time",status = "status")
+res<-res[order(res$P,decreasing = F),]
+head(res,n=10)
+```
+
 
 References
 ---------
