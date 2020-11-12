@@ -2,7 +2,7 @@
 % Please edit documentation in R/IPS_calculation.R
 \name{IPS_calculation}
 \alias{IPS_calculation}
-\title{Title This R-script can be used to calculate Immunophenoscore (IPS)}
+\title{This R-script can be used to calculate Immunophenoscore (IPS)}
 \usage{
 IPS_calculation(project, eset, plot)
 }
@@ -16,7 +16,7 @@ expression values (i.e. log2(TPM+1) for each sample in columns}
 IPS score data frame
 }
 \description{
-Title This R-script can be used to calculate Immunophenoscore (IPS)
+This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
 

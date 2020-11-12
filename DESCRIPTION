@@ -5,7 +5,7 @@ Version: 0.99.1
 Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
 Description: Comprehensive analysis of tumor microenvironment and signatures for immuno-oncology
-License: MIT
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
@@ -21,8 +21,7 @@ Depends:
     ggplot2,
     ggpubr,
     tidyHeatmap,
-    tidyverse,
-    R (>= 3.6)
+    tidyverse
 Imports: 
    EPIC, 
    MCPcounter,

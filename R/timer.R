@@ -176,11 +176,21 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
   return(extracted)
 }
 
+
+
+#' Input gene expression
+#'
+#' @param path path of data
+#'
+#' @return
+#' @export
+#'
+#' @examples
 ParseInputExpression <- function(path) {
   ret <- read.csv(path, sep='\t', row.names=1)
   ret <- as.matrix(ret)
   mode(ret) <- 'numeric'
-  ret <- ConvertRownameToLoci(ret)
+  # ret <- ConvertRownameToLoci(ret)
   return(ret)
 }
 

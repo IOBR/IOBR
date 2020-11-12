@@ -3,7 +3,7 @@
 
 
 
-#' Title This R-script can be used to calculate Immunophenoscore (IPS)
+#' This R-script can be used to calculate Immunophenoscore (IPS)
 #'
 #' @param project
 #' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
@@ -46,7 +46,7 @@ IPS_calculation<-function(project, eset, plot){
 
   IPSG<-IPSG[IPSG$GENE%in%rownames(gene_expression),]#不在eset的基因删除掉
   unique_ips_genes<-as.vector(unique(IPSG$NAME))
-  print(summary(IPSG$GENE%in%rownames(gene_expression)))
+  # print(summary(IPSG$GENE%in%rownames(gene_expression)))
 
   IPS<-NULL
   MHC<-NULL
@@ -67,9 +67,9 @@ IPS_calculation<-function(project, eset, plot){
   if (length(MISSING_GENES)>0) {
     cat("differently named or missing genes: ",MISSING_GENES,"\n")
   }
-  for (x in 1:length(ind)) {
-    print(IPSG[ind,])
-  }
+  # for (x in 1:length(ind)) {
+  #   print(IPSG[ind,])
+  # }
 
   for (i in 1:length(sample_names)) {
     GE<-gene_expression[[i]]
