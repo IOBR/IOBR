@@ -8,7 +8,7 @@
 #' @param project
 #' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
 #' expression values (i.e. log2(TPM+1) for each sample in columns
-#' @param plot default = FALSE;Needs packages ggplot2,grid,gridExtra
+#' @param plot default = FALSE;Needs packages ggplot2, grid, gridExtra
 #'
 #' @return IPS score data frame
 #' @export
@@ -16,7 +16,6 @@
 #' @import ggplot2
 #' @import grid
 #' @examples
-#'
 IPS_calculation<-function(project, eset, plot){
 
 
@@ -82,7 +81,7 @@ IPS_calculation<-function(project, eset, plot){
     k<-1
     for (gen in unique_ips_genes) {
       MIG[k]<- mean(Z1[which (as.vector(IPSG$NAME)==gen)],na.rm=TRUE)
-      WEIGHT[k]<- mean(W1[which (as.vector(IPSG$NAME)==gen)])
+      WEIGHT[k]<- mean(W1[which (as.vector(IPSG$NAME)==gen)],na.rm=TRUE)
       k<-k+1
     }
     WG<-MIG*WEIGHT

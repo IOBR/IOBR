@@ -47,10 +47,10 @@ timer_available_cancers <- c('kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kir
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   ## intersect the gene names of cancer.exp and immune.exp
   tmp.dd <- as.matrix(cancer.exp)
-  tmp <- sapply(strsplit(rownames(cancer.exp), '\\|'),
-                function(x) x[[1]])
-  rownames(tmp.dd) <- tmp
-  tmp.dd <- as.matrix(tmp.dd[which(nchar(tmp)>1), ])
+  # tmp <- sapply(strsplit(rownames(cancer.exp), '\\|'),
+  #               function(x) x[[1]])
+  # rownames(tmp.dd) <- tmp
+  # tmp.dd <- as.matrix(tmp.dd[which(nchar(tmp)>1), ])
   tmp.ss <- intersect(rownames(tmp.dd), rownames(immune.exp))
 
   ## bind cancer and immune expression data into one dataframe
