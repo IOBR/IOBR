@@ -71,7 +71,7 @@ IPS_calculation<-function(project, eset, plot){
   # }
 
   for (i in 1:length(sample_names)) {
-    GE<-gene_expression[[i]]
+    GE<-gene_expression[,i]
     mGE<-mean(GE)
     sGE<-sd(GE)
     Z1<-(gene_expression[as.vector(IPSG$GENE),i]-mGE)/sGE
