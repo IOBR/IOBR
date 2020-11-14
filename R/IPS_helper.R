@@ -6,13 +6,14 @@
 ## calculate Immunophenoscore
 #' Title
 #'
-#' @param x 
+#' @param x
 #'
 #' @return
 #' @export
 #'
 #' @examples
 ipsmap<- function (x) {
+  # if(is.na(x)) x<-0
   if (x<=0) {
     ips<-0
   } else {
@@ -28,7 +29,7 @@ ipsmap<- function (x) {
 
 #' Title
 #'
-#' @param x 
+#' @param x
 #'
 #' @return
 #' @export
@@ -50,7 +51,7 @@ mapcolors<-function (x) {
 
 #' Title
 #'
-#' @param x 
+#' @param x
 #'
 #' @return
 #' @export

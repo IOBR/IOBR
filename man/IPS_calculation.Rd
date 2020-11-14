@@ -4,7 +4,7 @@
 \alias{IPS_calculation}
 \title{This R-script can be used to calculate Immunophenoscore (IPS)}
 \usage{
-IPS_calculation(project, eset, plot)
+IPS_calculation(eset, plot = FALSE)
 }
 \arguments{
 \item{eset}{expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
@@ -19,7 +19,7 @@ IPS score data frame
 This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
-鍋囧瑕佺敾鍥剧殑璇㤼㹤
-file to deposit resluts
+if TRUE, plot will be saved
+file to deposit reslut
 棣栧厛鏋勫缓鍥剧殑鍌ㄥ瓨鏂囦欢澶戼㸹
 }

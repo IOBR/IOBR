@@ -5,7 +5,6 @@
 
 #' This R-script can be used to calculate Immunophenoscore (IPS)
 #'
-#' @param project
 #' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
 #' expression values (i.e. log2(TPM+1) for each sample in columns
 #' @param plot default = FALSE;Needs packages ggplot2, grid, gridExtra
@@ -16,14 +15,14 @@
 #' @import ggplot2
 #' @import grid
 #' @examples
-IPS_calculation<-function(project, eset, plot){
+IPS_calculation<-function(eset, plot = FALSE){
 
 
   #normalize gene expression matrix
   if(max(eset)>100) eset<-log2(eset+1)
   ###################################################
   gene_expression<-eset
-  sample_names<-names(gene_expression)
+  sample_names<-colnames(gene_expression)
   ####################################################
   ##
   ##   This R-script can be used to calculate Immunophenoscore (IPS) and generate Immunophenogram from "EXPR.txt" and "IPS_genes.txt"
@@ -43,7 +42,7 @@ IPS_calculation<-function(project, eset, plot){
   # For different
   IPSG<-ips_gene_set
 
-  IPSG<-IPSG[IPSG$GENE%in%rownames(gene_expression),]#不在eset的基因删除掉
+  IPSG<-IPSG[IPSG$GENE%in%rownames(gene_expression),]
   unique_ips_genes<-as.vector(unique(IPSG$NAME))
   # print(summary(IPSG$GENE%in%rownames(gene_expression)))
 
@@ -70,10 +69,10 @@ IPS_calculation<-function(project, eset, plot){
   #   print(IPSG[ind,])
   # }
 
-  for (i in 1:length(sample_names)) {
+  for (i in 1:ncol(eset)) {
     GE<-gene_expression[,i]
-    mGE<-mean(GE)
-    sGE<-sd(GE)
+    mGE<-mean(GE,na.rm=TRUE)
+    sGE<-sd(GE,na.rm=TRUE)
     Z1<-(gene_expression[as.vector(IPSG$GENE),i]-mGE)/sGE
     W1<-IPSG$WEIGHT
     WEIGHT<-NULL
@@ -85,27 +84,31 @@ IPS_calculation<-function(project, eset, plot){
       k<-k+1
     }
     WG<-MIG*WEIGHT
-    MHC[i]<-mean(WG[1:10])
-    CP[i]<-mean(WG[11:20])
-    EC[i]<-mean(WG[21:24])
-    SC[i]<-mean(WG[25:26])
-    AZ[i]<-sum(MHC[i],CP[i],EC[i],SC[i])
+    MHC[i]<-mean(WG[1:10],na.rm=TRUE)
+    CP[i]<-mean(WG[11:20],na.rm=TRUE)
+    EC[i]<-mean(WG[21:24],na.rm=TRUE)
+    SC[i]<-mean(WG[25:26],na.rm=TRUE)
+    AZ[i]<-sum(MHC[i],CP[i],EC[i],SC[i],na.rm = TRUE)
+    # print(paste0(">>> Processing sample ", i))
+    # if(is.na(AZ[i])) {
+    #   print(paste0(">>> ", i," Sample with error"))
+    #   AZ[i]<-0
+    # }
     IPS[i]<-ipsmap(AZ[i])
 
 
-    #' 假如要画图的话
+    #' if TRUE, plot will be saved
 
     if (plot) {
 
-      #' file to deposit resluts
+      #' file to deposit reslut
       file_name<-paste0("IPS-Results")
       if ( ! file.exists(file_name) ) dir.create(file_name)
       abspath<-paste(getwd(),"/" ,file_name, "/",sep ="" );abspath
       ################################################
       #' 首先构建图的储存文件夹
       plotpath<-paste(file_name,"/IPS_plot_results",sep = "")
-      if ( ! file.exists(plotpath) )
-        dir.create(plotpath)
+      if ( ! file.exists(plotpath)) dir.create(plotpath)
       ###############################
       ###############################
 
@@ -172,7 +175,7 @@ IPS_calculation<-function(project, eset, plot){
   #########################################
   res<-data.frame(ID=sample_names,MHC=MHC,EC=EC,SC=SC,CP=CP,AZ=AZ,IPS=IPS)
 
-  res<-column_to_rownames(res,var = "ID")
+  res<-tibble::column_to_rownames(res,var = "ID")
 
  return(res)
 }
