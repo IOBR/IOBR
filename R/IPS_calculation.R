@@ -8,6 +8,7 @@
 #' @param eset expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
 #' expression values (i.e. log2(TPM+1) for each sample in columns
 #' @param plot default = FALSE;Needs packages ggplot2, grid, gridExtra
+#' @param project default is NULL
 #'
 #' @return IPS score data frame
 #' @export
@@ -15,11 +16,12 @@
 #' @import ggplot2
 #' @import grid
 #' @examples
-IPS_calculation<-function(eset, plot = FALSE){
+IPS_calculation<-function(project=NULL, eset, plot = FALSE){
 
 
   #normalize gene expression matrix
   if(max(eset)>100) eset<-log2(eset+1)
+
   ###################################################
   gene_expression<-eset
   sample_names<-colnames(gene_expression)
@@ -174,6 +176,11 @@ IPS_calculation<-function(eset, plot = FALSE){
 
   #########################################
   res<-data.frame(ID=sample_names,MHC=MHC,EC=EC,SC=SC,CP=CP,AZ=AZ,IPS=IPS)
+
+  if(!is.null(project)){
+    res$ProjectID<-project
+    res<-res[,c(ncol(res),1:ncol(res)-1)]
+  }
 
   res<-tibble::column_to_rownames(res,var = "ID")
 

@@ -492,7 +492,7 @@ deconvo_tme = function(eset,
 
                cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, arrays = arrays,perm = perm, ...),
 
-               ips = deconvo_ips(eset, project,plot = plot, ...),
+               ips = deconvo_ips(eset,project,plot = plot, ...),
 
                quantiseq = deconvo_quantiseq(eset,project,tumor=tumor, arrays=arrays, scale_mrna=scale_mrna, ...),
 
