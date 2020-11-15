@@ -567,7 +567,7 @@ deconvo_tme = function(eset,
 
                timer = deconvo_timer(eset,project, indications = group_list, ...),
 
-               svm = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svm", absolute.mode = absolute.mode,abs.method = abs.method ,scale_reference,perm,...),
+               svm = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svm", absolute.mode = absolute.mode,abs.method = abs.method,perm,...),
 
                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei",scale_reference,perm,...) )
 
