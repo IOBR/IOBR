@@ -17,6 +17,8 @@ deconvo_tme(
   scale_mrna,
   group_list = NULL,
   platform = "affymetrix",
+  absolute.mode = FALSE,
+  abs.method = "sig.score",
   ...
 )
 }
@@ -47,12 +49,16 @@ Currently affects `CIBERSORT` and `svm_ref`}
 \item{scale_mrna}{logical. If FALSE, disable correction for mRNA content of different cell types.
 This is supported by methods that compute an absolute score (EPIC and quanTIseq)}
 
+\item{group_list}{tumor type list of samples}
+
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"
 Currently affects `ESTIMATE` method}
 
-\item{...}{arguments passed to the respective method}
+\item{absolute.mode}{Run CIBERSORT or SVM in absolute mode (default = FALSE)}
 
-\item{indications}{Currently affects `TIMER` method}
+\item{abs.method}{if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'}
+
+\item{...}{arguments passed to the respective method}
 }
 \value{
 `data.frame` with `ID` as first column and other column with the
@@ -65,5 +71,7 @@ Deconvoluting Tumor microenvironment on a transcriptomic dataset
 
 }
 \author{
-Dongqiang Zeng, Rongfang Shen
+Dongqiang Zeng
+
+Rongfang Shen
 }

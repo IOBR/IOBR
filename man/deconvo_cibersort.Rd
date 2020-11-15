@@ -4,7 +4,14 @@
 \alias{deconvo_cibersort}
 \title{Decoding immune microenvironment using CIBERSORT}
 \usage{
-deconvo_cibersort(eset, project = NULL, arrays, absolute = FALSE, perm = 1000)
+deconvo_cibersort(
+  eset,
+  project = NULL,
+  arrays,
+  perm = 1000,
+  absolute = FALSE,
+  abs_method = "sig.score"
+)
 }
 \arguments{
 \item{eset}{expression set with gene symbol at rowname, sample ID at column}
@@ -13,9 +20,9 @@ deconvo_cibersort(eset, project = NULL, arrays, absolute = FALSE, perm = 1000)
 
 \item{arrays}{logical: Runs methods in a mode optimized for microarray data.}
 
-\item{absolute}{logical: Runs CIBERSORT in absolute mode}
-
 \item{perm}{permutation to run CIBERSORT}
+
+\item{absolute}{logical: Runs CIBERSORT in absolute mode}
 }
 \value{
 cibersrot with immune cell fractions

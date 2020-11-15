@@ -175,12 +175,16 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' @import preprocessCore
 #' @import tidyverse
 #' @examples
-#' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_ec, perm = 1000, QN=TRUE)
+#' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_ec, perm = 1000, QN=TRUE, absolute=FALSE)
 #' head(cibersort)
-#'
 
 CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute, abs_method='sig.score'){
 
+
+  if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0){
+    stop("None identical gene between eset and reference had been found.
+         Check your eset using: intersect(rownames(eset), rownames(reference))")
+  }
 
   if(absolute && abs_method != 'no.sumto1' && abs_method != 'sig.score')
     stop("abs_method must be set to either 'sig.score' or 'no.sumto1'")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateRef_rnaseq.R
 \name{generateRef_rnaseq}
 \alias{generateRef_rnaseq}
-\title{Title}
+\title{Generate reference gene matrix from DEGs result}
 \usage{
 generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 }
@@ -21,5 +21,8 @@ generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 
 }
 \description{
-Title
+Generate reference gene matrix from DEGs result
+}
+\author{
+Rongfang Shen
 }

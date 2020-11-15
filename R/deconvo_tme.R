@@ -168,7 +168,7 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 #' cibersort_result<-deconvo_cibersort(eset = eset_stad,project = "TCGA-STAD",arrays = TRUE,absolute = FALSE, perm = 500)
 
 
-deconvo_cibersort<-function(eset, project = NULL, arrays, absolute = FALSE, perm = 1000){
+deconvo_cibersort<-function(eset, project = NULL, arrays,  perm = 1000, absolute = FALSE, abs_method = "sig.score"){
 
   if(absolute){
     message(paste0("\n", ">>> Running ", "CIBERSORT in absolute mode"))
@@ -187,7 +187,8 @@ deconvo_cibersort<-function(eset, project = NULL, arrays, absolute = FALSE, perm
                  mixture_file = eset,
                  perm = perm,
                  QN = quantile_norm,
-                 absolute = absolute)
+                 absolute = absolute,
+                 abs_method = abs_method)
   ###############################
   colnames(res)<-gsub(colnames(res),pattern = "\\.",replacement = "\\_")
   colnames(res)<-gsub(colnames(res),pattern = "\\ ",replacement = "\\_")
@@ -304,15 +305,23 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' @param method deconvolution method. must be "svm" or "lsei"
 #' @param perm  permutation to run CIBERSORT
 #' @param reference immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq
+#' @param absolute.mode absolute.mode, default is FALSE
+#' @param abs.method abs.method, default is sig.score
 #' @param scale_reference  a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction.
+#'
 #' @author Dongqiang Zeng
 #' @author Rongfang Shen
 #' @return
 #' @export
 #'
 #' @examples
-deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,reference,scale_reference){
+deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,
+                      reference, scale_reference, absolute.mode = FALSE, abs.method = "sig.score"){
 
+  if (length(intersect(rownames(eset), rownames(reference))) == 0){
+    stop("None identical gene between eset and reference had been found.
+         Check your eset using: intersect(rownames(eset), rownames(reference))")
+  }
   # reccomend to disable quantile normalizeation for RNA seq.
   quantile_norm = arrays
   ##############################
@@ -320,14 +329,67 @@ deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,reference,s
   if(method=="svm"){
     message(paste0("\n", ">>> Running ", "cell estimation in SVM mode"))
 
-   res<- deconvo_constru_sig(eset = eset,reference = reference,scale_reference = scale_reference,
-                             method = "svm",perm = perm,arrays = arrays)
+   # res<- deconvo_constru_sig(eset = eset,reference = reference,scale_reference = scale_reference,
+   #                           method = "svm",perm = perm,arrays = arrays,
+   #                           absolute.mode  = absolute.mode, abs.method = abs.method)
+   if(absolute.mode) message(paste0("\n", ">>> Running ", "SVM in absolute mode"))
+
+   eset<-as.data.frame(eset)
+   # the authors reccomend to disable quantile normalizeation for RNA seq.
+   # (see CIBERSORT website).
+   quantile_norm = arrays
+   ##############################
+   res<-CIBERSORT(sig_matrix = reference,
+                  mixture_file = eset,
+                  perm = perm,
+                  QN = quantile_norm,
+                  absolute = absolute.mode,
+                  abs_method = abs.method)
+   ###############################
+
   }else if(method=="lsei"){
 
     message(paste0("\n", ">>> Running ", "cell estimation in lsei mode"))
-
-    res<- deconvo_constru_sig(eset = eset,reference = reference,scale_reference = scale_reference,
-                              method = "lsei",perm = perm,arrays = arrays)
+    eset <- as.matrix(eset)
+    reference <- as.matrix(reference)
+    # quantile normalized
+    if (arrays){
+      roweset <- rownames(eset)
+      coleset <- colnames(eset)
+      eset <- normalize.quantiles(eset)
+      rownames(eset) <- roweset
+      colnames(eset) <- coleset
+    }
+    # scale_reference
+    if (scale_reference){
+      reference <- (reference - mean(reference))/sd(as.vector(reference))
+    }
+    Ymedian <- max(median(eset),1)
+    # common eset
+    common <- intersect(rownames(eset), rownames(reference))
+    eset <- eset[match(common, rownames(eset)), ]
+    reference <- reference[match(common, rownames(reference)), ]
+    # deconvolution
+    output <- matrix()
+    # message(paste0("\n", ">>> Running ", "cell estimation in lsei mode"))
+    Numofx <- ncol(reference)
+    AA <- reference
+    EE <- rep(1, Numofx)
+    FF <- 1
+    GG <- diag(nrow=Numofx)
+    HH <- rep(0, Numofx)
+    out.all <- c()
+    itor <- 1
+    samples <- ncol(eset)
+    while (itor <= samples){
+        BB <- eset[, itor]
+        BB <- (BB - mean(BB))/sd(BB)
+        out <- lsei(AA, BB, EE, FF, GG, HH)
+        out.all <- rbind(out.all, out$X)
+        itor <- itor + 1
+      }
+    rownames(out.all) <- colnames(eset)
+    res <- out.all
   }
 
   ###############################
@@ -341,7 +403,7 @@ deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,reference,s
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
 
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
 
 }
@@ -454,12 +516,15 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @param plot Currently affects `IPS` method
 #' @param scale_mrna  logical. If FALSE, disable correction for mRNA content of different cell types.
 #'   This is supported by methods that compute an absolute score (EPIC and quanTIseq)
+#' @param group_list tumor type list of samples
+#' @param absolute.mode Run CIBERSORT or SVM in absolute mode (default = FALSE)
+#' @param abs.method if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'
 #' @param ... arguments passed to the respective method
-#' @param indications Currently affects `TIMER` method
 #'
 #' @return `data.frame` with `ID` as first column and other column with the
 #'     calculated cell fractions for each sample.
-#' @author Dongqiang Zeng, Rongfang Shen
+#' @author Dongqiang Zeng
+#' @author Rongfang Shen
 #' @name deconvo_tme
 #' @export deconvo_tme
 #' @examples
@@ -476,6 +541,8 @@ deconvo_tme = function(eset,
                        scale_mrna,
                        group_list = NULL,
                        platform = "affymetrix",
+                       absolute.mode = FALSE,
+                       abs.method = "sig.score",
                        ...) {
 
   # message(paste0("\n", ">>> Running ", method))
@@ -490,7 +557,7 @@ deconvo_tme = function(eset,
 
                cibersort = deconvo_cibersort(eset, project, absolute = FALSE, arrays = arrays,perm = perm, ...),
 
-               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, arrays = arrays,perm = perm, ...),
+               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method,arrays = arrays,perm = perm, ...),
 
                ips = deconvo_ips(eset,project,plot = plot, ...),
 
@@ -500,17 +567,13 @@ deconvo_tme = function(eset,
 
                timer = deconvo_timer(eset,project, indications = group_list, ...),
 
-               svm = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svm",scale_reference,perm,...),
+               svm = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svm", absolute.mode = absolute.mode,abs.method = abs.method ,scale_reference,perm,...),
 
                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei",scale_reference,perm,...) )
 
   res<-tibble::as_tibble(res)
   return(res)
 }
-
-
-
-
 
 
 

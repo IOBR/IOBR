@@ -64,7 +64,7 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
     return(tmp)
   })
   median_value <- t(dat) %>% as.data.frame() %>%
-    split(., pheno) %>% purrr::map(function(x) colMedians(as.matrix(x)))
+    split(., pheno) %>% purrr::map(function(x) matrixStats:: colMedians(as.matrix(x)))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
@@ -87,11 +87,4 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
   return(list(reference_matrix = reference, G = G, condition_number = condition_number,
               whole_matrix = median_value))
 }
-Top_probe <- function(dat, i){
-  if (nrow(dat) <= i){
-    probe = dat[, "probe"] %>% as.character()
-  }else{
-    probe = dat[1:i, "probe"] %>% as.character()
-  }
-  probe
-}
+

@@ -11,7 +11,9 @@ deconvo_ref(
   method = "svm",
   perm,
   reference,
-  scale_reference
+  scale_reference,
+  absolute.mode = FALSE,
+  abs.method = "sig.score"
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ deconvo_ref(
 \item{reference}{immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq}
 
 \item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction.}
+
+\item{absolute.mode}{absolute.mode, default is FALSE}
+
+\item{abs.method}{abs.method, default is sig.score}
 }
 \value{
 

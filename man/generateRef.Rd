@@ -21,3 +21,6 @@ generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR = 0.05)
 \description{
 Generate reference gene matrix
 }
+\author{
+Rongfang Shen
+}
