@@ -4,18 +4,30 @@
 \alias{batch_pcc}
 \title{Batch way to calculate the partial correlation coefficient}
 \usage{
-batch_pcc(data, target, feature, method = "pearson", interference)
+batch_pcc(
+  pdata_group,
+  id1 = "ID",
+  feature_data,
+  id2 = "ID",
+  interferenceid,
+  target,
+  method = "pearson"
+)
 }
 \arguments{
-\item{data}{matrix;data signature matrix with multiple features}
+\item{pdata_group}{matrix;data signature matrix with multiple features}
 
-\item{target}{a character vector; target name of group}
+\item{id1}{identifier of pdata}
 
-\item{feature}{character vectors; feature used to comparison}
+\item{feature_data}{feature data}
+
+\item{id2}{identifier of feature data}
+
+\item{interferenceid}{character vectors; vector used to control}
+
+\item{target}{character vectors; target name of group}
 
 \item{method}{vector; one of "pearson"(default), "spearman" or "kendall"}
-
-\item{interference}{a numeric vector, matrix or data frame; variabes used to control when calculate the correlation between interesting variables.}
 }
 \value{
 
@@ -25,14 +37,11 @@ batch_pcc() provide a batch way to calculate the partial correlation coefficient
 controlling a third variable
 }
 \examples{
-
-data("tcga_crc_exp")
-data("tcga_crc_purity")
-tcga_crc_exp <- t(tcga_crc_exp)
-tcga_crc_exp <- data.frame(array = stringr锛氾細str_sub(rownames(tcga_crc_exp), 1, 15), tcga_crc_exp)
-dat <- merge(tcga_crc_purity, tcga_crc_exp, by = "array")
-TP53cor <- batch_pcc(data = dat, target = "TP53",
-feature = colnames(dat)[3:100], method = "pearson", interference = dat$purity)
+pdata_group <- imvigor210_pdata[, c("ID", "TumorPurity", "Pan_F_TBRs")] \%>\%
+rename(target = Pan_F_TBRs) \%>\% mutate(target = as.numeric(target))
+res <- batch_pcc(pdata_group = pdata_group, id1 = "ID", feature_data = imvigor210_sig,
+id2 = "ID", interferenceid = "TumorPurity",
+target = "target", method = "pearson")
 }
 \author{
 Rongfang Shen

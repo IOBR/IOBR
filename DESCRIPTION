@@ -4,7 +4,7 @@ Title: Immune Oncology Biological Research
 Version: 0.99.1
 Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
-Description: Comprehensive analysis of tumor microenvironment and signatures for immuno-oncology
+Description: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

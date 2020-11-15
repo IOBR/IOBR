@@ -2,16 +2,16 @@
 % Please edit documentation in R/generateRef.R
 \name{generateRef}
 \alias{generateRef}
-\title{Generating signature matrix for CIBERSORT algorithm}
+\title{Generate reference gene matrix}
 \usage{
-generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR)
+generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR = 0.05)
 }
 \arguments{
 \item{dat}{data frame or matrix; gene probes in the row and samples in the column}
 
 \item{pheno}{character vector; cell type class of the samples}
 
-\item{mode}{"oneVSothers" or "pairs"; two modes for identifying significantly differentially expressed genes}
+\item{mode}{"oneVSothers" or "pairs"; two modes for identifying significantly differential expressed genes}
 
 \item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
 }
@@ -19,13 +19,5 @@ generateRef(dat, pheno, mode = c("oneVSothers", "pairs"), FDR)
 
 }
 \description{
-Generating signature matrix for CIBERSORT algorithm
-}
-\examples{
-data("Stromal_v2.pheno")
-data("Stromal_v2")
-immune_feature <- generateRef(dat = Stromal_v2, pheno = Stromal_v2.pheno, mode = "oneVSothers", FDR = 0.05)
-reference <- immune_feature$reference_matrix
-condition_number <- immune_feature$condition_number
-top_probe <- immune_feature$G
+Generate reference gene matrix
 }

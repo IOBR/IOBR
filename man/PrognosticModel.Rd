@@ -2,7 +2,7 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticModel}
 \alias{PrognosticModel}
-\title{Traning a prognostic model}
+\title{Title}
 \usage{
 PrognosticModel(
   x,
@@ -10,7 +10,8 @@ PrognosticModel(
   scale = T,
   seed = "123456",
   train_ratio = 0.7,
-  nfold = 10
+  nfold = 10,
+  plot = T
 )
 }
 \arguments{
@@ -22,15 +23,17 @@ PrognosticModel(
 
 \item{seed}{default 123456}
 
-\item{train_ratio}{Value between 0 -1; The ratio was used to split the x and y into training and testing data.}
+\item{train_ratio}{Value between 0-1; The ratio was used to split the x and y into training and testing data.}
 
-\item{nfold}{}
+\item{nfold}{nfold default 10}
+
+\item{plot}{}
 }
 \value{
-a list contain the results of 3 model (Lasso, Ridge) and the input train data.
+a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 }
 \description{
-Traning a prognostic model
+Title
 }
 \examples{
 load("./data/crc_response.rda")

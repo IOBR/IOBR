@@ -1,4 +1,4 @@
-#' Title
+#' Generate reference gene matrix from DEGs result
 #'
 #' @param dds raw count data from RNA-seq
 #' @param pheno  data frame or matrix;un-normalized counts of RNA-seq
@@ -9,6 +9,7 @@
 #' @importFrom  DESeq2 DESeq
 #'
 #' @return
+#' @author Rongfang Shen
 #' @export
 #'
 #' @example
@@ -17,16 +18,16 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
     stop("The sample order of dds and dat much be identical")
   }
   dds <- round(dds, 0)
-  keep <- rowSums(dds) >= 10
+  keep <- rowSums(dds) >= 0.05 *ncol(dds)
   dds <- dds[keep,]
   dds <- na.omit(dds)
   samples <- data.frame(row.names = colnames(dds), cell = pheno)
   ncells <- unique(pheno)
   if (mode == "pairs"){
-    dds <- DESeqDataSetFromMatrix(dds,
+    dds <- DESeq2::DESeqDataSetFromMatrix(dds,
                                     colData = samples,
                                     design = ~ cell)
-    dds <- DESeq(dds)
+    dds <- DESeq2::DESeq(dds)
     contrasts <- list()
     # generate contrast list
     for (i in 1:length(ncells)){
@@ -40,7 +41,7 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
       }
     }
     res <- lapply(contrasts, function(z){
-      results(dds, contrast = z)
+      DESeq2::results(dds, contrast = z)
     })
   }
   if (mode == "oneVSothers"){
@@ -49,11 +50,11 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
      cellA <- ncells[i]
      samples$group <- NA
      samples$group <- ifelse(samples$cell == cellA, cellA, "others")
-     dds2 <- DESeqDataSetFromMatrix(dds,
+     dds2 <- DESeq2::DESeqDataSetFromMatrix(dds,
                                    colData = samples,
                                    design = ~ group)
-     dds2 <- DESeq(dds2)
-     res[[i]] <- results(dds2, contrast = c("group", cellA, "others"))
+     dds2 <- DESeq2::DESeq(dds2)
+     res[[i]] <- DESeq2::results(dds2, contrast = c("group", cellA, "others"))
     }
   }
   resData <- lapply(res, function(x){
@@ -63,13 +64,13 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
     return(tmp)
   })
   median_value <- t(dat) %>% as.data.frame() %>%
-    split(., pheno) %>% map(function(x) colMedians(as.matrix(x)))
+    split(., pheno) %>% purrr::map(function(x) colMedians(as.matrix(x)))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
   con_nums <- c()
   for (i in 50:200){
-    probes <- resData %>% map(function(x)Top_probe(dat = x, i = i)) %>%
+    probes <- resData %>% purrr::map(function(x)Top_probe(dat = x, i = i)) %>%
       unlist() %>% unique()
     tmpdat <- median_value[probes, ]
     #condition number

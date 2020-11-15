@@ -2,7 +2,7 @@
 % Please edit documentation in R/BinomialModel.R
 \name{BinomialModel}
 \alias{BinomialModel}
-\title{Traning a binomial model}
+\title{Title}
 \usage{
 BinomialModel(
   x,
@@ -10,27 +10,30 @@ BinomialModel(
   seed = "123456",
   scale = TRUE,
   train_ratio = 0.7,
-  nfold = 10
+  nfold = 10,
+  plot = F
 )
 }
 \arguments{
-\item{x}{input matrix or data.frame where samples are in rows and features in columns; The first column of x is the sample ID of which column is "ID".}
+\item{x}{data.frame contains sample ID and features; The first column of x is the sample ID.}
 
-\item{y}{input matrix or data.frame whose sample ID in the first column and the outcome of each sample in the second sample. Outcome value can be numeric or factor vector.}
+\item{y}{data.frame whose sample ID in the first column and the outcome of each sample in the second sample. Outcome value can be numeric or factor vector.}
 
 \item{seed}{default 123456}
 
 \item{scale}{A logistic: should the x be scaled, default is TRUE.}
 
-\item{train_ratio}{Value between 0 -1; The ratio was used to split the x and y into training and testing data.}
+\item{train_ratio}{Value between 0-1, eg: 0.7; The ratio is used to split the x and y into training and testing data.}
 
-\item{nfold}{}
+\item{nfold}{default 10}
+
+\item{plot}{}
 }
 \value{
 a list contain the results of 3 model (Lasso, Ridge and ElasticNet regression model) and the input train data.
 }
 \description{
-Traning a binomial model
+Title
 }
 \examples{
 load("./data/crc_response.rda")

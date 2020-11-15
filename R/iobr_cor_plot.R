@@ -370,19 +370,23 @@ iobr_cor_plot<-function(pdata_group,
 
   }
 
-  features<-unique(unlist(group_list))
+  # features<-unique(unlist(group_list))
 
   if(is_target_continuous==FALSE& nlevels(pf[,group]==2)){
-    eset<-pf[,colnames(pf)%in%c(group,setdiff(features,c("ID",group)))]
-    res<-  batch_wilcoxon(data = eset,target = group,feature = feature_selected)
-    return(res)
+    # eset<-pf[,colnames(pf)%in%c(group,setdiff(features,c("ID",group)))]
+    eset<-pf
+    feas<-colnames(pf)[scale_begin:ncol(pf)]
+    res<-  batch_wilcoxon(data = eset,target = group,feature = feas)
+    res<-tibble::as_tibble(res)
   }
-  if(is_target_continuous==TRUE){
-    eset<-pf[,colnames(pf)%in%c(target,setdiff(features,c("ID",target)))]
-    res<-  batch_cor(data = eset,target = target,feature = setdiff(colnames(eset),target),method = "spearman")
-    return(res)
+  if(is_target_continuous){
+    # eset<-pf[,colnames(pf)%in%c(target,setdiff(features,c("ID",target)))]
+    eset<-pf
+    feas<-colnames(pf)[scale_begin:ncol(pf)]
+    res<-  batch_cor(data = eset,target = target,feature = feas,method = "spearman")
+    res<-tibble::as_tibble(res)
   }
-
+  return(res)
 }
 
 
