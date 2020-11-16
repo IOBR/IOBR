@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_surv.R
 \name{batch_surv}
 \alias{batch_surv}
-\title{Batch surival analysis on a data frame with multiple variables}
+\title{Batch survival analysis on a data frame with multiple variables}
 \usage{
 batch_surv(pdata, variable, time = "time", status = "status")
 }

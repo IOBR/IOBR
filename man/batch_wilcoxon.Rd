@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_wilcoxon.R
 \name{batch_wilcoxon}
 \alias{batch_wilcoxon}
-\title{Batch to conduct wilcoxon test with two groups}
+\title{Batch to conduct wilcoxon test in two groups}
 \usage{
 batch_wilcoxon(
   data = data,
@@ -24,7 +24,7 @@ batch_wilcoxon(
 
 }
 \description{
-Batch to conduct wilcoxon test with two groups
+Batch to conduct wilcoxon test in two groups
 }
 \author{
 Dongqiang Zeng

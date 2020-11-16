@@ -19,11 +19,16 @@
 #' @examples
 batch_cor<-function(data = data,target = target, feature = feature,method = "spearman"){
 
+  data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
+  feature<-feature_manipulation(data = data, feature = feature)
+
+  feature<-feature[!feature==target]
 
   aa<-lapply(data[,feature], function(x) cor.test(x,data[,target],method = method))
 
   bb<-lapply(data[,feature], function(x) exact_pvalue(x,data[,target],method = method))
+
   bb<-as.data.frame(bb)
   bb<-as.data.frame(t(bb))
 

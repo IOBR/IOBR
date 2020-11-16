@@ -1,7 +1,7 @@
 
 
 
-#' Batch to conduct wilcoxon test with two groups
+#' Batch to conduct wilcoxon test in two groups
 #'
 #' @param data signature matrix with two groups
 #' @param target name of group:
@@ -17,9 +17,11 @@
 batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Low"), feature = feature){
 
   feature<-feature[feature%in%colnames(data)]
-
+  feature<-feature_manipulation(data = data, feature = feature)
   #change-name-of-group
   colnames(data)[which(colnames(data)==target)]<-"group"
+
+
   aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"],var.equal = F))
 
   result_mean<-data %>% group_by(.$group) %>%
