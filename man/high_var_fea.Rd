@@ -14,6 +14,11 @@ high_var_fea(
   n = 10
 )
 }
+\arguments{
+\item{result}{a tibble}
+
+\item{target}{name of variables}
+}
 \value{
 
 }
