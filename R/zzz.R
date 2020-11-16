@@ -5,7 +5,11 @@
 
 .onLoad <- function(libname, pkgname) {
 
-  invisible(suppressPackageStartupMessages(sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "ComplexHeatmap","ggpubr","limma","limSolve","preprocessCore","e1071","GSVA","tidyHeatmap"),requireNamespace, quietly = TRUE)))
+  invisible(suppressPackageStartupMessages(
+    sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "ComplexHeatmap",
+             "ggpubr","limma","limSolve","preprocessCore","e1071","GSVA","tidyHeatmap"),
+           requireNamespace, quietly = TRUE)
+    ))
 }
 
 

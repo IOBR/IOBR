@@ -36,6 +36,8 @@ batch_surv<-function(pdata,variable,time="time", status="status"){
     result<-rbind(result,result1)
   }
   result[result>100]<-Inf
+  result<-result[order(result$P,decreasing = F),]
+  result<-tibble::as_tibble(result)
   return(result)
 }
 
