@@ -162,10 +162,13 @@ iobr_cor_plot<-function(pdata_group,
         if(group == "group3") eset<-eset[!eset$group3=="Middle",]
 
         res<- batch_wilcoxon(data = eset,target = group,feature = setdiff(colnames(eset),group))
-        good_features<-high_var_fea(result = res,target = "sig_names",
-                                            name_padj = "p.adj",padj_cutoff = padj_cutoff,
-                                            name_logfc = "statistic",logfc_cutoff  = 0,
-                                            n = feature_limit/2)
+        good_features<-high_var_fea(result = res,
+                                    target = "sig_names",
+                                    name_padj = "p.adj",
+                                    padj_cutoff = padj_cutoff,
+                                    name_logfc = "statistic",
+                                    logfc_cutoff  = 0,
+                                    n = feature_limit/2)
       }else if(is_target_continuous==TRUE){
         eset<-pf[,colnames(pf)%in%c(target,features)]
         res<- batch_cor(data = eset,target = target,feature = setdiff(colnames(eset),target),method = "spearman")

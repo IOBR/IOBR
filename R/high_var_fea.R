@@ -3,8 +3,8 @@
 
 #' Extract top varity features form statistical results
 #'
-#' @param result
-#' @param target
+#' @param result a tibble
+#' @param target name of variables
 #' @param name_padj
 #' @param name_logfc
 #' @param n
@@ -21,18 +21,18 @@ high_var_fea<-function(result, target, name_padj = "padj", padj_cutoff = 1, name
   colnames(result)[which(colnames(result)==name_logfc)]<-"logfc"
   colnames(result)[which(colnames(result)==target)]<-"target"
 
-  topVarFeature1<- as.tibble(result) %>%
+  topVarFeature1<-result%>%
     # filter(!is.na(target)) %>%
-    filter(padj < padj_cutoff) %>%
-    arrange(padj) %>%
-    filter(logfc < - abs(logfc_cutoff)) %>%
+    dplyr::filter(padj < padj_cutoff) %>%
+    dplyr::arrange(padj) %>%
+    dplyr::filter(logfc < - abs(logfc_cutoff)) %>%
     dplyr::select(target,padj,logfc)
 
-  topVarFeature2<- as.tibble(result) %>%
+  topVarFeature2<-result %>%
     # filter(!is.na(target)) %>%
-    filter(padj < padj_cutoff) %>%
-    arrange(padj) %>%
-    filter(logfc > abs(logfc_cutoff)) %>%
+    dplyr::filter(padj < padj_cutoff) %>%
+    dplyr::arrange(padj) %>%
+    dplyr::filter(logfc > abs(logfc_cutoff)) %>%
     dplyr::select(target,padj,logfc)
 
   if(dim(topVarFeature1)[1]<n)
