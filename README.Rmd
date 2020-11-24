@@ -21,14 +21,13 @@ IOBR is an R package to perform comprehensive analysis of tumor microenvironment
 
 ### 1.1 Introduction
 
-- 1.IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
+- 1.IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`; 
 - 2.IOBR collects 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
 - 3.IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
 - 4.IOBR integrates multiple approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis.
-- 5.IOBR also integrates methods for batch visualization of subgroup characteristics. 
+- 5.IOBR also integrates methods for batch visualization of subgroup characteristics.
 
-
-![IOBR logo](./man/figures/IOBR-Package.png)
+![IOBR logo](./man/figures/IOBR-Workflow.png)
 
 ### 1.2 Installation
 Before installing IOBR, please install all dependencies by executing the following command in R console:
@@ -39,9 +38,9 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`, `limSolve`,
 options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
-depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2",
-          'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', 
-          'ggpubr',"devtools")
+depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
+          'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
+          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor","timeROC","pracma")
 for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
@@ -50,10 +49,8 @@ for(i in 1:length(depens)){
 
 if (!requireNamespace("EPIC", quietly = TRUE))
   devtools::install_github("GfellerLab/EPIC", build_vignettes=TRUE)
-
 if (!requireNamespace("MCPcounter", quietly = TRUE))
   devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
-
 if (!requireNamespace("estimate", quietly = TRUE)){
   rforge <- "http://r-forge.r-project.org"
   install.packages("estimate", repos=rforge, dependencies=TRUE)
@@ -78,10 +75,9 @@ Sys.setenv(LANGUAGE = "en") # The error message would be present in English.
 options(stringsAsFactors = FALSE) #To avoid transiting character into factor.
 ```
 
+![IOBR logo](./man/figures/IOBR-Package.png)
 
-## 2 TME deconvolution
-
-### 2.1 Availabie methods to decode TME contexture
+## 1.4 Availabie methods to decode TME contexture
 
 ```{r}
 tme_deconvolution_methods
@@ -108,413 +104,12 @@ If you use this package in your work, please cite both our package and the metho
 | [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7 |
 
 
-The input data is a matrix (log2(TMP+1) transformed) containing 98 TCGA-STAD samples, with genes in rows and samples in columns. The rownames must be HGNC symbols and the colnames must be sample names.
-
-```{r}
-# Check data 
-eset_stad[1:5,1:5]
-```
-
-Check detail parameters of the function
-```{r}
-help(deconvo_tme)
-```
-
-
-#### 2.1.1 Method 1: Use CIBERSORT to decode the TME contexture.
-```{r,fig.width= 8.5, fig.height=6}
-cibersort<-deconvo_tme(eset = eset_stad,method = "cibersort",arrays = FALSE,perm = 200 )
-head(cibersort)
-res<-cell_bar_plot(input = cibersort[1:12,], title = "CIBERSORT Cell Fraction")
-```
-
-
-#### 2.1.2 Method 2: Use EPIC to decode the TME contexture.
-```{r}
-help(deconvo_epic)
-epic<-deconvo_tme(eset = eset_stad,method = "epic",arrays = FALSE)
-head(epic)
-
-```
-
-
-#### 2.1.3 Method 3: Use MCPcounter to decode the TME contexture. 
-```{r}
-mcp<-deconvo_tme(eset = eset_stad,method = "mcpcounter")
-head(mcp)
-
-```
-
-
-#### 2.1.4 Method 4: Use xCELL to decode the TME contexture.
-```{r,message=FALSE}
-xcell<-deconvo_tme(eset = eset_stad,method = "xcell",arrays = FALSE)
-head(xcell)
-
-```
-
-
-#### 2.1.5 Method 5: Use ESTIMATE to estimate tumor purity, and generate immune score and stromal score.
-```{r,message=FALSE,warning=FALSE}
-estimate<-deconvo_tme(eset = eset_stad,method = "estimate")
-head(estimate)
-
-```
-
-
-#### 2.1.6 Method 6: Use TIMER to decode the TME contexture.
-```{r,message=FALSE, warning=FALSE}
-timer<-deconvo_tme(eset = eset_stad,method = "timer",group_list = rep("stad",dim(eset_stad)[2]))
-head(timer)
-
-```
-
-
-#### 2.1.7 Method 7: Use quanTIseq to decode the TME contexture.
-```{r,fig.width= 8, fig.height=6}
-quantiseq<-deconvo_tme(eset = eset_stad, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE,method = "quantiseq")
-head(quantiseq)
-res<-cell_bar_plot(input = quantiseq[1:12,], title = "quanTIseq Cell Fraction")
-```
-
-
-#### 2.1.8 Method 8: Use IPS to estimate immune phenotype.
-```{r,message=FALSE}
-ips<-deconvo_tme(eset = eset_stad,method = "ips",plot= FALSE)
-head(ips)
-```
-
-
-#### 2.1.9 Combine the above deconvolution results for subsequent analyses.   
-```{r}
-tme_combine<-cibersort %>% 
-  inner_join(.,mcp,by = "ID") %>% 
-  inner_join(.,xcell,by = "ID") %>%
-  inner_join(.,epic,by = "ID") %>% 
-  inner_join(.,estimate,by = "ID") %>% 
-  inner_join(.,timer,by = "ID") %>% 
-  inner_join(.,quantiseq,by = "ID") %>% 
-  inner_join(.,ips,by = "ID")
-dim(tme_combine)
-colnames(tme_combine)
-```
-
-
-## 3 Signature score estimation
-
-IOBR integrates 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
-
-
-### 3.1 Obtain the included signatures
-```{r}
-library(IOBR)
-#TME associated signatures
-names(signature_tme)[1:20]
-#Metabolism related signatures
-names(signature_metabolism)[1:20]
-#Signatures associated with biomedical basic research: such as m6A and exosomes
-names(signature_tumor)
-#signature collection including all aforementioned signatures 
-names(signature_collection)[1:20]
-
-```
-
-
-### 3.2 Methods for signature calculation
-
-### 3.2.1 Calculate TME associated signatures-(through PCA method).
-```{r}
-sig_tme<-calculate_sig_score(pdata = NULL,
-                             eset = eset_stad,
-                             signature = signature_tme,
-                             method = "pca",
-                             mini_gene_count = 2)
-sig_tme[1:5,1:10]
-```
-
-### 3.2.2 Calculate TME associated signatures-(through ssGSEA method).
-```{r,message=FALSE}
-sig_tme<-calculate_sig_score(pdata = NULL,
-                             eset = eset_stad,
-                             signature = signature_tme,
-                             method = "ssgsea",
-                             mini_gene_count = 5)
-sig_tme[1:5,1:10]
-```
-
-
-### 3.2.3 Calculate metabolism related signatures.
-```{r}
-sig_meta<-calculate_sig_score(pdata = NULL,
-                              eset = eset_stad,
-                              signature = signature_metabolism,
-                              method = "pca",
-                              mini_gene_count = 2)
-sig_meta[1:5,1:10]
-```
-
-
-### 3.2.4 Calculate all collected signature scores (integrating three methods: PCA, ssGSEA and z-score).
-```{r,message=FALSE}
-sig_res<-calculate_sig_score(pdata = NULL,
-                             eset = eset_stad,
-                             signature = signature_collection,
-                             method = "integration",
-                             mini_gene_count = 2)
-sig_res[1:5,1:10]
-```
-
-
-### 3.2.5 The signature gene sets derived from GO, KEGG, HALLMARK and REACTOME datasets.
-
-IOBR also enrolls the signature gene sets, containing GO, KEGG, HALLMARK and REACTOME gene sets obtained from [MsigDB](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H). The ssGSEA method is recommended for these signature estimation. This process may take a while for big datasets or calculating a large number of signatures.  
-```{r,message=FALSE}
-sig_hallmark<-calculate_sig_score(pdata = NULL,
-                                  eset = eset_stad,
-                                  signature = hallmark,
-                                  method = "ssgsea",
-                                  mini_gene_count = 2)
-sig_hallmark[1:5,1:10]
-```
-
-
-## 4 Find phenotype relevant signatures
-
-### 4.1 Data of IMvigor210 immuntherapy cohort is used for batch analysis of phenotype-related sigantures.
-```{r}
-## Load the signatures and Cell fractions calculated in previous steps by IOBR.
-imvigor210_sig[1:5,1:10]
-
-# Check therapeutic response and survival outcome in the phenotype data.
-head(imvigor210_pdata)
-```
-
-### 4.2 sig_group() function for batch visualization of response associated signatures.
-```{r}
-# The signature group list.
-names(sig_group)
-
-# The tumor-relevant signatures in first group.
-names(sig_group)[1]
-sig_group[[1]]
-
-# The signatures associated with immunotherapy biomarkers.
-names(sig_group)[3]
-sig_group[[3]]
-
-# The signatures of immunosuppression.
-names(sig_group)[5]
-sig_group[[5]]
-```
-
-### 4.3 Construct phenotype group and bath visualize correlation betweeen therapy response and selected signatures. 
-```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
-pdata_group<-imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR","BOR_binary")]
-res<-iobr_cor_plot(pdata_group = pdata_group,
-                   id1 = "ID",
-                   feature_data = imvigor210_sig,
-                   id2 = "ID",
-                   target= NULL,
-                   group = "BOR_binary",
-                   is_target_continuous = FALSE,
-                   padj_cutoff = 1,
-                   index = 1,
-                   category = "signature",
-                   signature_group =sig_group[c(1,3,5)],
-                   ProjectID = "IMvigor210",
-                   palette_box = "paired1",
-                   palette_corplot = "pheatmap",
-                   palette_heatmap = 2,
-                   feature_limit = 26,
-                   character_limit = 30,
-                   show_heatmap_col_name = FALSE,
-                   show_col = FALSE,
-                   show_plot = TRUE)
-head(res,n=10)
-```
-
-### 4.4 Estemate the expression of response relevant signature genes.
-```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
-
-imvigor210_eset[1:5,1:6]
-
-res<-iobr_cor_plot(pdata_group = pdata_group,
-                   id1 = "ID",
-                   feature_data = imvigor210_eset,
-                   id2 = "ID",
-                   target= NULL,
-                   group = "BOR_binary",
-                   is_target_continuous = FALSE,
-                   padj_cutoff = 1,
-                   index = 1,
-                   category = "gene",
-                   signature_group =signature_collection[c(1:2,4)],
-                   ProjectID = "IMvigor210",
-                   palette_box = "paired1",
-                   palette_corplot = "pheatmap",
-                   palette_heatmap = 4,
-                   feature_limit = 26,
-                   character_limit = 30,
-                   show_heatmap_col_name = FALSE,
-                   show_col = FALSE,
-                   show_plot = TRUE)
-head(res,n=10)
-```
-
-## 5 Analyze signatures relevant to target signature.
-
-### 5.1 Construct `pdata_group`as a phenotype data frame of patients.
-
-```{r}
-# The data have been saved in `imvigor210_pdata`.
-head(imvigor210_pdata)
-pdata_group<-as.data.frame(imvigor210_pdata[,c("ID","Pan_F_TBRs")])
-pdata_group$Pan_F_TBRs<-scale(as.numeric(pdata_group$Pan_F_TBRs))
-head(pdata_group)
-```
-
-### 5.2 Analyze Pan-F-TBRs relevant signatures.
-`Pan-F-TBRs` is an immune-exclusion signature published in Nature in 2018: S. Mariathasan et al., TGFbeta attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544-548 (2018). 
-the Pan-F-TBRs score obtained could be used to batch analyze and visualize the interaction between this immune-exclusion signature and other interested `signatures` , as well as its significant `cell fractions`, and to further explore other biomarkers may impact corresponding biological process.
-
-
-
-```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
-res<-iobr_cor_plot(pdata_group = pdata_group,
-                   id1 = "ID",
-                   feature_data = imvigor210_sig,
-                   id2 = "ID",
-                   target= "Pan_F_TBRs",
-                   group = "group3",
-                   is_target_continuous = TRUE,
-                   padj_cutoff = 1,
-                   index = 1,
-                   category = "signature",
-                   signature_group =sig_group[1:2],
-                   ProjectID = "IMvigor210",
-                   palette_box = "set2",
-                   palette_corplot = "pheatmap",
-                   palette_heatmap = 2,
-                   feature_limit = 26,
-                   character_limit = 30,
-                   show_heatmap_col_name = FALSE,
-                   show_col = FALSE,
-                   show_plot = TRUE)
-head(res,n=10)
-```
-
-
-### 5.3 Analyze the immune cell infiltration lanscape related to Pan-F-TBRs.
-```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
-names(sig_group)
-res<-iobr_cor_plot(pdata_group = pdata_group,
-                   id1 = "ID",
-                   feature_data = imvigor210_sig,
-                   id2 = "ID",
-                   target= "Pan_F_TBRs",
-                   group = "group3",
-                   is_target_continuous = TRUE,
-                   padj_cutoff = 1,
-                   index = 1,
-                   category = "signature",
-                   signature_group =sig_group[20:24],
-                   ProjectID = "IMvigor210",
-                   palette_box = "jco",
-                   palette_corplot = "pheatmap",
-                   palette_heatmap = 3,
-                   feature_limit = 26,
-                   character_limit = 30,
-                   show_heatmap_col_name = FALSE,
-                   show_col = FALSE,
-                   show_plot = TRUE)
-head(res,n=10)
-
-```
-
-
-## 6 Serach for mutations related to signature
-
-### 6.1 Mutation matrix using MAF data format.
-MAF data was obtained from [UCSC Xena website](https://api.gdc.cancer.gov/data/c06465a3-50e7-46f7-b2dd-7bd654ca206b)
-
-```{r}
-help("make_mut_matrix")
-
-maf_file<-"TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
-# Each gene of every samples is categorized as binary variables(mutation or non-mutation) in the MAF data. 
-mut_list<-make_mut_matrix(maf = maf_file,
-                          isTCGA = T, 
-                          category = "multi")
-# If "multi" is set in above "category" parameter,four data frames will be returned, which evaluate all the mutations of every gene or estimate only SNP, indel and frameshift as follow:
-names(mut_list)
-mut_list$all[1:5,1:10]
-```
-
-
-
-### 6.2 sig_group() function for batch visualization of response associated signatures.
-```{r,fig.width=18,fig.height=12,warning=FALSE, message=FALSE}
-# Transform the mutation data into categorical variable matrix.----------
-mut<-mut_list$snp
-max(mut)
-# If the maximum of mutation counts of a single gene of a person in is over 4, the mutation data would be standardized according to following principles.
-# mut[mut>=3&mut<=5]<-3
-# mut[mut>5]<-4
-##########################
-res<-find_mutations(mutation_matrix = mut, 
-                    signature_matrix = tcga_stad_sig,
-                    id_signature_matrix = "ID",
-                    signature = "CD_8_T_effector",
-                    min_mut_freq = 0.01,
-                    plot = TRUE,
-                    method = "multi",
-                    save_path = paste0("CD_8_T_effector-relevant-mutations"),
-                    palette = "jama",
-                    show_plot = T)
-
-```
-
-## 7 Other methods for batch analysis 
-IOBR provide multiple batch analytical functions for statistical analysis, data operation and transformation. Batch survival analysis, for example, could batch analyze the best cutoff value for subsequent batch survival analysis, varied batch statistical tests, etc.
-
-### 7.1 subgroup survival analyses
-
-```{r}
-
-##loading data and filter NA
-data(subgroup_data)
-input <- subgroup_data %>% 
-   filter(time > 0) %>% 
-   filter(!is.na(status)) %>% 
-   filter(!is.na(AJCC_stage))
-dim(input)
-##for binary variable
-data1 <- subgroup_survival(pdata = input,
-                           time ="time", 
-                           status = "status",
-                           variable = c("ProjectID", "AJCC_stage"), 
-                           object ="score_binary" )
-data1
-```
-
-### 7.2 Batch survival analysis
-```{r}
-data("pdata_sig_tme")
-
-input <- pdata_sig_tme %>% 
-   filter(time > 0) %>% 
-   filter(!is.na(status))
-res <- batch_surv(pdata = input, variable = c(277:ncol(input)), time = "time",status = "status")
-res<-res[order(res$P,decreasing = F),]
-head(res,n=10)
-```
-
 
 References
 ---------
 DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu  WJ Liao.
 
-IOBR: Comprehensive analysis of tumor microenvironment and signatures for immuno-oncology. 
+IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures.
 
 
 Contact

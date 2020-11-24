@@ -17,12 +17,6 @@ batch_pcc(
 \arguments{
 \item{pdata_group}{matrix;data signature matrix with multiple features}
 
-\item{id1}{identifier of pdata}
-
-\item{feature_data}{feature data}
-
-\item{id2}{identifier of feature data}
-
 \item{interferenceid}{character vectors; vector used to control}
 
 \item{target}{character vectors; target name of group}

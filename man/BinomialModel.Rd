@@ -2,7 +2,7 @@
 % Please edit documentation in R/BinomialModel.R
 \name{BinomialModel}
 \alias{BinomialModel}
-\title{Title}
+\title{Binomial Model construction}
 \usage{
 BinomialModel(
   x,
@@ -11,7 +11,7 @@ BinomialModel(
   scale = TRUE,
   train_ratio = 0.7,
   nfold = 10,
-  plot = F
+  plot = T
 )
 }
 \arguments{
@@ -27,17 +27,11 @@ BinomialModel(
 
 \item{nfold}{default 10}
 
-\item{plot}{}
+\item{plot}{A logistic, default is TRUE.}
 }
 \value{
-a list contain the results of 3 model (Lasso, Ridge and ElasticNet regression model) and the input train data.
+a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 }
 \description{
-Title
-}
-\examples{
-load("./data/crc_response.rda")
-load("./data/tme_combine.rda")
-binomial_result <- BinomialModel(x = tme_combine, y = na.omit(response[, c("ID", "Stage")]),
-seed = "123456", scale = TRUE, train_ratio = 0.7, nfold = 10)
+Binomial Model construction
 }

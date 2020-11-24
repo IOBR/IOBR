@@ -14,6 +14,7 @@ Depends:
     survival,
     survminer,
     limma,
+    DESeq2,
     limSolve,
     GSVA,
     e1071,
@@ -29,3 +30,7 @@ Imports:
    estimate,
    matrixStats
 BugReports: https://github.com/DongqiangZeng0808/IOBR/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

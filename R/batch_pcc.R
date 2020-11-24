@@ -6,9 +6,9 @@
 #' @description  batch_pcc() provide a batch way to calculate the partial correlation coefficient between target gene and others when
 #' controlling a third variable
 #' @param pdata_group matrix;data signature matrix with multiple features
-#' @param feature_data feature data
-#' @param id1 identifier of pdata
-#' @param id2 identifier of feature data
+#' @param feature_data
+#' @param id1
+#' @param id2
 #' @param interferenceid character vectors; vector used to control
 #' @param target character vectors; target name of group
 #' @param method vector; one of "pearson"(default), "spearman" or "kendall"
@@ -28,7 +28,7 @@ batch_pcc <- function(pdata_group, id1 = "ID",
   dat <- merge(pdata_group, feature_data, by.x = id1, by.y = id2)
   features <- setdiff(colnames(feature_data), id2)
   aa <- dat[, features] %>%as_tibble() %>%
-    purrr::map(ppcor::pcor.test, y = dat[,target], z = dat[, interferenceid], method=method)
+    map(ppcor::pcor.test, y = dat[,target], z = dat[, interferenceid], method=method)
   pvalue <- aa %>% purrr::map_dbl("p.value")
   statistic <- aa %>% purrr::map_dbl("estimate")
   cc <- data.frame(sig_names = features,

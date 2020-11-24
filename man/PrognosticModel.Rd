@@ -2,12 +2,12 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticModel}
 \alias{PrognosticModel}
-\title{Title}
+\title{Prognostic Model}
 \usage{
 PrognosticModel(
   x,
   y,
-  scale = T,
+  scale = F,
   seed = "123456",
   train_ratio = 0.7,
   nfold = 10,
@@ -27,19 +27,11 @@ PrognosticModel(
 
 \item{nfold}{nfold default 10}
 
-\item{plot}{}
+\item{plot}{A logistic, default is TRUE.}
 }
 \value{
 a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 }
 \description{
-Title
-}
-\examples{
-load("./data/crc_response.rda")
-load("./data/tme_combine.rda")
-x <- tme_combine
-y <- na.omit(response[, c("ID", "OS.time", "OS")])
-colnames(y) <- c("ID", "time", "status")
-PrognosticResult <- PrognosticModel(x = x, y = y, scale = T, seed = "123456", train_ratio = 0.7)
+Prognostic Model
 }
