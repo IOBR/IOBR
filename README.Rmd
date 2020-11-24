@@ -13,13 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# IOBR: Immuno-Oncology Bioinformatics Research
+# IOBR: Immuno-Oncology Biological Research
 
 IOBR is an R package to perform comprehensive analysis of tumor microenvironment and signatures for immuno-oncology.
 
-## 1 Introduction and Installation
 
-### 1.1 Introduction
+### 1.Introduction
 
 - 1.IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`; 
 - 2.IOBR collects 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
@@ -29,7 +28,7 @@ IOBR is an R package to perform comprehensive analysis of tumor microenvironment
 
 ![IOBR logo](./man/figures/IOBR-Workflow.png)
 
-### 1.2 Installation
+### 2.Installation
 Before installing IOBR, please install all dependencies by executing the following command in R console:
 
 The dependencies includs `tibble`, `survival`, `survminer`, `limma`, `limSolve`, `GSVA`, `e1071`, `preprocessCore`, `ggplot2` and `ggpubr`.
@@ -64,24 +63,19 @@ if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
 ```
 
-## 1.3 Library R packages
+Library R packages
 
-```{r message=FALSE, warning=FALSE}
+```{r message = FALSE, warning=FALSE}
 library(IOBR) 
-library(EPIC)
-library(estimate) 
-library(MCPcounter)
-Sys.setenv(LANGUAGE = "en") # The error message would be present in English.
-options(stringsAsFactors = FALSE) #To avoid transiting character into factor.
 ```
 
 ![IOBR logo](./man/figures/IOBR-Package.png)
 
-## 1.4 Availabie methods to decode TME contexture
+## 3.Availabie methods to decode TME contexture
 
 ```{r}
 tme_deconvolution_methods
-# Return available parameter options of deconvolution methods
+# Return available parameter options of TME deconvolution.
 ```
 
 If you use this package in your work, please cite both our package and the method(s) you are using.
@@ -98,11 +92,26 @@ If you use this package in your work, please cite both our package and the metho
 | [xCell](http://xcell.ucsf.edu/) | free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. https://doi.org/10.1186/s13059-017-1349-1 |
 | [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/) | free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. https://doi.org/10.7554/eLife.26476 |
 
+
+## 4.Availabie methods to estimate signatures
+```{r}
+signature_score_calculation_methods
+# Return available parameter options of signature estimation.
+```
+
 #### Licenses of the signature-esitmation method
 | method | license | citation |
 |--------|---------|----------|
 | [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7 |
 
+## 5.Signature collection
+```{r}
+#References of collected signatures
+signature_collection_citation
+
+#signature groups
+sig_group[1:3]
+```
 
 
 References

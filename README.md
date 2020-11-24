@@ -1,14 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# IOBR: Immuno-Oncology Bioinformatics Research
+# IOBR: Immuno-Oncology Biological Research
 
 IOBR is an R package to perform comprehensive analysis of tumor
 microenvironment and signatures for immuno-oncology.
 
-## 1 Introduction and Installation
-
-### 1.1 Introduction
+### 1.Introduction
 
   - 1.IOBR integrates 8 published methodologies decoding tumor
     microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`,
@@ -29,7 +27,7 @@ microenvironment and signatures for immuno-oncology.
 
 ![IOBR logo](./man/figures/IOBR-Workflow.png)
 
-### 1.2 Installation
+### 2.Installation
 
 Before installing IOBR, please install all dependencies by executing the
 following command in R console:
@@ -67,20 +65,15 @@ if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
 ```
 
-## 1.3 Library R packages
+Library R packages
 
 ``` r
 library(IOBR) 
-library(EPIC)
-library(estimate) 
-library(MCPcounter)
-Sys.setenv(LANGUAGE = "en") # The error message would be present in English.
-options(stringsAsFactors = FALSE) #To avoid transiting character into factor.
 ```
 
 ![IOBR logo](./man/figures/IOBR-Package.png)
 
-## 1.4 Availabie methods to decode TME contexture
+## 3.Availabie methods to decode TME contexture
 
 ``` r
 tme_deconvolution_methods
@@ -90,7 +83,7 @@ tme_deconvolution_methods
 #>    "cibersort_abs"              "ips"         "estimate"          "svm_ref" 
 #>               lsei              TIMER          quanTIseq 
 #>         "lsei_ref"            "timer"        "quantiseq"
-# Return available parameter options of deconvolution methods
+# Return available parameter options of TME deconvolution.
 ```
 
 If you use this package in your work, please cite both our package and
@@ -109,11 +102,68 @@ the method(s) you are using.
 | [xCell](http://xcell.ucsf.edu/)                                             | free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION))                                   | Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. <https://doi.org/10.1186/s13059-017-1349-1>                                                                                                                |
 | [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/)                           | free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. <https://doi.org/10.7554/eLife.26476>                                                                  |
 
+## 4.Availabie methods to estimate signatures
+
+``` r
+signature_score_calculation_methods
+#>           PCA        ssGSEA       z-score   Integration 
+#>         "pca"      "ssgsea"      "zscore" "integration"
+# Return available parameter options of signature estimation.
+```
+
 #### Licenses of the signature-esitmation method
 
 | method                                                                   | license                                                | citation                                                                                                                                                                                                              |
 | ------------------------------------------------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (\>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, <http://www.biomedcentral.com/1471-2105/14/7> |
+
+## 5.Signature collection
+
+``` r
+#References of collected signatures
+signature_collection_citation
+#> # A tibble: 255 x 6
+#>    Signatures   `Published year` Journal Title                   PMID   DOI     
+#>    <chr>                   <dbl> <chr>   <chr>                   <chr>  <chr>   
+#>  1 CD_8_T_effe~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  2 DDR                      2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  3 APM                      2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  4 Immune_Chec~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  5 CellCycle_R~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  6 Pan_F_TBRs               2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  7 Histones                 2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  8 EMT1                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#>  9 EMT2                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#> 10 EMT3                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
+#> # ... with 245 more rows
+
+#signature groups
+sig_group[1:3]
+#> $tumor_signature
+#>  [1] "CellCycle_Reg"                            
+#>  [2] "Cell_cycle"                               
+#>  [3] "DDR"                                      
+#>  [4] "Mismatch_Repair"                          
+#>  [5] "Histones"                                 
+#>  [6] "Homologous_recombination"                 
+#>  [7] "Nature_metabolism_Hypoxia"                
+#>  [8] "Molecular_Cancer_m6A"                     
+#>  [9] "MT_exosome"                               
+#> [10] "Positive_regulation_of_exosomal_secretion"
+#> [11] "Ferroptosis"                              
+#> [12] "EV_Cell_2020"                             
+#> 
+#> $EMT
+#> [1] "Pan_F_TBRs" "EMT1"       "EMT2"       "EMT3"       "WNT_target"
+#> 
+#> $io_biomarkers
+#>  [1] "TMEscore_CIR"                    "TMEscoreA_CIR"                  
+#>  [3] "TMEscoreB_CIR"                   "T_cell_inflamed_GEP_Ayers_et_al"
+#>  [5] "CD_8_T_effector"                 "IPS_IPS"                        
+#>  [7] "Immune_Checkpoint"               "Exhausted_CD8_Danaher_et_al"    
+#>  [9] "Pan_F_TBRs"                      "Mismatch_Repair"                
+#> [11] "APM"
+```
 
 ## References
 
