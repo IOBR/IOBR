@@ -4,14 +4,14 @@
 \alias{format_msigdb}
 \title{Format input signatures from MsgiDB}
 \usage{
-format_msigdb(sig, ont = "ont", gene = "gene")
+format_msigdb(gmt, ont = "ont", gene = "gene")
 }
 \arguments{
-\item{sig}{`signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`}
-
 \item{ont}{column name of signatures}
 
 \item{gene}{column name of gene}
+
+\item{sig}{`signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`}
 }
 \value{
 signature list

@@ -34,11 +34,20 @@ make_mut_matrix<-function(maf = NULL, maf_data = NULL, isTCGA = TRUE, category =
     mut<-mut_maf@data
   }else{
 
-    mut<-maf_data
+    mut<-as.data.frame(maf_data)
     colnames(mut)[which(colnames(mut)==Tumor_Sample_Barcode)]<-"Tumor_Sample_Barcode"
     colnames(mut)[which(colnames(mut)==Hugo_Symbol)]<-"Hugo_Symbol"
     colnames(mut)[which(colnames(mut)==Variant_Classification)]<-"Variant_Classification"
-    colnames(mut)[which(colnames(mut)==Variant_Type)]<-"Variant_Type"
+
+    if(!Variant_Type%in%colnames(mut)){
+      mut$Variant_Type<-mut$Variant_Classification
+      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "missense",replacement = "SNP")
+      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "insert",replacement = "INS")
+      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "frame",replacement = "Frame_Shift_Del")
+      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "delet",replacement = "DEL")
+    }else{
+      colnames(mut)[which(colnames(mut)==Variant_Type)]<-"Variant_Type"
+    }
 
   }
 

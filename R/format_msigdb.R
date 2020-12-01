@@ -11,8 +11,10 @@
 #' @export
 #'
 #' @examples
-format_msigdb<-function(sig, ont = "ont", gene = "gene"){
+format_msigdb<-function(gmt, ont = "ont", gene = "gene"){
 
+  sig <- clusterProfiler::read.gmt(paste0(gmt))
+  ######################################
   sig<-as.data.frame(sig)
   colnames(sig)[which(colnames(sig)==ont)]<-"ont"
   colnames(sig)[which(colnames(sig)==gene)]<-"gene"

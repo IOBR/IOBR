@@ -19,8 +19,8 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
                               "CIBERSORT Absolute"="cibersort_abs",
                               "IPS" = "ips",
                               "ESTIMATE" = "estimate",
-                              "SVM" = "svm_ref",
-                              "lsei" = "lsei_ref",
+                              "SVM" = "svm",
+                              "lsei" = "lsei",
                               "TIMER" = "timer",
                               "quanTIseq" = "quantiseq")
 ############################################
@@ -31,7 +31,7 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
 #' Decoding immune microenvironment using xCell
 #'
 #' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different data sets
 #' @param array transcrptomic data type
 #' @return xCell with immune cell fractions
 #' @export
@@ -45,7 +45,7 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
   message(paste0("\n", ">>> Running ", "xCell"))
   #normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)
-  data("xCell.data")
+  # data("xCell.data")
   rnaseq = !arrays
   res<- xCellAnalysis(eset,rnaseq = rnaseq)
   res<-as.data.frame(t(res))
@@ -106,10 +106,10 @@ deconvo_mcpcounter<-function(eset,project = NULL){
 
 
 
-#' Estimating immune microenvironment using EPIC: FOR RANseq mostly
+#' Estimating immune microenvironment using EPIC: FOR RNAseq mostly
 #'
 #' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different data sets
 #' @param tumor is input sample tumor or normal
 #' @return EPIC with immune cell fractions
 #' @export

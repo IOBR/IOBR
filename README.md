@@ -25,7 +25,7 @@ microenvironment and signatures for immuno-oncology.
   - 5.IOBR also integrates methods for batch visualization of subgroup
     characteristics.
 
-![IOBR logo](./man/figures/IOBR-Workflow.png)
+IOBR package workflow ![IOBR logo](./man/figures/IOBR-Workflow.png)
 
 ### 2.Installation
 
@@ -71,7 +71,7 @@ Library R packages
 library(IOBR) 
 ```
 
-![IOBR logo](./man/figures/IOBR-Package.png)
+IOBR package pipeline ![IOBR logo](./man/figures/IOBR-Package.png)
 
 ## 3.Availabie methods to decode TME contexture
 

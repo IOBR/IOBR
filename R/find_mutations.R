@@ -13,7 +13,7 @@
 #' @param signature name of target signature
 #' @param min_mut_freq minimum frequency of mutation
 #' @param plot logical variable, if TRUE, plot will be save in the `save_path`
-#' @param method `multi` or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `Wilcoxon` will be performed
+#' @param method `multi` or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed
 #' @param save_path path to save plot and statistical analyses
 #' @param palette palette of box plot
 #' @param show_plot logical variable, if TRUE, plot will be printed.
@@ -23,7 +23,7 @@
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi",save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE){
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE){
 
 
 

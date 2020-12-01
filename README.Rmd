@@ -26,6 +26,7 @@ IOBR is an R package to perform comprehensive analysis of tumor microenvironment
 - 4.IOBR integrates multiple approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis.
 - 5.IOBR also integrates methods for batch visualization of subgroup characteristics.
 
+IOBR package workflow
 ![IOBR logo](./man/figures/IOBR-Workflow.png)
 
 ### 2.Installation
@@ -69,7 +70,9 @@ Library R packages
 library(IOBR) 
 ```
 
+IOBR package pipeline
 ![IOBR logo](./man/figures/IOBR-Package.png)
+
 
 ## 3.Availabie methods to decode TME contexture
 

@@ -2,14 +2,14 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_epic}
 \alias{deconvo_epic}
-\title{Estimating immune microenvironment using EPIC: FOR RANseq mostly}
+\title{Estimating immune microenvironment using EPIC: FOR RNAseq mostly}
 \usage{
 deconvo_epic(eset, project = NULL, tumor)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different data sets}
 
 \item{tumor}{is input sample tumor or normal}
 }
@@ -17,7 +17,7 @@ deconvo_epic(eset, project = NULL, tumor)
 EPIC with immune cell fractions
 }
 \description{
-Estimating immune microenvironment using EPIC: FOR RANseq mostly
+Estimating immune microenvironment using EPIC: FOR RNAseq mostly
 }
 \examples{
 epic_result<-deconvo_epic(eset = eset_stad,project = "TCGA-STAD",tumor = TRUE)
