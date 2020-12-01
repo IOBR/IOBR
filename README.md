@@ -62,7 +62,7 @@ The package is not yet on CRAN. You can install it from Github:
 
 ``` r
 if (!requireNamespace("IOBR", quietly = TRUE))
-  devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
+  devtools::install_github("IOBR/IOBR",ref="master")
 ```
 
 Library R packages
@@ -80,9 +80,9 @@ tme_deconvolution_methods
 #>         MCPcounter               EPIC              xCell          CIBERSORT 
 #>       "mcpcounter"             "epic"            "xcell"        "cibersort" 
 #> CIBERSORT Absolute                IPS           ESTIMATE                SVM 
-#>    "cibersort_abs"              "ips"         "estimate"          "svm_ref" 
+#>    "cibersort_abs"              "ips"         "estimate"              "svm" 
 #>               lsei              TIMER          quanTIseq 
-#>         "lsei_ref"            "timer"        "quantiseq"
+#>             "lsei"            "timer"        "quantiseq"
 # Return available parameter options of TME deconvolution.
 ```
 

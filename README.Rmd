@@ -61,7 +61,7 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 The package is not yet on CRAN. You can install it from Github:
 ```{r}
 if (!requireNamespace("IOBR", quietly = TRUE))
-  devtools::install_github("DongqiangZeng0808/IOBR",ref="master")
+  devtools::install_github("IOBR/IOBR",ref="master")
 ```
 
 Library R packages
