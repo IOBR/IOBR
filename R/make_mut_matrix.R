@@ -41,14 +41,14 @@ make_mut_matrix<-function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category =
 
     if(!Variant_Type%in%colnames(mut)){
 
-      if("filter"%in%colname(mut)) mut<-mut[mut$filter=="PASS",]
+      if("filter"%in%colnames(mut)) mut<-mut[mut$filter=="PASS",]
       mut$Variant_Type<-mut$Variant_Classification
       mut<-mut[!grepl(mut$Variant_Type,pattern = "synonymous"),]
 
-      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "missense",replacement = "SNP")
-      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "frame",replacement = "Frame_Shift")
-      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "insert",replacement = "INS")
-      mut$Variant_Type<-gsub(tolower(mut$Variant_Type),pattern = "delet",replacement = "DEL")
+      mut$Variant_Type[stringr::str_detect(tolower(mut$Variant_Type),pattern = "missense")]<-"SNP"
+      mut$Variant_Type[stringr::str_detect(tolower(mut$Variant_Type),pattern = "frameshift")]<-"Frame_Shift"
+      mut$Variant_Type[stringr::str_detect(tolower(mut$Variant_Type),pattern = "insert")]<-"INS"
+      mut$Variant_Type[stringr::str_detect(tolower(mut$Variant_Type),pattern = "delet")]<-"DEL"
 
       mut<-mut[mut$Variant_Type%in%c("SNP","INS","DEL","Frame_Shift"),]
     }else{
