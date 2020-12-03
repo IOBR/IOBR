@@ -6,7 +6,7 @@
 \usage{
 make_mut_matrix(
   maf = NULL,
-  maf_data = NULL,
+  mut_data = NULL,
   isTCGA = TRUE,
   category = "multi",
   Tumor_Sample_Barcode = "Tumor_Sample_Barcode",
@@ -18,7 +18,7 @@ make_mut_matrix(
 \arguments{
 \item{maf}{file name of maf data}
 
-\item{maf_data}{if maf data had beed loaded, this argument will be applied}
+\item{mut_data}{if maf data had beed loaded, this argument will be applied}
 
 \item{isTCGA}{logical variable,}
 
