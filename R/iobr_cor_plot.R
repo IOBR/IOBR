@@ -1,7 +1,6 @@
 
 
 
-####################################
 #' Integrative correlation between phenotype and features
 #'
 #' @param pdata_group pdata
@@ -137,7 +136,8 @@ iobr_cor_plot<-function(pdata_group,
   scale_begin<-length(colnames(pdata_group))+1
   pf[,scale_begin:ncol(pf)]<-scale( pf[,scale_begin:ncol(pf)],center = T,scale = T)
 
-
+  pf_stat<-pf
+  ####################################################################
   if(!class(signature_group)=="list") stop(">>> Input must be a list.")
   ####################################################################
   for (x in 1:length(panel)) {
@@ -367,7 +367,6 @@ iobr_cor_plot<-function(pdata_group,
              width = 12,height = 12.8,
              path = file_store)
 
-      ####################################
     }
 
 
@@ -375,21 +374,30 @@ iobr_cor_plot<-function(pdata_group,
 
   # features<-unique(unlist(group_list))
 
-  if(is_target_continuous==FALSE& nlevels(pf[,group]==2)){
-    # eset<-pf[,colnames(pf)%in%c(group,setdiff(features,c("ID",group)))]
-    eset<-pf
-    feas<-colnames(pf)[scale_begin:ncol(pf)]
-    res<-  batch_wilcoxon(data = eset,target = group,feature = feas)
-    res<-tibble::as_tibble(res)
+  if(!is_target_continuous){
+    # print(pf[,group])
+    if(length(unique(pf[,group]))==2){
+      print(">>> Proportion of two groups:")
+      print(summary(as.factor(pf[,group])))
+      eset<-pf_stat
+      feas  <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
+      levels<- c(as.character(unique(pf_stat[,group])))
+      res   <-  batch_wilcoxon(data = eset,target = group,group_names = levels,feature = feas)
+      res   <- tibble::as_tibble(res)
+    }else{
+      print("Error: Only two categorical variables supported statistical difference calculation")
+    }
+
   }
   if(is_target_continuous){
     # eset<-pf[,colnames(pf)%in%c(target,setdiff(features,c("ID",target)))]
-    eset<-pf
-    feas<-colnames(pf)[scale_begin:ncol(pf)]
+    eset<-pf_stat
+    feas<-colnames(pf_stat)[scale_begin:ncol(pf_stat)]
     res<-  batch_cor(data = eset,target = target,feature = feas,method = "spearman")
     res<-tibble::as_tibble(res)
+
   }
-  return(res)
+  if(!is.null(res)) return(res)
 }
 
 

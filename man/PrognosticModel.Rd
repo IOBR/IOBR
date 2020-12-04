@@ -2,7 +2,7 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticModel}
 \alias{PrognosticModel}
-\title{Prognostic Model}
+\title{Prognostic Model construction}
 \usage{
 PrognosticModel(
   x,
@@ -33,5 +33,5 @@ PrognosticModel(
 a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 }
 \description{
-Prognostic Model
+Prognostic Model construction
 }

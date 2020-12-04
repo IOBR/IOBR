@@ -153,7 +153,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     aa<-lapply(input2[,input_genes], function(x) wilcox.test(input2[,1]~x))
 
     res2<-data.frame(p.value = sapply(aa, getElement, name = "p.value"),
-                    names=input_genes,
+                    names = input_genes,
                     statistic = sapply(aa, getElement, name = "statistic"))
 
     res2$adjust_pvalue<-p.adjust(res2$p.value,method = "BH",n=length(res2$p.value))
@@ -228,13 +228,11 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
     res$adjust_pvalue<-p.adjust(res$p.value,method = "BH",n=length(res$p.value))
 
-    res2<-res2[order(res2$p.value,decreasing = F),]
+    res<-res[order(res$p.value,decreasing = F),]
     print(">>>> Result of Wilcoxon test")
-    print(res2[1:10,])
-
+    print(res[1:10,])
 
     write.csv(res, paste0(abspath,"1-Wilcoxon-test-relevant-mutations.csv"))
-
 
     result<-list("wilcoxon_test" = res,"sig_mut_data" = input2)
     #################################
@@ -267,14 +265,14 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
 
-        ggsave(pl[[i]],filename = paste0(2+i,"-1-",gene,"-binary.pdf"),
+        ggsave(pl[[i]],filename = paste0(i,"-1-",gene,"-binary.pdf"),
                width = 4.2,height = 6.5,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
                           labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "2-Relevant_mutations_binary.pdf",width = 22,height = 17,path = file_name)
+      ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 22,height = 17,path = file_name)
       #####################################
     }
 

@@ -14,6 +14,9 @@
 #'
 BinomialModel <- function(x, y,seed = "123456", scale = TRUE,
                           train_ratio = 0.7, nfold = 10, plot = T){
+
+  x<-as.data.frame(x)
+  y<-as.data.frame(y)
   print(message(paste0("\n", ">>> Processing data")))
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "binomial")
   x_scale <- processdat$x_scale

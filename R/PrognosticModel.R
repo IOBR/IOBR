@@ -1,4 +1,4 @@
-#' Prognostic Model
+#' Prognostic Model construction
 #'
 #' @param x input matrix or data.frame where samples are in rows and features in columns; The first column of x is the sample ID of which column is "ID".
 #' @param y input matrix or data.frame with three column. Column names are "ID", "time", "status"
@@ -13,6 +13,10 @@
 #'
 #' @examples
 PrognosticModel <- function(x, y, scale = F, seed = "123456", train_ratio = 0.7, nfold = 10, plot = T){
+
+  x<-as.data.frame(x)
+  y<-as.data.frame(y)
+
   print(message(paste0("\n", ">>> Processing data")))
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "survival")
   x_scale <- processdat$x_scale

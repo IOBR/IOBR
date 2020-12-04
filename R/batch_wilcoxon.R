@@ -16,6 +16,7 @@
 #' @examples
 batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Low"), feature = feature){
 
+  data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
   feature<-feature_manipulation(data = data, feature = feature)
   #change-name-of-group
@@ -46,6 +47,8 @@ batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Lo
     mutate(log10pvalue = log10(.$p.value)* -1) %>%
     mutate(stars = cut(.$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                        label=c("****","***", "**", "*", "+","")))
+  cc<-tibble::as_tibble(cc)
   return(cc)
+
 }
 
