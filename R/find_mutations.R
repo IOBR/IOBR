@@ -141,7 +141,6 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
     sig_mut2<- rownames_to_column(sig_mut,var = "ID")
 
-
     patr1<-sig_mut2[,c("ID",signature)]
     part2<-sig_mut2[,input_genes]
     part2[part2>=1]<-1
@@ -181,7 +180,6 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
       input_long[,signature]<-as.numeric(input_long[,signature])
       input_long$mutation<-as.factor(input_long$mutation)
 
-
       input_long$mutation<-ifelse(input_long$mutation==0,"WT","Mutated")
       ####################################
 
@@ -212,13 +210,13 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   }else{
     ################################
-    patr1<-sig_mut[,signature]
-    part2<-sig_mut[,input_genes]
+    sig_mut2<- rownames_to_column(sig_mut,var = "ID")
+    patr1<-sig_mut2[,c("ID",signature)]
+    part2<-sig_mut2[,input_genes]
     part2[part2>=1]<-1
-    sig_ms2<-cbind(patr1,part2)
-
-    input2<-sig_ms2
-
+    sig_mut2<-cbind(patr1,part2)
+    sig_mut2<-column_to_rownames(sig_mut2,var = "ID")
+    input2<-sig_mut2
     ##############################
     aa<-lapply(input2[,input_genes], function(x) wilcox.test(input2[,1]~x))
 
@@ -241,12 +239,14 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
       ####################################
       top10_genes<-res$names[1:10]
+      top10_genes<- top10_genes[!is.na(top10_genes)]
       top10_genes<-as.character(top10_genes[top10_genes%in%colnames(input2)])
 
-      input_long<-input2[,c(signature,top10_genes)]
-      input_long<-reshape2:: melt(input_long,id.vars = 1,
-                          variable.name = "Gene",
-                          value.name = "mutation")
+      input_long<-input2[, c(signature,top10_genes)]
+      input_long<-reshape2:: melt(input_long,
+                                  id.vars = 1,
+                                  variable.name = "Gene",
+                                  value.name = "mutation")
       input_long[,signature]<-as.numeric(input_long[,signature])
       input_long$mutation<-as.factor(input_long$mutation)
 

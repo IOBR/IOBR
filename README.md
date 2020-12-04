@@ -40,8 +40,8 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
 `limSolve`, `GSVA`, `e1071`, `preprocessCore`, `ggplot2` and `ggpubr`.
 
 ``` r
-options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
-options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
+# options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
+# options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
