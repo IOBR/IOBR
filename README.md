@@ -8,22 +8,26 @@ microenvironment and signatures for immuno-oncology.
 
 ### 1.Introduction
 
-  - 1.IOBR integrates 8 published methodologies decoding tumor
-    microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`,
-    `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
-  - 2.IOBR collects 255 published signature gene sets, involving tumor
-    microenvironment, tumor metabolism, m6A, exosomes, microsatellite
-    instability, and tertiary lymphoid structure. Running the function
-    `signature_collection_citation` to attain the source papers. The
-    function `signature_collection` returns the detail signature genes
-    of all given signatures.
-  - 3.IOBR adopts three computational methods to calculate the signature
-    score, comprising `PCA`,`z-score`, and `ssGSEA`;
-  - 4.IOBR integrates multiple approaches for variable transition,
-    visualization, batch survival analysis, feature selection, and
-    statistical analysis.
-  - 5.IOBR also integrates methods for batch visualization of subgroup
-    characteristics.
+  - 1.  IOBR integrates 8 published methodologies decoding tumor
+        microenvironment (TME) contexture: `CIBERSORT`, `TIMER`,
+        `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
+
+  - 2.  IOBR collects 255 published signature gene sets, involving tumor
+        microenvironment, tumor metabolism, m6A, exosomes,
+        microsatellite instability, and tertiary lymphoid structure.
+        Running the function `signature_collection_citation` to attain
+        the source papers. The function `signature_collection` returns
+        the detail signature genes of all given signatures.
+
+  - 3.  IOBR adopts three computational methods to calculate the
+        signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
+
+  - 4.  IOBR integrates multiple approaches for variable transition,
+        visualization, batch survival analysis, feature selection, and
+        statistical analysis.
+
+  - 5.  IOBR also integrates methods for batch visualization of subgroup
+        characteristics.
 
 IOBR package workflow ![IOBR logo](./man/figures/IOBR-Workflow.png)
 
@@ -58,7 +62,8 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 }
 ```
 
-The package is not yet on CRAN. You can install it from Github:
+The package is not yet on CRAN or Bioconductor. You can install it from
+Github:
 
 ``` r
 if (!requireNamespace("IOBR", quietly = TRUE))
@@ -71,7 +76,17 @@ Library R packages
 library(IOBR) 
 ```
 
-IOBR package pipeline ![IOBR logo](./man/figures/IOBR-Package.png)
+### 3.Manual
+
+IOBR pipeline diagram below outlines the data processing flow of this
+package, and a detailed guidance of how to use IOBR could be find in the
+[HTML vignette](), or by typing the following code to R session.
+
+``` r
+browseVignettes("IOBR") 
+```
+
+![IOBR logo](./man/figures/IOBR-Package.png)
 
 ## 3.Availabie methods to decode TME contexture
 
@@ -121,21 +136,29 @@ signature_score_calculation_methods
 
 ``` r
 #References of collected signatures
-signature_collection_citation
-#> # A tibble: 255 x 6
-#>    Signatures   `Published year` Journal Title                   PMID   DOI     
-#>    <chr>                   <dbl> <chr>   <chr>                   <chr>  <chr>   
-#>  1 CD_8_T_effe~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  2 DDR                      2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  3 APM                      2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  4 Immune_Chec~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  5 CellCycle_R~             2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  6 Pan_F_TBRs               2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  7 Histones                 2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  8 EMT1                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#>  9 EMT2                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#> 10 EMT3                     2018 Nature  TGFβ attenuates tumour~ 29443~ 10.1038~
-#> # ... with 245 more rows
+signature_collection_citation[!duplicated(signature_collection_citation$Journal),]
+#> # A tibble: 19 x 6
+#>    Signatures       `Published year` Journal      Title           PMID  DOI     
+#>    <chr>                       <dbl> <chr>        <chr>           <chr> <chr>   
+#>  1 CD_8_T_effector              2018 Nature       TGFβ attenuate~ 2944~ 10.1038~
+#>  2 TMEscoreA_CIR                2019 Cancer Immu~ Tumor Microenv~ 3084~ 10.1158~
+#>  3 CD8_Rooney_et_al             2015 Cell         Molecular and ~ 2559~ 10.1016~
+#>  4 T_cell_inflamed~             2017 The Journal~ IFN-γ–related ~ 2865~ 10.1172~
+#>  5 MDSC_Wang_et_al              2016 Canccer Dis~ Targeting YAP-~ 2670~ 10.1158~
+#>  6 B_cells_Danaher~             2017 Journal for~ Gene expressio~ 2823~ 10.1186~
+#>  7 Nature_metaboli~             2019 Nature Meta~ Characterizati~ 3198~ 10.1038~
+#>  8 Winter_hypoxia_~             2007 Cancer Rese~ Relation of a ~ 1740~ 10.1158~
+#>  9 Hu_hypoxia_sign~             2019 Molecular B~ The Genome Lan~ 3044~ 10.1093~
+#> 10 MT_exosome                   2019 Molecular T~ An EV-Associat~ 3147~ 10.1016~
+#> 11 SR_exosome                   2017 Scientific ~ Genetic Mutati~ 2838~ 10.1038~
+#> 12 MC_Review_Exoso~             2016 Molcular Ca~ Diagnostic, Pr~ 2718~ 10.1186~
+#> 13 CMLS_Review_Exo~             2018 Cellular an~ Current knowle~ 2873~ 10.1007~
+#> 14 Positive_regula~             2020 Gene Ontolo~ http://geneont~ <NA>  <NA>    
+#> 15 Molecular_Cance~             2020 Molecular C~ m6A regulator-~ <NA>  10.1186~
+#> 16 Ferroptosis                  2020 IOBR         Constructed by~ <NA>  <NA>    
+#> 17 T_cell_accumula~             2018 Nature Medi~ Signatures of ~ 3012~ 10.1038~
+#> 18 Antigen_Process~             2020 Nature Comm~ Pan-cancer Cha~ 3208~ 10.1038~
+#> 19 CD8_T_cells_Bin~             2013 Immunity     Spatio-tempora~ 2413~ 10.1016~
 
 #signature groups
 sig_group[1:3]
@@ -167,11 +190,14 @@ sig_group[1:3]
 
 ## References
 
-DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu, WJ Liao.
+DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu, WJ Liao\*.
 
 IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor
 microenvironment and signatures.
 
-## Contact
+## Reporting bugs
+
+Please report bugs to the [Github issues
+page](https://github.com/IOBR/IOBR/issues)
 
 E-mail any questions to <dongqiangzeng0808@gmail.com>
