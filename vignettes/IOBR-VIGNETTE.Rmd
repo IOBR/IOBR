@@ -1,0 +1,1079 @@
+---
+title: "IOBR <br>Immuno-Oncology Biological Research"
+author:
+  name: "<b>Dongqiang Zeng</b>"
+  affiliation: "<b>Department of Oncology, <br>Nanfang Hosipital, <br>Southern Medical University, Guangzhou, China</b>"
+  email: "<b>dongqiangzeng0808@gmail.com</b>"
+date: "<b>`r Sys.Date()`</b>"
+output: 
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+vignette: >
+  %\VignetteIndexEntry{IOBR-VIGNETTE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+p.caption {
+  font-size: 0.8em;
+}
+
+sup {
+    line-height: 0;
+    font-size: 0.83em;
+    vertical-align: super;
+}
+
+.math {
+  font-size: small;
+}
+</style>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, echo=FALSE}
+Sys.setenv(LANGUAGE = "en")
+```
+
+# CONTENTS
+* [1. Introduction](#Section.1)
+* [2. Installation](#Section.2)
+* [3. Data Scenario and Preparation](#Section.3 ) 
+  * [3.1 Gene-expression Data Derived from RNAseq](#Section.3.1)
+  * [3.2 Gene-expression Data Derived from Array](#Section.3.2)
+* [4. IOBR Pipeline Introduction](#Section.4)
+* [5. Functional Modules](#Section.5)
+  * [5.1 TME Deconvolution Module](#Section.5.1)
+    * [5.1.1 Available Methods to Decode TME Contexture](#Section.5.1.1)
+      * [1) Method 1: CIBERSORT](#Section.5.1.1.1)
+      * [2) Method 2: EPIC](#Section.5.1.1.2)
+      * [3) Method 3: MCPcounter](# Section.5.1.1.3)
+      * [4) Method 4: xCELL](#Section.5.1.1.4)
+      * [5) Method 5: ESTIMATE](#Section.5.1.1.5)
+      * [6) Method 6: TIMER](# Section.5.1.1.6)
+      * [7) Method 7: quanTIseq](#Section.5.1.1.7)
+      * [8) Method 8: IPS](#Section.5.1.1.8)
+      * [9) Combination of above deconvolution results](#Section.5.1.1.9)
+  * [5.2 Signature Module](#Section.5.2)
+    * [5.2.1 Signature Estimation](#Section.5.2.1)
+      * [1) Signature collection](#Section.5.2.1.1)
+      * [2) Methods for signature calculation](#Section.5.2.1.2)
+    * [5.2.2 Signatures Derived From Single Cell RANseq](#Section.5.2.2)
+      * [1) Methods for signature estimation](#Section.5.2.2.1)
+      * [2) Signature-phenotype correlation](#Section.5.2.2.2)
+    * [5.2.3 Explore Phenotype Relevant Signatures](#Section.5.2.3)
+      * [1) Load data](#Section.5.2.3.1)
+      * [2) Signature groups](#Section.5.2.3.2)
+      * [3) Identify phenotype relevant signatures](#Section.5.2.3.3)
+      * [4) Visualize phenotype relevant signature genes](#Section.5.2.3.4)
+      * [5) Estimate lncRNA associated signatures](#Section.5.2.3.5) 
+    * [5.2.4 Identify Signatures Relevant to Targeted Signature](#Section.5.2.4)
+      * [1) Construct phenotype group](#Section.5.2.4.1)
+      * [2) Analyze Pan-F-TBRs correlated signatures](#Section.5.2.4.2)
+      * [3) Evaluate Pan-F-TBRs related TME cell infiltration](#Section.5.2.4.3)
+    * [5.2.5 Batch Analyses and Visualization](#Section.5.2.5)
+      * [1) Batch survival analyses](#Section.5.2.5.1)
+      * [2) Subgroup survival analyses](#Section.5.2.5.2)
+      * [3) Batch statistical analyses](#Section.5.2.5.3)
+      * [4) Batch analyses of Pearson's correlation coefficient](#Section.5.2.5.4)  
+  * [5.3 Signature Associated Mutation Module](#Section.5.3)
+    * [5.3.1 Load Mutation MAF data](#Section.5.3.1)
+    * [5.3.2 Analyze Phenotype Associated Signatures](#Section.5.3.2)
+  * [5.4 Model Construction Module](#Section.5.4)
+* [6. Summary](#Section.6)
+* [7. Session Information](#Section.7)
+* [8. Citing IOBR](#Section.8)
+* [REFERENCES](#Section.9)
+
+
+# <a id="Section.1" style="color:#B7950B;">1. Introduction</a>
+Recent advance in next generation sequencing has triggered the rapid accumulation of publicly available multi-omics data<sup>1</sup>. The application of integrated omics to exploring robust signatures for clinical translation is increasingly highlighted in immuno-oncology,but raises computational and biological challenges<sup>2</sup>. This vignette aims to demonstrate how to utilize the package named IOBR to perform multi-omics immuno-oncology biological research to decode tumor microenvironment and signatures for clinical translation. This R package integrates 8 published methodologies for decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`. Moreover, 255 published signature gene sets were collected by IOBR, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Run the function `signature_collection_citation` to attain the source papers and the function `signature_collection` returns the detail signature genes of all given signatures. Subsequently, IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`. To note, IOBR collected and employed multiple  approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis. Batch analysis and visualization of corresponding results is supported. The details of how IOBR works is described below.
+
+### Graphical abstract outlines the workflow of IOBR package.
+<p align="center">![IOBR logo](./man/figures/IOBR-Workflow.png)</p>
+
+# <a id="Section.2" style="color:#B7950B;">2. Installation</a>
+It is essential that you have R 3.6.3 or above already installed on your computer or server. IOBR is a pipeline that utilizes many other R packages that are currently available from CRAN, Bioconductor and GitHub. 
+
+Before installing IOBR, please properly install all dependencies including `tibble`, `survival`, `survminer`, `limma`, `limSolve`, `GSVA`, `e1071`, `preprocessCore`, `ggplot2`, `ggpubr` and so on. It is an easy way to install them by executing the following command in your R session:
+
+```{r,echo=FALSE}
+Sys.setenv(LANGUAGE = "en") # The error message would be present in English.
+options(stringsAsFactors = FALSE) #To avoid transiting character into factor.
+```
+
+```{r, warning=FALSE, message=FALSE, echo=TRUE, eval=FALSE}
+# options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
+# options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
+depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
+          'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
+          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor","timeROC","pracma")
+for(i in 1:length(depens)){
+  depen<-depens[i]
+  if (!requireNamespace(depen, quietly = TRUE)) BiocManager::install(depen)
+}
+
+if (!requireNamespace("EPIC", quietly = TRUE))
+  devtools::install_github("GfellerLab/EPIC", build_vignettes=TRUE)
+if (!requireNamespace("MCPcounter", quietly = TRUE))
+  devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
+if (!requireNamespace("estimate", quietly = TRUE)){
+  rforge <- "http://r-forge.r-project.org"
+  install.packages("estimate", repos=rforge, dependencies=TRUE)
+}
+
+```
+
+Then, you can start to install IOBR from github by typing the following code into your R session:
+```{r}
+if (!requireNamespace("remotes", quietly = TRUE)) install("remotes")
+if (!requireNamespace("IOBR", quietly = TRUE))
+  remotes::install_github("IOBR/IOBR",ref="master")
+```
+
+Load the IOBR package in your R session after the installation is complete:
+```{r, eval=TRUE, warning=FALSE, message=FALSE}
+library(IOBR)
+library(EPIC)
+library(estimate) 
+library(MCPcounter)
+library(tidyverse)
+library(tidyHeatmap)
+library(maftools)
+library(ggpubr)
+library(ggplot2)
+library(survival)
+```
+
+# <a id="Section.3" style="color:#B7950B;">3. Data Scenario and Preparation</a>
+
+## <a id="Section.3.1" style="color:#B7950B;">3.1 Gene-expression Data Derived from RNAseq</a>
+### Preparation of Gene-expression data derived from RNAseq.
+For transcriptomic data of TCGA data sets, we strongly recommend user to use [UCSCXenaTools](https://github.com/ropensci/UCSCXenaTools) R package. Here, we download counts data of TCGA-STAD from [UCSC](https://genome.ucsc.edu/) using UCSCXenaTools R package. If you use it in published research, please cite: *Wang et al.*, (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq. Journal of Open Source Software, 4(40), 1627, https://doi.org/10.21105/joss.01627.
+If you are not online or can not access to UCSC, we have prepared expression data of TCGA-STAD in IOBR package.`data(eset_stad)` could be applied to loading gene expression data.
+```{r}
+if (!requireNamespace("UCSCXenaTools", quietly = TRUE))
+    BiocManager::install("UCSCXenaTools")
+library(UCSCXenaTools)
+# NOTE: This process may take a few minutes which depends on the internet connection speed. Please wait for its completion.
+eset_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)") %>% 
+  XenaFilter(filterDatasets    = "TCGA-STAD.htseq_counts.tsv") %>% 
+  XenaQuery() %>%
+  XenaDownload() %>% 
+  XenaPrepare()
+eset_stad[1:5,1:5]
+```
+### Transform gene expression matrix into TPM format, and conduct subsequent annotation. 
+```{r,message=FALSE,warning=FALSE}
+
+# Remove the version numbers in Ensembl ID.
+eset_stad$Ensembl_ID<-substring(eset_stad$Ensembl_ID, 1, 15)
+eset_stad<-column_to_rownames(eset_stad, var = "Ensembl_ID")
+# Revert back to original format because the data from UCSC was log2(x+1)transformed.
+eset_stad<-(2^eset_stad)+1
+
+# In this process, *biomaRt* R package is utilized to acquire the gene length of each Ensembl ID and calculate the TPM of each sample. If identical gene symbols exists, these genes would be ordered by the mean expression levels. The gene symbol with highest mean expression level is selected and remove others.
+# NOTE: This process may take a few minutes which depends on the internet connection speed. Please wait for its completion.
+eset_stad<-count2tpm(countMat = eset_stad, idType = "Ensembl", org="hsa")
+eset_stad[1:5,1:5]
+```
+
+## <a id="Section.3.2" style="color:#B7950B;">3.2 Gene-expression Data Derived from Array</a>
+### Obtain dataset from GEO [Gastric cancer:GSE100935](https://www.ncbi.nlm.nih.gov/pubmed/30045931) using GEOquery R package.
+```{r,message=FALSE,warning=FALSE}
+if (!requireNamespace("GEOquery", quietly = TRUE))
+    BiocManager::install("GEOquery")
+library("GEOquery")
+# NOTE: This process may take a few minutes which depends on the internet connection speed. Please wait for its completion.
+eset_geo<-getGEO(GEO     = "GSE100935",
+                 getGPL  = F,
+                 destdir = "./")
+
+eset    <-eset_geo[[1]]
+eset    <-exprs(eset)
+eset[1:5,1:5]
+```
+
+### Annotate genes in expression matrix and remove duplicate genes.
+```{r,message=FALSE,warning=FALSE}
+# Load the annotation file `anno_hug133plus2` in IOBR.
+head(anno_hug133plus2)
+# Conduct gene annotation using `anno_hug133plus2` file; If identical gene symbols exists, these genes would be ordered by the mean expression levels. The gene symbol with highest mean expression level is selected and remove others. 
+
+eset<-anno_eset(eset       = eset,
+                annotation = anno_hug133plus2,
+                symbol     = "symbol",
+                probe      = "probe_id",
+                method     = "mean")
+eset[1:5, 1:5]
+# Another annotation file `anno_illumina` is also provided by IOBR for convenient annotation of Illumina gene expression arrays  
+head(anno_illumina)
+```
+
+# <a id="Section.4" style="color:#B7950B;">4. IOBR Pipeline Introduction</a>
+
+### Pipeline diagram dipict major functions contained in IOBR  which are categorized into four functional modules. 
+
+<p align="center">!![IOBR logo](./man/figures/IOBR-Package.png)</p>
+
+### Outline of all functions for data preparation and analyses of each module.
+
+* <div style="color:green">**Data Preparation: data annotation and transformation**</div> 
+    * `count2tpm()`: transform count data of RNA sequencing into TPM data.
+    * `anno_eset()`: annotate the normalized genes expression matrix, including RNAseq and array (Affymetrix or Illumina).
+    * `remove_duplicate_genes()`: remove the genes annotated with the duplicated symbol after normalization and retain only the symbol with highest expression level.
+</br>
+
+* <div style="color:green">**TME Deconvolution Module: integrate multiple algorithms to decode immune contexture**</div> 
+    * `deconvo_tme()`: decode the TME infiltration with different deconvolution methodologies, based on bulk RNAseq, microarray or single cell RNAseq data.
+    * `generateRef()`: generate a novel gene reference matrix for a specific feature such as infiltrating cell, through the  SVR and lsei algorithm.
+</br>
+
+* <div style="color:green">**Signature Module: calculate signature scores, estimate phenotype related signatures and corresponding genes, and evaluate signatures generated from single-cell RNA sequencing data **</div>
+    * `calculate_sig_score()`: estimate the interested signatures enrolled in IOBR R package, which involves TME-associated, tumor-metabolism, and tumor-intrinsic signatures.
+    * `feature_manipulation()`: manipulate features including the cell fraction and signatures generated from multi-omics data for latter analysis and model construction. Remove missing values, outliers and variables without significant variance.
+    * `format_signatures()`: generate the object of `calculate_sig_score()`function, by inputting a data frame with signatures as column names of corresponding gene sets, and return a list contain the signature information for calculating multiple signature scores.
+    * `format_msigdb()`: transform the signature gene sets data  with gmt format, which is not included in the signature collection and might be downloaded in the MSgiDB website, into the object of `calculate_sig_score()`function.
+</br>
+    
+  * <div style="color:green">**Batch Analysis and Visualization: batch survival analysis and batch correlation analysis and other batch statistical analyses **</div>
+    * `batch_surv`: batch survival analysis of multiple continuous variables including varied signature scores.
+    * `subgroup_survival`: batch survival analysis of multiple categorized variables with different number of subgroups. 
+    * `batch_cor()`: batch analysis of correlation between two continuous variables using Pearson correlation coefficient or Spearman's rank correlation coefficient .
+    * `batch_wilcoxon()`: conduct batch wilcoxon analyses of binary variables.
+    * `batch_pcc()`: batch analyses of Partial Correlation coefficient(PCC) between continuous variables  and minimize the interference derived from confounding factors.
+    * `iobr_cor_plot()`: visualization of batch correlation analysis of signatures from 'sig_group'. Visualize the correlation between signature or phenotype with  expression of gene sets  in target signature is also supported.
+    * `cell_bar_plot()`: batch visualization of TME cell fraction, supporting input of deconvolution results from 'CIBERSORT', 'EPIC' and 'quanTIseq' methodologies to further compare the TME cell distributions within one sample or among different samples. 
+</br>
+
+* <div style="color:green">**Signature Associated Mutation Module: identify and analyze mutations relevant to targeted signatures**</div>
+    * `make_mut_matrix()`: transform the mutation data with MAF format(contain the columns of gene ID and the corresponding gene alterations which including SNP, indel and frameshift) into a mutation matrix in a suitable manner for further investigating signature relevant mutations.
+    * `find_mutations()`: identify mutations associated with a distinct phenotype or signature.
+</br>
+
+* <div style="color:green">**Model Construction Module: feature selection and fast model construct to predict clinical phenotype**</div>
+    * `BinomialModel()`: select features and construct a model to predict a binary phenotype.
+    * `PrognosticMode()`: select features and construct a model to predict clinical survial outcome.
+</br>
+
+
+# <a id="Section.5" style="color:#B7950B;">5. Functional Modules</a>
+IOBR consists of four functional modules, comprising decoding immune contexture (TME deconvolution module), estimation of signature scores, phenotype related signatures and corresponding genes, and signatures generated from single-cell sequencing data (signature module), analysis of signature associated mutations (signature associated mutation module) and fast model construction (model construction module). Details of each module and functional codes are described below. Hence, let us follow the analytic pipeline of IOBR step by step.
+
+## <a id="Section.5.1" style="color:#B7950B;">5.1 TME Deconvolution Module</a>
+
+### <a id="Section.5.1.1" style="color:#B7950B;">5.1.1 Available Methods to Decode TME Contexture</a>
+
+```{r}
+tme_deconvolution_methods
+# Return available parameter options of deconvolution methods
+```
+
+If you use this package in your work, please cite both our package and the method(s) you are using.
+
+### Licenses of the deconvolution methods
+| method | license | citation |
+|--------|---------|----------|
+| [CIBERSORT](https://cibersort.stanford.edu/) | free for non-commerical use only | Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.  https://doi.org/10.1038/nmeth.3337 |
+| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | free ([GPL2.0]( https://bioinformatics.mdanderson.org/estimate/)) | Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612. http://doi.org/10.1038/ncomms3612 |
+| [quanTIseq](http://icbi.at/software/quantiseq/doc/index.html) | free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md)) | Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. https://doi.org/10.1186/s13073-019-0638-6 |
+| [TIMER](http://cistrome.org/TIMER/) | free ([GPL 2.0](http://cistrome.org/TIMER/download.html)) | Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.  https://doi.org/10.1186/s13059-016-1028-7 |
+| [IPS](https://github.com/icbi-lab/Immunophenogram) | free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE)) | P. Charoentong et al., Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017). https://doi.org/10.1016/j.celrep.2016.12.019 |
+| [MCPCounter](https://github.com/ebecht/MCPcounter) | free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License)) | Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218. https://doi.org/10.1186/s13059-016-1070-5 |
+| [xCell](http://xcell.ucsf.edu/) | free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. https://doi.org/10.1186/s13059-017-1349-1 |
+| [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/) | free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. https://doi.org/10.7554/eLife.26476 |
+
+### Licenses of the signature-esitmation method
+| method | license | citation |
+|--------|---------|----------|
+| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7 |
+
+The input data is a matrix (log2(TMP+1) transformed) containing 98 TCGA-STAD samples, with genes in rows and samples in columns. The row name must be HGNC symbols and the column name must be sample names.
+```{r}
+# Load the `eset_stad` test data of gene expression matrix in IOBR
+data("eset_stad")
+eset_stad[1:5, 1:5]
+```
+Check detail parameters of the function
+```{r}
+help(deconvo_tme)
+```
+
+#### <a id="Section.5.1.1.1" style="color:#B7950B;">1) Method 1: CIBERSORT</a>
+```{r,fig.width= 8.5, fig.height=6}
+cibersort<-deconvo_tme(eset = eset_stad, method = "cibersort", arrays = FALSE, perm = 200 )
+head(cibersort)
+res<-cell_bar_plot(input = cibersort[1:12,], title = "CIBERSORT Cell Fraction")
+```
+
+#### <a id="Section.5.1.1.2" style="color:#B7950B;">2) Method 2: EPIC</a>
+```{r}
+help(deconvo_epic)
+epic<-deconvo_tme(eset = eset_stad, method = "epic", arrays = FALSE)
+head(epic)
+```
+
+#### <a id="Section.5.1.1.3" style="color:#B7950B;">3) Method 3: MCPcounter</a> 
+```{r}
+mcp<-deconvo_tme(eset = eset_stad, method = "mcpcounter")
+head(mcp)
+
+```
+
+#### <a id="Section.5.1.1.4" style="color:#B7950B;">4) Method 4: xCELL</a>
+```{r,message=FALSE}
+xcell<-deconvo_tme(eset = eset_stad, method = "xcell",arrays = FALSE)
+head(xcell)
+
+```
+
+#### <a id="Section.5.1.1.5" style="color:#B7950B;">5) Method 5: ESTIMATE</a>
+```{r,message=FALSE,warning=FALSE}
+estimate<-deconvo_tme(eset = eset_stad, method = "estimate")
+head(estimate)
+
+```
+
+#### <a id="Section.5.1.1.6" style="color:#B7950B;">6) Method 6: TIMER</a>
+```{r,message=FALSE, warning=FALSE}
+timer<-deconvo_tme(eset = eset_stad, method = "timer", group_list = rep("stad",dim(eset_stad)[2]))
+head(timer)
+
+```
+
+#### <a id="Section.5.1.1.7" style="color:#B7950B;">7) Method 7: quanTIseq</a>
+```{r,fig.width= 8, fig.height=6}
+quantiseq<-deconvo_tme(eset = eset_stad, tumor = TRUE, arrays = FALSE, scale_mrna = TRUE, method = "quantiseq")
+head(quantiseq)
+res<-cell_bar_plot(input = quantiseq[1:12, ], title = "quanTIseq Cell Fraction")
+```
+
+#### <a id="Section.5.1.1.8" style="color:#B7950B;">8) Method 8: IPS</a>
+```{r,message=FALSE}
+ips<-deconvo_tme(eset = eset_stad, method = "ips", plot= FALSE)
+head(ips)
+```
+
+#### <a id="Section.5.1.1.9" style="color:#B7950B;">9) Combination of above deconvolution results</a>
+```{r}
+tme_combine<-cibersort %>% 
+  inner_join(.,mcp,by       = "ID") %>% 
+  inner_join(.,xcell,by     = "ID") %>%
+  inner_join(.,epic,by      = "ID") %>% 
+  inner_join(.,estimate,by  = "ID") %>% 
+  inner_join(.,timer,by     = "ID") %>% 
+  inner_join(.,quantiseq,by = "ID") %>% 
+  inner_join(.,ips,by       = "ID")
+dim(tme_combine)
+colnames(tme_combine)
+```
+
+
+## <a id="Section.5.2" style="color:#B7950B;">5.2 Signature Module</a>
+
+### <a id="Section.5.2.1" style="color:#B7950B;">5.2.1 Signature Estimation</a>
+IOBR integrates 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
+
+#### <a id="Section.5.2.1.1" style="color:#B7950B;">1) Signature collection</a>
+Obtain the included signatures first.The signature collection is mainly classified into 3 categories: TME-associated, tumor-metabolism, and tumor-intrinsic signatures. 
+
+```{r}
+# Return available parameter options of signature estimation.
+signature_score_calculation_methods
+#TME associated signatures
+names(signature_tme)[1:20]
+#Metabolism related signatures
+names(signature_metabolism)[1:20]
+#Signatures associated with biomedical basic research: such as m6A and exosomes
+names(signature_tumor)
+#signature collection including all aforementioned signatures 
+names(signature_collection)[1:20]
+#citation of signatures
+signature_collection_citation[1:20,]
+```
+
+#### <a id="Section.5.2.1.2" style="color:#B7950B;">2) Methods for signature calculation</a>
+Three methodologies were adopted in the process of signature score evaluation, comprising Single-sample Gene Set Enrichment Analysis (ssGSEA), Principal component analysis (PCA), and Z-score.
+
+#### Calculate TME associated signatures-(through PCA method).
+```{r,message = F, warning = F}
+sig_tme<-calculate_sig_score(pdata           = NULL,
+                             eset            = eset_stad,
+                             signature       = signature_tme,
+                             method          = "pca",
+                             mini_gene_count = 2)
+sig_tme[1:5, 1:10]
+```
+#### Estimate TME associated signatures-(through ssGSEA method).
+```{r,message = F, warning = F}
+sig_tme<-calculate_sig_score(pdata           = NULL,
+                             eset            = eset_stad,
+                             signature       = signature_tme,
+                             method          = "ssgsea",
+                             mini_gene_count = 5)
+sig_tme[1:5, 1:10]
+```
+#### Evaluate metabolism related signatures.
+```{r,message = F, warning = F}
+sig_meta<-calculate_sig_score(pdata           = NULL,
+                              eset            = eset_stad,
+                              signature       = signature_metabolism,
+                              method          = "pca",
+                              mini_gene_count = 2)
+sig_meta[1:5, 1:10]
+```
+#### Analyze all collected signature scores (integrating three methods: PCA, ssGSEA and z-score).
+```{r,message = F, warning = F}
+sig_res<-calculate_sig_score(pdata           = NULL,
+                             eset            = eset_stad,
+                             signature       = signature_collection,
+                             method          = "integration",
+                             mini_gene_count = 2)
+sig_res[1:5, 1:10]
+```
+#### The signature gene sets derived from GO, KEGG, HALLMARK and REACTOME datasets.
+IOBR also enrolls the signature gene sets, containing GO, KEGG, HALLMARK and REACTOME gene sets obtained from [MsigDB](https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H). The ssGSEA method is recommended for these signature estimation. This process may take a while for big datasets or calculating a large number of signatures.  
+```{r,message = F, warning = F}
+sig_hallmark<-calculate_sig_score(pdata           = NULL,
+                                  eset            = eset_stad,
+                                  signature       = hallmark,
+                                  method          = "ssgsea",
+                                  mini_gene_count = 2)
+sig_hallmark[1:5, 1:10]
+```
+
+
+### <a id="Section.5.2.2" style="color:#B7950B;">5.2.2 Signatures Derived From Single Cell RANseq</a>
+The recent advances in single-cell analysis make it a popular alternative to determine cell markers and gene signatures for phenotype. However, the significantly expensive cost and high requirement for starting tumor material still limited its widespread utility. Therefore, the attainable bulk sequencing larger dataset is still a need in validating the clinical significance of these signatures. 
+
+#### <a id="Section.5.2.2.1" style="color:#B7950B;">1) Methods for signature estimation</a>
+
+Given that single-cell sequencing have a high resolution for dissecting signature genes of cells, we provide mutiple methodologies to extract cell signaturte genes from the single-cell sequencing data (`inputTPM` or `inputcounts`). Additionally, the linear `svr` algorithm of CIBERSORT or `lsei` algorithm is adopted in the bulk-seq data analysis to verify the clinical significance of the targeted cells identified by single-cell RNA sequencing.
+
+####Data Sources: Lineage-dependent gene expression programs influence the immune landscape of colorectal cancer. Nat Genet 2020
+Method: 10X 3'
+Data operation process:
+Cell filtering: 
+1. Only immune cells and stromal cells detected in the tumor are retained.
+
+2. Select the cell type with the cell volume greater than 500.
+                
+Gene filtering: Genes detected in more than 5% of cells.
+
+```{r,message=FALSE,warning=FALSE}
+
+immune_feature_limma <- GenerateRef(dat     = inputTPM, 
+                                    pheno   = pdatacounts$cluster,
+                                    method  = "limma", 
+                                    FDR     = 0.05)
+
+immune_feature_DESeq2 <- GenerateRef(dds    = inputcounts,
+                                     pheno  = pdatacounts$cluster, 
+                                     dat    = inputTPM, 
+                                     method = "DESeq2",
+                                     FDR    = 0.05)
+
+reference        <- immune_feature_DESeq2$reference_matrix
+condition_number <- immune_feature_DESeq2$condition_number
+top_probe        <- immune_feature_DESeq2$G
+
+```
+
+```{r,message=FALSE,warning=FALSE}
+
+data("eset_stad")
+
+svm<-deconvo_tme(eset            = eset_stad, 
+                 reference       = reference, 
+                 method          = "svm", 
+                 arrays          = FALSE,
+                 absolute.mode   = FALSE,
+                 # abs.method    = "sig.score",
+                 perm            = 1000)
+head(svm)
+
+lsei<-deconvo_tme(eset           = eset_stad, 
+                 reference       = reference, 
+                 method          = "lsei", 
+                 arrays          = FALSE,
+                 scale_reference = T,
+                 perm            = 1000)
+head(lsei)
+```
+
+#### <a id="Section.5.2.2.2" style="color:#B7950B;">2) Signature-phenotype correlation</a>
+Following is the example to explore the correlation between TLS score with tumor molecular characteristics, tumor microenvironment, and clinical phenotype of patients. [B cells and tertiary lymphoid structures promote immunotherapy response](https://www.nature.com/articles/s41586-019-1922-8)
+
+```{r,message=FALSE,warning=FALSE}
+# Construct the signature list as an object first. The TLs signature mentioned above is included in the 'signature_collection' in IOBR.
+signature_collection$TLS_Nature
+
+# It is recommended to calculate other included signatures simultaneously, to systematically decode the correlation between TLS score and other tumor microenvironment characteristics.
+
+# Data of mice received checkpoint blockade is adopted in this exploration. 
+sig_res<-calculate_sig_score(pdata           = NULL,
+                             eset            = eset_GSE63557,
+                             signature       = signature_collection,
+                             method          = "integration",
+                             mini_gene_count = 2)
+input<-merge(pdata_GSE63557,sig_res,by="ID",all =FALSE)
+wilcox.test(input$TLS_Nature_PCA~input$BOR_binary)
+```
+
+
+### <a id="Section.5.2.3" style="color:#B7950B;">5.2.3 Explore Phenotype Relevant Signatures</a>
+
+#### <a id="Section.5.2.3.1" style="color:#B7950B;">1) Load data</a>
+Data of [IMvigor210 immunotherapy cohort](https://www.nature.com/articles/nature25501) was used for batch analysis of phenotype-related signatures.
+```{r,message=FALSE,warning=FALSE}
+## Load the signatures and Cell fractions calculated in previous steps by IOBR.
+data("imvigor210_sig")
+imvigor210_sig[1:5, 1:10]
+
+# Check therapeutic response and survival outcome in the phenotype data.
+data("imvigor210_pdata")
+imvigor210_pdata[1:5, 1:5]
+```
+#### <a id="Section.5.2.3.2" style="color:#B7950B;">2)Signature groups</a>
+Run `sig_group()` function for latter batch analysis of response associated signatures.
+```{r}
+# The signature group list.
+names(sig_group)
+
+# The tumor-relevant signatures in first group.
+names(sig_group)[1]
+sig_group[[1]]
+
+# The signatures associated with immunotherapy biomarkers.
+names(sig_group)[3]
+sig_group[[3]]
+
+# The signatures of immunosuppression.
+names(sig_group)[5]
+sig_group[[5]]
+```
+#### <a id="Section.5.2.3.3" style="color:#B7950B;">3) Identify phenotype relevant signatures</a>
+Construct phenotype group and bath visualize correlation between therapy response and selected signatures. 
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+pdata_group<-imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR","BOR_binary")]
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_sig,
+                   id2                   = "ID",
+                   target                = NULL,
+                   group                 = "BOR_binary",
+                   is_target_continuous  = FALSE,
+                   padj_cutoff           = 1,
+                   index                 = 1,
+                   category              = "signature",
+                   signature_group       = sig_group[c(1,3,5)],
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "paired1",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 2,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+head(res)
+```
+#### <a id="Section.5.2.3.4" style="color:#B7950B;">4) Visualize phenotype relevant signature genes</a>
+Estimate and visualize the expression of response relevant signature genes.
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+
+imvigor210_eset[1:5, 1:6]
+
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_eset,
+                   id2                   = "ID",
+                   target                = NULL,
+                   group                 = "BOR_binary",
+                   is_target_continuous  = FALSE,
+                   padj_cutoff           = 1,
+                   index                 = 2,
+                   category              = "gene",
+                   signature_group       = signature_collection[c(1:2,4)],    
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "paired1",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 4,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+head(res)
+```
+#### <a id="Section.5.2.3.5" style="color:#B7950B;">5) Estimate lncRNA associated signatures</a>
+```{r}
+## Load the signatures and Cell fractions calculated in previous steps by IOBR.
+head(as_tibble(imvigor210_sig))
+
+# Check therapeutic response and survival outcome in the phenotype data.
+head(as_tibble(imvigor210_pdata))
+```
+#### Define the latent molecur functions of non-coding RNA by exploring lncRNA related signatures.
+- Multiple literatures have reported that *HCP5* is correlated with tumor microenvironment and immunotherapeutic responses.[Citation-1](https://www.mdpi.com/2073-4409/8/5/480),[Citation-2](https://www.nature.com/articles/s41467-020-14802-2),[Citation-3](https://jitc.bmj.com/content/8/1/e000110);      
+
+- Reports also suggested the association between *LINC00657* and progression of multiple cancers.[Citation-1](https://www.mdpi.com/1422-0067/21/1/258/htm),[Citation-2](https://www.sciencedirect.com/science/article/abs/pii/S0304383520305784)，[Citation-3](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7268253/)
+
+- Taken *HCP5* and *LINC00657* for example, we explore their relationships with TME and other well-recognized signatures, to better reveal their potential functions.
+```{r,warning=FALSE, message=FALSE}
+
+# Load the test data: the gene expression matrix of IMvigor210 cohort has been normalized using method `voom`.
+imvigor210_eset[1:5,1:5]
+# Extract the significant genes as a phenotype of the patients based on the exploration of expression matrix.
+pdata_group<-rownames_to_column(as.data.frame(t(imvigor210_eset)),var = "ID")
+
+pdata_group<-as.data.frame(pdata_group[,c("ID","HCP5","LINC00657")])
+head(pdata_group)
+```
+Utilize `iobr_cor_plot`function for batch statistical analysis and visualization of the correlation between *HCP5* and TME.
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_sig,
+                   id2                   = "ID",
+                   target                = "HCP5",
+                   group                 = "group3",
+                   is_target_continuous  = TRUE,
+                   padj_cutoff           = 1,
+                   index                 = 3,
+                   category              = "signature",
+                   signature_group       = sig_group[1:3],
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "set2",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 2,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+
+# Check targeted genes and the statistical correlations with all analyzed signatures. (determined by Spearman's rank correlation coefficient.)  
+head(res)
+
+```
+Utilize `iobr_cor_plot`function for batch statistical analysis and visualization of the correlation between *LINC00657* and TME. 
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+# Only part of the sign_group was exhibited, as an example of the more extensive results.
+names(sig_group)
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_sig,
+                   id2                   = "ID",
+                   target                = "LINC00657",
+                   group                 = "group3",
+                   is_target_continuous  = TRUE,
+                   padj_cutoff           = 1,
+                   index                 = 4,
+                   category              = "signature",
+                   signature_group       = sig_group[c(1,3:4)],
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "jco",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 4,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+# # Check targeted genes and the statistical correlations with all analyzed signatures. (determined by Spearman's rank correlation coefficient.)  
+head(res)
+
+```
+
+
+### <a id="Section.5.2.4" style="color:#B7950B;">5.2.4 Identify Signatures Relevant to Targeted Signature</a>
+
+#### <a id="Section.5.2.4.1" style="color:#B7950B;">1) Construct phenotype group</a>
+Construct the `pdata_group`as a phenotype data frame of patients.
+```{r}
+# The data have been saved in `imvigor210_pdata`.
+# head(imvigor210_pdata)
+pdata_group<-as.data.frame(imvigor210_pdata[,c("ID","Pan_F_TBRs")])
+pdata_group$Pan_F_TBRs<-scale(as.numeric(pdata_group$Pan_F_TBRs))
+head(pdata_group)
+```
+#### <a id="Section.5.2.4.2" style="color:#B7950B;">2) Analyze Pan-F-TBRs correlated signatures</a>
+`Pan-F-TBRs` is an immune-exclusion signature published in Nature in 2018: S. Mariathasan et al., TGFbeta attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544-548 (2018). 
+
+The Pan-F-TBRs score obtained could be used to batch analyze and visualize the interaction between this immune-exclusion signature and other interested `signatures` , as well as its significant `cell fractions`, and to further explore other biomarkers may impact corresponding biological process.
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_sig,
+                   id2                   = "ID",
+                   target                = "Pan_F_TBRs",
+                   group                 = "group3",
+                   is_target_continuous  = TRUE,
+                   padj_cutoff           = 1,
+                   index                 = 5,
+                   category              = "signature",
+                   signature_group       =sig_group[1:2],
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "set2",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 2,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+head(res)
+```
+#### <a id="Section.5.2.4.3" style="color:#B7950B;">3) Evaluate Pan-F-TBRs related TME cell infiltration</a>
+Analyze the immune cell infiltration landscape related to Pan-F-TBRs.
+```{r,fig.width=9,fig.height=6,warning=FALSE, message=FALSE}
+names(sig_group)
+res<-iobr_cor_plot(pdata_group           = pdata_group,
+                   id1                   = "ID",
+                   feature_data          = imvigor210_sig,
+                   id2                   = "ID",
+                   target                = "Pan_F_TBRs",
+                   group                 = "group3",
+                   is_target_continuous  = TRUE,
+                   padj_cutoff           = 1,
+                   index                 = 6,
+                   category              = "signature",
+                   signature_group       = sig_group[20:24],
+                   ProjectID             = "IMvigor210",
+                   palette_box           = "jco",
+                   palette_corplot       = "pheatmap",
+                   palette_heatmap       = 3,
+                   feature_limit         = 26,
+                   character_limit       = 30,
+                   show_heatmap_col_name = FALSE,
+                   show_col              = FALSE,
+                   show_plot             = TRUE)
+head(res)
+```
+
+
+### <a id="Section.5.2.5" style="color:#B7950B;">5.2.5 Batch Analyses and Visualization</a>
+IOBR provide multiple batch analytic functions for statistical analysis, data operation and transformation. For instance,batch survival analysis could be employed for batch analysis of the best cutoff value for subsequent batch survival analysis, varied batch statistical tests, etc.
+
+#### <a id="Section.5.2.5.1" style="color:#B7950B;">1) Batch survival analyses</a>
+```{r}
+input<-imvigor210_pdata %>% 
+  filter(!is.na(.$OS_days)) %>% 
+  filter(!is.na(.$OS_status)) %>% 
+  mutate(OS_days = as.numeric(.$OS_days)) %>% 
+  mutate(OS_status = as.numeric(.$OS_status)) %>% 
+  dplyr::select(ID,OS_days,OS_status) %>% 
+  inner_join(.,imvigor210_sig, by= "ID")
+
+res <- batch_surv(pdata    = input, 
+                  variable = c(4:ncol(input)), 
+                  time     = "OS_days",
+                  status   = "OS_status")
+head(res)
+###########################  
+head(res,n=10)
+```
+#### <a id="Section.5.2.5.2" style="color:#B7950B;">2) Subgroup survival analyses</a>
+```{r}
+##loading data and filter NA
+data(subgroup_data)
+input <- subgroup_data %>% 
+   filter(time > 0) %>% 
+   filter(!is.na(status)) %>% 
+   filter(!is.na(AJCC_stage))
+
+##for binary variable
+res <- subgroup_survival(pdata    = input,
+                         time     = "time", 
+                         status   = "status",
+                         variable = c("ProjectID", "AJCC_stage"),
+                         object   = "score_binary" )
+res
+```
+#### <a id="Section.5.2.5.3" style="color:#B7950B;">3) Batch statistical analyses</a>
+```{r,warning=FALSE,message=FALSE}
+data("imvigor210_sig")
+data("imvigor210_pdata")
+# For analyses of binary variables
+input<-merge(imvigor210_pdata[,c("ID","BOR_binary")],imvigor210_sig,by="ID",all = F)
+input<-input[!input$BOR_binary=="NA",]
+input[1:5,1:5]
+res<-batch_wilcoxon(data    = input,
+                    target  = "BOR_binary", 
+                    group_names = c("NR","R"),
+                    feature = colnames(imvigor210_sig)[3:ncol(imvigor210_sig)])
+head(res, n=10)
+#Note: Features with statistically significant p value could be used to construct model in the next module.
+model_feas<-as.character(res[res$p.value<0.05,"sig_names"])
+
+# For analyses of continuous variables
+# head(imvigor210_sig)
+res<-batch_cor(data    = imvigor210_sig,
+               target  = "Pan_F_TBRs",
+               feature = colnames(imvigor210_sig)[3:ncol(imvigor210_sig)],
+               method  = "spearman")
+head(res, n=10)
+```
+#### <a id="Section.5.2.5.4" style="color:#B7950B;">4) Batch analyses of Pearson's correlation coefficient</a>
+Detail code to perform `batch_pcc()`function for batch analyses of Partial Correlation coefficient(PCC) is shown below.
+
+Herein, we utilized the data of the Pan_F_TBRs relevant signatures after adjusting TumorPurity  as an example input. The major limitation of this method is that it may merely suitable for correlation estimation between two continuous variables.
+```{r,warning=FALSE,message=FALSE}
+pdata_group <- imvigor210_pdata[, c("ID", "TumorPurity", "Pan_F_TBRs")] %>% 
+  rename(target = Pan_F_TBRs) %>% mutate(target = as.numeric(target))
+res <- batch_pcc(pdata_group    = pdata_group, 
+                 id1            = "ID", 
+                 feature_data   = imvigor210_sig, 
+                 id2            = "ID", 
+                 interferenceid = "TumorPurity",
+                 target         = "target",
+                 method         = "pearson")
+head(res, n = 8)
+```
+
+
+## <a id="Section.5.3" style="color:#B7950B;">5.3 Signature Associated Mutation Module</a>
+
+### <a id="Section.5.3.1" style="color:#B7950B;">5.3.1 Load Mutation MAF data</a>
+The input Mutation matrix with MAF data format is loaded for further analyses.
+
+MAF data of TCGA-STAD was obtained from [UCSC Xena website](https://api.gdc.cancer.gov/data/c06465a3-50e7-46f7-b2dd-7bd654ca206b)
+```{r}
+# help("make_mut_matrix")
+
+maf_file<-"../TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
+mut_list<-make_mut_matrix(maf      = maf_file,
+                          isTCGA   = T, 
+                          category = "multi")
+# If "multi" is set in above "category" parameter, four data frames will be returned, which evaluate all the mutations of every gene or estimate only SNP, indel and frameshift as follow:
+
+# NOTE: UCSCXenaTools can be applied to access variant data of TCGA data sets.
+var_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)") %>% 
+  XenaFilter(filterDatasets    = "TCGA-STAD.mutect2_snv.tsv") %>% 
+  XenaQuery() %>%
+  XenaDownload() %>% 
+  XenaPrepare()
+head(var_stad)
+# Then function `make_mut_matrix` can be used to transform data frame into mutation matrix
+mut_list2<-make_mut_matrix(mut_data               = var_stad,
+                           category               = "multi",
+                           Tumor_Sample_Barcode   = "Sample_ID",
+                           Hugo_Symbol            = "gene",
+                           Variant_Classification = "effect",
+                           Variant_Type           = "Variant_Type")
+
+# NOTE: IOBR provides mutation matrix(`tcga_stad_var`), if MAF data or UCSC can not be accessed. 
+tcga_stad_var[1:5,1:5]
+
+```
+
+
+### <a id="Section.5.3.2" style="color:#B7950B;">5.3.2 Analyze Phenotype Associated Signatures</a>
+Utilize `sig_group()` function for batch analyses and visualization of response associated signatures.
+```{r,fig.width=18,fig.height=12,warning=FALSE, message=FALSE}
+names(mut_list)
+mut_list$all[1:5, 1:10]
+
+# choose SNP mutation matrix as input
+mut<-mut_list$snp
+# NOTE: If the maximum of mutation counts of a single gene of a person in is over 4, the mutation data would be standardized according to following principles.
+# mut[mut>=3&mut<=5]<-3
+# mut[mut>5]<-4
+# Each gene of every samples is categorized as binary variables(mutation or non-mutation) in the MAF data. 
+##########################
+res<-find_mutations(mutation_matrix     = mut, 
+                    signature_matrix    = tcga_stad_sig,
+                    id_signature_matrix = "ID",
+                    signature           = "CD_8_T_effector",
+                    min_mut_freq        = 0.01,
+                    plot                = TRUE,
+                    method              = "Wilcoxon",
+                    save_path           = paste0("CD_8_T_effector-relevant-mutations"),
+                    palette             = "jco",
+                    show_plot           = T)
+
+```
+
+
+## <a id="Section.5.4" style="color:#B7950B;">5.4 Model Construction Module</a>
+For effective application of the signatures in clinical interpretation, IOBR also provides functions for feature selection, robust biomarker identification, and model construction based on priorly identified phenotype associated biomarkers in [5.2.3 Explore Phenotype Relevant Signatures](#Section.5.2.3).
+For predictive model construction.
+```{r,warning=FALSE,message=FALSE}
+
+data("imvigor210_sig")
+data("imvigor210_pdata")
+# For analyses of binary variables
+input<-imvigor210_pdata %>% 
+  dplyr::select(ID,BOR_binary) %>% 
+  inner_join(.,imvigor210_sig,by="ID") %>% 
+  filter(!is.na(.$BOR_binary)) %>% 
+  filter(!.$BOR_binary=="NA")
+
+# Feature engineering
+res<-batch_wilcoxon(data    = as.data.frame(input),
+                    target  = "BOR_binary",
+                    group_names = c("NR","R"),
+                    feature = colnames(input)[3:ncol(input)])
+head(res)
+model_feas<-as.character(res[res$p.value<0.05,"sig_names"])
+
+input<-as.data.frame(imvigor210_sig)
+feas<-colnames(input)[colnames(input)%in%model_feas]
+input<-input[, c("ID",feas)]
+
+# target data
+pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+
+#Feature selection
+binomial_result <- BinomialModel(x           = input, 
+                                 y           = pdata_group, 
+                                 seed        = "123456", 
+                                 scale       = TRUE,
+                                 train_ratio = 0.7, 
+                                 nfold       = 10, 
+                                 plot        = T)
+
+plot(binomial_result$lasso_result$model)
+plot(binomial_result$ridge_result$model)
+lapply(binomial_result[1:2], function(z)z$AUC)
+```
+
+
+For prognostic model construction.
+```{r,warning=FALSE,message=FALSE}
+data("imvigor210_pdata")
+
+pdata_prog<-imvigor210_pdata %>% 
+  dplyr::select(ID, OS_days, OS_status) %>% 
+  filter(!is.na(.$OS_days)) %>% 
+  filter(!.$OS_days=="NA") %>% 
+  dplyr:: rename(time = OS_days) %>% 
+  dplyr:: rename(status = OS_status) %>% 
+  mutate(time = as.numeric(.$time)) %>%
+  mutate(status = as.numeric(.$status))
+
+pdata_prog<-as.data.frame(pdata_prog)
+input<-as.data.frame(imvigor210_sig)
+
+prognostic_result <- PrognosticModel(x           = input, 
+                                     y           = pdata_prog, 
+                                     scale       = T, 
+                                     seed        = "123456", 
+                                     train_ratio = 0.8,
+                                     nfold       = 10,
+                                     plot        = T)
+plot(prognostic_result$lasso_result$model)
+plot(prognostic_result$ridge_result$model)
+```
+In order to find best predictive or prognostic signature, we recommend [Blasso](https://github.com/DongqiangZeng0808/Blasso) package to  determine the most robust markers. If Blasso R package is utilized in your published research, please cite: DQ Zeng, ZL Ye, et al., Macrophage correlates with immunophenotype and predicts anti-PD-L1 response of urothelial cancer. Theranostics 2020; 10(15):7002-7014. [doi:10.7150/thno.46176](https://www.thno.org/v10p7002.html)
+```{r,fig.width=18,fig.height=15,warning=FALSE, message=FALSE}
+if (!requireNamespace("Blasso", quietly = TRUE))  devtools::install_github("DongqiangZeng0808/Blasso")
+library("Blasso")
+#For prognostic biomarkers
+# res<-best_predictor_cox(target_data        = target, 
+#                         features           = features, 
+#                         status             = "status",
+#                         time               = "time",
+#                         nfolds             = 10,
+#                         permutation        = 300,
+#                         show_progress      = FALSE)
+#For predictive biomarkers
+# res<-best_predictor_binomial(target_data   = target, 
+#                              features      = features,
+#                              response      = "status",
+#                              nfolds        = 10,
+#                              permutation   = 300,
+#                              show_progress = FALSE)
+
+```
+
+
+# <a id="Section.6" style="color:#B7950B;">6. Summary</a>
+IOBR provides four major analytic modules allowing effective and flexible analysis of tumor immunologic, clinical, genomics, and single-cell data. There might be some limitations in this package, we will put our efforts into its improvement for more functionality in the future. Any questions, bug reports, or suggestions about IOBR R package is appreciated. Please contact us through E-mail to dongqiangzeng0808@gmail.com or yzlsibyl@163.com. 
+
+
+# <a id="Section.7" style="color:#B7950B;">7. Session Information</a>
+
+```{r}
+sessionInfo()
+```
+
+
+# <a id="Section.8" style="color:#B7950B;">8. Citing IOBR</a> 
+In that IOBR incorporating some algorithms and methodologies from many other packages, please cite corresponding papers alongside IOBR when using the functions contains these algorithms. The detailed paper sources and respective licenses were listed in the subset of [5.1.1 Available Methods to Decode TME Contexture](#Section.5.1.1).
+
+If IOBR R package is utilized in your published research, please cite:
+   
+   >+ DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu,  WJ Liao*. (2020). IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures. [doi........]
+
+Please cite the following papers appropriately for TME deconvolution algorithm if used:
+
+   >+ CIBERSORT: Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.  https://doi.org/10.1038/nmeth.3337 
+   >+ ESTIMATE: Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R.*(2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612. http://doi.org/10.1038/ncomms3612 
+   >+ quanTIseq: Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S.* (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. https://doi.org/10.1186/s13073-019-0638-6 
+   >+ Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S.* (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.     
+   >+ IPS: P. Charoentong et al.*, Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017). https://doi.org/10.1016/j.celrep.2016.12.019 
+   >+ MCPCounter: Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A*. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218. https://doi.org/10.1186/s13059-016-1070-5 
+   >+ xCell: Aran, D., Hu, Z., & Butte, A. J.* (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. https://doi.org/10.1186/s13059-017-1349-1 
+   >+ EPIC: Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D*. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. https://doi.org/10.7554/eLife.26476 
+
+
+For signature score estimation, please cite corresponding literature below:
+
+   >+ ssgsea: Barbie, D.A. et al (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature, 462(5):108-112.
+   >+ gsva: Hänzelmann, S., Castelo, R. and Guinney, J. (2013). GSVA: Gene set variation analysis for microarray and RNA-Seq data. BMC Bioinformatics, 14(1):7.
+   >+ zscore: Lee, E. et al (2008). Inferring pathway activity toward precise disease classification. PLoS Comp Biol, 4(11):e1000217.
+   
+
+For the datasets enrolled in IOBR, please cite the data sources:
+
+   >+ UCSCXena: Wang et al.,et al (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq. Journal of Open Source Software, 4(40), 1627 
+   >+ TLSscore: Helmink BA, Reddy SM, Gao J, et al. B cells and tertiary lymphoid structures promote immunotherapy response. Nature. 2020 Jan;577(7791):549-555.  
+   >+ IMvigor210 immuntherapy cohort: Mariathasan S, Turley SJ, Nickles D, et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature. 2018 Feb 22;554(7693):544-548. 
+   >+ HCP5: Kulski, J.K. Long Noncoding RNA HCP5, a Hybrid HLA Class I Endogenous Retroviral Gene: Structure, Expression, and Disease Associations. Cells 2019, 8, 480.
+   >+ HCP5: Li, Y., Jiang, T., Zhou, W. et al. Pan-cancer characterization of immune-related lncRNAs identifies potential oncogenic biomarkers. Nat Commun 11, 1000 (2020). 
+   >+ HCP5: Sun J, Zhang Z, Bao S, et alIdentification of tumor immune infiltration-associated lncRNAs for improving prognosis and immunotherapy response of patients with non-small cell lung cancerJournal for ImmunoTherapy of Cancer 2020;8:e000110.
+   >+ LINC00657: Feng Q, Zhang H, Yao D, Chen WD, Wang YD. Emerging Role of Non-Coding RNAs in Esophageal Squamous Cell Carcinoma. Int J Mol Sci. 2019 Dec 30;21(1):258. doi: 10.3390/ijms21010258. 
+   >+ LINC00657: Qin X, Zhou M, Lv H, Mao X, Li X, Guo H, Li L, Xing H. Long noncoding RNA LINC00657 inhibits cervical cancer development by sponging miR-20a-5p and targeting RUNX3. Cancer Lett. 2020 Oct 28:S0304-3835(20)30578-4. doi: 10.1016/j.canlet.2020.10.044.
+   >+ LINC00657: Zhang XM, Wang J, Liu ZL, Liu H, Cheng YF, Wang T. LINC00657/miR-26a-5p/CKS2 ceRNA network promotes the growth of esophageal cancer cells via the MDM2/p53/Bcl2/Bax pathway. Biosci Rep. 2020;40(6):BSR20200525.
+   >+ TCGA.STAD: Cancer Genome Atlas Research Network. Comprehensive molecular characterization of gastric adenocarcinoma. Nature. 2014 Sep 11;513(7517):202-9. doi: 10.1038/nature13480.
+   >+ TCGA.STAD MAF data: https://api.gdc.cancer.gov/data/c06465a3-50e7-46f7-b2dd-7bd654ca206b
+   
+   
+   
+# <a id="Section.9" style="color:#B7950B;">REFERENCES</a> 
+
+>1. Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457. 
+2. Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R.*(2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612.
+3. Rieder, D., Hackl, H., ..., Sopper, S.* (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. 
+4. Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S.* (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.     
+5. P. Charoentong et al.*, Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017).  
+6. Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A*. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218. 
+7. Aran, D., Hu, Z., & Butte, A. J.* (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. 
+8. Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D*. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. 
+9. Barbie, D.A. et al (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature, 462(5):108-112.
+10. Hänzelmann, S., Castelo, R. and Guinney, J. (2013). GSVA: Gene set variation analysis for microarray and RNA-Seq data. BMC Bioinformatics, 14(1):7.
+11. Lee, E. et al (2008). Inferring pathway activity toward precise disease classification. PLoS Comp Biol, 4(11):e1000217.
+12. Wang et al.,et al (2019). The UCSCXenaTools R package: a toolkit for accessing genomics data from UCSC Xena platform, from cancer multi-omics to single-cell RNA-seq. Journal of Open Source Software, 4(40), 1627
+13. Helmink BA, Reddy SM, Gao J, et al. B cells and tertiary lymphoid structures promote immunotherapy response. Nature. 2020 Jan;577(7791):549-555.  
+14. Mariathasan S, Turley SJ, Nickles D, et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature. 2018 Feb 22;554(7693):544-548. 
+15. Kulski, J.K. Long Noncoding RNA HCP5, a Hybrid HLA Class I Endogenous Retroviral Gene: Structure, Expression, and Disease Associations. Cells 2019, 8, 480.
+17. Li, Y., Jiang, T., Zhou, W. et al. Pan-cancer characterization of immune-related lncRNAs identifies potential oncogenic biomarkers. Nat Commun 11, 1000 (2020). 
+18. Sun J, Zhang Z, Bao S, et alIdentification of tumor immune infiltration-associated lncRNAs for improving prognosis and immunotherapy response of patients with non-small cell lung cancerJournal for ImmunoTherapy of Cancer 2020;8:e000110.
+19. Feng Q, Zhang H, Yao D, Chen WD, Wang YD. Emerging Role of Non-Coding RNAs in Esophageal Squamous Cell Carcinoma. Int J Mol Sci. 2019 Dec 30;21(1):258. doi: 10.3390/ijms21010258. 
+20. Qin X, Zhou M, Lv H, Mao X, Li X, Guo H, Li L, Xing H. Long noncoding RNA LINC00657 inhibits cervical cancer development by sponging miR-20a-5p and targeting RUNX3. Cancer Lett. 2020 Oct 
+21. Zhang XM, Wang J, Liu ZL, Liu H, Cheng YF, Wang T. LINC00657/miR-26a-5p/CKS2 ceRNA network promotes the growth of esophageal cancer cells via the MDM2/p53/Bcl2/Bax pathway. Biosci Rep. 2020;40(6):BSR20200525.
+22. Cancer Genome Atlas Research Network. Comprehensive molecular characterization of gastric adenocarcinoma. Nature. 2014 Sep 11;513(7517):202-9. doi: 10.1038/nature13480.
+
+
+
