@@ -14,8 +14,8 @@
 #' @examples
 PrognosticModel <- function(x, y, scale = F, seed = "123456", train_ratio = 0.7, nfold = 10, plot = T){
 
-  x<-as.data.frame(x)
-  y<-as.data.frame(y)
+  # x<-as.data.frame(x)
+  # y<-as.data.frame(y)
 
   print(message(paste0("\n", ">>> Processing data")))
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "survival")
