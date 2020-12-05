@@ -924,7 +924,7 @@ res<-batch_wilcoxon(data    = as.data.frame(input),
                     group_names = c("NR","R"),
                     feature = colnames(input)[3:ncol(input)])
 head(res)
-model_feas<-as.character(res[res$p.value<0.05,"sig_names"])
+model_feas<-as.character(res[res$p.value<0.05,]$sig_names)
 
 input<-as.data.frame(imvigor210_sig)
 feas<-colnames(input)[colnames(input)%in%model_feas]
