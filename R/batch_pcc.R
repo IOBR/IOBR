@@ -25,9 +25,13 @@ batch_pcc <- function(pdata_group, id1 = "ID",
                       feature_data, id2 = "ID",
                       interferenceid,
                       target, method = "pearson"){
+
+  if(target%in%colnames(feature_data)) feature_data<-feature_data[,-which(colnames(feature_data)==target)]
+  if(interferenceid%in%colnames(feature_data)) feature_data<-feature_data[,-which(colnames(feature_data)==interferenceid)]
+
   dat <- merge(pdata_group, feature_data, by.x = id1, by.y = id2)
   features <- setdiff(colnames(feature_data), id2)
-  aa <- dat[, features] %>%as_tibble() %>%
+  aa <- dat[, features] %>% tibble::as_tibble() %>%
     map(ppcor::pcor.test, y = dat[,target], z = dat[, interferenceid], method=method)
   pvalue <- aa %>% purrr::map_dbl("p.value")
   statistic <- aa %>% purrr::map_dbl("estimate")
