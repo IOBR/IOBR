@@ -79,7 +79,7 @@ library(IOBR)
 ### 3.Manual
 
 IOBR pipeline diagram below outlines the data processing flow of this
-package, and a detailed guidance of how to use IOBR could be find in the
+package, and detailed guidance of how to use IOBR could be found in the
 [HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html), or by
 typing the following code to R session.
 

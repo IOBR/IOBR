@@ -19,10 +19,10 @@
   msg <- paste0("==========================================================================\n",
                 " ", pkgname, " v", pkgVersion, "  ",
 
-                "  For help: https://github.com/DongqiangZeng0808/", pkgname, "\n\n")
+                "  For help: https://github.com/IOBR/IOBR/issues", "\n\n")
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
-                    " DQ Zeng, ZL Ye, RF Shen, Y Xiong, JN Wu, WJ Qiu,  WJ Liao*\n",
+                    " Zeng et al., (2020)*\n",
                     " IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment \n",
                     " and signatures. \n",
                     # " XXXX, 2020", "\n",
