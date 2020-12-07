@@ -16,7 +16,7 @@ batch_wilcoxon(
 
 \item{target}{name of group:}
 
-\item{group_names}{with `high` and `low` default}
+\item{group_names}{with `high` and `low` as default}
 
 \item{feature}{feature used to comparison}
 }

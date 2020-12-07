@@ -5,7 +5,7 @@
 #'
 #' @param data signature matrix with two groups
 #' @param target name of group:
-#' @param group_names  with `high` and `low` default
+#' @param group_names  with `high` and `low` as default
 #' @param feature feature used to comparison
 #'
 #' @return

@@ -58,7 +58,7 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
     res$ProjectID<-project
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
 }
 
@@ -97,7 +97,7 @@ deconvo_mcpcounter<-function(eset,project = NULL){
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
 
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
   ###################################
 }
@@ -141,7 +141,7 @@ deconvo_epic<-function(eset,project = NULL,tumor){
     res$ProjectID<-project
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
   ###################################
 }
@@ -201,7 +201,7 @@ deconvo_cibersort<-function(eset, project = NULL, arrays,  perm = 1000, absolute
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
 
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
   ###################################
 }
@@ -239,7 +239,7 @@ deconvo_ips<-function(eset,project = NULL,plot){
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
 
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
   return(res)
 }
 
@@ -262,7 +262,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 
   message(paste0("\n", ">>> Running ", "ESTIMATE"))
   eset<-as.data.frame(eset)
-  eset<-rownames_to_column(eset,var = "symbol")
+  eset<-tibble::rownames_to_column(eset,var = "symbol")
   sampleData<-paste0(project,"-eset.txt");sampleData
   write.table(eset,sampleData,sep = "\t",row.names = F,quote = F)
   ########################################
@@ -289,7 +289,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
     scores<-scores[,c(ncol(scores),1:ncol(scores)-1)]
   }
 
-  scores<-rownames_to_column(as.data.frame(scores),var = "ID")
+  scores<-tibble::rownames_to_column(as.data.frame(scores),var = "ID")
   scores$ID<-gsub(scores$ID,pattern = "\\.",replacement = "-")
 
   return(scores)
@@ -449,7 +449,7 @@ deconvo_timer = function(eset,project = NULL,indications = NULL) {
     results<-results[,c(ncol(results),1:ncol(results)-1)]
   }
 
-  results<-rownames_to_column(results,var = "ID")
+  results<-tibble::rownames_to_column(results,var = "ID")
 
   return(results)
 }
@@ -475,7 +475,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 
   res<-as.data.frame(res)
   rownames(res)<-NULL
-  res<-column_to_rownames(res,var = "Sample")
+  res<-tibble::column_to_rownames(res,var = "Sample")
 
   colnames(res)<-paste(colnames(res),"_quantiseq",sep = "")
 
@@ -489,7 +489,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 
 
 
-  res<-rownames_to_column(res,var = "ID")
+  res<-tibble::rownames_to_column(res,var = "ID")
 
   return(res)
 }

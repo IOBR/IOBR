@@ -31,7 +31,7 @@ find_mutations(
 
 \item{plot}{logical variable, if TRUE, plot will be save in the `save_path`}
 
-\item{method}{`multi` or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed}
+\item{method}{multi or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed}
 
 \item{save_path}{path to save plot and statistical analyses}
 

@@ -4,7 +4,7 @@
 \alias{batch_cor}
 \title{Batch to conduct correlation analysis with multiple features}
 \usage{
-batch_cor(data = data, target = target, feature = feature, method = "spearman")
+batch_cor(data, target, feature, method = "spearman")
 }
 \arguments{
 \item{data}{signature matrix with multiple features}

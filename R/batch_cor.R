@@ -17,7 +17,7 @@
 #' @export
 #'
 #' @examples
-batch_cor<-function(data = data,target = target, feature = feature,method = "spearman"){
+batch_cor<-function(data, target, feature, method = "spearman"){
 
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
@@ -41,6 +41,7 @@ batch_cor<-function(data = data,target = target, feature = feature,method = "spe
   rownames(cc)<-NULL
   cc$stars <- cut(cc$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                   label=c("****","***", "**", "*", "+",""))
+  cc<-tibble::as_tibble(cc)
   return(cc)
 }
 
