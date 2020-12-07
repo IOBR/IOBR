@@ -304,7 +304,7 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
   res <-GSVA::gsva(as.matrix(eset), signature,
                   method="ssgsea",
-                  kcdf="Gaussian", #标准化好的所有基因表达矩阵都推荐使用Gaussian
+                  kcdf="Gaussian",
                   min.sz=5,
                   ssgsea.norm=T)
   res<-as.data.frame(t(res))

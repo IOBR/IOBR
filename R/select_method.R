@@ -1,32 +1,35 @@
 
 
 
-#' Choose which method to conduct analysis
+#' Choose which method to conduct following analysis
 #'
-#' @param score TME signature score matrix
-#' @param choosemethod choosemethod to analysis, contain three methodologies : PCA, ssGSEA, zScore
+#' @param data signature matrix
+#' @param method choose method to analysis, contain three methodologies : PCA, ssGSEA, zScore
 #'
-#' @return filterd TME signature score matrix
+#' @return filtered signature score matrix
 #' @export
 #'
 #' @examples
-select_method<-function(score = score, choosemethod = "ssGSEA" ){
+select_method<-function(data, method = "ssGSEA" ){
 
-  if (choosemethod=="ssGSEA") {
-    score<-score[,-grep(colnames(score),pattern = "_PCA")];
-    score<-score[,-grep(colnames(score),pattern = "_zscore")]
-    colnames(score)<-gsub(colnames(score),pattern = "_ssGSEA",replacement = "")
+
+  method<-tolower(method)
+
+  if (method=="ssgsea") {
+    data<-data[,-grep(colnames(data),pattern = "_PCA")]
+    data<-data[,-grep(colnames(data),pattern = "_zscore")]
+    colnames()<-gsub(colnames(data),pattern = "_ssGSEA",replacement = "")
   }
-  if (choosemethod=="PCA") {
-    score<-score[,-grep(colnames(score),pattern = "_ssGSEA")];
-    score<-score[,-grep(colnames(score),pattern = "_zscore")]
-    colnames(score)<-gsub(colnames(score),pattern = "_PCA",replacement = "")
+  if (method=="pca") {
+    data<-data[,-grep(colnames(data),pattern = "_ssGSEA")]
+    data<-data[,-grep(colnames(data),pattern = "_zscore")]
+    colnames(data)<-gsub(colnames(data),pattern = "_PCA",replacement = "")
   }
-  if (choosemethod=="zScore") {
-    score<-score[,-grep(colnames(score),pattern = "_ssGSEA")];
-    score<-score[,-grep(colnames(score),pattern = "_PCA")]
-    colnames(score)<-gsub(colnames(score),pattern = "_zscore",replacement = "")
+  if (method=="zscore") {
+    data<-data[,-grep(colnames(data),pattern = "_ssGSEA")]
+    data<-data[,-grep(colnames(data),pattern = "_PCA")]
+    colnames(data)<-gsub(colnames(data),pattern = "_zscore",replacement = "")
   }
-  return(score)
+  return(data)
 }
 #############################################
