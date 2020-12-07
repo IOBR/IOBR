@@ -2,18 +2,18 @@
 % Please edit documentation in R/select_method.R
 \name{select_method}
 \alias{select_method}
-\title{Choose which method to conduct analysis}
+\title{Choose which method to conduct following analysis}
 \usage{
-select_method(score = score, choosemethod = "ssGSEA")
+select_method(data, method = "ssGSEA")
 }
 \arguments{
-\item{score}{TME signature score matrix}
+\item{data}{signature matrix}
 
-\item{choosemethod}{choosemethod to analysis, contain three methodologies : PCA, ssGSEA, zScore}
+\item{method}{choose method to analysis, contain three methodologies : PCA, ssGSEA, zScore}
 }
 \value{
-filterd TME signature score matrix
+filtered signature score matrix
 }
 \description{
-Choose which method to conduct analysis
+Choose which method to conduct following analysis
 }
