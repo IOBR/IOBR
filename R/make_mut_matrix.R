@@ -25,7 +25,7 @@ make_mut_matrix<-function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category =
 
   if(!is.null(maf)){
 
-    mut_maf<-maftools:: read.maf(maf = maf,useAll = FALSE,isTCGA = isTCGA)
+    mut_maf<-maftools:: read.maf(maf = maf,useAll = TRUE,isTCGA = isTCGA)
 
     print(summary(mut_maf@data$Variant_Classification))
     print(summary(mut_maf@data$Variant_Type))
