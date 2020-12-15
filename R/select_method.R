@@ -18,7 +18,7 @@ select_method<-function(data, method = "ssGSEA" ){
   if (method=="ssgsea") {
     data<-data[,-grep(colnames(data),pattern = "_PCA")]
     data<-data[,-grep(colnames(data),pattern = "_zscore")]
-    colnames()<-gsub(colnames(data),pattern = "_ssGSEA",replacement = "")
+    colnames(data)<-gsub(colnames(data),pattern = "_ssGSEA",replacement = "")
   }
   if (method=="pca") {
     data<-data[,-grep(colnames(data),pattern = "_ssGSEA")]
