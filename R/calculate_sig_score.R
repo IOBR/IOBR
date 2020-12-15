@@ -373,6 +373,7 @@ calculate_sig_score<-function(pdata = NULL,
     }
   }
   ##########################################
+  method<-tolower(method)
   # run selected method
   res = switch(method,
                pca = calculate_sig_score_pca(pdata, eset,
