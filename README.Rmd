@@ -125,9 +125,7 @@ sig_group[1:3]
 
 References
 ---------
-DQ Zeng, ZL Ye, RF Shen, Y Xiong..., WJ Liao*.
-
-IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures.
+DQ Zeng, ZL Ye, GC Yu, …, WJ Liao*, IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures. bioRxiv, 2020.2012.2014.422647 (2020).[doi: 10.1101/2020.12.14.422647](https://www.biorxiv.org/content/10.1101/2020.12.14.422647v1)
 
 
 Reporting bugs
