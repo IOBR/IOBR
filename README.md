@@ -80,6 +80,7 @@ library(IOBR)
 
 IOBR pipeline diagram below outlines the data processing flow of this
 package, and detailed guidance of how to use IOBR could be found in the
+[GitHub vignette](https://github.com/IOBR/IOBR/tree/master/vignettes) or
 [HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html), or by
 typing the following code to R session.
 
