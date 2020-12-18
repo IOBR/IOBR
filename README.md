@@ -8,16 +8,16 @@ microenvironment and signatures for immuno-oncology.
 
 ### 1.Introduction
 
-  - 1.  IOBR integrates 8 published methodologies decoding tumor
-        microenvironment (TME) contexture: `CIBERSORT`, `TIMER`,
-        `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
-
-  - 2.  IOBR collects 255 published signature gene sets, involving tumor
+  - 1.  IOBR collects 255 published signature gene sets, involving tumor
         microenvironment, tumor metabolism, m6A, exosomes,
         microsatellite instability, and tertiary lymphoid structure.
         Running the function `signature_collection_citation` to attain
         the source papers. The function `signature_collection` returns
         the detail signature genes of all given signatures.
+
+  - 2.  IOBR integrates 8 published methodologies decoding tumor
+        microenvironment (TME) contexture: `CIBERSORT`, `TIMER`,
+        `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
 
   - 3.  IOBR adopts three computational methods to calculate the
         signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
@@ -29,7 +29,9 @@ microenvironment and signatures for immuno-oncology.
   - 5.  IOBR also integrates methods for batch visualization of subgroup
         characteristics.
 
-IOBR package workflow ![IOBR logo](./man/figures/IOBR-Workflow.png)
+#### IOBR package workflow
+
+![IOBR logo](./man/figures/IOBR-Workflow.png)
 
 ### 2.Installation
 
@@ -81,12 +83,7 @@ library(IOBR)
 IOBR pipeline diagram below outlines the data processing flow of this
 package, and detailed guidance of how to use IOBR could be found in the
 [GitHub vignette](https://github.com/IOBR/IOBR/tree/master/vignettes) or
-[HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html), or by
-typing the following code to R session.
-
-``` r
-browseVignettes("IOBR") 
-```
+[HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html).
 
 ![IOBR logo](./man/figures/IOBR-Package.png)
 
