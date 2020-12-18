@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# IOBR: Immuno-Oncology Biological Research
+
+IOBR is an R package to perform comprehensive analysis of tumor
+microenvironment and signatures for immuno-oncology.
+
 # CONTENTS
 
   - [1. Introduction](#Section.1)
@@ -201,7 +206,7 @@ eset_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)")
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/RtmpQaWcsk.
+#> All downloaded files will under directory /tmp/RtmpG670Gn.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.htseq_counts.tsv.gz
@@ -940,7 +945,7 @@ res<-cell_bar_plot(input = cibersort[1:12,], title = "CIBERSORT Cell Fraction")
 #> There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 ```
 
-<img src="man/figuresunnamed-chunk-28-1.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-28-1.png" width="100%" />
 
 #### <a id="Section.5.1.3.2" style="color:#B7950B;">2) Method 2: EPIC</a>
 
@@ -1104,7 +1109,7 @@ res<-cell_bar_plot(input = quantiseq[1:12, ], title = "quanTIseq Cell Fraction")
 #> There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 ```
 
-<img src="man/figuresunnamed-chunk-35-1.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-35-1.png" width="100%" />
 
 #### <a id="Section.5.1.3.8" style="color:#B7950B;">8) Method 8: IPS</a>
 
@@ -1272,15 +1277,15 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
-<img src="man/figuresunnamed-chunk-40-1.png" width="100%" /><img src="man/figuresunnamed-chunk-40-2.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-40-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-40-2.png" width="100%" />
 
     #> [1] ">>>  Processing signature: io_biomarkers"
 
-<img src="man/figuresunnamed-chunk-40-3.png" width="100%" /><img src="man/figuresunnamed-chunk-40-4.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-40-3.png" width="100%" /><img src="../man/figuresunnamed-chunk-40-4.png" width="100%" />
 
     #> [1] ">>>  Processing signature: immu_suppression"
 
-<img src="man/figuresunnamed-chunk-40-5.png" width="100%" /><img src="man/figuresunnamed-chunk-40-6.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-40-5.png" width="100%" /><img src="../man/figuresunnamed-chunk-40-6.png" width="100%" />
 
     #> [1] ">>> Proportion of two groups:"
     #>  NR   R 
@@ -1340,15 +1345,15 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: CD_8_T_effector"
 ```
 
-<img src="man/figuresunnamed-chunk-41-1.png" width="100%" /><img src="man/figuresunnamed-chunk-41-2.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-41-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-41-2.png" width="100%" />
 
     #> [1] ">>>  Processing signature: DDR"
 
-<img src="man/figuresunnamed-chunk-41-3.png" width="100%" /><img src="man/figuresunnamed-chunk-41-4.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-41-3.png" width="100%" /><img src="../man/figuresunnamed-chunk-41-4.png" width="100%" />
 
     #> [1] ">>>  Processing signature: Immune_Checkpoint"
 
-<img src="man/figuresunnamed-chunk-41-5.png" width="100%" /><img src="man/figuresunnamed-chunk-41-6.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-41-5.png" width="100%" /><img src="../man/figuresunnamed-chunk-41-6.png" width="100%" />
 
     #> [1] ">>> Proportion of two groups:"
     #>  NR   R 
@@ -1512,15 +1517,15 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
-<img src="man/figuresunnamed-chunk-44-1.png" width="100%" /><img src="man/figuresunnamed-chunk-44-2.png" width="100%" /><img src="man/figuresunnamed-chunk-44-3.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-44-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-2.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-3.png" width="100%" />
 
     #> [1] ">>>  Processing signature: EMT"
 
-<img src="man/figuresunnamed-chunk-44-4.png" width="100%" /><img src="man/figuresunnamed-chunk-44-5.png" width="100%" /><img src="man/figuresunnamed-chunk-44-6.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-44-4.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-5.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-6.png" width="100%" />
 
     #> [1] ">>>  Processing signature: io_biomarkers"
 
-<img src="man/figuresunnamed-chunk-44-7.png" width="100%" /><img src="man/figuresunnamed-chunk-44-8.png" width="100%" /><img src="man/figuresunnamed-chunk-44-9.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-44-7.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-8.png" width="100%" /><img src="../man/figuresunnamed-chunk-44-9.png" width="100%" />
 
 ``` r
 
@@ -1579,15 +1584,15 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
-<img src="man/figuresunnamed-chunk-45-1.png" width="100%" /><img src="man/figuresunnamed-chunk-45-2.png" width="100%" /><img src="man/figuresunnamed-chunk-45-3.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-45-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-2.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-3.png" width="100%" />
 
     #> [1] ">>>  Processing signature: io_biomarkers"
 
-<img src="man/figuresunnamed-chunk-45-4.png" width="100%" /><img src="man/figuresunnamed-chunk-45-5.png" width="100%" /><img src="man/figuresunnamed-chunk-45-6.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-45-4.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-5.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-6.png" width="100%" />
 
     #> [1] ">>>  Processing signature: immu_microenvironment"
 
-<img src="man/figuresunnamed-chunk-45-7.png" width="100%" /><img src="man/figuresunnamed-chunk-45-8.png" width="100%" /><img src="man/figuresunnamed-chunk-45-9.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-45-7.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-8.png" width="100%" /><img src="../man/figuresunnamed-chunk-45-9.png" width="100%" />
 
 ``` r
 # # Check targeted genes and the statistical correlations with all analyzed signatures. (determined by Spearman's rank correlation coefficient.)  
@@ -1661,11 +1666,11 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
-<img src="man/figuresunnamed-chunk-47-1.png" width="100%" /><img src="man/figuresunnamed-chunk-47-2.png" width="100%" /><img src="man/figuresunnamed-chunk-47-3.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-47-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-47-2.png" width="100%" /><img src="../man/figuresunnamed-chunk-47-3.png" width="100%" />
 
     #> [1] ">>>  Processing signature: EMT"
 
-<img src="man/figuresunnamed-chunk-47-4.png" width="100%" /><img src="man/figuresunnamed-chunk-47-5.png" width="100%" /><img src="man/figuresunnamed-chunk-47-6.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-47-4.png" width="100%" /><img src="../man/figuresunnamed-chunk-47-5.png" width="100%" /><img src="../man/figuresunnamed-chunk-47-6.png" width="100%" />
 
 ``` r
 head(res)
@@ -1722,23 +1727,23 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
 #> [1] ">>>  Processing signature: CIBERSORT"
 ```
 
-<img src="man/figuresunnamed-chunk-48-1.png" width="100%" /><img src="man/figuresunnamed-chunk-48-2.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-48-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-2.png" width="100%" />
 
     #> [1] ">>>  Processing signature: MCPcounter"
 
-<img src="man/figuresunnamed-chunk-48-3.png" width="100%" /><img src="man/figuresunnamed-chunk-48-4.png" width="100%" /><img src="man/figuresunnamed-chunk-48-5.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-48-3.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-4.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-5.png" width="100%" />
 
     #> [1] ">>>  Processing signature: EPIC"
 
-<img src="man/figuresunnamed-chunk-48-6.png" width="100%" /><img src="man/figuresunnamed-chunk-48-7.png" width="100%" /><img src="man/figuresunnamed-chunk-48-8.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-48-6.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-7.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-8.png" width="100%" />
 
     #> [1] ">>>  Processing signature: xCell"
 
-<img src="man/figuresunnamed-chunk-48-9.png" width="100%" /><img src="man/figuresunnamed-chunk-48-10.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-48-9.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-10.png" width="100%" />
 
     #> [1] ">>>  Processing signature: quanTIseq"
 
-<img src="man/figuresunnamed-chunk-48-11.png" width="100%" /><img src="man/figuresunnamed-chunk-48-12.png" width="100%" /><img src="man/figuresunnamed-chunk-48-13.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-48-11.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-12.png" width="100%" /><img src="../man/figuresunnamed-chunk-48-13.png" width="100%" />
 
 ``` r
 head(res)
@@ -1945,7 +1950,7 @@ mut_list<-make_mut_matrix(maf      = maf_file,
 #>   FLG
 #> -Processing clinical data
 #> --Missing clinical data
-#> -Finished in 10.8s elapsed (24.0s cpu) 
+#> -Finished in 10.6s elapsed (22.2s cpu) 
 #>        Frame_Shift_Del        Frame_Shift_Ins           In_Frame_Del 
 #>                  18418                   4461                    692 
 #>           In_Frame_Ins      Missense_Mutation      Nonsense_Mutation 
@@ -1967,7 +1972,7 @@ var_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)") 
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/RtmpQaWcsk.
+#> All downloaded files will under directory /tmp/RtmpG670Gn.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.mutect2_snv.tsv.gz
@@ -2051,7 +2056,7 @@ res<-find_mutations(mutation_matrix     = mut,
 #> PLEC   8.026240e-04   PLEC      5562  3.933979e-02
 ```
 
-<img src="man/figuresunnamed-chunk-54-1.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-54-1.png" width="100%" />
 
 ## <a id="Section.5.4" style="color:#B7950B;">5.4 Model Construction Module</a>
 
@@ -2110,19 +2115,19 @@ binomial_result <- BinomialModel(x           = input,
 #> NULL
 ```
 
-<img src="man/figuresunnamed-chunk-55-1.png" width="100%" /><img src="man/figuresunnamed-chunk-55-2.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-55-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-55-2.png" width="100%" />
 
     #> NULL
     
     plot(binomial_result$lasso_result$model)
 
-<img src="man/figuresunnamed-chunk-55-3.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-55-3.png" width="100%" />
 
 ``` r
 plot(binomial_result$ridge_result$model)
 ```
 
-<img src="man/figuresunnamed-chunk-55-4.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-55-4.png" width="100%" />
 
 ``` r
 lapply(binomial_result[1:2], function(z)z$AUC)
@@ -2165,19 +2170,19 @@ prognostic_result <- PrognosticModel(x           = input,
 #> NULL
 ```
 
-<img src="man/figuresunnamed-chunk-56-1.png" width="100%" /><img src="man/figuresunnamed-chunk-56-2.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-56-1.png" width="100%" /><img src="../man/figuresunnamed-chunk-56-2.png" width="100%" />
 
 ``` r
 plot(prognostic_result$lasso_result$model)
 ```
 
-<img src="man/figuresunnamed-chunk-56-3.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-56-3.png" width="100%" />
 
 ``` r
 plot(prognostic_result$ridge_result$model)
 ```
 
-<img src="man/figuresunnamed-chunk-56-4.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-56-4.png" width="100%" />
 
 # <a id="Section.6" style="color:#B7950B;">6. Demonstration of IOBR Pipeline with An Example Dataset</a>
 
@@ -2414,7 +2419,7 @@ res<-best_predictor_cox(target_data        = target,
                         show_progress      = FALSE)
 ```
 
-<img src="man/figuresunnamed-chunk-67-1.png" width="100%" />
+<img src="../man/figuresunnamed-chunk-67-1.png" width="100%" />
 
 # <a id="Section.7" style="color:#B7950B;">7. Summary</a>
 
