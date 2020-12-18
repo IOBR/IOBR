@@ -73,10 +73,6 @@ library(IOBR)
 ### 3.Manual
 IOBR pipeline diagram below outlines the data processing flow of this package, and detailed guidance of how to use IOBR could be found in the [GitHub vignette](https://github.com/IOBR/IOBR/tree/master/vignettes) or [HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html).
 
-```{r,echo = F, message = FALSE, warning=FALSE}
-browseVignettes("IOBR") 
-```
-
 ![IOBR logo](./man/figures/IOBR-Package.png)
 
 
