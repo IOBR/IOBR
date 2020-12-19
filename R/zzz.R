@@ -22,11 +22,11 @@
                 "  For help: https://github.com/IOBR/IOBR/issues", "\n\n")
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
-                    " Zeng et al., (2020)*\n",
-                    " IOBR: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment \n",
-                    " and signatures. \n",
+                    " DQ Zeng, ZL Ye, GC Yu, …, WJ Liao*.\n",
+                    " IOBR: Multi-omics Immuno-Oncology Biological Research to decode \n ",
+                    " tumor microenvironment and signatures. bioRxiv, 2020.2012.2014.422647 (2020). \n",
                     # " XXXX, 2020", "\n",
-                    # " DOI:   ","\n" ,
+                    " DOI: 10.1101/2020.12.14.422647\n",
                     # " PMID:  ","\n",
                     "==========================================================================")
 
