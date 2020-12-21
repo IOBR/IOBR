@@ -21,7 +21,7 @@ Imports:
    MCPcounter,
    estimate,
    matrixStats
-BugReports: https://github.com/DongqiangZeng0808/IOBR/issues
+BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 
     knitr,
     rmarkdown

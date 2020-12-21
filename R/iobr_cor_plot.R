@@ -31,33 +31,38 @@
 #' @examples
 #'
 iobr_cor_plot<-function(pdata_group,
-                         id1 = "ID",
-                         feature_data,
-                         id2 = "ID",
-                         target = NULL,
-                         group = "group3",
-                         is_target_continuous = TRUE,
-                         padj_cutoff = 1,
-                         index = 1,
-                         category = "signature",
-                         signature_group = sig_group,
-                         ProjectID = "TCGA-STAD",
-                         palette_box = "nrc",
-                         palette_corplot = "pheatmap",
-                         palette_heatmap = 2,
-                         feature_limit = 26,
-                         character_limit = 30,
-                         show_heatmap_col_name = FALSE,
-                         show_col = FALSE,
-                         show_plot = FALSE){
+                        id1 = "ID",
+                        feature_data,
+                        id2 = "ID",
+                        target = NULL,
+                        group = "group3",
+                        is_target_continuous = TRUE,
+                        padj_cutoff = 1,
+                        index = 1,
+                        category = "signature",
+                        signature_group = sig_group,
+                        ProjectID = "TCGA-STAD",
+                        palette_box = "nrc",
+                        palette_corplot = "pheatmap",
+                        palette_heatmap = 2,
+                        feature_limit = 26,
+                        character_limit = 30,
+                        show_heatmap_col_name = FALSE,
+                        show_col = FALSE,
+                        show_plot = FALSE,
+                        path = NULL){
 
-  if(!is.null(target)){
-    file_store<-paste0(index,"-1-",ProjectID,"-",target,"-relevant-",category)
+  if(!is.null(path)){
+    file_store<-path
   }else{
-    file_store<-paste0(index,"-1-",ProjectID,"-",group,"-relevant-",category)
+    if(!is.null(target)){
+      file_store<-paste0(index,"-1-",ProjectID,"-",target,"-relevant-",category)
+    }else{
+      file_store<-paste0(index,"-1-",ProjectID,"-",group,"-relevant-",category)
+    }
   }
 
-  if ( ! file.exists(file_store) ) dir.create(file_store)
+  if(!file.exists(file_store)) dir.create(file_store)
   abspath<-paste(getwd(),"/",file_store,"/",sep ="" )
 
   if(is.null(names(signature_group))) signature_group<-list('signature' = signature_group)

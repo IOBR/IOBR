@@ -24,7 +24,8 @@ iobr_cor_plot(
   character_limit = 30,
   show_heatmap_col_name = FALSE,
   show_col = FALSE,
-  show_plot = FALSE
+  show_plot = FALSE,
+  path = NULL
 )
 }
 \arguments{
