@@ -206,7 +206,7 @@ eset_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)")
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/Rtmp9OZ6DM.
+#> All downloaded files will under directory /tmp/RtmpAOBNSI.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.htseq_counts.tsv.gz
@@ -1273,7 +1273,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "1-BOR-relevant-signatures")
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
@@ -1341,7 +1342,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "2-BOR-relevant-genes")
 #> [1] ">>>  Processing signature: CD_8_T_effector"
 ```
 
@@ -1513,7 +1515,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "3-HCP5-relevant-signatures")
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
@@ -1580,7 +1583,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "4-LINC00657-relevant-signatures")
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
@@ -1653,7 +1657,7 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    padj_cutoff           = 1,
                    index                 = 5,
                    category              = "signature",
-                   signature_group       =sig_group[1:2],
+                   signature_group       = sig_group[1:2],
                    ProjectID             = "IMvigor210",
                    palette_box           = "set2",
                    palette_corplot       = "pheatmap",
@@ -1662,7 +1666,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "5-Pan_F_TBRs-relevant-signatures")
 #> [1] ">>>  Processing signature: tumor_signature"
 ```
 
@@ -1723,7 +1728,8 @@ res<-iobr_cor_plot(pdata_group           = pdata_group,
                    character_limit       = 30,
                    show_heatmap_col_name = FALSE,
                    show_col              = FALSE,
-                   show_plot             = TRUE)
+                   show_plot             = TRUE,
+                   path                  = "6-Pan_F_TBRs-relevant-TME-cell")
 #> [1] ">>>  Processing signature: CIBERSORT"
 ```
 
@@ -1950,7 +1956,7 @@ mut_list<-make_mut_matrix(maf      = maf_file,
 #>   FLG
 #> -Processing clinical data
 #> --Missing clinical data
-#> -Finished in 11.1s elapsed (23.6s cpu) 
+#> -Finished in 11.2s elapsed (25.9s cpu) 
 #>        Frame_Shift_Del        Frame_Shift_Ins           In_Frame_Del 
 #>                  18418                   4461                    692 
 #>           In_Frame_Ins      Missense_Mutation      Nonsense_Mutation 
@@ -1972,7 +1978,7 @@ var_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)") 
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/Rtmp9OZ6DM.
+#> All downloaded files will under directory /tmp/RtmpAOBNSI.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.mutect2_snv.tsv.gz
