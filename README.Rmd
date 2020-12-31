@@ -48,7 +48,7 @@ for(i in 1:length(depens)){
 }
 
 if (!requireNamespace("EPIC", quietly = TRUE))
-  devtools::install_github("GfellerLab/EPIC", build_vignettes=TRUE)
+  devtools::install_github("GfellerLab/EPIC", ref="master")
 if (!requireNamespace("MCPcounter", quietly = TRUE))
   devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
 if (!requireNamespace("estimate", quietly = TRUE)){

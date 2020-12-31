@@ -15,6 +15,7 @@ Depends:
   ggplot2,
   ggpubr,
   survival,
+  tidyHeatmap,
   R(>= 3.5.0)
 Imports: 
    EPIC, 
