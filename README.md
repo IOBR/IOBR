@@ -35,7 +35,10 @@ microenvironment and signatures for immuno-oncology.
 
 ### 2.Installation
 
-Before installing IOBR, please install all dependencies by executing the
+It is essential that you have R 3.6.3 or above already installed on your
+computer or server. IOBR utilizes many other R packages that are
+currently available from CRAN, Bioconductor and GitHub. Before
+installing IOBR, please install all dependencies by executing the
 following command in R console:
 
 The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
@@ -44,10 +47,11 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
 ``` r
 # options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
-if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
-          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor","timeROC","pracma")
+          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor", "timeROC","pracma")
 for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
