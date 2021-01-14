@@ -31,9 +31,9 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa")
   # listEnsemblArchives()
   # listMarts()
   # listAttributes()
-  ds = datasets[grepl(org, datasets)]
-  mart <- biomaRt:: useMart(host = "www.ensembl.org", biomart = 'ENSEMBL_MART_ENSEMBL', dataset = ds)
-  ensembl =biomaRt::  getBM(attributes=type, mart = mart)
+  ds <- datasets[grepl(org, datasets)]
+  mart <- biomaRt::useMart(host = "www.ensembl.org", biomart = 'ENSEMBL_MART_ENSEMBL', dataset = ds)
+  ensembl <- biomaRt::getBM(attributes=type, mart = mart)
   ensembl$Length <- abs(ensembl$end_position - ensembl$start_position)
 
   if(toupper(idType) == "ENSEMBL"){
@@ -47,17 +47,17 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa")
   else
     stop("Please input right type of gene name, such as Ensembl or gene Symbol ...")
 
-  countMat<-as.matrix(countMat)
-  na_idx = which(is.na(len))
+  countMat <-as.matrix(countMat)
+  na_idx <- which(is.na(len))
   if(length(na_idx)>0){
     warning(paste0("Omit ", length(na_idx), " genes of which length is not available !"))
-    countMat = countMat[!is.na(len),]
+    countMat <- countMat[!is.na(len),]
     len = len[!is.na(len)]
   }
   tmp <- countMat / len
   TPM <- 1e6 * t(t(tmp) / colSums(tmp))
 
-  order_index=apply(TPM,1,function(x) mean(x,na.rm=T))
+  order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
   TPM <-TPM[order(order_index,decreasing=T),]
   TPM <- TPM[!duplicated(rownames(TPM)),]
   return(TPM)
