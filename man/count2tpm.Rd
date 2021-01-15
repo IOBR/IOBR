@@ -5,7 +5,17 @@
 \alias{count2tpm}
 \title{Convert read counts to transcripts per million (TPM)}
 \usage{
-count2tpm(countMat, idType = "Ensembl", org = "hsa")
+count2tpm(
+  countMat,
+  idType = "Ensembl",
+  org = "hsa",
+  source = "web",
+  effLength = NULL,
+  id = "id",
+  gene_symbol = "symbol",
+  length = "eff_length",
+  remove_redundancy = "mean"
+)
 }
 \arguments{
 \item{countMat}{A read count matrix, with geneid as rownames and sample as columns.}
@@ -13,6 +23,18 @@ count2tpm(countMat, idType = "Ensembl", org = "hsa")
 \item{idType}{Type of gene id. "Ensembl" "ENTREZ","SYMBOL",}
 
 \item{org}{Organism, hsa or mmu.}
+
+\item{source}{default is "web", user can provide effLength manually, if idType is ensembl and source is set to "default", effLength would be provided by IOBR which was estimated by gencode.v22}
+
+\item{effLength}{effLength data with gene id and effective length}
+
+\item{id}{id matched to row names of expression set}
+
+\item{gene_symbol}{gene symbol}
+
+\item{length}{gene length}
+
+\item{remove_redundancy}{dafault is mean, other options are sd or median}
 }
 \value{
 A tpm expression profile.

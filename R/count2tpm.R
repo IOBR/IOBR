@@ -13,6 +13,12 @@
 #' @param countMat A read count matrix, with geneid as rownames and sample as columns.
 #' @param idType Type of gene id. "Ensembl" "ENTREZ","SYMBOL",
 #' @param org Organism, hsa or mmu.
+#' @param source default is "web", user can provide effLength manually, if idType is ensembl and source is set to "default", effLength would be provided by IOBR which was estimated by gencode.v22
+#' @param effLength effLength data with gene id and effective length
+#' @param id id matched to row names of expression set
+#' @param length gene length
+#' @param gene_symbol gene symbol
+#' @param remove_redundancy dafault is mean, other options are sd or median
 #'
 #' @return A tpm expression profile.
 #'
@@ -20,34 +26,70 @@
 #' @author Dongqiang Zeng
 #' @export
 #'
-count2tpm <- function(countMat, idType = "Ensembl", org="hsa")
+count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", remove_redundancy = "mean")
 {
   # requireNamespace("biomaRt")
   if(class(countMat)!="matrix")  countMat<-as.matrix(countMat)
-  datasets = paste0(c("hsapiens", "mmusculus", "btaurus", "cfamiliaris",
-                      "ptroglodytes", "rnorvegicus", "sscrofa"), "_gene_ensembl")
-  type = c("ensembl_gene_id", "entrezgene_id", "hgnc_symbol", "start_position", "end_position")
-  if(org=="mmu") type[3] = "mgi_symbol"
-  # listEnsemblArchives()
-  # listMarts()
-  # listAttributes()
-  ds <- datasets[grepl(org, datasets)]
-  mart <- biomaRt::useMart(host = "www.ensembl.org", biomart = 'ENSEMBL_MART_ENSEMBL', dataset = ds)
-  ensembl <- biomaRt::getBM(attributes=type, mart = mart)
-  ensembl$Length <- abs(ensembl$end_position - ensembl$start_position)
 
-  if(toupper(idType) == "ENSEMBL"){
-    len <- ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), "Length"]
-    rownames(countMat) = ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), 3]
+  if(is.null(effLength) & source == "web"){
+    datasets = paste0(c("hsapiens", "mmusculus", "btaurus", "cfamiliaris",
+                        "ptroglodytes", "rnorvegicus", "sscrofa"), "_gene_ensembl")
+    type = c("ensembl_gene_id", "entrezgene_id", "hgnc_symbol", "start_position", "end_position")
+    if(org =="mmu") type[3] = "mgi_symbol"
+    # listEnsemblArchives()
+    # listMarts()
+    # listAttributes()
+    ds <- datasets[grepl(org, datasets)]
+    mart <- biomaRt::useMart(host = "www.ensembl.org", biomart = 'ENSEMBL_MART_ENSEMBL', dataset = ds)
+    ensembl <- biomaRt::getBM(attributes=type, mart = mart)
+    ensembl$Length <- abs(ensembl$end_position - ensembl$start_position)
+
+    if(toupper(idType) == "ENSEMBL"){
+      len <- ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), "Length"]
+      rownames(countMat) = ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), 3]
+    }
+    else if(toupper(idType) == "SYMBOL")
+      len <- ensembl[match(rownames(countMat), ensembl[,3]), "Length"]
+    else if(toupper(idType) == "ENTREZ")
+      len <- ensembl[match(rownames(countMat), ensembl[,2]), "Length"]
+    else
+      stop("Please input right type of gene name, such as Ensembl or gene Symbol ...")
   }
-  else if(toupper(idType) == "SYMBOL")
-    len <- ensembl[match(rownames(countMat), ensembl[,3]), "Length"]
-  else if(toupper(idType) == "ENTREZ")
-    len <- ensembl[match(rownames(countMat), ensembl[,2]), "Length"]
-  else
-    stop("Please input right type of gene name, such as Ensembl or gene Symbol ...")
 
-  countMat <-as.matrix(countMat)
+
+  if(source == "default" & tolower(idType) == "ensembl") {
+
+    countMat<-countMat[rownames(countMat)%in%length_ensembl$id,]
+    length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat),]
+
+    len<- length_ensembl[match(rownames(countMat), length_ensembl$id), "eff_length"]
+
+    rownames(countMat)<- length_ensembl[match(rownames(countMat),length_ensembl$id), 3]
+    countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
+
+  }
+
+  if(!is.null(effLength)){
+    colnames(effLength)[which(colnames(effLength)==id)]<-"id"
+    colnames(effLength)[which(colnames(effLength)==length)]<-"eff_length"
+
+    if(!id==gene_symbol){
+      colnames(effLength)[which(colnames(effLength)==gene_symbol)]<-"gene_symbol"
+      rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
+    }
+
+    countMat<-countMat[rownames(countMat)%in%effLength$id,]
+    effLength<-effLength[effLength$id%in%rownames(countMat),]
+
+    len<- effLength[match(rownames(countMat), effLength[,"id"]), "eff_length"]
+
+    if(!id==gene_symbol) {
+      rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
+      countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
+    }
+
+  }
+
   na_idx <- which(is.na(len))
   if(length(na_idx)>0){
     warning(paste0("Omit ", length(na_idx), " genes of which length is not available !"))
@@ -57,7 +99,14 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa")
   tmp <- countMat / len
   TPM <- 1e6 * t(t(tmp) / colSums(tmp))
 
-  order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
+  if(tolower(remove_redundancy)=="mean"){
+    order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
+  }else if(tolower(remove_redundancy)=="sd"){
+    order_index <- apply(TPM,1,function(x) sd(x,na.rm=T))
+  }else if(tolower(remove_redundancy)=="median"){
+    order_index <- apply(TPM,1,function(x) median(x,na.rm=T))
+  }
+
   TPM <-TPM[order(order_index,decreasing=T),]
   TPM <- TPM[!duplicated(rownames(TPM)),]
   return(TPM)
