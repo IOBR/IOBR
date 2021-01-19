@@ -15,7 +15,12 @@ find_mutations(
   save_path = NULL,
   palette = "paired3",
   show_plot = TRUE,
-  show_col = FALSE
+  show_col = FALSE,
+  width = 8,
+  height = 4,
+  oncoprint_group_by = "mean",
+  oncoprint_col = "#224444",
+  gene_counts = 10
 )
 }
 \arguments{
@@ -27,7 +32,7 @@ find_mutations(
 
 \item{signature}{name of target signature}
 
-\item{min_mut_freq}{minimum frequency of mutation}
+\item{min_mut_freq}{minimum frequency of mutations}
 
 \item{plot}{logical variable, if TRUE, plot will be save in the `save_path`}
 
@@ -40,6 +45,18 @@ find_mutations(
 \item{show_plot}{logical variable, if TRUE, plot will be printed.}
 
 \item{show_col}{show code of palette}
+
+\item{width}{width of oncoprint}
+
+\item{height}{height of oncoprint}
+
+\item{oncoprint_group_by}{signature must be group by mean or quantile}
+
+\item{oncoprint_col}{color of mutation}
+
+\item{gene_counts}{define the number of genes which will be shown in the oncoprint}
+
+\item{group_col}{color of signature group}
 }
 \value{
 
