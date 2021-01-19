@@ -11,20 +11,26 @@
 #' @param signature_matrix signature data frame with identifier and target signature
 #' @param id_signature_matrix column name of identifier
 #' @param signature name of target signature
-#' @param min_mut_freq minimum frequency of mutation
+#' @param min_mut_freq minimum frequency of mutations
 #' @param plot logical variable, if TRUE, plot will be save in the `save_path`
 #' @param method multi or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed
 #' @param save_path path to save plot and statistical analyses
 #' @param palette palette of box plot
 #' @param show_plot logical variable, if TRUE, plot will be printed.
 #' @param show_col show code of palette
+#' @param width width of oncoprint
+#' @param height height of oncoprint
+#' @param oncoprint_group_by signature must be group by mean or quantile
+#' @param oncoprint_col color of mutation
+#' @param gene_counts define the number of genes which will be shown in the oncoprint
+#' @param group_col color of signature group
 #'
 #' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE){
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE,width = 8, height = 4,oncoprint_group_by = "mean",oncoprint_col = "#224444",gene_counts = 10){
 
 
 
@@ -46,6 +52,9 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   mut2<-mutation_matrix
   mut2[mut2>=1]<-1
+
+  mut_onco<-mut2
+
   mutfreq<-data.frame(head(sort(colSums(mut2),decreasing = T),500))
   colnames(mutfreq)<-"Freq"
   index<-which(mutfreq$Freq>=dim(mut2)[1]*min_mut_freq)
@@ -231,7 +240,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     print(">>>> Result of Wilcoxon test")
     print(res[1:10,])
 
-    write.csv(res, paste0(abspath,"1-Wilcoxon-test-relevant-mutations.csv"))
+    write.csv(res, paste0(abspath,"0-Wilcoxon-test-relevant-mutations.csv"))
 
     result<-list("wilcoxon_test" = res,"sig_mut_data" = input2)
     #################################
@@ -280,7 +289,121 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   }
 
-  return(result)
 
+
+  genes<-result$wilcoxon_test$names
+  genes<-genes[1:gene_counts]
+  signature_matrix<-signature_matrix[!duplicated(signature_matrix$ID),]
+  signature_matrix<-signature_matrix[signature_matrix$ID%in%rownames(mut_onco),]
+  mut_onco<-mut_onco[rownames(mut_onco)%in%signature_matrix$ID,]
+  ####################################
+
+  pdata_group<- signature_matrix[,c("ID",signature)]
+  pdata_group[,signature]<-as.numeric(pdata_group[,signature])
+
+  max_sig<-max(pdata_group[,signature],na.rm =  TRUE )
+  min_sig<-min(pdata_group[,signature],na.rm =  TRUE)
+  #################################
+  if(oncoprint_group_by=="mean"){
+    if(!"group2"%in%colnames(pdata_group)){
+      pdata_group$group<-ifelse(pdata_group[,signature]>=mean(pdata_group[,signature]),"High","Low")
+    }
+  }else if(oncoprint_group_by=="quantile3"){
+    if(!"group3"%in%colnames(pdata_group)){
+      q1<-quantile(pdata_group[,signature],probs = 1/3)
+      q2<-quantile(pdata_group[,signature],probs = 2/3)
+      pdata_group$group<-ifelse(pdata_group[,signature]<=q1,"Low",ifelse(pdata_group[,signature]>=q2,"High","Middle"))
+    }
+  }else{
+    stop("Signature must be group by mean or quantile3 \n")
+  }
+  print(head(pdata_group))
+  idh<-pdata_group[pdata_group$group=="High","ID"]
+  idl<-pdata_group[pdata_group$group=="Low","ID"]
+  pdata1<-pdata_group[pdata_group$ID%in%idh, ]
+  pdata2<-pdata_group[pdata_group$ID%in%idl, ]
+
+
+  # library(ComplexHeatmap)
+  group_col<-palettes(category = "box",palette = palette,show_col = show_col)
+
+  h1<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata1[,target]),
+                                                        border=FALSE,
+                                                        gp = gpar(fill="#2D004B"),
+                                                        axis = TRUE,
+                                                        ylim = c(min_sig,max_sig)),
+
+                         Group = pdata1$group,
+                         annotation_height=unit.c(rep(unit(1.5, "cm"), 1), rep(unit(0.5, "cm"), 1)), #unit.c(rep(unit(0.9, "cm"), 5))
+                         annotation_legend_param=list(labels_gp = gpar(fontsize = 10),
+                                                      title_gp = gpar(fontsize = 10, fontface = "bold"),
+                                                      ncol=1),
+                         gap=unit(c(2,2), "mm"),
+                         col=list(Group = c("High" = group_col[1],"Low" = group_col[2])),
+                         show_annotation_name = TRUE,
+                         #annotation_name_side="left",
+                         annotation_name_gp = gpar(fontsize = 12))
+
+  h2<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata2[,target]),
+                                                        border=FALSE,
+                                                        gp = gpar(fill="#2D004B"),
+                                                        axis = TRUE,
+                                                        ylim = c(min_sig,max_sig)),
+
+                         Group = pdata2$group,
+                         annotation_height=unit.c(rep(unit(1.5, "cm"), 1), rep(unit(0.5, "cm"), 1)), #unit.c(rep(unit(0.9, "cm"), 5))
+                         annotation_legend_param=list(labels_gp = gpar(fontsize = 10),
+                                                      title_gp = gpar(fontsize = 10, fontface = "bold"),
+                                                      ncol=1),
+                         gap=unit(c(2,2), "mm"),
+                         col=list(Group = c("High" = group_col[1],"Low" = group_col[2])),
+                         show_annotation_name = TRUE,
+                         #annotation_name_side="left",
+                         annotation_name_gp = gpar(fontsize = 12))
+
+
+
+
+
+  col = c(mut = oncoprint_col)
+  mut1<-t(mut_onco[rownames(mut_onco)%in%idh, colnames(mut_onco)%in%genes])
+  mut2<-t(mut_onco[rownames(mut_onco)%in%idl, colnames(mut_onco)%in%genes])
+
+  mut1<-list(mut = mut1)
+  mut2<-list(mut = mut2)
+  #########################################
+  ho1<-ComplexHeatmap:: oncoPrint(mut1,
+                 alter_fun_is_vectorized = FALSE,
+                 alter_fun = list(mut = function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.88,
+                                                                       gp = gpar(fill = oncoprint_col, col = oncoprint_col))),
+                 column_title = paste0(" High ", signature),
+                 show_heatmap_legend = FALSE,
+                 heatmap_legend_param = list(title = "", labels = ""),
+                 col = col,
+                 top_annotation = h1)
+
+
+  ho2<-ComplexHeatmap:: oncoPrint(mut2,
+                 alter_fun_is_vectorized = FALSE,
+                 alter_fun = list(mut = function(x, y, w, h) grid.rect(x, y, w*0.9, h*0.88,
+                                                                       gp = gpar(fill = oncoprint_col, col = oncoprint_col))),
+                 column_title = paste0(" Low ", signature),
+                 show_heatmap_legend = FALSE,
+                 heatmap_legend_param = list(title = "", labels = "Mutation"),
+                 col = col,
+                 top_annotation = h2)
+
+
+  p<-ho1+ho2
+
+  # fig.path<-paste0(getwd(),"/",save_path)
+  # save to pdf
+  pdf(file.path(abspath, paste0("0-OncoPrint-",signature,".pdf")), width = width, height = height)
+  draw(p)
+  invisible(dev.off())
+  # print to screen
+  # draw(p)
+
+  return(result)
 
 }

@@ -150,12 +150,13 @@ iobr_cor_plot<-function(pdata_group,
     index_i<- which(names(group_list)==panel[x])[1]
     group_name<-names(group_list)[index_i]
 
-    print(paste0(">>>  Processing signature: ", group_name))
+    # print(paste0(">>>  Processing signature: ", group_name))
 
     features<-group_list[[index_i]]
     features<-features[features%in%colnames(pf)]
     if(length(features)<= 2) next
 
+    print(paste0(">>>  Processing signature: ", group_name))
     #####################################
     #if counts of features is larger than feature limit, choose most significant variables
     if(length(features) > feature_limit){
@@ -216,6 +217,7 @@ iobr_cor_plot<-function(pdata_group,
                             patterns_to_na = patterns_to_na,
                             patterns_space = c("\\_"))
     }
+
 
     # pf_long$variables<-gsub(pf_long$variables,pattern = "\\_",replacement = " ")
 
