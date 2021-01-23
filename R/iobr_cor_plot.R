@@ -143,8 +143,19 @@ iobr_cor_plot<-function(pdata_group,
 
   pf_stat<-pf
   ####################################################################
-  if(!class(signature_group)=="list") stop(">>> Input must be a list.")
+  if(!class(signature_group)=="list") stop(">>> Signature_group must be a list.")
   ####################################################################
+
+  all_sig<- unique(unlist(group_list))
+
+  if(category=="signature"){
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching signature in signature matrix and signature_group, please add new signature groups into sig_group list or generate another one list")
+  }
+
+  if(category=="gene"){
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set and signature_group, please add new signature groups into signature_collections list or generate another one list")
+  }
+
   for (x in 1:length(panel)) {
 
     index_i<- which(names(group_list)==panel[x])[1]
@@ -154,7 +165,7 @@ iobr_cor_plot<-function(pdata_group,
 
     features<-group_list[[index_i]]
     features<-features[features%in%colnames(pf)]
-    if(length(features)<= 2) next
+    if(length(features)< 2) next
 
     print(paste0(">>>  Processing signature: ", group_name))
     #####################################
