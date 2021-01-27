@@ -5,7 +5,7 @@
 \title{Calculating signature score using PCA method}
 \usage{
 calculate_sig_score_pca(
-  pdata,
+  pdata = NULL,
   eset,
   signature,
   mini_gene_count,
@@ -16,7 +16,7 @@ calculate_sig_score_pca(
 \item{pdata}{phenotype data of input sample;
 if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset}
 
-\item{eset}{normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
+\item{eset}{normalized transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
 Gene expression data should be scale before signature score estimation}
 
 \item{signature}{List of gene signatures;}

@@ -5,7 +5,7 @@
 \title{Calculating signature score using ssGSEA method}
 \usage{
 calculate_sig_score_ssgsea(
-  pdata,
+  pdata = NULL,
   eset,
   signature,
   mini_gene_count,

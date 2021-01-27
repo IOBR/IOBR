@@ -5,7 +5,7 @@
 \title{Calculating signature score using Integration method}
 \usage{
 calculate_sig_score_integration(
-  pdata,
+  pdata = NULL,
   eset,
   signature,
   mini_gene_count = 2,
