@@ -58,7 +58,7 @@ calculate_sig_score_pca<-function(pdata,
   ###########################
 
   #normalization
-  if(max(eset)>100) eset<-log2(eset+1)
+  eset<-log2eset(eset = eset)
   eset<-scale(eset,center = T,scale = T)
   ###########################
 
@@ -128,7 +128,7 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  if(max(eset)>100) eset<-log2(eset+1)
+  eset<-log2eset(eset = eset)
   eset<-scale(eset,center = T,scale = T)
   ###########################
   ###########################
@@ -184,6 +184,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
   if(mini_gene_count<=5) mini_gene_count <- 5
   ############################
 
+
   #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
@@ -197,6 +198,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
   eset<-eset[,colnames(eset)%in%pdata$ID]
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ##############################
+  eset<-log2eset(eset = eset)
   ##############################
   res <- GSVA:: gsva(as.matrix(eset),
                      signature,
@@ -263,11 +265,9 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  if(max(eset)>100) {
-    eset1<-log2(eset+1)
-  }else{eset1<-eset}
+  eset<-log2eset(eset = eset)
   ##########################
-  eset1<-scale(eset1,center = T,scale = T)
+  eset1<-scale(eset,center = T,scale = T)
   message(paste0("\n", ">>>Step 1: Calculating signature score using PCA method"))
   goi <- names(signature)
   ###########################
@@ -373,7 +373,10 @@ calculate_sig_score<-function(pdata = NULL,
     }
   }
   ##########################################
+
   method<-tolower(method)
+
+  if(!method%in%c("zscore","pca","ssgsea")) stop("At present, we only provide three methods to calculate the score: PCA, zscore, ssGSEA")
   # run selected method
   res = switch(method,
                pca = calculate_sig_score_pca(pdata, eset,
