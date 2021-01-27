@@ -11,9 +11,9 @@
 #'
 #' @export
 
-signature_score_calculation_methods= c("PCA" = "pca",
-                                      "ssGSEA" = "ssgsea",
-                                      "z-score" = "zscore",
+signature_score_calculation_methods= c("PCA"        = "pca",
+                                      "ssGSEA"      = "ssgsea",
+                                      "z-score"     = "zscore",
                                       "Integration" = "integration")
 ##########################################
 
@@ -24,7 +24,7 @@ signature_score_calculation_methods= c("PCA" = "pca",
 #'
 #' @param pdata phenotype data of input sample;
 #' if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset
-#' @param eset normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
+#' @param eset normalized transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
 #' Gene expression data should be scale before signature score estimation
 #' @param signature List of gene signatures;
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set
@@ -35,7 +35,7 @@ signature_score_calculation_methods= c("PCA" = "pca",
 #' @export
 #'
 #' @examples
-calculate_sig_score_pca<-function(pdata,
+calculate_sig_score_pca<-function(pdata = NULL,
                                   eset,
                                   signature,
                                   mini_gene_count,
@@ -48,7 +48,16 @@ calculate_sig_score_pca<-function(pdata,
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
   }else{
     pdata<-as.data.frame(pdata)
-    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+
+    if("ID"%in%colnames(pdata) & !column_of_sample=="ID"){
+      colnames(pdata)[which(colnames(pdata)== "ID")]<-"ID2"
+      message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
+    }
+
+    if(column_of_sample%in%colnames(pdata)){
+      colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+    }
+
   }
   #match phenotype data and gene expression set
   ###########################
@@ -119,7 +128,16 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
   }else{
     pdata<-as.data.frame(pdata)
-    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+
+    if("ID"%in%colnames(pdata) & !column_of_sample=="ID"){
+      colnames(pdata)[which(colnames(pdata)== "ID")]<-"ID2"
+      message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
+    }
+
+    if(column_of_sample%in%colnames(pdata)){
+      colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+    }
+
   }
   #match phenotype data and gene expression set
   ###########################
@@ -173,14 +191,16 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-calculate_sig_score_ssgsea<-function(pdata, eset, signature,
+calculate_sig_score_ssgsea<-function(pdata = NULL,
+                                     eset,
+                                     signature,
                                      mini_gene_count,
                                      column_of_sample){
 
   message(paste0("\n", ">>> Calculating signature score with ssGSEA method"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
-  ###########################
+
   if(mini_gene_count<=5) mini_gene_count <- 5
   ############################
 
@@ -190,13 +210,22 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
   }else{
     pdata<-as.data.frame(pdata)
-    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+
+    if("ID"%in%colnames(pdata) & !column_of_sample=="ID"){
+      colnames(pdata)[which(colnames(pdata)== "ID")]<-"ID2"
+      message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
+    }
+
+    if(column_of_sample%in%colnames(pdata)){
+      colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+    }
+
   }
   #match phenotype data and gene expression set
   ###########################
   pdata<-pdata[pdata$ID%in%colnames(eset),]
   eset<-eset[,colnames(eset)%in%pdata$ID]
-  eset<-eset[,match(pdata$ID,colnames(eset))]
+
   ##############################
   eset<-log2eset(eset = eset)
   ##############################
@@ -206,6 +235,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
                      kcdf="Gaussian",
                      min.sz= mini_gene_count,
                      ssgsea.norm=T)
+
   res<-as.data.frame(t(res))
   res<-rownames_to_column(res,var = "ID")
 
@@ -217,7 +247,7 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
     res[,"TMEscore_plus"]<-res[,"TMEscoreA_plus"] - res[,"TMEscoreB_plus"]
   }
 
-  pdata<-merge(pdata,res,by ="ID",all.x = T,all.y = F)
+  pdata<-merge(pdata,res,by = "ID",all.x = F,all.y = F)
   pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
@@ -244,7 +274,9 @@ calculate_sig_score_ssgsea<-function(pdata, eset, signature,
 #' @author Dongqiang Zeng
 #' @examples
 #'
-calculate_sig_score_integration<-function(pdata, eset, signature,
+calculate_sig_score_integration<-function(pdata = NULL,
+                                          eset,
+                                          signature,
                                           mini_gene_count = 2,
                                           column_of_sample){
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
@@ -256,7 +288,16 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
   }else{
     pdata<-as.data.frame(pdata)
-    colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+
+    if("ID"%in%colnames(pdata) & !column_of_sample=="ID"){
+      colnames(pdata)[which(colnames(pdata)== "ID")]<-"ID2"
+      message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
+    }
+
+    if(column_of_sample%in%colnames(pdata)){
+      colnames(pdata)[which(colnames(pdata)==column_of_sample)]<-"ID"
+    }
+
   }
   #match phenotype data and gene expression set
   ###########################
@@ -302,10 +343,11 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   }
   ############################
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
-  res <-GSVA::gsva(as.matrix(eset), signature,
-                  method="ssgsea",
-                  kcdf="Gaussian",
-                  min.sz=5,
+  res <-GSVA::gsva(as.matrix(eset),
+                   signature,
+                  method     ="ssgsea",
+                  kcdf       ="Gaussian",
+                  min.sz     = mini_gene_count,
                   ssgsea.norm=T)
   res<-as.data.frame(t(res))
   if ("TMEscoreA_CIR"%in% colnames(res) & "TMEscoreB_CIR"%in%colnames(res)) {
@@ -317,7 +359,8 @@ calculate_sig_score_integration<-function(pdata, eset, signature,
   #############################
   colnames(res)<-paste0(colnames(res),"_ssGSEA")
   res<-rownames_to_column(res,var = "ID")
-  pdata<-merge(pdata,res,by="ID",all.x = T,all.y = T)
+
+  pdata<-merge(pdata,res,by="ID",all.x = F,all.y = F)
   pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
