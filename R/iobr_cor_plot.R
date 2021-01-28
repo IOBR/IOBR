@@ -329,7 +329,8 @@ iobr_cor_plot<-function(pdata_group,
     if(show_plot) print(pp)
 
      pp %>%  tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",group_name, "-tidyheatmap.pdf"),
-                                 width = 8,height = height_heatmap)
+                                 width = 8,
+                                 height = height_heatmap)
     ####################################################
     if(is_target_continuous ==TRUE& length(group_list[[index_i]])<= 20){
 
@@ -390,7 +391,6 @@ iobr_cor_plot<-function(pdata_group,
 
   }
 
-  # features<-unique(unlist(group_list))
 
   if(!is_target_continuous){
     # print(pf[,group])
