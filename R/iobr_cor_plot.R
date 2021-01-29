@@ -393,17 +393,20 @@ iobr_cor_plot<-function(pdata_group,
 
 
   if(!is_target_continuous){
-    # print(pf[,group])
-    if(length(unique(pf[,group]))==2){
+
+    if(group=="group3") {
+      pf_stat<-pf_stat[!pf_stat$group3=="Middle",]
+    }
+    if(length(unique(pf_stat[,group]))==2){
       print(">>> Proportion of two groups:")
-      print(summary(as.factor(pf[,group])))
+      print(summary(as.factor(pf_stat[,group])))
       eset<-pf_stat
       feas  <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
       levels<- c(as.character(unique(pf_stat[,group])))
       res   <-  batch_wilcoxon(data = eset,target = group,group_names = levels,feature = feas)
       res   <- tibble::as_tibble(res)
     }else{
-      print("Error: Only two categorical variables supported statistical difference calculation")
+      stop("Only two categorical variables can support statistical difference calculation")
     }
 
   }
