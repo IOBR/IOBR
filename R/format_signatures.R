@@ -27,10 +27,11 @@ format_signatures<-function(sig_data,save_signature = FALSE, output_name = "sign
   bb<-lapply(bb,function(x) na.omit(x))
   bb<-lapply(bb,function(x) as.character(x))
   bb<-lapply(bb,function(x) unique(x))
+  bb<-lapply(bb,function(x) x[!x==""])
   #' standerdized the name of list
-  names(bb)<-gsub(names(bb),pattern = "\\.",replacement = "_")
+  # names(bb)<-gsub(names(bb),pattern = "\\.",replacement = "_")
   names(bb)<-gsub(names(bb),pattern = "\\ ",replacement = "_")
-  names(bb)<-gsub(names(bb),pattern = "\\-",replacement = "_")
+  # names(bb)<-gsub(names(bb),pattern = "\\-",replacement = "_")
   # ########################################
   my_signatures<-bb
   ##########################################
