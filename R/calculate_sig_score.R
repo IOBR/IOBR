@@ -419,7 +419,7 @@ calculate_sig_score<-function(pdata = NULL,
 
   method<-tolower(method)
 
-  if(!method%in%c("zscore","pca","ssgsea")) stop("At present, we only provide three methods to calculate the score: PCA, zscore, ssGSEA")
+  if(!method%in%c("zscore","pca","ssgsea","integration")) stop("At present, we only provide three methods to calculate the score: PCA, zscore, ssGSEA")
   # run selected method
   res = switch(method,
                pca = calculate_sig_score_pca(pdata, eset,

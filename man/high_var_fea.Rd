@@ -2,7 +2,7 @@
 % Please edit documentation in R/high_var_fea.R
 \name{high_var_fea}
 \alias{high_var_fea}
-\title{Extract top varity features form statistical results}
+\title{Extract most variable features form statistical results}
 \usage{
 high_var_fea(
   result,
@@ -18,12 +18,22 @@ high_var_fea(
 \item{result}{a tibble}
 
 \item{target}{name of variables}
+
+\item{name_padj}{column of adjust p value}
+
+\item{padj_cutoff}{cutoff of adjust p value}
+
+\item{name_logfc}{column of log(Fold change)}
+
+\item{logfc_cutoff}{cutoff of log(Fold change)}
+
+\item{n}{top n variables}
 }
 \value{
 
 }
 \description{
-Extract top varity features form statistical results
+Extract most variable features form statistical results
 }
 \author{
 Dongqiang Zeng
