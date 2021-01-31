@@ -50,7 +50,8 @@ iobr_cor_plot<-function(pdata_group,
                         show_heatmap_col_name = FALSE,
                         show_col = FALSE,
                         show_plot = FALSE,
-                        path = NULL){
+                        path = NULL,
+                        picture_format = "pdf"){
 
   if(!is.null(path)){
     file_store<-path
@@ -98,8 +99,17 @@ iobr_cor_plot<-function(pdata_group,
   }
 
   feature_data<-as.data.frame(feature_data)
-  colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
+
+  # print(feature_data[1:5,1:5])
+
+  if(category=="signature"){
+    colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
+  }
+
   feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
+
+  # print(feature_selected[1:10])
+
   feature_data<-feature_data[,colnames(feature_data)%in%c("ID",feature_selected)]
 
   if(!is.null(target)){
@@ -117,7 +127,7 @@ iobr_cor_plot<-function(pdata_group,
     title.x<-"Signatures"
   }
   if(category == "gene"){
-    group_list<-signature_collection[names(signature_collection)%in%names(signature_group)]
+    group_list<-signature_group
     panel<-names(signature_group)
     feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
     title.y<-"Gene expression"
@@ -129,7 +139,7 @@ iobr_cor_plot<-function(pdata_group,
   if(category == "gene"& feature_max > 50){
     rownames(feature_data)<-NULL
     feature_data<-column_to_rownames(feature_data,var = "ID")
-    feature_data<-log2(feature_data)
+    feature_data<-log2eset(feature_data)
 
     feature_data<-rownames_to_column(feature_data,var = "ID")
     feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
@@ -311,7 +321,7 @@ iobr_cor_plot<-function(pdata_group,
     pf_long_group$value[pf_long_group$value > 2.5] = 2.5
     pf_long_group$value[pf_long_group$value < -2.5] = -2.5
 
-    height_heatmap<-length(features)*0.15 + 3
+    height_heatmap<-max(nchar(features))*0.15 + 3
     ####################################################
     heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col)
     ####################################################

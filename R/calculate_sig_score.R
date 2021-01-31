@@ -68,6 +68,8 @@ calculate_sig_score_pca<-function(pdata = NULL,
 
   #normalization
   eset<-log2eset(eset = eset)
+  check_eset(eset)
+
   eset<-scale(eset,center = T,scale = T)
   ###########################
 
@@ -117,7 +119,9 @@ calculate_sig_score_pca<-function(pdata = NULL,
 #'
 #' @examples
 #'
-calculate_sig_score_zscore<-function(pdata, eset, signature,
+calculate_sig_score_zscore<-function(pdata = NULL,
+                                     eset,
+                                     signature,
                                      mini_gene_count,
                                      column_of_sample){
 
@@ -147,6 +151,9 @@ calculate_sig_score_zscore<-function(pdata, eset, signature,
   ###########################
   #normalization
   eset<-log2eset(eset = eset)
+
+  check_eset(eset)
+
   eset<-scale(eset,center = T,scale = T)
   ###########################
   ###########################
@@ -228,6 +235,7 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
 
   ##############################
   eset<-log2eset(eset = eset)
+  check_eset(eset)
   ##############################
   res <- GSVA:: gsva(as.matrix(eset),
                      signature,
@@ -307,6 +315,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
   ###########################
   #normalization
   eset<-log2eset(eset = eset)
+  check_eset(eset)
   ##########################
   eset1<-scale(eset,center = T,scale = T)
   message(paste0("\n", ">>>Step 1: Calculating signature score using PCA method"))
