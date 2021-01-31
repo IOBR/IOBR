@@ -23,6 +23,8 @@
 #' @param show_heatmap_col_name logical variable, if TRUE, `tidyheatmap` will print the column name
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
 #' @param show_plot logical variable, if TRUE, plots will be print
+#' @param path folder name to save the result
+#' @param discrete_x if maximal character length of variables is larger than discrete_x, label will be discrete
 #'
 #' @author Dongqiang Zeng
 #' @return
@@ -50,7 +52,8 @@ iobr_cor_plot<-function(pdata_group,
                         show_heatmap_col_name = FALSE,
                         show_col = FALSE,
                         show_plot = FALSE,
-                        path = NULL){
+                        path = NULL,
+                        discrete_x = 30){
 
   if(!is.null(path)){
     file_store<-path
@@ -261,7 +264,11 @@ iobr_cor_plot<-function(pdata_group,
       pf_long_group<-pf_long
     }
 
-    axis_text_size<- 18 - max(nchar(pf_long$variables))/5
+    axis_text_size<- 18 - max(nchar(pf_long$variables))/8
+
+    if(max(nchar(pf_long_group$variables))> discrete_x){
+      pf_long_group$variables<-gsub(pf_long_group$variables,pattern = "\\_",replacement = " ")
+    }
 
     color_box<-palettes(category = "box",palette = palette_box, show_col = show_col)
     ######################################################
@@ -286,7 +293,8 @@ iobr_cor_plot<-function(pdata_group,
               legend.justification=c(.5,.5),
               legend.box="horizontal",
               legend.box.just="top",
-              legend.text=element_text(colour="black",size=10,face = "plain"))
+              legend.text=element_text(colour="black",size=10,face = "plain"))+
+      scale_x_discrete(labels=function(x) str_wrap(x, width=35))
     #################################################
     max_variables <- max(pf_long_group$value)
     group_box<-sym(target_binary)
@@ -300,8 +308,8 @@ iobr_cor_plot<-function(pdata_group,
       print(pp2)
     }
     ###################################################
-    plot_width<-length(features)*0.45+3
-    plot_height<- 4 + max(nchar(pf_long_group$variables))*0.1
+    plot_width<-length(features)*0.4+3
+    plot_height<- 4 + max(nchar(pf_long_group$variables))*0.04
     ###################################################
 
     if(!is.null(target)){

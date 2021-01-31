@@ -25,7 +25,8 @@ iobr_cor_plot(
   show_heatmap_col_name = FALSE,
   show_col = FALSE,
   show_plot = FALSE,
-  path = NULL
+  path = NULL,
+  discrete_x = 30
 )
 }
 \arguments{
@@ -68,6 +69,10 @@ iobr_cor_plot(
 \item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
 
 \item{show_plot}{logical variable, if TRUE, plots will be print}
+
+\item{path}{folder name to save the result}
+
+\item{discrete_x}{if maximal character length of variables is larger than discrete_x, label will be discrete}
 }
 \value{
 
