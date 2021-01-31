@@ -5,7 +5,7 @@
 \title{Calculating signature score using z-score method}
 \usage{
 calculate_sig_score_zscore(
-  pdata,
+  pdata = NULL,
   eset,
   signature,
   mini_gene_count,

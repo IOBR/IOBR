@@ -93,12 +93,14 @@ iobr_cor_plot<-function(pdata_group,
   #####################################################
 
   if(category=="gene"){
+
+    feature_data<-log2eset(feature_data)
+    check_eset(feature_data)
     #Gene expression data should be transposed
     feature_data<-tibble::rownames_to_column(as.data.frame(t(feature_data)),var = "ID")
   }
 
   feature_data<-as.data.frame(feature_data)
-
   # print(feature_data[1:5,1:5])
 
   if(category=="signature"){
@@ -123,33 +125,22 @@ iobr_cor_plot<-function(pdata_group,
 
   }
 
-  if(category == "signature"){
-    group_list<-signature_group
-    panel<-names(signature_group)
-    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
-    title.y<-"Signature score"
-    title.x<-"Signatures"
-  }
-  if(category == "gene"){
-    group_list<-signature_group
-    panel<-names(signature_group)
-    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
-    title.y<-"Gene expression"
-    title.x<-"Signature genes"
-  }
+  group_list<-signature_group
+  panel<-names(signature_group)
+  feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
 
 
-  feature_max <- max(feature_data[,colnames(feature_data)%in%feature_selected])
-  if(category == "gene"& feature_max > 50){
-    rownames(feature_data)<-NULL
-    feature_data<-column_to_rownames(feature_data,var = "ID")
-    feature_data<-log2eset(feature_data)
-
-    feature_data<-rownames_to_column(feature_data,var = "ID")
-    feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
-    feature_data<-feature_data[,colnames(feature_data)%in%c("ID",feature_selected)]
-    feature_data<-as.data.frame(feature_data)
-  }
+  # feature_max <- max(feature_data[,colnames(feature_data)%in%feature_selected])
+  # if(category == "gene"& feature_max > 50){
+  #
+  #   rownames(feature_data)<-NULL
+  #   feature_data<-column_to_rownames(feature_data,var = "ID")
+  #
+  #   feature_data<-rownames_to_column(feature_data,var = "ID")
+  #   feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
+  #   feature_data<-feature_data[,colnames(feature_data)%in%c("ID",feature_selected)]
+  #   feature_data<-as.data.frame(feature_data)
+  # }
 
   pf<-merge(pdata_group,feature_data,by = "ID",all = F)
   scale_begin<-length(colnames(pdata_group))+1
@@ -168,6 +159,14 @@ iobr_cor_plot<-function(pdata_group,
 
   if(category=="gene"){
     if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set and signature_group, please add new signature groups into signature_collections list or generate another one list")
+  }
+
+  if(category == "signature"){
+    title.y<-"Signature score"
+    title.x<-"Signatures"
+  }else{
+    title.y<-"Gene expression"
+    title.x<-"Signature genes"
   }
 
   for (x in 1:length(panel)) {
@@ -306,14 +305,14 @@ iobr_cor_plot<-function(pdata_group,
     ###################################################
 
     if(!is.null(target)){
-      ggsave(pp1,filename =paste0("1-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.pdf"),
+      ggsave(pp1,filename =paste0(index, "-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.pdf"),
              width = plot_width,height = plot_height,path = file_store)
-      ggsave(pp2,filename =paste0("1-",x,"-2-",ProjectID,"-",target,"-",group_name,"-box.pdf"),
+      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",target,"-",group_name,"-box.pdf"),
              width = plot_width,height = plot_height,path = file_store)
     }else{
-      ggsave(pp1,filename =paste0("1-",x,"-1-",ProjectID,"-",group,"-",group_name,"-pvalue-box.pdf"),
+      ggsave(pp1,filename =paste0(index, "-" ,x,"-1-",ProjectID,"-",group,"-",group_name,"-pvalue-box.pdf"),
              width = plot_width,height = plot_height,path = file_store)
-      ggsave(pp2,filename =paste0("1-",x,"-2-",ProjectID,"-",group,"-",group_name,"-box.pdf"),
+      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",group,"-",group_name,"-box.pdf"),
              width = plot_width,height = plot_height,path = file_store)
     }
     ####################################################
@@ -342,7 +341,7 @@ iobr_cor_plot<-function(pdata_group,
 
     if(show_plot) print(pp)
 
-     pp %>%  tidyHeatmap::save_pdf(paste0(abspath, "1-",x,"-3-",ProjectID,"-",group,"-",group_name, "-tidyheatmap.pdf"),
+     pp %>%  tidyHeatmap::save_pdf(paste0(abspath, index, "-" ,x,"-3-",ProjectID,"-",group,"-",group_name, "-tidyheatmap.pdf"),
                                  width = 8,
                                  height = height_heatmap)
     ####################################################
@@ -367,7 +366,7 @@ iobr_cor_plot<-function(pdata_group,
       width_heatmap<-length(group_list[[index_i]])*0.75+5
       height_heatmap<-length(group_list[[index_i]])*0.75+4
       #####################################
-      pdf(file  = paste0(abspath, "1-",x,"-4-",ProjectID,"-",group_name,
+      pdf(file  = paste0(abspath, index, "-" ,x,"-4-",ProjectID,"-",group_name,
                          "-associated-",category, "-corplot.pdf"),
           width = width_heatmap,height = height_heatmap)
       corrplot::corrplot(bbcor$r, type="lower", order="hclust",
@@ -395,7 +394,7 @@ iobr_cor_plot<-function(pdata_group,
                                 colors = col)+
         theme(plot.title=element_text(size=rel(2.5),hjust=0.5))
       ######################################
-      ggsave(p,filename = paste0("1-",x,"-5-",ProjectID,"-",group_name,
+      ggsave(p,filename = paste0(index, "-" ,x,"-5-",ProjectID,"-",group_name,
                                  "-associated-",category, "-corplot.pdf"),
              width = 12,height = 12.8,
              path = file_store)
