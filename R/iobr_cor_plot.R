@@ -25,6 +25,7 @@
 #' @param show_plot logical variable, if TRUE, plots will be print
 #' @param path folder name to save the result
 #' @param discrete_x if maximal character length of variables is larger than discrete_x, label will be discrete
+#' @param show_palettes default is FALSE
 #'
 #' @author Dongqiang Zeng
 #' @return
@@ -53,7 +54,8 @@ iobr_cor_plot<-function(pdata_group,
                         show_col = FALSE,
                         show_plot = FALSE,
                         path = NULL,
-                        discrete_x = 30){
+                        discrete_x = 30,
+                        show_palettes = FALSE){
 
   if(!is.null(path)){
     file_store<-path
@@ -266,13 +268,16 @@ iobr_cor_plot<-function(pdata_group,
 
     axis_text_size<- 18 - max(nchar(pf_long$variables))/8
 
+    pf_long_group_box<-pf_long_group
+
     if(max(nchar(pf_long_group$variables))> discrete_x){
-      pf_long_group$variables<-gsub(pf_long_group$variables,pattern = "\\_",replacement = " ")
+
+      pf_long_group_box$variables<-gsub(pf_long_group_box$variables,pattern = "\\_",replacement = " ")
     }
 
-    color_box<-palettes(category = "box",palette = palette_box, show_col = show_col)
+    color_box<-palettes(category = "box",palette = palette_box, show_col = show_col, show_message = show_palettes)
     ######################################################
-    p <-ggboxplot(pf_long_group, x = "variables", y = "value",fill =  target_binary)+
+    p <-ggboxplot(pf_long_group_box, x = "variables", y = "value",fill =  target_binary)+
       scale_fill_manual(values= color_box)+
       ylab(paste0(title.y))+
       # xlab("")+
@@ -296,7 +301,7 @@ iobr_cor_plot<-function(pdata_group,
               legend.text=element_text(colour="black",size=10,face = "plain"))+
       scale_x_discrete(labels=function(x) str_wrap(x, width=35))
     #################################################
-    max_variables <- max(pf_long_group$value)
+    max_variables <- max(pf_long_group_box$value)
     group_box<-sym(target_binary)
     pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),
                               size= 2.6, label.y = max_variables-0.3)
@@ -309,7 +314,7 @@ iobr_cor_plot<-function(pdata_group,
     }
     ###################################################
     plot_width<-length(features)*0.4+3
-    plot_height<- 4 + max(nchar(pf_long_group$variables))*0.04
+    plot_height<- 4 + max(nchar(pf_long_group_box$variables))*0.04
     ###################################################
 
     if(!is.null(target)){
@@ -332,9 +337,9 @@ iobr_cor_plot<-function(pdata_group,
     pf_long_group$value[pf_long_group$value > 2.5] = 2.5
     pf_long_group$value[pf_long_group$value < -2.5] = -2.5
 
-    height_heatmap<-length(features)*0.15 + 3
+    height_heatmap<-length(features)*0.2 + 3
     ####################################################
-    heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col)
+    heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col, show_message = show_palettes)
     ####################################################
     pp<-pf_long_group %>%
       group_by(target_group) %>%
@@ -369,7 +374,7 @@ iobr_cor_plot<-function(pdata_group,
       bbcor <-Hmisc:: rcorr(as.matrix(pf_cor),type = "spearman")
 
       ###################################
-      col<- palettes(category = "heatmap3",palette = palette_corplot, show_col = show_col)
+      col<- palettes(category = "heatmap3",palette = palette_corplot, show_col = show_col,show_message = show_palettes)
 
       width_heatmap<-length(group_list[[index_i]])*0.75+5
       height_heatmap<-length(group_list[[index_i]])*0.75+4

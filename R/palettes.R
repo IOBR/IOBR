@@ -9,20 +9,20 @@
 #' @param alpha intensity of the color
 #' @param counts number of colors, only affect continue colors
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
+#' @param show_message print palettes that can be choose
 #'
 #' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
-palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show_col = TRUE){
+palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show_col = TRUE, show_message = FALSE){
 
   message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))
 
 
   if(category == "box"){
-
-    message(paste0("There are ten palettes you can choose: nrc, jama, aaas, jco, paired1-4, accent, set2"))
+     if(show_message) message(paste0("There are ten palettes you can choose: nrc, jama, aaas, jco, paired1-4, accent, set2"))
     if(palette=="nrc"){
       mypal = ggsci:: pal_npg("nrc", alpha = alpha)(9)
 
@@ -67,7 +67,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
   }
 
   if(category == "continue2"){
-    message(paste0("There are five palettes you can choose: nrc, jama, aaas, jco, rdbu"))
+    if(show_message)  message(paste0("There are five palettes you can choose: nrc, jama, aaas, jco, rdbu"))
     if(palette=="nrc"){
       mypal = ggsci:: pal_npg("nrc", alpha = alpha)(9)
       mypal<-mypal[c(4,1)]
@@ -121,7 +121,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
   }
 
   if(category == "continue"){
-    message(paste0("There are four palettes you can choose: rdbu, puor, blues, reds"))
+    if(show_message)  message(paste0("There are four palettes you can choose: rdbu, puor, blues, reds"))
     if(palette == "rdbu" ){
     mypal<-  RColorBrewer::brewer.pal(11,"RdBu")
 
@@ -143,7 +143,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
 
   if(category == "heatmap"){
 
-    message(paste0("There are five palettes you can choose: pheatmap, virids, blues, reds, peach"))
+    if(show_message) message(paste0("There are five palettes you can choose: pheatmap, virids, blues, reds, peach"))
 
     if(palette == "pheatmap" ){
       mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(counts)
@@ -168,7 +168,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
   }
 
   if(category=="heatmap3"){
-    message(paste0("There are six palettes you can choose: pheatmap, virids, blues, reds, peach, normal"))
+    if(show_message) message(paste0("There are six palettes you can choose: pheatmap, virids, blues, reds, peach, normal"))
 
     if(palette == "pheatmap" ){
       mypal<- c("#4575B4","#FEF9B6","#D73027")
@@ -203,7 +203,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
 
   if(category == "tidyheatmap"){
 
-    message(paste0("There are six palettes you can choose: 1, 2, 3, 4, 5, 6"))
+    if(show_message)  message(paste0("There are six palettes you can choose: 1, 2, 3, 4, 5, 6"))
     if(palette==1){
       mypal<-circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), viridis::magma(5))
     }else if(palette==2){

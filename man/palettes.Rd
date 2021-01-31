@@ -9,7 +9,8 @@ palettes(
   palette = "nrc",
   alpha = 1,
   counts = 50,
-  show_col = TRUE
+  show_col = TRUE,
+  show_message = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ palettes(
 \item{counts}{number of colors, only affect continue colors}
 
 \item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
+
+\item{show_message}{print palettes that can be choose}
 }
 \value{
 
