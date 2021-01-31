@@ -297,7 +297,7 @@ iobr_cor_plot<-function(pdata_group,
       print(pp2)
     }
     ###################################################
-    plot_width<-length(features)*0.5+3
+    plot_width<-length(features)*0.45+3
     plot_height<- 4 + max(nchar(pf_long_group$variables))*0.1
     ###################################################
 
@@ -321,7 +321,7 @@ iobr_cor_plot<-function(pdata_group,
     pf_long_group$value[pf_long_group$value > 2.5] = 2.5
     pf_long_group$value[pf_long_group$value < -2.5] = -2.5
 
-    height_heatmap<-max(nchar(features))*0.15 + 3
+    height_heatmap<-max(length(features))*0.15 + 3
     ####################################################
     heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col)
     ####################################################
