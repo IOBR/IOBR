@@ -50,8 +50,7 @@ iobr_cor_plot<-function(pdata_group,
                         show_heatmap_col_name = FALSE,
                         show_col = FALSE,
                         show_plot = FALSE,
-                        path = NULL,
-                        picture_format = "pdf"){
+                        path = NULL){
 
   if(!is.null(path)){
     file_store<-path
@@ -103,7 +102,12 @@ iobr_cor_plot<-function(pdata_group,
   # print(feature_data[1:5,1:5])
 
   if(category=="signature"){
-    colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
+    if(id2%in%colnames(feature_data)){
+      colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
+    }else{
+      stop("id2 is not in colname of feature_data")
+    }
+
   }
 
   feature_selected<-feature_manipulation(data = feature_data,feature = setdiff(colnames(feature_data),"ID"))
@@ -321,7 +325,7 @@ iobr_cor_plot<-function(pdata_group,
     pf_long_group$value[pf_long_group$value > 2.5] = 2.5
     pf_long_group$value[pf_long_group$value < -2.5] = -2.5
 
-    height_heatmap<-max(length(features))*0.15 + 3
+    height_heatmap<-length(features)*0.15 + 3
     ####################################################
     heatmap_col<-palettes(category = "tidyheatmap",palette = palette_heatmap,show_col = show_col)
     ####################################################
