@@ -18,7 +18,7 @@
 #' @examples
 palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show_col = TRUE, show_message = FALSE){
 
-  message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))
+  if(show_message) message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))
 
 
   if(category == "box"){
