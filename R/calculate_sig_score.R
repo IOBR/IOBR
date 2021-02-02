@@ -41,7 +41,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
                                   mini_gene_count,
                                   column_of_sample){
 
-  message(paste0("\n", ">>> Calculating signature score with PCA method"))
+  message(paste0("\n", ">>> Calculating signature score using PCA method"))
 
   #creat pdata if NULL
   if(is.null(pdata)){
@@ -125,7 +125,7 @@ calculate_sig_score_zscore<-function(pdata = NULL,
                                      mini_gene_count,
                                      column_of_sample){
 
-  message(paste0("\n", ">>> Calculating signature score with z-score method"))
+  message(paste0("\n", ">>> Calculating signature score using z-score method"))
 
   #creat pdata if NULL
   if(is.null(pdata)){
@@ -204,7 +204,7 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
                                      mini_gene_count,
                                      column_of_sample){
 
-  message(paste0("\n", ">>> Calculating signature score with ssGSEA method"))
+  message(paste0("\n", ">>> Calculating signature score using ssGSEA method"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
 
