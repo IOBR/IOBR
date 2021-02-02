@@ -237,7 +237,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     res$adjust_pvalue<-p.adjust(res$p.value,method = "BH",n=length(res$p.value))
 
     res<-res[order(res$p.value,decreasing = F),]
-    print(">>>> Result of Wilcoxon test")
+    print(">>>> Result of Wilcoxon test (top 10): ")
     print(res[1:10,])
 
     write.csv(res, paste0(abspath,"0-Wilcoxon-test-relevant-mutations.csv"))
@@ -288,7 +288,6 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
 
   }
-
 
 
   genes<-result$wilcoxon_test$names
@@ -403,6 +402,9 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
   invisible(dev.off())
   # print to screen
   # draw(p)
+  if(show_plot){
+    print(p)
+  }
 
   return(result)
 
