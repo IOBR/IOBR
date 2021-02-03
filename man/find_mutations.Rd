@@ -26,7 +26,7 @@ find_mutations(
 \arguments{
 \item{mutation_matrix}{mutation matrix with sample name in the row and genes in the column}
 
-\item{signature_matrix}{signature data frame with identifier and target signature}
+\item{signature_matrix}{signature data frame with identifier and target signatures}
 
 \item{id_signature_matrix}{column name of identifier}
 

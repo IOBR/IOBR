@@ -8,7 +8,7 @@ deconvo_ref(
   eset,
   project = NULL,
   arrays,
-  method = "svm",
+  method = "svr",
   perm,
   reference,
   scale_reference,
@@ -23,9 +23,9 @@ deconvo_ref(
 
 \item{arrays}{a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.}
 
-\item{method}{deconvolution method. must be "svm" or "lsei"}
+\item{method}{deconvolution method. must be "svr" or "lsei"}
 
-\item{perm}{permutation to run CIBERSORT}
+\item{perm}{permutation to run svr}
 
 \item{reference}{immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq}
 

@@ -9,7 +9,7 @@ deconvo_mcpcounter(eset, project = NULL)
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different data sets}
 }
 \value{
 MCP-counter with immune cell fractions

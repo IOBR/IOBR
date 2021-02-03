@@ -29,20 +29,20 @@ Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sa
 \item{project}{project name used to distinguish different data sets, default is NULL}
 
 \item{method}{a string specifying the method.
-Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.}
+Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.}
 
 \item{arrays}{Runs methods in a mode optimized for microarray data.
-Currently affects `CIBERSORT`, `svm` and `xCell`.}
+Currently affects `CIBERSORT`, `svr` and `xCell`.}
 
 \item{tumor}{logical. use a signature matrix/procedure optimized for tumor samples,
 if supported by the method. Currently affects `EPIC`}
 
 \item{perm}{set permutations for statistical analysis (≥100 permutations recommended).
-Currently affects `CIBERSORT` and `svm_ref`}
+Currently affects `CIBERSORT` and `svr_ref`}
 
 \item{reference}{immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq}
 
-\item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svm` and `lsei` method}
+\item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svr` and `lsei` method}
 
 \item{plot}{Currently affects `IPS` method}
 
@@ -54,7 +54,7 @@ This is supported by methods that compute an absolute score (EPIC and quanTIseq)
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"
 Currently affects `ESTIMATE` method}
 
-\item{absolute.mode}{Run CIBERSORT or SVM in absolute mode (default = FALSE)}
+\item{absolute.mode}{Run CIBERSORT or svr in absolute mode (default = FALSE)}
 
 \item{abs.method}{if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'}
 
