@@ -8,7 +8,7 @@
 #' Searching for mutations related to signature score
 #'
 #' @param mutation_matrix mutation matrix with sample name in the row and genes in the column
-#' @param signature_matrix signature data frame with identifier and target signature
+#' @param signature_matrix signature data frame with identifier and target signatures
 #' @param id_signature_matrix column name of identifier
 #' @param signature name of target signature
 #' @param min_mut_freq minimum frequency of mutations
@@ -326,7 +326,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
   # library(ComplexHeatmap)
   group_col<-palettes(category = "box",palette = palette,show_col = show_col)
 
-  h1<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata1[,target]),
+  h1<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata1[,signature]),
                                                         border=FALSE,
                                                         gp = gpar(fill="#2D004B"),
                                                         axis = TRUE,
@@ -343,7 +343,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                          #annotation_name_side="left",
                          annotation_name_gp = gpar(fontsize = 12))
 
-  h2<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata2[,target]),
+  h2<-ComplexHeatmap:: HeatmapAnnotation(Signature_score = anno_barplot(as.numeric(pdata2[,signature]),
                                                         border=FALSE,
                                                         gp = gpar(fill="#2D004B"),
                                                         axis = TRUE,

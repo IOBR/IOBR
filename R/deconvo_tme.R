@@ -6,7 +6,7 @@
 #' Collection of tumor microenvironment cell fraction deconvolution methods.
 #'
 #' The methods currently supported are
-#' `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svm`,`lsei`,`timer`,`quantiseq`
+#' `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
 #'
 #' The object is a named vector. The names correspond to the display name of the method,
 #' the values to the internal name.
@@ -19,7 +19,7 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
                               "CIBERSORT Absolute"="cibersort_abs",
                               "IPS" = "ips",
                               "ESTIMATE" = "estimate",
-                              "SVM" = "svm",
+                              "SVR" = "svr",
                               "lsei" = "lsei",
                               "TIMER" = "timer",
                               "quanTIseq" = "quantiseq")
@@ -67,7 +67,7 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
 #' Estimating immune microenvironment using MCP-counter
 #'
 #' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different data sets
 #' @return MCP-counter with immune cell fractions
 #' @export
 #' @importFrom MCPcounter MCPcounter.estimate
@@ -302,8 +302,8 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' @param eset expression data with matched gene id of reference
 #' @param project project name used to distinguish different datasets
 #' @param arrays a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.
-#' @param method deconvolution method. must be "svm" or "lsei"
-#' @param perm  permutation to run CIBERSORT
+#' @param method deconvolution method. must be "svr" or "lsei"
+#' @param perm  permutation to run svr
 #' @param reference immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq
 #' @param absolute.mode absolute.mode, default is FALSE
 #' @param abs.method abs.method, default is sig.score
@@ -315,27 +315,24 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' @export
 #'
 #' @examples
-deconvo_ref<-function(eset,project = NULL,arrays,method = "svm",perm,
+deconvo_ref<-function(eset,project = NULL,arrays,method = "svr",perm,
                       reference, scale_reference, absolute.mode = FALSE, abs.method = "sig.score"){
 
   if (length(intersect(rownames(eset), rownames(reference))) == 0){
     stop("None identical gene between eset and reference had been found.
          Check your eset using: intersect(rownames(eset), rownames(reference))")
   }
-  # reccomend to disable quantile normalizeation for RNA seq.
+  # recomend to disable quantile normalization for RNA seq.
   quantile_norm = arrays
   ##############################
 
-  if(method=="svm"){
-    message(paste0("\n", ">>> Running ", "cell estimation in SVM mode"))
+  if(method=="svr"){
+    message(paste0("\n", ">>> Running ", "cell estimation in SVR mode"))
 
-   # res<- deconvo_constru_sig(eset = eset,reference = reference,scale_reference = scale_reference,
-   #                           method = "svm",perm = perm,arrays = arrays,
-   #                           absolute.mode  = absolute.mode, abs.method = abs.method)
-   if(absolute.mode) message(paste0("\n", ">>> Running ", "SVM in absolute mode"))
+   if(absolute.mode) message(paste0("\n", ">>> Running ", "SVR in absolute mode"))
 
    eset<-as.data.frame(eset)
-   # the authors reccomend to disable quantile normalizeation for RNA seq.
+   # the authors recomend to disable quantile normalization for RNA seq.
    # (see CIBERSORT website).
    quantile_norm = arrays
    ##############################
@@ -502,22 +499,22 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.
 #' @param project project name used to distinguish different data sets, default is NULL
 #' @param method a string specifying the method.
-#' Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svm`,`lsei`，`timer`, `quantiseq`.
+#' Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.
 #' @param tumor logical. use a signature matrix/procedure optimized for tumor samples,
 #'   if supported by the method. Currently affects `EPIC`
 #' @param arrays Runs methods in a mode optimized for microarray data.
-#'   Currently affects `CIBERSORT`, `svm` and `xCell`.
+#'   Currently affects `CIBERSORT`, `svr` and `xCell`.
 #' @param perm  set permutations for statistical analysis (≥100 permutations recommended).
-#' Currently affects `CIBERSORT` and `svm_ref`
+#' Currently affects `CIBERSORT` and `svr_ref`
 #' @param reference immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq
-#' @param scale_reference a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svm` and `lsei` method
+#' @param scale_reference a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svr` and `lsei` method
 #' @param platform character string indicating platform type. Defaults to "affymetrix"
 #' Currently affects `ESTIMATE` method
 #' @param plot Currently affects `IPS` method
 #' @param scale_mrna  logical. If FALSE, disable correction for mRNA content of different cell types.
 #'   This is supported by methods that compute an absolute score (EPIC and quanTIseq)
 #' @param group_list tumor type list of samples
-#' @param absolute.mode Run CIBERSORT or SVM in absolute mode (default = FALSE)
+#' @param absolute.mode Run CIBERSORT or svr in absolute mode (default = FALSE)
 #' @param abs.method if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'
 #' @param ... arguments passed to the respective method
 #'
@@ -567,7 +564,7 @@ deconvo_tme = function(eset,
 
                timer = deconvo_timer(eset,project, indications = group_list, ...),
 
-               svm = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svm", absolute.mode = absolute.mode,abs.method = abs.method,perm,...),
+               svr = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svr", absolute.mode = absolute.mode,abs.method = abs.method,perm,...),
 
                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei",scale_reference,perm,...) )
 

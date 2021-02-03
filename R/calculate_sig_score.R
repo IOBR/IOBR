@@ -407,11 +407,13 @@ calculate_sig_score<-function(pdata = NULL,
                               print_filtered_signatures = FALSE,...){
 
 
+  if(class(signature)=="list"){
+    signature<-lapply(signature,function(x) na.omit(x))
+    signature<-lapply(signature,function(x) as.character(x))
+    signature<-lapply(signature,function(x) unique(x))
+    signature<-lapply(signature,function(x) x[!x==""])
+  }
 
-  signature<-lapply(signature,function(x) na.omit(x))
-  signature<-lapply(signature,function(x) as.character(x))
-  signature<-lapply(signature,function(x) unique(x))
-  signature<-lapply(signature,function(x) x[!x==""])
   ########################################
   if (print_gene_propotion) {
     message(lapply(signature,function(x) summary(x%in%rownames(eset))))
