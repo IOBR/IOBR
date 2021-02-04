@@ -121,7 +121,7 @@ session:
 ``` r
 # options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
-if (!requireNamespace("BiocManager", quietly = TRUE)) install("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
           'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor","timeROC","pracma")
@@ -129,11 +129,11 @@ for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE)) BiocManager::install(depen)
 }
-
+if (!requireNamespace("remotes", quietly = TRUE)) install("remotes")
 if (!requireNamespace("EPIC", quietly = TRUE))
-  devtools::install_github("GfellerLab/EPIC", build_vignettes=TRUE)
+  remotes::install_github("GfellerLab/EPIC", build_vignettes=TRUE)
 if (!requireNamespace("MCPcounter", quietly = TRUE))
-  devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
+  remotes::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
 if (!requireNamespace("estimate", quietly = TRUE)){
   rforge <- "http://r-forge.r-project.org"
   install.packages("estimate", repos=rforge, dependencies=TRUE)
@@ -144,7 +144,6 @@ Then, you can start to install IOBR from github by typing the following
 code into your R session:
 
 ``` r
-if (!requireNamespace("remotes", quietly = TRUE)) install("remotes")
 if (!requireNamespace("IOBR", quietly = TRUE))
   remotes::install_github("IOBR/IOBR",ref="master")
 ```
@@ -206,10 +205,13 @@ eset_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)")
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/RtmpAOBNSI.
+#> All downloaded files will under directory /tmp/RtmphVRIcz.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.htseq_counts.tsv.gz
+#> Warning in download.file(url, destfile, ...): URL 'https://gdc-hub.s3.us-
+#> east-1.amazonaws.com:443/download/TCGA-STAD.htseq_counts.tsv.gz': status was
+#> 'Couldn't connect to server'
 eset_stad[1:5,1:5]
 #> # A tibble: 5 x 5
 #>   Ensembl_ID `TCGA-D7-5577-0… `TCGA-D7-6818-0… `TCGA-BR-7958-0… `TCGA-D7-8572-0…
@@ -766,14 +768,14 @@ top_probe        <- immune_feature_DESeq2$G
 ``` r
 
 data("eset_stad")
-svm<-deconvo_tme(eset            = eset_stad, 
+svr<-deconvo_tme(eset            = eset_stad, 
                  reference       = reference, 
-                 method          = "svm", 
+                 method          = "svr", 
                  arrays          = FALSE,
                  absolute.mode   = FALSE,
                  # abs.method    = "sig.score",
                  perm            = 1000)
-head(svm)
+head(svr)
 #> # A tibble: 6 x 24
 #>   ID    BcellsCD19CD20B… BcellsIgAPlasma… BcellsIgGPlasma… MyeloidsProinfl…
 #>   <chr>            <dbl>            <dbl>            <dbl>            <dbl>
@@ -783,16 +785,16 @@ head(svm)
 #> 4 TCGA…           0.103            0.0270          0.0109                 0
 #> 5 TCGA…           0.119            0               0.00757                0
 #> 6 TCGA…           0.0875           0.0100          0                      0
-#> # … with 19 more variables: MyeloidsProliferating_svm <dbl>,
-#> #   MyeloidsSPP1_svm <dbl>, MyeloidscDC_svm <dbl>,
-#> #   StromalcellsMyofibroblasts_svm <dbl>, StromalcellsPericytes_svm <dbl>,
-#> #   StromalcellsStalklikeECs_svm <dbl>, StromalcellsStromal2_svm <dbl>,
-#> #   StromalcellsStromal3_svm <dbl>, StromalcellsTiplikeECs_svm <dbl>,
-#> #   TcellsCD4Tcells_svm <dbl>, TcellsCD8Tcells_svm <dbl>,
-#> #   TcellsNKcells_svm <dbl>, TcellsRegulatoryTcells_svm <dbl>,
-#> #   TcellsTfollicularhelpercells_svm <dbl>, TcellsThelper17cells_svm <dbl>,
-#> #   TcellsgammadeltaTcells_svm <dbl>, `P-value_svm` <dbl>,
-#> #   Correlation_svm <dbl>, RMSE_svm <dbl>
+#> # … with 19 more variables: MyeloidsProliferating_svr <dbl>,
+#> #   MyeloidsSPP1_svr <dbl>, MyeloidscDC_svr <dbl>,
+#> #   StromalcellsMyofibroblasts_svr <dbl>, StromalcellsPericytes_svr <dbl>,
+#> #   StromalcellsStalklikeECs_svr <dbl>, StromalcellsStromal2_svr <dbl>,
+#> #   StromalcellsStromal3_svr <dbl>, StromalcellsTiplikeECs_svr <dbl>,
+#> #   TcellsCD4Tcells_svr <dbl>, TcellsCD8Tcells_svr <dbl>,
+#> #   TcellsNKcells_svr <dbl>, TcellsRegulatoryTcells_svr <dbl>,
+#> #   TcellsTfollicularhelpercells_svr <dbl>, TcellsThelper17cells_svr <dbl>,
+#> #   TcellsgammadeltaTcells_svr <dbl>, `P-value_svr` <dbl>,
+#> #   Correlation_svr <dbl>, RMSE_svr <dbl>
 
 lsei<-deconvo_tme(eset           = eset_stad, 
                  reference       = reference, 
@@ -860,8 +862,8 @@ wilcox.test(input$TLS_Nature_PCA~input$BOR_binary)
 tme_deconvolution_methods
 #>         MCPcounter               EPIC              xCell          CIBERSORT 
 #>       "mcpcounter"             "epic"            "xcell"        "cibersort" 
-#> CIBERSORT Absolute                IPS           ESTIMATE                SVM 
-#>    "cibersort_abs"              "ips"         "estimate"              "svm" 
+#> CIBERSORT Absolute                IPS           ESTIMATE                SVR 
+#>    "cibersort_abs"              "ips"         "estimate"              "svr" 
 #>               lsei              TIMER          quanTIseq 
 #>             "lsei"            "timer"        "quantiseq"
 # Return available parameter options of deconvolution methods
@@ -942,7 +944,6 @@ head(cibersort)
 #> #   `P-value_CIBERSORT` <dbl>, Correlation_CIBERSORT <dbl>,
 #> #   RMSE_CIBERSORT <dbl>
 res<-cell_bar_plot(input = cibersort[1:12,], title = "CIBERSORT Cell Fraction")
-#> There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 ```
 
 <img src="man/figuresunnamed-chunk-28-1.png" width="100%" />
@@ -1106,7 +1107,6 @@ head(quantiseq)
 #> #   T_cells_CD8_quantiseq <dbl>, Tregs_quantiseq <dbl>,
 #> #   Dendritic_cells_quantiseq <dbl>, Other_quantiseq <dbl>
 res<-cell_bar_plot(input = quantiseq[1:12, ], title = "quanTIseq Cell Fraction")
-#> There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 ```
 
 <img src="man/figuresunnamed-chunk-35-1.png" width="100%" />
@@ -1956,7 +1956,7 @@ mut_list<-make_mut_matrix(maf      = maf_file,
 #>   FLG
 #> -Processing clinical data
 #> --Missing clinical data
-#> -Finished in 11.2s elapsed (25.9s cpu) 
+#> -Finished in 11.8s elapsed (23.4s cpu) 
 #>        Frame_Shift_Del        Frame_Shift_Ins           In_Frame_Del 
 #>                  18418                   4461                    692 
 #>           In_Frame_Ins      Missense_Mutation      Nonsense_Mutation 
@@ -1978,7 +1978,7 @@ var_stad<-XenaGenerate(subset = XenaCohorts =="GDC TCGA Stomach Cancer (STAD)") 
   XenaDownload() %>% 
   XenaPrepare()
 #> This will check url status, please be patient.
-#> All downloaded files will under directory /tmp/RtmpAOBNSI.
+#> All downloaded files will under directory /tmp/RtmphVRIcz.
 #> The 'trans_slash' option is FALSE, keep same directory structure as Xena.
 #> Creating directories for datasets...
 #> Downloading TCGA-STAD.mutect2_snv.tsv.gz
@@ -2045,10 +2045,15 @@ res<-find_mutations(mutation_matrix     = mut,
                     min_mut_freq        = 0.01,
                     plot                = TRUE,
                     method              = "Wilcoxon",
-                    save_path           = paste0("CD_8_T_effector-relevant-mutations"),
+                    save_path           = paste0("7-CD_8_T_effector-relevant-mutations"),
                     palette             = "jco",
-                    show_plot           = T)
-#> [1] ">>>> Result of Wilcoxon test"
+                    show_plot           = T,
+                    width               = 8, 
+                    height              = 4,
+                    oncoprint_group_by  = "mean",
+                    oncoprint_col       = "#224444",
+                    gene_counts         = 10)
+#> [1] ">>>> Result of Wilcoxon test (top 10): "
 #>             p.value  names statistic adjust_pvalue
 #> PIK3CA 1.921035e-10 PIK3CA      4125  9.605174e-08
 #> TCHH   1.961642e-05   TCHH      3312  4.904106e-03
@@ -2060,9 +2065,16 @@ res<-find_mutations(mutation_matrix     = mut,
 #> ANK3   6.399572e-04   ANK3      4446  3.933979e-02
 #> DMD    7.364591e-04    DMD      5311  3.933979e-02
 #> PLEC   8.026240e-04   PLEC      5562  3.933979e-02
+#>             ID CD_8_T_effector group
+#> 1 TCGA-3M-AB46     -1.37082918   Low
+#> 2 TCGA-3M-AB47     -1.50940808   Low
+#> 3 TCGA-B7-5818      2.53609581  High
+#> 4 TCGA-B7-A5TI     -0.01203826   Low
+#> 5 TCGA-B7-A5TJ     -2.23729684   Low
+#> 6 TCGA-B7-A5TK      5.57762089  High
 ```
 
-<img src="man/figuresunnamed-chunk-54-1.png" width="100%" />
+<img src="man/figuresunnamed-chunk-54-1.png" width="100%" /><img src="man/figuresunnamed-chunk-54-2.png" width="100%" />
 
 ## <a id="Section.5.4" style="color:#B7950B;">5.4 Model Construction Module</a>
 
@@ -2314,7 +2326,8 @@ sig_res<-calculate_sig_score(pdata           = NULL,
                              method          = "pca",
                              mini_gene_count = 2)
 #> 
-#> >>> Calculating signature score with PCA method
+#> >>> Calculating signature score using PCA method
+#> >>> log2 transformation is not necessary
 ```
 
 Step 4: Evaluation of Gene signatures and pathway obtained from MsigDB
@@ -2422,7 +2435,8 @@ res<-best_predictor_cox(target_data        = target,
                         nfolds             = 10,
                         permutation        = 2000,
                         plot_vars          = 12,
-                        show_progress      = FALSE)
+                        show_progress      = FALSE,
+                        palette            = "Greys")
 ```
 
 <img src="man/figuresunnamed-chunk-67-1.png" width="100%" />
@@ -2455,8 +2469,8 @@ sessionInfo()
 #> [10] LC_TELEPHONE=C       LC_MEASUREMENT=C     LC_IDENTIFICATION=C 
 #> 
 #> attached base packages:
-#> [1] parallel  stats     graphics  grDevices utils     datasets  methods  
-#> [8] base     
+#> [1] parallel  grid      stats     graphics  grDevices utils     datasets 
+#> [8] methods   base     
 #> 
 #> other attached packages:
 #>  [1] Blasso_0.1.0                  progress_1.2.2               
@@ -2464,101 +2478,101 @@ sessionInfo()
 #>  [5] Matrix_1.2-18                 IMvigor210CoreBiologies_1.0.0
 #>  [7] GEOquery_2.54.1               Biobase_2.46.0               
 #>  [9] BiocGenerics_0.32.0           UCSCXenaTools_1.3.4          
-#> [11] maftools_2.2.10               tidyHeatmap_1.1.5            
-#> [13] forcats_0.5.0                 stringr_1.4.0                
-#> [15] purrr_0.3.4                   readr_1.3.1                  
-#> [17] tidyr_1.1.0                   tidyverse_1.3.0              
-#> [19] MCPcounter_1.2.0              curl_4.3                     
-#> [21] estimate_1.0.13               EPIC_1.1.5                   
-#> [23] IOBR_0.99.9                   survival_3.2-7               
-#> [25] ggpubr_0.4.0                  ggplot2_3.3.2                
-#> [27] dplyr_1.0.0                   tibble_3.0.1                 
+#> [11] maftools_2.2.10               forcats_0.5.0                
+#> [13] stringr_1.4.0                 purrr_0.3.4                  
+#> [15] readr_1.3.1                   tidyr_1.1.0                  
+#> [17] tidyverse_1.3.0               MCPcounter_1.2.0             
+#> [19] curl_4.3                      estimate_1.0.13              
+#> [21] EPIC_1.1.5                    IOBR_0.99.9                  
+#> [23] tidyHeatmap_1.1.5             ComplexHeatmap_2.2.0         
+#> [25] survival_3.2-7                ggpubr_0.4.0                 
+#> [27] ggplot2_3.3.2                 dplyr_1.0.0                  
+#> [29] tibble_3.0.1                 
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] utf8_1.1.4                  tidyselect_1.1.0           
 #>   [3] RSQLite_2.2.0               AnnotationDbi_1.48.0       
-#>   [5] htmlwidgets_1.5.1           grid_3.6.3                 
-#>   [7] BiocParallel_1.20.1         lpSolve_5.6.15             
-#>   [9] DESeq_1.38.0                munsell_0.5.0              
-#>  [11] pec_2019.11.03              codetools_0.2-16           
-#>  [13] preprocessCore_1.48.0       withr_2.2.0                
-#>  [15] colorspace_1.4-1            limSolve_1.5.6             
-#>  [17] knitr_1.29                  rstudioapi_0.11            
-#>  [19] ROCR_1.0-11                 stats4_3.6.3               
-#>  [21] ggsignif_0.6.0              labeling_0.3               
-#>  [23] GenomeInfoDbData_1.2.2      KMsurv_0.1-5               
-#>  [25] farver_2.0.3                bit64_0.9-7                
-#>  [27] vctrs_0.3.1                 generics_0.1.0             
-#>  [29] xfun_0.15                   BiocFileCache_1.10.2       
-#>  [31] R6_2.4.1                    GenomeInfoDb_1.22.1        
-#>  [33] clue_0.3-57                 timereg_1.9.8              
-#>  [35] locfit_1.5-9.4              bitops_1.0-6               
-#>  [37] DelayedArray_0.12.3         assertthat_0.2.1           
-#>  [39] promises_1.1.1              scales_1.1.1               
-#>  [41] nnet_7.3-12                 gtable_0.3.0               
-#>  [43] sva_3.34.0                  rlang_0.4.6                
-#>  [45] genefilter_1.68.0           GlobalOptions_0.1.2        
-#>  [47] splines_3.6.3               rstatix_0.6.0              
-#>  [49] acepack_1.4.1               wordcloud_2.6              
-#>  [51] broom_0.5.6                 checkmate_2.0.0            
-#>  [53] reshape2_1.4.4              yaml_2.2.1                 
-#>  [55] abind_1.4-5                 modelr_0.1.8               
-#>  [57] backports_1.1.8             httpuv_1.5.4               
-#>  [59] Hmisc_4.4-0                 lava_1.6.8.1               
-#>  [61] tools_3.6.3                 ellipsis_0.3.1             
-#>  [63] plyr_1.8.6                  Rcpp_1.0.5                 
-#>  [65] base64enc_0.1-3             zlibbioc_1.32.0            
-#>  [67] RCurl_1.98-1.2              prettyunits_1.1.1          
-#>  [69] rpart_4.1-15                openssl_1.4.2              
-#>  [71] GetoptLong_1.0.4            viridis_0.5.1              
-#>  [73] cowplot_1.0.0               S4Vectors_0.24.4           
-#>  [75] zoo_1.8-8                   SummarizedExperiment_1.16.1
-#>  [77] haven_2.3.1                 cluster_2.1.0              
-#>  [79] fs_1.4.1                    magrittr_1.5               
-#>  [81] data.table_1.12.8           openxlsx_4.1.5             
-#>  [83] circlize_0.4.11             reprex_0.3.0               
-#>  [85] survminer_0.4.8             mvtnorm_1.1-1              
-#>  [87] timeROC_0.4                 matrixStats_0.56.0         
-#>  [89] hms_0.5.3                   mime_0.9                   
-#>  [91] evaluate_0.14               GSVA_1.34.0                
-#>  [93] xtable_1.8-4                XML_3.99-0.3               
-#>  [95] rio_0.5.16                  jpeg_0.1-8.1               
-#>  [97] readxl_1.3.1                IRanges_2.20.2             
-#>  [99] gridExtra_2.3               shape_1.4.5                
-#> [101] compiler_3.6.3              biomaRt_2.42.1             
-#> [103] crayon_1.3.4                htmltools_0.5.0            
-#> [105] mgcv_1.8-31                 later_1.1.0.1              
-#> [107] Formula_1.2-3               geneplotter_1.64.0         
-#> [109] lubridate_1.7.9             DBI_1.1.0                  
-#> [111] corrplot_0.84               ppcor_1.1                  
-#> [113] dbplyr_1.4.4                ComplexHeatmap_2.2.0       
-#> [115] MASS_7.3-51.5               rappdirs_0.3.1             
-#> [117] car_3.0-8                   cli_2.0.2                  
-#> [119] quadprog_1.5-8              GenomicRanges_1.38.0       
-#> [121] pkgconfig_2.0.3             km.ci_0.5-2                
-#> [123] numDeriv_2016.8-1.1         foreign_0.8-75             
-#> [125] xml2_1.3.2                  foreach_1.5.0              
-#> [127] annotate_1.64.0             ggcorrplot_0.1.3           
-#> [129] XVector_0.26.0              prodlim_2019.11.13         
-#> [131] rvest_0.3.5                 digest_0.6.25              
-#> [133] pracma_2.2.9                graph_1.64.0               
-#> [135] rmarkdown_2.3               cellranger_1.1.0           
-#> [137] survMisc_0.5.5              htmlTable_2.0.0            
-#> [139] GSEABase_1.48.0             shiny_1.5.0                
-#> [141] rjson_0.2.20                lifecycle_0.2.0            
-#> [143] nlme_3.1-144                jsonlite_1.7.0             
-#> [145] carData_3.0-4               viridisLite_0.3.0          
-#> [147] askpass_1.1                 limma_3.42.2               
-#> [149] fansi_0.4.1                 pillar_1.4.4               
-#> [151] ggsci_2.9                   lattice_0.20-38            
-#> [153] fastmap_1.0.1               httr_1.4.1                 
-#> [155] glue_1.4.1                  remotes_2.1.1              
-#> [157] zip_2.0.4                   png_0.1-7                  
-#> [159] shinythemes_1.1.2           iterators_1.0.12           
-#> [161] bit_1.1-15.2                class_7.3-15               
-#> [163] stringi_1.4.6               blob_1.2.1                 
-#> [165] DESeq2_1.26.0               latticeExtra_0.6-29        
-#> [167] memoise_1.1.0               e1071_1.7-4
+#>   [5] htmlwidgets_1.5.1           BiocParallel_1.20.1        
+#>   [7] lpSolve_5.6.15              DESeq_1.38.0               
+#>   [9] munsell_0.5.0               pec_2019.11.03             
+#>  [11] codetools_0.2-16            preprocessCore_1.48.0      
+#>  [13] withr_2.2.0                 colorspace_1.4-1           
+#>  [15] limSolve_1.5.6              knitr_1.29                 
+#>  [17] rstudioapi_0.11             ROCR_1.0-11                
+#>  [19] stats4_3.6.3                ggsignif_0.6.0             
+#>  [21] labeling_0.3                GenomeInfoDbData_1.2.2     
+#>  [23] KMsurv_0.1-5                farver_2.0.3               
+#>  [25] bit64_0.9-7                 vctrs_0.3.1                
+#>  [27] generics_0.1.0              xfun_0.15                  
+#>  [29] BiocFileCache_1.10.2        R6_2.4.1                   
+#>  [31] GenomeInfoDb_1.22.1         clue_0.3-57                
+#>  [33] timereg_1.9.8               locfit_1.5-9.4             
+#>  [35] bitops_1.0-6                DelayedArray_0.12.3        
+#>  [37] assertthat_0.2.1            promises_1.1.1             
+#>  [39] scales_1.1.1                nnet_7.3-12                
+#>  [41] gtable_0.3.0                sva_3.34.0                 
+#>  [43] rlang_0.4.6                 genefilter_1.68.0          
+#>  [45] GlobalOptions_0.1.2         splines_3.6.3              
+#>  [47] rstatix_0.6.0               acepack_1.4.1              
+#>  [49] wordcloud_2.6               broom_0.5.6                
+#>  [51] checkmate_2.0.0             reshape2_1.4.4             
+#>  [53] yaml_2.2.1                  abind_1.4-5                
+#>  [55] modelr_0.1.8                backports_1.1.8            
+#>  [57] httpuv_1.5.4                Hmisc_4.4-0                
+#>  [59] lava_1.6.8.1                tools_3.6.3                
+#>  [61] ellipsis_0.3.1              plyr_1.8.6                 
+#>  [63] Rcpp_1.0.5                  base64enc_0.1-3            
+#>  [65] zlibbioc_1.32.0             RCurl_1.98-1.2             
+#>  [67] prettyunits_1.1.1           rpart_4.1-15               
+#>  [69] openssl_1.4.2               GetoptLong_1.0.4           
+#>  [71] viridis_0.5.1               cowplot_1.0.0              
+#>  [73] S4Vectors_0.24.4            zoo_1.8-8                  
+#>  [75] SummarizedExperiment_1.16.1 haven_2.3.1                
+#>  [77] cluster_2.1.0               fs_1.4.1                   
+#>  [79] magrittr_1.5                data.table_1.12.8          
+#>  [81] openxlsx_4.1.5              circlize_0.4.11            
+#>  [83] reprex_0.3.0                survminer_0.4.8            
+#>  [85] mvtnorm_1.1-1               timeROC_0.4                
+#>  [87] matrixStats_0.56.0          hms_0.5.3                  
+#>  [89] mime_0.9                    evaluate_0.14              
+#>  [91] GSVA_1.34.0                 xtable_1.8-4               
+#>  [93] XML_3.99-0.3                rio_0.5.16                 
+#>  [95] jpeg_0.1-8.1                readxl_1.3.1               
+#>  [97] IRanges_2.20.2              gridExtra_2.3              
+#>  [99] shape_1.4.5                 compiler_3.6.3             
+#> [101] biomaRt_2.42.1              crayon_1.3.4               
+#> [103] htmltools_0.5.0             mgcv_1.8-31                
+#> [105] later_1.1.0.1               Formula_1.2-3              
+#> [107] geneplotter_1.64.0          lubridate_1.7.9            
+#> [109] DBI_1.1.0                   corrplot_0.84              
+#> [111] ppcor_1.1                   dbplyr_1.4.4               
+#> [113] MASS_7.3-51.5               rappdirs_0.3.1             
+#> [115] car_3.0-8                   cli_2.0.2                  
+#> [117] quadprog_1.5-8              GenomicRanges_1.38.0       
+#> [119] pkgconfig_2.0.3             km.ci_0.5-2                
+#> [121] numDeriv_2016.8-1.1         foreign_0.8-75             
+#> [123] xml2_1.3.2                  foreach_1.5.0              
+#> [125] annotate_1.64.0             ggcorrplot_0.1.3           
+#> [127] XVector_0.26.0              prodlim_2019.11.13         
+#> [129] rvest_0.3.5                 digest_0.6.25              
+#> [131] pracma_2.2.9                graph_1.64.0               
+#> [133] rmarkdown_2.3               cellranger_1.1.0           
+#> [135] survMisc_0.5.5              htmlTable_2.0.0            
+#> [137] GSEABase_1.48.0             shiny_1.5.0                
+#> [139] rjson_0.2.20                lifecycle_0.2.0            
+#> [141] nlme_3.1-144                jsonlite_1.7.0             
+#> [143] carData_3.0-4               viridisLite_0.3.0          
+#> [145] askpass_1.1                 limma_3.42.2               
+#> [147] fansi_0.4.1                 pillar_1.4.4               
+#> [149] ggsci_2.9                   lattice_0.20-38            
+#> [151] fastmap_1.0.1               httr_1.4.1                 
+#> [153] glue_1.4.1                  zip_2.0.4                  
+#> [155] png_0.1-7                   shinythemes_1.1.2          
+#> [157] iterators_1.0.12            bit_1.1-15.2               
+#> [159] class_7.3-15                stringi_1.4.6              
+#> [161] blob_1.2.1                  DESeq2_1.26.0              
+#> [163] latticeExtra_0.6-29         memoise_1.1.0              
+#> [165] e1071_1.7-4
 ```
 
 # <a id="Section.9" style="color:#B7950B;">9. Citing IOBR</a>
@@ -2571,7 +2585,7 @@ Available Methods to Decode TME Contexture](#Section.5.1.3).
 
 If IOBR R package is utilized in your published research, please cite:
 
->   - DQ Zeng, ZL Ye, GC Yu, …, WJ Liao\*, IOBR: Multi-omics
+>   - DQ Zeng, ZL Ye, RF Shen, GC Yu, …, WJ Liao\*, IOBR: Multi-omics
 >     Immuno-Oncology Biological Research to decode tumor
 >     microenvironment and signatures. bioRxiv, 2020.2012.2014.422647
 >     (2020).
