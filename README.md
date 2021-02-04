@@ -97,8 +97,8 @@ package, and detailed guidance of how to use IOBR could be found in the
 tme_deconvolution_methods
 #>         MCPcounter               EPIC              xCell          CIBERSORT 
 #>       "mcpcounter"             "epic"            "xcell"        "cibersort" 
-#> CIBERSORT Absolute                IPS           ESTIMATE                SVM 
-#>    "cibersort_abs"              "ips"         "estimate"              "svm" 
+#> CIBERSORT Absolute                IPS           ESTIMATE                SVR 
+#>    "cibersort_abs"              "ips"         "estimate"              "svr" 
 #>               lsei              TIMER          quanTIseq 
 #>             "lsei"            "timer"        "quantiseq"
 # Return available parameter options of TME deconvolution.
