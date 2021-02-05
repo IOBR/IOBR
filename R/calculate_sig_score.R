@@ -29,6 +29,7 @@ signature_score_calculation_methods= c("PCA"        = "pca",
 #' @param signature List of gene signatures;
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
+#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @author Dongqiang Zeng
 #' @return signature scores for gene sets; signatures in columns, samples in rows
@@ -39,7 +40,8 @@ calculate_sig_score_pca<-function(pdata = NULL,
                                   eset,
                                   signature,
                                   mini_gene_count,
-                                  column_of_sample){
+                                  column_of_sample,
+                                  ajdust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using PCA method"))
 
@@ -69,6 +71,10 @@ calculate_sig_score_pca<-function(pdata = NULL,
   #normalization
   eset<-log2eset(eset = eset)
   check_eset(eset)
+  if(adjust_eset){
+    feas<-feature_manipulation(data=eset,is.matrix = T)
+    eset<-eset[rownames(eset)%in%feas,]
+  }
 
   eset<-scale(eset,center = T,scale = T)
   ###########################
@@ -112,6 +118,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
 #' @param signature List of gene signatures
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found
+#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @author Dongqiang Zeng
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
@@ -123,7 +130,8 @@ calculate_sig_score_zscore<-function(pdata = NULL,
                                      eset,
                                      signature,
                                      mini_gene_count,
-                                     column_of_sample){
+                                     column_of_sample,
+                                     adjust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using z-score method"))
 
@@ -153,6 +161,10 @@ calculate_sig_score_zscore<-function(pdata = NULL,
   eset<-log2eset(eset = eset)
 
   check_eset(eset)
+  if(adjust_eset){
+    feas<-feature_manipulation(data=eset,is.matrix = T)
+    eset<-eset[rownames(eset)%in%feas,]
+  }
 
   eset<-scale(eset,center = T,scale = T)
   ###########################
@@ -192,6 +204,7 @@ calculate_sig_score_zscore<-function(pdata = NULL,
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set; default is 5;
 #' the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
+#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
@@ -202,7 +215,8 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
                                      eset,
                                      signature,
                                      mini_gene_count,
-                                     column_of_sample){
+                                     column_of_sample,
+                                     adjust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using ssGSEA method"))
 
@@ -236,6 +250,10 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   ##############################
   eset<-log2eset(eset = eset)
   check_eset(eset)
+  if(adjust_eset){
+    feas<-feature_manipulation(data=eset,is.matrix = T)
+    eset<-eset[rownames(eset)%in%feas,]
+  }
   ##############################
   res <- GSVA:: gsva(as.matrix(eset),
                      signature,
@@ -275,6 +293,7 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set; default is 5;
 #' the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
+#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
@@ -286,7 +305,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
                                           eset,
                                           signature,
                                           mini_gene_count = 2,
-                                          column_of_sample){
+                                          column_of_sample,
+                                          adjust_eset = FALSE){
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
@@ -316,6 +336,10 @@ calculate_sig_score_integration<-function(pdata = NULL,
   #normalization
   eset<-log2eset(eset = eset)
   check_eset(eset)
+  if(adjust_eset){
+    feas<-feature_manipulation(data=eset,is.matrix = T)
+    eset<-eset[rownames(eset)%in%feas,]
+  }
   ##########################
   eset1<-scale(eset,center = T,scale = T)
   message(paste0("\n", ">>>Step 1: Calculating signature score using PCA method"))
@@ -387,6 +411,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' @param method he methods currently supported are `pca`, `ssgsea`, `zscore`,`integration`
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
 #' default is 2 for PCA and z score funciion
+#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #' @param column_of_sample Defines in which column of pdata the sample identifier can be found.
 #' @param print_gene_propotion logical, print the propotion of signature genes in gene matrix
 #' @param print_filtered_signatures logical, print filtered signatures has gene count less than minical gene count
@@ -404,6 +429,7 @@ calculate_sig_score<-function(pdata = NULL,
                               mini_gene_count = 3,
                               column_of_sample = "ID",
                               print_gene_propotion = FALSE,
+                              adjust_eset = FALSE,
                               print_filtered_signatures = FALSE,...){
 
 
@@ -443,19 +469,23 @@ calculate_sig_score<-function(pdata = NULL,
                pca = calculate_sig_score_pca(pdata, eset,
                                              signature = signature,
                                              mini_gene_count = mini_gene_count,
-                                             column_of_sample = column_of_sample,...),
+                                             column_of_sample = column_of_sample,
+                                             adjust_eset = adjust_eset,...),
                ssgsea = calculate_sig_score_ssgsea(pdata, eset,
                                                    signature = signature,
                                                    mini_gene_count = mini_gene_count,
-                                                   column_of_sample = column_of_sample,...),
+                                                   column_of_sample = column_of_sample,
+                                                   adjust_eset = adjust_eset,...),
                zscore = calculate_sig_score_zscore(pdata,eset,
                                                    signature = signature,
                                                    mini_gene_count = mini_gene_count,
-                                                   column_of_sample = column_of_sample,...),
+                                                   column_of_sample = column_of_sample,
+                                                   adjust_eset = adjust_eset,...),
                integration = calculate_sig_score_integration(pdata,eset,
                                                         signature = signature,
                                                         mini_gene_count = mini_gene_count,
-                                                        column_of_sample = column_of_sample,...))
+                                                        column_of_sample = column_of_sample,
+                                                        adjust_eset = adjust_eset,...))
   return(res)
 }
 

@@ -4,13 +4,24 @@
 #' @param data data with features in the columns
 #' @param print_result logical variables, if TRUE, feature detail will be printed in the console
 #' @param feature features with NA or Infinity value
+#' @param is_matrix if input is a matrix, data will be transformed and feature will be row names of original data
 #'
 #' @return filtered features
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
 
-feature_manipulation<-function(data = data,feature = feature, print_result = FALSE){
+feature_manipulation<-function(data, feature = NULL, is_matrix = FALSE, print_result = FALSE){
+
+  if(is_matrix){
+    data<-as.data.frame(t(data))
+    feature<-colnames(data)
+  }
+
+  if(is.null(feature)&!is_matrix){
+    feature<-setdiff(colnames(data),"ID")
+  }
+
   data<-as.data.frame(data)
   #remove NA variables
   if(print_result)  print(paste(">>> Is NA exist: ",  sum(is.na(data[,feature]))))
