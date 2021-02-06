@@ -9,7 +9,8 @@ calculate_sig_score_zscore(
   eset,
   signature,
   mini_gene_count,
-  column_of_sample
+  column_of_sample,
+  adjust_eset = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ if phenotype data is NULL, create a data frame with `Index` and `ID` contain col
 \item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set;}
 
 \item{column_of_sample}{Defines in which column of pdata the sample identifier can be found}
+
+\item{ajdust_eset}{remove variables with missing value, sd =0, and Inf value}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows

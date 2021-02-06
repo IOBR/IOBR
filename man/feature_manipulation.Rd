@@ -4,12 +4,19 @@
 \alias{feature_manipulation}
 \title{Filtering features using multiple methods}
 \usage{
-feature_manipulation(data = data, feature = feature, print_result = FALSE)
+feature_manipulation(
+  data,
+  feature = NULL,
+  is_matrix = FALSE,
+  print_result = FALSE
+)
 }
 \arguments{
 \item{data}{data with features in the columns}
 
 \item{feature}{features with NA or Infinity value}
+
+\item{is_matrix}{if input is a matrix, data will be transformed and feature will be row names of original data}
 
 \item{print_result}{logical variables, if TRUE, feature detail will be printed in the console}
 }

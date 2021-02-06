@@ -12,6 +12,7 @@ calculate_sig_score(
   mini_gene_count = 3,
   column_of_sample = "ID",
   print_gene_propotion = FALSE,
+  adjust_eset = FALSE,
   print_filtered_signatures = FALSE,
   ...
 )
@@ -36,6 +37,8 @@ default is 2 for PCA and z score funciion}
 \item{print_filtered_signatures}{logical, print filtered signatures has gene count less than minical gene count}
 
 \item{...}{}
+
+\item{ajdust_eset}{remove variables with missing value, sd =0, and Inf value}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
