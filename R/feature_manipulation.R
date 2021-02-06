@@ -36,12 +36,12 @@ feature_manipulation<-function(data, feature = NULL, is_matrix = FALSE, print_re
   #remove non-numeric variables
   if(print_result){
     print(paste0(">>>> Is nonnumeric variables exist ? >>>>"))
-    print(summary(lapply(data[,feature],function(x) class(x))==!"numeric"))
+    print(summary(sapply(data[,feature], mode)!="numeric"))
   }
-  fea_class<-as.vector(lapply(data[,feature],function(x) class(x))=="numeric")
+  fea_class<-as.vector(sapply(data[,feature], mode)=="numeric")
   feature<-feature[fea_class]
 
-  #remove infinited variables
+  #remove infinite variables
 
   if(print_result){
     print(paste0(">>>> Is -Inf variables exist ? >>>>"))
@@ -62,7 +62,7 @@ feature_manipulation<-function(data, feature = NULL, is_matrix = FALSE, print_re
   sd<-apply(data[,feature],2,function(x) sd(x)==0)
 
   if(print_result){
-    print(paste0(">>> Variables have sd = 0 :  "))
+    print(paste0(">>> Variables with sd = 0 :  "))
     print(summary(sd))
   }
 

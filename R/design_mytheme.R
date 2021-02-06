@@ -29,6 +29,7 @@ design_mytheme<-function( plot_title_size = 2,axis_title_size = 2,
           axis.text=element_text(size=rel(2.5)),
           axis.text.x= element_text(face="plain",size= axis_text_size,
                                     angle=axis_angle,hjust = hjust,color="black"),#family="Times New Roman"
+          axis.text.y= element_text(face="plain",size= axis_text_size,color="black"),#family="Times New Roman"
           # panel.grid.major=element_line(color="white"),
           # panel.grid.minor=element_line(color="white"),
           # panel.border=element_rect(color="white"),
