@@ -22,15 +22,15 @@
 #' @param height height of oncoprint
 #' @param oncoprint_group_by signature must be group by mean or quantile
 #' @param oncoprint_col color of mutation
+#' @param jitter if true, each point will be drawn in the box plot with jitter
 #' @param gene_counts define the number of genes which will be shown in the oncoprint
-#' @param group_col color of signature group
 #'
 #' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE,width = 8, height = 4,oncoprint_group_by = "mean",oncoprint_col = "#224444",gene_counts = 10){
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE,width = 8, height = 4,oncoprint_group_by = "mean",oncoprint_col = "#224444",gene_counts = 10,jitter = FALSE){
 
 
 
@@ -131,13 +131,17 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         gene<- top10_genes[i]
         dd<-input_long[input_long$Gene==gene,]
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
-          geom_boxplot(outlier.shape = NA,outlier.size = NA)+
-          geom_jitter(width = 0.25,size= 5.9,alpha=0.75,color ="black")+
+          geom_boxplot(outlier.shape = NA,outlier.size = -0.5)+
+          # geom_jitter(width = 0.25,size= 5.9,alpha=0.75,color ="black")+
           scale_fill_manual(values = palettes(category = "box",palette = palette,show_col = show_col))+
           mytheme+theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
           mytheme+stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)+
           stat_compare_means(size=6)
+
+        if(jitter){
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= 5.9,alpha=0.75,color ="black")
+        }
         ggsave(pl[[i]],filename = paste0(4+i,"-1-",gene,"-continue.pdf"),
                width = 4.2,height = 6.5,path = file_name)
       }
@@ -198,14 +202,18 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         gene<- top10_genes[i]
         dd<-input_long[input_long$Gene==gene,]
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
-          geom_boxplot(outlier.shape = NA,outlier.size = NA)+
-          geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")+
+          geom_boxplot(outlier.shape = NA,outlier.size = -0.5)+
+          # geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")+
           scale_fill_manual(values= palettes(category = "box",palette = palette,show_col = show_col))+
           mytheme+
           theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
+        if(jitter){
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")
+        }
+
         ggsave(pl[[i]],filename = paste0(4+i,"-2-",gene,"-binary.pdf"),
                width = 4.2,height = 6.5,path = file_name)
       }
