@@ -26,7 +26,7 @@ iobr_cor_plot(
   show_col = FALSE,
   show_plot = FALSE,
   path = NULL,
-  discrete_x = 30,
+  discrete_x = 20,
   show_palettes = FALSE
 )
 }

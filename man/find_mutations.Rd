@@ -20,7 +20,8 @@ find_mutations(
   height = 4,
   oncoprint_group_by = "mean",
   oncoprint_col = "#224444",
-  gene_counts = 10
+  gene_counts = 10,
+  jitter = FALSE
 )
 }
 \arguments{
@@ -56,7 +57,7 @@ find_mutations(
 
 \item{gene_counts}{define the number of genes which will be shown in the oncoprint}
 
-\item{group_col}{color of signature group}
+\item{jitter}{if true, each point will be drawn in the box plot with jitter}
 }
 \value{
 
