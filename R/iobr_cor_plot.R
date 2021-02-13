@@ -26,6 +26,7 @@
 #' @param path folder name to save the result
 #' @param discrete_x if maximal character length of variables is larger than discrete_x, label will be discrete
 #' @param show_palettes default is FALSE
+#' @param discrete_width numeric, default is 30, range from 20 to 80.
 #'
 #' @author Dongqiang Zeng
 #' @return
@@ -55,6 +56,7 @@ iobr_cor_plot<-function(pdata_group,
                         show_plot = FALSE,
                         path = NULL,
                         discrete_x = 20,
+                        discrete_width = 30,
                         show_palettes = FALSE){
 
   if(!is.null(path)){
@@ -266,13 +268,14 @@ iobr_cor_plot<-function(pdata_group,
       pf_long_group<-pf_long
     }
 
-    axis_text_size<- 18 - max(nchar(pf_long$variables))/8
+    axis_text_size<- 18 - max(nchar(pf_long$variables))/7
 
     pf_long_group_box<-pf_long_group
 
     if(max(nchar(pf_long_group$variables))> discrete_x){
 
-      pf_long_group_box$variables<-gsub(pf_long_group_box$variables,pattern = "\\_",replacement = " ")
+      # pf_long_group_box$nchar_discrete<-ifelse(max(nchar(pf_long_group$variables))> discrete_x,TRUE,FALSE)
+      pf_long_group_box$variables<-ifelse(nchar(pf_long_group$variables)> discrete_x, gsub(pf_long_group_box$variables,pattern = "\\_",replacement = " "),pf_long_group_box$variables)
     }
 
     color_box<-palettes(category = "box",palette = palette_box, show_col = show_col, show_message = show_palettes)
@@ -299,14 +302,14 @@ iobr_cor_plot<-function(pdata_group,
               legend.box="horizontal",
               legend.box.just="top",
               legend.text=element_text(colour="black",size=10,face = "plain"))+
-      scale_x_discrete(labels=function(x) str_wrap(x, width=35))
+      scale_x_discrete(labels=function(x) stringr::str_wrap(x, width = discrete_width))
     #################################################
     max_variables <- max(pf_long_group_box$value)
     group_box<-sym(target_binary)
     pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),
                               size= 2.6, label.y = max_variables-0.3)
     pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",
-                              size=6, label.y = max_variables-0.5 )
+                              size=6, label.y = max_variables-0.6 )
     if(show_plot&length(features)<13){
       print(pp1)
     }else if(show_plot&length(features)>13){
@@ -314,7 +317,7 @@ iobr_cor_plot<-function(pdata_group,
     }
     ###################################################
     plot_width<-length(features)*0.4+3
-    plot_height<- 4 + max(nchar(pf_long_group_box$variables))*0.04
+    plot_height<- 4 + max(nchar(pf_long_group_box$variables))*0.05
     ###################################################
 
     if(!is.null(target)){
