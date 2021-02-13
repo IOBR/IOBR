@@ -29,7 +29,7 @@ signature_score_calculation_methods= c("PCA"        = "pca",
 #' @param signature List of gene signatures;
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
-#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
+#' @param adjust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @author Dongqiang Zeng
 #' @return signature scores for gene sets; signatures in columns, samples in rows
@@ -41,7 +41,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
                                   signature,
                                   mini_gene_count,
                                   column_of_sample,
-                                  ajdust_eset = FALSE){
+                                  adjust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using PCA method"))
 
@@ -118,7 +118,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
 #' @param signature List of gene signatures
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found
-#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
+#' @param adjust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @author Dongqiang Zeng
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
@@ -204,7 +204,7 @@ calculate_sig_score_zscore<-function(pdata = NULL,
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set; default is 5;
 #' the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
-#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
+#' @param adjust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
