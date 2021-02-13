@@ -27,6 +27,7 @@ iobr_cor_plot(
   show_plot = FALSE,
   path = NULL,
   discrete_x = 20,
+  discrete_width = 30,
   show_palettes = FALSE
 )
 }
@@ -74,6 +75,8 @@ iobr_cor_plot(
 \item{path}{folder name to save the result}
 
 \item{discrete_x}{if maximal character length of variables is larger than discrete_x, label will be discrete}
+
+\item{discrete_width}{numeric, default is 30, range from 20 to 80.}
 
 \item{show_palettes}{default is FALSE}
 }
