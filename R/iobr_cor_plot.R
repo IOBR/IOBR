@@ -54,7 +54,7 @@ iobr_cor_plot<-function(pdata_group,
                         show_col = FALSE,
                         show_plot = FALSE,
                         path = NULL,
-                        discrete_x = 30,
+                        discrete_x = 20,
                         show_palettes = FALSE){
 
   if(!is.null(path)){
@@ -306,7 +306,7 @@ iobr_cor_plot<-function(pdata_group,
     pp1<-p+stat_compare_means(aes(group = !!group_box,label = paste0("p = ", ..p.format..)),
                               size= 2.6, label.y = max_variables-0.3)
     pp2<-p+stat_compare_means(aes(group = !!group_box ),label = "p.signif",
-                              size=7, label.y = max_variables-0.5 )
+                              size=6, label.y = max_variables-0.5 )
     if(show_plot&length(features)<13){
       print(pp1)
     }else if(show_plot&length(features)>13){
