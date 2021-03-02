@@ -55,13 +55,11 @@ depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools"
 for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
-    BiocManager::install(depen)
+    BiocManager::install(depen,update = FALSE)
 }
 
 if (!requireNamespace("EPIC", quietly = TRUE))
   devtools::install_github("GfellerLab/EPIC", ref="master")
-if (!requireNamespace("MCPcounter", quietly = TRUE))
-  devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
 if (!requireNamespace("estimate", quietly = TRUE)){
   rforge <- "http://r-forge.r-project.org"
   install.packages("estimate", repos=rforge, dependencies=TRUE)
@@ -73,7 +71,7 @@ Github:
 
 ``` r
 if (!requireNamespace("IOBR", quietly = TRUE))
-  devtools::install_github("IOBR/IOBR",ref="master")
+  devtools::install_github("IOBR/IOBR")
 ```
 
 Library R packages
@@ -193,9 +191,9 @@ sig_group[1:3]
 
 ## References
 
-DQ Zeng, ZL Ye, GC Yu, …, WJ Liao\*, IOBR: Multi-omics Immuno-Oncology
-Biological Research to decode tumor microenvironment and signatures.
-bioRxiv, 2020.2012.2014.422647
+DQ Zeng, ZL Ye, RF Shen, GC Yu, …, WJ Liao\*, IOBR: Multi-omics
+Immuno-Oncology Biological Research to decode tumor microenvironment and
+signatures. bioRxiv, 2020.2012.2014.422647
 (2020).[doi: 10.1101/2020.12.14.422647](https://www.biorxiv.org/content/10.1101/2020.12.14.422647v1)
 
 ## Reporting bugs

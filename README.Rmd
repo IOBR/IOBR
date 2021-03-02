@@ -45,13 +45,11 @@ depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools"
 for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
-    BiocManager::install(depen)
+    BiocManager::install(depen,update = FALSE)
 }
 
 if (!requireNamespace("EPIC", quietly = TRUE))
   devtools::install_github("GfellerLab/EPIC", ref="master")
-if (!requireNamespace("MCPcounter", quietly = TRUE))
-  devtools::install_github("ebecht/MCPcounter",ref="master", subdir="Source")
 if (!requireNamespace("estimate", quietly = TRUE)){
   rforge <- "http://r-forge.r-project.org"
   install.packages("estimate", repos=rforge, dependencies=TRUE)
@@ -62,7 +60,7 @@ if (!requireNamespace("estimate", quietly = TRUE)){
 The package is not yet on CRAN or Bioconductor. You can install it from Github:
 ```{r}
 if (!requireNamespace("IOBR", quietly = TRUE))
-  devtools::install_github("IOBR/IOBR",ref="master")
+  devtools::install_github("IOBR/IOBR")
 ```
 
 Library R packages
