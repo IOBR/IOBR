@@ -70,7 +70,6 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
 #' @param project project name used to distinguish different data sets
 #' @return MCP-counter with immune cell fractions
 #' @export
-#' @importFrom MCPcounter MCPcounter.estimate
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
