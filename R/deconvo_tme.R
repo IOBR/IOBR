@@ -82,10 +82,10 @@ deconvo_mcpcounter<-function(eset,project = NULL){
   #normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)
 
-  res<-MCPcounter::MCPcounter.estimate(eset,
-                                       featuresType = "HUGO_symbols",
-                                       probesets= mcp_probesets,
-                                       genes= mcp_genes)
+  res<-MCPcounter.estimate(eset,
+                           featuresType = "HUGO_symbols",
+                           probesets= mcp_probesets,
+                           genes= mcp_genes)
   res<-as.data.frame(t(res))
   ####################################
   colnames(res)<-gsub(colnames(res),pattern = "\\.",replacement = "\\_")

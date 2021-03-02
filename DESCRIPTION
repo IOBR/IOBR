@@ -20,7 +20,6 @@ Depends:
   R(>= 3.5.0)
 Imports: 
    EPIC, 
-   MCPcounter,
    estimate,
    matrixStats
 BugReports: https://github.com/IOBR/IOBR/issues
