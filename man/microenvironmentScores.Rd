@@ -13,5 +13,5 @@ microenvironmentScores(adjustedScores)
 the microenvironment scores
 }
 \description{
-\code{microenvironmentScores} Returns the adjusted xCell scores.
+microenvironmentScores Returns the adjusted xCell scores.
 }

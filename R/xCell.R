@@ -19,7 +19,8 @@
 #' to be in the mixture. The names of cell types in this list must be a subset of the cell types that are inferred by xCell.
 #'
 #' @return the adjusted xCell scores
-xCellAnalysis <- function(expr, signatures=NULL, genes=NULL, spill=NULL, rnaseq=TRUE, file.name = NULL, scale=TRUE,
+xCellAnalysis <- function(expr, signatures=NULL, genes=NULL,
+                          spill=NULL, rnaseq=TRUE, file.name = NULL, scale=TRUE,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
   if (is.null(signatures))
@@ -71,7 +72,7 @@ xCellAnalysis <- function(expr, signatures=NULL, genes=NULL, spill=NULL, rnaseq=
 
 #' Calculated raw xCell enrichment scores
 #'
-#' \code{rawEnrichmentAnalysis} Returns the raw xCell cell types enrichment scores.
+#' rawEnrichmentAnalysis Returns the raw xCell cell types enrichment scores.
 #'
 #' @param expr the gene expression data set. A matrix with row names as symbols and columns as samples.
 #' @param signatures a GMT object of signatures.
@@ -118,7 +119,7 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
 
 #' Transform scores from raw scores to fractions
 #'
-#' \code{transformScores} Returns the trasnformed xCell scores (not adjusted).
+#' transformScores Returns the trasnformed xCell scores (not adjusted).
 #'
 #' @param scores raw scores of cell types calculated by rawEnrichmentAnalysis
 #' @param fit.vals the calibration values in the spill object (spill$fv).
@@ -149,7 +150,7 @@ transformScores <- function(scores, fit.vals, scale=TRUE,
 
 #' Adjust scores using the spillover compensation method
 #'
-#' \code{spillOver} Returns the adjusted xCell scores.
+#' spillOver Returns the adjusted xCell scores.
 #'
 #' @param transformedScores the trasnformed scores of cell types calculated by transformScores
 #' @param K the Spillover matrix (spill$K).
@@ -178,7 +179,7 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
 
 #' Calculate microenvironment scores
 #'
-#' \code{microenvironmentScores} Returns the adjusted xCell scores.
+#' microenvironmentScores Returns the adjusted xCell scores.
 #'
 #' @param adjustedScores the combined microenvironment scores
 #'
@@ -192,7 +193,7 @@ microenvironmentScores <- function(adjustedScores) {
 
 #' Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.
 #'
-#' \code{xCellSignifcanceBetaDist} Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+#' xCellSignifcanceBetaDist Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
 #'
 #' @param scores the xCell scores.
 #' @param beta_params the pre-calculated beta distribution parameters from random mixtures.
@@ -236,7 +237,7 @@ xCellSignifcanceBetaDist = function(scores,beta_params=NULL,rnaseq=T,file.name =
 }
 #' Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.
 #'
-#' \code{xCellSignifcanceRandomMatrix} Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+#' xCellSignifcanceRandomMatrix Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
 #'
 #' @param scores the xCell scores.
 #' @param expr the input expression matrix.

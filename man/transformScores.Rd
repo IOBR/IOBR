@@ -19,5 +19,5 @@ transformScores(scores, fit.vals, scale = TRUE, fn = NULL)
 the trasnformed xCell scores
 }
 \description{
-\code{transformScores} Returns the trasnformed xCell scores (not adjusted).
+transformScores Returns the trasnformed xCell scores (not adjusted).
 }

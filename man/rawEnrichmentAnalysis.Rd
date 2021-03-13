@@ -19,5 +19,5 @@ rawEnrichmentAnalysis(expr, signatures, genes, file.name = NULL)
 the raw xCell scores
 }
 \description{
-\code{rawEnrichmentAnalysis} Returns the raw xCell cell types enrichment scores.
+rawEnrichmentAnalysis Returns the raw xCell cell types enrichment scores.
 }

@@ -30,5 +30,5 @@ xCellSignifcanceRandomMatrix(
 a list with the p-values, the xcell scores of the shuffled data and the shuffled expression matrix.
 }
 \description{
-\code{xCellSignifcanceRandomMatrix} Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+xCellSignifcanceRandomMatrix Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
 }

@@ -24,5 +24,5 @@ xCellSignifcanceBetaDist(
 a p-values matrix for each score.
 }
 \description{
-\code{xCellSignifcanceBetaDist} Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+xCellSignifcanceBetaDist Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
 }

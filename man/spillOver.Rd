@@ -19,5 +19,5 @@ spillOver(transformedScores, K, alpha = 0.5, file.name = NULL)
 the adjusted xCell scores
 }
 \description{
-\code{spillOver} Returns the adjusted xCell scores.
+spillOver Returns the adjusted xCell scores.
 }
