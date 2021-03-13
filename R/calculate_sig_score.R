@@ -72,7 +72,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
   eset<-log2eset(eset = eset)
   check_eset(eset)
   if(adjust_eset){
-    feas<-feature_manipulation(data=eset,is.matrix = T)
+    feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
   }
 
@@ -162,7 +162,7 @@ calculate_sig_score_zscore<-function(pdata = NULL,
 
   check_eset(eset)
   if(adjust_eset){
-    feas<-feature_manipulation(data=eset,is.matrix = T)
+    feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
   }
 
@@ -251,7 +251,7 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   eset<-log2eset(eset = eset)
   check_eset(eset)
   if(adjust_eset){
-    feas<-feature_manipulation(data=eset,is.matrix = T)
+    feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
   }
   ##############################
@@ -337,7 +337,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
   eset<-log2eset(eset = eset)
   check_eset(eset)
   if(adjust_eset){
-    feas<-feature_manipulation(data=eset,is.matrix = T)
+    feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
   }
   ##########################
