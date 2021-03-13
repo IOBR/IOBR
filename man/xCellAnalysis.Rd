@@ -14,8 +14,6 @@ xCellAnalysis(
   scale = TRUE,
   alpha = 0.5,
   save.raw = FALSE,
-  parallel.sz = 4,
-  parallel.type = "SOCK",
   cell.types.use = NULL
 )
 }
@@ -37,10 +35,6 @@ xCellAnalysis(
 \item{alpha}{a value to override the spillover alpha parameter. Deafult = 0.5}
 
 \item{save.raw}{TRUE to save a raw}
-
-\item{parallel.sz}{integer for the number of threads to use. Default is 4.}
-
-\item{parallel.type}{Type of cluster architecture when using snow. 'SOCK' or 'FORK'. Fork is faster, but is not supported in windows.}
 
 \item{cell.types.use}{a character list of the cell types to use in the analysis. If NULL runs xCell with all cell types.
 The spillover compensation step may over compensate, thus it is always better to run xCell with a list of cell types that are expected

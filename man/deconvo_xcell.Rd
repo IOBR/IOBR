@@ -4,7 +4,7 @@
 \alias{deconvo_xcell}
 \title{Decoding immune microenvironment using xCell}
 \usage{
-deconvo_xcell(eset, project = NULL, arrays)
+deconvo_xcell(eset, project = NULL, arrays = FALSE)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
@@ -20,7 +20,7 @@ xCell with immune cell fractions
 Decoding immune microenvironment using xCell
 }
 \examples{
-xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD")
+xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD", arrays = FALSE)
 
 }
 \author{

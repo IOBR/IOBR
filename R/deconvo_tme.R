@@ -6,7 +6,7 @@
 #' Collection of tumor microenvironment cell fraction deconvolution methods.
 #'
 #' The methods currently supported are
-#' `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
+#' `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
 #'
 #' The object is a named vector. The names correspond to the display name of the method,
 #' the values to the internal name.
@@ -38,9 +38,9 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD")
+#' xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD", arrays = FALSE)
 #'
-deconvo_xcell<-function(eset,project = NULL,arrays){
+deconvo_xcell<-function(eset, project = NULL, arrays = FALSE){
 
   message(paste0("\n", ">>> Running ", "xCell"))
   #normalize gene expression matrix
@@ -68,12 +68,12 @@ deconvo_xcell<-function(eset,project = NULL,arrays){
 #'
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different data sets
-#' @return MCP-counter with immune cell fractions
+#' @return MCPcounter with immune cell fractions
 #' @export
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' mcp_result<-deconvo_mcpcounter(eset = eset_stad,project = "TCGA-STAD")
+#' mcp_result<-deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
 #'
 deconvo_mcpcounter<-function(eset,project = NULL){
 
@@ -498,7 +498,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.
 #' @param project project name used to distinguish different data sets, default is NULL
 #' @param method a string specifying the method.
-#' Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.
+#' Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.
 #' @param tumor logical. use a signature matrix/procedure optimized for tumor samples,
 #'   if supported by the method. Currently affects `EPIC`
 #' @param arrays Runs methods in a mode optimized for microarray data.

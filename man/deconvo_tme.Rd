@@ -29,7 +29,7 @@ Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sa
 \item{project}{project name used to distinguish different data sets, default is NULL}
 
 \item{method}{a string specifying the method.
-Supported methods are `mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.}
+Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.}
 
 \item{arrays}{Runs methods in a mode optimized for microarray data.
 Currently affects `CIBERSORT`, `svr` and `xCell`.}

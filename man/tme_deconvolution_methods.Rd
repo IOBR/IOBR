@@ -12,7 +12,7 @@ tme_deconvolution_methods
 }
 \description{
 The methods currently supported are
-`mcp_counter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
+`mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
 }
 \details{
 The object is a named vector. The names correspond to the display name of the method,

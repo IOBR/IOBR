@@ -12,13 +12,13 @@ deconvo_mcpcounter(eset, project = NULL)
 \item{project}{project name used to distinguish different data sets}
 }
 \value{
-MCP-counter with immune cell fractions
+MCPcounter with immune cell fractions
 }
 \description{
 Estimating immune microenvironment using MCP-counter
 }
 \examples{
-mcp_result<-deconvo_mcpcounter(eset = eset_stad,project = "TCGA-STAD")
+mcp_result<-deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
 
 }
 \author{
