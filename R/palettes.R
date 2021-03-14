@@ -98,14 +98,24 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
 
   if(category=="random"){
 
-    mypal<-c(RColorBrewer:: brewer.pal(8, "Accent"),
-             RColorBrewer:: brewer.pal(8,"Dark2"),
-               c("#224444","#e68a00","#33adff","#a6a6a6","#439373",
-                 "#67001F","#1B9E77","#FB9A99","#FDBF6F","#92C5DE",
-                 "#33A02C","#D1E5F0","#92C5DE","#4393C3",
-                 "#B2DF8A","#CAB2D6","#56B4E9","#BC3C29FF"),
+    mypal<-c(RColorBrewer:: brewer.pal(7, "Accent"),
+             RColorBrewer:: brewer.pal(7,"Dark2"),
+             ggsci:: pal_npg("nrc", alpha = alpha)(8),
+             ggsci:: pal_jama(palette = c("default"),alpha = alpha)(7),
+             ggsci::pal_aaas(palette = c("default"),alpha = alpha)(9),
+             ggsci::pal_jco(palette = c("default"),alpha = alpha)(9),
+
              RColorBrewer:: brewer.pal(8,"Set1"),
-             RColorBrewer:: brewer.pal(8,"Set2"))
+             RColorBrewer:: brewer.pal(8,"Set2"),
+             RColorBrewer:: brewer.pal(8,"Set3"),
+             RColorBrewer:: brewer.pal(8,"Paired"),
+             c("#224444","#e68a00","#33adff","#a6a6a6","#439373",
+               "#67001F","#1B9E77","#FB9A99","#FDBF6F","#92C5DE",
+               "#33A02C","#D1E5F0","#92C5DE","#4393C3",
+               "#B2DF8A","#CAB2D6","#56B4E9","#BC3C29FF"))
+
+    mypal<-mypal[-c(4,9,11,14,17,18,20,25,27,28,29,31,
+                    32,34,35,36,38,41,48,50,63,65,70,88,91)]
     if(palette==1){
       mypal<- mypal[1:15]
     }else if(palette == 2){
