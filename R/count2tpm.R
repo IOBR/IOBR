@@ -14,10 +14,10 @@
 #' @param idType Type of gene id. "Ensembl" "ENTREZ","SYMBOL",
 #' @param org Organism, hsa or mmu.
 #' @param source default is "web", user can provide effLength manually, if idType is ensembl and source is set to "default", effLength would be provided by IOBR which was estimated by gencode.v22
-#' @param effLength effLength data with gene id and effective length
+#' @param effLength user can provide gene Length data with gene id and effective length
 #' @param id id matched to row names of expression set
-#' @param length gene length
-#' @param gene_symbol gene symbol
+#' @param length column name of gene length
+#' @param gene_symbol column name of gene symbol
 #' @param remove_redundancy dafault is mean, other options are sd or median
 #'
 #' @return A tpm expression profile.
