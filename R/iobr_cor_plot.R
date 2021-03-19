@@ -56,7 +56,7 @@ iobr_cor_plot<-function(pdata_group,
                         show_plot = FALSE,
                         path = NULL,
                         discrete_x = 20,
-                        discrete_width = 30,
+                        discrete_width = 20,
                         show_palettes = FALSE){
 
   if(!is.null(path)){
@@ -161,11 +161,11 @@ iobr_cor_plot<-function(pdata_group,
   all_sig<- unique(unlist(group_list))
 
   if(category=="signature"){
-    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching signature in signature matrix and signature_group, please add new signature groups into sig_group list or generate another one list")
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching signature in signature matrix or signature_group, please add new signature groups into sig_group list or generate another one list object")
   }
 
   if(category=="gene"){
-    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set and signature_group, please add new signature groups into signature_collections list or generate another one list")
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set or signature_group, please add new signature groups into signature_collections list or generate another one list object")
   }
 
   if(category == "signature"){

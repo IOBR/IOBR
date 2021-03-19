@@ -14,7 +14,7 @@
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Low"), feature){
+batch_wilcoxon<-function(data,target = "group",group_names = c("High","Low"), feature){
 
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
@@ -26,11 +26,14 @@ batch_wilcoxon<-function(data = data,target = "group",group_names = c("High","Lo
   aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"],var.equal = F))
 
   result_mean<-data %>% dplyr:: group_by(.$group) %>%
-    dplyr:: summarise_if(is.numeric,mean) %>%
+    dplyr:: summarise_if(is.numeric,mean)
+
+  rownames(result_mean)<-NULL
+  result_mean<-result_mean %>%
     tibble:: column_to_rownames(.,var = ".$group") %>%
-    as.data.frame() %>%
+    base:: as.data.frame() %>%
     t() %>%
-    as.data.frame() %>%
+    base:: as.data.frame() %>%
     tibble:: rownames_to_column(.,var = "sig_names")
 
   result_mean<-as.data.frame(result_mean)
