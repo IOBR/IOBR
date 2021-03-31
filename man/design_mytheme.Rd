@@ -11,7 +11,8 @@ design_mytheme(
   axis_angle = 60,
   hjust = 1,
   legend.position = "bottom",
-  legend.direction = "horizontal"
+  legend.direction = "horizontal",
+  legend.size = 12
 )
 }
 \arguments{
@@ -24,12 +25,21 @@ design_mytheme(
 \item{axis_angle}{axis angle}
 
 \item{hjust}{horizontal justification}
+
+\item{legend.position}{legend.position default is bottom}
+
+\item{legend.direction}{legend.direction horizontal or vertical}
+
+\item{legend.size}{font size of legend}
 }
 \value{
 mytheme
 }
 \description{
 Design my ggplpt2 theme
+}
+\examples{
+mytheme <- design_mytheme()
 }
 \author{
 Dongqiang Zeng

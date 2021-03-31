@@ -26,13 +26,13 @@ count2tpm(
 
 \item{source}{default is "web", user can provide effLength manually, if idType is ensembl and source is set to "default", effLength would be provided by IOBR which was estimated by gencode.v22}
 
-\item{effLength}{effLength data with gene id and effective length}
+\item{effLength}{user can provide gene Length data with gene id and effective length}
 
 \item{id}{id matched to row names of expression set}
 
-\item{gene_symbol}{gene symbol}
+\item{gene_symbol}{column name of gene symbol}
 
-\item{length}{gene length}
+\item{length}{column name of gene length}
 
 \item{remove_redundancy}{dafault is mean, other options are sd or median}
 }

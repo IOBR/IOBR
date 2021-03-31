@@ -4,12 +4,7 @@
 \alias{batch_wilcoxon}
 \title{Batch to conduct wilcoxon test in two groups}
 \usage{
-batch_wilcoxon(
-  data = data,
-  target = "group",
-  group_names = c("High", "Low"),
-  feature = feature
-)
+batch_wilcoxon(data, target = "group", group_names = c("High", "Low"), feature)
 }
 \arguments{
 \item{data}{signature matrix with two groups}

@@ -69,8 +69,8 @@ calculate_sig_score_pca<-function(pdata = NULL,
   ###########################
 
   #normalization
-  eset<-log2eset(eset = eset)
-  check_eset(eset)
+  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
+  if(dim(eset)[2]<5000) check_eset(eset)
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
@@ -158,9 +158,9 @@ calculate_sig_score_zscore<-function(pdata = NULL,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  eset<-log2eset(eset = eset)
+  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
+  if(dim(eset)[2]<5000) check_eset(eset)
 
-  check_eset(eset)
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
@@ -225,7 +225,6 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   if(mini_gene_count<=5) mini_gene_count <- 5
   ############################
 
-
   #creat pdata if NULL
   if(is.null(pdata)){
     pdata<-data.frame("Index" = 1:length(colnames(eset)),"ID" = colnames(eset))
@@ -248,8 +247,9 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   eset<-eset[,colnames(eset)%in%pdata$ID]
 
   ##############################
-  eset<-log2eset(eset = eset)
-  check_eset(eset)
+  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
+  if(dim(eset)[2]<5000) check_eset(eset)
+
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
@@ -334,8 +334,9 @@ calculate_sig_score_integration<-function(pdata = NULL,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  eset<-log2eset(eset = eset)
-  check_eset(eset)
+  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
+  if(dim(eset)[2]<5000) check_eset(eset)
+
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]

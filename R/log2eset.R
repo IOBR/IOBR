@@ -17,7 +17,7 @@ log2eset<-function(eset = NULL){
     (qx[6]-qx[1] > 50 && qx[2] > 0) ||
     (qx[2] > 0 && qx[2] < 1 && qx[4] > 1 && qx[4] < 2)
 
-  if (log_judge){
+  if(log_judge){
     eset[eset < 0] <- 0
     eset <- log2(eset+1)
     message(">>> log2 transformation was finished")
