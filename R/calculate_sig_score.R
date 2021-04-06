@@ -158,8 +158,8 @@ calculate_sig_score_zscore<-function(pdata = NULL,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
-  if(dim(eset)[2]<5000) check_eset(eset)
+  if(ncol(eset) < 5000) eset<-log2eset(eset = eset)
+  if(ncol(eset) <5000) check_eset(eset)
 
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
@@ -247,8 +247,8 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   eset<-eset[,colnames(eset)%in%pdata$ID]
 
   ##############################
-  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
-  if(dim(eset)[2]<5000) check_eset(eset)
+  if(ncol(eset) < 5000) eset<-log2eset(eset = eset)
+  if(ncol(eset) <5000) check_eset(eset)
 
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
@@ -334,8 +334,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
   eset<-eset[,match(pdata$ID,colnames(eset))]
   ###########################
   #normalization
-  if(dim(eset)[2]<5000) eset<-log2eset(eset = eset)
-  if(dim(eset)[2]<5000) check_eset(eset)
+  if(ncol(eset) < 5000) eset<-log2eset(eset = eset)
+  if(ncol(eset) < 5000) check_eset(eset)
 
   if(adjust_eset){
     feas<-feature_manipulation(data=eset,is_matrix = T)
