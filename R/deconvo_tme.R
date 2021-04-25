@@ -483,8 +483,6 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
     res<-res[,c(ncol(res),1:ncol(res)-1)]
   }
 
-
-
   res<-tibble::rownames_to_column(res,var = "ID")
 
   return(res)

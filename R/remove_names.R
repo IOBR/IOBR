@@ -6,12 +6,12 @@ patterns_to_na<-c("_cibersort","xCell","_EPIC","_TIMER","_quantiseq","_MCP","HAL
 
 
 
-#' Batch to transform patterns to specical character
+#' Batch to transform patterns to special character
 #'
 #' @param input_df input data frame
-#' @param variables colnames or names of variable
-#' @param patterns_to_na patterns that will be transform into NA: ''
-#' @param patterns_space patterns that will be transform into space: ' '
+#' @param variables colunm names or names of variable
+#' @param patterns_to_na patterns that will be transform into NA
+#' @param patterns_space patterns that will be transform into space
 #'
 #' @return
 #' @export

@@ -40,10 +40,10 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     file_name<-save_path
   }
 
-  if ( ! file.exists(file_name) )
-    dir.create(file_name)
+  if (!file.exists(file_name)) dir.create(file_name)
   abspath<-paste0(getwd(),"/",file_name,"/" )
   #######################################################
+  signature_matrix<-as.data.frame(signature_matrix)
 
   if(max(mutation_matrix)>4){
     mutation_matrix[mutation_matrix>=3&mutation_matrix<=5]<-3
