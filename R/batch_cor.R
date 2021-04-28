@@ -35,7 +35,7 @@ batch_cor<-function(data, target, feature, method = "spearman"){
   cc<-data.frame(sig_names=feature,
                  p.value = bb$V1,
                  statistic = sapply(aa, getElement, name = "estimate"))
-  cc<-cc[order(cc$p.value,decreasing = F),]
+  cc<-cc[order(cc$p.value,decreasing = FALSE),]
   cc$p.adj<-p.adjust(cc$p.value,method = "BH")
   cc$log10pvalue<--1*log10(cc$p.value)
   rownames(cc)<-NULL
@@ -59,7 +59,7 @@ batch_cor<-function(data, target, feature, method = "spearman"){
 exact_pvalue<-function(x,y,method){
 
   l <- length(y)
-  r <- cor(x = x, y = y, method = method)
+  r <- cor(x = x, y = y, method = method, use = "complete.obs")
 
   if(r<0){
     t <- r * sqrt((l - 2) / (1 - r^2))
