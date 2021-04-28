@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove_names.R
 \name{remove_names}
 \alias{remove_names}
-\title{Batch to transform patterns to specical character}
+\title{Batch to transform patterns to special character}
 \usage{
 remove_names(
   input_df,
@@ -14,15 +14,15 @@ remove_names(
 \arguments{
 \item{input_df}{input data frame}
 
-\item{patterns_to_na}{patterns that will be transform into NA: ''}
+\item{patterns_to_na}{patterns that will be transform into NA}
 
-\item{patterns_space}{patterns that will be transform into space: ' '}
+\item{patterns_space}{patterns that will be transform into space}
 
-\item{variables}{colnames or names of variable}
+\item{variables}{colunm names or names of variable}
 }
 \value{
 
 }
 \description{
-Batch to transform patterns to specical character
+Batch to transform patterns to special character
 }
