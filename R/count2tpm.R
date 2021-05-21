@@ -70,23 +70,30 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", 
   }
 
   if(!is.null(effLength)){
+
+    effLength<-as.data.frame(effLength)
     colnames(effLength)[which(colnames(effLength)==id)]<-"id"
     colnames(effLength)[which(colnames(effLength)==length)]<-"eff_length"
+    effLength<-effLength[!duplicated(effLength$id),]
 
-    if(!id==gene_symbol){
-      colnames(effLength)[which(colnames(effLength)==gene_symbol)]<-"gene_symbol"
-      rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
-    }
 
+    countMat<-as.matrix(countMat)
     countMat<-countMat[rownames(countMat)%in%effLength$id,]
     effLength<-effLength[effLength$id%in%rownames(countMat),]
 
-    len<- effLength[match(rownames(countMat), effLength[,"id"]), "eff_length"]
-
-    if(!id==gene_symbol) {
+    if(id!=gene_symbol){
+      # countMat<-as.matrix(countMat)
+      colnames(effLength)[which(colnames(effLength)==gene_symbol)]<-"gene_symbol"
       rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
-      countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
+
+    }else{
+      # countMat<-as.matrix(countMat)
+      effLength$gene_symbol<-effLength$id
+      # colnames(effLength)[which(colnames(effLength)==gene_symbol)]<-"gene_symbol"
+      rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
     }
+
+    len<- effLength[match(rownames(countMat), effLength[,"gene_symbol"]), "eff_length"]
 
   }
 
