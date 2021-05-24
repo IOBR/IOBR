@@ -116,5 +116,9 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", 
 
   TPM <-TPM[order(order_index,decreasing=T),]
   TPM <- TPM[!duplicated(rownames(TPM)),]
+  TPM <- TPM[!is.na(rownames(TPM)),]
+  TPM <- TPM[!rownames(TPM)==" ",]
+  TPM <- TPM[,!is.na(colnames(TPM))]
+  TPM <- TPM[,!colnames(TPM)==" "]
   return(TPM)
 }
