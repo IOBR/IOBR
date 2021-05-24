@@ -30,7 +30,7 @@
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,min_mut_freq = 0.05,plot = TRUE, method = "multi", save_path = NULL,palette = "paired3",show_plot = TRUE,show_col = FALSE,width = 8, height = 4,oncoprint_group_by = "mean",oncoprint_col = "#224444",gene_counts = 10,jitter = FALSE){
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE){
 
 
 
@@ -78,12 +78,12 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   mytheme<-theme_light()+
     theme(
-      plot.title=element_text(size=rel(2.8),hjust=0.5),
+      plot.title=element_text(size=rel(2.3),hjust=0.5),
       axis.title.y=element_text(size=rel(2.5)),
       axis.title.x= element_blank(),
-      axis.text.x= element_text(face="plain",size=30,angle=0,color="black"),#family="Times New Roman"
-      axis.text.y = element_text(face="plain",size=20,angle=90,color="black"),#family="Times New Roman"
-      axis.line=element_line(color="black",size=0.70))+theme(
+      axis.text.x= element_text(face="plain",size=15,angle=0,color="black"),#family="Times New Roman"
+      axis.text.y = element_text(face="plain",size=15,angle=90,color="black"),#family="Times New Roman"
+      axis.line=element_line(color="black",size=0.6))+theme(
         legend.key.size=unit(.3,"inches"),
         legend.title=element_blank(),
         legend.position="none",
@@ -163,6 +163,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
     input2<-sig_mut2
 
+    # print(input2[1:5,1:5])
     aa<-lapply(input2[,input_genes], function(x) wilcox.test(input2[,1]~x))
 
     res2<-data.frame(p.value = sapply(aa, getElement, name = "p.value"),
@@ -235,6 +236,8 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     sig_mut2<-cbind(patr1,part2)
     sig_mut2<-column_to_rownames(sig_mut2,var = "ID")
     input2<-sig_mut2
+
+    # print(input2[1:5,1:5])
     ##############################
     aa<-lapply(input2[,input_genes], function(x) wilcox.test(input2[,1]~x))
 
@@ -245,6 +248,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     res$adjust_pvalue<-p.adjust(res$p.value,method = "BH",n=length(res$p.value))
 
     res<-res[order(res$p.value,decreasing = F),]
+
     print(">>> Result of Wilcoxon test (top 10): ")
     print(res[1:10,])
 
@@ -276,7 +280,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         dd<-input_long[input_long$Gene==gene,]
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
           geom_boxplot(outlier.shape = NA,outlier.size = NA)+
-          geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")+
+          geom_jitter(width = 0.25,size= 3.5,alpha=0.75,color ="black")+
           scale_fill_manual(values= palettes(category = "box",palette = palette,show_col = show_col))+
           mytheme+theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
@@ -287,7 +291,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                width = 4.2,height = 6.5,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
-                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
+                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 15)
       if(show_plot) print(com_plot)
       #####################################
       ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 22,height = 17,path = file_name)
