@@ -172,7 +172,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     res2$adjust_pvalue<-p.adjust(res2$p.value,method = "BH",n=length(res2$p.value))
 
     res2<-res2[order(res2$p.value,decreasing = F),]
-    print(">>>> Result of Wilcoxon test")
+    print(">>> Result of Wilcoxon test (top 10)")
     print(res2[1:10,])
     write.csv(res2, paste0(abspath,"2-Wilcoxon-test-relevant-mutations.csv"))
 
@@ -245,7 +245,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     res$adjust_pvalue<-p.adjust(res$p.value,method = "BH",n=length(res$p.value))
 
     res<-res[order(res$p.value,decreasing = F),]
-    print(">>>> Result of Wilcoxon test (top 10): ")
+    print(">>> Result of Wilcoxon test (top 10): ")
     print(res[1:10,])
 
     write.csv(res, paste0(abspath,"0-Wilcoxon-test-relevant-mutations.csv"))
@@ -324,11 +324,12 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
   }else{
     stop("Signature must be group by mean or quantile3 \n")
   }
-  print(head(pdata_group))
+  # print(head(pdata_group))
   idh<-pdata_group[pdata_group$group=="High","ID"]
   idl<-pdata_group[pdata_group$group=="Low","ID"]
   pdata1<-pdata_group[pdata_group$ID%in%idh, ]
   pdata2<-pdata_group[pdata_group$ID%in%idl, ]
+
 
 
   # library(ComplexHeatmap)
@@ -378,6 +379,10 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   mut1<-list(mut = mut1)
   mut2<-list(mut = mut2)
+
+  width_h<- c(length(idh)/c(length(idh)+length(idl)))*width
+  width_l<- c(length(idl)/c(length(idh)+length(idl)))*width
+
   #########################################
   ho1<-ComplexHeatmap:: oncoPrint(mut1,
                  alter_fun_is_vectorized = FALSE,
@@ -387,7 +392,8 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                  show_heatmap_legend = FALSE,
                  heatmap_legend_param = list(title = "", labels = ""),
                  col = col,
-                 top_annotation = h1)
+                 top_annotation = h1,
+                 width = unit(width_h, "cm"))
 
 
   ho2<-ComplexHeatmap:: oncoPrint(mut2,
@@ -398,7 +404,8 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                  show_heatmap_legend = FALSE,
                  heatmap_legend_param = list(title = "", labels = "Mutation"),
                  col = col,
-                 top_annotation = h2)
+                 top_annotation = h2,
+                 width = unit(width_l, "cm"))
 
 
   p<-ho1+ho2
