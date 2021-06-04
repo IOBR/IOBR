@@ -199,12 +199,13 @@ calculate_sig_score_zscore<-function(pdata = NULL,
 #'
 #' @param pdata phenotype data of input sample;
 #' if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset
-#' @param eset normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
+#' @param eset normalizated  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
 #' @param signature List of gene signatures
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set; default is 5;
 #' the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
 #' @param adjust_eset remove variables with missing value, sd =0, and Inf value
+#' @param parallel.size default is 1
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
@@ -216,7 +217,8 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
                                      signature,
                                      mini_gene_count,
                                      column_of_sample,
-                                     adjust_eset = FALSE){
+                                     adjust_eset = FALSE,
+                                     parallel.size = 1){
 
   message(paste0("\n", ">>> Calculating signature score using ssGSEA method"))
 
@@ -260,7 +262,8 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
                      method="ssgsea",
                      kcdf="Gaussian",
                      min.sz= mini_gene_count,
-                     ssgsea.norm=T)
+                     ssgsea.norm=T,
+                     parallel.sz = parallel.size)
 
   res<-as.data.frame(t(res))
   res<-rownames_to_column(res,var = "ID")
@@ -292,8 +295,9 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
 #' @param signature List of gene signatures
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set; default is 5;
 #' the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation
+#' @param adjust_eset default is FALSE, if true, data with Inf or zero sd will be replaced
+#' @param parallel.size default is 1
 #' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
-#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
@@ -306,7 +310,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
                                           signature,
                                           mini_gene_count = 2,
                                           column_of_sample,
-                                          adjust_eset = FALSE){
+                                          adjust_eset = FALSE,
+                                          parallel.size = 1){
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
@@ -382,7 +387,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
                   method     ="ssgsea",
                   kcdf       ="Gaussian",
                   min.sz     = mini_gene_count,
-                  ssgsea.norm=T)
+                  ssgsea.norm= T,
+                  parallel.sz= parallel.size)
   res<-as.data.frame(t(res))
   if ("TMEscoreA_CIR"%in% colnames(res) & "TMEscoreB_CIR"%in%colnames(res)) {
     res[,"TMEscore_CIR"]<-res[,"TMEscoreA_CIR"] - res[,"TMEscoreB_CIR"]
@@ -405,6 +411,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
 
 
 #' Calculating signature score  on a gene expression dataset
+#'
 #' @param pdata phenotype data of input sample
 #' @param eset normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
 #' @param signature List of gene signatures;
@@ -412,11 +419,12 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' @param method he methods currently supported are `pca`, `ssgsea`, `zscore`,`integration`
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
 #' default is 2 for PCA and z score funciion
-#' @param ajdust_eset remove variables with missing value, sd =0, and Inf value
 #' @param column_of_sample Defines in which column of pdata the sample identifier can be found.
 #' @param print_gene_propotion logical, print the propotion of signature genes in gene matrix
 #' @param print_filtered_signatures logical, print filtered signatures has gene count less than minical gene count
 #' @param ...
+#' @param adjust_eset default is FALSE
+#' @param parallel.size default is 1
 #'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
@@ -431,6 +439,7 @@ calculate_sig_score<-function(pdata = NULL,
                               column_of_sample = "ID",
                               print_gene_propotion = FALSE,
                               adjust_eset = FALSE,
+                              parallel.size = 1,
                               print_filtered_signatures = FALSE,...){
 
 
@@ -476,7 +485,8 @@ calculate_sig_score<-function(pdata = NULL,
                                                    signature = signature,
                                                    mini_gene_count = mini_gene_count,
                                                    column_of_sample = column_of_sample,
-                                                   adjust_eset = adjust_eset,...),
+                                                   adjust_eset = adjust_eset,
+                                                   parallel.size = parallel.size...),
                zscore = calculate_sig_score_zscore(pdata,eset,
                                                    signature = signature,
                                                    mini_gene_count = mini_gene_count,
@@ -486,7 +496,8 @@ calculate_sig_score<-function(pdata = NULL,
                                                         signature = signature,
                                                         mini_gene_count = mini_gene_count,
                                                         column_of_sample = column_of_sample,
-                                                        adjust_eset = adjust_eset,...))
+                                                        adjust_eset = adjust_eset,
+                                                        parallel.size = parallel.size...))
   return(res)
 }
 
