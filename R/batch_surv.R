@@ -35,7 +35,7 @@ batch_surv<-function(pdata,variable,time="time", status="status"){
     rownames(result1)<-colnames(pdata)[variable[i]]
     result<-rbind(result,result1)
   }
-  result[result>100]<-Inf
+  result[result>500]<-Inf
   result<-result[order(result$P,decreasing = F),]
   result<-tibble::rownames_to_column(result,var = "ID")
   result<-tibble::as_tibble(result)

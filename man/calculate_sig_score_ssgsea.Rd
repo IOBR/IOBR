@@ -10,14 +10,15 @@ calculate_sig_score_ssgsea(
   signature,
   mini_gene_count,
   column_of_sample,
-  adjust_eset = FALSE
+  adjust_eset = FALSE,
+  parallel.size = 1
 )
 }
 \arguments{
 \item{pdata}{phenotype data of input sample;
 if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset}
 
-\item{eset}{normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
+\item{eset}{normalizated  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
 
 \item{signature}{List of gene signatures}
 
@@ -27,6 +28,8 @@ the minimal gene count for ssGSEA methods should larger than 5 for the robustnes
 \item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
 
 \item{adjust_eset}{remove variables with missing value, sd =0, and Inf value}
+
+\item{parallel.size}{default is 1}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows

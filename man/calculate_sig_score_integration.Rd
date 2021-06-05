@@ -10,7 +10,8 @@ calculate_sig_score_integration(
   signature,
   mini_gene_count = 2,
   column_of_sample,
-  adjust_eset = FALSE
+  adjust_eset = FALSE,
+  parallel.size = 1
 )
 }
 \arguments{
@@ -26,7 +27,9 @@ the minimal gene count for ssGSEA methods should larger than 5 for the robustnes
 
 \item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
 
-\item{ajdust_eset}{remove variables with missing value, sd =0, and Inf value}
+\item{adjust_eset}{default is FALSE, if true, data with Inf or zero sd will be replaced}
+
+\item{parallel.size}{default is 1}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
