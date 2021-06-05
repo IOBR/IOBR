@@ -11,7 +11,7 @@ calculate_sig_score_ssgsea(
   mini_gene_count,
   column_of_sample,
   adjust_eset = FALSE,
-  parallel.size = 1
+  parallel.size = 1L
 )
 }
 \arguments{

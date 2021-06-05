@@ -13,7 +13,7 @@ calculate_sig_score(
   column_of_sample = "ID",
   print_gene_propotion = FALSE,
   adjust_eset = FALSE,
-  parallel.size = 1,
+  parallel.size = 1L,
   print_filtered_signatures = FALSE,
   ...
 )

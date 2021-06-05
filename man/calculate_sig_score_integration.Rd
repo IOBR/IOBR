@@ -11,7 +11,7 @@ calculate_sig_score_integration(
   mini_gene_count = 2,
   column_of_sample,
   adjust_eset = FALSE,
-  parallel.size = 1
+  parallel.size = 1L
 )
 }
 \arguments{
