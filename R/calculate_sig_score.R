@@ -218,7 +218,7 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
                                      mini_gene_count,
                                      column_of_sample,
                                      adjust_eset = FALSE,
-                                     parallel.size = 1){
+                                     parallel.size = 1L){
 
   message(paste0("\n", ">>> Calculating signature score using ssGSEA method"))
 
@@ -311,7 +311,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
                                           mini_gene_count = 2,
                                           column_of_sample,
                                           adjust_eset = FALSE,
-                                          parallel.size = 1){
+                                          parallel.size = 1L){
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
 
   signature<-signature[lapply(signature,function(x) sum(x%in%rownames(eset)==TRUE))>= mini_gene_count]
@@ -439,7 +439,7 @@ calculate_sig_score<-function(pdata = NULL,
                               column_of_sample = "ID",
                               print_gene_propotion = FALSE,
                               adjust_eset = FALSE,
-                              parallel.size = 1,
+                              parallel.size = 1L,
                               print_filtered_signatures = FALSE,...){
 
 
@@ -486,7 +486,7 @@ calculate_sig_score<-function(pdata = NULL,
                                                    mini_gene_count = mini_gene_count,
                                                    column_of_sample = column_of_sample,
                                                    adjust_eset = adjust_eset,
-                                                   parallel.size = parallel.size...),
+                                                   parallel.size = parallel.size,...),
                zscore = calculate_sig_score_zscore(pdata,eset,
                                                    signature = signature,
                                                    mini_gene_count = mini_gene_count,
@@ -497,7 +497,7 @@ calculate_sig_score<-function(pdata = NULL,
                                                         mini_gene_count = mini_gene_count,
                                                         column_of_sample = column_of_sample,
                                                         adjust_eset = adjust_eset,
-                                                        parallel.size = parallel.size...))
+                                                        parallel.size = parallel.size,...))
   return(res)
 }
 
