@@ -26,9 +26,9 @@ sig_forest(
 
 \item{HR}{Hazard ratio of survival result}
 
-\item{CI_low_0.95}{95% confidence interval}
+\item{CI_low_0.95}{confidence interval}
 
-\item{CI_up_0.95}{95% confidence interval}
+\item{CI_up_0.95}{confidence interval}
 
 \item{n}{maximum of signatures}
 
@@ -45,6 +45,10 @@ sig_forest(
 Forest plot of survival analysis results.
 }
 \examples{
-sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable <- c(100:ncol(pdata_sig_tme_binary)))
+sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))
 sig_forest(data = sig_surv_result, signature = "ID")
+
+}
+\author{
+Dongqiang Zeng
 }
