@@ -19,24 +19,27 @@ Depends:
   tidyHeatmap,
   R(>= 3.5.0)
 Imports: 
-   EPIC, 
-   estimate,
-   matrixStats,
-   e1071,
-   preprocessCore, 
-   ggplot2, 
-   biomaRt,
-   ggpubr, 
-   devtools, 
-   tidyHeatmap, 
-   caret, 
-   glmnet, 
-   ppcor, 
-   timeROC,
-   pracma
+  EPIC, 
+  estimate,
+  matrixStats,
+  e1071,
+  preprocessCore,
+  biomaRt, 
+  devtools, 
+  caret, 
+  glmnet, 
+  ppcor, 
+  timeROC,
+  pracma,
+  DESeq2, 
+  cowplot, 
+  limSolve, 
+  limma, 
+  purrr, 
+  stringr,
+  tidyverse
 BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 
-    knitr,
-    rmarkdown
-    
+  knitr,
+  rmarkdown
 VignetteBuilder: knitr
