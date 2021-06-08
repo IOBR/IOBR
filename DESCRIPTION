@@ -21,7 +21,8 @@ Depends:
 Imports: 
    EPIC, 
    estimate,
-   matrixStats
+   matrixStats,
+   e1071
 BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 
     knitr,
