@@ -2,7 +2,7 @@ Package: IOBR
 Type: Package
 Title: Immune Oncology Biological Research
 Version: 0.99.9
-Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen
+Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
 Description: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures
 License: GPL-3
@@ -22,9 +22,21 @@ Imports:
    EPIC, 
    estimate,
    matrixStats,
-   e1071
+   e1071,
+   preprocessCore, 
+   ggplot2, 
+   biomaRt,
+   ggpubr, 
+   devtools, 
+   tidyHeatmap, 
+   caret, 
+   glmnet, 
+   ppcor, 
+   timeROC,
+   pracma
 BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 
     knitr,
     rmarkdown
+    
 VignetteBuilder: knitr
