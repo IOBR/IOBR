@@ -27,6 +27,9 @@ batch_surv<-function(pdata,variable,time="time", status="status"){
   colnames(pdata)[which(colnames(pdata)==time)]<-"time"
   colnames(pdata)[which(colnames(pdata)==status)]<-"status"
 
+  pdata$time <-as.numeric(pdata$time)
+  pdata$status <-as.numeric(pdata$status)
+
   result_list<-lapply(pdata[,variable], function(x) coxph(Surv(pdata$time,pdata$status)~x,data = pdata[,variable]))
 
   result<-data.frame(NULL)
