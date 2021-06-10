@@ -280,12 +280,16 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         dd<-input_long[input_long$Gene==gene,]
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
           geom_boxplot(outlier.shape = NA,outlier.size = NA)+
-          geom_jitter(width = 0.25,size= 3.5,alpha=0.75,color ="black")+
+          # geom_jitter(width = 0.25,size= 3.5,alpha=0.75,color ="black")+
           scale_fill_manual(values= palettes(category = "box",palette = palette,show_col = show_col))+
           mytheme+theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
+
+        if(jitter){
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")
+        }
 
         ggsave(pl[[i]],filename = paste0(i,"-1-",gene,"-binary.pdf"),
                width = 4.2,height = 6.5,path = file_name)
