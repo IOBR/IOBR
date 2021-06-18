@@ -8,25 +8,25 @@ microenvironment and signatures for immuno-oncology.
 
 ### 1.Introduction
 
-  - 1.  IOBR collects 255 published signature gene sets, involving tumor
+-   1.  IOBR collects 255 published signature gene sets, involving tumor
         microenvironment, tumor metabolism, m6A, exosomes,
         microsatellite instability, and tertiary lymphoid structure.
         Running the function `signature_collection_citation` to attain
         the source papers. The function `signature_collection` returns
         the detail signature genes of all given signatures.
 
-  - 2.  IOBR integrates 8 published methodologies decoding tumor
+-   2.  IOBR integrates 8 published methodologies decoding tumor
         microenvironment (TME) contexture: `CIBERSORT`, `TIMER`,
         `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
 
-  - 3.  IOBR adopts three computational methods to calculate the
+-   3.  IOBR adopts three computational methods to calculate the
         signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
 
-  - 4.  IOBR integrates multiple approaches for variable transition,
+-   4.  IOBR integrates multiple approaches for variable transition,
         visualization, batch survival analysis, feature selection, and
         statistical analysis.
 
-  - 5.  IOBR also integrates methods for batch visualization of subgroup
+-   5.  IOBR also integrates methods for batch visualization of subgroup
         characteristics.
 
 #### IOBR package workflow
@@ -48,6 +48,8 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
 # options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
+#> Bioconductor version '3.12' is out-of-date; the current release version '3.13'
+#>   is available with R version '4.1'; see https://bioconductor.org/install
 
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
@@ -56,13 +58,6 @@ for(i in 1:length(depens)){
   depen<-depens[i]
   if (!requireNamespace(depen, quietly = TRUE))
     BiocManager::install(depen,update = FALSE)
-}
-
-if (!requireNamespace("EPIC", quietly = TRUE))
-  devtools::install_github("GfellerLab/EPIC", ref="master")
-if (!requireNamespace("estimate", quietly = TRUE)){
-  rforge <- "http://r-forge.r-project.org"
-  install.packages("estimate", repos=rforge, dependencies=TRUE)
 }
 ```
 
@@ -108,7 +103,7 @@ the method(s) you are using.
 #### Licenses of the deconvolution methods
 
 | method                                                                      | license                                                                                                       | citation                                                                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [CIBERSORT](https://cibersort.stanford.edu/)                                | free for non-commerical use only                                                                              | Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457. <https://doi.org/10.1038/nmeth.3337>                                                            |
 | [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | free ([GPL2.0](https://bioinformatics.mdanderson.org/estimate/))                                              | Vegesna R, Kim H, Torres-Garcia W, …, Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612. <http://doi.org/10.1038/ncomms3612>                                                                                          |
 | [quanTIseq](http://icbi.at/software/quantiseq/doc/index.html)               | free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md))                                 | Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., …, Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. <https://doi.org/10.1186/s13073-019-0638-6>           |
@@ -129,9 +124,9 @@ signature_score_calculation_methods
 
 #### Licenses of the signature-esitmation method
 
-| method                                                                   | license                                                | citation                                                                                                                                                                                                              |
-| ------------------------------------------------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (\>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, <http://www.biomedcentral.com/1471-2105/14/7> |
+| method                                                                   | license                                                  | citation                                                                                                                                                                                                              |
+|--------------------------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (&gt;= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, <http://www.biomedcentral.com/1471-2105/14/7> |
 
 ## 5.Signature collection
 
@@ -193,8 +188,8 @@ sig_group[1:3]
 
 DQ Zeng, ZL Ye, RF Shen, GC Yu, …, WJ Liao\*, IOBR: Multi-omics
 Immuno-Oncology Biological Research to decode tumor microenvironment and
-signatures. bioRxiv, 2020.2012.2014.422647
-(2020).[doi: 10.1101/2020.12.14.422647](https://www.biorxiv.org/content/10.1101/2020.12.14.422647v1)
+signatures. bioRxiv, 2020.2012.2014.422647 (2020).[doi:
+10.1101/2020.12.14.422647](https://www.biorxiv.org/content/10.1101/2020.12.14.422647v1)
 
 ## Reporting bugs
 
