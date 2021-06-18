@@ -430,6 +430,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
+#' @references 1. Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7
+#' 2. Mariathasan, S., Turley, S., Nickles, D. et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544–548 (2018).
 #'
 calculate_sig_score<-function(pdata = NULL,
                               eset,
