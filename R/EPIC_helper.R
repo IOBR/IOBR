@@ -153,13 +153,13 @@ EPIC <- function(bulk, reference=NULL, mRNA_cell=NULL, mRNA_cell_sub=NULL,
   if (is.null(reference)){
     reference <- IOBR::TRef
   } else if (is.character(reference)){
-    if (reference %in% prebuiltRefNames){
-      reference <- get(reference, pos="package:EPIC")
+    if (reference %in% c("TRef","BRef")){
+      reference <- get(reference, pos="package:IOBR")
       # Replace the char defining the reference name by the corresponding
       # pre-built reference values.
     } else
       stop("The reference, '", reference, "' is not part of the allowed ",
-           "references:", paste(prebuiltRefNames, collapse=", "))
+           "references:", paste(c("TRef","BRef"), collapse=", "))
   } else if (is.list(reference)){
     refListNames <- names(reference)
     if ( (!all(c("refProfiles", "sigGenes") %in% refListNames)) ||
