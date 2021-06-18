@@ -40,6 +40,8 @@ Imports:
   tidyverse
 BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 
-  knitr,
-  rmarkdown
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
+Config/testthat/edition: 3

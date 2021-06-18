@@ -112,7 +112,6 @@ deconvo_mcpcounter<-function(eset,project = NULL){
 #' @param tumor is input sample tumor or normal
 #' @return EPIC with immune cell fractions
 #' @export
-#' @importFrom EPIC EPIC
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
@@ -128,7 +127,7 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 
   ref = ifelse(tumor, "TRef", "BRef")
   ##############################
-  out <- EPIC::EPIC(bulk = eset,reference = ref,mRNA_cell = NULL, scaleExprs =TRUE)
+  out <- IOBR::EPIC(bulk = eset,reference = ref,mRNA_cell = NULL, scaleExprs =TRUE)
   res<-as.data.frame((out$cellFractions))
   ####################################
   colnames(res)<-gsub(colnames(res),pattern = "\\.",replacement = "\\_")
@@ -250,7 +249,6 @@ deconvo_ips<-function(eset,project = NULL,plot){
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different datasets
 #' @param platform character string indicating platform type. Defaults to "affymetrix"
-#' @importFrom estimate estimateScore
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @return
@@ -262,7 +260,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
   message(paste0("\n", ">>> Running ", "ESTIMATE"))
   eset<-as.data.frame(eset)
   eset<-tibble::rownames_to_column(eset,var = "symbol")
-  sampleData<-paste0(project,"-eset.txt");sampleData
+  sampleData<-paste0(project,"-eset.txt")
   write.table(eset,sampleData,sep = "\t",row.names = F,quote = F)
   ########################################
   filterCommonGenes(input.f= sampleData,
@@ -271,7 +269,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
   #delete-data-after-input
   file.remove(paste0(project,"-eset.txt"))
   ################################
-  estimate::estimateScore(input.ds = paste0(project,"_Tumor_purity.gct"),
+  estimateScore(input.ds = paste0(project,"_Tumor_purity.gct"),
                 output.ds= paste0(project,"_Tumor_estimate_score.gct"),
                 platform= platform)
   file.remove(paste0(project,"_Tumor_purity.gct"))

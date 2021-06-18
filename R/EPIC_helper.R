@@ -151,7 +151,7 @@ EPIC <- function(bulk, reference=NULL, mRNA_cell=NULL, mRNA_cell_sub=NULL,
   # 'reference'.
   with_w <- TRUE
   if (is.null(reference)){
-    reference <- EPIC::TRef
+    reference <- IOBR::TRef
   } else if (is.character(reference)){
     if (reference %in% prebuiltRefNames){
       reference <- get(reference, pos="package:EPIC")
@@ -247,7 +247,7 @@ EPIC <- function(bulk, reference=NULL, mRNA_cell=NULL, mRNA_cell_sub=NULL,
   }
 
   if (is.null(mRNA_cell))
-    mRNA_cell <- EPIC::mRNA_cell_default
+    mRNA_cell <- IOBR::mRNA_cell_default
 
   if (!is.null(mRNA_cell_sub)){
     if (is.null(names(mRNA_cell_sub)) || !is.numeric(mRNA_cell_sub))
@@ -458,6 +458,10 @@ scaleCounts <- function(counts, sigGenes=NULL, renormGenes=NULL, normFact=NULL){
 #' \emph{warn} is true a warning message will be written in case there are
 #' duplicates, this warning message will include the \emph{in_type} string to
 #' indicate the current type of the input matrix.
+#'
+#' @param mat matrix
+#' @param warn warning
+#' @param in_type default is null
 #'
 #' @keywords internal
 merge_duplicates <- function(mat, warn=TRUE, in_type=NULL){
