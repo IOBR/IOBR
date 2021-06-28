@@ -153,7 +153,7 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
 
   if(category == "heatmap"){
 
-    if(show_message) message(paste0("There are five palettes you can choose: pheatmap, virids, blues, reds, peach"))
+    message(paste0("There are five palettes you can choose: pheatmap, virids, blues, reds, peach"))
 
     if(palette == "pheatmap" ){
       mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(counts)
@@ -178,7 +178,8 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
   }
 
   if(category=="heatmap3"){
-    if(show_message) message(paste0("There are six palettes you can choose: pheatmap, virids, blues, reds, peach, normal"))
+
+    message(paste0("There are six palettes you can choose: pheatmap, virids, blues, reds, peach, normal"))
 
     if(palette == "pheatmap" ){
       mypal<- c("#4575B4","#FEF9B6","#D73027")

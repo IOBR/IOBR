@@ -8,6 +8,8 @@ sig_box(
   data,
   signature,
   variable,
+  angle_x_text = 0,
+  hjust = 0,
   palette = "nrc",
   cols = NULL,
   jitter = FALSE,
@@ -20,6 +22,10 @@ sig_box(
 \item{signature}{name of signature}
 
 \item{variable}{name of category variable}
+
+\item{angle_x_text}{angle_x_text}
+
+\item{hjust}{hjust}
 
 \item{palette}{default is nature palette}
 
