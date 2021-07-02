@@ -27,9 +27,9 @@
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
                     " DQ Zeng, ZL Ye, RF Sheng, GC Yu, Y Xiong …, WJ Liao*.\n",
                     " IOBR: Multi-omics Immuno-Oncology Biological Research to decode \n ",
-                    " tumor microenvironment and signatures. bioRxiv, 2020.2012.2014.422647 (2020). \n",
+                    " tumor microenvironment and signatures. Frontiers in Immunology. 12:687975,(2021). \n",
                     # " XXXX, 2020", "\n",
-                    " DOI: 10.1101/2020.12.14.422647\n",
+                    " DOI: 10.3389/fimmu.2021.687975\n",
                     # " PMID:  ","\n",
                     "==========================================================================")
 
