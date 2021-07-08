@@ -24,13 +24,15 @@
 #' @param oncoprint_col color of mutation
 #' @param jitter if true, each point will be drawn in the box plot with jitter
 #' @param gene_counts define the number of genes which will be shown in the oncoprint
+#' @param genes genes for drawing
+#' @param point_size default is 4.5
 #'
 #' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE){
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5){
 
 
 
@@ -50,24 +52,29 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     mutation_matrix[mutation_matrix>5]<-4
   }
 
+
+
   mut2<-mutation_matrix
   mut2[mut2>=1]<-1
-
   mut_onco<-mut2
 
-  mutfreq<-data.frame(head(sort(colSums(mut2),decreasing = T),500))
-  colnames(mutfreq)<-"Freq"
-  index<-which(mutfreq$Freq>=dim(mut2)[1]*min_mut_freq)
-  index<-max(index)
-  input_genes<-names(head(sort(colSums(mut2),decreasing = T),index))
-  input_genes<-unique(input_genes)
-  input_genes<-input_genes[!is.na(input_genes)]
+  if(is.null(genes)){
+    mutfreq<-data.frame(head(sort(colSums(mut2),decreasing = T),500))
+    colnames(mutfreq)<-"Freq"
+    index<-which(mutfreq$Freq>=dim(mut2)[1]*min_mut_freq)
+    index<-max(index)
+    input_genes<-names(head(sort(colSums(mut2),decreasing = T),index))
+    input_genes<-unique(input_genes)
+    input_genes<-input_genes[!is.na(input_genes)]
+  }else{
+    input_genes<-genes
+  }
 
   mutation_matrix<-mutation_matrix[,colnames(mutation_matrix)%in%input_genes]
+  genes<-genes[genes%in%colnames(mutation_matrix)]
   ########################################################
 
   colnames(signature_matrix)[which(colnames(signature_matrix)==id_signature_matrix)]<-"ID"
-
   mutation_matrix<-as.data.frame(mutation_matrix)
   mutation_matrix<-tibble:: rownames_to_column(mutation_matrix,var = "ID")
 
@@ -78,10 +85,10 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   mytheme<-theme_light()+
     theme(
-      plot.title=element_text(size=rel(2.3),hjust=0.5),
-      axis.title.y=element_text(size=rel(2.5)),
+      plot.title=element_text(size=rel(2.3),hjust=0.5,face="italic"),
+      axis.title.y=element_text(size=rel(1.8)),
       axis.title.x= element_blank(),
-      axis.text.x= element_text(face="plain",size=15,angle=0,color="black"),#family="Times New Roman"
+      axis.text.x= element_text(face="plain",size=18,angle=0,color="black"),#family="Times New Roman"
       axis.text.y = element_text(face="plain",size=15,angle=90,color="black"),#family="Times New Roman"
       axis.line=element_line(color="black",size=0.6))+theme(
         legend.key.size=unit(.3,"inches"),
@@ -97,9 +104,17 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
   if(method == "multi"){
 
+    if(!is.null(genes)){
+      if(length(genes)<10){
+        print(genes)
+        stop(paste0("Please provide at least 10 genes with mutaion freq larger than ",min_mut_freq))
+      }
+      input_genes<-genes
+    }
+
+    input_genes<-input_genes[input_genes%in%colnames(sig_mut)]
 
     input<-sig_mut[,c(signature,input_genes)]
-
     ##############################
     aa<-lapply(input[,input_genes], function(x) PMCMRplus::cuzickTest(input[,1]~x))
     res1<-data.frame(p.value = sapply(aa, getElement, name = "p.value"),
@@ -140,21 +155,21 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           stat_compare_means(size=6)
 
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= 5.9,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= point_size,alpha=0.75,color ="black")
         }
         ggsave(pl[[i]],filename = paste0(4+i,"-1-",gene,"-continue.pdf"),
-               width = 4.2,height = 6.5,path = file_name)
+               width = 4,height = 5.5,path = file_name)
       }
       com_plot<- cowplot::plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
                       labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "3-Relevant_mutations_Continue.pdf",width = 25,height = 17,path = file_name)
+      ggsave(com_plot,filename = "3-Relevant_mutations_Continue.pdf",width = 14,height = 10,path = file_name)
       #####################################
     }
 
-    sig_mut2<- rownames_to_column(sig_mut,var = "ID")
 
+    sig_mut2<- rownames_to_column(sig_mut,var = "ID")
     patr1<-sig_mut2[,c("ID",signature)]
     part2<-sig_mut2[,input_genes]
     part2[part2>=1]<-1
@@ -205,32 +220,43 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
           geom_boxplot(outlier.shape = NA,outlier.size = -0.5)+
           # geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")+
-          scale_fill_manual(values= palettes(category = "box",palette = palette,show_col = show_col))+
-          mytheme+
+          scale_fill_manual(values= palettes(category = "box", palette = palette, show_col = show_col))+
           theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size = point_size,alpha=0.75,color ="black")
         }
 
         ggsave(pl[[i]],filename = paste0(4+i,"-2-",gene,"-binary.pdf"),
-               width = 4.2,height = 6.5,path = file_name)
+               width = 4,height = 5.5,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
                           labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "4-Relevant_mutations_binary.pdf",width = 22,height = 17,path = file_name)
+      ggsave(com_plot,filename = "4-Relevant_mutations_binary.pdf",width = 14,height = 10,path = file_name)
       #####################################
     }
 
 
-  }else{
-    ################################
+  }else if(tolower(method) =="wilcoxon" ){
+
+    if(!is.null(genes)){
+      if(length(genes)<10){
+        print(genes)
+        stop(paste0("Please provide at least 10 genes with mutaion freq larger than ",min_mut_freq))
+      }
+      input_genes<-genes
+    }
+
     sig_mut2<- rownames_to_column(sig_mut,var = "ID")
+
     patr1<-sig_mut2[,c("ID",signature)]
+
+    input_genes<-input_genes[input_genes%in%colnames(sig_mut2)]
+
     part2<-sig_mut2[,input_genes]
     part2[part2>=1]<-1
     sig_mut2<-cbind(patr1,part2)
@@ -288,17 +314,17 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
 
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=point_size,alpha=0.75,color ="black")
         }
 
         ggsave(pl[[i]],filename = paste0(i,"-1-",gene,"-binary.pdf"),
-               width = 4.2,height = 6.5,path = file_name)
+               width = 4,height = 5.5,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
                           labels = "AUTO",ncol = 5,nrow = 2,label_size = 15)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 22,height = 17,path = file_name)
+      ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 14,height = 10,path = file_name)
       #####################################
     }
 
@@ -306,15 +332,36 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
   }
 
 
-  genes<-result$wilcoxon_test$names
-  genes<-genes[1:gene_counts]
+  # if(!is.null(genes)){
+  #   if(length(genes)<10) stop("Please provide at least 10 genes")
+  #   genes_for_oncoprint<-genes
+  #   genes_for_oncoprint<-genes_for_oncoprint[1:gene_counts]
+  #   genes_for_oncoprint<-genes_for_oncoprint[!is.na(genes_for_oncoprint)]
+  # }else{
+  #   genes_for_oncoprint<-result$wilcoxon_test$names
+  #   genes_for_oncoprint<-genes_for_oncoprint[1:gene_counts]
+  #   genes_for_oncoprint<-genes_for_oncoprint[!is.na(genes_for_oncoprint)]
+  # }
+  #
+  genes_for_oncoprint<-result$wilcoxon_test$names
+  genes_for_oncoprint<-genes_for_oncoprint[1:gene_counts]
+  genes_for_oncoprint<-genes_for_oncoprint[!is.na(genes_for_oncoprint)]
+
+
   signature_matrix<-signature_matrix[!duplicated(signature_matrix$ID),]
   signature_matrix<-signature_matrix[signature_matrix$ID%in%rownames(mut_onco),]
+
   mut_onco<-mut_onco[rownames(mut_onco)%in%signature_matrix$ID,]
   ####################################
 
-  pdata_group<- signature_matrix[,c("ID",signature)]
-  pdata_group[,signature]<-as.numeric(pdata_group[,signature])
+
+  if(oncoprint_group_by!="mean"&oncoprint_group_by!="quantile3"){
+    pdata_group<- signature_matrix[,c("ID",signature,oncoprint_group_by)]
+    pdata_group[,signature]<-as.numeric(pdata_group[,signature])
+  }else{
+    pdata_group<- signature_matrix[,c("ID",signature)]
+    pdata_group[,signature]<-as.numeric(pdata_group[,signature])
+  }
 
   max_sig<-max(pdata_group[,signature],na.rm =  TRUE )
   min_sig<-min(pdata_group[,signature],na.rm =  TRUE)
@@ -330,15 +377,27 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
       pdata_group$group<-ifelse(pdata_group[,signature]<=q1,"Low",ifelse(pdata_group[,signature]>=q2,"High","Middle"))
     }
   }else{
-    stop("Signature must be group by mean or quantile3 \n")
+
+    if("group"%in%colnames(pdata_group)&"group"!=oncoprint_group_by) stop(" Variable:`group` already exist in colname of pdata!")
+
+    if(!"group"%in%colnames(pdata_group)){
+      colnames(pdata_group)[which(colnames(pdata_group)==oncoprint_group_by)]<-"group"
+    }
+    # print(head(pdata_group))
+    if(nlevels(as.factor(pdata_group$group))>2) stop("Levels of `oncoprint_group_by` must less than 3")
+
+    if(!"High"%in%unique(pdata_group$group)) {
+      print(summary(as.factor(pdata_group$group)))
+      stop("Levels of `oncoprint_group_by` must be `High` or `Low`")
+    }
   }
+
+
   # print(head(pdata_group))
   idh<-pdata_group[pdata_group$group=="High","ID"]
   idl<-pdata_group[pdata_group$group=="Low","ID"]
   pdata1<-pdata_group[pdata_group$ID%in%idh, ]
   pdata2<-pdata_group[pdata_group$ID%in%idl, ]
-
-
 
   # library(ComplexHeatmap)
   group_col<-palettes(category = "box",palette = palette,show_col = show_col)
@@ -382,14 +441,14 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
 
 
   col = c(mut = oncoprint_col)
-  mut1<-t(mut_onco[rownames(mut_onco)%in%idh, colnames(mut_onco)%in%genes])
-  mut2<-t(mut_onco[rownames(mut_onco)%in%idl, colnames(mut_onco)%in%genes])
+  mut1<-t(mut_onco[rownames(mut_onco)%in%idh, colnames(mut_onco)%in%genes_for_oncoprint])
+  mut2<-t(mut_onco[rownames(mut_onco)%in%idl, colnames(mut_onco)%in%genes_for_oncoprint])
 
   mut1<-list(mut = mut1)
   mut2<-list(mut = mut2)
 
-  width_h<- c(length(idh)/c(length(idh)+length(idl)))*width
-  width_l<- c(length(idl)/c(length(idh)+length(idl)))*width
+  # width_h<- c(length(idh)/c(length(idh)+length(idl)))*width
+  # width_l<- c(length(idl)/c(length(idh)+length(idl)))*width
 
   #########################################
   ho1<-ComplexHeatmap:: oncoPrint(mut1,
@@ -400,8 +459,9 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                  show_heatmap_legend = FALSE,
                  heatmap_legend_param = list(title = "", labels = ""),
                  col = col,
-                 top_annotation = h1,
-                 width = unit(width_h, "cm"))
+                 row_names_gp = gpar(fontface = "italic"),
+                 # width = unit(width_h, "cm"),
+                 top_annotation = h1)
 
 
   ho2<-ComplexHeatmap:: oncoPrint(mut2,
@@ -412,8 +472,9 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
                  show_heatmap_legend = FALSE,
                  heatmap_legend_param = list(title = "", labels = "Mutation"),
                  col = col,
-                 top_annotation = h2,
-                 width = unit(width_l, "cm"))
+                 row_names_gp = gpar(fontface = "italic"),
+                 # width = unit(width_l, "cm"),
+                 top_annotation = h2)
 
 
   p<-ho1+ho2
