@@ -139,7 +139,7 @@ iobr_cor_plot<-function(pdata_group,
   panel<-names(signature_group)
   feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
 
-  if(unique(colnames(feature_data))<length(colnames(feature_data))) stop("There are duplicate variables in the column name of the feature matrix, please modify." )
+  if(length(unique(colnames(feature_data)))<length(colnames(feature_data))) stop("There are duplicate variables in the column name of the feature matrix, please modify." )
 
   # feature_max <- max(feature_data[,colnames(feature_data)%in%feature_selected])
   # if(category == "gene"& feature_max > 50){
