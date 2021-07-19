@@ -114,7 +114,7 @@ iobr_cor_plot<-function(pdata_group,
     if(id2%in%colnames(feature_data)){
       colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
     }else{
-      stop("id2 is not in colname of feature_data")
+      stop("id2 is not in column name of feature_data")
     }
 
   }
@@ -136,6 +136,7 @@ iobr_cor_plot<-function(pdata_group,
   panel<-names(signature_group)
   feature_data<-feature_data[,colnames(feature_data)%in%c("ID",unique(unlist(group_list)))]
 
+  if(unique(colnames(feature_data))<length(colnames(feature_data))) stop("There are duplicate variables in the column name of the feature matrix, please modify." )
 
   # feature_max <- max(feature_data[,colnames(feature_data)%in%feature_selected])
   # if(category == "gene"& feature_max > 50){
@@ -393,9 +394,13 @@ iobr_cor_plot<-function(pdata_group,
                          col = colorRampPalette(col)(50))
       dev.off()
       corrplot::corrplot(bbcor$r, type="lower", order="hclust",
-                         p.mat = bbcor$P, sig.level = 0.05,tl.srt=45,
-                         tl.col = "black",tl.cex = 1,
-                         addrect=2,rect.col = "black",
+                         p.mat = bbcor$P,
+                         sig.level = 0.05,
+                         tl.srt=45,
+                         tl.col = "black",
+                         tl.cex = 1,
+                         addrect=2,
+                         rect.col = "black",
                          rect.lwd = 3,
                          col = colorRampPalette(col)(50))
       ########################################
