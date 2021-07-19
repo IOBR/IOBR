@@ -21,14 +21,15 @@ iobr_cor_plot(
   palette_corplot = "pheatmap",
   palette_heatmap = 2,
   feature_limit = 26,
-  character_limit = 30,
+  character_limit = 60,
   show_heatmap_col_name = FALSE,
   show_col = FALSE,
   show_plot = FALSE,
   path = NULL,
   discrete_x = 20,
   discrete_width = 20,
-  show_palettes = FALSE
+  show_palettes = FALSE,
+  fig.type = "pdf"
 )
 }
 \arguments{
@@ -79,6 +80,8 @@ iobr_cor_plot(
 \item{discrete_width}{numeric, default is 30, range from 20 to 80.}
 
 \item{show_palettes}{default is FALSE}
+
+\item{fig.type}{default is pdf, if not, figure will be saved in png format.}
 }
 \value{
 

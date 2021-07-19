@@ -27,7 +27,9 @@
 #' @param discrete_x if maximal character length of variables is larger than discrete_x, label will be discrete
 #' @param show_palettes default is FALSE
 #' @param discrete_width numeric, default is 30, range from 20 to 80.
+#' @param fig.type default is pdf, if not, figure will be saved in png format.
 #'
+#' @import corrplot
 #' @author Dongqiang Zeng
 #' @return
 #' @export
@@ -50,14 +52,15 @@ iobr_cor_plot<-function(pdata_group,
                         palette_corplot = "pheatmap",
                         palette_heatmap = 2,
                         feature_limit = 26,
-                        character_limit = 30,
+                        character_limit = 60,
                         show_heatmap_col_name = FALSE,
                         show_col = FALSE,
                         show_plot = FALSE,
                         path = NULL,
                         discrete_x = 20,
                         discrete_width = 20,
-                        show_palettes = FALSE){
+                        show_palettes = FALSE,
+                        fig.type = "pdf"){
 
   if(!is.null(path)){
     file_store<-path
@@ -321,15 +324,21 @@ iobr_cor_plot<-function(pdata_group,
     plot_height<- 4 + max(nchar(pf_long_group_box$variables))*0.05
     ###################################################
 
+    if(fig.type=="pdf"){
+      fig.type<- "pdf"
+    }else{
+      fig.type<-"png"
+    }
+
     if(!is.null(target)){
-      ggsave(pp1,filename =paste0(index, "-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.pdf"),
+      ggsave(pp1,filename =paste0(index, "-",x,"-1-",ProjectID,"-",target,"-",group_name,"-pvalue-box.",fig.type),
              width = plot_width,height = plot_height,path = file_store)
-      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",target,"-",group_name,"-box.pdf"),
+      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",target,"-",group_name,"-box.",fig.type),
              width = plot_width,height = plot_height,path = file_store)
     }else{
-      ggsave(pp1,filename =paste0(index, "-" ,x,"-1-",ProjectID,"-",group,"-",group_name,"-pvalue-box.pdf"),
+      ggsave(pp1,filename =paste0(index, "-" ,x,"-1-",ProjectID,"-",group,"-",group_name,"-pvalue-box.",fig.type),
              width = plot_width,height = plot_height,path = file_store)
-      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",group,"-",group_name,"-box.pdf"),
+      ggsave(pp2,filename =paste0(index, "-" ,x,"-2-",ProjectID,"-",group,"-",group_name,"-box.",fig.type),
              width = plot_width,height = plot_height,path = file_store)
     }
     ####################################################
@@ -416,7 +425,7 @@ iobr_cor_plot<-function(pdata_group,
         theme(plot.title=element_text(size=rel(2.5),hjust=0.5))
       ######################################
       ggsave(p,filename = paste0(index, "-" ,x,"-5-",ProjectID,"-",group_name,
-                                 "-associated-",category, "-corplot.pdf"),
+                                 "-associated-",category, "-corplot.",fig.type),
              width = 12,height = 12.8,
              path = file_store)
 
