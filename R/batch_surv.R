@@ -21,7 +21,7 @@
 ##'
 ##' sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable <- c(c(ncol(pdata_stad)+1):ncol(pdata_sig_tme_binary)))
 
-batch_surv<-function(pdata,variable,time="time", status="status"){
+batch_surv<-function(pdata, variable, time="time", status="status"){
 
   pdata<-as.data.frame(pdata)
   colnames(pdata)[which(colnames(pdata)==time)]<-"time"
@@ -35,10 +35,10 @@ batch_surv<-function(pdata,variable,time="time", status="status"){
   result<-data.frame(NULL)
   for (i in 1:length(result_list)) {
     result1<-getHRandCIfromCoxph(result_list[[i]])
-    rownames(result1)<-colnames(pdata)[variable[i]]
+    rownames(result1)<-variable[i]
     result<-rbind(result,result1)
   }
-  result[result>500]<-Inf
+  result[result>1000]<-Inf
   result<-result[order(result$P,decreasing = F),]
   result<-tibble::rownames_to_column(result,var = "ID")
   result<-tibble::as_tibble(result)
