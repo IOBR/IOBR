@@ -23,5 +23,5 @@ This R-script can be used to calculate Immunophenoscore (IPS)
 \examples{
 if TRUE, plot will be saved
 file to deposit reslut
-棣栧厛鏋勫缓鍥剧殑鍌ㄥ瓨鏂囦欢澶戼㸹
+首先构建图的储存文件夹
 }
