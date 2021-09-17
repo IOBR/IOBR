@@ -76,7 +76,7 @@ calculate_sig_score_pca<-function(pdata = NULL,
     eset<-eset[rownames(eset)%in%feas,]
   }
 
-  eset<-scale(eset,center = T,scale = T)
+  # eset<-scale(eset,center = T,scale = T)
   ###########################
 
   #filter signatures
@@ -347,7 +347,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
     eset<-eset[rownames(eset)%in%feas,]
   }
   ##########################
-  eset1<-scale(eset,center = T,scale = T)
+  # eset1<-scale(eset,center = T,scale = T)
   message(paste0("\n", ">>>Step 1: Calculating signature score using PCA method"))
   goi <- names(signature)
   ###########################

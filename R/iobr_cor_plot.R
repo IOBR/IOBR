@@ -360,6 +360,7 @@ iobr_cor_plot<-function(pdata_group,
         .column = ID,
         .row = variables,
         .value = value,
+        palette_grouping = list(c(color_box)),
         # column_title = group_name,
         # annotation = group2,
         palette_value = heatmap_col,
@@ -385,7 +386,7 @@ iobr_cor_plot<-function(pdata_group,
       }
 
       bbcor <-Hmisc:: rcorr(as.matrix(pf_cor),type = "spearman")
-
+      bbcor$P[is.na(bbcor$P)]<-0
       ###################################
       col<- palettes(category = "heatmap3",palette = palette_corplot, show_col = show_col,show_message = show_palettes)
 
@@ -395,14 +396,22 @@ iobr_cor_plot<-function(pdata_group,
       pdf(file  = paste0(abspath, index, "-" ,x,"-4-",ProjectID,"-",group_name,
                          "-associated-",category, "-corplot.pdf"),
           width = width_heatmap,height = height_heatmap)
-      corrplot::corrplot(bbcor$r, type="lower", order="hclust",
-                         p.mat = bbcor$P, sig.level = 0.05,tl.srt=45,
-                         tl.col = "black",tl.cex = 1.3,
-                         addrect=2,rect.col = "black",
+      corrplot::corrplot(bbcor$r,
+                         type="lower",
+                         order="hclust",
+                         p.mat = bbcor$P,
+                         sig.level = 0.05,
+                         tl.srt=45,
+                         tl.col = "black",
+                         tl.cex = 1.3,
+                         addrect=2,
+                         rect.col = "black",
                          rect.lwd = 3,
                          col = colorRampPalette(col)(50))
       dev.off()
-      corrplot::corrplot(bbcor$r, type="lower", order="hclust",
+      corrplot::corrplot(bbcor$r,
+                         type="lower",
+                         order="hclust",
                          p.mat = bbcor$P,
                          sig.level = 0.05,
                          tl.srt=45,

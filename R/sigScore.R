@@ -16,7 +16,7 @@ sigScore <- function(eset, methods = "PCA") {
 
   if (methods == "PCA") {
     # message(paste0("Calculating siganture score using PCA function"))
-    pc <- prcomp(t(eset))
+    pc <- prcomp(t(eset),na.action = na.omit, scale. = T)
     sigs <- pc$x[,1] * sign(cor(pc$x[,1], colMeans(eset)))
   } else {
     # message(paste0("Calculating siganture score using mean of signature genes"))
