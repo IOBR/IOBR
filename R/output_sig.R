@@ -15,27 +15,27 @@
 #' @examples
 
 output_sig<-function(signatures, format = "csv", file.name ){
-  
-  
+
+
   if(length(signatures)<=1){
-    sig<-as.data.frame(sig)
-    colnames(sig)<-"signature genes"
+    signatures<-as.data.frame(signatures)
+    colnames(signatures)<-"signature genes"
   }
-  
+
   if(length(signatures)>=2){
-    sig<-as.data.frame(t(do.call("rbind", signature_tme)))
-    
-    for (i in 1:ncol(sig)) {
-      
-      index<-duplicated(sig[,i])
-      sig[index,i]<-NA
-      
+    signatures<-as.data.frame(t(do.call("rbind", signatures)))
+
+    for (i in 1:ncol(signatures)) {
+
+      index<-duplicated(signatures[,i])
+      signatures[index,i]<-NA
+
     }
   }
-  
-  if(format=="csv") write.csv(sig, file = paste0(file.name,".csv"))
-  
-  if(format=="rdata") save(sig, file = paste0(file.name,".RData"))
-  return(sig)
+
+  if(format=="csv") write.csv(signatures, file = paste0(file.name,".csv"))
+
+  if(format=="rdata") save(signatures, file = paste0(file.name,".RData"))
+  return(signatures)
 }
 
