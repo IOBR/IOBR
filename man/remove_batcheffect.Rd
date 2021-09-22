@@ -8,6 +8,7 @@ remove_batcheffect(
   eset1,
   eset2,
   eset3 = NULL,
+  log2 = TRUE,
   check_eset = TRUE,
   labels = NULL,
   palette = "nrc"
@@ -19,6 +20,8 @@ remove_batcheffect(
 \item{eset2}{expression set-2}
 
 \item{eset3}{expression set-3, default is null}
+
+\item{log2}{default is TRUE}
 
 \item{check_eset}{default is true}
 

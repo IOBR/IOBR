@@ -7,7 +7,7 @@
 PrognosticModel(
   x,
   y,
-  scale = F,
+  scale = FALSE,
   seed = "123456",
   train_ratio = 0.7,
   nfold = 10,
