@@ -10,25 +10,27 @@
 #' @param labels labels for expression sets
 #' @param check_eset default is true
 #' @param palette palette from IOBR::palettes, default is nature
+#' @param log2 default is TRUE
 #'
 #' @return
 #' @export
 #'
 #' @examples
-remove_batcheffect<-function(eset1, eset2, eset3 = NULL, check_eset = TRUE, labels = NULL, palette = "nrc"){
+remove_batcheffect<-function(eset1, eset2, eset3 = NULL, log2 = TRUE, check_eset = TRUE, labels = NULL, palette = "nrc"){
 
 
   cols<-IOBR::palettes(category = "box", palette = palette, show_col = F, show_message = F)
 
-  eset1<-log2eset(eset1)
+
+  if(log2) eset1<-log2eset(eset1)
   if(check_eset) check_eset(eset1)
 
-  eset2<-log2eset(eset2)
+  if(log2) eset2<-log2eset(eset2)
   if(check_eset) check_eset(eset2)
 
 
   if(!is.null(eset3)) {
-    eset3<-log2eset(eset3)
+    if(log2)  eset3<-log2eset(eset3)
     if(check_eset) check_eset(eset3)
     cols<-cols[1:3]
   }else{

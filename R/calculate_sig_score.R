@@ -166,7 +166,7 @@ calculate_sig_score_zscore<-function(pdata = NULL,
     eset<-eset[rownames(eset)%in%feas,]
   }
 
-  eset<-scale(eset,center = T,scale = T)
+  # eset<-scale(eset,center = T,scale = T)
   ###########################
   ###########################
   if(mini_gene_count<=2) mini_gene_count <- 2
@@ -348,14 +348,19 @@ calculate_sig_score_integration<-function(pdata = NULL,
   }
   ##########################
   # eset1<-scale(eset,center = T,scale = T)
+  # if(sum(is.na(eset1))>0){
+  #   feas<-feature_manipulation(data=eset1,is_matrix = T)
+  #   eset1<-eset1[rownames(eset1)%in%feas,]
+  # }
+  ###########################
   message(paste0("\n", ">>>Step 1: Calculating signature score using PCA method"))
   goi <- names(signature)
   ###########################
   for (sig in goi) {
     pdata[, paste(sig,"_PCA",sep = "")] <- NA
     genes <- signature[[sig]]
-    genes <- genes[genes %in% rownames(eset1)]
-    tmp <- eset1[genes, , drop=FALSE]
+    genes <- genes[genes %in% rownames(eset)]
+    tmp <- eset[genes, , drop=FALSE]
     pdata[, paste(sig,"_PCA",sep = "")] <- sigScore(tmp,methods = "PCA")
   }
   ############################
@@ -370,8 +375,8 @@ calculate_sig_score_integration<-function(pdata = NULL,
   for (sig in goi) {
     pdata[, paste(sig,"_zscore",sep = "")] <- NA
     genes <- signature[[sig]]
-    genes <- genes[genes %in% rownames(eset1)]
-    tmp <- eset1[genes, , drop=FALSE]
+    genes <- genes[genes %in% rownames(eset)]
+    tmp <- eset[genes, , drop=FALSE]
     pdata[, paste(sig,"_zscore",sep = "")] <- sigScore(tmp,methods = "z-score")
   }
   if ("TMEscoreA_CIR"%in%goi &"TMEscoreB_CIR" %in% goi) {

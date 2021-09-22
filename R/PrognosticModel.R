@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-PrognosticModel <- function(x, y, scale = F, seed = "123456", train_ratio = 0.7, nfold = 10, plot = T){
+PrognosticModel <- function(x, y, scale = FALSE, seed = "123456", train_ratio = 0.7, nfold = 10, plot = T){
 
   x<-as.data.frame(x)
   y<-as.data.frame(y)
