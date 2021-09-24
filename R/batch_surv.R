@@ -24,8 +24,12 @@
 batch_surv<-function(pdata, variable, time="time", status="status"){
 
   pdata<-as.data.frame(pdata)
+
   colnames(pdata)[which(colnames(pdata)==time)]<-"time"
   colnames(pdata)[which(colnames(pdata)==status)]<-"status"
+
+  pdata<-pdata[!is.na(pdata$time),]
+  pdata<-pdata[!is.na(pdata$status),]
 
   pdata$time <-as.numeric(pdata$time)
   pdata$status <-as.numeric(pdata$status)
