@@ -10,6 +10,7 @@ sig_heatmap(
   features,
   group,
   palette = 2,
+  palette_group = "jama",
   show_col = F,
   show_palettes = F,
   show_plot = T,
@@ -29,6 +30,8 @@ sig_heatmap(
 \item{group}{category}
 
 \item{palette}{default is 2, options: 1,2,3}
+
+\item{palette_group}{default is jama}
 
 \item{show_col}{show color}
 
