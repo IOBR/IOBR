@@ -49,6 +49,7 @@ iobr_cor_plot<-function(pdata_group,
                         signature_group = sig_group,
                         ProjectID = "TCGA-STAD",
                         palette_box = "nrc",
+                        cols_box = NULL,
                         palette_corplot = "pheatmap",
                         palette_heatmap = 2,
                         feature_limit = 26,
@@ -282,7 +283,13 @@ iobr_cor_plot<-function(pdata_group,
       pf_long_group_box$variables<-ifelse(nchar(pf_long_group$variables)> discrete_x, gsub(pf_long_group_box$variables,pattern = "\\_",replacement = " "),pf_long_group_box$variables)
     }
 
-    color_box<-palettes(category = "box",palette = palette_box, show_col = show_col, show_message = show_palettes)
+
+    if(!is.null(cols_box)){
+      color_box<-palettes(category = "box",palette = palette_box, show_col = show_col, show_message = show_palettes)
+    }else{
+      color_box<- cols_box
+    }
+
     ######################################################
     p <-ggboxplot(pf_long_group_box, x = "variables", y = "value",fill =  target_binary)+
       scale_fill_manual(values= color_box)+

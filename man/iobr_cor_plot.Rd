@@ -18,6 +18,7 @@ iobr_cor_plot(
   signature_group = sig_group,
   ProjectID = "TCGA-STAD",
   palette_box = "nrc",
+  cols_box = NULL,
   palette_corplot = "pheatmap",
   palette_heatmap = 2,
   feature_limit = 26,

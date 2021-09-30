@@ -15,6 +15,10 @@ sig_heatmap(
   show_palettes = F,
   show_plot = T,
   width = 8,
+  height = NULL,
+  size_col = 10,
+  size_row = 8,
+  angle_col = 90,
   show_heatmap_col_name = F,
   path = NULL,
   index = NULL
@@ -40,6 +44,8 @@ sig_heatmap(
 \item{show_plot}{show plot}
 
 \item{width}{default is 8}
+
+\item{angle_col}{}
 
 \item{show_heatmap_col_name}{show heatmpa column name}
 
