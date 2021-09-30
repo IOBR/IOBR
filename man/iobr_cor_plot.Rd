@@ -60,6 +60,8 @@ iobr_cor_plot(
 
 \item{palette_box}{palette for box plot}
 
+\item{cols_box}{default is null}
+
 \item{palette_corplot}{palette for cor-plot}
 
 \item{palette_heatmap}{palette for heatmap}

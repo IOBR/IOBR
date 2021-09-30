@@ -28,6 +28,7 @@
 #' @param show_palettes default is FALSE
 #' @param discrete_width numeric, default is 30, range from 20 to 80.
 #' @param fig.type default is pdf, if not, figure will be saved in png format.
+#' @param cols_box default is null
 #'
 #' @import corrplot
 #' @author Dongqiang Zeng

@@ -79,7 +79,7 @@ BinomialModel <- function(x, y,seed = "123456", scale = TRUE,
 #' @export
 #'
 #' @examples
-ProcessingData <- function(x, y, scale = scale, type = "binomial"){
+ProcessingData <- function(x, y, scale, type = "binomial"){
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
   x$ID <- as.character(x$ID)

@@ -4,7 +4,7 @@
 \alias{ProcessingData}
 \title{Processing Data}
 \usage{
-ProcessingData(x, y, scale = scale, type = "binomial")
+ProcessingData(x, y, scale, type = "binomial")
 }
 \arguments{
 \item{type}{}
