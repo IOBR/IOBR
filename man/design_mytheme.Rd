@@ -5,6 +5,7 @@
 \title{Design my ggplpt2 theme}
 \usage{
 design_mytheme(
+  theme = "light",
   plot_title_size = 2,
   axis_title_size = 2,
   axis_text_size = 12,
@@ -16,6 +17,8 @@ design_mytheme(
 )
 }
 \arguments{
+\item{theme}{default is light}
+
 \item{plot_title_size}{title size}
 
 \item{axis_title_size}{axis title size}
