@@ -3,8 +3,6 @@
 
 
 
-
-
 #' signature box plot
 #'
 #' @param data input data
@@ -16,13 +14,15 @@
 #' @param point_size size of point
 #' @param angle_x_text angle_x_text
 #' @param hjust hjust
+#' @param show_pvalue default is true
+#' @param return_stat_res default is FALSE
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype",jitter = T)
-sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5){
+sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, show_pvalue = TRUE, return_stat_res = FALSE){
 
 
   data<-as.data.frame(data)
@@ -59,8 +59,11 @@ sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palett
     theme(legend.position = "none")
 
 
+  if(show_pvalue)   p<-p+stat_compare_means(comparisons = comparision,size=6)+stat_compare_means(size=6)
 
-  p<-p+stat_compare_means(comparisons = comparision,size=6)+stat_compare_means(size=6)
+
+  res<-compare_means(signature ~ variable, data = data)
+  print(res)
 
   if(jitter){
     p<- p + geom_point(shape = 21,
@@ -70,8 +73,11 @@ sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palett
   }
 
   print(p)
-  return(p)
+
+  if(return_stat_res){
+    return(res)
+  }else{
+    return(p)
+  }
 
 }
-
-
