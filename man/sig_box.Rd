@@ -13,7 +13,9 @@ sig_box(
   palette = "nrc",
   cols = NULL,
   jitter = FALSE,
-  point_size = 5
+  point_size = 5,
+  show_pvalue = TRUE,
+  return_stat_res = FALSE
 )
 }
 \arguments{
@@ -34,6 +36,10 @@ sig_box(
 \item{jitter}{default is FALSE}
 
 \item{point_size}{size of point}
+
+\item{show_pvalue}{default is true}
+
+\item{return_stat_res}{default is FALSE}
 }
 \value{
 
