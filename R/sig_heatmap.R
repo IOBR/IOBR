@@ -76,6 +76,7 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
   color_box<-color_box[1:n]
   # print(color_box)
   ####################################################
+
   pp<-pf_long_group %>%
     group_by(target_group) %>%
     tidyHeatmap:: heatmap(
