@@ -38,31 +38,31 @@
 #' @examples
 #'
 iobr_cor_plot<-function(pdata_group,
-                        id1 = "ID",
+                        id1                   = "ID",
                         feature_data,
-                        id2 = "ID",
-                        target = NULL,
-                        group = "group3",
-                        is_target_continuous = TRUE,
-                        padj_cutoff = 1,
-                        index = 1,
-                        category = "signature",
-                        signature_group = sig_group,
-                        ProjectID = "TCGA-STAD",
-                        palette_box = "nrc",
-                        cols_box = NULL,
-                        palette_corplot = "pheatmap",
-                        palette_heatmap = 2,
-                        feature_limit = 26,
-                        character_limit = 60,
+                        id2                   = "ID",
+                        target                = NULL,
+                        group                 = "group3",
+                        is_target_continuous  = TRUE,
+                        padj_cutoff           = 1,
+                        index                 = 1,
+                        category              = "signature",
+                        signature_group       = sig_group,
+                        ProjectID             = "TCGA-STAD",
+                        palette_box           = "nrc",
+                        cols_box              = NULL,
+                        palette_corplot       = "pheatmap",
+                        palette_heatmap       = 2,
+                        feature_limit         = 26,
+                        character_limit       = 60,
                         show_heatmap_col_name = FALSE,
-                        show_col = FALSE,
-                        show_plot = FALSE,
-                        path = NULL,
-                        discrete_x = 20,
-                        discrete_width = 20,
-                        show_palettes = FALSE,
-                        fig.type = "pdf"){
+                        show_col              = FALSE,
+                        show_plot             = FALSE,
+                        path                  = NULL,
+                        discrete_x            = 20,
+                        discrete_width        = 20,
+                        show_palettes         = FALSE,
+                        fig.type              = "pdf"){
 
   if(!is.null(path)){
     file_store<-path
@@ -285,9 +285,10 @@ iobr_cor_plot<-function(pdata_group,
     }
 
 
-    if(!is.null(cols_box)){
+    if(is.null(cols_box)){
       color_box<-palettes(category = "box",palette = palette_box, show_col = show_col, show_message = show_palettes)
     }else{
+      message(">>>-- cols_box must be set if palette_box is NULL...")
       color_box<- cols_box
     }
 
@@ -463,7 +464,8 @@ iobr_cor_plot<-function(pdata_group,
       eset<-pf_stat
       feas  <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
       levels<- c(as.character(unique(pf_stat[,group])))
-      res   <-  batch_wilcoxon(data = eset,target = group,group_names = levels,feature = feas)
+      res   <-  batch_wilcoxon(data = eset, target = group, group_names = levels, feature = feas)
+
       res   <- tibble::as_tibble(res)
     }else{
       stop("Only two categorical variables can support statistical difference calculation")
@@ -471,6 +473,8 @@ iobr_cor_plot<-function(pdata_group,
 
   }
   if(is_target_continuous){
+
+    if(is.null(target)) stop("target must be define...")
     # eset<-pf[,colnames(pf)%in%c(target,setdiff(features,c("ID",target)))]
     eset<-pf_stat
     feas<-colnames(pf_stat)[scale_begin:ncol(pf_stat)]

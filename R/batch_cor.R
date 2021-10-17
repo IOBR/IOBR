@@ -35,7 +35,7 @@ batch_cor<-function(data, target, feature, method = "spearman"){
   cc<-data.frame(sig_names=feature,
                  p.value = bb$V1,
                  statistic = sapply(aa, getElement, name = "estimate"))
-  cc<-cc[order(cc$p.value,decreasing = FALSE),]
+  cc<-cc[order(cc$p.value, decreasing = FALSE),]
   cc$p.adj<-p.adjust(cc$p.value,method = "BH")
   cc$log10pvalue<--1*log10(cc$p.value)
   rownames(cc)<-NULL

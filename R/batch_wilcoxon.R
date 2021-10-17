@@ -4,7 +4,7 @@
 #' Batch to conduct wilcoxon test in two groups
 #'
 #' @param data signature matrix with two groups
-#' @param target name of group:
+#' @param target name of group;
 #' @param group_names  with `high` and `low` as default
 #' @param feature feature used to comparison
 #'
@@ -14,7 +14,7 @@
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-batch_wilcoxon<-function(data,target = "group",group_names = c("High","Low"), feature){
+batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), feature){
 
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
@@ -45,10 +45,10 @@ batch_wilcoxon<-function(data,target = "group",group_names = c("High","Low"), fe
                  p.value = sapply(aa, getElement, name = "p.value"))
 
   cc<-cc %>%  full_join(result_mean,by = "sig_names") %>%
-    arrange(p.value) %>%
-    mutate(p.adj = p.adjust(.$p.value,method = "BH") ) %>%
-    mutate(log10pvalue = log10(.$p.value)* -1) %>%
-    mutate(stars = cut(.$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
+    dplyr:: arrange(p.value) %>%
+    dplyr:: mutate(p.adj = p.adjust(.$p.value,method = "BH") ) %>%
+    dplyr:: mutate(log10pvalue = log10(.$p.value)* -1) %>%
+    dplyr:: mutate(stars = cut(.$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                        label=c("****","***", "**", "*", "+","")))
   cc<-tibble::as_tibble(cc)
   return(cc)

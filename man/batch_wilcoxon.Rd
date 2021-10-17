@@ -9,7 +9,7 @@ batch_wilcoxon(data, target = "group", group_names = c("High", "Low"), feature)
 \arguments{
 \item{data}{signature matrix with two groups}
 
-\item{target}{name of group:}
+\item{target}{name of group;}
 
 \item{group_names}{with `high` and `low` as default}
 
