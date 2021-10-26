@@ -48,8 +48,6 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
 # options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-#> Bioconductor version '3.12' is out-of-date; the current release version '3.13'
-#>   is available with R version '4.1'; see https://bioconductor.org/install
 
 depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
           'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
@@ -155,7 +153,6 @@ signature_collection_citation[!duplicated(signature_collection_citation$Journal)
 #> 17 T_cell_accumula~             2018 Nature Medi~ Signatures of ~ 3012~ 10.1038~
 #> 18 Antigen_Process~             2020 Nature Comm~ Pan-cancer Cha~ 3208~ 10.1038~
 #> 19 CD8_T_cells_Bin~             2013 Immunity     Spatio-tempora~ 2413~ 10.1016~
-
 #signature groups
 sig_group[1:3]
 #> $tumor_signature
@@ -186,9 +183,9 @@ sig_group[1:3]
 
 ## References
 
-Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y,…, Liao W (2021) IOBR:
+Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y,…, Liao W (2021) **IOBR**:
 Multi-Omics Immuno-Oncology Biological Research to Decode Tumor
-Microenvironment and Signatures. Frontiers in Immunology. 12:687975.
+Microenvironment and Signatures. *Frontiers in Immunology*. 12:687975.
 [doi:
 10.3389/fimmu.2021.687975](https://www.frontiersin.org/articles/10.3389/fimmu.2021.687975/full)
 

@@ -25,8 +25,19 @@
 #' @export
 #'
 #' @examples
-sig_roc<-function(data, response, variables, fig.path = ".", main = NULL, file.name = NULL, palette = "jama", cols = NULL,  alpha = 1, compare = FALSE, compare_method = "bootstrap", boot.n = 100){
-
+sig_roc<-function(data,
+                  response,
+                  variables,
+                  fig.path = ".",
+                  main = NULL,
+                  file.name = NULL,
+                  palette = "jama",
+                  cols = NULL,
+                  alpha = 1,
+                  compare = FALSE,
+                  compare_method = "bootstrap",
+                  boot.n = 100){
+  options(pROCProgress = list(name = "none"))
   data<-as.data.frame(data)
 
   variables<-variables[variables%in%colnames(data)]
