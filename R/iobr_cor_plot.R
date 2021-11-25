@@ -167,11 +167,13 @@ iobr_cor_plot<-function(pdata_group,
   all_sig<- unique(unlist(group_list))
 
   if(category=="signature"){
-    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching signature in signature matrix or signature_group, please add new signature groups into sig_group list or generate another one list object")
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching signature in signature matrix or signature_group,
+                                                              please add new signature groups into sig_group list or generate another one list object")
   }
 
   if(category=="gene"){
-    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set or signature_group, please add new signature groups into signature_collections list or generate another one list object")
+    if(length(colnames(pf)[colnames(pf)%in%all_sig])<=0) stop(">>> There is no matching gene in expression set or signature_group,
+                                                              please add new signature groups into signature_collections list or generate another one list object")
   }
 
   if(category == "signature"){
@@ -205,23 +207,23 @@ iobr_cor_plot<-function(pdata_group,
         if(group == "group3") eset<-eset[!eset$group3=="Middle",]
 
         res<- batch_wilcoxon(data = eset,target = group,feature = setdiff(colnames(eset),group))
-        good_features<-high_var_fea(result = res,
-                                    target = "sig_names",
-                                    name_padj = "p.adj",
-                                    padj_cutoff = padj_cutoff,
-                                    name_logfc = "statistic",
+        good_features<-high_var_fea(result        = res,
+                                    target        = "sig_names",
+                                    name_padj     = "p.adj",
+                                    padj_cutoff   = padj_cutoff,
+                                    name_logfc    = "statistic",
                                     logfc_cutoff  = 0,
-                                    n = feature_limit/2)
+                                    n             = feature_limit/2)
       }else if(is_target_continuous==TRUE){
         eset<-pf[,colnames(pf)%in%c(target,features)]
         res<- batch_cor(data = eset,target = target,feature = setdiff(colnames(eset),target),method = "spearman")
-        good_features<-high_var_fea(result = res,
-                                    target = "sig_names",
-                                    name_padj = "p.adj",
-                                    padj_cutoff = padj_cutoff,
-                                    name_logfc = "statistic",
+        good_features<-high_var_fea(result        = res,
+                                    target        = "sig_names",
+                                    name_padj     = "p.adj",
+                                    padj_cutoff   = padj_cutoff,
+                                    name_logfc    = "statistic",
                                     logfc_cutoff  = 0,
-                                    n = feature_limit/2)
+                                    n             = feature_limit/2)
       }
       if(length(good_features)<=2){
         good_features<-res$sig_names[1:6]
@@ -249,8 +251,8 @@ iobr_cor_plot<-function(pdata_group,
 
     patterns<-tolower(gsub(patterns_to_na,pattern = "\\_",replacement = ""))
     if(tolower(group_name)%in%patterns){
-      pf_long<-remove_names(input_df = pf_long,
-                            variable = "variables",
+      pf_long<-remove_names(input_df       = pf_long,
+                            variable       = "variables",
                             patterns_to_na = patterns_to_na,
                             patterns_space = c("\\_"))
     }
@@ -263,6 +265,8 @@ iobr_cor_plot<-function(pdata_group,
     if(group == "group3"){
       target_binary<-"group3"
       pf_long_group<-pf_long[!pf_long$group3=="Middle",]
+
+
     }else if(group =="best_cutoff"&!is.null(target)) {
       target_binary<-paste0(target,"_binary")
       pf_long_group<-pf_long

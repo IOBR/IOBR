@@ -42,7 +42,8 @@ batchPCA =function(indata, batch,  pos="bottomright", xy=c(1,2), cols=NULL, show
   xlab.text = paste("Comp ", xy[1], ": ", as.character(pct1), "% variance", sep="")
   ylab.text = paste("Comp ", xy[2], ": ", as.character(pct2), "% variance", sep="")
 
-  plot(pca@scores[,xy[1]], pca@scores[,xy[2]],  cex=0.7, xlab=xlab.text, ylab=ylab.text, col=cols[factor(batch)], pch=(1:N.batch)[factor(batch)],lwd=1.5, main=main.title)
+  plot(pca@scores[,xy[1]], pca@scores[,xy[2]],  cex=0.7, xlab=xlab.text, ylab=ylab.text,
+       col=cols[factor(batch)], pch=(1:N.batch)[factor(batch)],lwd=1.5, main=main.title)
   abline(h=0, v=0, col="brown", lty=2)
   abline(h=0, v=0, col="brown", lty=2)
   center1<-tapply(pca@scores[,xy[1]], factor(batch), mean)
