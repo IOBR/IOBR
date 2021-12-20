@@ -14,14 +14,17 @@
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), feature){
+batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), feature, feature_manipulation = FALSE){
 
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
-  feature<-feature_manipulation(data = data, feature = feature)
+
+  if(feature_manipulation) feature<-feature_manipulation(data = data, feature = feature)
+
   #change-name-of-group
   colnames(data)[which(colnames(data)==target)]<-"group"
 
+  data<-data[,c("group", feature)]
 
   aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"],var.equal = F))
 

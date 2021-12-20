@@ -40,6 +40,7 @@ subgroup_survival<-function(pdata,time_name="time",status_name= "status",variabl
   pdata<-as.data.frame(pdata)
   for (sig in variables) {
     ind<-which(colnames(pdata)==sig)
+
     tmp<-pdata[!is.na(pdata[,ind]),]
     if(dim(tmp)[1]==0)
       next

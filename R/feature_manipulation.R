@@ -11,15 +11,11 @@
 #' @author Dongqiang Zeng
 #' @examples
 
-feature_manipulation<-function(data, feature = NULL, is_matrix = FALSE, print_result = FALSE){
+feature_manipulation<-function(data, feature, is_matrix = FALSE, print_result = FALSE){
 
   if(is_matrix){
     data<-as.data.frame(t(data))
     feature<-colnames(data)
-  }
-
-  if(is.null(feature)&!is_matrix){
-    feature<-setdiff(colnames(data),"ID")
   }
 
   data<-as.data.frame(data)
