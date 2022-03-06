@@ -16,20 +16,31 @@
 #'
 #' @examples
 #'
-transform_data<-function(data = data, feature = feature,data_type,into = 0){
+transform_data<-function(data = data, feature = feature, data_type, into = 0){
   feature<-colnames(data)[colnames(data)%in%feature]
 
   if(data_type == "NA"){
     for(i in 1:length(feature) ){
       var<-feature[i]
       j<-which(colnames(data)==var)
-      data[is.na(data[,var]),j]<- into
+
+      if(into=="mean"){
+        data[is.na(data[,var]),j]<-mean(data[,j], na.rm = TRUE )
+      }else{
+        data[is.na(data[,var]),j]<- into
+      }
     }
   }else if(data_type == "Inf"){
     for(i in 1:length(feature) ){
       var<-feature[i]
       j<-which(colnames(data)==var)
-      data[is.infinite(data[,var]),j]<- into
+
+      if(into=="mean"){
+        data[is.infinite(data[,var]),j]<-mean(data[,j], na.rm = TRUE )
+      }else{
+        data[is.infinite(data[,var]),j]<- into
+      }
+
     }
   }else if(data_type == "zero"){
     for(i in 1:length(feature) ){

@@ -19,10 +19,12 @@ batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), f
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
 
-  if(feature_manipulation) feature<-feature_manipulation(data = data, feature = feature)
+  if(feature_manipulation) feature<-feature_manipulation(data = data, feature = feature, print_result = F)
 
   #change-name-of-group
   colnames(data)[which(colnames(data)==target)]<-"group"
+
+  if(!identical(group_names,c("High","Low"))) message(">>>--- group_names must be specified...")
 
   data<-data[,c("group", feature)]
 

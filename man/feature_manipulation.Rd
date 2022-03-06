@@ -4,12 +4,7 @@
 \alias{feature_manipulation}
 \title{Filtering features using multiple methods}
 \usage{
-feature_manipulation(
-  data,
-  feature = NULL,
-  is_matrix = FALSE,
-  print_result = FALSE
-)
+feature_manipulation(data, feature, is_matrix = FALSE, print_result = FALSE)
 }
 \arguments{
 \item{data}{data with features in the columns}
