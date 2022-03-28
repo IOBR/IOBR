@@ -29,7 +29,7 @@
 count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", remove_redundancy = "mean")
 {
   # requireNamespace("biomaRt")
-  if(class(countMat)!="matrix")  countMat<-as.matrix(countMat)
+  if(!is.matrix(countMat))  countMat<-as.matrix(countMat)
 
   if(sum(is.na(countMat))>0){
     message(paste0("There are ", sum(is.na(countMat)) ," missing value in count matrix, these genes will be removed."))
