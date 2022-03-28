@@ -37,8 +37,8 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", 
     countMat<-countMat[rownames(countMat)%in%feas,]
   }
 
-  feas<-feature_manipulation(data = exp, feature = rownames(exp), is_matrix = T)
-  exp<-exp[rownames(exp)%in%feas,]
+  feas<-feature_manipulation(data = countMat, feature = rownames(countMat), is_matrix = T)
+  countMat<-countMat[rownames(countMat)%in%feas,]
 
   if(is.null(effLength) & source == "web"){
     datasets = paste0(c("hsapiens", "mmusculus", "btaurus", "cfamiliaris",
