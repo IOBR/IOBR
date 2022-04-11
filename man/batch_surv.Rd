@@ -9,7 +9,7 @@ batch_surv(pdata, variable, time = "time", status = "status")
 \arguments{
 \item{pdata}{data with follow up data and multiple variables}
 
-\item{variable}{use column c(a:b) to select variables}
+\item{variable}{column names of included variables}
 
 \item{time}{survival time}
 

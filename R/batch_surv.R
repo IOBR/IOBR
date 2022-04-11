@@ -11,7 +11,7 @@
 ##' @param pdata data with follow up data and multiple variables
 ##' @param time  survival time
 ##' @param status survival status
-##' @param variable use column c(a:b) to select variables
+##' @param variable column names of included variables
 ##'
 ##' @author Dongqiang Zeng
 ##' @importFrom  survival coxph
