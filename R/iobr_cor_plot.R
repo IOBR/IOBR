@@ -12,14 +12,14 @@
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
 #' @param padj_cutoff cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`
 #' @param index index use to order the file name
-#' @param signature_group for signature group `sig_group`, for gene_group `signature_collection` or `signature_tme`
+#' @param signature_group for signature group： `sig_group`, for gene_group `signature_collection` or `signature_tme`
 #' @param category `signature` or `gene`
 #' @param ProjectID names to define the file names
-#' @param feature_limit maximal number features to plot
+#' @param feature_limit maximal number of features to be drawn
 #' @param character_limit maximal number of feature characters
 #' @param palette_box palette for box plot
 #' @param palette_corplot palette for cor-plot
-#' @param palette_heatmap palette for heatmap
+#' @param palette_heatmap palette for heat map
 #' @param show_heatmap_col_name logical variable, if TRUE, `tidyheatmap` will print the column name
 #' @param show_col logical variable, if TRUE, color will be print and show in the R studio
 #' @param show_plot logical variable, if TRUE, plots will be print
@@ -48,7 +48,7 @@ iobr_cor_plot<-function(pdata_group,
                         index                 = 1,
                         category              = "signature",
                         signature_group       = sig_group,
-                        ProjectID             = "TCGA-STAD",
+                        ProjectID             = "TCGA",
                         palette_box           = "nrc",
                         cols_box              = NULL,
                         palette_corplot       = "pheatmap",
@@ -119,7 +119,7 @@ iobr_cor_plot<-function(pdata_group,
     if(id2%in%colnames(feature_data)){
       colnames(feature_data)[which(colnames(feature_data)==id2)]<-"ID"
     }else{
-      stop("id2 is not in column name of feature_data")
+      stop("id2 is not in the column name of feature_data")
     }
 
   }
