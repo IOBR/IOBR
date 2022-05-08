@@ -4,7 +4,7 @@
 \alias{transform_data}
 \title{Transform features with Inf or NA to other number}
 \usage{
-transform_data(data = data, feature = feature, data_type, into = 0)
+transform_data(data, feature, data_type = c("NA", "Inf", "zero"), into = 0)
 }
 \arguments{
 \item{data}{data with Inf}

@@ -22,14 +22,17 @@
 #' @param size_col
 #' @param size_row
 #' @param angle_col
+#' @param cols_group
+#' @param column_title
+#' @param row_title
 #'
 #' @return
 #' @export
 #'
 #' @examples
 sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_group = "jama", show_col = F,
-                      show_palettes = F, show_plot = T, width = 8,height = NULL, size_col = 10,size_row = 8,
-                      angle_col = 90,
+                      show_palettes = F, cols_group = NULL, show_plot = T, width = 8, height = NULL, size_col = 10,size_row = 8,
+                      angle_col = 90, column_title = NULL, row_title = NULL,
                       show_heatmap_col_name = F, path = NULL, index = NULL){
 
 
@@ -69,7 +72,15 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
   heatmap_col<-palettes(category = "tidyheatmap",palette = palette, show_col = show_col, show_message = show_palettes)
 
 
-  color_box<-palettes(category = "box",palette = palette_group, show_col = show_col, show_message = show_palettes)
+  if(!is.null(cols_group)){
+    color_box<-cols_group
+  }else{
+    if(is.null(palette)){
+      color_box<-palettes(category = "random", show_col = show_col ,show_message = show_palettes)
+    }else{
+      color_box<-palettes(category = "box", palette = palette_group, show_col = show_col,show_message = show_palettes)
+    }
+  }
 
   n<- length(unique(as.character(pf_long_group$target_group)))
   # print(n)
@@ -84,7 +95,10 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
       .row = variables,
       .value = value,
       palette_grouping = list(c(color_box)),
-      # column_title = group_name,
+
+      column_title = column_title,
+      row_title = row_title,
+
       # annotation = group2,
       palette_value = heatmap_col,
       show_column_names = show_heatmap_col_name,
@@ -93,6 +107,7 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
       column_names_rot = angle_col)
 
   if(show_plot) print(pp)
+
 
   if(is.null(index)) index<-1
   pp %>%  tidyHeatmap::save_pdf(paste0(abspath, index, "-",group,"-tidyheatmap.pdf"),

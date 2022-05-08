@@ -16,7 +16,7 @@ iobr_cor_plot(
   index = 1,
   category = "signature",
   signature_group = sig_group,
-  ProjectID = "TCGA-STAD",
+  ProjectID = "TCGA",
   palette_box = "nrc",
   cols_box = NULL,
   palette_corplot = "pheatmap",
@@ -54,7 +54,7 @@ iobr_cor_plot(
 
 \item{category}{`signature` or `gene`}
 
-\item{signature_group}{for signature group `sig_group`, for gene_group `signature_collection` or `signature_tme`}
+\item{signature_group}{for signature group： `sig_group`, for gene_group `signature_collection` or `signature_tme`}
 
 \item{ProjectID}{names to define the file names}
 
@@ -64,9 +64,9 @@ iobr_cor_plot(
 
 \item{palette_corplot}{palette for cor-plot}
 
-\item{palette_heatmap}{palette for heatmap}
+\item{palette_heatmap}{palette for heat map}
 
-\item{feature_limit}{maximal number features to plot}
+\item{feature_limit}{maximal number of features to be drawn}
 
 \item{character_limit}{maximal number of feature characters}
 

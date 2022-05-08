@@ -13,12 +13,15 @@ sig_heatmap(
   palette_group = "jama",
   show_col = F,
   show_palettes = F,
+  cols_group = NULL,
   show_plot = T,
   width = 8,
   height = NULL,
   size_col = 10,
   size_row = 8,
   angle_col = 90,
+  column_title = NULL,
+  row_title = NULL,
   show_heatmap_col_name = F,
   path = NULL,
   index = NULL
@@ -45,7 +48,7 @@ sig_heatmap(
 
 \item{width}{default is 8}
 
-\item{angle_col}{}
+\item{row_title}{}
 
 \item{show_heatmap_col_name}{show heatmpa column name}
 

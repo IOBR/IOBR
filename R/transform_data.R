@@ -16,7 +16,7 @@
 #'
 #' @examples
 #'
-transform_data<-function(data = data, feature = feature, data_type, into = 0){
+transform_data<-function(data, feature, data_type= c("NA", "Inf", "zero"), into = 0){
   feature<-colnames(data)[colnames(data)%in%feature]
 
   if(data_type == "NA"){
