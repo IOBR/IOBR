@@ -11,7 +11,6 @@
 #' @export
 #'
 #' @examples
-#' eset[1:5,1:5]
 #' eset<-remove_duplicate_genes(eset = eset,column_of_symbol = "symbol",method = "mean")
 #' summary(duplicated(rownames(eset)))
 #
