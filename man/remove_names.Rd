@@ -20,9 +20,6 @@ remove_names(
 
 \item{variables}{colunm names or names of variable}
 }
-\value{
-
-}
 \description{
 Batch to transform patterns to special character
 }

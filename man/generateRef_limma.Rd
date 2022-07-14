@@ -13,9 +13,6 @@ generateRef_limma(dat, pheno, FDR = 0.05)
 
 \item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
 }
-\value{
-
-}
 \description{
 Generate Reference signature matrix using limma
 }

@@ -23,9 +23,6 @@ cell_bar_plot(
 
 \item{coord_filp}{logical variables, `coord_filp` of ggplot2}
 }
-\value{
-
-}
 \description{
 Visualize the results as a stacked bar chart with tidyverse/ggplot2.
 }

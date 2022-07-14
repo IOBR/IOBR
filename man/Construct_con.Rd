@@ -9,9 +9,6 @@ Construct_con(pheno, mode)
 \arguments{
 \item{mode}{}
 }
-\value{
-
-}
 \description{
 Construct contrast
 }

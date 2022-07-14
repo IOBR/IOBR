@@ -9,9 +9,6 @@ DrawQQPlot(cancer.exp, immune.exp, name = "")
 \arguments{
 \item{name}{}
 }
-\value{
-
-}
 \description{
 Draw QQ Plot
 }

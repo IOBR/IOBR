@@ -13,9 +13,6 @@ filterCommonGenes(input.f, output.f, id = c("GeneSymbol", "EntrezID"))
 
 \item{id}{"GeneSymbol", "EntrezID"}
 }
-\value{
-
-}
 \description{
 filterCommonGenes
 }

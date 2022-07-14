@@ -9,9 +9,6 @@ CalculateTimeROC(model, newx, s, acture.y, foldername, modelname)
 \arguments{
 \item{modelname}{}
 }
-\value{
-
-}
 \description{
 Calculate Time ROC
 }

@@ -9,9 +9,6 @@ Top_probe(dat, i)
 \arguments{
 \item{i}{}
 }
-\value{
-
-}
 \description{
 Top probe
 }

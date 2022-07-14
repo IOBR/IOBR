@@ -9,9 +9,6 @@ PrognosticResult(model, train.x, train.y, test.x, test.y)
 \arguments{
 \item{test.y}{}
 }
-\value{
-
-}
 \description{
 Prognostic Result
 }

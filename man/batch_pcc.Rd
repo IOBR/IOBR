@@ -23,9 +23,6 @@ batch_pcc(
 
 \item{method}{vector; one of "pearson"(default), "spearman" or "kendall"}
 }
-\value{
-
-}
 \description{
 batch_pcc() provide a batch way to calculate the partial correlation coefficient between target gene and others when
 controlling a third variable

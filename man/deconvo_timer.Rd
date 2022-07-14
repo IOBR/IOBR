@@ -14,13 +14,7 @@ deconvo_timer(eset, project = NULL, indications = NULL)
 
 \item{indications}{a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'}
 }
-\value{
-
-}
 \description{
 Deconvoluting using the TIMER technique
 Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
-}
-\examples{
-
 }

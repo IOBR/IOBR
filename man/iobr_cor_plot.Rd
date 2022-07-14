@@ -86,14 +86,8 @@ iobr_cor_plot(
 
 \item{fig.type}{default is pdf, if not, figure will be saved in png format.}
 }
-\value{
-
-}
 \description{
 Integrative correlation between phenotype and features
-}
-\examples{
-
 }
 \author{
 Dongqiang Zeng

@@ -26,9 +26,6 @@ palettes(
 
 \item{show_message}{print palettes that can be choose}
 }
-\value{
-
-}
 \description{
 Choose colors.
 }

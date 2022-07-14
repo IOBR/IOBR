@@ -29,6 +29,3 @@ pdata with binary variables
 \description{
 Extract best cut-off and add new binary object to data frame
 }
-\examples{
-
-}

@@ -9,9 +9,6 @@ GetOutlierGenes(cancers)
 \arguments{
 \item{cancers}{}
 }
-\value{
-
-}
 \description{
 Get Outlier Genes
 }

@@ -37,9 +37,6 @@ data frame with pdata and signature scores for gene sets; signatures in columns,
 \description{
 Calculating signature score using Integration method
 }
-\examples{
-
-}
 \author{
 Dongqiang Zeng
 }

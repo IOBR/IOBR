@@ -44,9 +44,6 @@ sig_roc(
 
 \item{boot.n}{default is 100 when bootstrap is chosen.}
 }
-\value{
-
-}
 \description{
 Drawing multiple AUC into one graph
 }

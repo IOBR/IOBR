@@ -9,9 +9,6 @@ RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 \arguments{
 \item{immune.cellType}{}
 }
-\value{
-
-}
 \description{
 Remove batch effect of expression set
 }

@@ -9,9 +9,6 @@ RegressionResult(train.x, train.y, test.x, test.y, model)
 \arguments{
 \item{model}{}
 }
-\value{
-
-}
 \description{
 Regression Result
 }

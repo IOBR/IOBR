@@ -32,9 +32,6 @@ make_mut_matrix(
 
 \item{Variant_Type}{column name of variant type: SNP, INS, DEL}
 }
-\value{
-
-}
 \description{
 Make mutation matrix using maf data
 }

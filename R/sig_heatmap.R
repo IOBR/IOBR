@@ -3,7 +3,7 @@
 
 
 
-#' simple heatmap
+#' simple heat map
 #'
 #' @param input data frame with `ID`, `group` and features
 #' @param ID default is ID
@@ -14,17 +14,17 @@
 #' @param show_palettes show palettes
 #' @param show_plot show plot
 #' @param width default is 8
-#' @param show_heatmap_col_name  show heatmpa column name
+#' @param show_heatmap_col_name  show heat map column name
 #' @param path save path, folder name
 #' @param index default is null
 #' @param palette_group default is jama
-#' @param height
-#' @param size_col
-#' @param size_row
-#' @param angle_col
-#' @param cols_group
-#' @param column_title
-#' @param row_title
+#' @param height height of figure
+#' @param size_col font size of column name
+#' @param size_row font size of row name
+#' @param angle_col angle of column name
+#' @param cols_group user can define the colors of group
+#' @param column_title  title of column
+#' @param row_title title of row
 #'
 #' @return
 #' @export
@@ -32,7 +32,7 @@
 #' @examples
 sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_group = "jama", show_col = F,
                       show_palettes = F, cols_group = NULL, show_plot = T, width = 8, height = NULL, size_col = 10,size_row = 8,
-                      angle_col = 90, column_title = NULL, row_title = NULL,
+                      angle_col = 90, column_title = NULL, row_title = NULL, add_anno = NULL, add_anno_cols = NULL,
                       show_heatmap_col_name = F, path = NULL, index = NULL){
 
 
@@ -82,7 +82,10 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
     }
   }
 
-  n<- length(unique(as.character(pf_long_group$target_group)))
+  target_level<- unique(as.character(pf_long_group$target_group))
+  target_level<-target_level[!is.na(target_level)]
+
+  n<- length(target_level)
   # print(n)
   color_box<-color_box[1:n]
   # print(color_box)
@@ -95,7 +98,7 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
       .row = variables,
       .value = value,
       palette_grouping = list(c(color_box)),
-
+      scale = "column",
       column_title = column_title,
       row_title = row_title,
 
@@ -106,8 +109,11 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
       row_names_gp = grid::gpar(fontsize = size_row),
       column_names_rot = angle_col)
 
-  if(show_plot) print(pp)
+  if(!is.null(add_anno)){
+    pp<-pp|>add_tile(add_anno, show_legend = TRUE)
+  }
 
+  if(show_plot) print(pp)
 
   if(is.null(index)) index<-1
   pp %>%  tidyHeatmap::save_pdf(paste0(abspath, index, "-",group,"-tidyheatmap.pdf"),

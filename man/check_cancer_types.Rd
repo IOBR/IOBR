@@ -9,9 +9,6 @@ check_cancer_types(args)
 \arguments{
 \item{args}{environment}
 }
-\value{
-
-}
 \description{
 process batch table and check cancer types.
 }

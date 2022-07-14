@@ -15,9 +15,6 @@ batch_cor(data, target, feature, method = "spearman")
 
 \item{method}{method must be either `spearman` or `pearson`}
 }
-\value{
-
-}
 \description{
 Batch to conduct correlation analysis with multiple features
 }

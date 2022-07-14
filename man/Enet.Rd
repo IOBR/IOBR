@@ -9,9 +9,6 @@ Enet(train.x, train.y, lambdamax, nfold = nfold)
 \arguments{
 \item{nfold}{}
 }
-\value{
-
-}
 \description{
 Enet
 }

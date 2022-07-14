@@ -5,7 +5,7 @@
 #'
 #' @param eset gene expression matrix with probe or ensembl, entrez id in the rownames
 #' @param annotation annotation file with gene symbol and other ids matched to rowname of eset
-#'  user can choose anno_hug133plus2, anno_rnaseq and anno_illumina as input
+#'  user can choose `anno_hug133plus2`, `anno_rnaseq` and `anno_illumina` as input
 #' @param symbol column name of gene symbol in annotation file
 #' @param probe column name of relevant id in annotation file
 #' @param method method used to remove duplicated genes
@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-anno_eset<- function(eset,annotation,symbol = "symbol", probe = "probe_id",method = "mean"){
+anno_eset<- function(eset, annotation, symbol = "symbol", probe = "probe_id",method = "mean"){
 
   annotation<-as.data.frame(annotation)
   colnames(annotation)[which(colnames(annotation)==symbol)]<-"symbol"

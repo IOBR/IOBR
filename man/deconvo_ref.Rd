@@ -35,9 +35,6 @@ deconvo_ref(
 
 \item{abs.method}{abs.method, default is sig.score}
 }
-\value{
-
-}
 \description{
 Estimate the fraction of cell types using defined reference genes
 }

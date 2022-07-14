@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_heatmap.R
 \name{sig_heatmap}
 \alias{sig_heatmap}
-\title{simple heatmap}
+\title{simple heat map}
 \usage{
 sig_heatmap(
   input,
@@ -22,6 +22,8 @@ sig_heatmap(
   angle_col = 90,
   column_title = NULL,
   row_title = NULL,
+  add_anno = NULL,
+  add_anno_cols = NULL,
   show_heatmap_col_name = F,
   path = NULL,
   index = NULL
@@ -44,21 +46,30 @@ sig_heatmap(
 
 \item{show_palettes}{show palettes}
 
+\item{cols_group}{user can define the colors of group}
+
 \item{show_plot}{show plot}
 
 \item{width}{default is 8}
 
-\item{row_title}{}
+\item{height}{height of figure}
 
-\item{show_heatmap_col_name}{show heatmpa column name}
+\item{size_col}{font size of column name}
+
+\item{size_row}{font size of row name}
+
+\item{angle_col}{angle of column name}
+
+\item{column_title}{title of column}
+
+\item{row_title}{title of row}
+
+\item{show_heatmap_col_name}{show heat map column name}
 
 \item{path}{save path, folder name}
 
 \item{index}{default is null}
 }
-\value{
-
-}
 \description{
-simple heatmap
+simple heat map
 }

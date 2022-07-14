@@ -33,9 +33,6 @@ data frame with pdata and signature scores for gene sets; signatures in columns,
 \description{
 Calculating signature score using z-score method
 }
-\examples{
-
-}
 \author{
 Dongqiang Zeng
 }

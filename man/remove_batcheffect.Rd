@@ -29,9 +29,6 @@ remove_batcheffect(
 
 \item{palette}{palette from IOBR::palettes, default is nature}
 }
-\value{
-
-}
 \description{
 remove batch effect of two or three expression set
 }

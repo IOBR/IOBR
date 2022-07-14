@@ -9,9 +9,6 @@ ParseInputExpression(path)
 \arguments{
 \item{path}{path of data}
 }
-\value{
-
-}
 \description{
 Input gene expression
 }

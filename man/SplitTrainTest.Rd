@@ -9,9 +9,6 @@ SplitTrainTest(x, y, train_ratio, type, seed)
 \arguments{
 \item{seed}{}
 }
-\value{
-
-}
 \description{
 Split Train and Test data
 }

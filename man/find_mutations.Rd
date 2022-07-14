@@ -65,9 +65,6 @@ find_mutations(
 
 \item{point_size}{default is 4.5}
 }
-\value{
-
-}
 \description{
 Searching for mutations related to signature score
 }

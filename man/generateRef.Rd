@@ -17,9 +17,6 @@ GenerateRef(dds, pheno, FDR = 0.05, dat, method = "limma")
 
 \item{method}{limma or DESeq2;}
 }
-\value{
-
-}
 \description{
 Generate Reference signature matrix
 }

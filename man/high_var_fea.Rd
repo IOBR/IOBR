@@ -29,9 +29,6 @@ high_var_fea(
 
 \item{n}{top n variables}
 }
-\value{
-
-}
 \description{
 Extract most variable features form statistical results
 }

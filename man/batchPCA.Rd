@@ -35,9 +35,6 @@ batchPCA(
 
 \item{main.title}{title of plot}
 }
-\value{
-
-}
 \description{
 batch PCA
 }

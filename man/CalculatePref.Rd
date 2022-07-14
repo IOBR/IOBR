@@ -9,9 +9,6 @@ CalculatePref(model, newx, s, acture.y)
 \arguments{
 \item{acture.y}{}
 }
-\value{
-
-}
 \description{
 Calculate Pref
 }

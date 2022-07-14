@@ -9,9 +9,6 @@ BinomialAUC(model, newx, s, acture.y)
 \arguments{
 \item{acture.y}{}
 }
-\value{
-
-}
 \description{
 BinomialAUC
 }

@@ -9,9 +9,6 @@ outputGCT(input.f, output.f)
 \arguments{
 \item{output.f}{}
 }
-\value{
-
-}
 \description{
 outputGCT
 }

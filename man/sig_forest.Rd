@@ -38,9 +38,6 @@ sig_forest(
 
 \item{color_option}{default is 1, other option:2, 3}
 }
-\value{
-
-}
 \description{
 Forest plot of survival analysis results.
 }

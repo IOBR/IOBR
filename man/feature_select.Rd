@@ -26,9 +26,6 @@ feature_select(
 
 \item{padjcut}{Numeric. Adjust P value cutoff.}
 }
-\value{
-
-}
 \description{
 Feature selection
 }

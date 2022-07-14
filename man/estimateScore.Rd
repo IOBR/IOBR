@@ -13,9 +13,6 @@ estimateScore(
 \arguments{
 \item{platform}{"affymetrix", "agilent", "illumina"}
 }
-\value{
-
-}
 \description{
 estimateScore
 }

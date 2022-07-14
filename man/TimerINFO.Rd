@@ -9,9 +9,6 @@ TimerINFO(string)
 \arguments{
 \item{string}{}
 }
-\value{
-
-}
 \description{
 This code is adapted from https://github.com/hanfeisun/TIMER, which
 again is an adapted version of the original TIMER source code

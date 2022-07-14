@@ -23,9 +23,6 @@ lasso_select(
 
 \item{lambda}{"lambda.min" or "lambda.1se"}
 }
-\value{
-
-}
 \description{
 Constructing predictive or prognostic modle
 }

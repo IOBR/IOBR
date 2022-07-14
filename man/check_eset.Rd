@@ -11,9 +11,6 @@ check_eset(eset, print_result = F)
 
 \item{print_result}{logical, default is FALSE}
 }
-\value{
-
-}
 \description{
 Check the value of gene expression set
 }

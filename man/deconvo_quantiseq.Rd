@@ -17,9 +17,6 @@ deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 
 \item{scale_mrna}{logistic variable}
 }
-\value{
-
-}
 \description{
 Deconvoluting micrornvironment using the quanTIseq technique
 }

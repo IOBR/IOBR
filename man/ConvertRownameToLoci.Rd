@@ -9,9 +9,6 @@ ConvertRownameToLoci(cancerGeneExpression)
 \arguments{
 \item{cancerGeneExpression}{}
 }
-\value{
-
-}
 \description{
 Convert Rowname To Loci
 }

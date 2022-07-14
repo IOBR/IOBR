@@ -18,9 +18,6 @@ plotPurity(
 
 \item{output.dir}{default is estimated_purity_plots}
 }
-\value{
-
-}
 \description{
 plotPurity
 }

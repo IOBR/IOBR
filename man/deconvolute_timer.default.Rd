@@ -9,9 +9,6 @@ deconvolute_timer.default(args)
 \arguments{
 \item{args}{environment}
 }
-\value{
-
-}
 \description{
 deconvolute tumor microenvironment using timer
 }

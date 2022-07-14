@@ -13,9 +13,6 @@ output_sig(signatures, format = "csv", file.name)
 
 \item{file.name}{file name of output data}
 }
-\value{
-
-}
 \description{
 save signature data into a data frame
 }

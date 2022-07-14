@@ -41,9 +41,6 @@ sig_box(
 
 \item{return_stat_res}{default is FALSE}
 }
-\value{
-
-}
 \description{
 signature box plot
 }

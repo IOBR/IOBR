@@ -9,9 +9,6 @@ ProcessingData(x, y, scale, type = "binomial")
 \arguments{
 \item{type}{}
 }
-\value{
-
-}
 \description{
 Processing Data
 }

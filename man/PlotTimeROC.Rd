@@ -9,9 +9,6 @@ PlotTimeROC(train.x, train.y, test.x, test.y, model, foldername, modelname)
 \arguments{
 \item{modelname}{}
 }
-\value{
-
-}
 \description{
 Plot Time ROC
 }

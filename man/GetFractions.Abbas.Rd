@@ -13,9 +13,6 @@ GetFractions.Abbas(XX, YY, w = NA)
 
 \item{w}{}
 }
-\value{
-
-}
 \description{
 Constrained regression method implemented in Abbas et al., 2009
 }

@@ -21,9 +21,6 @@ minipulated data
 \description{
 Transform features with Inf or NA to other number
 }
-\examples{
-
-}
 \author{
 Dongqiang Zeng
 }

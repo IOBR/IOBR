@@ -21,9 +21,6 @@ batch_wilcoxon(
 
 \item{feature}{feature used to comparison}
 }
-\value{
-
-}
 \description{
 Batch to conduct wilcoxon test in two groups
 }
