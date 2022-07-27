@@ -50,8 +50,9 @@ batchPCA =function(indata, batch,  pos="bottomright", xy=c(1,2), cols=NULL, show
   center2<-tapply(pca@scores[,xy[2]], factor(batch), mean)
   for (ii in 1:length(center1)) {
     groupi<-pca@scores[as.numeric(factor(batch))==ii, xy]
+
     #  print(paste("Cluster", ii))
-    if (class(groupi)=="matrix") {
+    if (class(groupi)[1]=="matrix") {
       for (j in (1:nrow(groupi))) {
         segments( groupi[j,1], groupi[j,2], center1[ii], center2[ii], col=cols[ii] , lwd=0.3)
       }
