@@ -16,7 +16,7 @@ anno_eset(
 \item{eset}{gene expression matrix with probe or ensembl, entrez id in the rownames}
 
 \item{annotation}{annotation file with gene symbol and other ids matched to rowname of eset
-user can choose anno_hug133plus2, anno_rnaseq and anno_illumina as input}
+user can choose `anno_hug133plus2`, `anno_rnaseq` and `anno_illumina` as input}
 
 \item{symbol}{column name of gene symbol in annotation file}
 

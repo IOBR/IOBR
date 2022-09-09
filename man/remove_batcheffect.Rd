@@ -11,13 +11,15 @@ remove_batcheffect(
   log2 = TRUE,
   check_eset = TRUE,
   labels = NULL,
-  palette = "nrc"
+  palette = "nrc",
+  path = NULL,
+  save_plot = FALSE
 )
 }
 \arguments{
-\item{eset1}{expression set-1}
+\item{eset1}{expression set-1, normalized data}
 
-\item{eset2}{expression set-2}
+\item{eset2}{expression set-2, normalized data}
 
 \item{eset3}{expression set-3, default is null}
 
@@ -28,6 +30,10 @@ remove_batcheffect(
 \item{labels}{labels for expression sets}
 
 \item{palette}{palette from IOBR::palettes, default is nature}
+
+\item{path}{default is NULL}
+
+\item{save_plot}{default is FALSE, if true, path could be set to folder name}
 }
 \description{
 remove batch effect of two or three expression set

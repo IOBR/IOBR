@@ -16,14 +16,16 @@
 #' @param hjust hjust
 #' @param show_pvalue default is true
 #' @param return_stat_res default is FALSE
+#' @param size_of_pvalue default is 6
+#' @param size_of_font default is 5
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype",jitter = T)
-sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, show_pvalue = TRUE, return_stat_res = FALSE){
-
+sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
+                  size_of_pvalue = 6, show_pvalue = TRUE, return_stat_res = FALSE){
 
   data<-as.data.frame(data)
   data<-data[,c(variable, signature)]
@@ -48,18 +50,19 @@ sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palett
 
   comparision<-combn(unique(as.character(data$variable)), 2, simplify=F)
 
-  p<-p+theme_light()+
-    theme(axis.title.y=element_text(size=rel(2.0)),
-          axis.title.x = element_text(size=rel(2.0)),
-          axis.text=element_text(size=rel(2.0)),
-          axis.text.x= element_text(face="plain",
-                                    angle = angle_x_text,hjust = hjust,color="black"),#family="Times New Roman"
 
-          axis.line=element_line(color="black", size=0.5))+
+  size_font <- size_of_font*0.2
+  p<-p+theme_light()+
+    theme(axis.title.y=element_text(size=rel(size_font)),
+          axis.title.x = element_text(size=rel(size_font)),
+          axis.text=element_text(size=rel(size_font)),
+          axis.text.x= element_text(face="plain", angle = angle_x_text,hjust = hjust,color="black"), #family="Times New Roman"
+
+          axis.line=element_line(color="black", size=0.25))+
     theme(legend.position = "none")
 
 
-  if(show_pvalue)   p<-p+stat_compare_means(comparisons = comparision,size=6)+stat_compare_means(size=6)
+  if(show_pvalue)   p<-p+stat_compare_means(comparisons = comparision,size = size_of_pvalue)+stat_compare_means(size = size_of_pvalue)
 
 
   res<-compare_means(signature ~ variable, data = data)

@@ -19,6 +19,7 @@
 #' @param compare default is FALSE
 #' @param compare_method  default is bootstrap, other option: “delong”, “venkatraman”
 #' @param boot.n default is 100 when bootstrap is chosen.
+#' @param smooth default is TRUE
 #'
 #' @author Dongqiang Zeng
 #' @return
@@ -35,6 +36,7 @@ sig_roc<-function(data,
                   cols = NULL,
                   alpha = 1,
                   compare = FALSE,
+                  smooth  = TRUE,
                   compare_method = "bootstrap",
                   boot.n = 100){
   options(pROCProgress = list(name = "none"))
@@ -58,14 +60,13 @@ sig_roc<-function(data,
 
   auc.out <- c()
 
-  if(is.null(file.name)) file.name<- "ROC of multiple variables"
+  if(is.null(file.name)) file.name<- "0-ROC of multiple variables"
 
   outfile = file.path(fig.path, paste(file.name, ".pdf",sep=""))
 
   pdf(file = outfile, width = 5, height = 5)
-
   x <- pROC:: plot.roc(input[,1],input[,2],ylim=c(0,1),xlim=c(1,0),
-                       smooth=T,
+                       smooth= smooth,
                        ci=TRUE,
                        main = main ,
                        col=cols[2],
@@ -103,7 +104,7 @@ sig_roc<-function(data,
 
     for (i in 2:(ncol(input)-1)){
       for (j in (i+1):ncol(input)){
-        p <-pROC:: roc.test(input[,1],input[,i],input[,j], method = compare_method,boot.n = boot.n,progress = "none")
+        p <-pROC:: roc.test(input[,1],input[,i],input[,j], method = compare_method,boot.n = boot.n, progress = "none")
         p.tmp <- c(colnames(input)[i],colnames(input)[j],p$p.value)
         p.out <- rbind(p.out,p.tmp)
       }
@@ -111,11 +112,9 @@ sig_roc<-function(data,
     p.out <- as.data.frame(p.out)
     # head(p.out)
     colnames(p.out) <- c("ROC1","ROC2","p.value")
-
   }
 
   legend.name <- paste(colnames(input)[2:length(input)]," AUC = ",auc.out$AUC,sep=" ")
-
   legend("bottomright",
          legend=legend.name,
          col = cols[2:length(input)],
