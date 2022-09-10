@@ -14,6 +14,7 @@ sig_box(
   cols = NULL,
   jitter = FALSE,
   point_size = 5,
+  size_of_font = 10,
   size_of_pvalue = 6,
   show_pvalue = TRUE,
   return_stat_res = FALSE
@@ -37,6 +38,8 @@ sig_box(
 \item{jitter}{default is FALSE}
 
 \item{point_size}{size of point}
+
+\item{size_of_font}{default is 5}
 
 \item{size_of_pvalue}{default is 6}
 

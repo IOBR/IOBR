@@ -13,7 +13,8 @@ design_mytheme(
   hjust = 1,
   legend.position = "bottom",
   legend.direction = "horizontal",
-  legend.size = 12
+  legend.size = 0.25,
+  legend.size.text = 12
 )
 }
 \arguments{

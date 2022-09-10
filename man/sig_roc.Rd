@@ -15,6 +15,7 @@ sig_roc(
   cols = NULL,
   alpha = 1,
   compare = FALSE,
+  smooth = TRUE,
   compare_method = "bootstrap",
   boot.n = 100
 )
@@ -39,6 +40,8 @@ sig_roc(
 \item{alpha}{default is 1}
 
 \item{compare}{default is FALSE}
+
+\item{smooth}{default is TRUE}
 
 \item{compare_method}{default is bootstrap, other option: “delong”, “venkatraman”}
 
