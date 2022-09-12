@@ -69,11 +69,15 @@ count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", 
   if(source == "default" & tolower(idType) == "ensembl") {
 
     countMat<-countMat[rownames(countMat)%in%length_ensembl$id,]
+
+    if(dim(countMat)[1]==0) stop("Identifier of matrix is not match to references.")
+
     length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat),]
 
     len<- length_ensembl[match(rownames(countMat), length_ensembl$id), "eff_length"]
 
     rownames(countMat)<- length_ensembl[match(rownames(countMat),length_ensembl$id), 3]
+
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
 
   }
