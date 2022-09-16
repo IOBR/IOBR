@@ -14,6 +14,7 @@
 #' @param hjust horizontal justification
 #' @param legend.size font size of legend
 #' @param theme default is light
+#' @param legend.size.text default is 12
 #'
 #' @author Dongqiang Zeng
 #' @return mytheme
@@ -47,15 +48,16 @@ design_mytheme<-function(theme = "light",
                       # panel.grid.major=element_line(color="white"),
                       # panel.grid.minor=element_line(color="white"),
                       # panel.border=element_rect(color="white"),
-                      axis.line=element_line(color="black",size=0.5))+theme(
-                        legend.key.size=unit(legend.size,"inches"),
+                      axis.line=element_line(color="black",size=0.5))+
+                     theme(
+                        legend.key.size=unit(legend.size,"cm"),
                         # legend.title=element_blank(),
                         legend.position= legend.position,#"none","left","right","bottom","top",or #c(0.5,1)
                         legend.direction= legend.direction,# "vertical"
                         legend.justification=c(.5,.5),#"center" or two-element numeric vector
                         legend.box="horizontal",#"horizontal",
                         legend.box.just="top",
-                        legend.text=element_text(colour="black",size=legend.size.text,face = "plain")#("plain", "italic", "bold", "bold.italic")
+                        legend.text=element_text(colour="black", size=legend.size.text, face = "plain")#("plain", "italic", "bold", "bold.italic")
                       )
 
 

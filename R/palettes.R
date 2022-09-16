@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show_col = TRUE, show_message = FALSE){
+palettes<-function(category = "box", palette = "nrc", alpha = 1,counts = 50, show_col = TRUE, show_message = FALSE){
 
   if(show_message) message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))
 
@@ -100,9 +100,6 @@ palettes<-function(category = "box", palette = "nrc",alpha = 1,counts = 50, show
 
 
     message(">>>>=== Palette option for random: 1: palette1, 2: palette2, 3: palette3")
-
-
-
     ###########################################################
     if(palette==1){
       mypal<- palette1
