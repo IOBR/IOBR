@@ -26,8 +26,9 @@
 #' @author Dongqiang Zeng
 #' @export
 #'
-count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", remove_redundancy = "mean")
-{
+count2tpm <- function(countMat, idType = "Ensembl", org="hsa",  source = "web", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", remove_redundancy = "mean"){
+
+
   # requireNamespace("biomaRt")
   if(!is.matrix(countMat))  countMat<-as.matrix(countMat)
 

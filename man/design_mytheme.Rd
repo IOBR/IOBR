@@ -35,6 +35,8 @@ design_mytheme(
 \item{legend.direction}{legend.direction horizontal or vertical}
 
 \item{legend.size}{font size of legend}
+
+\item{legend.size.text}{default is 12}
 }
 \value{
 mytheme
