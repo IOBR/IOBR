@@ -7,8 +7,7 @@
 batch_wilcoxon(
   data,
   target = "group",
-  group_names = c("High", "Low"),
-  feature,
+  feature = NULL,
   feature_manipulation = FALSE
 )
 }
@@ -17,12 +16,15 @@ batch_wilcoxon(
 
 \item{target}{name of group;}
 
-\item{group_names}{with `high` and `low` as default}
-
 \item{feature}{feature used to comparison}
+
+\item{feature_manipulation}{}
 }
 \description{
 Batch to conduct wilcoxon test in two groups
+}
+\examples{
+res<-batch_wilcoxon(data = pdata_sig_tme, target = "Gender", feature = colnames(pdata_sig_tme)[300:400])
 }
 \author{
 Dongqiang Zeng
