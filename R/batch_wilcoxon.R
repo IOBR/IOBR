@@ -5,8 +5,8 @@
 #'
 #' @param data signature matrix with two groups
 #' @param target name of group;
-#' @param group_names  with `high` and `low` as default
 #' @param feature feature used to comparison
+#' @param feature_manipulation
 #'
 #' @return
 #' @export
@@ -14,24 +14,47 @@
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), feature, feature_manipulation = FALSE){
+#' res<-batch_wilcoxon(data = pdata_sig_tme, target = "Gender", feature = colnames(pdata_sig_tme)[300:400])
+batch_wilcoxon<-function(data, target = "group", feature = NULL, feature_manipulation = FALSE){
 
   data<-as.data.frame(data)
-  feature<-feature[feature%in%colnames(data)]
-
-  if(feature_manipulation) feature<-feature_manipulation(data = data, feature = feature, print_result = F)
-
   #change-name-of-group
   colnames(data)[which(colnames(data)==target)]<-"group"
 
-  if(!identical(group_names,c("High","Low"))) message(">>>--- group_names must be specified...")
+  data<-data[!is.na(data$group), ]
+  data<-data[!data$group=="", ]
+  data$group<-as.character(data$group)
+  group_names<- unique(data$group)
+
+  if(is.null(feature)){
+    message(">>>-- `feature` must be specified, or all continuous features will be estimated...")
+
+    index<- menu(c("all continuous features", "selected features "), title=" >>>-- Choose features:")
+    if(index == 1){
+      feature<-colnames(data)
+      feature<-feature[sapply(data, is.numeric)]
+    }else{
+      stop(">>>-- Please specify the features that you want to proceed...")
+    }
+
+  }
+  feature<-feature[feature%in%colnames(data)]
+  if(feature_manipulation) feature<-feature_manipulation(data = data, feature = feature, print_result = F)
+
+  # if(!identical(group_names,c("High","Low"))) message(">>>--- `group_names` should be specified...")
+
+  message(">>>-- Grouping information: ")
+  print(table(data$group))
+  ###########################################
+  if(length(group_names)>2) {
+    print(table(data$group))
+    stop("Variable has more than two levels...")
+  }
 
   data<-data[,c("group", feature)]
-
-  aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"],var.equal = F))
-
+  aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"], var.equal = F))
   result_mean<-data %>% dplyr:: group_by(.$group) %>%
-    dplyr:: summarise_if(is.numeric,mean)
+    dplyr:: summarise_if(is.numeric, mean)
 
   rownames(result_mean)<-NULL
   result_mean<-result_mean %>%
@@ -53,7 +76,7 @@ batch_wilcoxon<-function(data,target = "group", group_names = c("High","Low"), f
     dplyr:: arrange(p.value) %>%
     dplyr:: mutate(p.adj = p.adjust(.$p.value,method = "BH") ) %>%
     dplyr:: mutate(log10pvalue = log10(.$p.value)* -1) %>%
-    dplyr:: mutate(stars = cut(.$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
+    dplyr:: mutate(stars = cut(.$p.value, breaks=c(-Inf, 0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                        label=c("****","***", "**", "*", "+","")))
   cc<-tibble::as_tibble(cc)
   return(cc)
