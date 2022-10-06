@@ -3,7 +3,7 @@
 
 
 
-#' simple heat map
+#' simple heatmap
 #'
 #' @param input data frame with `ID`, `group` and features
 #' @param ID default is ID
@@ -32,7 +32,7 @@
 #' @examples
 sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_group = "jama", show_col = F,
                       show_palettes = F, cols_group = NULL, show_plot = T, width = 8, height = NULL, size_col = 10,size_row = 8,
-                      angle_col = 90, column_title = NULL, row_title = NULL, add_anno = NULL, add_anno_cols = NULL,
+                      angle_col = 90, column_title = NULL, row_title = NULL,
                       show_heatmap_col_name = F, path = NULL, index = NULL){
 
 
@@ -94,24 +94,24 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
   pp<-pf_long_group %>%
     group_by(target_group) %>%
     tidyHeatmap:: heatmap(
-      .column = idd,
-      .row = variables,
-      .value = value,
-      palette_grouping = list(c(color_box)),
-      scale = "column",
-      column_title = column_title,
-      row_title = row_title,
+      .column           = idd,
+      .row              = variables,
+      .value            = value,
+      palette_grouping  = list(c(color_box)),
+      scale             = "column",
+      column_title      = column_title,
+      row_title         = row_title,
 
-      # annotation = group2,
-      palette_value = heatmap_col,
+      # annotation      = group2,
+      palette_value     = heatmap_col,
       show_column_names = show_heatmap_col_name,
-      column_names_gp = grid::gpar(fontsize = size_col),
-      row_names_gp = grid::gpar(fontsize = size_row),
-      column_names_rot = angle_col)
+      column_names_gp   = grid::gpar(fontsize = size_col),
+      row_names_gp      = grid::gpar(fontsize = size_row),
+      column_names_rot  = angle_col)
 
-  if(!is.null(add_anno)){
-    pp<-pp|>add_tile(add_anno, show_legend = TRUE)
-  }
+  # if(!is.null(add_anno)){
+  #   pp<-pp|>add_tile(add_anno, show_legend = TRUE)
+  # }
 
   if(show_plot) print(pp)
 
