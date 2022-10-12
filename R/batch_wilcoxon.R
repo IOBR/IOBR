@@ -6,7 +6,7 @@
 #' @param data signature matrix with two groups
 #' @param target name of group;
 #' @param feature feature used to comparison
-#' @param feature_manipulation
+#' @param feature_manipulation default is FALSE, if true, variables with NA or infinite value will be removed
 #'
 #' @return
 #' @export

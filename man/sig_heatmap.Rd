@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_heatmap.R
 \name{sig_heatmap}
 \alias{sig_heatmap}
-\title{simple heat map}
+\title{simple heatmap}
 \usage{
 sig_heatmap(
   input,
@@ -22,8 +22,6 @@ sig_heatmap(
   angle_col = 90,
   column_title = NULL,
   row_title = NULL,
-  add_anno = NULL,
-  add_anno_cols = NULL,
   show_heatmap_col_name = F,
   path = NULL,
   index = NULL
@@ -71,5 +69,5 @@ sig_heatmap(
 \item{index}{default is null}
 }
 \description{
-simple heat map
+simple heatmap
 }

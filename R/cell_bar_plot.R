@@ -9,6 +9,9 @@
 #' @param title plot title
 #' @param legend.position legend position
 #' @param coord_filp logical variables, `coord_filp` of ggplot2
+#' @param palette default is palette3
+#' @param show_col default is FALSE
+#' @param cols default is NULL, user can define colors manually
 #'
 #' @return
 #' @export
@@ -16,7 +19,7 @@
 #' @examples
 #' res<-cell_bar_plot(input = cibersort[1:20,],id = "ID")
 #'
-cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.position = "bottom", coord_filp = TRUE){
+cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.position = "bottom", coord_filp = TRUE, palette = 3, show_col = F, cols = NULL){
 
   input<-as.data.frame(input)
   colnames(input)[which(colnames(input)==id)]<-"ID"
@@ -35,6 +38,18 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.posit
     legend.direction<-"vertical"
   }
 
+
+  if(!is.null(cols)){
+    cols<-cols
+  }else{
+    if(is.null(palette)){
+      cols<-IOBR::palettes(category = "random", palette = 4, show_col = show_col, show_message = T)
+    }else{
+      cols<-IOBR::palettes(category = "random", palette = palette, show_col = show_col, show_message = T)
+    }
+  }
+
+
   if(coord_filp){
     pp<-input %>%
       gather(cell_type,fraction, -ID) %>%
@@ -43,7 +58,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.posit
       geom_bar(stat='identity') +
       coord_flip() +
       theme_light()+
-      scale_fill_manual(values = palettes(category = "random",counts = 23, show_col = FALSE)) +
+      scale_fill_manual(values = cols) +
       scale_x_discrete(limits = rev(levels(input)))+
       ggtitle(paste0(title))+
       theme(plot.title=element_text(size=rel(2),hjust=0.5),
@@ -63,7 +78,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.posit
       geom_bar(stat='identity') +
       # coord_flip() +
       theme_light()+
-      scale_fill_manual(values = palettes(category = "random",counts = 23, show_col = FALSE)) +
+      scale_fill_manual(values = cols) +
       scale_x_discrete(limits = rev(levels(input)))+
       ggtitle(paste0(title))+
       theme(plot.title=element_text(size=rel(2),hjust=0.5),

@@ -18,7 +18,7 @@ batch_wilcoxon(
 
 \item{feature}{feature used to comparison}
 
-\item{feature_manipulation}{}
+\item{feature_manipulation}{default is FALSE, if true, variables with NA or infinite value will be removed}
 }
 \description{
 Batch to conduct wilcoxon test in two groups
