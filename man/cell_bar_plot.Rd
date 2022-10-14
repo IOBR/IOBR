@@ -9,7 +9,10 @@ cell_bar_plot(
   id = "ID",
   title = "Cell Fraction",
   legend.position = "bottom",
-  coord_filp = TRUE
+  coord_filp = TRUE,
+  palette = 3,
+  show_col = F,
+  cols = NULL
 )
 }
 \arguments{
@@ -22,6 +25,12 @@ cell_bar_plot(
 \item{legend.position}{legend position}
 
 \item{coord_filp}{logical variables, `coord_filp` of ggplot2}
+
+\item{palette}{default is palette3}
+
+\item{show_col}{default is FALSE}
+
+\item{cols}{default is NULL, user can define colors manually}
 }
 \description{
 Visualize the results as a stacked bar chart with tidyverse/ggplot2.
