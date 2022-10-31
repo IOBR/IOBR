@@ -82,7 +82,7 @@ sig_roc<-function(data,
   for (i in 3:ncol(input)){
     x <-pROC::plot.roc(input[,1],input[,i],
                   add        =T,
-                  smooth     =T,
+                  smooth     =smooth,
                   ci         =TRUE,
                   col        =cols[i],
                   lwd        =2,
