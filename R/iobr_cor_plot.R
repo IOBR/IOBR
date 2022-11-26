@@ -206,7 +206,7 @@ iobr_cor_plot<-function(pdata_group,
 
         if(group == "group3") eset<-eset[!eset$group3=="Middle",]
 
-        res<- batch_wilcoxon(data = eset,target = group,feature = setdiff(colnames(eset),group))
+        res<- batch_wilcoxon(data = eset,target = group, feature = setdiff(colnames(eset),group))
         good_features<-high_var_fea(result        = res,
                                     target        = "sig_names",
                                     name_padj     = "p.adj",
@@ -468,7 +468,7 @@ iobr_cor_plot<-function(pdata_group,
       eset<-pf_stat
       feas  <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
       levels<- c(as.character(unique(pf_stat[,group])))
-      res   <-  batch_wilcoxon(data = eset, target = group, group_names = levels, feature = feas)
+      res   <-  batch_wilcoxon(data = eset, target = group, feature = feas, feature_manipulation = T)
 
       res   <- tibble::as_tibble(res)
     }else{

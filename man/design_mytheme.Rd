@@ -11,10 +11,12 @@ design_mytheme(
   axis_text_size = 12,
   axis_angle = 60,
   hjust = 1,
-  legend.position = "bottom",
-  legend.direction = "horizontal",
+  legend.position = NULL,
+  legend.direction = NULL,
   legend.size = 0.25,
-  legend.size.text = 12
+  legend.key.height = 0.5,
+  legend.key.width = 0.5,
+  legend.size.text = 10
 )
 }
 \arguments{
@@ -35,6 +37,10 @@ design_mytheme(
 \item{legend.direction}{legend.direction horizontal or vertical}
 
 \item{legend.size}{font size of legend}
+
+\item{legend.key.height}{default is 0.5}
+
+\item{legend.key.width}{default is 0.5}
 
 \item{legend.size.text}{default is 12}
 }
