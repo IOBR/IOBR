@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 ^1-build-IOBR-package-1-main\.R$
 ^README\.Rmd$
+^2-bulid-IOBR-used-data\.R$
+^3-Testing-functions\.R$
+^4-new-function-exploring\.R$
+^tests/testthat$
