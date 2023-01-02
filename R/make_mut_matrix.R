@@ -20,7 +20,7 @@
 #' @author Dongqian Zeng
 #'
 #' @examples
-make_mut_matrix<-function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category = "multi",Tumor_Sample_Barcode = "Tumor_Sample_Barcode", Hugo_Symbol = "Hugo_Symbol", Variant_Classification = "Variant_Classification", Variant_Type = "Variant_Type"){
+make_mut_matrix<-function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category = "multi", Tumor_Sample_Barcode = "Tumor_Sample_Barcode", Hugo_Symbol = "Hugo_Symbol", Variant_Classification = "Variant_Classification", Variant_Type = "Variant_Type"){
 
 
   if(!is.null(maf)){
