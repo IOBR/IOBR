@@ -20,7 +20,6 @@ palettes<-function(category = "box", palette = "nrc", alpha = 1,counts = 50, sho
 
   if(show_message) message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))
 
-
   if(category == "box"){
      if(show_message) message(paste0("There are ten palettes you can choose: nrc, jama, aaas, jco, paired1-4, accent, set2"))
     if(palette=="nrc"){
@@ -151,23 +150,31 @@ palettes<-function(category = "box", palette = "nrc", alpha = 1,counts = 50, sho
 
   if(category == "heatmap"){
 
-    message(paste0("There are five palettes you can choose: pheatmap, virids, blues, reds, peach"))
+    message(paste0("There are five palettes you can choose: 1 = pheatmap,  2 = peach,  3 = blues, 4 = virids, 5 = reds, 6 = RdBu, 7 = navy_firebrick"))
 
-    if(palette == "pheatmap" ){
-      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(counts)
+    if(palette == 1 ){
+      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu"))(counts))
 
-    }else if(palette == "peach"){
+    }else if(palette == 2){
       mypal<-  colorRampPalette(c("#3182bd", "white", "#dd1c77"))(counts)
 
-    }else if(palette == "blues"){
-      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Blues")))(counts)
+    }else if(palette == 3){
+      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Blues"))(counts))
 
-    }else if(palette == "virids"){
+    }else if(palette == 4){
       mypal<- viridis:: inferno(counts)
 
-    }else if(palette == "reds"){
-      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Reds")))(counts)
+    }else if(palette == 5){
+      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Reds"))(counts))
+    }else if(palette == 6){
+      mypal<- rev(colorRampPalette(RColorBrewer::brewer.pal(11,"RdBu"))(counts))
+    }else if(palette == 7){
+      mypal<-  colorRampPalette(c("navy","white", "firebrick"))(counts)
+    }else if(palette == 8){
+      mypal<-  colorRampPalette(viridis::magma(5))(counts)
     }
+
+
     if(show_col){
       print(paste0("'", mypal,"'",collapse = ", "))
       scales:: show_col(mypal)
