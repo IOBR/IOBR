@@ -52,7 +52,7 @@ batch_wilcoxon<-function(data, target = "group", feature = NULL, feature_manipul
   }
 
   data<-data[,c("group", feature)]
-  aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[,"group"], var.equal = F))
+  aa<-lapply(data[,feature], function(x) wilcox.test(x ~ data[, "group"], var.equal = F))
   result_mean<-data %>% dplyr:: group_by(.$group) %>%
     dplyr:: summarise_if(is.numeric, mean)
 
