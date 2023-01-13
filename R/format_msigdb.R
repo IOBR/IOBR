@@ -3,7 +3,7 @@
 
 #' Format input signatures from MsgiDB
 #'
-#' @param sig `signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`
+#' @param gmt `signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`
 #' @param ont column name of signatures
 #' @param gene column name of gene
 #'
