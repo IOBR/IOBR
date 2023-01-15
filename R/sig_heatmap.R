@@ -69,7 +69,7 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
   }
 
   ####################################################
-  heatmap_col<-palettes(category = "tidyheatmap",palette = palette, show_col = show_col, show_message = show_palettes)
+  heatmap_col<-palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
 
 
   if(!is.null(cols_group)){
