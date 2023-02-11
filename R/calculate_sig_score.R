@@ -100,6 +100,8 @@ calculate_sig_score_pca<-function(pdata = NULL,
   if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
     pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
+
+  if("Index"%in%colnames(pdata)) pdata<-pdata[,-which(colnames(pdata)=="Index")]
   pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
@@ -187,6 +189,8 @@ calculate_sig_score_zscore<-function(pdata = NULL,
   if ("TMEscoreA_plus"%in%goi &"TMEscoreB_plus" %in% goi) {
     pdata[,"TMEscore_plus"]<-pdata[,"TMEscoreA_plus"]-pdata[,"TMEscoreB_plus"]
   }
+
+  if("Index"%in%colnames(pdata)) pdata<-pdata[,-which(colnames(pdata)=="Index")]
   pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
@@ -277,6 +281,8 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
   }
 
   pdata<-merge(pdata,res,by = "ID",all.x = F,all.y = F)
+
+  if("Index"%in%colnames(pdata)) pdata<-pdata[,-which(colnames(pdata)=="Index")]
   pdata<-tibble::as_tibble(pdata)
   return(pdata)
 }
@@ -418,15 +424,15 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' Calculating signature score  on a gene expression dataset
 #'
 #' @param pdata phenotype data of input sample
-#' @param eset normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
+#' @param eset normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
 #' @param signature List of gene signatures;
 #' such as `signature_tme`, `signature_metabolism`,`signature_collection`, `go_bp`,`kegg`,`hallmark`
 #' @param method he methods currently supported are `pca`, `ssgsea`, `zscore`,`integration`
 #' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
-#' default is 2 for PCA and z score funciion
-#' @param column_of_sample Defines in which column of pdata the sample identifier can be found.
-#' @param print_gene_propotion logical, print the propotion of signature genes in gene matrix
-#' @param print_filtered_signatures logical, print filtered signatures has gene count less than minical gene count
+#' default is 2 for PCA and z score function
+#' @param column_of_sample Defines in which column of the `pdata` the identifier of the sample can be found.
+#' @param print_gene_propotion logical, print the proportion of signature genes in gene matrix
+#' @param print_filtered_signatures logical, print filtered signatures has gene count less than minimal gene count
 #' @param ...
 #' @param adjust_eset default is FALSE
 #' @param parallel.size default is 1
