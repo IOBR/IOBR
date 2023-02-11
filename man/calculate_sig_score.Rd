@@ -21,7 +21,7 @@ calculate_sig_score(
 \arguments{
 \item{pdata}{phenotype data of input sample}
 
-\item{eset}{normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
+\item{eset}{normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
 
 \item{signature}{List of gene signatures;
 such as `signature_tme`, `signature_metabolism`,`signature_collection`, `go_bp`,`kegg`,`hallmark`}
@@ -29,17 +29,17 @@ such as `signature_tme`, `signature_metabolism`,`signature_collection`, `go_bp`,
 \item{method}{he methods currently supported are `pca`, `ssgsea`, `zscore`,`integration`}
 
 \item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set;
-default is 2 for PCA and z score funciion}
+default is 2 for PCA and z score function}
 
-\item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
+\item{column_of_sample}{Defines in which column of the `pdata` the identifier of the sample can be found.}
 
-\item{print_gene_propotion}{logical, print the propotion of signature genes in gene matrix}
+\item{print_gene_propotion}{logical, print the proportion of signature genes in gene matrix}
 
 \item{adjust_eset}{default is FALSE}
 
 \item{parallel.size}{default is 1}
 
-\item{print_filtered_signatures}{logical, print filtered signatures has gene count less than minical gene count}
+\item{print_filtered_signatures}{logical, print filtered signatures has gene count less than minimal gene count}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
