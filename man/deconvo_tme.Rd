@@ -24,7 +24,7 @@ deconvo_tme(
 }
 \arguments{
 \item{eset}{A gene expression matrix
-Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.}
+Either: A numeric matrix or data.frame with HGNC gene symbols as row names and sample identifiers as column names. In both cases.}
 
 \item{project}{project name used to distinguish different data sets, default is NULL}
 

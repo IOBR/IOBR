@@ -153,8 +153,8 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 #' CIBERSORT is only freely available to academic users.
 #' A license an the binary can be obtained from https://cibersort.stanford.edu.
 #'
-#' @param eset expression set with gene symbol at rowname, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param eset expression set with gene symbol at row name, sample ID at column
+#' @param project project name used to distinguish different data sets
 #' @param arrays logical: Runs methods in a mode optimized for microarray data.
 #' @param absolute logical: Runs CIBERSORT in absolute mode
 #' @param perm permutation to run CIBERSORT
@@ -247,7 +247,7 @@ deconvo_ips<-function(eset,project = NULL,plot){
 #' Calculation of stromal, immune, and ESTIMATE scores
 #'
 #' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different datasets
+#' @param project project name used to distinguish different data sets
 #' @param platform character string indicating platform type. Defaults to "affymetrix"
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
@@ -312,7 +312,7 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' @export
 #'
 #' @examples
-deconvo_ref<-function(eset,project = NULL,arrays,method = "svr",perm,
+deconvo_ref<-function(eset, project = NULL, arrays,method = "svr",perm,
                       reference, scale_reference, absolute.mode = FALSE, abs.method = "sig.score"){
 
   if (length(intersect(rownames(eset), rownames(reference))) == 0){
@@ -491,7 +491,7 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' Deconvoluting Tumor microenvironment on a transcriptomic dataset
 #'
 #' @param eset A gene expression matrix
-#'   Either: A numeric matrix or data.frame with HGNC gene symbols as rownames and sample identifiers as colnames. In both cases, data must be on non-log scale.
+#'   Either: A numeric matrix or data.frame with HGNC gene symbols as row names and sample identifiers as column names. In both cases.
 #' @param project project name used to distinguish different data sets, default is NULL
 #' @param method a string specifying the method.
 #' Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.

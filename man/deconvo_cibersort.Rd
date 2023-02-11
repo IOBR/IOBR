@@ -14,9 +14,9 @@ deconvo_cibersort(
 )
 }
 \arguments{
-\item{eset}{expression set with gene symbol at rowname, sample ID at column}
+\item{eset}{expression set with gene symbol at row name, sample ID at column}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different data sets}
 
 \item{arrays}{logical: Runs methods in a mode optimized for microarray data.}
 

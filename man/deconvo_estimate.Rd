@@ -9,7 +9,7 @@ deconvo_estimate(eset, project = NULL, platform = "affymetrix")
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{project name used to distinguish different data sets}
 
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"}
 }
