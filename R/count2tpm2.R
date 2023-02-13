@@ -16,7 +16,7 @@
 #' @param id id matched to row names of expression set
 #' @param length column name of gene length
 #' @param gene_symbol column name of gene symbol
-#' @param remove_redundancy default is mean, other options are `sd` or `median`
+#' @param remove_redundancy default is mean, other options are `sd`, `mean` or `median`
 #'
 #' @return A tpm expression profile.
 #'
@@ -209,23 +209,27 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     countMat <- countMat[!is.na(len),]
     len = len[!is.na(len)]
   }
-  tmp <- countMat / len
+  ############################################
+
+  tmp <- countMat / c(len/1000) # (`per million` scaling factor)
   TPM <- 1e6 * t(t(tmp) / colSums(tmp))
 
-  if(tolower(remove_redundancy)=="mean"){
-    order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
-  }else if(tolower(remove_redundancy)=="sd"){
-    order_index <- apply(TPM,1,function(x) sd(x,na.rm=T))
-  }else if(tolower(remove_redundancy)=="median"){
-    order_index <- apply(TPM,1,function(x) median(x,na.rm=T))
-  }
-
-  TPM <-TPM[order(order_index,decreasing=T),]
-  TPM <- TPM[!duplicated(rownames(TPM)),]
-  TPM <- TPM[!is.na(rownames(TPM)),]
-  TPM <- TPM[!rownames(TPM)==" ",]
-  TPM <- TPM[,!is.na(colnames(TPM))]
-  TPM <- TPM[,!colnames(TPM)==" "]
+  TPM<-rownames_to_column(TPM, var = "symbol")
+  TPM<-remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol", method = tolower(remove_redundancy))
+  # if(tolower(remove_redundancy)=="mean"){
+  #   order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
+  # }else if(tolower(remove_redundancy)=="sd"){
+  #   order_index <- apply(TPM,1,function(x) sd(x,na.rm=T))
+  # }else if(tolower(remove_redundancy)=="median"){
+  #   order_index <- apply(TPM,1,function(x) median(x,na.rm=T))
+  # }
+  #
+  # TPM <-TPM[order(order_index,decreasing=T),]
+  # TPM <- TPM[!duplicated(rownames(TPM)),]
+  # TPM <- TPM[!is.na(rownames(TPM)),]
+  # TPM <- TPM[!rownames(TPM)==" ",]
+  # TPM <- TPM[,!is.na(colnames(TPM))]
+  # TPM <- TPM[,!colnames(TPM)==" "]
   return(TPM)
 }
 
