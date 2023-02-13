@@ -34,7 +34,7 @@ count2tpm(
 
 \item{length}{column name of gene length}
 
-\item{remove_redundancy}{default is mean, other options are `sd` or `median`}
+\item{remove_redundancy}{default is mean, other options are `sd`, `mean` or `median`}
 }
 \value{
 A tpm expression profile.

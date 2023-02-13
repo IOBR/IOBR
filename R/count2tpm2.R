@@ -187,7 +187,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     countMat<-countMat[rownames(countMat)%in%effLength$id, ]
     effLength<-effLength[effLength$id%in%rownames(countMat), ]
 
-    if(id!=gene_symbol){
+    if(id!= gene_symbol){
       # countMat<-as.matrix(countMat)
       colnames(effLength)[which(colnames(effLength)==gene_symbol)]<-"gene_symbol"
       rownames(countMat)<- effLength[match(rownames(countMat),effLength$id), "gene_symbol"]
@@ -234,8 +234,6 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 }
 
 
-
-
 # help("count2tpm")
 # eset<-load_rna(project = "TCGA", ProjectID = "TCGA-STAD", tissue_type = "tumor_normal", data_type = "count")
 # mhead(eset)
@@ -247,6 +245,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 # ensembl<- rownames_to_column(ensembl, var = "id")
 # ensembl<- merge(ensembl, anno_grch38, by.x = "id", by.y = "ensgene", all = FALSE)
 #######################################
+# https://cloud.tencent.com/developer/article/2031969
 
 
 
