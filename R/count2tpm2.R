@@ -214,6 +214,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   tmp <- countMat / c(len/1000) # (`per million` scaling factor)
   TPM <- 1e6 * t(t(tmp) / colSums(tmp))
 
+  TPM<- as.data.frame(TPM)
   TPM<-rownames_to_column(TPM, var = "symbol")
   TPM<-remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol", method = tolower(remove_redundancy))
   # if(tolower(remove_redundancy)=="mean"){
