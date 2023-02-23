@@ -217,6 +217,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   #####################################
   # TPM <- rownames_to_column(TPM, var = "symbol" )
   # TPM <- remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol", method = tolower(remove_redundancy))
+
   # if(tolower(remove_redundancy)=="mean"){
   #   order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
   # }else if(tolower(remove_redundancy)=="sd"){
@@ -225,9 +226,10 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   #   order_index <- apply(TPM,1,function(x) median(x,na.rm=T))
   # }
   # TPM <- TPM[order(order_index,decreasing=T),]
+
   # TPM <- TPM[!duplicated(rownames(TPM)),]
-  # TPM <- TPM[!is.na(rownames(TPM)),]
-  # TPM <- TPM[!rownames(TPM)==" ",]
+  TPM <- TPM[!is.na(rownames(TPM)),]
+  TPM <- TPM[!rownames(TPM)==" ",]
   # TPM <- TPM[,!is.na(colnames(TPM))]
   # TPM <- TPM[,!colnames(TPM)==" "]
   return(TPM)
