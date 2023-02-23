@@ -15,7 +15,7 @@
 #' summary(duplicated(rownames(eset)))
 #
 
-remove_duplicate_genes<-function(eset, column_of_symbol ,method = "mean"){
+remove_duplicate_genes<-function(eset, column_of_symbol, method = "mean"){
   eset<-as.data.frame(eset)
   rownames(eset)<-NULL
 

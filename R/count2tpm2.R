@@ -87,7 +87,6 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 
 
     message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL as row names")
-
     message(">>>--- Using variables (anno_grch38) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
 
@@ -98,14 +97,13 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 
     countMat<-countMat[rownames(countMat)%in%length_ensembl$id,]
     if(dim(countMat)[1]==0) stop("Identifier of matrix is not match to references.")
-    length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat),]
+    length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat), ]
     len<- length_ensembl[match(rownames(countMat), length_ensembl$id), "eff_length"]
     rownames(countMat)<- length_ensembl[match(rownames(countMat),length_ensembl$id), 3]
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
   }else if(source == "local" & tolower(idType) == "symbol"  & org == "hsa"){
 
     message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL as row names")
-
     message(">>>--- Using variables (anno_grch38) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
     length_ensembl<-anno_grch38[,c("symbol", "eff_length", "gc")]
@@ -115,9 +113,11 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     length_ensembl<-length_ensembl[!duplicated(length_ensembl$id), ]
 
     countMat<-countMat[rownames(countMat)%in%length_ensembl$id,]
+
     if(dim(countMat)[1]==0) stop("Identifier of matrix is not match to references.")
     length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat),]
     len<- length_ensembl[match(rownames(countMat), length_ensembl$id), "eff_length"]
+
     rownames(countMat)<- length_ensembl[match(rownames(countMat),length_ensembl$id), 1]
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
   }
@@ -139,9 +139,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
   }else if(source == "local" & tolower(idType) == "mgi"  & org == "mmus"){
 
-
     message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL as row names")
-
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
 
@@ -206,17 +204,19 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   na_idx <- which(is.na(len))
   if(length(na_idx)>0){
     warning(paste0(">>>--- Omit ", length(na_idx), " genes of which length is not available !"))
-    countMat <- countMat[!is.na(len),]
+    countMat <- countMat[!is.na(len), ]
     len = len[!is.na(len)]
   }
-  ############################################
-
+  #####################################
   tmp <- countMat / c(len/1000) # (`per million` scaling factor)
   TPM <- 1e6 * t(t(tmp) / colSums(tmp))
-
-  TPM<- as.data.frame(TPM)
-  TPM<-rownames_to_column(TPM, var = "symbol")
-  TPM<-remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol", method = tolower(remove_redundancy))
+  # print(head(TPM))
+  # rownames(TPM) <- as.character(rownames(TPM))
+  # TPM <- BiocGenerics:: as.data.frame(TPM)
+  # print(head(TPM))
+  #####################################
+  # TPM <- rownames_to_column(TPM, var = "symbol" )
+  # TPM <- remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol", method = tolower(remove_redundancy))
   # if(tolower(remove_redundancy)=="mean"){
   #   order_index <- apply(TPM,1,function(x) mean(x,na.rm=T))
   # }else if(tolower(remove_redundancy)=="sd"){
@@ -224,8 +224,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   # }else if(tolower(remove_redundancy)=="median"){
   #   order_index <- apply(TPM,1,function(x) median(x,na.rm=T))
   # }
-  #
-  # TPM <-TPM[order(order_index,decreasing=T),]
+  # TPM <- TPM[order(order_index,decreasing=T),]
   # TPM <- TPM[!duplicated(rownames(TPM)),]
   # TPM <- TPM[!is.na(rownames(TPM)),]
   # TPM <- TPM[!rownames(TPM)==" ",]
