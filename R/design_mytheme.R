@@ -57,7 +57,7 @@ design_mytheme<-function(theme            = "light",
                       # panel.grid.major=element_line(color="white"),
                       # panel.grid.minor=element_line(color="white"),
                       # panel.border=element_rect(color="white"),
-                      axis.line=element_line(color="black",size=0.5))
+                      axis.line=element_line(color="grey", size = 0.2))
 
   if(is.null(legend.position)) {
     legend.position<- "bottom"
