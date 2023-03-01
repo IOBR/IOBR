@@ -139,7 +139,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
   }else if(source == "local" & tolower(idType) == "mgi"  & org == "mmus"){
 
-    message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL as row names")
+    message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL ID as row names")
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
 
@@ -152,12 +152,11 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
     if(dim(countMat)[1]==0) stop("Identifier of matrix is not match to references.")
     length_ensembl<-length_ensembl[length_ensembl$id%in%rownames(countMat),]
     len<- length_ensembl[match(rownames(countMat), length_ensembl$id), "eff_length"]
-    rownames(countMat)<- length_ensembl[match(rownames(countMat),length_ensembl$id), 3]
+    rownames(countMat) <- length_ensembl[match(rownames(countMat),length_ensembl$id), 3]
     countMat<-matrix(as.numeric(countMat), dim(countMat), dimnames = dimnames(countMat))
   }else if(source == "local" & tolower(idType) == "symbol"  & org == "mmus"){
 
-    message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL as row names")
-
+    message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL ID as row names")
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
     length_ensembl<-anno_gc_vm32[,c("symbol", "eff_length", "gc")]
