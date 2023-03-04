@@ -13,29 +13,42 @@
 #' @param jitter default is FALSE
 #' @param point_size size of point
 #' @param angle_x_text angle_x_text
-#' @param hjust hjust
+#' @param hjust default is 0.5
 #' @param show_pvalue default is true
 #' @param return_stat_res default is FALSE
 #' @param size_of_pvalue default is 6
 #' @param size_of_font default is 5
+#' @param assay default is NULL
+#' @param slot default is scale.data
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype",jitter = T)
-sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
-                  size_of_pvalue = 6, show_pvalue = TRUE, return_stat_res = FALSE){
+#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T)
+sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0.5, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
+                  size_of_pvalue = 6, show_pvalue = TRUE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE){
+
+  if(class(data)[1]=="Seurat"){
+
+    cat(crayon::green(">>>-- Derive matrix data from Seurat object...\n"))
+    input<- extract_sc_data( sce                = data,
+                             vars               = signature,
+                             assay              = assay,
+                             slot               = slot,
+                             combine_meta_data  = TRUE)
+    data<- input
+  }
+
 
   data<-as.data.frame(data)
   data<-data[,c(variable, signature)]
-
   colnames(data)[which(colnames(data)==variable)]<-"variable"
-
   colnames(data)[which(colnames(data)==signature)]<-"signature"
 
+  if(scale) data[,"signature"] <-as.numeric(scale(data[,"signature"], scale = T, center = T))
   data<-data[!is.na(data$variable),]
-
+  ####################################
   if(is.null(cols)){
     cols<-IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   }else{
@@ -50,7 +63,6 @@ sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palett
 
   comparision<-combn(unique(as.character(data$variable)), 2, simplify=F)
 
-
   size_font <- size_of_font*0.2
   p<-p+theme_light()+
     theme(axis.title.y=element_text(size=rel(size_font)),
@@ -58,7 +70,7 @@ sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0, palett
           axis.text=element_text(size=rel(size_font)),
           axis.text.x= element_text(face="plain", angle = angle_x_text,hjust = hjust,color="black"), #family="Times New Roman"
 
-          axis.line=element_line(color="black", size=0.25))+
+          axis.line=element_line(color="grey", size=0.05))+
     theme(legend.position = "none")
 
 
