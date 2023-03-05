@@ -9,7 +9,7 @@ sig_box(
   signature,
   variable,
   angle_x_text = 0,
-  hjust = 0,
+  hjust = 0.5,
   palette = "nrc",
   cols = NULL,
   jitter = FALSE,
@@ -17,7 +17,10 @@ sig_box(
   size_of_font = 10,
   size_of_pvalue = 6,
   show_pvalue = TRUE,
-  return_stat_res = FALSE
+  return_stat_res = FALSE,
+  assay = NULL,
+  slot = "scale.data",
+  scale = FALSE
 )
 }
 \arguments{
@@ -29,7 +32,7 @@ sig_box(
 
 \item{angle_x_text}{angle_x_text}
 
-\item{hjust}{hjust}
+\item{hjust}{default is 0.5}
 
 \item{palette}{default is nature palette}
 
@@ -46,10 +49,14 @@ sig_box(
 \item{show_pvalue}{default is true}
 
 \item{return_stat_res}{default is FALSE}
+
+\item{assay}{default is NULL}
+
+\item{slot}{default is scale.data}
 }
 \description{
 signature box plot
 }
 \examples{
-sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype",jitter = T)
+sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T)
 }
