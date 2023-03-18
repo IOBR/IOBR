@@ -25,12 +25,13 @@
 #' @param cols_group user can define the colors of group
 #' @param column_title  title of column
 #' @param row_title title of row
+#' @param scale defalut is FALSE
 #'
 #' @return
 #' @export
 #'
 #' @examples
-sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_group = "jama", show_col = F,
+sig_heatmap<-function(input, ID = "ID", features, group, scale = FALSE, palette = 2, palette_group = "jama", show_col = F,
                       show_palettes = F, cols_group = NULL, show_plot = T, width = 8, height = NULL, size_col = 10,size_row = 8,
                       angle_col = 90, column_title = NULL, row_title = NULL,
                       show_heatmap_col_name = F, path = NULL, index = NULL){
@@ -90,6 +91,11 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
   color_box<-color_box[1:n]
   # print(color_box)
   ####################################################
+ if(scale){
+   scale = "column"
+ }else{
+   scale = "none"
+ }
 
   pp<-pf_long_group %>%
     group_by(target_group) %>%
@@ -98,7 +104,7 @@ sig_heatmap<-function(input, ID = "ID", features, group, palette = 2, palette_gr
       .row              = variables,
       .value            = value,
       palette_grouping  = list(c(color_box)),
-      scale             = "column",
+      scale             = scale,
       column_title      = column_title,
       row_title         = row_title,
 
