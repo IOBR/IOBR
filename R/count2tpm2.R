@@ -229,6 +229,9 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   # TPM <- TPM[!duplicated(rownames(TPM)),]
   TPM <- TPM[!is.na(rownames(TPM)),]
   TPM <- TPM[!rownames(TPM)==" ",]
+
+  TPM <- rownames_to_column(as.data.frame(TPM), var = "symbol")
+  TPM <- remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol")
   # TPM <- TPM[,!is.na(colnames(TPM))]
   # TPM <- TPM[,!colnames(TPM)==" "]
   return(TPM)
