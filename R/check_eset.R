@@ -5,12 +5,13 @@
 #'
 #' @param eset gene expression set
 #' @param print_result logical, default is FALSE
+#' @param estimate_sd sd estimation
 #'
 #' @return
 #' @export
 #'
 #' @examples
-check_eset<-function(eset, print_result = F){
+check_eset<-function(eset, print_result = F , estimate_sd = FALSE){
 
 
 
@@ -20,7 +21,7 @@ check_eset<-function(eset, print_result = F){
 
   }
 
-  if(sum(is.na(eset))>0)  warning(paste0("There are some missing values in the gene expression matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
+  if(sum(is.na(eset))>0)  warning(paste0("There are some missing values in the matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
 
 
   teset<-as.data.frame(t(eset))
@@ -36,17 +37,18 @@ check_eset<-function(eset, print_result = F){
     print(summary(lapply(teset,function(x) max(x))==Inf))
   }
 
-  if(min(eset)==-Inf | max(eset)== Inf)  warning(paste0("There are some infinite values in the gene expression matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
+  if(min(eset)==-Inf | max(eset)== Inf)  warning(paste0("There are some infinite values in the matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
 
 
-  sd<-apply(eset,1,function(x) sd(x)==0)
+  if(estimate_sd){
+    sd<-apply(eset,1,function(x) sd(x)==0)
 
-  if(print_result){
-    message(paste0("<<< Features have sd = 0 >>> "))
-    print(summary(sd))
+    if(print_result){
+      message(paste0("<<< Features have sd = 0 >>> "))
+      print(summary(sd))
+    }
+
+    if(nlevels(as.factor(sd))>1) warning(paste0("Some vairables in the matrix have no variance between samples, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
+
   }
-
-  if(nlevels(as.factor(sd))>1) warning(paste0("Some vairables in the gene expression matrix have no variance between samples, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
-
-
 }
