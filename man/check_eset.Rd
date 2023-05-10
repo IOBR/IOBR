@@ -4,12 +4,14 @@
 \alias{check_eset}
 \title{Check the value of gene expression set}
 \usage{
-check_eset(eset, print_result = F)
+check_eset(eset, print_result = F, estimate_sd = FALSE)
 }
 \arguments{
 \item{eset}{gene expression set}
 
 \item{print_result}{logical, default is FALSE}
+
+\item{estimate_sd}{sd estimation}
 }
 \description{
 Check the value of gene expression set

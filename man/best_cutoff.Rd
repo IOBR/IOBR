@@ -7,9 +7,9 @@
 best_cutoff(pdata, variable, time = "time", status = "status", PrintResult = T)
 }
 \arguments{
-\item{pdata}{phenotype data with surcival information and features}
+\item{pdata}{phenotype data with survival information and features}
 
-\item{variable}{selected featrues that will be classified into two groups}
+\item{variable}{selected features that will be classified into two groups}
 
 \item{time}{column name of survival time}
 

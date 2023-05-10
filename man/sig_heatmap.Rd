@@ -9,6 +9,7 @@ sig_heatmap(
   ID = "ID",
   features,
   group,
+  scale = FALSE,
   palette = 2,
   palette_group = "jama",
   show_col = F,
@@ -35,6 +36,8 @@ sig_heatmap(
 \item{features}{features}
 
 \item{group}{category}
+
+\item{scale}{defalut is FALSE}
 
 \item{palette}{default is 2, options: 1,2,3}
 
