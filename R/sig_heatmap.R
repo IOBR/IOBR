@@ -31,10 +31,27 @@
 #' @export
 #'
 #' @examples
-sig_heatmap<-function(input, ID = "ID", features, group, scale = FALSE, palette = 2, palette_group = "jama", show_col = F,
-                      show_palettes = F, cols_group = NULL, show_plot = T, width = 8, height = NULL, size_col = 10,size_row = 8,
-                      angle_col = 90, column_title = NULL, row_title = NULL,
-                      show_heatmap_col_name = F, path = NULL, index = NULL){
+sig_heatmap<-function(input,
+                      ID             = "ID",
+                      features,
+                      group,
+                      scale                 = FALSE,
+                      palette               = 2,
+                      palette_group         = "jama",
+                      show_col              = F,
+                      show_palettes         = F,
+                      cols_group            = NULL,
+                      show_plot             = T,
+                      width                 = 8,
+                      height                = NULL,
+                      size_col              = 10,
+                      size_row              = 8,
+                      angle_col             = 90,
+                      column_title          = NULL,
+                      row_title             = NULL,
+                      show_heatmap_col_name = F,
+                      path                  = NULL,
+                      index                 = NULL){
 
 
   if(!is.null(path)){
@@ -56,11 +73,11 @@ sig_heatmap<-function(input, ID = "ID", features, group, scale = FALSE, palette 
   input<-input[,c("idd", group, features)]
   colnames(input)[which(colnames(input)==group)]<-"target_group"
 
+  input<- input[!is.na(input[,"target_group"]), ]
+
   pf_long_group <- tidyr::pivot_longer(input, 3:ncol(input), names_to = "variables",values_to = "value")
 
   ###################################################
-  pf_long_group$value[pf_long_group$value > 2.5] = 2.5
-  pf_long_group$value[pf_long_group$value < -2.5] = -2.5
 
 
   if(is.null(height)){
@@ -94,11 +111,13 @@ sig_heatmap<-function(input, ID = "ID", features, group, scale = FALSE, palette 
  if(scale){
    scale = "column"
  }else{
+   pf_long_group$value[pf_long_group$value > 2.5] = 2.5
+   pf_long_group$value[pf_long_group$value < -2.5] = -2.5
    scale = "none"
  }
 
   pp<-pf_long_group %>%
-    group_by(target_group) %>%
+    dplyr:: group_by(target_group) %>%
     tidyHeatmap:: heatmap(
       .column           = idd,
       .row              = variables,
