@@ -17,6 +17,7 @@
 #' @param legend.size.text default is 12
 #' @param legend.key.height default is 0.5
 #' @param legend.key.width default is 0.5
+#' @param legend.box default is horizontal, other option is vertical
 #'
 #' @author Dongqiang Zeng
 #' @return mytheme
@@ -35,7 +36,8 @@ design_mytheme<-function(theme            = "light",
                          legend.size      = 0.25,
                          legend.key.height= 0.5,
                          legend.key.width = 0.5,
-                         legend.size.text = 10){
+                         legend.size.text = 10,
+                         legend.box       = "horizontal"){
 
   if(theme=="light"){
     mytheme<-ggplot2::theme_light()
@@ -61,13 +63,16 @@ design_mytheme<-function(theme            = "light",
 
   if(is.null(legend.position)) {
     legend.position<- "bottom"
+
   }else{
+
     message(paste0(">>>>Options for 'legend.position' : none, left, right, bottom, top"))
   }
 
   if(is.null(legend.direction)) {
     legend.direction<- "horizontal"
   }else{
+
     message(paste0(">>>>Options for 'legend.direction' : horizontal, vertical "))
   }
 
@@ -81,7 +86,7 @@ design_mytheme<-function(theme            = "light",
       legend.position= legend.position,#"none","left","right","bottom","top",or #c(0.5,1)
       legend.direction= legend.direction,# "vertical"
       legend.justification=c(.5,.5),#"center" or two-element numeric vector
-      legend.box="horizontal",#"horizontal",
+      legend.box= legend.box,#"horizontal",
       legend.box.just="top",
       legend.text=element_text(colour="black", size= legend.size.text, face = "plain")#("plain", "italic", "bold", "bold.italic")
     )
