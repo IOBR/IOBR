@@ -16,7 +16,8 @@ design_mytheme(
   legend.size = 0.25,
   legend.key.height = 0.5,
   legend.key.width = 0.5,
-  legend.size.text = 10
+  legend.size.text = 10,
+  legend.box = "horizontal"
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ design_mytheme(
 \item{legend.key.width}{default is 0.5}
 
 \item{legend.size.text}{default is 12}
+
+\item{legend.box}{default is horizontal, other option is vertical}
 }
 \value{
 mytheme
