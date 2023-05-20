@@ -18,7 +18,7 @@
 #' @param gene_symbol column name of gene symbol
 #' @param remove_redundancy default is mean, other options are `sd`, `mean` or `median`
 #'
-#' @return A tpm expression profile.
+#' @return A TPM expression profile.
 #'
 #' @author Wubing Zhang
 #' @author Dongqiang Zeng

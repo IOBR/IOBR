@@ -85,12 +85,12 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     if(length(time_point)==1) time_point<- round(c(quantile(time)[2],quantile(time)[3],quantile(time)[4]), 0)
     ###################################
     roc1      <- timeROC::timeROC( T        = time,
-                          delta    = status,
-                          marker   = input[, vars],
-                          cause    =1,
-                          weighting="marginal",
-                          times    = time_point[1],
-                          iid      =TRUE)
+                          delta             = status,
+                          marker            = input[, vars],
+                          cause             =1,
+                          weighting         ="marginal",
+                          times             = time_point[1],
+                          iid               =TRUE)
     auc1 <- round(roc1[["AUC"]][2],2)
     #########################################
     roc2      <- timeROC::timeROC( T        = time,
