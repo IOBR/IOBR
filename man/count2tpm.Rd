@@ -37,7 +37,7 @@ count2tpm(
 \item{remove_redundancy}{default is mean, other options are `sd`, `mean` or `median`}
 }
 \value{
-A tpm expression profile.
+A TPM expression profile.
 }
 \description{
 Convert read counts to transcripts per million (TPM)
