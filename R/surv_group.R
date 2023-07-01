@@ -27,9 +27,6 @@
 #' @param font.size.table default is 62
 #'
 #' @author Dongqiang Zeng
-#' @importFrom survminer surv_cutpoint
-#' @importFrom IOBR best_cutoff
-#' @importFrom IOBR getHRandCIfromCoxph
 #' @import survival
 #' @return
 #' @export
@@ -130,8 +127,8 @@ surv_group  <-function(input_pdata,
 
     # hack strata for better survival curve
     names(sfit$strata) <- gsub("target_group=", "", names(sfit$strata))
-    ##########################################
-    # ###########################################
+    #############################################
+    #############################################
     pp<- survminer:: ggsurvplot(sfit,
                                 data             = input_pdata,
                                 censor           = TRUE,
@@ -142,7 +139,8 @@ surv_group  <-function(input_pdata,
                                 # legend.labs    = c(paste0('Low ',mini_sig),paste0("Middle ",mini_sig),paste0("High ",mini_sig)),
                                 submain          = paste0(target_group,"-in-",project),
                                 surv.median.line = "h", # draw horizontal line at median survival
-                                risk.table       = T,tables.height = 0.25,
+                                risk.table       = T,
+                                tables.height    = 0.25,
                                 palette          = cols,
                                 pval.size        = 8)
 

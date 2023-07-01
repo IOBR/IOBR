@@ -30,7 +30,7 @@
                     " tumor microenvironment and signatures. Frontiers in Immunology. 12:687975,(2021). \n",
                     # " XXXX, 2020", "\n",
                     " DOI: 10.3389/fimmu.2021.687975\n",
-                    # " PMID:  ","\n",
+                    " Higly Cited Paper and Hot Paper of WOS\n",
                     "==========================================================================")
 
   packageStartupMessage(paste0(msg, citation))
