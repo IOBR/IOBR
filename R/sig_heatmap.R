@@ -17,7 +17,7 @@
 #' @param show_heatmap_col_name  show heat map column name
 #' @param path save path, folder name
 #' @param index default is null
-#' @param palette_group default is jama
+#' @param palette_group default is `jama`
 #' @param height height of figure
 #' @param size_col font size of column name
 #' @param size_row font size of row name
@@ -25,7 +25,7 @@
 #' @param cols_group user can define the colors of group
 #' @param column_title  title of column
 #' @param row_title title of row
-#' @param scale defalut is FALSE
+#' @param scale default is FALSE
 #'
 #' @return
 #' @export
