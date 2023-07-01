@@ -37,11 +37,11 @@ sig_heatmap(
 
 \item{group}{category}
 
-\item{scale}{defalut is FALSE}
+\item{scale}{default is FALSE}
 
 \item{palette}{default is 2, options: 1,2,3}
 
-\item{palette_group}{default is jama}
+\item{palette_group}{default is `jama`}
 
 \item{show_col}{show color}
 
