@@ -37,6 +37,6 @@ get_cols<-function(cols = "normal", palette = 1, show_col = T, seed = 123){
     mycols<-cols
     if(show_col) scales::show_col(mycols)
   }
-  ################################################
+
   return(mycols)
 }
