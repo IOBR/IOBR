@@ -2,7 +2,6 @@
 
 
 
-
 #' Title
 #'
 #' @param data
@@ -18,16 +17,22 @@
 #' @param ncp
 #' @param axes
 #' @param addEllipses
+#' @param geom.ind
 #'
 #' @return
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
 iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata, id_pdata = "ID", group = NULL,
-                     cols = "normal", palette = "jama", repel = FALSE, ncp = 6, axes = c(1, 2), addEllipses = TRUE){
+                     geom.ind = "point",
+                     cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE){
 
+  if(is.log) data <- log2eset(data+1)
+  feas <- feature_manipulation(data = data, feature = rownames(data), is_matrix = TRUE)
+  data <-data[rownames(data)%in%feas, ]
+  #######################################
   if(is.matrix) data <- t(data)
-  if(is.log) data <- log2eset(data)
   if(scale) data <- scale(data)
 
   res.pca <- FactoMineR::PCA(data, ncp = ncp, graph = FALSE)
@@ -44,13 +49,13 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   cols <- cols[1:length(unique(pdata[, group]))]
   #########################################
   p <- factoextra:: fviz_pca_ind(res.pca,
-                                axes = axes,
-                                geom.ind     = "point", # show points only (nbut not "text")
-                                col.ind      = pdata[, group], # color by groups
-                                palette      = cols,
-                                repel        = repel,
-                                addEllipses  = addEllipses, # Concentration ellipses
-                                legend.title = group)
+                                 axes = axes,
+                                 geom.ind     = geom.ind, # show points only (nbut not "text")
+                                 col.ind      = pdata[, group], # color by groups
+                                 palette      = cols,
+                                 repel        = repel,
+                                 addEllipses  = addEllipses, # Concentration ellipses
+                                 legend.title = group)
   return(p)
 
 }
