@@ -19,8 +19,8 @@ find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC"){
 
   path<- creat_folder(project)
   tree.combat <- eset %>% t %>% dist %>% hclust(method = "average")
-  pdf(paste0(path$abspath, project_name,"-clusteringplot"), width = 20, height = 10)
-  plot(tree.combat, main =paste0("1-", project_name,"-","Hierarchical Clustering Sammples"))
+  pdf(paste0(path$abspath, project,"-clusteringplot.pdf"), width = 20, height = 10)
+  plot(tree.combat, main =paste0("1-","Hierarchical Clustering Sammples"))
   dev.off()
   ###############################
 
@@ -42,7 +42,7 @@ find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC"){
   p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
   p<-p+design_mytheme()
 
-  ggsave(p, filename = paste0("2-", project_name,"-connectivityplot.pdf"), width = 10, height = 10, path = path$folder_name)
+  ggsave(p, filename = paste0("2-connectivityplot.pdf"), width = 10, height = 10, path = path$folder_name)
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]
 

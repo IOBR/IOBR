@@ -13,10 +13,10 @@
 #' @export
 #'
 #' @examples
-scale_matrix<-function(matrix, log2matrix = T, manipulate = FALSE){
+scale_matrix<-function(matrix, log2matrix = TRUE, manipulate = FALSE){
 
   if(log2matrix){
-    matrix<-IOBR::log2eset(matrix+1)
+    matrix<- IOBR::log2eset(matrix+1)
   }
   matrix<-as.data.frame(t(matrix))
   matrix<-scale(matrix,center = T,scale = T)

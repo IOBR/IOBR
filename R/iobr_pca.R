@@ -47,12 +47,15 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   cols <- get_cols(cols = cols, palette = palette, show_col = FALSE, seed = 123)
 
   cols <- cols[1:length(unique(pdata[, group]))]
+
+  print(paste0(">>-- colors for PCA: ", cols))
   #########################################
   p <- factoextra:: fviz_pca_ind(res.pca,
                                  axes = axes,
                                  geom.ind     = geom.ind, # show points only (nbut not "text")
-                                 col.ind      = pdata[, group], # color by groups
+                                 col.ind      = as.character(pdata[, group]), # color by groups
                                  palette      = cols,
+
                                  repel        = repel,
                                  addEllipses  = addEllipses, # Concentration ellipses
                                  legend.title = group)
