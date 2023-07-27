@@ -9,22 +9,28 @@
 #' @param eset expression set
 #' @param yinter between -3 to -2
 #' @param project default is NSCLC
+#' @param plot_hculst
 #'
 #' @return
 #' @export
 #'
 #' @examples
-find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC"){
+find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC", plot_hculst = FALSE){
 
-
+  library(WGCNA)
   path<- creat_folder(project)
-  tree.combat <- eset %>% t %>% dist %>% hclust(method = "average")
-  pdf(paste0(path$abspath, project,"-clusteringplot.pdf"), width = 20, height = 10)
-  plot(tree.combat, main =paste0("1-","Hierarchical Clustering Sammples"))
-  dev.off()
+
+
+  if(plot_hculst){
+    tree.combat <- eset %>% t %>% dist %>% hclust(method = "average")
+    ##############################
+    pdf(paste0(path$abspath, "1-clusteringplot.pdf"), width = 20, height = 10)
+    plot(tree.combat, main =paste0("1-","Hierarchical Clustering Sammples"))
+    dev.off()
+  }
   ###############################
 
-  #' @使用WGCNA查看样本离异度
+  #' 使用WGCNA查看样本离异度
   ###############################
   normalized.adjacency <- (0.5 + 0.5 * bicor(eset)) ^ 2
   network.summary <- fundamentalNetworkConcepts(normalized.adjacency)
