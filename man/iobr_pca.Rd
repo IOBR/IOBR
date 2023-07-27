@@ -12,17 +12,21 @@ iobr_pca(
   pdata,
   id_pdata = "ID",
   group = NULL,
+  geom.ind = "point",
   cols = "normal",
   palette = "jama",
   repel = FALSE,
-  ncp = 6,
+  ncp = 5,
   axes = c(1, 2),
   addEllipses = TRUE
 )
 }
 \arguments{
-\item{addEllipses}{}
+\item{geom.ind}{}
 }
 \description{
 Title
+}
+\author{
+Dongqiang Zeng
 }
