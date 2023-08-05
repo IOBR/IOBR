@@ -26,9 +26,11 @@
 #' @param seed A logical parameter indicating whether to use a random seed for reproducibility in the analysis. The default value is FALSE.
 #' @param fig.type Specifies the file type for saving the GSEA plots. The default value is "pdf".
 #' @param show_path_n Specifies the number of paths to show in the GSEA plots. The default value is 20.
+#' @param print_bar Default is TRUE
 #'
 #' @return
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
 sig_gsea <-function(deg,
@@ -78,7 +80,7 @@ sig_gsea <-function(deg,
   colnames(deg)[which(colnames(deg)==logfc)]<-"logfc"
   ##################################
 
-  message("`>>> Parametar org must be one of: hsa or mus`")
+  message("`>>>--- Parametar org must be one of: hsa or mus`")
   if(org=="hsa"){
 
     database<-"org.Hs.eg.db"
@@ -190,6 +192,7 @@ sig_gsea <-function(deg,
   writexl::write_xlsx(as.data.frame(hall_gsea),paste0(abspath,"1-",category,"_GSEA_significant_results.xlsx"))
   # save(hall_gsea,file = paste(abspath,"2-",category,"_GSEA_result.RData",sep = ""))
 
+
   ###########################################
   if(dim(hall_gsea)[1] > 0){
 
@@ -199,7 +202,7 @@ sig_gsea <-function(deg,
       paths<-rownames(hall_gsea[1:show_gsea,])
     }
 
-    print(paste0("Most significant genesets: "))
+    print(paste0(">>>--- Most significant gene sets: "))
     print(paste(1:length(paths),paths,collapse = "; "))
     ###############################################
 
@@ -212,9 +215,8 @@ sig_gsea <-function(deg,
                                      color        = gseacol[1:length(paths)],
                                      pvalue_table = TRUE)
 
-    ggsave(GSEAPLOT,path = file_store,
-           filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type),
-           width = 10,height = 6,dpi = 300)
+    ggsave(GSEAPLOT,path = file_store, filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type),
+           width = 10, height = 7, dpi = 300)
     if(show_plot) print(GSEAPLOT)
     ###############################################
 
@@ -237,6 +239,7 @@ sig_gsea <-function(deg,
                                          color        = gseacol[i],
                                          pvalue_table = TRUE)
         gseaplot<-gseaplot+design_mytheme(axis_angle = 0, hjust = 0.5)
+        if(show_plot) print(gseaplot)
         ggsave(gseaplot,path = file_store,
                filename = paste0(i+4,"-GSEA_plot-",single_path,".",fig.type),
                width = 10,height = 7,dpi = 300)
@@ -275,6 +278,7 @@ sig_gsea <-function(deg,
     ######################################################
   }
 
+    hall_gsea <- as.tibble(hall_gsea)
     #' restore data
     hall_gsea_result<-list(up = hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore > 0,],
                            down = hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore < 0,],
