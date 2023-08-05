@@ -20,6 +20,8 @@ Depends:
   R(>= 3.5.0)
 Imports: 
   matrixStats,
+  survminer,
+  corrplot,
   e1071,
   preprocessCore,
   biomaRt, 

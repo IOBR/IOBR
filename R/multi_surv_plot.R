@@ -22,11 +22,9 @@
 #' @param ID This optional parameter represents the column name in input_pdata that contains the unique identifier for each data point. The default value is "ID".
 #'
 #' @importFrom survminer surv_cutpoint
-#' @importFrom IOBR best_cutoff
-#' @importFrom IOBR getHRandCIfromCoxph
 #' @import survival
 #' @author Dongqiang Zeng
-#' @return survival data
+#' @return survival
 #' @export
 #'
 #' @examples
@@ -146,7 +144,7 @@ multi_surv_plot<-function(input_pdata,
   max_month<- break_month*6
   ###########################################
 
-  if(is.null(cols))  cols<-IOBR:: palettes(category = "box",palette = palette, show_col = F)
+  if(is.null(cols))  cols<- palettes(category = "box",palette = palette, show_col = F)
 
   ###########################################
   pp<-ggsurvplot(sfit,

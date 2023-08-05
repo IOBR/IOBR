@@ -54,7 +54,7 @@ multi_surv_plot(
 \item{index}{This parameter represents the index for multiple plots generated in a single run. It is used as the prefix in the filename. The default value is 1.}
 }
 \value{
-survival data
+survival
 }
 \description{
 Multiple survival KM-plot to a signature or gene

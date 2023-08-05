@@ -2,7 +2,7 @@
 % Please edit documentation in R/lasso_select.R
 \name{lasso_select}
 \alias{lasso_select}
-\title{Constructing predictive or prognostic modle}
+\title{Constructing predictive or prognostic model}
 \usage{
 lasso_select(
   x,
@@ -13,18 +13,18 @@ lasso_select(
 )
 }
 \arguments{
-\item{x}{input matrix.Rownames should be features like gene symbols or cgi, colnames be samples}
+\item{x}{input matrix.Row names should be features like gene symbols or cgi, colnames be samples}
 
 \item{y}{response variable. can be binary and survival type.}
 
 \item{type}{"binary" or "survival"}
 
-\item{nfold}{number of nfold for cross-validation - default is 10}
+\item{nfold}{number of `nfold` for cross-validation - default is 10}
 
 \item{lambda}{"lambda.min" or "lambda.1se"}
 }
 \description{
-Constructing predictive or prognostic modle
+Constructing predictive or prognostic model
 }
 \examples{
 
@@ -42,4 +42,7 @@ pd1 <- as.numeric(dat[, "PDCD1"])
 group <- ifelse(pd1 > mean(pd1), 1, 0)
 sur_gene <- lasso_select(x = x, y = y, type = "survival", nfold = 10, lambda = "lambda.min")
 pd1_gene <- lasso_select(x = x, y = group, type = "binary", nfold = 10, lambda = "lambda.min")
+}
+\author{
+Dongqiang Zeng
 }

@@ -110,7 +110,7 @@ surv_group  <-function(input_pdata,
   }
   max_month<- break_month*6
   ###########################################
-  if(is.null(cols))  cols<-IOBR:: palettes(category = "box",palette = palette, show_col = F)
+  if(is.null(cols))  cols<-  palettes(category = "box",palette = palette, show_col = F)
 
 
   # print(unique(input_pdata$target_group))

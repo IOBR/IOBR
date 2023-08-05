@@ -4,20 +4,20 @@
 
 #' Title
 #'
-#' @param data
-#' @param is.matrix
-#' @param scale
-#' @param is.log
-#' @param pdata
-#' @param id_pdata
-#' @param group
-#' @param cols
-#' @param palette
-#' @param repel
-#' @param ncp
-#' @param axes
-#' @param addEllipses
-#' @param geom.ind
+#' @param data The input data for PCA. It should be a matrix or a data frame.
+#' @param is.matrix Specifies whether the input data is a matrix. Default is TRUE.
+#' @param scale Specifies whether to scale the input data. Default is TRUE.
+#' @param is.log Specifies whether to log transform the input data. Default is FALSE.
+#' @param pdata Additional data associated with the principal components. It should be a data frame. Default is NULL.
+#' @param id_pdata The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".
+#' @param group  The column name in 'pdata' that represents groups/categories to color the points. Default is NULL.
+#' @param cols The color scheme to be used for group categories. Default is "normal".
+#' @param palette The color palette to be used for group categories. Default is "jama".
+#' @param repel Specifies whether to repel the data points to avoid overlap. Default is FALSE.
+#' @param ncp The number of dimensions to keep in the PCA. Default is 5.
+#' @param axes  The dimensions/axes to be plotted. Default is c(1, 2).
+#' @param addEllipses Specifies whether to add concentration ellipses to the plot. Default is TRUE.
+#' @param geom.ind The type of geometric representation for the points in the PCA plot. Default is "point".
 #'
 #' @return
 #' @export

@@ -10,6 +10,7 @@
 ##' @author Dorothee Nickles
 ##' @export
 ##' @import survival
+##'
 getHRandCIfromCoxph <- function(coxphData) {
 
   stopifnot(is(coxphData, "coxph"))

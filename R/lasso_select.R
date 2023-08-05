@@ -1,16 +1,16 @@
 
 
-#' Constructing predictive or prognostic modle
+#' Constructing predictive or prognostic model
 #'
-#' @param x input matrix.Rownames should be features like gene symbols or cgi, colnames be samples
+#' @param x input matrix.Row names should be features like gene symbols or cgi, colnames be samples
 #' @param y response variable. can be binary and survival type.
 #' @param type "binary" or "survival"
-#' @param nfold number of nfold for cross-validation - default is 10
+#' @param nfold number of `nfold` for cross-validation - default is 10
 #' @param lambda "lambda.min" or "lambda.1se"
 #'
 #' @return
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
 #'
 #' data("crc_clin")

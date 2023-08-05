@@ -140,7 +140,7 @@ sig_gsea <-function(deg,
     #   genesets<-lapply(genesets, function(x) mus2human_gene)
     # }
 
-    term2genes<-IOBR:: output_sig(genesets,file.name = "sig")
+    term2genes<- output_sig(genesets,file.name = "sig")
     file.remove("sig.csv")
     term2genes<-reshape2:: melt(as.matrix(term2genes))
     term2genes<-term2genes[,-1]
@@ -206,7 +206,7 @@ sig_gsea <-function(deg,
     print(paste(1:length(paths),paths,collapse = "; "))
     ###############################################
 
-    gseacol<-IOBR:: palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
+    gseacol<- palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
 
     ###############################################
     GSEAPLOT<-enrichplot:: gseaplot2(hall_gsea,
