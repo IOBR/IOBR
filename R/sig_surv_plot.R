@@ -29,7 +29,7 @@
 #'
 #' @examples
 #'
-multi_surv_plot<-function(input_pdata,
+sig_surv_plot <- function(input_pdata,
                           signature,
                           project     = "KM",
                           ID          = "ID",
@@ -147,7 +147,7 @@ multi_surv_plot<-function(input_pdata,
   if(is.null(cols))  cols<- palettes(category = "box",palette = palette, show_col = F)
 
   ###########################################
-  pp<-ggsurvplot(sfit,
+  pp1<-ggsurvplot(sfit,
                  data = input_pdata,
                  censor = TRUE,
                  ncensor.plot = F,conf.int = F,
@@ -164,11 +164,10 @@ multi_surv_plot<-function(input_pdata,
                                             paste("P = ",round(pvalue[,1],4), sep = "")),
                               HR, CI, cut_off,sep = "\n"))
 
-  pp<-list(pp)
-  res <- arrange_ggsurvplots(pp, print = FALSE, ncol = 1, nrow = 1)
+  res1 <- arrange_ggsurvplots(list(pp1), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(res,filename = paste0(index,"-1-KMplot-best-cutoff-",signature,"-",project,".", fig.type),
+  ggsave(res1,filename = paste0(index,"-1-KMplot-best-cutoff-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
 
   ################################################
@@ -194,7 +193,7 @@ multi_surv_plot<-function(input_pdata,
   names(sfit$strata) <- gsub("group3=", "", names(sfit$strata))
   ##########################################
   # ###########################################
-  pp<-ggsurvplot(sfit,data = input_pdata,censor = TRUE,
+  pp2<-ggsurvplot(sfit,data = input_pdata,censor = TRUE,
                  ncensor.plot = F,conf.int = F,
                  xlim = c(0,max_month),
                  break.time.by = break_month,
@@ -218,7 +217,7 @@ multi_surv_plot<-function(input_pdata,
                   ifelse(p.val < 0.001, " < 0.001",
                          paste0(" = ",round(p.val, 3))))
 
-  pp$plot <- pp$plot + annotate("text",
+  pp2$plot <- pp2$plot + annotate("text",
                                 x = 0, y = 0.55,
                                 hjust = 0,
                                 fontface = 3,
@@ -237,14 +236,13 @@ multi_surv_plot<-function(input_pdata,
   # options(stringsAsFactors = TRUE)
 
   df <- tibble(x = 0, y = 0, tb = list(addTab))
-  pp$plot <- pp$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
+  pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
 
 
-  pp<-list(pp)
-  res <- arrange_ggsurvplots(pp, print = FALSE, ncol = 1, nrow = 1)
+  res2 <- arrange_ggsurvplots(list(pp2), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(res,filename = paste0(index,"-2-KMplot-3group-",signature,"-",project,".", fig.type),
+  ggsave(res2,filename = paste0(index,"-2-KMplot-3group-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
 
   ################################################
@@ -264,7 +262,7 @@ multi_surv_plot<-function(input_pdata,
   CI <- paste("95% CI: ", paste(round(pvalue[,3],2), round(pvalue[,4],2), sep = " - "), sep = "")
 
   sfit <- surv_fit(Surv(input_pdata$time,input_pdata$status) ~ input_pdata$group2,data=input_pdata)
-  pp<-ggsurvplot(sfit,data = input_pdata,censor = TRUE,
+  pp3<-ggsurvplot(sfit,data = input_pdata,censor = TRUE,
                  ncensor.plot = F,conf.int = F,
                  xlim = c(0,max_month),
                  break.time.by = break_month,
@@ -279,13 +277,22 @@ multi_surv_plot<-function(input_pdata,
                  pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
                                             paste("P = ",round(pvalue[,1],4), sep = "")),
                               HR, CI,sep = "\n"))
-  pp<-list(pp)
-  res <- arrange_ggsurvplots(pp, print = FALSE, ncol = 1, nrow = 1)
+
+  res3 <- arrange_ggsurvplots(list(pp3), print = FALSE, ncol = 1, nrow = 1)
   ##############################
-  ggsave(res,filename = paste0(index,"-3-KMplot-2group-",signature,"-",project,".", fig.type),
+  ggsave(res3,filename = paste0(index,"-3-KMplot-2group-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
   #############################################
   input_pdata$group2<-ifelse(input_pdata$group2==1,"High","Low")
-  return(input_pdata)
+
+  plots <- list()
+  plots[[1]] <- pp1
+  plots[[2]] <- pp3
+  plots[[3]] <- pp2
+  print(">>>>>>>>>")
+  plots <- arrange_ggsurvplots(plots, print = FALSE, ncol = 3, nrow = 1)
+
+  res <- list("data" = input_pdata, "plots" = plots)
+  return(res)
 
 }
