@@ -22,7 +22,33 @@ iobr_pca(
 )
 }
 \arguments{
-\item{geom.ind}{}
+\item{data}{The input data for PCA. It should be a matrix or a data frame.}
+
+\item{is.matrix}{Specifies whether the input data is a matrix. Default is TRUE.}
+
+\item{scale}{Specifies whether to scale the input data. Default is TRUE.}
+
+\item{is.log}{Specifies whether to log transform the input data. Default is FALSE.}
+
+\item{pdata}{Additional data associated with the principal components. It should be a data frame. Default is NULL.}
+
+\item{id_pdata}{The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".}
+
+\item{group}{The column name in 'pdata' that represents groups/categories to color the points. Default is NULL.}
+
+\item{geom.ind}{The type of geometric representation for the points in the PCA plot. Default is "point".}
+
+\item{cols}{The color scheme to be used for group categories. Default is "normal".}
+
+\item{palette}{The color palette to be used for group categories. Default is "jama".}
+
+\item{repel}{Specifies whether to repel the data points to avoid overlap. Default is FALSE.}
+
+\item{ncp}{The number of dimensions to keep in the PCA. Default is 5.}
+
+\item{axes}{The dimensions/axes to be plotted. Default is c(1, 2).}
+
+\item{addEllipses}{Specifies whether to add concentration ellipses to the plot. Default is TRUE.}
 }
 \description{
 Title

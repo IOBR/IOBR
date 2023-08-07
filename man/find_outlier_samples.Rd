@@ -4,7 +4,13 @@
 \alias{find_outlier_samples}
 \title{Title}
 \usage{
-find_outlier_samples(eset, yinter = -3, project = "NSCLC", plot_hculst = FALSE)
+find_outlier_samples(
+  eset,
+  yinter = -3,
+  project = "NSCLC",
+  plot_hculst = FALSE,
+  show_plot = TRUE
+)
 }
 \arguments{
 \item{eset}{expression set}
@@ -13,7 +19,7 @@ find_outlier_samples(eset, yinter = -3, project = "NSCLC", plot_hculst = FALSE)
 
 \item{project}{default is NSCLC}
 
-\item{plot_hculst}{}
+\item{show_plot}{}
 }
 \description{
 Title

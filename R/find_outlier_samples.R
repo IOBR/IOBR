@@ -10,12 +10,13 @@
 #' @param yinter between -3 to -2
 #' @param project default is NSCLC
 #' @param plot_hculst
+#' @param show_plot
 #'
 #' @return
 #' @export
 #'
 #' @examples
-find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC", plot_hculst = FALSE){
+find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC", plot_hculst = FALSE, show_plot = TRUE){
 
   library(WGCNA)
   path<- creat_folder(project)
@@ -47,6 +48,7 @@ find_outlier_samples<- function(eset, yinter = -3, project = "NSCLC", plot_hculs
   p <- p + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
   p<-p+design_mytheme()
+  if(show_plot) print(p)
 
   ggsave(p, filename = paste0("2-connectivityplot.pdf"), width = 10, height = 10, path = path$folder_name)
 
