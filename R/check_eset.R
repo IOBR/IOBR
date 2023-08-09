@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-check_eset<-function(eset, print_result = F , estimate_sd = FALSE){
+check_eset<-function(eset, print_result = FALSE , estimate_sd = FALSE){
 
 
 

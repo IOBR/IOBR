@@ -2,7 +2,8 @@
 
 
 
-#' Title
+#' Principal Component Analysis (PCA) Visualization Function
+#' @description The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 #'
 #' @param data The input data for PCA. It should be a matrix or a data frame.
 #' @param is.matrix Specifies whether the input data is a matrix. Default is TRUE.
@@ -25,8 +26,7 @@
 #'
 #' @examples
 iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata, id_pdata = "ID", group = NULL,
-                     geom.ind = "point",
-                     cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE){
+                     geom.ind = "point", cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE){
 
   if(is.log) data <- log2eset(data+1)
   feas <- feature_manipulation(data = data, feature = rownames(data), is_matrix = TRUE)

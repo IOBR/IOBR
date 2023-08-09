@@ -2,39 +2,51 @@
 % Please edit documentation in R/remove_batcheffect.R
 \name{remove_batcheffect}
 \alias{remove_batcheffect}
-\title{remove batch effect of two or three expression set}
+\title{Removing batch effect of two or three expression set}
 \usage{
 remove_batcheffect(
   eset1,
   eset2,
   eset3 = NULL,
+  id_type,
+  data_type = c("array", "count", "tpm"),
+  cols = "normal",
+  palette = "jama",
   log2 = TRUE,
   check_eset = TRUE,
-  labels = NULL,
-  palette = "nrc",
-  path = NULL,
-  save_plot = FALSE
+  adjust_eset = TRUE,
+  repel = FALSE,
+  path = "Result_PCA"
 )
 }
 \arguments{
-\item{eset1}{expression set-1, normalized data}
+\item{eset1}{These are the expression sets for which you want to remove the batch effect.}
 
-\item{eset2}{expression set-2, normalized data}
+\item{eset2}{These are the expression sets for which you want to remove the batch effect.}
 
-\item{eset3}{expression set-3, default is null}
+\item{eset3}{These are the expression sets for which you want to remove the batch effect. Input 'NULL' for eset3 if not available.}
 
-\item{log2}{default is TRUE}
+\item{id_type}{Type of id present in the expression set (like Ensembl ID or Gene Symbol).}
 
-\item{check_eset}{default is true}
+\item{data_type}{Type of data in the expression set ("array", "count", or "tpm"). Default is "array".}
 
-\item{labels}{labels for expression sets}
+\item{cols}{Color scale to use for the PCA plot. Default is 'normal'.}
 
-\item{palette}{palette from IOBR::palettes, default is nature}
+\item{palette}{Color palette to use for the plot. Default is 'jama'.}
 
-\item{path}{default is NULL}
+\item{log2}{it performs log2 transformation of the data. Defaults to TRUE.}
 
-\item{save_plot}{default is FALSE, if true, path could be set to folder name}
+\item{check_eset}{Logical, determining whether to check the eset or not. If TRUE, checks for errors in the expression set. Default is TRUE.}
+
+\item{adjust_eset}{Logical, whether to adjust the expression set by manipulating the features. Default is TRUE.}
+
+\item{repel}{whether to add labels to the PCA plot. Default is FALSE.}
+
+\item{path}{Directory where the results should be saved. If it is NULL, results will be saved in a folder "Combat_PCA".}
 }
 \description{
-remove batch effect of two or three expression set
+Removing batch effect of two or three expression set
+}
+\author{
+Dongqiang Zeng
 }

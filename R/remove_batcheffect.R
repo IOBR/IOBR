@@ -2,57 +2,66 @@
 
 
 
-#' remove batch effect of two or three expression set
+#' Removing batch effect of two or three expression set
 #'
-#' @param eset1 expression set-1, normalized data
-#' @param eset2 expression set-2, normalized data
-#' @param eset3 expression set-3, default is null
-#' @param labels labels for expression sets
-#' @param check_eset default is true
-#' @param palette palette from IOBR::palettes, default is nature
-#' @param log2 default is TRUE
-#' @param path default is NULL
-#' @param save_plot default is FALSE, if true, path could be set to folder name
+#' @param eset1 These are the expression sets for which you want to remove the batch effect.
+#' @param eset2 These are the expression sets for which you want to remove the batch effect.
+#' @param eset3 These are the expression sets for which you want to remove the batch effect. Input 'NULL' for eset3 if not available.
+#' @param check_eset Logical, determining whether to check the eset or not. If TRUE, checks for errors in the expression set. Default is TRUE.
+#' @param palette Color palette to use for the plot. Default is 'jama'.
+#' @param log2  it performs log2 transformation of the data. Defaults to TRUE.
+#' @param path Directory where the results should be saved. If it is NULL, results will be saved in a folder "Combat_PCA".
+#' @param adjust_eset Logical, whether to adjust the expression set by manipulating the features. Default is TRUE.
+#' @param id_type Type of id present in the expression set (like Ensembl ID or Gene Symbol).
+#' @param data_type Type of data in the expression set ("array", "count", or "tpm"). Default is "array".
+#' @param cols Color scale to use for the PCA plot. Default is 'normal'.
+#' @param repel whether to add labels to the PCA plot. Default is FALSE.
 #'
 #' @return
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
-remove_batcheffect<-function(eset1, eset2, eset3 = NULL, log2 = TRUE, check_eset = TRUE, labels = NULL, palette = "nrc", path = NULL, save_plot = FALSE){
+remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = c("array", "count", "tpm"), cols = "normal", palette = "jama",
+                               log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = "Result_PCA"){
 
-
-  cols<-IOBR::palettes(category = "box", palette = palette, show_col = F, show_message = F)
-
-  if(is.null(path)){
-    abspath<-NULL
-  }else{
-    if(!file.exists(path)) dir.create(path)
-    abspath<-paste(getwd(),"/",file_store,"/",sep ="" )
+ if(is.null(path)) path <- "Combat_PCA"
+ path <- creat_folder(path)
+ #######################################################
+  if(log2){
+    eset2<-log2eset(eset2)
+    eset1<-log2eset(eset1)
   }
+  ###########################
+  if(check_eset){
+    check_eset(eset1)
+    check_eset(eset2)
+  }
+  ###########################
+  if(adjust_eset){
+    feas<-feature_manipulation(data=eset1,is_matrix = T)
+    eset1<-eset1[rownames(eset1)%in%feas,]
 
-  if(log2) eset1<-log2eset(eset1)
-  if(check_eset) check_eset(eset1)
-
-  if(log2) eset2<-log2eset(eset2)
-  if(check_eset) check_eset(eset2)
-
+    feas<-feature_manipulation(data=eset2,is_matrix = T)
+    eset2<-eset2[rownames(eset2)%in%feas,]
+  }
+  ###########################
 
   if(!is.null(eset3)) {
     if(log2)  eset3<-log2eset(eset3)
     if(check_eset) check_eset(eset3)
-    cols<-cols[1:3]
-  }else{
-    cols<-cols[1:2]
+    if(adjust_eset){
+      feas<-feature_manipulation(data=eset3,is_matrix = T)
+      eset3<-eset3[rownames(eset3)%in%feas,]
+    }
   }
 
   if(is.null(eset3)){
     comgene <- intersect(rownames(eset1), rownames(eset2))
     comgene<-comgene[!comgene==""]
     comgene<-comgene[!is.na(comgene)]
-
     combined.expr <- cbind.data.frame(eset1[comgene,],
                                       eset2[comgene,])
-    batch <- data.frame(batch = rep(c("eset1","eset2"), times = c(ncol(eset1),ncol(eset2))))
+    batch <- data.frame("ID" = colnames(combined.expr), "batch" = rep(c("eset1","eset2"), times = c(ncol(eset1),ncol(eset2))))
   }
   ######################
 
@@ -63,56 +72,85 @@ remove_batcheffect<-function(eset1, eset2, eset3 = NULL, log2 = TRUE, check_eset
     combined.expr <- cbind.data.frame(eset1[comgene,],
                                       eset2[comgene,],
                                       eset3[comgene,])
-    batch <- data.frame(batch = rep(c("eset1","eset2","eset3"), times = c(ncol(eset1),ncol(eset2),ncol(eset3))))
+    batch <- data.frame("ID" = colnames(combined.expr), "batch" = rep(c("eset1","eset2","eset3"), times = c(ncol(eset1),ncol(eset2),ncol(eset3))))
+  }
+  ########################################################################
 
+  if(!data_type=="count") {
+
+    message(">>>=== Processing method: sva:: ComBat")
+    modcombat = model.matrix(~ 1, data = batch)
+    combined.expr.combat <- as.data.frame(sva:: ComBat(dat=as.matrix(combined.expr), batch=batch$batch, mod=modcombat))
+    combined.expr.combat <- preprocessCore::normalize.quantiles(as.matrix(combined.expr.combat), keep.names = TRUE)
+    prefix <- data_type
+
+  }else if(data_type=="count"){
+    message(">>>=== Processing method: sva:: ComBat_seq")
+    combined.expr.combat <- sva::ComBat_seq(combined.expr, batch = batch$batch)
+    eset2_tpm <- count2tpm(countMat = combined.expr.combat, idType = id_type, source = "local")
+    eset2_tpm <- log2eset(eset2_tpm)
+    message(">>>=== Count data after proccessing sva::ComBat_seq will be return...")
+    prefix <- "count"
   }
 
-  ######################
+  ########################################################################
+  p1 <-iobr_pca(data = combined.expr,
+                is.matrix = TRUE,
+                scale = TRUE,
+                is.log = TRUE,  #取对数+scale
+                # geom.ind = "point",
+                pdata = batch,
+                id_pdata = "ID",
+                group = "batch",
+                cols = cols,
+                palette = palette,
+                repel = repel,
+                ncp = 3,
+                axes = c(1, 2),
+                addEllipses = TRUE)
 
-  # outfile = file.path(fig.dir, paste("PCA before and after batch effect manipulation", ".pdf",sep=""))
-  # pdf(file=outfile, width = 7, height = 3.5)
+  p2 <-iobr_pca(data = combined.expr.combat,
+                is.matrix = TRUE,
+                scale = TRUE, is.log = TRUE,  #取对数+scale
+                pdata = batch, id_pdata = "ID", group = "batch",
+                cols = cols,
+                palette = palette,
+                repel = repel,
+                ncp = 3, axes = c(1, 2),
+                addEllipses = TRUE)
+  p1 <- p1 + ggtitle(paste0("Data before correction: ", prefix))
+  p2 <- p2 + ggtitle(paste0("Data after correction: ", prefix))
 
-  par(mfcol = c(1,2))
+  if(data_type=="count"){
 
-  if(is.null(labels) & is.null(eset3)){
-    labels <-c("eset1", "eset2")
-  } else if(is.null(labels) & !is.null(eset3)){
-    labels <-c("eset1", "eset2", "eset3")
-  }
+    p3 <-iobr_pca(data = eset2_tpm,
+                  is.matrix = TRUE,
+                  scale = TRUE, is.log = TRUE,  #取对数+scale
+                  pdata = batch, id_pdata = "ID", group = "batch",
+                  cols = cols,
+                  palette = palette,
+                  repel = repel,
+                  ncp = 3, axes = c(1, 2),
+                  addEllipses = TRUE)
+    p3 <- p3 + ggtitle("Data after correction: count2TPM")
 
-  if(!is.null(eset3)){
-    batch_for_pca<-rep(labels, times = c(ncol(eset1),ncol(eset2),ncol(eset3)))
-    table(batch_for_pca)
+    p<- p1|p2|p3
+
   }else{
-    batch_for_pca<-rep(labels, times = c(ncol(eset1),ncol(eset2)))
-    table(batch_for_pca)
+    p<- p1|p2
   }
 
-  batchPCA(indata = t(scale(t(combined.expr))),
-           batch = batch_for_pca,
-           main.title = "Raw PCA for combined expression profile",
-           cols =  cols,
-           showID = F,
-           cex = 0.7,
-           showLegend = T)
-
-
-  modcombat = model.matrix(~ 1, data = batch)
-  combined.expr.combat <- as.data.frame(sva:: ComBat(dat=as.matrix(combined.expr), batch=batch$batch, mod=modcombat))
-
-  batchPCA(indata = t(scale(t(combined.expr.combat))),
-           batch = batch_for_pca,
-           main.title = "Combat PCA for combined expression profile",
-           cols =  cols,
-           showID = F,
-           cex = 0.7,
-           showLegend = T)
-
-  # if(save_plot){
-  #   pdf(paste0(abspath, "PCA-before-and-after-batch-effect.pdf"), width = 6.5, height = 3)
-  # }
-
-  # invisible(dev.off())
+  print(p)
+  ########################################
+  if(!data_type=="count"){
+    num<- 2
+    width <- 2*5
+  }else{
+    num <- 3
+    width <- 3*5
+  }
+  ggsave(p, filename = paste0("0-PCA-of-",num,"-eset.pdf"), width = width, height = 5, path = path$folder_name)
+  ########################################
 
   return(combined.expr.combat)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_pca.R
 \name{iobr_pca}
 \alias{iobr_pca}
-\title{Title}
+\title{Principal Component Analysis (PCA) Visualization Function}
 \usage{
 iobr_pca(
   data,
@@ -51,7 +51,7 @@ iobr_pca(
 \item{addEllipses}{Specifies whether to add concentration ellipses to the plot. Default is TRUE.}
 }
 \description{
-Title
+The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 }
 \author{
 Dongqiang Zeng

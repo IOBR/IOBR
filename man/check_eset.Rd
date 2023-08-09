@@ -4,7 +4,7 @@
 \alias{check_eset}
 \title{Check the value of gene expression set}
 \usage{
-check_eset(eset, print_result = F, estimate_sd = FALSE)
+check_eset(eset, print_result = FALSE, estimate_sd = FALSE)
 }
 \arguments{
 \item{eset}{gene expression set}
