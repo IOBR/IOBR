@@ -14,15 +14,15 @@ count2tpm(
   id = "id",
   gene_symbol = "symbol",
   length = "eff_length",
-  remove_redundancy = "mean"
+  check_data = FALSE
 )
 }
 \arguments{
-\item{countMat}{A read count matrix, with `geneid` as row names and samples as columns.}
+\item{countMat}{A read count matrix, with gene names as row names and samples as columns.}
 
 \item{idType}{Type of gene id. "Ensembl" "ENTREZ","SYMBOL"}
 
-\item{org}{Organism, `hsa` or `mmus`}
+\item{org}{Organism: `hsa` or `mmus`}
 
 \item{source}{default is "local". Other option is `biomart`. user can also provide `effLength` manually, if `idType` is `ensembl`, and source is set to `local`, `effLength` was provided by IOBR which was estimated by function `getGeneLengthAndGCContent` of EDASeq package at 2023-02-10.}
 
@@ -33,8 +33,6 @@ count2tpm(
 \item{gene_symbol}{column name of gene symbol}
 
 \item{length}{column name of gene length}
-
-\item{remove_redundancy}{default is mean, other options are `sd`, `mean` or `median`}
 }
 \value{
 A TPM expression profile.
