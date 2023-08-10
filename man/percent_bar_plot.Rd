@@ -2,7 +2,7 @@
 % Please edit documentation in R/percent_bar.R
 \name{percent_bar_plot}
 \alias{percent_bar_plot}
-\title{percent_bar_plot}
+\title{Function to create a percent bar plot.}
 \usage{
 percent_bar_plot(
   input,
@@ -13,6 +13,7 @@ percent_bar_plot(
   palette = NULL,
   title = NULL,
   axis_angle = 0,
+  coord_flip = FALSE,
   add_Freq = TRUE,
   Freq = NULL,
   size_freq = 8,
@@ -24,28 +25,40 @@ percent_bar_plot(
 )
 }
 \arguments{
-\item{input}{data frame}
+\item{input}{Input data frame.}
 
-\item{x}{group in x axis}
+\item{x}{Name of the x-axis variable.}
 
-\item{y}{group in y axis}
+\item{y}{Name of the y-axis variable.}
 
-\item{color}{colors}
+\item{subset.x}{Optional subset of x-axis values.}
 
-\item{palette}{palette for box}
+\item{color}{Optional color palette for the bars.}
 
-\item{title}{title}
+\item{palette}{Optional palette type for color selection.}
 
-\item{axis_angle}{range from [0,90]}
+\item{title}{Optional title for the plot.}
+
+\item{axis_angle}{Optional angle for the axis labels. range from [0,90]}
+
+\item{coord_flip}{Boolean indicating whether to flip the x and y axes.}
 
 \item{add_Freq}{default is true for data frame}
 
-\item{Freq}{column name of Frequency}
+\item{Freq}{Optional name for the frequency column.}
 
-\item{add_sum}{default is TRUE}
+\item{size_freq}{Size of the frequency labels.}
 
-\item{round.num}{}
+\item{legend.size}{Size of the legend.}
+
+\item{legend.size.text}{Size of the legend text.}
+
+\item{add_sum}{Boolean indicating whether to add the sum to the x-axis labels.}
+
+\item{print_result}{Boolean indicating whether to print the result data frame.}
+
+\item{round.num}{Number of decimal places to round the proportion column.}
 }
 \description{
-percent_bar_plot
+Function to create a percent bar plot.
 }

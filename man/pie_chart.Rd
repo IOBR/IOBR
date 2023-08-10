@@ -19,7 +19,7 @@ pie_chart(
 )
 }
 \arguments{
-\item{input}{data frame}
+\item{input}{Input data frame.}
 
 \item{var}{target}
 

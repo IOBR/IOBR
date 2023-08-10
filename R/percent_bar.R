@@ -4,24 +4,25 @@
 
 
 
-#' percent_bar_plot
+#' Function to create a percent bar plot.
 #'
-#' @param input data frame
-#' @param x group in x axis
-#' @param y group in y axis
-#' @param color colors
-#' @param title title
-#' @param palette palette for box
-#' @param axis_angle range from [0,90]
+#' @param input Input data frame.
+#' @param x Name of the x-axis variable.
+#' @param y Name of the y-axis variable.
+#' @param color Optional color palette for the bars.
+#' @param title Optional title for the plot.
+#' @param palette Optional palette type for color selection.
+#' @param axis_angle Optional angle for the axis labels. range from [0,90]
 #' @param add_Freq default is true for data frame
-#' @param Freq column name of Frequency
-#' @param size_freq
-#' @param add_sum default is TRUE
-#' @param subset.x
-#' @param legend.size
-#' @param legend.size.text
-#' @param print_result
-#' @param round.num
+#' @param Freq Optional name for the frequency column.
+#' @param size_freq Size of the frequency labels.
+#' @param add_sum Boolean indicating whether to add the sum to the x-axis labels.
+#' @param subset.x Optional subset of x-axis values.
+#' @param legend.size Size of the legend.
+#' @param legend.size.text Size of the legend text.
+#' @param print_result Boolean indicating whether to print the result data frame.
+#' @param round.num Number of decimal places to round the proportion column.
+#' @param coord_flip Boolean indicating whether to flip the x and y axes.
 #'
 #' @return
 #' @export
@@ -33,6 +34,7 @@ percent_bar_plot<-function(input, x, y,
                            palette          = NULL,
                            title            = NULL,
                            axis_angle       = 0,
+                           coord_flip       = FALSE,
                            add_Freq         = TRUE,
                            Freq             = NULL,
                            size_freq        = 8,
@@ -98,12 +100,16 @@ percent_bar_plot<-function(input, x, y,
     xlab(NULL)
 
   if(axis_angle==0){
-    mytheme<-design_mytheme(axis_text_size = 20,axis_angle = axis_angle, hjust = 0.5, legend.size = legend.size, legend.size.text = legend.size.text)
+    mytheme<-design_mytheme(axis_text_size = 20,axis_angle = 0, hjust = 0.5, legend.size = legend.size, legend.size.text = legend.size.text)
   }else{
-    mytheme<-design_mytheme(axis_text_size = 20,axis_angle = axis_angle, hjust = 1, legend.size = legend.size, legend.size.text = legend.size.text)
+      mytheme<-design_mytheme(axis_text_size = 20,axis_angle = axis_angle, hjust = 1, legend.size = legend.size, legend.size.text = legend.size.text)
+      message(">>>=== When the coordinates are inverted, axis_angle can't fulfil its function")
   }
 
   pp<-c+mytheme
+  if(coord_flip){
+    pp<- pp+coord_flip()
+  }
   print(pp)
   return(pp)
 }
@@ -115,7 +121,7 @@ percent_bar_plot<-function(input, x, y,
 
 #' pie_chart
 #'
-#' @param input data frame
+#' @param input Input data frame.
 #' @param var target
 #' @param color
 #' @param palette
