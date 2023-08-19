@@ -26,6 +26,8 @@
 #' @param column_title  title of column
 #' @param row_title title of row
 #' @param scale default is FALSE
+#' @param condiction
+#' @param id_condiction
 #'
 #' @return
 #' @export
@@ -35,6 +37,8 @@ sig_heatmap<-function(input,
                       ID             = "ID",
                       features,
                       group,
+                      condiction            = NULL,
+                      id_condiction         = "vars",
                       scale                 = FALSE,
                       palette               = 2,
                       palette_group         = "jama",
@@ -77,6 +81,14 @@ sig_heatmap<-function(input,
 
   pf_long_group <- tidyr::pivot_longer(input, 3:ncol(input), names_to = "variables",values_to = "value")
 
+
+  if(!is.null(condiction)){
+    colnames(condiction)[which(colnames(condiction)==id_condiction)]<-"vars"
+    condiction <- condiction[,c("vars", "condiction")]
+    pf_long_group <- merge(pf_long_group, condiction, by.x = "variables", by.y = "vars", all.x = TRUE, all.y = FALSE)
+    pf_long_group$condiction  <- ifelse(is.na(pf_long_group$condiction), "others", pf_long_group$condiction)
+    print(head(pf_long_group))
+  }
   ###################################################
 
 
@@ -100,12 +112,21 @@ sig_heatmap<-function(input,
     }
   }
 
-  target_level<- unique(as.character(pf_long_group$target_group))
-  target_level<-target_level[!is.na(target_level)]
+  if(!is.null(condiction)){
 
-  n<- length(target_level)
+    target_level1<- unique(as.character(pf_long_group$condiction))
+    target_level1<-target_level1[!is.na(target_level1)]
+
+    n<- length(target_level1)
+    # print(n)
+    color_box1<-color_box[1:n]
+  }
+
+  target_level2<- unique(as.character(pf_long_group$target_group))
+  target_level2<-target_level2[!is.na(target_level2)]
+  n<- length(target_level2)
   # print(n)
-  color_box<-color_box[1:n]
+  color_box2<-color_box[1:n]
   # print(color_box)
   ####################################################
  if(scale){
@@ -116,27 +137,44 @@ sig_heatmap<-function(input,
    scale = "none"
  }
 
-  pp<-pf_long_group %>%
-    dplyr:: group_by(target_group) %>%
-    tidyHeatmap:: heatmap(
-      .column           = idd,
-      .row              = variables,
-      .value            = value,
-      palette_grouping  = list(c(color_box)),
-      scale             = scale,
-      column_title      = column_title,
-      row_title         = row_title,
+  ####################################################
+  if(is.null(condiction)){
+    pp<-pf_long_group %>%
+      dplyr:: group_by(target_group) %>%
+      tidyHeatmap:: heatmap(
+        .column           = idd,
+        .row              = variables,
+        .value            = value,
+        palette_grouping  = list(c(color_box2)),
+        scale             = scale,
+        column_title      = column_title,
+        row_title         = row_title,
+        # annotation      = group2,
+        palette_value     = heatmap_col,
+        show_column_names = show_heatmap_col_name,
+        column_names_gp   = grid::gpar(fontsize = size_col),
+        row_names_gp      = grid::gpar(fontsize = size_row),
+        column_names_rot  = angle_col)
+  }else{
 
-      # annotation      = group2,
-      palette_value     = heatmap_col,
-      show_column_names = show_heatmap_col_name,
-      column_names_gp   = grid::gpar(fontsize = size_col),
-      row_names_gp      = grid::gpar(fontsize = size_row),
-      column_names_rot  = angle_col)
+    pp<-pf_long_group %>%
+      dplyr:: group_by(target_group, condiction) %>%
+      tidyHeatmap:: heatmap(
+        .column           = idd,
+        .row              = variables,
+        .value            = value,
+        palette_grouping  = list(c(color_box1),c(color_box2)),
+        scale             = scale,
+        column_title      = column_title,
+        row_title         = row_title,
+        # annotation      = group2,
+        palette_value     = heatmap_col,
+        show_column_names = show_heatmap_col_name,
+        column_names_gp   = grid::gpar(fontsize = size_col),
+        row_names_gp      = grid::gpar(fontsize = size_row),
+        column_names_rot  = angle_col)
+  }
 
-  # if(!is.null(add_anno)){
-  #   pp<-pp|>add_tile(add_anno, show_legend = TRUE)
-  # }
 
   if(show_plot) print(pp)
 
