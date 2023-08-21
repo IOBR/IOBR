@@ -27,9 +27,11 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
  if(is.null(path)) path <- "Combat_PCA"
  path <- creat_folder(path)
  #######################################################
-  if(log2){
-    eset2<-log2eset(eset2)
-    eset1<-log2eset(eset1)
+  if(!data_type=="count"){
+    if(log2){
+      eset2<-log2eset(eset2)
+      eset1<-log2eset(eset1)
+    }
   }
   ###########################
   if(check_eset){
@@ -59,6 +61,8 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
     comgene <- intersect(rownames(eset1), rownames(eset2))
     comgene<-comgene[!comgene==""]
     comgene<-comgene[!is.na(comgene)]
+
+    message(paste0(">>>== The two expression matrices share ", length(comgene), " features in common. "))
     combined.expr <- cbind.data.frame(eset1[comgene,],
                                       eset2[comgene,])
     batch <- data.frame("ID" = colnames(combined.expr), "batch" = rep(c("eset1","eset2"), times = c(ncol(eset1),ncol(eset2))))
@@ -69,6 +73,8 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
     comgene <- intersect(intersect(rownames(eset1), rownames(eset2)), rownames(eset3))
     comgene<-comgene[!comgene==""]
     comgene<-comgene[!is.na(comgene)]
+
+    message(paste0(">>>== The three expression matrices share ", length(comgene), " features in common. "))
     combined.expr <- cbind.data.frame(eset1[comgene,],
                                       eset2[comgene,],
                                       eset3[comgene,])
@@ -86,7 +92,8 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
 
   }else if(data_type=="count"){
     message(">>>=== Processing method: sva:: ComBat_seq")
-    combined.expr.combat <- sva::ComBat_seq(combined.expr, batch = batch$batch)
+    combined.expr.combat <- sva::ComBat_seq(as.matrix(combined.expr), batch = batch$batch)
+    # print(head(combined.expr.combat))
     eset2_tpm <- count2tpm(countMat = combined.expr.combat, idType = id_type, source = "local")
     eset2_tpm <- log2eset(eset2_tpm)
     message(">>>=== Count data after proccessing sva::ComBat_seq will be return...")
