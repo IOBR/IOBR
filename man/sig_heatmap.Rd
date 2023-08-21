@@ -9,6 +9,8 @@ sig_heatmap(
   ID = "ID",
   features,
   group,
+  condiction = NULL,
+  id_condiction = "vars",
   scale = FALSE,
   palette = 2,
   palette_group = "jama",
@@ -36,6 +38,8 @@ sig_heatmap(
 \item{features}{features}
 
 \item{group}{category}
+
+\item{id_condiction}{}
 
 \item{scale}{default is FALSE}
 
