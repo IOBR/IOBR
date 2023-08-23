@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_heatmap.R
 \name{sig_heatmap}
 \alias{sig_heatmap}
-\title{simple heatmap}
+\title{sig_heatmap}
 \usage{
 sig_heatmap(
   input,
@@ -11,6 +11,7 @@ sig_heatmap(
   group,
   condiction = NULL,
   id_condiction = "vars",
+  col_condiction = "condiction",
   scale = FALSE,
   palette = 2,
   palette_group = "jama",
@@ -33,48 +34,52 @@ sig_heatmap(
 \arguments{
 \item{input}{data frame with `ID`, `group` and features}
 
-\item{ID}{default is ID}
+\item{ID}{This parameter specifies the column name in the input data that represents the unique identifier. The default value is "ID".}
 
-\item{features}{features}
+\item{features}{This parameter is a vector of column names representing the features to be used in the heatmap.}
 
-\item{group}{category}
+\item{group}{This parameter is a column name in the input data that represents the grouping variable.}
 
-\item{id_condiction}{}
+\item{condiction}{This parameter is an optional data frame that defines additional conditions to be applied in the heatmap. It should have two columns: one specifying the variables and another specifying the conditions. The default value is NULL.}
 
-\item{scale}{default is FALSE}
+\item{id_condiction}{This parameter specifies the column name in the condiction data frame that represents the variables. The default value is "vars".}
 
-\item{palette}{default is 2, options: 1,2,3}
+\item{col_condiction}{This parameter specifies the column name in the condiction data frame that represents the conditions. The default value is "condiction".}
 
-\item{palette_group}{default is `jama`}
+\item{scale}{This parameter specifies whether to scale the heatmap by column. If set to TRUE, the heatmap will be scaled by column. The default value is FALSE.}
 
-\item{show_col}{show color}
+\item{palette}{This parameter specifies the palette to be used in the heatmap. It can be a numeric value representing the palette index or a string specifying the palette name. The default value is 2.}
 
-\item{show_palettes}{show palettes}
+\item{palette_group}{This parameter specifies the palette group to be used in the heatmap. It should be a string representing the palette group name. The default value is "jama".}
 
-\item{cols_group}{user can define the colors of group}
+\item{show_col}{This parameter specifies whether to show the color boxes in the heatmap. If set to TRUE, the color boxes will be shown. The default value is FALSE.}
 
-\item{show_plot}{show plot}
+\item{show_palettes}{This parameter specifies whether to show the available palettes. If set to TRUE, the available palettes will be shown. The default value is FALSE.}
 
-\item{width}{default is 8}
+\item{cols_group}{This parameter is a vector of colors to be used for the grouping variable. If not specified, the colors will be randomly assigned.}
 
-\item{height}{height of figure}
+\item{show_plot}{This parameter specifies whether to show the resulting heatmap plot. If set to TRUE, the plot will be shown. The default value is TRUE.}
 
-\item{size_col}{font size of column name}
+\item{width}{This parameter specifies the width of the resulting heatmap plot in inches. The default value is 8.}
 
-\item{size_row}{font size of row name}
+\item{height}{This parameter specifies the height of the resulting heatmap plot in inches. If not specified, the height will be calculated based on the number of features.}
 
-\item{angle_col}{angle of column name}
+\item{size_col}{This parameter specifies the font size of the column names in the heatmap plot. The default value is 10.}
 
-\item{column_title}{title of column}
+\item{size_row}{This parameter specifies the font size of the row names in the heatmap plot. The default value is 8.}
 
-\item{row_title}{title of row}
+\item{angle_col}{This parameter specifies the rotation angle of the column names in the heatmap plot. The default value is 90.}
 
-\item{show_heatmap_col_name}{show heat map column name}
+\item{column_title}{This parameter specifies the title of the column in the heatmap plot. If not specified, no title will be displayed.}
 
-\item{path}{save path, folder name}
+\item{row_title}{This parameter specifies the title of the row in the heatmap plot. If not specified, no title will be displayed.}
 
-\item{index}{default is null}
+\item{show_heatmap_col_name}{This parameter specifies whether to show the column names in the heatmap plot. If set to TRUE, the column names will be shown. The default value is FALSE.}
+
+\item{path}{This parameter specifies the directory path where the resulting heatmap plot will be saved. If not specified, a default path will be used.}
+
+\item{index}{default is nullThis parameter specifies the index number to be added to the filename of the resulting heatmap plot. If not specified, the index will be set to 1.}
 }
 \description{
-simple heatmap
+The sig_heatmap function is used to generate a heatmap plot based on input data, grouping variables, and optional conditions. The function allows customization of various parameters such as palette selection, scaling, color boxes, plot dimensions, and more. It provides flexibility in visualizing relationships between variables and groups in a concise and informative manner.
 }
