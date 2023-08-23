@@ -20,6 +20,8 @@
 #' @return
 #' @export
 #' @author Dongqiang Zeng
+#' @references Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078
+#' @references Leek, J. T., Johnson, W. E., Parker, H. S., Jaffe, A. E., & Storey, J. D. (2012). The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics, 28(6), 882-883.
 #' @examples
 remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = c("array", "count", "tpm"), cols = "normal", palette = "jama",
                                log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = "Result_PCA"){
