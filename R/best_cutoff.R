@@ -50,6 +50,9 @@ best_cutoff<-function(pdata, variable, time = "time",status = "status",PrintResu
   if(PrintResult) {
     print(list(best_cutoff=aa,cox_continuous_object=bb,summary_binary_variable = cc,cox_binary_object=dd))
   }
+
+  colnames(pdata)[which(colnames(pdata)=="time")]<-time
+  colnames(pdata)[which(colnames(pdata)=="status")]<-status
   return(pdata)
 
 }

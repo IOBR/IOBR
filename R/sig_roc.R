@@ -71,7 +71,9 @@ sig_roc<-function(data,
                        main = main ,
                        col=cols[2],
                        lwd=1.5,
-                       legacy.axes=T)
+                       legacy.axes=T,
+                       xlab = "False Positive Rate",
+                       ylab = "True Positive Rate")
 
   ci.lower <- round(as.numeric(x$ci[1]),3)
   ci.upper <- round(as.numeric(x$ci[3]),3)
@@ -86,7 +88,9 @@ sig_roc<-function(data,
                   ci         =TRUE,
                   col        =cols[i],
                   lwd        =2,
-                  legacy.axes=T)
+                  legacy.axes=T,
+                  xlab = "False Positive Rate",
+                  ylab = "True Positive Rate")
 
     ci.lower <- round(as.numeric(x$ci[1]),3)
     ci.upper <- round(as.numeric(x$ci[3]),3)

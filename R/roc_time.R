@@ -253,7 +253,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 
   }
 
-  p<- p + design_mytheme(axis_angle = 0, hjust = 0.5)
+  p<- p + design_mytheme(axis_angle = 0, hjust = 0.5, axis_title_size = 1.7)
   # print(p)
   ggsave(p, filename = paste0(index,"-", main,"-ROC-time",".", fig.type),
          width = width ,height = height, path = path$folder_name)
