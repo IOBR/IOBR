@@ -8,7 +8,7 @@
   invisible(suppressPackageStartupMessages(library("tidyHeatmap")))
 
   invisible(suppressPackageStartupMessages(
-    sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2",
+    sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "clusterProfiler", "patchwork",
              "ggpubr","limma","limSolve","preprocessCore","e1071","GSVA"),
            requireNamespace, quietly = TRUE)
     ))
@@ -20,9 +20,10 @@
 .onAttach <- function(libname, pkgname) {
   pkgVersion <- packageDescription(pkgname, fields="Version")
   msg <- paste0("==========================================================================\n",
-                " ", pkgname, " v", pkgVersion, "  ",
+                "  ", pkgname, " v", pkgVersion, "  Immuno-Oncology Biological Research ", "\n",
 
-                "  For help: https://github.com/IOBR/IOBR/issues", "\n\n")
+                "  For Tutorial: https://iobr.github.io/book/", "\n",
+                "  For Help: https://github.com/IOBR/IOBR/issues", "\n\n")
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
                     " DQ Zeng, ZL Ye, RF Sheng, GC Yu, Y Xiong …, WJ Liao*.\n",

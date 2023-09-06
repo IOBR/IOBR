@@ -17,10 +17,12 @@ Depends:
   survival,
   ComplexHeatmap,
   tidyHeatmap,
-  R(>= 3.5.0)
+  clusterProfiler,
+  patchwork,
+  survminer, 
+  R(>= 3.6.0)
 Imports: 
   matrixStats,
-  survminer,
   corrplot,
   e1071,
   preprocessCore,

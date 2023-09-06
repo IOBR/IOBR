@@ -1,8 +1,9 @@
 
 
 
-#' Signature GSEA
+#' sig_gsea - Perform Gene Set Enrichment Analysis
 #'
+#' @description The sig_gsea function conducts Gene Set Enrichment Analysis (GSEA) to identify significant gene sets based on differential gene expression data. It allows for customization of various parameters to tailor the analysis to specific needs. This function performs GSEA using the fgsea package and provides visualizations and results in the form of tables and plots. It also supports the utilization of user-defined gene sets or the use of predefined gene sets from the Molecular Signatures Database (MSigDB). The function further allows for customization of parameters such as organism, gene symbol type, visualization color palette, and significance thresholds. The results can be saved in Excel format, and plots can be saved in various image formats.
 #' @param deg Differential expressed genes object, typically a data frame that contains gene symbols, log fold changes, and other relevant information.
 #' @param genesets This parameter allows you to specify a custom set of gene sets to be used in the enrichment analysis. If not provided, the function will use the gene sets available in the "msigdb" database based on the selected organism.
 #' @param path The path parameter represents the location where the enrichment analysis results will be stored. If not specified, a default path named "1-GSEA-result" will be created in the current working directory.
@@ -128,7 +129,7 @@ sig_gsea <-function(deg,
 
     ##################################################
     if(is.null(category)){
-      message(">>>---Category is NULL, default is Hallmark gene sets...")
+      message(">>>--- Category is NULL, default is Hallmark gene sets...")
       category = "H"
     }
     term2genes <- msigdbr::msigdbr(species = species, category = category, subcategory = subcategory)
@@ -209,14 +210,16 @@ sig_gsea <-function(deg,
     # gseacol<- palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
     gseacol <- get_cols(palette = palette_gsea, show_col = FALSE)
     ###############################################
-    GSEAPLOT<-enrichplot:: gseaplot2(hall_gsea,
-                                     paths,
+    GSEAPLOT<-enrichplot:: gseaplot2(x = hall_gsea,
+                                    geneSetID =  paths,
                                      subplots     =c(1,2),
                                      color        = gseacol[1:length(paths)],
                                      pvalue_table = TRUE)
 
-    ggplot2::ggsave(filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type), plot = GSEAPLOT, path = file_store,
-           width = 11, height = 7, dpi = 300)
+    ggplot2::ggsave(filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type),
+                    plot = GSEAPLOT, path = file_store,
+                    width = 11, height = 7, dpi = 300)
+
     if(show_plot) print(GSEAPLOT)
     ###############################################
 
@@ -233,12 +236,14 @@ sig_gsea <-function(deg,
 
 
         ###############################################
-        gseaplot<-enrichplot:: gseaplot2(hall_gsea,
-                                         single_path,
+        gseaplot<-enrichplot:: gseaplot2(x = hall_gsea,
+                                         geneSetID = single_path,
                                          subplots     =c(1,2),
                                          color        = gseacol[i],
                                          pvalue_table = TRUE)
-        gseaplot<-gseaplot+design_mytheme(axis_angle = 0, hjust = 0.5)
+        gseaplot<-gseaplot
+        # +design_mytheme(axis_angle = 0, hjust = 0.5)
+
         if(show_plot) print(gseaplot)
         ggplot2::ggsave(filename = paste0(i+4,"-GSEA_plot-",single_path,".",fig.type), plot = gseaplot,
                         path = file_store, width = 11,height = 7.5, dpi = 300)
