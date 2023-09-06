@@ -4,7 +4,13 @@
 \alias{batch_surv}
 \title{Batch survival analysis on a data frame with multiple variables}
 \usage{
-batch_surv(pdata, variable, time = "time", status = "status")
+batch_surv(
+  pdata,
+  variable,
+  time = "time",
+  status = "status",
+  best_cutoff = FALSE
+)
 }
 \arguments{
 \item{pdata}{data with follow up data and multiple variables}
@@ -14,6 +20,8 @@ batch_surv(pdata, variable, time = "time", status = "status")
 \item{time}{survival time}
 
 \item{status}{survival status}
+
+\item{best_cutoff}{}
 }
 \description{
 @description  Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis

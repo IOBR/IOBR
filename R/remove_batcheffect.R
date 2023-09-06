@@ -17,7 +17,7 @@
 #' @param cols Color scale to use for the PCA plot. Default is 'normal'.
 #' @param repel whether to add labels to the PCA plot. Default is FALSE.
 #'
-#' @return
+#' @return eset after batch correction
 #' @export
 #' @author Dongqiang Zeng
 #' @references Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078
@@ -103,19 +103,19 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
   }
 
   ########################################################################
-  p1 <-iobr_pca(data = combined.expr,
-                is.matrix = TRUE,
-                scale = TRUE,
-                is.log = TRUE,  #取对数+scale
-                # geom.ind = "point",
-                pdata = batch,
-                id_pdata = "ID",
-                group = "batch",
-                cols = cols,
-                palette = palette,
-                repel = repel,
-                ncp = 3,
-                axes = c(1, 2),
+  p1 <-iobr_pca(data        = combined.expr,
+                is.matrix   = TRUE,
+                scale       = TRUE,
+                is.log      = TRUE,  #取对数+scale
+                # geom.ind  = "point",
+                pdata       = batch,
+                id_pdata    = "ID",
+                group       = "batch",
+                cols        = cols,
+                palette     = palette,
+                repel       = repel,
+                ncp         = 3,
+                axes        = c(1, 2),
                 addEllipses = TRUE)
 
   p2 <-iobr_pca(data = combined.expr.combat,
@@ -144,6 +144,7 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
     p3 <- p3 + ggtitle("Data after correction: count2TPM")
 
     p<- p1|p2|p3
+    # combined.expr.combat <- eset2_tpm
 
   }else{
     p<- p1|p2

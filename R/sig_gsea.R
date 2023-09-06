@@ -42,14 +42,14 @@ sig_gsea <-function(deg,
                     msigdb            = TRUE,
                     category          = "H",
                     subcategory       = NULL,
-                    palette_bar       = "nrc",
+                    palette_bar       = "jama",
                     palette_gsea      = 2,
                     show_bar          = 10,
                     show_col          = FALSE,
                     show_plot         = FALSE,
                     show_gsea         = 8,
                     show_path_n       = 20,
-                    plot_single_sig   = T,
+                    plot_single_sig   = FALSE,
                     project           = "custom_sig",
                     minGSSize         = 10,
                     maxGSSize         = 500,
@@ -172,7 +172,8 @@ sig_gsea <-function(deg,
   ####################################################
   hall_gsea <-clusterProfiler::GSEA(genelist,
                                     exponent      = 1,
-                                    nPerm         = 1000,
+                                    # nPerm         = 1000,
+                                    eps           = 0,
                                     minGSSize     = minGSSize,
                                     maxGSSize     = maxGSSize,
                                     pvalueCutoff  = 0.05,
@@ -192,7 +193,6 @@ sig_gsea <-function(deg,
   writexl::write_xlsx(as.data.frame(hall_gsea),paste0(abspath,"1-",category,"_GSEA_significant_results.xlsx"))
   # save(hall_gsea,file = paste(abspath,"2-",category,"_GSEA_result.RData",sep = ""))
 
-
   ###########################################
   if(dim(hall_gsea)[1] > 0){
 
@@ -206,8 +206,8 @@ sig_gsea <-function(deg,
     print(paste(1:length(paths),paths,collapse = "; "))
     ###############################################
 
-    gseacol<- palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
-
+    # gseacol<- palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
+    gseacol <- get_cols(palette = palette_gsea, show_col = FALSE)
     ###############################################
     GSEAPLOT<-enrichplot:: gseaplot2(hall_gsea,
                                      paths,
@@ -215,8 +215,8 @@ sig_gsea <-function(deg,
                                      color        = gseacol[1:length(paths)],
                                      pvalue_table = TRUE)
 
-    ggsave(GSEAPLOT,path = file_store, filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type),
-           width = 10, height = 7, dpi = 300)
+    ggplot2::ggsave(filename = paste0("2-",category,"_Top_",show_gsea,"_GSEA_plot.",fig.type), plot = GSEAPLOT, path = file_store,
+           width = 11, height = 7, dpi = 300)
     if(show_plot) print(GSEAPLOT)
     ###############################################
 
@@ -240,9 +240,8 @@ sig_gsea <-function(deg,
                                          pvalue_table = TRUE)
         gseaplot<-gseaplot+design_mytheme(axis_angle = 0, hjust = 0.5)
         if(show_plot) print(gseaplot)
-        ggsave(gseaplot,path = file_store,
-               filename = paste0(i+4,"-GSEA_plot-",single_path,".",fig.type),
-               width = 10,height = 7,dpi = 300)
+        ggplot2::ggsave(filename = paste0(i+4,"-GSEA_plot-",single_path,".",fig.type), plot = gseaplot,
+                        path = file_store, width = 11,height = 7.5, dpi = 300)
 
       }
 
@@ -252,27 +251,29 @@ sig_gsea <-function(deg,
     ################################################
     down_gogo<-hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore < 0,]
     if(!dim(down_gogo)[1]==0) down_gogo$group=-1
-    down_gogo<-down_gogo[1:15,]
+    down_gogo<-down_gogo[1:show_path_n,]
     down_gogo<-down_gogo[!is.na(down_gogo$p.adjust),]
 
     ################################################
     up_gogo<-hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore > 0,]
     if(!dim(up_gogo)[1]==0) up_gogo$group= 1
-    up_gogo<-up_gogo[1:15,]
+    up_gogo<-up_gogo[1:show_path_n,]
     up_gogo<-up_gogo[!is.na(up_gogo$p.adjust),]
 
 
    if(print_bar){
     ################################################
+
     gsea_bar<-enrichment_barplot(up_terms   = up_gogo,
                                  down_terms = down_gogo,
                                  palette    = palette_bar,
                                  title      = "GSEA-Enrichment",
                                  width_wrap = 30)
 
-    ggsave(gsea_bar,path = file_store,
-           filename = paste0('3-', category,'_GSEA_barplot.',fig.type),
-           width = 6.5,height = 10)
+    n_bar <- c(dim(up_gogo)[1]+ dim(down_gogo)[1])
+    height_bar <- 0.5*n_bar + 3
+   ggplot2:: ggsave(filename = paste0('3-', category,'_GSEA_barplot.',fig.type), plot = gsea_bar,
+                    path = file_store, width = 6,height = height_bar)
 
     if(show_plot) print(gsea_bar)
     ######################################################

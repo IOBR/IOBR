@@ -44,6 +44,9 @@ remove_batcheffect(
 
 \item{path}{Directory where the results should be saved. If it is NULL, results will be saved in a folder "Combat_PCA".}
 }
+\value{
+eset after batch correction
+}
 \description{
 Removing batch effect of two or three expression set
 }
