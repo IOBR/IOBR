@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_gsea.R
 \name{sig_gsea}
 \alias{sig_gsea}
-\title{Signature GSEA}
+\title{sig_gsea - Perform Gene Set Enrichment Analysis}
 \usage{
 sig_gsea(
   deg,
@@ -81,7 +81,7 @@ sig_gsea(
 \item{print_bar}{Default is TRUE}
 }
 \description{
-Signature GSEA
+The sig_gsea function conducts Gene Set Enrichment Analysis (GSEA) to identify significant gene sets based on differential gene expression data. It allows for customization of various parameters to tailor the analysis to specific needs. This function performs GSEA using the fgsea package and provides visualizations and results in the form of tables and plots. It also supports the utilization of user-defined gene sets or the use of predefined gene sets from the Molecular Signatures Database (MSigDB). The function further allows for customization of parameters such as organism, gene symbol type, visualization color palette, and significance thresholds. The results can be saved in Excel format, and plots can be saved in various image formats.
 }
 \examples{
 画出P_value的barplot
