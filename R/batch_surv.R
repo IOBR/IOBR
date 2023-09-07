@@ -4,20 +4,21 @@
 
 
 
-##' Batch survival analysis on a data frame with multiple variables
+##' batch_surv - Batch Survival Analysis Function
 ##'
-##'  @description  Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis
+##'  @description  This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
 ##'
-##' @param pdata data with follow up data and multiple variables
-##' @param time  survival time
-##' @param status survival status
-##' @param variable column names of included variables
-##' @param best_cutoff
+##' @param pdata The data frame containing the data.
+##' @param time  The column name representing time. Default is "time".
+##' @param status The column name representing status. Default is "status".
+##' @param variable The variables to perform survival analysis on.
+##' @param best_cutoff Whether to use the best cutoff for survival analysis. Default is FALSE. If set to TRUE, the function will calculate hazard ratios and confidence intervals for the binary version of the variables using the best cutoff method.
 ##'
 ##' @author Dongqiang Zeng
 ##' @importFrom  survival coxph
 ##' @importFrom survival Surv
 ##' @export
+##' @return A dataframe containing hazard ratios and confidence intervals.
 ##' @examples
 ##'
 ##' sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable <- c(c(ncol(pdata_stad)+1):ncol(pdata_sig_tme_binary)))
