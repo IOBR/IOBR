@@ -38,7 +38,7 @@ check_eset<-function(eset, print_result = FALSE , estimate_sd = FALSE){
     print(summary(lapply(teset,function(x) max(x))==Inf))
   }
 
-  if(min(eset, na.rm = TRUE)==-Inf | max(eset)== Inf, na.rm = TRUE)  warning(paste0("There are some infinite values in the matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
+  if(min(eset, na.rm = TRUE)== -Inf | max(eset, na.rm = TRUE)== Inf)  warning(paste0("There are some infinite values in the matrix, which may affect the score calculation. You can set parameter 'adjust_eset' as TRUE to avoid these effects"))
 
 
   if(estimate_sd){
