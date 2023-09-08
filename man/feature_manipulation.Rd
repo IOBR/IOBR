@@ -2,24 +2,24 @@
 % Please edit documentation in R/feature_manipulation.R
 \name{feature_manipulation}
 \alias{feature_manipulation}
-\title{Filtering features using multiple methods}
+\title{feature_manipulation - Manipulate features in a matrix or dataframe}
 \usage{
 feature_manipulation(data, feature, is_matrix = FALSE, print_result = FALSE)
 }
 \arguments{
-\item{data}{data with features in the columns}
+\item{data}{The matrix or dataframe containing the features to be manipulated.}
 
-\item{feature}{features with NA or Infinity value}
+\item{feature}{The features to be manipulated. If is_matrix is set to TRUE, feature will be ignored.}
 
-\item{is_matrix}{if input is a matrix, data will be transformed and feature will be row names of original data}
+\item{is_matrix}{Whether the data is in matrix format. Default is FALSE. If set to TRUE, the function will treat data as a matrix and extract the column names as features.}
 
-\item{print_result}{logical variables, if TRUE, feature detail will be printed in the console}
+\item{print_result}{Whether to print the manipulation results. Default is FALSE. If set to TRUE, it will print the results of each manipulation step.}
 }
 \value{
 filtered features
 }
 \description{
-Filtering features using multiple methods
+This function allows for manipulation of features in a given matrix or dataframe. It can remove variables with missing values, non-numeric variables, infinite variables, and variables with zero standard deviation.
 }
 \author{
 Dongqiang Zeng

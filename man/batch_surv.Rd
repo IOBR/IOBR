@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_surv.R
 \name{batch_surv}
 \alias{batch_surv}
-\title{Batch survival analysis on a data frame with multiple variables}
+\title{batch_surv - Batch Survival Analysis Function}
 \usage{
 batch_surv(
   pdata,
@@ -13,18 +13,21 @@ batch_surv(
 )
 }
 \arguments{
-\item{pdata}{data with follow up data and multiple variables}
+\item{pdata}{The data frame containing the data.}
 
-\item{variable}{column names of included variables}
+\item{variable}{The variables to perform survival analysis on.}
 
-\item{time}{survival time}
+\item{time}{The column name representing time. Default is "time".}
 
-\item{status}{survival status}
+\item{status}{The column name representing status. Default is "status".}
 
-\item{best_cutoff}{}
+\item{best_cutoff}{Whether to use the best cutoff for survival analysis. Default is FALSE. If set to TRUE, the function will calculate hazard ratios and confidence intervals for the binary version of the variables using the best cutoff method.}
+}
+\value{
+A dataframe containing hazard ratios and confidence intervals.
 }
 \description{
-@description  Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis
+@description  This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
 }
 \examples{
 

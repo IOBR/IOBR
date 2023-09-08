@@ -2,62 +2,65 @@
 % Please edit documentation in R/iobr_deg.R
 \name{iobr_deg}
 \alias{iobr_deg}
-\title{Differential expressed analyses}
+\title{iobr_deg}
 \usage{
 iobr_deg(
   eset,
-  annoation = annotation_grch38,
+  annotation = NULL,
   pdata,
   group_id = "group",
   pdata_id = "ID",
-  array = TRUE,
+  array = FALSE,
   method = "DESeq2",
-  contrast = c("deg_group", "High", "Low"),
+  contrast = c("High", "Low"),
   path = NULL,
   padj_cutoff = 0.01,
   logfc_cutoff = 0.5,
   volcano_plot = FALSE,
   col_volcano = 1,
   heatmap = TRUE,
-  col_heatmap = 1
+  col_heatmap = 1,
+  parallel = FALSE
 )
 }
 \arguments{
-\item{eset}{Expression set object containing the matrix of gene expression data. Default is NULL.}
+\item{eset}{The gene expression data matrix}
 
-\item{annoation}{The annotation to be used. Default is annotation_grch38.}
+\item{annotation}{(Optional) The annotation object for mapping gene IDs to gene names. Default is NULL.}
 
-\item{pdata}{The data frame containing the sample information.}
+\item{pdata}{The DataFrame containing sample information and group labels.}
 
-\item{group_id}{Specifies the ID of the group. Default is "group".}
+\item{group_id}{The column name in "pdata" that specifies the group labels. Default value is "group".}
 
-\item{pdata_id}{Specifies the ID of the pdata. Default is "ID".}
+\item{pdata_id}{The column name in "pdata" that specifies the sample IDs. Default value is "ID".}
 
-\item{array}{Logical value to specify whether the 'eset' is a microarray data or not. Default is TRUE.}
+\item{array}{Logical value indicating whether to normalize the gene expression data using quantile normalization. Default value is TRUE.}
 
-\item{method}{The method used for DEG analysis: either "DESeq2" or "limma". Default is "DESeq2".}
+\item{method}{The method to be used for differential expression analysis. Options are "DESeq2" or "limma". Default value is "DESeq2".}
 
-\item{contrast}{Specifies groups to apply DESeq2 results() function, it is typically applied to groups of interest in terms of an outcome variable of interest. Default is c("deg_group","High","Low").}
+\item{contrast}{A character vector specifying the contrast for the analysis.  The first and second elements are the names of the two groups being compared. Default value is  "High" and "Low".}
 
-\item{path}{}
+\item{path}{path to save results}
 
-\item{padj_cutoff}{Specifies the cutoff of adjusted p-values. Default is 0.01.}
+\item{padj_cutoff}{The adjusted p-value cutoff for determining significance. Default value is 0.01.}
 
-\item{logfc_cutoff}{Specifies the cutoff of log2 Fold Change. Default is 0.5.}
+\item{logfc_cutoff}{The log2 fold change cutoff for determining significance. Default value is 0.5.}
 
-\item{volcano_plot}{Logical value to specify whether to plot volcano plots or not. Default is FALSE.}
+\item{volcano_plot}{Logical value indicating whether to generate a volcano plot. Default value is FALSE.}
 
-\item{col_volcano}{Specifies the color of the volcano plots. Default is 1.}
+\item{col_volcano}{The color index for plotting the volcano plot. Default value is 1.}
 
-\item{heatmap}{Logical value to specify whether to plot heatmaps or not. Default is TRUE.}
+\item{heatmap}{Logical value indicating whether to generate a heatmap. Default value is TRUE.}
 
-\item{col_heatmap}{Specifies the color of the heatmaps. Default is 1.}
+\item{col_heatmap}{The color index for plotting the heatmap. Default value is 1.}
+
+\item{parallel}{default is FALSE}
 }
 \value{
 DEG object
 }
 \description{
-Differential expressed analyses
+This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
 }
 \author{
 Dongqiang Zeng
