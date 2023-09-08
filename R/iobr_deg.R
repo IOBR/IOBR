@@ -9,7 +9,7 @@
 #' @description This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
 #'
 #' @param eset The gene expression data matrix
-#' @param annoation (Optional) The annotation object for mapping gene IDs to gene names. Default value is "annotation_grch38".
+#' @param annotation (Optional) The annotation object for mapping gene IDs to gene names. Default is NULL.
 #' @param pdata The DataFrame containing sample information and group labels.
 #' @param group_id The column name in "pdata" that specifies the group labels. Default value is "group".
 #' @param pdata_id The column name in "pdata" that specifies the sample IDs. Default value is "ID".
@@ -33,7 +33,7 @@
 #' @examples
 #'
 iobr_deg<-function(eset,
-                   annoation    = annotation_grch38,
+                   annotation    = NULL,
                    pdata,
                    group_id     = "group",
                    pdata_id     = "ID",
@@ -98,23 +98,25 @@ iobr_deg<-function(eset,
     # print(summary(res_tidy))
     #####################################
     message(">>>== Summary of differential gene analysis results \n")
-    message(paste0("Counts of gene: Adj.pvalue < 0.001: >>>  ",sum(res_tidy$padj < 0.001, na.rm=TRUE)))
-    message(paste0("Counts of gene: Adj.pvalue < 0.05: >>>  ",sum(res_tidy$padj < 0.05, na.rm=TRUE)))
-    message(paste0("Counts of gene: Adj.pvalue < 0.1: >>>  ",sum(res_tidy$padj < 0.1, na.rm=TRUE)))
-    message(paste0("Counts of gene: Adj.pvalue < 0.25: >>>  ",sum(res_tidy$padj < 0.25, na.rm=TRUE)))
+    message(paste0("Counts of gene: Adj.pvalue < 0.001:  ",sum(res_tidy$padj < 0.001, na.rm=TRUE)))
+    message(paste0("Counts of gene: Adj.pvalue < 0.05:  ",sum(res_tidy$padj < 0.05, na.rm=TRUE)))
+    message(paste0("Counts of gene: Adj.pvalue < 0.1:  ",sum(res_tidy$padj < 0.1, na.rm=TRUE)))
+    message(paste0("Counts of gene: Adj.pvalue < 0.25:  ",sum(res_tidy$padj < 0.25, na.rm=TRUE)))
 
-    DEG<-res_tidy[order(res_tidy$padj,decreasing = F),]
-    # print(head(DEG))
+    DEG <- res_tidy[order(res_tidy$padj, decreasing = F), ]
+
 
     if(!is.null(annotation)){
       # DEG$row<-substring(DEG$row,1,15)
-      DEG<-merge(DEG, annoation, by.x="row", by.y="ensgene",all = FALSE)
+      DEG <- merge(DEG, annoation, by.x="row", by.y="ensgene",all = FALSE)
 
     }else{
-      DEG <- rownames_to_column(DEG, var = "row")
-      message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg`")
+      # print(head(DEG))
+      # DEG <- rownames_to_column(DEG, var = "row")
+      message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg` \n")
     }
 
+    # print(head(DEG))
     DEG$sigORnot <- ifelse(DEG$log2FoldChange > logfc_cutoff & DEG$padj < padj_cutoff, "Up_regulated",
                            ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT"))
     DEG$label <- ifelse(abs(DEG$log2FoldChange) > logfc_cutoff & DEG$padj < padj_cutoff, "Both",

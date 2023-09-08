@@ -39,13 +39,12 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`, `limSolve`,
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
-depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
-          'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
-          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor", "timeROC","pracma")
+depens<-c('tibble', 'survival', 'survminer', 'limma', "DESeq2","devtools", 'limSolve', 'GSVA', 'e1071', 'preprocessCore', 
+          "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor",  "timeROC", "pracma", "factoextra", 
+          "FactoMineR", "WGCNA", "patchwork", 'ggplot2', "biomaRt", 'ggpubr', 'ComplexHeatmap')
 for(i in 1:length(depens)){
   depen<-depens[i]
-  if (!requireNamespace(depen, quietly = TRUE))
-    BiocManager::install(depen,update = FALSE)
+  if (!requireNamespace(depen, quietly = TRUE))  BiocManager::install(depen,update = FALSE)
 }
 
 ```
@@ -63,7 +62,7 @@ library(IOBR)
 ```
 
 ### 3.Manual
-IOBR pipeline diagram below outlines the data processing flow of this package, and detailed guidance of how to use IOBR could be found in the [GitHub vignette](https://github.com/IOBR/IOBR/tree/master/vignettes) or [HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html).
+IOBR pipeline diagram below outlines the data processing flow of this package, and detailed guidance of how to use IOBR could be found in the [IOBR book](https://iobr.github.io/book/).
 
 ![IOBR logo](./man/figures/IOBR-Package.png)
 

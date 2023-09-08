@@ -8,30 +8,33 @@ microenvironment and signatures for immuno-oncology.
 
 ### 1.Introduction
 
--   1.  IOBR collects 255 published signature gene sets, involving tumor
-        microenvironment, tumor metabolism, m6A, exosomes,
-        microsatellite instability, and tertiary lymphoid structure.
-        Running the function `signature_collection_citation` to attain
-        the source papers. The function `signature_collection` returns
-        the detail signature genes of all given signatures.
+- 1.  IOBR collects 255 published signature gene sets, involving tumor
+      microenvironment, tumor metabolism, m6A, exosomes, microsatellite
+      instability, and tertiary lymphoid structure. Running the function
+      `signature_collection_citation` to attain the source papers. The
+      function `signature_collection` returns the detail signature genes
+      of all given signatures.
 
--   2.  IOBR integrates 8 published methodologies decoding tumor
-        microenvironment (TME) contexture: `CIBERSORT`, `TIMER`,
-        `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
+- 2.  IOBR integrates 8 published methodologies decoding tumor
+      microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`,
+      `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`;
 
--   3.  IOBR adopts three computational methods to calculate the
-        signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
+- 3.  IOBR adopts three computational methods to calculate the signature
+      score, comprising `PCA`,`z-score`, and `ssGSEA`;
 
--   4.  IOBR integrates multiple approaches for variable transition,
-        visualization, batch survival analysis, feature selection, and
-        statistical analysis.
+- 4.  IOBR integrates multiple approaches for variable transition,
+      visualization, batch survival analysis, feature selection, and
+      statistical analysis.
 
--   5.  IOBR also integrates methods for batch visualization of subgroup
-        characteristics.
+- 5.  IOBR also integrates methods for batch visualization of subgroup
+      characteristics.
 
 #### IOBR package workflow
 
-![IOBR logo](./man/figures/IOBR-Workflow.png)
+<figure>
+<img src="./man/figures/IOBR-Workflow.png" alt="IOBR logo" />
+<figcaption aria-hidden="true">IOBR logo</figcaption>
+</figure>
 
 ### 2.Installation
 
@@ -49,14 +52,14 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`,
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
-depens<-c('tibble', 'survival', 'survminer', 'sva', 'limma', "DESeq2","devtools",
-          'limSolve', 'GSVA', 'e1071', 'preprocessCore', 'ggplot2', "biomaRt",
-          'ggpubr', "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor", "timeROC","pracma")
+depens<-c('tibble', 'survival', 'survminer', 'limma', "DESeq2","devtools", 'limSolve', 'GSVA', 'e1071', 'preprocessCore', 
+          "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor",  "timeROC", "pracma", "factoextra", 
+          "FactoMineR", "WGCNA", "patchwork", 'ggplot2', "biomaRt", 'ggpubr', 'ComplexHeatmap')
 for(i in 1:length(depens)){
   depen<-depens[i]
-  if (!requireNamespace(depen, quietly = TRUE))
-    BiocManager::install(depen,update = FALSE)
+  if (!requireNamespace(depen, quietly = TRUE))  BiocManager::install(depen,update = FALSE)
 }
+#> 
 ```
 
 The package is not yet on CRAN or Bioconductor. You can install it from
@@ -65,6 +68,7 @@ Github:
 ``` r
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("IOBR/IOBR")
+#> Warning: 程辑包'tidyHeatmap'是用R版本4.2.3 来建造的
 ```
 
 Library R packages
@@ -77,10 +81,12 @@ library(IOBR)
 
 IOBR pipeline diagram below outlines the data processing flow of this
 package, and detailed guidance of how to use IOBR could be found in the
-[GitHub vignette](https://github.com/IOBR/IOBR/tree/master/vignettes) or
-[HTML vignette](https://iobr.github.io/IOBR/IOBR-VIGNETTE.html).
+[IOBR book](https://iobr.github.io/book/).
 
-![IOBR logo](./man/figures/IOBR-Package.png)
+<figure>
+<img src="./man/figures/IOBR-Package.png" alt="IOBR logo" />
+<figcaption aria-hidden="true">IOBR logo</figcaption>
+</figure>
 
 ## 3.Availabie methods to decode TME contexture
 
@@ -122,37 +128,38 @@ signature_score_calculation_methods
 
 #### Licenses of the signature-esitmation method
 
-| method                                                                   | license                                                  | citation                                                                                                                                                                                                              |
-|--------------------------------------------------------------------------|----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (&gt;= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, <http://www.biomedcentral.com/1471-2105/14/7> |
+| method                                                                   | license                                                | citation                                                                                                                                                                                                              |
+|--------------------------------------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (\>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, <http://www.biomedcentral.com/1471-2105/14/7> |
 
 ## 5.Signature collection
 
 ``` r
 #References of collected signatures
 signature_collection_citation[!duplicated(signature_collection_citation$Journal),]
-#> # A tibble: 19 x 6
-#>    Signatures       `Published year` Journal      Title           PMID  DOI     
-#>    <chr>                       <dbl> <chr>        <chr>           <chr> <chr>   
-#>  1 CD_8_T_effector              2018 Nature       TGFβ attenuate~ 2944~ 10.1038~
-#>  2 TMEscoreA_CIR                2019 Cancer Immu~ Tumor Microenv~ 3084~ 10.1158~
-#>  3 CD8_Rooney_et_al             2015 Cell         Molecular and ~ 2559~ 10.1016~
-#>  4 T_cell_inflamed~             2017 The Journal~ IFN-γ–related ~ 2865~ 10.1172~
-#>  5 MDSC_Wang_et_al              2016 Canccer Dis~ Targeting YAP-~ 2670~ 10.1158~
-#>  6 B_cells_Danaher~             2017 Journal for~ Gene expressio~ 2823~ 10.1186~
-#>  7 Nature_metaboli~             2019 Nature Meta~ Characterizati~ 3198~ 10.1038~
-#>  8 Winter_hypoxia_~             2007 Cancer Rese~ Relation of a ~ 1740~ 10.1158~
-#>  9 Hu_hypoxia_sign~             2019 Molecular B~ The Genome Lan~ 3044~ 10.1093~
-#> 10 MT_exosome                   2019 Molecular T~ An EV-Associat~ 3147~ 10.1016~
-#> 11 SR_exosome                   2017 Scientific ~ Genetic Mutati~ 2838~ 10.1038~
-#> 12 MC_Review_Exoso~             2016 Molcular Ca~ Diagnostic, Pr~ 2718~ 10.1186~
-#> 13 CMLS_Review_Exo~             2018 Cellular an~ Current knowle~ 2873~ 10.1007~
-#> 14 Positive_regula~             2020 Gene Ontolo~ http://geneont~ <NA>  <NA>    
-#> 15 Molecular_Cance~             2020 Molecular C~ m6A regulator-~ <NA>  10.1186~
-#> 16 Ferroptosis                  2020 IOBR         Constructed by~ <NA>  <NA>    
-#> 17 T_cell_accumula~             2018 Nature Medi~ Signatures of ~ 3012~ 10.1038~
-#> 18 Antigen_Process~             2020 Nature Comm~ Pan-cancer Cha~ 3208~ 10.1038~
-#> 19 CD8_T_cells_Bin~             2013 Immunity     Spatio-tempora~ 2413~ 10.1016~
+#> # A tibble: 19 × 6
+#>    Signatures                         `Published year` Journal Title PMID  DOI  
+#>    <chr>                                         <dbl> <chr>   <chr> <chr> <chr>
+#>  1 CD_8_T_effector                                2018 Nature  TGFβ… 2944… 10.1…
+#>  2 TMEscoreA_CIR                                  2019 Cancer… Tumo… 3084… 10.1…
+#>  3 CD8_Rooney_et_al                               2015 Cell    Mole… 2559… 10.1…
+#>  4 T_cell_inflamed_GEP_Ayers_et_al                2017 The Jo… IFN-… 2865… 10.1…
+#>  5 MDSC_Wang_et_al                                2016 Cancce… Targ… 2670… 10.1…
+#>  6 B_cells_Danaher_et_al                          2017 Journa… Gene… 2823… 10.1…
+#>  7 Nature_metabolism_Hypoxia                      2019 Nature… Char… 3198… 10.1…
+#>  8 Winter_hypoxia_signature                       2007 Cancer… Rela… 1740… 10.1…
+#>  9 Hu_hypoxia_signature                           2019 Molecu… The … 3044… 10.1…
+#> 10 MT_exosome                                     2019 Molecu… An E… 3147… 10.1…
+#> 11 SR_exosome                                     2017 Scient… Gene… 2838… 10.1…
+#> 12 MC_Review_Exosome1                             2016 Molcul… Diag… 2718… 10.1…
+#> 13 CMLS_Review_Exosome                            2018 Cellul… Curr… 2873… 10.1…
+#> 14 Positive_regulation_of_exosomal_s…             2020 Gene O… http… <NA>  <NA> 
+#> 15 Molecular_Cancer_m6A                           2020 Molecu… m6A … <NA>  10.1…
+#> 16 Ferroptosis                                    2020 IOBR    Cons… <NA>  <NA> 
+#> 17 T_cell_accumulation_Peng_et_al                 2018 Nature… Sign… 3012… 10.1…
+#> 18 Antigen_Processing_and_Presentati…             2020 Nature… Pan-… 3208… 10.1…
+#> 19 CD8_T_cells_Bindea_et_al                       2013 Immuni… Spat… 2413… 10.1…
+
 #signature groups
 sig_group[1:3]
 #> $tumor_signature
