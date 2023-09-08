@@ -4,23 +4,26 @@
 
 
 
-#' Differential expressed analyses
+#' iobr_deg
 #'
-#' @param eset Expression set object containing the matrix of gene expression data. Default is NULL.
-#' @param annoation The annotation to be used. Default is annotation_grch38.
-#' @param pdata The data frame containing the sample information.
-#' @param group_id Specifies the ID of the group. Default is "group".
-#' @param pdata_id Specifies the ID of the pdata. Default is "ID".
-#' @param array Logical value to specify whether the 'eset' is a microarray data or not. Default is TRUE.
-#' @param method The method used for DEG analysis: either "DESeq2" or "limma". Default is "DESeq2".
-#' @param contrast Specifies groups to apply DESeq2 results() function, it is typically applied to groups of interest in terms of an outcome variable of interest. Default is c("deg_group","High","Low").
-#' @param padj_cutoff Specifies the cutoff of adjusted p-values. Default is 0.01.
-#' @param logfc_cutoff Specifies the cutoff of log2 Fold Change. Default is 0.5.
-#' @param volcano_plot Logical value to specify whether to plot volcano plots or not. Default is FALSE.
-#' @param col_volcano Specifies the color of the volcano plots. Default is 1.
-#' @param heatmap Logical value to specify whether to plot heatmaps or not. Default is TRUE.
-#' @param col_heatmap Specifies the color of the heatmaps. Default is 1.
-#' @param path
+#' @description This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
+#'
+#' @param eset The gene expression data matrix
+#' @param annoation (Optional) The annotation object for mapping gene IDs to gene names. Default value is "annotation_grch38".
+#' @param pdata The DataFrame containing sample information and group labels.
+#' @param group_id The column name in "pdata" that specifies the group labels. Default value is "group".
+#' @param pdata_id The column name in "pdata" that specifies the sample IDs. Default value is "ID".
+#' @param array Logical value indicating whether to normalize the gene expression data using quantile normalization. Default value is TRUE.
+#' @param method The method to be used for differential expression analysis. Options are "DESeq2" or "limma". Default value is "DESeq2".
+#' @param contrast A character vector specifying the contrast for the analysis.  The first and second elements are the names of the two groups being compared. Default value is  "High" and "Low".
+#' @param padj_cutoff The adjusted p-value cutoff for determining significance. Default value is 0.01.
+#' @param logfc_cutoff The log2 fold change cutoff for determining significance. Default value is 0.5.
+#' @param volcano_plot Logical value indicating whether to generate a volcano plot. Default value is FALSE.
+#' @param col_volcano The color index for plotting the volcano plot. Default value is 1.
+#' @param heatmap Logical value indicating whether to generate a heatmap. Default value is TRUE.
+#' @param col_heatmap The color index for plotting the heatmap. Default value is 1.
+#' @param path path to save results
+#' @param parallel default is FALSE
 #'
 #' @importFrom limma lmFit
 #' @author Dongqiang Zeng
@@ -29,29 +32,29 @@
 #'
 #' @examples
 #'
-iobr_deg<-function(eset         ,
+iobr_deg<-function(eset,
                    annoation    = annotation_grch38,
                    pdata,
-                   group_id    = "group",
+                   group_id     = "group",
                    pdata_id     = "ID",
-                   array        = TRUE,
+                   array        = FALSE,
                    method       = "DESeq2",
-                   contrast     = c("deg_group","High","Low"),
+                   contrast     = c("High","Low"),
                    path         = NULL,
                    padj_cutoff  = 0.01,
                    logfc_cutoff = 0.5,
                    volcano_plot = FALSE,
                    col_volcano  = 1,
                    heatmap      = TRUE,
-                   col_heatmap  = 1){
-
-
-
+                   col_heatmap  = 1,
+                   parallel     = FALSE){
 
   ############################################
   if(is.null(path)){
     # set path to store enrichment analyses result
-    path <-creat_folder(paste0("1-result-of-DEGs"))
+    path <-creat_folder(paste0("Result-of-DEGs"))
+  }else{
+    path <- creat_folder(path)
   }
   abspath<-path$abspath
   ############################################
@@ -59,6 +62,7 @@ iobr_deg<-function(eset         ,
   colnames(pdata)[which(colnames(pdata)==pdata_id)]<-"ID"
   colnames(pdata)[which(colnames(pdata)==group_id)]<-"deg_group"
 
+  message(">>>== Matching grouping information and expression matrix \n")
   if(group_id=="group3"){
     pdata<-pdata[!pdata$deg_group=="Middle",]
   }
@@ -73,6 +77,11 @@ iobr_deg<-function(eset         ,
   if(array) eset <- preprocessCore::normalize.quantiles(as.matrix(eset), keep.names = TRUE)
 
   if(method == "DESeq2"){
+
+    message(">>>== DEGseq2 (method) was selected for differential gene analysis of RNAseq \n")
+
+    message(">>>== Please ensure that `eset` is a count expression matrix \n")
+    #########################################
     eset<-round(eset,0)
     dds <-DESeq2::DESeqDataSetFromMatrix(countData = eset,
                                          colData = pdata,
@@ -80,26 +89,31 @@ iobr_deg<-function(eset         ,
 
     #过滤一些low count的数据,起码五分之一的样本有表达
     dds <- dds[rowSums(counts(dds)) > ncol(eset)/5, ]
-    dds <- DESeq(dds) #,parallel = T
-    # contrast<-c("deg_group","High","Low")
+    dds <- DESeq(dds, parallel = parallel) #,parallel = T
+
+
+    contrast<-c("deg_group", contrast)
     res_tidy <- results(dds,tidy = T,contrast = contrast)
     res_tidy <- as.data.frame(res_tidy)
     # print(summary(res_tidy))
     #####################################
+    message(">>>== Summary of differential gene analysis results \n")
     message(paste0("Counts of gene: Adj.pvalue < 0.001: >>>  ",sum(res_tidy$padj < 0.001, na.rm=TRUE)))
     message(paste0("Counts of gene: Adj.pvalue < 0.05: >>>  ",sum(res_tidy$padj < 0.05, na.rm=TRUE)))
     message(paste0("Counts of gene: Adj.pvalue < 0.1: >>>  ",sum(res_tidy$padj < 0.1, na.rm=TRUE)))
     message(paste0("Counts of gene: Adj.pvalue < 0.25: >>>  ",sum(res_tidy$padj < 0.25, na.rm=TRUE)))
 
-
     DEG<-res_tidy[order(res_tidy$padj,decreasing = F),]
-    print(head(DEG))
+    # print(head(DEG))
 
     if(!is.null(annotation)){
       # DEG$row<-substring(DEG$row,1,15)
-      DEG<-merge(DEG, annoation, by.x="row",by.y="ensgene",all = FALSE)
-    }
+      DEG<-merge(DEG, annoation, by.x="row", by.y="ensgene",all = FALSE)
 
+    }else{
+      DEG <- rownames_to_column(DEG, var = "row")
+      message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg`")
+    }
 
     DEG$sigORnot <- ifelse(DEG$log2FoldChange > logfc_cutoff & DEG$padj < padj_cutoff, "Up_regulated",
                            ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT"))
@@ -107,8 +121,7 @@ iobr_deg<-function(eset         ,
                         ifelse(DEG$padj < padj_cutoff, "Significant",
                                ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ",logfc_cutoff), "NOT")))
     #######################################################
-    print(head(DEG))
-
+    # print(head(DEG))
     #######################################################
     contrast<-contrast[2:3]
     # contrast<-contrast[order(contrast)]
@@ -120,28 +133,38 @@ iobr_deg<-function(eset         ,
     bb<-as.character(pdata[pdata$deg_group == level2,"ID"])
     bb<-bb[bb%in%colnames(eset)]
     #######################################################
-    message(paste(">>>>"))
-    message(paste0("ID of ",level1," group: "))
-    message(paste(aa,collapse = ", "))
-    message(paste(">>>>"))
-    message(paste0("ID of ",level2," group: "))
-    message(paste(bb,collapse = ", "))
+    if(length(aa)<= 20 & length(bb) <= 20) {
+      message(paste(">>>>"))
+      message(paste0("ID of ",level1," group: "))
+      message(paste(aa, collapse = ", "))
+      message(paste(">>>>"))
+      message(paste0("ID of ",level2," group: "))
+      message(paste(bb, collapse = ", "))
+    }
     #########################################################
-    eset2 <- normalizeBetweenArrays(eset,method = "quantile")
-    eset2<-tibble::rownames_to_column(as.data.frame(eset2),var = "ID")
+    eset2 <- preprocessCore::normalize.quantiles(as.matrix(eset), keep.names = TRUE)
+    eset2<-tibble::rownames_to_column(as.data.frame(eset2), var = "ID")
     # eset2$ID<-substring(eset2$ID,1,15)
     ####################################################
-    meancounts<-eset2 %>%
-      mutate(mean_h=(rowSums(.[,aa]))/length(aa))%>%
-      mutate(mean_l=(rowSums(.[,bb]))/length(bb))%>%
-      dplyr:: select(ID,mean_h,mean_l)
+    # meancounts<-eset2 %>%
+    #   mutate(mean_h=(rowSums(.[,aa]))/length(aa))%>%
+    #   mutate(mean_l=(rowSums(.[,bb]))/length(bb))%>%
+    #   dplyr:: select(ID,mean_h, mean_l)
+    message(paste0("group1 = ", contrast[1]))
+    message(paste0("group2 = ",  contrast[2]))
 
+    meancounts<-eset2%>%mutate(mean_group1=(rowSums(.[,aa]))/length(aa))%>%
+      mutate(mean_group2=(rowSums(.[,bb]))/length(bb))%>%
+      dplyr:: select(ID, mean_group1,mean_group2)
 
     # if(!is.null(annotation)) meancounts$ID <-substring(meancounts$ID,1,15)
     ##################################################
+    # print(meancounts)
 
+    DEG<-merge(DEG, meancounts, by.x="row", by.y="ID",all = FALSE)
+    colnames(DEG)[which(colnames(DEG)=="mean_group1")] <- contrast[1]
+    colnames(DEG)[which(colnames(DEG)=="mean_group2")] <- contrast[2]
 
-    DEG<-merge(DEG,meancounts,by.x="row",by.y="ID",all = FALSE)
     DEG<-tibble::as_tibble(DEG)
     DEG<-DEG[order(DEG$padj,decreasing = F),]
     print(head(DEG))
@@ -149,6 +172,9 @@ iobr_deg<-function(eset         ,
   }
 
   if(method == "limma"){
+
+    message(">>>== limma was selected for differential gene analysis of Array data \n")
+
     library(limma)
     pdata$deg_group<-ifelse(pdata$deg_group==contrast[2],"group1","group2")
     ################################
@@ -179,10 +205,6 @@ iobr_deg<-function(eset         ,
 
     #######################################################
 
-    # contrast<-contrast[2:3]
-    # # contrast<-contrast[order(contrast)]
-    # level1<-as.character(contrast[1])
-    # level2<-as.character(contrast[2])
     aa<-as.character(pdata[pdata$deg_group == "group1","ID"])
     aa<-aa[aa%in%colnames(eset)]
     #######################################################
@@ -195,7 +217,7 @@ iobr_deg<-function(eset         ,
     meancounts<-eset2%>%mutate(mean_group1=(rowSums(.[,aa]))/length(aa))%>%
       mutate(mean_group2=(rowSums(.[,bb]))/length(bb))%>%
       dplyr:: select(ID,mean_group1,mean_group2)
-    DEG<-merge(DEG, meancounts, by.x="symbol",by.y="ID",all = FALSE)
+    DEG<-merge(DEG, meancounts, by.x= "symbol", by.y="ID", all = FALSE)
     # DEG<-tbl_df(DEG)
     DEG<-DEG[order(DEG$padj,decreasing = F),]
     DEG<-tibble::as_tibble(DEG)
