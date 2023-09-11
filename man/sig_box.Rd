@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_box.R
 \name{sig_box}
 \alias{sig_box}
-\title{signature box plot}
+\title{Title: sig_box - Generate a Boxplot with Statistical Comparisons}
 \usage{
 sig_box(
   data,
@@ -24,39 +24,42 @@ sig_box(
 )
 }
 \arguments{
-\item{data}{input data}
+\item{data}{The input data, which can be a Seurat object or a data frame.}
 
-\item{signature}{name of signature}
+\item{signature}{The column name representing the y-axis values in the plot.}
 
-\item{variable}{name of category variable}
+\item{variable}{The column name representing the x-axis values in the plot.}
 
-\item{angle_x_text}{angle_x_text}
+\item{angle_x_text}{The angle (in degrees) at which x-axis text labels should be displayed (default = 0).}
 
-\item{hjust}{default is 0.5}
+\item{hjust}{The horizontal justification of x-axis text labels (default = 0.5).}
 
-\item{palette}{default is nature palette}
+\item{palette}{The color palette to use for filling the boxplots (default = "nrc").}
 
-\item{cols}{default is null}
+\item{cols}{Optional vector of colors to use for filling the boxplots (default = NULL).}
 
-\item{jitter}{default is FALSE}
+\item{jitter}{Boolean flag indicating whether to add jitter to the data points (default = FALSE).}
 
-\item{point_size}{size of point}
+\item{point_size}{The size of the data points when jitter is enabled (default = 5).}
 
-\item{size_of_font}{default is 5}
+\item{size_of_font}{The font size for axis labels and text (default = 10).}
 
-\item{size_of_pvalue}{default is 6}
+\item{size_of_pvalue}{The font size for the statistical comparison results (default = 6).}
 
-\item{show_pvalue}{default is true}
+\item{show_pvalue}{Boolean flag indicating whether to display the statistical comparison results (default = TRUE).}
 
-\item{return_stat_res}{default is FALSE}
+\item{return_stat_res}{Boolean flag indicating whether to return the statistical comparison results (default = FALSE).}
 
-\item{assay}{default is NULL}
+\item{assay}{The name of the assay to extract data from in a Seurat object (default = NULL, uses the default assay).}
 
-\item{slot}{default is scale.data}
+\item{slot}{The slot name to extract data from in a Seurat object (default = "scale.data").}
+
+\item{scale}{Boolean flag indicating whether to scale the signature values (default = FALSE).}
 }
 \description{
-signature box plot
+The sig_box function is designed to generate a boxplot with optional statistical comparisons. It takes in various parameters such as data, signature, variable, and more to customize the plot. It can be used to visualize and analyze data in a Seurat object or any other data frame.
 }
-\examples{
+\author{
+Dongqiang Zeng
 sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T)
 }
