@@ -5,6 +5,7 @@
 
 #' Calculate and Visualize Correlation between Two Variables
 #' @description The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
+#'
 #' @param eset A dataset containing the variables of interest.
 #' @param pdata An optional data frame providing additional data for the analysis. Default is NULL.
 #' @param var1 The name of the first variable to analyze.
@@ -34,6 +35,8 @@
 #' @param save_plot Whether to save the plot as a file. Default is FALSE.
 #' @param id_pdata The column name in pdata that contains unique identifiers. Default is "ID".
 #' @param scale Whether to scale the data. Default is TRUE.
+#' @param is.matrix Whether the eset is a matrix data with feature as row names
+#' @param id_eset The column name in eset that contains unique identifiers. Default is "ID".
 #'
 #' @return
 #' @export
@@ -41,7 +44,7 @@
 #'
 #' @examples
 #'
-get_cor <- function(eset, pdata = NULL, id_pdata = "ID", var1, var2, scale = TRUE,
+get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pdata = "ID", var1, var2, scale = TRUE,
         subtype = NULL, na.subtype.rm = FALSE, color_subtype = NULL,  palette = "jama", index = NULL,
         method = "spearman", show_cor_result = T, col_line = NULL, id = "NULL",
         show_lebel = FALSE, point_size = 4, title = NULL, alpha = 0.7,title_size = 2,
@@ -51,19 +54,34 @@ get_cor <- function(eset, pdata = NULL, id_pdata = "ID", var1, var2, scale = TRU
   if(is.null(index)) index<-1
   if(!show_lebel) id<-NULL
 
+
   #######################################
   if(is.null(pdata)){
-    data<- as.data.frame(rownames_to_column(as.data.frame(t(eset)), var = "ID"))
+
+    if(is.matrix){
+      data<- as.data.frame(rownames_to_column(as.data.frame(t(eset)), var = "ID"))
+    }else{
+      colnames(eset)[which(colnames(eset)==id_eset)]<-"ID"
+      data <- eset
+    }
     if(scale) data[,c(var1, var2)] <- scale(data[,c(var1, var2)])
   }else{
     colnames(pdata)[which(colnames(pdata)==id_pdata)]<-"ID"
 
     feas<- c(var1, var2)
+    ##################################
+    if(is.matrix){
+      feas<- feas[feas%in%rownames(eset)]
+      if(length(feas)==1) feas<- c(feas, "GAPDH", "TUBB1", "BMP2")
 
-    feas<- feas[feas%in%rownames(eset)]
-    if(length(feas)==1) feas<- c(feas, "GAPDH", "TUBB1", "BMP2")
+      data<- combine_pd_eset(eset = eset, pdata = pdata, id_pdata = "ID", feas = feas, scale = scale)
 
-    data<- combine_pd_eset(eset = eset, pdata = pdata, id_pdata = "ID", feas = feas, scale = scale)
+    }else{
+      colnames(eset)[which(colnames(eset)==id_eset)]<-"ID"
+      data <- eset
+      data <- merge(pdata, eset, by ="ID")
+    }
+
     message("Done: Combing data...")
   }
 
