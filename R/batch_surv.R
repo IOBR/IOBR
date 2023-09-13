@@ -40,8 +40,9 @@ batch_surv <- function(pdata, variable, time ="time", status ="status", best_cut
    for (i in 1:length(variable)) {
      var <- variable[i]
      pdata <- best_cutoff(pdata = pdata, time = "time", status = "status", variable = var, PrintResult = FALSE)
-     # pdata[, var] <- ifelse(pdata[, var]=="High", 1, 0)
+     pdata[, paste0(var, "_binary")] <- ifelse(pdata[, paste0(var, "_binary")]=="High", 1, 0)
    }
+    # print(pdata)
     variable <- paste0(variable, "_binary")
   }
   #################################################
