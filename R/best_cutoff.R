@@ -47,8 +47,9 @@ best_cutoff<-function(pdata, variable, time = "time",status = "status",PrintResu
   pdata[,variable2]<-as.factor(pdata[,variable2])
   cc<-summary(pdata[, variable2])
   dd<-base::summary(coxph(y~pdata[,which(colnames(pdata)==variable2)],data =pdata))
+
   if(PrintResult) {
-    print(list(best_cutoff=aa,cox_continuous_object=bb,summary_binary_variable = cc,cox_binary_object=dd))
+    print(list(best_cutoff=aa, cox_continuous_object=bb, summary_binary_variable = cc, cox_binary_object=dd))
   }
 
   colnames(pdata)[which(colnames(pdata)=="time")]<-time

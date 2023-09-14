@@ -6,9 +6,10 @@
 
   invisible(suppressPackageStartupMessages(library("ComplexHeatmap")))
   invisible(suppressPackageStartupMessages(library("tidyHeatmap")))
+  invisible(suppressPackageStartupMessages(library("clusterProfiler")))
 
   invisible(suppressPackageStartupMessages(
-    sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "clusterProfiler", "patchwork",
+    sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "patchwork",
              "ggpubr","limma","limSolve","preprocessCore","e1071","GSVA"),
            requireNamespace, quietly = TRUE)
     ))

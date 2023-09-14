@@ -57,6 +57,7 @@ batch_surv <- function(pdata, variable, time ="time", status ="status", best_cut
 
   result<-result[order(result$P,decreasing = F),]
   result<-tibble::rownames_to_column(result,var = "ID")
+
   if(best_cutoff==TRUE){
     result$ID <- gsub(result$ID, pattern = "_binary", replacement = "")
   }
