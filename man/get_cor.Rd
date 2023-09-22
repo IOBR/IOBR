@@ -7,6 +7,8 @@
 get_cor(
   eset,
   pdata = NULL,
+  is.matrix = FALSE,
+  id_eset = "ID",
   id_pdata = "ID",
   var1,
   var2,
@@ -40,6 +42,10 @@ get_cor(
 \item{eset}{A dataset containing the variables of interest.}
 
 \item{pdata}{An optional data frame providing additional data for the analysis. Default is NULL.}
+
+\item{is.matrix}{Whether the eset is a matrix data with feature as row names}
+
+\item{id_eset}{The column name in eset that contains unique identifiers. Default is "ID".}
 
 \item{id_pdata}{The column name in pdata that contains unique identifiers. Default is "ID".}
 

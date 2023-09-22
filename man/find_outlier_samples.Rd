@@ -9,7 +9,8 @@ find_outlier_samples(
   yinter = -3,
   project = "find_outlier_eset",
   plot_hculst = FALSE,
-  show_plot = TRUE
+  show_plot = TRUE,
+  index = NULL
 )
 }
 \arguments{
@@ -22,10 +23,15 @@ find_outlier_samples(
 \item{plot_hculst}{A logical value indicating whether to plot the hierarchical clustering of samples. If set to TRUE, the hierarchical clustering plot will be generated.}
 
 \item{show_plot}{A logical value indicating whether to display the connectivity plot. If set to TRUE, the connectivity plot will be shown.}
+
+\item{index}{default is null.}
 }
 \value{
 A vector of character strings representing the names of potential outlier samples identified based on the connectivity analysis. These samples have connectivity z-scores greater than the absolute value of yinter.
 }
 \description{
 The "find_outlier_samples" function is designed to analyze gene expression data and identify potential outlier samples based on connectivity analysis. By utilizing the "WGCNA" package, this function calculates the normalized adjacency and connectivity z-scores for each sample. It further generates a connectivity plot, highlighting samples with connectivity z-scores greater than the specified y-intercept value. This function also allows for the option to plot hierarchical clustering and save the output files in a designated project folder. The returned result is a list of potential outlier samples, providing valuable insights for further analysis and data interpretation.
+}
+\author{
+Dongqiang Zeng
 }
