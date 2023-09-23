@@ -3,17 +3,21 @@
 
 
 
-#' Title
+#' Title eset_distribution
 #'
-#' @param eset
-#' @param quantile
-#' @param log
-#' @param project
+#' @description eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
+#' @param eset Expression set (matrix or data frame) containing gene expression data.
+#' @param quantile Number of quantiles used for sampling columns in the eset matrix.
+#' @param log Logical value indicating whether to perform log2 transformation of the expression values.
+#' @param project Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' data(eset_gse62254, package = "IOBR")
+#' eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
+#' eset_distribution(eset)
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL){
 
 
@@ -29,8 +33,6 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL){
   eset.melt <- reshape2:: melt(eset1, id = c("Sample.Name"))
   head(eset.melt)
   colnames(eset.melt)[2:3] <- c("Symbol", "Intensity")
-  ######################################
-  #' 画图--箱图
   ######################################
   if(is.null(project)){
     path <- creat_folder("result")
@@ -54,7 +56,6 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL){
   ggsave(filename = paste0("1-",project,"-boxplot.png"), plot = p,
          width = 15 , height = 8,path = path$folder_name)
   ####################################
-  #' 画图--密度曲线图
 
   p <- ggplot(eset.melt, aes(Intensity, group = Sample.Name)) + geom_density() + theme_bw()
   p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())

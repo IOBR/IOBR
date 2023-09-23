@@ -3,21 +3,22 @@
 
 
 
-#' Design my ggplpt2 theme
+#' design_mytheme
 #'
-#' @param plot_title_size title size
-#' @param axis_title_size axis title size
-#' @param axis_text_size axis text size
-#' @param axis_angle  axis angle
-#' @param legend.position legend.position default is bottom
-#' @param legend.direction legend.direction horizontal or vertical
+#' @description This function modifies a ggplot2 theme based on user-defined parameters for various plot elements. It allows customization of the theme's appearance, including title size, axis size, legend position, and more.
+#' @param plot_title_size The size of the plot title. Default is 2.
+#' @param axis_title_size The size of the axis titles. Default is 2.
+#' @param axis_text_size The size of the axis tick mark labels. Default is 12.
+#' @param axis_angle  The angle of rotation for the x-axis tick mark labels. Default is 60.
+#' @param legend.position The position of the legend in the plot. Options include "none", "left", "right", "bottom", and "top". Default is NULL.
+#' @param legend.direction The direction of the legend items. Options include "horizontal" and "vertical". Default is NULL.
 #' @param hjust horizontal justification
-#' @param legend.size font size of legend
-#' @param theme default is light
-#' @param legend.size.text default is 12
-#' @param legend.key.height default is 0.5
-#' @param legend.key.width default is 0.5
-#' @param legend.box default is horizontal, other option is vertical
+#' @param legend.size The size of the legend key. Default is 0.25.
+#' @param theme The desired theme for the plot. Options include "light", "bw", "classic", and "classic2". Default is "light".
+#' @param legend.size.text The size of the legend text labels. Default is 10.
+#' @param legend.key.height The height of the legend key. Default is 0.5.
+#' @param legend.key.width The width of the legend key. Default is 0.5.
+#' @param legend.box The orientation of the legend box. Options include "horizontal" and "vertical". Default is "horizontal".
 #'
 #' @author Dongqiang Zeng
 #' @return mytheme
