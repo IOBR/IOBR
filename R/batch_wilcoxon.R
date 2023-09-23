@@ -1,20 +1,22 @@
 
-
-
-#' Batch to conduct wilcoxon test in two groups
+#' Batch to conduct wilcoxon test between two groups
 #'
-#' @param data signature matrix with two groups
-#' @param target name of group;
-#' @param feature feature used to comparison
-#' @param feature_manipulation default is FALSE, if true, variables with NA or infinite value will be removed
+#' @description The batch_wilcoxon function performs Wilcoxon rank-sum tests on a given data set to compare the distribution of a specified feature between two groups. It computes the p-values and ranks the significant features based on the p-values. The function returns a data frame with the feature names, p-values, adjusted p-values, logarithm of p-values, and a star rating based on the p-value ranges.
+#' @param data A data frame containing the input data for analysis.
+#' @param target The name of the column in the data frame that represents the group labels. The default value is "group".
+#' @param feature A character vector specifying the names of the features or variables to be analyzed. If NULL, all continuous features in the data frame will be used. Default value is NULL.
+#' @param feature_manipulation A logical value indicating whether feature manipulation is required. If TRUE, a custom feature manipulation function will be applied to the data. Default value is FALSE.
 #'
-#' @return
+#' @return statistical result
 #' @export
 #' @import dplyr
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-#' res<-batch_wilcoxon(data = pdata_sig_tme, target = "Gender", feature = colnames(pdata_sig_tme)[300:400])
+#' # Loading TCGA-STAD microenvironment signature data
+#' data("sig_stad", package = "IOBR")
+#' # Finding microenvironmental scores associated with Gender
+#' batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 batch_wilcoxon<-function(data, target = "group", feature = NULL, feature_manipulation = FALSE){
 
   data<-as.data.frame(data)

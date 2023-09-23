@@ -36,11 +36,19 @@ signature_score_calculation_methods= c("PCA"        = "pca",
 #' @export
 #'
 #' @examples
+#'
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # transform count data to tpm
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # signature score estimation using PCA method
+#' calculate_sig_score_pca(eset = eset, signature = signature_tme)
+
 calculate_sig_score_pca<-function(pdata = NULL,
                                   eset,
                                   signature,
-                                  mini_gene_count,
-                                  column_of_sample,
+                                  mini_gene_count = 3,
+                                  column_of_sample = "ID",
                                   adjust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using PCA method"))
@@ -127,12 +135,17 @@ calculate_sig_score_pca<-function(pdata = NULL,
 #' @export
 #'
 #' @examples
-#'
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # transform count data to tpm
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # signature score estimation using z-score method
+#' calculate_sig_score_zscore(eset = eset, signature = signature_tme)
 calculate_sig_score_zscore<-function(pdata = NULL,
                                      eset,
                                      signature,
-                                     mini_gene_count,
-                                     column_of_sample,
+                                     mini_gene_count = 3,
+                                     column_of_sample = "ID",
                                      adjust_eset = FALSE){
 
   message(paste0("\n", ">>> Calculating signature score using z-score method"))
@@ -216,11 +229,18 @@ calculate_sig_score_zscore<-function(pdata = NULL,
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # transform count data to tpm
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # signature score estimation using ssgsea method
+#' calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
+#'
 calculate_sig_score_ssgsea<-function(pdata = NULL,
                                      eset,
                                      signature,
-                                     mini_gene_count,
-                                     column_of_sample,
+                                     mini_gene_count = 3,
+                                     column_of_sample = "ID",
                                      adjust_eset = FALSE,
                                      parallel.size = 1L){
 
@@ -310,12 +330,18 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-#'
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # transform count data to tpm
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # signature score estimation using PCA, z-score, and ssgsea method
+#' calculate_sig_score_integration(eset = eset, signature = signature_tme)
+
 calculate_sig_score_integration<-function(pdata = NULL,
                                           eset,
                                           signature,
                                           mini_gene_count = 2,
-                                          column_of_sample,
+                                          column_of_sample = "ID",
                                           adjust_eset = FALSE,
                                           parallel.size = 1L){
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
@@ -441,8 +467,15 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # transform count data to tpm
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # signature score estimation using PCA, z-score, or ssgsea method
+#' calculate_sig_score(eset = eset, signature = signature_tme, method = "pca")
+#'
 #' @references 1. Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7
-#' 2. Mariathasan, S., Turley, S., Nickles, D. et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544–548 (2018).
+#' @references 2. Mariathasan, S., Turley, S., Nickles, D. et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544–548 (2018).
 #'
 calculate_sig_score<-function(pdata = NULL,
                               eset,

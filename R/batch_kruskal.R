@@ -2,17 +2,24 @@
 
 
 
-#' Title
+#' batch_kruskal
 #'
-#' @param data
-#' @param group
-#' @param feature
-#' @param feature_manipulation
+#' @description This function is used to efficiently perform the Kruskal-Wallis test on multiple continuous feature variables across different groups, providing statistical information such as p-values, adjusted p-values, and star ratings for significance.
+#' @param data A data frame containing the dataset.
+#' @param group A character specifying the name of the grouping variable.
+#' @param feature  A character vector specifying the names of the feature variables. If not specified, all continuous features will be estimated.
+#' @param feature_manipulation A logical value indicating whether feature manipulation should be performed. Default value is FALSE.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#'
+#' # Loading TCGA-STAD micro environment signature score data
+#' data("sig_stad", package = "IOBR")
+#' # Finding micro environmental scores associated with TCGA molecular subtype
+#' batch_kruskal(data = sig_stad, group = "Subtype", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+
 batch_kruskal<-function(data, group, feature = NULL, feature_manipulation = FALSE){
 
 

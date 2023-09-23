@@ -7,7 +7,7 @@
 #'
 #' @param countMat The count matrix that needs to be transformed to TPM.
 #' @param idType (Optional, defaults to "Ensembl"): Type of the gene identifier, it can be "Ensembl", "Entrez" or "Symbol".
-#' @param org  (Optional, defaults to "hsa"): The organism for which the analysis is needed, options include "hsa" (Human), "mmu" (Mouse), and others.
+#' @param org  (Optional, defaults to "hsa"): The organism for which the analysis is needed, options include "hsa" (Human), "mmus" (Mouse), and others.
 #' @param source (Optional, defaults to "local"): The source from where the gene lengths are retrieved; it can be either "biomart" or "local". Other option is `biomart`. user can also provide `effLength` manually, if `idType` is `ensembl`, and source is set to `local`, `effLength` was provided by IOBR which was estimated by function `getGeneLengthAndGCContent` of EDASeq package at 2023-02-10.
 #' @param effLength (Optional, defaults to NULL): The effective gene length used for TPM transformation.
 #' @param id (Optional, defaults to "id"): The column name in effLength that represents the gene identifier.
@@ -30,6 +30,8 @@
 
 count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "local", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", check_data = FALSE){
 
+
+  if(org%in%c("hsa", "mmus")) stop(">>>== `org` must be hsa or mmus...")
   # requireNamespace("biomaRt")
   if(!is.matrix(countMat)){
     countMat<-as.matrix(countMat)

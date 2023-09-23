@@ -50,14 +50,18 @@
 # library(preprocessCore)
 
 #Core algorithm
-#' Title
-#'
-#' @param X
-#' @param y
-#' @param absolute
-#' @param abs_method
+#' Title CoreAlg
+#' @description CoreAlg performs nu-regression using support vector machines (SVM) and calculates weights, root mean squared error (RMSE), and correlation coefficient (R).
+#' @param X Input matrix or data frame containing the predictor variables.
+#' @param y Numeric vector containing the response variable.
+#' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
+#' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
 #'
 #' @export
+#' @example
+#' X <- matrix(rnorm(100), nrow = 10)
+#' y <- rnorm(10)
+#' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
 #'
 CoreAlg <- function(X, y, absolute, abs_method){
 
@@ -111,14 +115,18 @@ CoreAlg <- function(X, y, absolute, abs_method){
 
 #do permutations
 #' Title
-#'
-#' @param perm Permutation
-#' @param X
-#' @param Y
-#' @param absolute
-#' @param abs_method
+#' @description doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
+#' @param perm Number of permutations to perform.
+#' @param X Input matrix or data frame containing the predictor variables.
+#' @param Y Numeric vector containing the response variable.
+#' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
+#' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
 #'
 #' @export
+#' @example
+#' X <- matrix(rnorm(100), nrow = 10)
+#' y <- rnorm(10)
+#' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
 #'
 doPerm <- function(perm, X, Y, absolute, abs_method){
   itor <- 1
@@ -175,7 +183,8 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' @import preprocessCore
 #' @import tidyverse
 #' @examples
-#' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_ec, perm = 1000, QN=TRUE, absolute=FALSE)
+#' data("eset_gse62254", package = "IOBR")
+#' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN=TRUE, absolute=FALSE)
 #' head(cibersort)
 
 CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute, abs_method='sig.score'){

@@ -1,22 +1,23 @@
 
 
 
-
-
-
-
-
 #' Batch to conduct correlation analysis with multiple features
 #'
-#' @param data signature matrix with multiple features
-#' @param target name of group
-#' @param feature feature used to comparison
-#' @param method method must be either `spearman` or `pearson`
+#' @param data A data frame containing the dataset.
+#' @param target A character specifying the name of the target variable.
+#' @param feature A character vector specifying the names of the feature variables.
+#' @param method A character specifying the correlation method to be used. Default value is "spearman".
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#'
+#' # Loading TCGA-STAD microenvironment signature data
+#' data("sig_stad", package = "IOBR")
+#' # Finding micro environmental scores associated with CD8 T cells
+#' batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+
 batch_cor<-function(data, target, feature, method = "spearman"){
 
   data<-as.data.frame(data)
@@ -54,7 +55,11 @@ batch_cor<-function(data, target, feature, method = "spearman"){
 #'
 #' @return
 #' @export
+#' @example
 #'
+#' # Loading TCGA-STAD microenvironment signature data
+#' data("sig_stad", package = "IOBR")
+#' exact_pvalue(sig_stad$CD8.T.cells, sig_stad$CD_8_T_effector, method = "spearman")
 
 exact_pvalue<-function(x,y,method){
 

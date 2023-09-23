@@ -17,18 +17,24 @@
 #' @export
 #'
 #' @examples
-#' res<-cell_bar_plot(input = cibersort[1:20,],id = "ID")
-#'
-cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", legend.position = "bottom", coord_filp = TRUE, palette = 3, show_col = F, cols = NULL){
+#' # Loading TCGA-STAD microenvironment data
+#' data("sig_stad", package = "IOBR")
+#' # showing 20 tumor microenvironment cell proportion deconvoluted by CIBERSORT algorithm
+#' cell_bar_plot(input = sig_stad[1:20, ], id = "ID", features = colnames(sig_stad)[25:46])
+
+cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = NULL, pattern = "CIBERSORT", legend.position = "bottom",
+                         coord_filp = TRUE, palette = 3, show_col = F, cols = NULL){
 
   input<-as.data.frame(input)
   colnames(input)[which(colnames(input)==id)]<-"ID"
 
-  if("ProjectID"%in%colnames(input))  input<-input[,-which(colnames(input)=="ProjectID")]
-  if("index"%in%colnames(input))  input<-input[,-which(colnames(input)=="index")]
-  if("RMSE_CIBERSORT"%in%colnames(input))  input<-input[,-which(colnames(input)=="RMSE_CIBERSORT")]
-  if("P-value_CIBERSORT"%in%colnames(input))  input<-input[,-which(colnames(input)=="P-value_CIBERSORT")]
-  if("Correlation_CIBERSORT"%in%colnames(input)) input<-input[,-which(colnames(input)=="Correlation_CIBERSORT")]
+  if(is.null(features)){
+    feas <- colnames(input)[str_detect(colnames(input), pattern = pattern)]
+  }else{
+    feas <- features
+  }
+
+  input <- input[,c("ID", features)]
 
   input<-remove_names(input_df = input, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = "_")
   ##################

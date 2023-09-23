@@ -1,36 +1,29 @@
 
 
-
 #' Batch way to calculate the partial correlation coefficient
 #'
-#' @description  batch_pcc() provide a batch way to calculate the partial correlation coefficient between target gene and others when
+#' @description  batch_pcc() provide a batch way to calculate the partial correlation coefficient between feature and others when
 #' controlling a third variable
 #' @param pdata_group matrix;data signature matrix with multiple features
-#' @param feature_data
-#' @param id1
-#' @param id2
-#' @param interferenceid character vectors; vector used to control
-#' @param target character vectors; target name of group
-#' @param method vector; one of "pearson"(default), "spearman" or "kendall"
+#' @param feature_data A data frame containing the feature data.
+#' @param id1 The name of the column in the pdata_group data frame representing the ID or identifier. The default value is "ID".
+#' @param id2 The name of the column in the feature_data data frame representing the ID or identifier. The default value is "ID".
+#' @param interferenceid The name of the column in the feature_data data frame representing the interference variable.
+#' @param target The name of the column in the pdata_group data frame representing the target variable for correlation.
+#' @param method The correlation method to be used. The default value is "pearson"; one of "pearson"(default), "spearman" or "kendall"
 #' @return
 #' @export
 #' @author Rongfang Shen
 #' @examples
-#' pdata_group <- imvigor210_pdata[, c("ID", "TumorPurity", "Pan_F_TBRs")] %>%
-#' rename(target = Pan_F_TBRs) %>% mutate(target = as.numeric(target))
-#' res <- batch_pcc(pdata_group = pdata_group, id1 = "ID", feature_data = imvigor210_sig,
-#' id2 = "ID", interferenceid = "TumorPurity",
-#' target = "target", method = "pearson")
-batch_pcc <- function(pdata_group, id1 = "ID",
-                      feature_data, id2 = "ID",
-                      interferenceid,
-                      target, method = "pearson"){
+#' # Loading TCGA-STAD microenvironment signature data
+#' data("sig_stad", package = "IOBR")
+#' # Finding Pan_F_TBRs associated signature score excluding the effects of tumour purity.
+#' res <- batch_pcc(input = sig_stad, interferenceid = "TumorPurity_estimate", target = "Pan_F_TBRs", method = "pearson", features = colnames(sig_stad)[70:ncol(sig_stad)])
+batch_pcc <- function(input, interferenceid, target, features, method = "pearson"){
 
-  if(target%in%colnames(feature_data)) feature_data<-feature_data[,-which(colnames(feature_data)==target)]
-  if(interferenceid%in%colnames(feature_data)) feature_data<-feature_data[,-which(colnames(feature_data)==interferenceid)]
+  dat <- input
+  features <- setdiff(features, c(unique(interferenceid, target)))
 
-  dat <- merge(pdata_group, feature_data, by.x = id1, by.y = id2)
-  features <- setdiff(colnames(feature_data), id2)
   aa <- dat[, features] %>% tibble::as_tibble() %>%
     map(ppcor::pcor.test, y = dat[,target], z = dat[, interferenceid], method=method)
   pvalue <- aa %>% purrr::map_dbl("p.value")
@@ -47,4 +40,3 @@ batch_pcc <- function(pdata_group, id1 = "ID",
   cc<-tibble::as_tibble(cc)
   return(cc)
 }
-

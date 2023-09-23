@@ -15,11 +15,11 @@
 #' @export
 #'
 #' @examples
-#' For affymatrix data
+#' # For affymatrix data
 #' data(eset_gse62254, package = "IOBR")
 #' eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
 #'
-#' For RNAseq data with ensembl id
+#' # For RNAseq data with ensembl id
 #' data(eset_stad, package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 
