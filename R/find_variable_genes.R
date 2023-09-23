@@ -23,7 +23,7 @@ find_variable_genes <- function(x, data_type = c("count", "normalized"), methods
   feas0 <- feature_manipulation(data = x, is_matrix = TRUE)
   x <- x[feas0, ]
 
-  if(data_type=="count"&"low"%in%methods){
+  if(data_type=="count" & c("low")%in%methods){
     # 去掉低表达的基因
 
     message(paste0(">>>== Genes expressed in more than", prop*100, "% of the samples") )
