@@ -3,19 +3,20 @@
 
 
 
-#' Title
+#' Title creates a new folder or directory
 #'
-#' @param f1
-#' @param f2
-#' @param return
-#' @param f3
+#' @description creat_folder creates a new folder or directory at the specified path and returns information about the created folder.
+#' @param f1 The name of the first level folder.
+#' @param f2 The name of the second level folder (optional).
+#' @param return An optional parameter to specify the information to return.
+#' @param f3 The name of the third level folder (optional).
 #'
-#' @return
+#' @return A list with the folder_name and abspath
 #' @export
 #'
 #' @examples
+#' creat_folder("1-result")
 creat_folder<-function(f1, f2 = NULL, f3 = NULL, return = NULL){
-
 
   if(!is.null(f3)){
     path<-file.path(getwd(), f1, f2, f3)

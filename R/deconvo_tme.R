@@ -38,7 +38,10 @@ tme_deconvolution_methods = c("MCPcounter"="mcpcounter",
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD", arrays = FALSE)
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' xcell_result<-deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 #'
 deconvo_xcell<-function(eset, project = NULL, arrays = FALSE){
 
@@ -73,7 +76,10 @@ deconvo_xcell<-function(eset, project = NULL, arrays = FALSE){
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' mcp_result<-deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' mcp_result<-deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 #'
 deconvo_mcpcounter<-function(eset,project = NULL){
 
@@ -115,7 +121,10 @@ deconvo_mcpcounter<-function(eset,project = NULL){
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' epic_result<-deconvo_epic(eset = eset_stad,project = "TCGA-STAD",tumor = TRUE)
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' epic_result<-deconvo_epic(eset = eset,project = "TCGA-STAD",tumor = TRUE)
 #'
 deconvo_epic<-function(eset,project = NULL,tumor){
 
@@ -163,8 +172,10 @@ deconvo_epic<-function(eset,project = NULL,tumor){
 #' @export
 #'
 #' @examples
-#' cibersort_result<-deconvo_cibersort(eset = eset_stad,project = "TCGA-STAD",arrays = TRUE,absolute = FALSE, perm = 500)
-
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' cibersort_result<-deconvo_cibersort(eset = eset,project = "TCGA-STAD", arrays = FALSE, absolute = FALSE, perm = 500)
 
 deconvo_cibersort<-function(eset, project = NULL, arrays,  perm = 1000, absolute = FALSE, abs_method = "sig.score"){
 
@@ -218,7 +229,10 @@ deconvo_cibersort<-function(eset, project = NULL, arrays,  perm = 1000, absolute
 #' @import grid
 #' @author Dongqiang Zeng
 #' @examples
-#' ips_result<-deconvo_ips(eset = eset_stad,project = "TCGA-STAD")
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' ips_result<-deconvo_ips(eset = eset, project = "TCGA-STAD")
 #'
 deconvo_ips<-function(eset,project = NULL,plot){
 
@@ -255,6 +269,10 @@ deconvo_ips<-function(eset,project = NULL,plot){
 #' @export
 #'
 #' @examples
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' deconvo_estimate(eset)
 deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 
   message(paste0("\n", ">>> Running ", "ESTIMATE"))
@@ -312,8 +330,12 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #' @export
 #'
 #' @examples
-deconvo_ref<-function(eset, project = NULL, arrays,method = "svr",perm,
-                      reference, scale_reference, absolute.mode = FALSE, abs.method = "sig.score"){
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' deconvo_ref(eset = eset, reference = lm22)
+deconvo_ref<-function(eset, project = NULL, arrays = TRUE, method = "svr", perm = 100,
+                      reference, scale_reference = TRUE, absolute.mode = FALSE, abs.method = "sig.score"){
 
   if (length(intersect(rownames(eset), rownames(reference))) == 0){
     stop("None identical gene between eset and reference had been found.
@@ -414,7 +436,10 @@ deconvo_ref<-function(eset, project = NULL, arrays,method = "svr",perm,
 #' @export
 #'
 #' @examples
-#'
+#' #' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' deconvo_timer(eset = eset, project = "stad")
 deconvo_timer = function(eset,project = NULL,indications = NULL) {
 
   indications = tolower(indications)
@@ -462,6 +487,10 @@ deconvo_timer = function(eset,project = NULL,indications = NULL) {
 #' @export
 #'
 #' @examples
+#' #' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
 deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 
 
@@ -528,6 +557,10 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @name deconvo_tme
 #' @export deconvo_tme
 #' @examples
+#' #' # Loading TCGA-STAD expresion data(raw count matrix)
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
 #'
 deconvo_tme = function(eset,
                        project = NULL,
