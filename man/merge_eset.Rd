@@ -2,7 +2,7 @@
 % Please edit documentation in R/merge_eset.R
 \name{merge_eset}
 \alias{merge_eset}
-\title{Merge gene expression sets by row names}
+\title{Merge expression sets by row names}
 \usage{
 merge_eset(eset1, eset2, eset3 = NULL)
 }
@@ -14,7 +14,7 @@ merge_eset(eset1, eset2, eset3 = NULL)
 \item{eset3}{eset3, default is NULL}
 }
 \description{
-Merge gene expression sets by row names
+Merge expression sets by row names
 }
 \author{
 Dongqiang Zeng

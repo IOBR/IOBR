@@ -3,26 +3,31 @@
 
 
 #' Convert read counts to transcripts per million (TPM)
+#' @description The count2tpm function is used to transform gene expression count data into Transcripts Per Million (TPM) values. This function supports gene IDs of type "Ensembl", "Entrez", or "Symbol", and retrieves gene length information using either an online connection to the bioMart database or a local dataset (specified by the source parameter). Missing values in count data can be checked and removed if check_data is set to TRUE. If gene length information is not provided through the effLength parameter, it will be obtained from the specified source. Based on the idType and org, the function identifies the matching identifiers in the count matrix to the annotation database and replaces them accordingly. After processing the gene names, lengths are obtained based on the idType. The function then calculates TPM values and removes any genes that do not have corresponding length information. The resulting TPM values are returned in a dataframe format. Additionally, duplicated genes are removed using the remove_duplicate_genes function before the final data frame is returned.
 #'
-#' @docType methods
-#' @name count2tpm
-#' @rdname count2tpm
-#'
-#' @param countMat A read count matrix, with gene names as row names and samples as columns.
-#' @param idType Type of gene id. "Ensembl" "ENTREZ","SYMBOL"
-#' @param org Organism: `hsa` or `mmus`
-#' @param source default is "local". Other option is `biomart`. user can also provide `effLength` manually, if `idType` is `ensembl`, and source is set to `local`, `effLength` was provided by IOBR which was estimated by function `getGeneLengthAndGCContent` of EDASeq package at 2023-02-10.
-#' @param effLength user can provide gene Length data with gene id and effective length
-#' @param id id matched to row names of expression set
-#' @param length column name of gene length
-#' @param gene_symbol column name of gene symbol
+#' @param countMat The count matrix that needs to be transformed to TPM.
+#' @param idType (Optional, defaults to "Ensembl"): Type of the gene identifier, it can be "Ensembl", "Entrez" or "Symbol".
+#' @param org  (Optional, defaults to "hsa"): The organism for which the analysis is needed, options include "hsa" (Human), "mmu" (Mouse), and others.
+#' @param source (Optional, defaults to "local"): The source from where the gene lengths are retrieved; it can be either "biomart" or "local". Other option is `biomart`. user can also provide `effLength` manually, if `idType` is `ensembl`, and source is set to `local`, `effLength` was provided by IOBR which was estimated by function `getGeneLengthAndGCContent` of EDASeq package at 2023-02-10.
+#' @param effLength (Optional, defaults to NULL): The effective gene length used for TPM transformation.
+#' @param id (Optional, defaults to "id"): The column name in effLength that represents the gene identifier.
+#' @param length (Optional, defaults to "eff_length"): The column name in effLength that represents the gene length.
+#' @param gene_symbol (Optional, defaults to "symbol"): The column name in effLength that represents the gene symbol.
+#' @param check_data (Optional, defaults to FALSE): Whether to check if there are missing values in the count matrix.
 #'
 #' @return A TPM expression profile.
 #'
 #' @author Wubing Zhang
 #' @author Dongqiang Zeng
 #' @export
+#' @example
+#' data(eset_stad, package = "IOBR")
+#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #'
+#' data(eset_stad, package = "IOBR")
+#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
+
 count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "local", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", check_data = FALSE){
 
   # requireNamespace("biomaRt")
