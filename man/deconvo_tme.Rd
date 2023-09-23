@@ -67,6 +67,13 @@ Currently affects `ESTIMATE` method}
 \description{
 Deconvoluting Tumor microenvironment on a transcriptomic dataset
 }
+\examples{
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
+
+}
 \references{
 1. Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.
 2. Vegesna R, Kim H, Torres-Garcia W, …, Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612.

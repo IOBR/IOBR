@@ -24,14 +24,17 @@ batch_surv(
 \item{best_cutoff}{Whether to use the best cutoff for survival analysis. Default is FALSE. If set to TRUE, the function will calculate hazard ratios and confidence intervals for the binary version of the variables using the best cutoff method.}
 }
 \value{
-A dataframe containing hazard ratios and confidence intervals.
+A data frame containing hazard ratios and confidence intervals.
 }
 \description{
-@description  This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
+This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
 }
 \examples{
 
-sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable <- c(c(ncol(pdata_stad)+1):ncol(pdata_sig_tme_binary)))
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+# Identifying signatures associated with gastric cancer patient survival
+batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)], time = "OS_time", status = "OS_status")
 }
 \author{
 Dongqiang Zeng

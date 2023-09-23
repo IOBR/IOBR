@@ -2,13 +2,25 @@
 % Please edit documentation in R/creat_folder.R
 \name{creat_folder}
 \alias{creat_folder}
-\title{Title}
+\title{Title creates a new folder or directory}
 \usage{
 creat_folder(f1, f2 = NULL, f3 = NULL, return = NULL)
 }
 \arguments{
-\item{f3}{}
+\item{f1}{The name of the first level folder.}
+
+\item{f2}{The name of the second level folder (optional).}
+
+\item{f3}{The name of the third level folder (optional).}
+
+\item{return}{An optional parameter to specify the information to return.}
+}
+\value{
+A list with the folder_name and abspath
 }
 \description{
-Title
+creat_folder creates a new folder or directory at the specified path and returns information about the created folder.
+}
+\examples{
+creat_folder("1-result")
 }

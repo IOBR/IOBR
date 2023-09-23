@@ -20,7 +20,10 @@ EPIC with immune cell fractions
 Estimating immune microenvironment using EPIC: FOR RNAseq mostly
 }
 \examples{
-epic_result<-deconvo_epic(eset = eset_stad,project = "TCGA-STAD",tumor = TRUE)
+# Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+epic_result<-deconvo_epic(eset = eset,project = "TCGA-STAD",tumor = TRUE)
 
 }
 \author{

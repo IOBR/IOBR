@@ -8,6 +8,8 @@ cell_bar_plot(
   input,
   id = "ID",
   title = "Cell Fraction",
+  features = NULL,
+  pattern = "CIBERSORT",
   legend.position = "bottom",
   coord_filp = TRUE,
   palette = 3,
@@ -36,6 +38,8 @@ cell_bar_plot(
 Visualize the results as a stacked bar chart with tidyverse/ggplot2.
 }
 \examples{
-res<-cell_bar_plot(input = cibersort[1:20,],id = "ID")
-
+# Loading TCGA-STAD microenvironment data
+data("sig_stad", package = "IOBR")
+# showing 20 tumor microenvironment cell proportion deconvoluted by CIBERSORT algorithm
+cell_bar_plot(input = sig_stad[1:20, ], id = "ID", features = colnames(sig_stad)[25:46])
 }

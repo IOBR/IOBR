@@ -2,17 +2,24 @@
 % Please edit documentation in R/eset_distribution.R
 \name{eset_distribution}
 \alias{eset_distribution}
-\title{Title}
+\title{Title eset_distribution}
 \usage{
 eset_distribution(eset, quantile = 3, log = TRUE, project = NULL)
 }
 \arguments{
-\item{project}{}
+\item{eset}{Expression set (matrix or data frame) containing gene expression data.}
+
+\item{quantile}{Number of quantiles used for sampling columns in the eset matrix.}
+
+\item{log}{Logical value indicating whether to perform log2 transformation of the expression values.}
+
+\item{project}{Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.}
 }
 \description{
-Title
+eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
 }
 \examples{
-画图--箱图
-画图--密度曲线图
+data(eset_gse62254, package = "IOBR")
+eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
+eset_distribution(eset)
 }

@@ -20,3 +20,9 @@ deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 \description{
 Deconvoluting micrornvironment using the quanTIseq technique
 }
+\examples{
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
+}

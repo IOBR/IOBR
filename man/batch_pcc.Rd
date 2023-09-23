@@ -4,35 +4,32 @@
 \alias{batch_pcc}
 \title{Batch way to calculate the partial correlation coefficient}
 \usage{
-batch_pcc(
-  pdata_group,
-  id1 = "ID",
-  feature_data,
-  id2 = "ID",
-  interferenceid,
-  target,
-  method = "pearson"
-)
+batch_pcc(input, interferenceid, target, features, method = "pearson")
 }
 \arguments{
+\item{interferenceid}{The name of the column in the feature_data data frame representing the interference variable.}
+
+\item{target}{The name of the column in the pdata_group data frame representing the target variable for correlation.}
+
+\item{method}{The correlation method to be used. The default value is "pearson"; one of "pearson"(default), "spearman" or "kendall"}
+
 \item{pdata_group}{matrix;data signature matrix with multiple features}
 
-\item{interferenceid}{character vectors; vector used to control}
+\item{feature_data}{A data frame containing the feature data.}
 
-\item{target}{character vectors; target name of group}
+\item{id1}{The name of the column in the pdata_group data frame representing the ID or identifier. The default value is "ID".}
 
-\item{method}{vector; one of "pearson"(default), "spearman" or "kendall"}
+\item{id2}{The name of the column in the feature_data data frame representing the ID or identifier. The default value is "ID".}
 }
 \description{
-batch_pcc() provide a batch way to calculate the partial correlation coefficient between target gene and others when
+batch_pcc() provide a batch way to calculate the partial correlation coefficient between feature and others when
 controlling a third variable
 }
 \examples{
-pdata_group <- imvigor210_pdata[, c("ID", "TumorPurity", "Pan_F_TBRs")] \%>\%
-rename(target = Pan_F_TBRs) \%>\% mutate(target = as.numeric(target))
-res <- batch_pcc(pdata_group = pdata_group, id1 = "ID", feature_data = imvigor210_sig,
-id2 = "ID", interferenceid = "TumorPurity",
-target = "target", method = "pearson")
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+# Finding Pan_F_TBRs associated signature score excluding the effects of tumour purity.
+res <- batch_pcc(input = sig_stad, interferenceid = "TumorPurity_estimate", target = "Pan_F_TBRs", method = "pearson", features = colnames(sig_stad)[70:ncol(sig_stad)])
 }
 \author{
 Rongfang Shen

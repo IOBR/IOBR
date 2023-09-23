@@ -15,3 +15,10 @@ gene expression set
 \description{
 Judge whether the expression set needs log2 transformation
 }
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data("eset_stad", package = "IOBR")
+# transform count data to tpm
+eset <- count2tpm(eset_stad, idType = "ensembl")
+eset <- log2eset(eset)
+}

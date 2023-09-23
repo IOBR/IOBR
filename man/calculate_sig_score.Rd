@@ -47,8 +47,18 @@ data frame with pdata and signature scores for gene sets; signatures in columns,
 \description{
 Calculating signature score  on a gene expression dataset
 }
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data("eset_stad", package = "IOBR")
+# transform count data to tpm
+eset <- count2tpm(eset_stad, idType = "ensembl")
+# signature score estimation using PCA, z-score, or ssgsea method
+calculate_sig_score(eset = eset, signature = signature_tme, method = "pca")
+
+}
 \references{
 1. Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7
+
 2. Mariathasan, S., Turley, S., Nickles, D. et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544–548 (2018).
 }
 \author{

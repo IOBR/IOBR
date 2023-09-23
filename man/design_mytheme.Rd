@@ -2,7 +2,7 @@
 % Please edit documentation in R/design_mytheme.R
 \name{design_mytheme}
 \alias{design_mytheme}
-\title{Design my ggplpt2 theme}
+\title{design_mytheme}
 \usage{
 design_mytheme(
   theme = "light",
@@ -21,37 +21,37 @@ design_mytheme(
 )
 }
 \arguments{
-\item{theme}{default is light}
+\item{theme}{The desired theme for the plot. Options include "light", "bw", "classic", and "classic2". Default is "light".}
 
-\item{plot_title_size}{title size}
+\item{plot_title_size}{The size of the plot title. Default is 2.}
 
-\item{axis_title_size}{axis title size}
+\item{axis_title_size}{The size of the axis titles. Default is 2.}
 
-\item{axis_text_size}{axis text size}
+\item{axis_text_size}{The size of the axis tick mark labels. Default is 12.}
 
-\item{axis_angle}{axis angle}
+\item{axis_angle}{The angle of rotation for the x-axis tick mark labels. Default is 60.}
 
 \item{hjust}{horizontal justification}
 
-\item{legend.position}{legend.position default is bottom}
+\item{legend.position}{The position of the legend in the plot. Options include "none", "left", "right", "bottom", and "top". Default is NULL.}
 
-\item{legend.direction}{legend.direction horizontal or vertical}
+\item{legend.direction}{The direction of the legend items. Options include "horizontal" and "vertical". Default is NULL.}
 
-\item{legend.size}{font size of legend}
+\item{legend.size}{The size of the legend key. Default is 0.25.}
 
-\item{legend.key.height}{default is 0.5}
+\item{legend.key.height}{The height of the legend key. Default is 0.5.}
 
-\item{legend.key.width}{default is 0.5}
+\item{legend.key.width}{The width of the legend key. Default is 0.5.}
 
-\item{legend.size.text}{default is 12}
+\item{legend.size.text}{The size of the legend text labels. Default is 10.}
 
-\item{legend.box}{default is horizontal, other option is vertical}
+\item{legend.box}{The orientation of the legend box. Options include "horizontal" and "vertical". Default is "horizontal".}
 }
 \value{
 mytheme
 }
 \description{
-Design my ggplpt2 theme
+This function modifies a ggplot2 theme based on user-defined parameters for various plot elements. It allows customization of the theme's appearance, including title size, axis size, legend position, and more.
 }
 \examples{
 mytheme <- design_mytheme()

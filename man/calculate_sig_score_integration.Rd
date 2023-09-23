@@ -9,7 +9,7 @@ calculate_sig_score_integration(
   eset,
   signature,
   mini_gene_count = 2,
-  column_of_sample,
+  column_of_sample = "ID",
   adjust_eset = FALSE,
   parallel.size = 1L
 )
@@ -36,6 +36,14 @@ data frame with pdata and signature scores for gene sets; signatures in columns,
 }
 \description{
 Calculating signature score using Integration method
+}
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data("eset_stad", package = "IOBR")
+# transform count data to tpm
+eset <- count2tpm(eset_stad, idType = "ensembl")
+# signature score estimation using PCA, z-score, and ssgsea method
+calculate_sig_score_integration(eset = eset, signature = signature_tme)
 }
 \author{
 Dongqiang Zeng

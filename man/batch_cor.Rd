@@ -7,14 +7,21 @@
 batch_cor(data, target, feature, method = "spearman")
 }
 \arguments{
-\item{data}{signature matrix with multiple features}
+\item{data}{A data frame containing the dataset.}
 
-\item{target}{name of group}
+\item{target}{A character specifying the name of the target variable.}
 
-\item{feature}{feature used to comparison}
+\item{feature}{A character vector specifying the names of the feature variables.}
 
-\item{method}{method must be either `spearman` or `pearson`}
+\item{method}{A character specifying the correlation method to be used. Default value is "spearman".}
 }
 \description{
 Batch to conduct correlation analysis with multiple features
+}
+\examples{
+
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+# Finding micro environmental scores associated with CD8 T cells
+batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }

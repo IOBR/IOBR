@@ -18,3 +18,9 @@ deconvo_timer(eset, project = NULL, indications = NULL)
 Deconvoluting using the TIMER technique
 Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 }
+\examples{
+#' # Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+deconvo_timer(eset = eset, project = "stad")
+}

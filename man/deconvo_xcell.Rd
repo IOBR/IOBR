@@ -20,7 +20,10 @@ xCell with immune cell fractions
 Decoding immune microenvironment using xCell
 }
 \examples{
-xcell_result<-deconvo_xcell(eset = eset_stad,project = "TCGA-STAD", arrays = FALSE)
+# Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+xcell_result<-deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 
 }
 \author{

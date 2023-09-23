@@ -2,33 +2,45 @@
 % Please edit documentation in R/combine_pd_eset.R
 \name{combine_pd_eset}
 \alias{combine_pd_eset}
-\title{Title}
+\title{Title combine_pd_eset}
 \usage{
 combine_pd_eset(
   eset,
   pdata,
   id_pdata = "ID",
   feas = NULL,
-  feature_manipulation = T,
-  scale = T,
+  feature_manipulation = TRUE,
+  scale = TRUE,
   choose_who_when_duplicate = "eset"
 )
 }
 \arguments{
-\item{eset}{expression set}
+\item{eset}{Expression set matrix or data frame.}
 
-\item{pdata}{phenotype data}
+\item{pdata}{Phenotype data.}
 
-\item{id_pdata}{identifier of pdata which could be matched with column name of eset}
+\item{id_pdata}{String indicating the column name in pdata that corresponds to the ID column.}
 
-\item{feas}{selected features of eset to combine with pdata}
+\item{feas}{Vector of feature names to include in the combined dataset. Default is NULL, which includes all features.}
 
-\item{feature_manipulation}{default is T, data with outliers will be filtered}
+\item{feature_manipulation}{Logical value indicating whether to perform feature manipulation on the data. Default is TRUE.}
 
-\item{scale}{default is true, scaling data}
+\item{scale}{Logical value indicating whether to scale the expression set. Default is TRUE.}
 
-\item{choose_who_when_duplicate}{when duplicated variables exist, preserve data of pdata or eset.}
+\item{choose_who_when_duplicate}{String indicating the preference when encountering duplicate IDs in pdata and eset.}
 }
 \description{
-Title
+combine_pd_eset combines the expression set (eset) with phenotype data (pdata).
+}
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data("eset_stad", package = "IOBR")
+# transform count data to tpm
+eset <- count2tpm(eset_stad, idType = "ensembl")
+colnames(eset) <- substring(colnames(eset), 1, 12)
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+eset <- count2tpm(eset_stad)
+colnames(eset) <- substring(colnames(eset), 1, 12)
+input <- combine_pd_eset(eset = eset, pdata = sig_stad, feas = unique(unlist(signature_collection)))
 }

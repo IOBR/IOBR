@@ -2,13 +2,19 @@
 % Please edit documentation in R/CIBERSORT.R
 \name{CoreAlg}
 \alias{CoreAlg}
-\title{Title}
+\title{Title CoreAlg}
 \usage{
 CoreAlg(X, y, absolute, abs_method)
 }
 \arguments{
-\item{abs_method}{}
+\item{X}{Input matrix or data frame containing the predictor variables.}
+
+\item{y}{Numeric vector containing the response variable.}
+
+\item{absolute}{Logical value indicating whether to use absolute space or relative space for the weights.}
+
+\item{abs_method}{String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.}
 }
 \description{
-Title
+CoreAlg performs nu-regression using support vector machines (SVM) and calculates weights, root mean squared error (RMSE), and correlation coefficient (R).
 }

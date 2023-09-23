@@ -18,7 +18,10 @@ IPS data frame
 Calculating immune phenotype score using IPS
 }
 \examples{
-ips_result<-deconvo_ips(eset = eset_stad,project = "TCGA-STAD")
+# Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+ips_result<-deconvo_ips(eset = eset, project = "TCGA-STAD")
 
 }
 \author{

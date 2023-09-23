@@ -7,11 +7,11 @@
 deconvo_ref(
   eset,
   project = NULL,
-  arrays,
+  arrays = TRUE,
   method = "svr",
-  perm,
+  perm = 100,
   reference,
-  scale_reference,
+  scale_reference = TRUE,
   absolute.mode = FALSE,
   abs.method = "sig.score"
 )
@@ -37,6 +37,12 @@ deconvo_ref(
 }
 \description{
 Estimate the fraction of cell types using defined reference genes
+}
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+deconvo_ref(eset = eset, reference = lm22)
 }
 \author{
 Dongqiang Zeng

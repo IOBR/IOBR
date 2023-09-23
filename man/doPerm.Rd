@@ -7,10 +7,16 @@
 doPerm(perm, X, Y, absolute, abs_method)
 }
 \arguments{
-\item{perm}{Permutation}
+\item{perm}{Number of permutations to perform.}
 
-\item{abs_method}{}
+\item{X}{Input matrix or data frame containing the predictor variables.}
+
+\item{Y}{Numeric vector containing the response variable.}
+
+\item{absolute}{Logical value indicating whether to use absolute space or relative space for the weights.}
+
+\item{abs_method}{String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.}
 }
 \description{
-Title
+doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
 }

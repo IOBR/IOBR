@@ -2,12 +2,12 @@
 % Please edit documentation in R/check_eset.R
 \name{check_eset}
 \alias{check_eset}
-\title{check_eset - Check integrity and outliers of eset dataset}
+\title{check_eset - Check integrity and outliers of expression set}
 \usage{
 check_eset(eset, print_result = FALSE, estimate_sd = FALSE)
 }
 \arguments{
-\item{eset}{The eset dataset to be checked.}
+\item{eset}{The matrix to be checked.}
 
 \item{print_result}{Whether to print the check results. Default is FALSE. If set to TRUE, it will print the results of each check.}
 
@@ -15,4 +15,14 @@ check_eset(eset, print_result = FALSE, estimate_sd = FALSE)
 }
 \description{
 This function is used to check the integrity and outliers of the given eset dataset, providing corresponding warnings and print results. It detects the presence of missing values, infinite values, and features with zero standard deviation.
+}
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data("eset_stad", package = "IOBR")
+# transform count data to tpm
+eset <- count2tpm(eset_stad, idType = "ensembl")
+check_eset(eset)
+}
+\author{
+Dongqiang Zeng
 }

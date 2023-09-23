@@ -13,19 +13,31 @@ best_cutoff2(
 )
 }
 \arguments{
-\item{pdata}{phenotype data with surcival information and features}
+\item{pdata}{phenotype data with survival information and features}
 
-\item{variable}{selected featrues that will be classified into two groups}
+\item{variable}{The name of the continuous variable in the input data for which the best cutoff needs to be determined.}
 
-\item{time}{column name of survival time}
+\item{time}{The name of the column in the input data representing the time-to-event (survival time). The default value is "time".}
 
-\item{status}{column name of event of follow up}
+\item{status}{The name of the column in the input data representing the event status (censoring information). The default value is "status".}
 
-\item{PrintResult}{logit, print results of survival analysis before and after classifying.}
+\item{PrintResult}{A logical value indicating whether to print the results. The default value is TRUE.}
 }
 \value{
-pdata with binary variables
+pdata with binary variables and best cutoff
 }
 \description{
-Extract best cut-off and add new binary object to data frame
+The "best_cutoff" function is used to find the best cutoff point for a continuous variable in survival analysis. It takes input data ("pdata") containing a continuous variable ("variable") and survival information ("time" and "status"). It returns the modified input data with a new binary variable created based on the best cutoff point.
+}
+\examples{
+
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+# Finding the best cutoff value of TMEscore for survival
+sig_stad2 <- best_cutoff2(pdata = sig_stad, variable = "TMEscore_CIR", time = "OS_time",status = "OS_status", PrintResult = T)
+sig_stad2$best_cutoff
+
+}
+\author{
+Dongqiang Zeng
 }

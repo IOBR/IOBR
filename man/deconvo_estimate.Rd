@@ -16,6 +16,12 @@ deconvo_estimate(eset, project = NULL, platform = "affymetrix")
 \description{
 Calculation of stromal, immune, and ESTIMATE scores
 }
+\examples{
+# Loading TCGA-STAD expresion data(raw count matrix)
+data(eset_stad, package = "IOBR")
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+deconvo_estimate(eset)
+}
 \author{
 Dongqiang Zeng
 }
