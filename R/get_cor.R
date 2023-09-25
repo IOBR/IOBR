@@ -37,6 +37,7 @@
 #' @param scale Whether to scale the data. Default is TRUE.
 #' @param is.matrix Whether the eset is a matrix data with feature as row names
 #' @param id_eset The column name in eset that contains unique identifiers. Default is "ID".
+#' @param add.hdr.line add.hdr.line
 #'
 #' @return
 #' @export
@@ -47,14 +48,12 @@
 get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pdata = "ID", var1, var2, scale = TRUE,
         subtype = NULL, na.subtype.rm = FALSE, color_subtype = NULL,  palette = "jama", index = NULL,
         method = "spearman", show_cor_result = T, col_line = NULL, id = "NULL",
-        show_lebel = FALSE, point_size = 4, title = NULL, alpha = 0.7,title_size = 2,
-        text_size = 15, axis_angle = 0, hjust = 0, show_plot = T, fig.format = "png",
-        fig.width = 7, fig.height = 7.3, path = NULL, save_plot = FALSE){
+        show_lebel = FALSE, point_size = 4, title = NULL, alpha = 0.7,title_size = 1.5,
+        text_size = 10, axis_angle = 0, hjust = 0, show_plot = TRUE, fig.format = "png",
+        fig.width = 7, fig.height = 7.3, path = NULL, save_plot = FALSE, add.hdr.line = FALSE){
 
   if(is.null(index)) index<-1
   if(!show_lebel) id<-NULL
-
-
   #######################################
   if(is.null(pdata)){
 
@@ -144,7 +143,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
   if(is.null(subtype)){
     p<-ggplot(input2, aes(x = input2[,var1],
                           y =  input2[,var2])) +
-      geom_point(size = point_size,alpha = alpha) + # Show dots
+      geom_point(size = point_size, alpha = alpha, colour = "black") + # Show dots
       # scale_colour_gradient(high = "dark")+
       geom_smooth(method=lm, se=T,color= col_line)+
       labs(x = paste0(var1),
@@ -167,6 +166,10 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
                         axis_angle = axis_angle)
 
   p<-p+theme+theme(plot.subtitle=element_text(size=15, hjust= 0, face="italic", color="black"))
+
+  if(add.hdr.line) {
+    p <- p +  geom_hdr_lines()
+  }
 
   if(show_plot) print(p)
 
