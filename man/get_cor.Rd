@@ -26,16 +26,17 @@ get_cor(
   point_size = 4,
   title = NULL,
   alpha = 0.7,
-  title_size = 2,
-  text_size = 15,
+  title_size = 1.5,
+  text_size = 10,
   axis_angle = 0,
   hjust = 0,
-  show_plot = T,
+  show_plot = TRUE,
   fig.format = "png",
   fig.width = 7,
   fig.height = 7.3,
   path = NULL,
-  save_plot = FALSE
+  save_plot = FALSE,
+  add.hdr.line = FALSE
 )
 }
 \arguments{
@@ -100,6 +101,8 @@ get_cor(
 \item{path}{The path where the figure will be saved. Default is NULL.}
 
 \item{save_plot}{Whether to save the plot as a file. Default is FALSE.}
+
+\item{add.hdr.line}{add.hdr.line}
 }
 \description{
 The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
