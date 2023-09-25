@@ -2,15 +2,16 @@
 
 
 
-#' Title
+#' Title find_variable_genes
 #'
-#' @param eset
-#' @param data_type
-#' @param methods
-#' @param prop
-#' @param quantile
-#' @param min.mad
-#' @param feas
+#' @description This function identifies variable genes based on specified criteria in a given gene expression dataset.
+#' @param eset The gene expression dataset as a matrix.
+#' @param data_type (character, optional): The type of data in the dataset. Default is "count". Possible values: "count", "normalized".
+#' @param methods  (character vector, optional): The methods to be used for gene selection. Default is c("low", "mad"). Possible values: "low", "mad".
+#' @param prop (numeric, optional): The proportion of samples in which a gene should be expressed. Default is 0.7.
+#' @param quantile  (numeric vector, optional): The quantiles used to calculate the minimum allowable median absolute deviation (mad) value. Default is c(0.75, 0.5, 0.25).
+#' @param min.mad  (numeric, optional): The minimum allowable mad value. Default is 0.1.
+#' @param feas (character vector, optional): Additional features to include in the variable gene selection. Default is NULL.
 #'
 #' @return
 #' @export
