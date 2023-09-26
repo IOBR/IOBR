@@ -31,7 +31,7 @@
 count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "local", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", check_data = FALSE){
 
 
-  if(org%in%c("hsa", "mmus")) stop(">>>== `org` must be hsa or mmus...")
+  if(!org%in%c("hsa", "mmus")) stop(">>>== `org` must be hsa or mmus...")
   # requireNamespace("biomaRt")
   if(!is.matrix(countMat)){
     countMat<-as.matrix(countMat)
@@ -82,6 +82,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 
   if(source == "local" & tolower(idType) == "ensembl" & org == "hsa") {
 
+    rownames(countMat) <- substring(rownames(countMat), 1, 15)
     data("anno_grch38", package = "IOBR")
     message(">>>--- Using variables (anno_grch38) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
