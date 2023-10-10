@@ -63,7 +63,9 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
       colnames(eset)[which(colnames(eset)==id_eset)]<-"ID"
       data <- eset
     }
-    if(scale) data[,c(var1, var2)] <- scale(data[,c(var1, var2)])
+
+    if(scale) data[,c(var1, var2)] <- scale(data[, c(var1, var2)])
+
   }else{
     colnames(pdata)[which(colnames(pdata)==id_pdata)]<-"ID"
 

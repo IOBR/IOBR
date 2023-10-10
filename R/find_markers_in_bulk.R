@@ -20,22 +20,30 @@
 #' @examples
 find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25){
 
+  library(Seurat)
+  if(dim(pdata)[2] == 2){
+    pdata[,"newid"] <- pdata[, id_pdata]
+  }
 
   pdata<-column_to_rownames(pdata, var = id_pdata)
   pdata<-pdata[rownames(pdata)%in%colnames(eset),]
+  # print(mhead(pdata))
 
   feas<-rownames(eset)
-  feas<-feature_manipulation(data = eset, feature = feas, is_matrix = T)
+  feas<-feature_manipulation(data = eset, feature = feas, is_matrix = TRUE)
 
   eset<-eset[rownames(eset)%in%feas, ]
   eset<- eset[,colnames(eset)%in%rownames(pdata)]
+
+  # print(mhead(eset))
+
   sce <- Seurat:: CreateSeuratObject(counts = eset,
                             meta.data = pdata,
                             min.cells = 0,
                             min.features = 0,
                             project = "sce")
   # print(head(sce@meta.data) )
-  sce <- ScaleData(object = sce,
+  sce <- Seurat:: ScaleData(object = sce,
                    # vars.to.regress = c('nCount_RNA'),
                    model.use = 'linear',
                    use.umi = FALSE)
@@ -44,10 +52,11 @@ find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 
   sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce))
   # sce <- FindNeighbors(object = sce, dims = 1:20, verbose = FALSE)
   # sce <- FindClusters(object = sce, resolution = 0.5,verbose = FALSE)
-  meta<-sce@meta.data
-  Idents(sce)<-as.character( meta[,group])
-  print(table(Idents(sce)))
-  sce.markers <- FindAllMarkers(object = sce, only.pos = only.pos, min.pct = min.pct, thresh.use = thresh.use, logfc.threshold = thresh.use)
+  meta <- sce@meta.data
+
+  Idents(sce) <- as.character( meta[,group])
+  print(table(Seurat::Idents(sce)))
+  sce.markers <- Seurat::FindAllMarkers(object = sce, only.pos = only.pos, min.pct = min.pct, thresh.use = thresh.use, logfc.threshold = thresh.use)
   # sce.markers %>% group_by(cluster) %>% top_n(top_n, avg_log2FC)
   topN <- sce.markers %>% group_by(cluster) %>% top_n(top_n, avg_log2FC)
   print(topN)

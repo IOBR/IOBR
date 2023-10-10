@@ -20,8 +20,12 @@
 
 batch_cor<-function(data, target, feature, method = "spearman"){
 
+  if(!target%in%colnames(data)) stop(">>>== target was not in the colnames of data")
   data<-as.data.frame(data)
   feature<-feature[feature%in%colnames(data)]
+
+  if(length(feature)==0) stop(">>>== features were not in the colnames of data")
+  #############################################
   feature<-feature_manipulation(data = data, feature = feature)
 
   feature<-feature[!feature==target]
@@ -33,12 +37,14 @@ batch_cor<-function(data, target, feature, method = "spearman"){
   bb<-as.data.frame(bb)
   bb<-as.data.frame(t(bb))
 
-  cc<-data.frame(sig_names=feature,
+  cc<-data.frame(sig_names = feature,
                  p.value = bb$V1,
                  statistic = sapply(aa, getElement, name = "estimate"))
+
+  # print(head(cc))
   cc<-cc[order(cc$p.value, decreasing = FALSE),]
-  cc$p.adj<-p.adjust(cc$p.value,method = "BH")
-  cc$log10pvalue<--1*log10(cc$p.value)
+  cc$p.adj <- p.adjust(cc$p.value,method = "BH")
+  cc$log10pvalue<- -1*log10(cc$p.value)
   rownames(cc)<-NULL
   cc$stars <- cut(cc$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                   label=c("****","***", "**", "*", "+",""))

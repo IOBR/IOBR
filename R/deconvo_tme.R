@@ -234,7 +234,7 @@ deconvo_cibersort<-function(eset, project = NULL, arrays,  perm = 1000, absolute
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' ips_result<-deconvo_ips(eset = eset, project = "TCGA-STAD")
 #'
-deconvo_ips<-function(eset,project = NULL,plot){
+deconvo_ips<-function(eset, project = NULL,plot){
 
   message(paste0("\n", ">>> Running ", "Immunophenoscore"))
   #normalize gene expression matrix
@@ -588,9 +588,9 @@ deconvo_tme = function(eset,
 
                epic = deconvo_epic(eset, project ,tumor = tumor, ...),
 
-               cibersort = deconvo_cibersort(eset, project, absolute = FALSE, arrays = arrays,perm = perm, ...),
+               cibersort = deconvo_cibersort(eset, project, absolute = absolute.mode, arrays = arrays, perm = perm, ...),
 
-               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method,arrays = arrays,perm = perm, ...),
+               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method, arrays = arrays,perm = perm, ...),
 
                ips = deconvo_ips(eset,project,plot = plot, ...),
 
@@ -600,7 +600,7 @@ deconvo_tme = function(eset,
 
                timer = deconvo_timer(eset,project, indications = group_list, ...),
 
-               svr = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svr", absolute.mode = absolute.mode,abs.method = abs.method,perm,...),
+               svr = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svr", absolute.mode = absolute.mode, abs.method = abs.method,perm,...),
 
                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei",scale_reference,perm,...) )
 
