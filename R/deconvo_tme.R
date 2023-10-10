@@ -561,7 +561,8 @@ deconvo_quantiseq = function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' data(eset_stad, package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
-#'
+#' #Absolute mode
+#' deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort", absolute.mode = TRUE)
 deconvo_tme = function(eset,
                        project = NULL,
                        method = tme_deconvolution_methods,
@@ -590,7 +591,7 @@ deconvo_tme = function(eset,
 
                cibersort = deconvo_cibersort(eset, project, absolute = absolute.mode, arrays = arrays, perm = perm, ...),
 
-               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method, arrays = arrays,perm = perm, ...),
+               cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method, arrays = arrays, perm = perm, ...),
 
                ips = deconvo_ips(eset,project,plot = plot, ...),
 
