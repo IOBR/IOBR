@@ -24,6 +24,10 @@ cell_bar_plot(
 
 \item{title}{plot title}
 
+\item{features}{default is NULL, user can define which column to draw}
+
+\item{pattern}{patterns of features}
+
 \item{legend.position}{legend position}
 
 \item{coord_filp}{logical variables, `coord_filp` of ggplot2}
