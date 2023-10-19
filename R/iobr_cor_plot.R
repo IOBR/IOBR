@@ -3,32 +3,32 @@
 
 #' Integrative correlation between phenotype and features
 #'
-#' @param pdata_group pdata
-#' @param id1 column of identifier of pdata
-#' @param feature_data feature data with first column as `id2`
+#' @param pdata_group A data frame to be analyzed, including id1 and phenotype data
+#' @param id1 column of identifier to pdata
+#' @param feature_data A data frame which should contain the feature data.
 #' @param id2 column of identifier of feature data
 #' @param target default is NULL, column of target variables if target is continuous
-#' @param group column used to differentiate patient groups
+#' @param group The grouping variable, default is "group3".
 #' @param is_target_continuous logical variable, if TRUE, new group will be generated based on the average or the third percentile
 #' @param padj_cutoff cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`
 #' @param index index use to order the file name
 #' @param signature_group for signature group： `sig_group`, for gene_group `signature_collection` or `signature_tme`
 #' @param category `signature` or `gene`
 #' @param ProjectID names to define the file names
-#' @param feature_limit maximal number of features to be drawn
-#' @param character_limit maximal number of feature characters
+#' @param feature_limit The limitation of a feature, default is 26.
+#' @param character_limit The limitation of a character, default is 60.
 #' @param palette_box palette for box plot
 #' @param palette_corplot palette for cor-plot
 #' @param palette_heatmap palette for heat map
-#' @param show_heatmap_col_name logical variable, if TRUE, `tidyheatmap` will print the column name
-#' @param show_col logical variable, if TRUE, color will be print and show in the R studio
+#' @param show_heatmap_col_name A logical value to indicate if heatmap column names should be displayed, default is FALSE.
+#' @param show_col  A logical value to determine if the color should be shown, default is FALSE.
 #' @param show_plot logical variable, if TRUE, plots will be print
-#' @param path folder name to save the result
+#' @param path The path for output file storing, default is NULL.
 #' @param discrete_x if maximal character length of variables is larger than discrete_x, label will be discrete
 #' @param show_palettes default is FALSE
 #' @param discrete_width numeric, default is 30, range from 20 to 80.
 #' @param fig.type default is pdf, if not, figure will be saved in png format.
-#' @param cols_box default is null
+#' @param cols_box Color settings for the box, default is NULL.
 #'
 #' @import corrplot
 #' @author Dongqiang Zeng

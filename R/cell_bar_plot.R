@@ -12,6 +12,8 @@
 #' @param palette default is palette3
 #' @param show_col default is FALSE
 #' @param cols default is NULL, user can define colors manually
+#' @param features default is NULL, user can define which column to draw
+#' @param pattern patterns of features
 #'
 #' @return
 #' @export
