@@ -34,17 +34,17 @@ iobr_cor_plot(
 )
 }
 \arguments{
-\item{pdata_group}{pdata}
+\item{pdata_group}{A data frame to be analyzed, including id1 and phenotype data}
 
-\item{id1}{column of identifier of pdata}
+\item{id1}{column of identifier to pdata}
 
-\item{feature_data}{feature data with first column as `id2`}
+\item{feature_data}{A data frame which should contain the feature data.}
 
 \item{id2}{column of identifier of feature data}
 
 \item{target}{default is NULL, column of target variables if target is continuous}
 
-\item{group}{column used to differentiate patient groups}
+\item{group}{The grouping variable, default is "group3".}
 
 \item{is_target_continuous}{logical variable, if TRUE, new group will be generated based on the average or the third percentile}
 
@@ -60,23 +60,23 @@ iobr_cor_plot(
 
 \item{palette_box}{palette for box plot}
 
-\item{cols_box}{default is null}
+\item{cols_box}{Color settings for the box, default is NULL.}
 
 \item{palette_corplot}{palette for cor-plot}
 
 \item{palette_heatmap}{palette for heat map}
 
-\item{feature_limit}{maximal number of features to be drawn}
+\item{feature_limit}{The limitation of a feature, default is 26.}
 
-\item{character_limit}{maximal number of feature characters}
+\item{character_limit}{The limitation of a character, default is 60.}
 
-\item{show_heatmap_col_name}{logical variable, if TRUE, `tidyheatmap` will print the column name}
+\item{show_heatmap_col_name}{A logical value to indicate if heatmap column names should be displayed, default is FALSE.}
 
-\item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
+\item{show_col}{A logical value to determine if the color should be shown, default is FALSE.}
 
 \item{show_plot}{logical variable, if TRUE, plots will be print}
 
-\item{path}{folder name to save the result}
+\item{path}{The path for output file storing, default is NULL.}
 
 \item{discrete_x}{if maximal character length of variables is larger than discrete_x, label will be discrete}
 
