@@ -36,7 +36,8 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = N
     feas <- features
   }
 
-  input <- input[,c("ID", features)]
+  input <- input[, c("ID", feas)]
+
 
   input<-remove_names(input_df = input, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = "_")
   ##################
@@ -60,7 +61,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = N
 
   if(coord_filp){
     pp<-input %>%
-      gather(cell_type,fraction, -ID) %>%
+      tidyr::gather(cell_type,fraction, -ID) %>%
       # plot as stacked bar chart
       ggplot(aes(x=ID, y=fraction, fill=cell_type)) +
       geom_bar(stat='identity') +
@@ -80,7 +81,7 @@ cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = N
             legend.box.just="top")
   }else{
    pp<- input %>%
-      gather(cell_type,fraction, -ID) %>%
+     tidyr::gather(cell_type,fraction, -ID) %>%
       # plot as stacked bar chart
       ggplot(aes(x=ID, y=fraction, fill=cell_type)) +
       geom_bar(stat='identity') +

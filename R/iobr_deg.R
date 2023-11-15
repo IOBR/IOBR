@@ -24,6 +24,7 @@
 #' @param col_heatmap The color index for plotting the heatmap. Default value is 1.
 #' @param path path to save results
 #' @param parallel default is FALSE
+#' @param id_anno Identifier of annotation data matched to row names of eset
 #'
 #' @importFrom limma lmFit
 #' @author Dongqiang Zeng
@@ -34,6 +35,7 @@
 #'
 iobr_deg<-function(eset,
                    annotation    = NULL,
+                   id_anno       = NULL,
                    pdata,
                    group_id     = "group",
                    pdata_id     = "ID",
@@ -108,12 +110,17 @@ iobr_deg<-function(eset,
 
     if(!is.null(annotation)){
       # DEG$row<-substring(DEG$row,1,15)
-      DEG <- merge(DEG, annoation, by.x="row", by.y="ensgene",all = FALSE)
+      colnames(annotation)[which(colnames(annotation)==id_anno)] <-"id"
+      DEG <- merge(DEG, annotation, by.x="row", by.y="id",all = FALSE)
 
     }else{
       # print(head(DEG))
       # DEG <- rownames_to_column(DEG, var = "row")
+
       message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg` \n")
+      data("anno_grch38", package = "IOBR")
+      DEG <- merge(DEG, anno_grch38, by.x="row", by.y="id",all = FALSE)
+
     }
 
     # print(head(DEG))
