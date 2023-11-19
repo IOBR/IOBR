@@ -7,6 +7,7 @@
 iobr_deg(
   eset,
   annotation = NULL,
+  id_anno = NULL,
   pdata,
   group_id = "group",
   pdata_id = "ID",
@@ -27,6 +28,8 @@ iobr_deg(
 \item{eset}{The gene expression data matrix}
 
 \item{annotation}{(Optional) The annotation object for mapping gene IDs to gene names. Default is NULL.}
+
+\item{id_anno}{Identifier of annotation data matched to row names of eset}
 
 \item{pdata}{The DataFrame containing sample information and group labels.}
 
