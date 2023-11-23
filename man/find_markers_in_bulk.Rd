@@ -13,7 +13,8 @@ find_markers_in_bulk(
   top_n = 20,
   thresh.use = 0.25,
   only.pos = TRUE,
-  min.pct = 0.25
+  min.pct = 0.25,
+  npcs = 50
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ find_markers_in_bulk(
 \item{only.pos}{A logical value indicating whether to select only positive markers, default is TRUE.}
 
 \item{min.pct}{A numeric value representing the minimum percentage threshold for marker selection, default is 0.25.}
+
+\item{npcs}{Total Number of PCs to compute and store (50 by default)}
 }
 \description{
 The goal of this function is to find relevant results from the given gene expression data and meta information.
