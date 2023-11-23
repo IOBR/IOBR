@@ -29,20 +29,22 @@ batch_cor<-function(data, target, feature, method = "spearman"){
   feature<-feature_manipulation(data = data, feature = feature)
 
   feature<-feature[!feature==target]
+  # print(feature[1:10])
 
   aa<-lapply(data[,feature], function(x) cor.test(x,data[,target],method = method))
 
   bb<-lapply(data[,feature], function(x) exact_pvalue(x,data[,target],method = method))
 
   bb<-as.data.frame(bb)
-  bb<-as.data.frame(t(bb))
 
+  bb<-as.data.frame(t(bb))
+  # print(head(bb))
   cc<-data.frame(sig_names = feature,
                  p.value = bb$V1,
                  statistic = sapply(aa, getElement, name = "estimate"))
 
-  # print(head(cc))
-  cc<-cc[order(cc$p.value, decreasing = FALSE),]
+  print(head(cc))
+  cc<-cc[base::order(cc$p.value, decreasing = FALSE),]
   cc$p.adj <- p.adjust(cc$p.value,method = "BH")
   cc$log10pvalue<- -1*log10(cc$p.value)
   rownames(cc)<-NULL
