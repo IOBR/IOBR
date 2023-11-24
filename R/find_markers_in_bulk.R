@@ -13,12 +13,13 @@
 #' @param thresh.use A numeric value representing the marker selection threshold, default is 0.25.
 #' @param only.pos A logical value indicating whether to select only positive markers, default is TRUE.
 #' @param min.pct A numeric value representing the minimum percentage threshold for marker selection, default is 0.25.
+#' @inheritParams Seurat::RunPCA
 #'
 #' @return
 #' @export
 #'
 #' @examples
-find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25){
+find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 50){
 
   library(Seurat)
   if(dim(pdata)[2] == 2){
@@ -49,7 +50,11 @@ find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 
                    use.umi = FALSE)
   sce <- Seurat::FindVariableFeatures(object = sce, nfeatures = nfeatures)
   # length(VariableFeatures(sce))
-  sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce))
+  if (ncol(sce) < npcs) {
+    message("The sample number is less than PC number setting, using the sample number -1 (you can set with npcs)")
+    npcs = ncol(sce) - 1
+  }
+  sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce), npcs = npcs)
   # sce <- FindNeighbors(object = sce, dims = 1:20, verbose = FALSE)
   # sce <- FindClusters(object = sce, resolution = 0.5,verbose = FALSE)
   meta <- sce@meta.data
