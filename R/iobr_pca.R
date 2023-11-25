@@ -25,6 +25,10 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' data("eset_stad", package = "IOBR")
+#' eset <- count2tpm(eset_stad)
+#' iobr_pca(eset, is.matrix = TRUE, scale = TRUE, is.log = TRUE, pdata = stad_group, id_pdata = "ID", group = "subtype")
+#'
 iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata, id_pdata = "ID", group = NULL,
                      geom.ind = "point", cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE){
 

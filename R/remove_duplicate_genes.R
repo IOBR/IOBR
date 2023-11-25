@@ -9,11 +9,11 @@
 #' @import tibble
 #' @return
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
 #' eset<-remove_duplicate_genes(eset = eset,column_of_symbol = "symbol",method = "mean")
 #' summary(duplicated(rownames(eset)))
-#
 
 remove_duplicate_genes<-function(eset, column_of_symbol, method = "mean"){
   eset<-as.data.frame(eset)
