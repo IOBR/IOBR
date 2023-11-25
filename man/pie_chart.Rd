@@ -19,14 +19,35 @@ pie_chart(
 )
 }
 \arguments{
-\item{input}{Input data frame.}
+\item{input}{The input dataframe.}
 
-\item{var}{target}
+\item{var}{The variable on which the pie chart or donut chart will be based.}
 
-\item{type}{plot type}
+\item{var2}{Optional. A secondary variable for creating a donut chart. Default is NULL.}
 
-\item{add_sum}{}
+\item{type}{The type of chart to be generated. 1 for pie chart, 2 for donut chart, 3 for donut chart based on webr package.}
+
+\item{show_freq}{Boolean indicating whether to show frequencies on the chart. Default is FALSE.}
+
+\item{color}{Optional. The color palette for the chart. If not provided, a default color palette will be used.}
+
+\item{palette}{Optional. The color palette to be used if color is not specified. Default is "jama".}
+
+\item{title}{Optional. The title of the chart. Default is NULL.}
+
+\item{text_size}{The size of the text on the chart. Default is 10.}
+
+\item{title_size}{The size of the title text on the chart. Default is 20.}
+
+\item{add_sum}{Boolean indicating whether to add the sum of frequencies to the chart. Default is FALSE.}
 }
 \description{
-pie_chart
+This function generates a pie chart or a donut chart from the input data. It allows customization of various visual aspects such as colors, labels, and title.
+}
+\examples{
+pie_chart(input = sig_stad, var = "Subtype",  palette = "jama")
+pie_chart(input = sig_stad, var = "Subtype",  palette = "nrc")
+}
+\author{
+Dongqiang Zeng
 }

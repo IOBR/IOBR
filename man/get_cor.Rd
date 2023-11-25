@@ -25,7 +25,7 @@ get_cor(
   show_lebel = FALSE,
   point_size = 4,
   title = NULL,
-  alpha = 0.7,
+  alpha = 0.5,
   title_size = 1.5,
   text_size = 10,
   axis_angle = 0,
@@ -106,6 +106,10 @@ get_cor(
 }
 \description{
 The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
+}
+\examples{
+data(eset_tme_stad, package = "IOBR")
+get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
 }
 \author{
 Dongqiang Zeng

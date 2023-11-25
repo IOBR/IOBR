@@ -18,6 +18,7 @@
 #'
 #' @author Dongqiang Zeng
 #' @examples
+#' # Expression matrix downloaded from UCSC Xena datasets: https://xenabrowser.net/datapages/
 #' eset <- tcga_rna_preps(eset = eset,  id_type = "ensembl", input_type = "log2count", output = "tumor", output_type = "count", annotation = TRUE)
 #'
 tcga_rna_preps <- function(eset, id_type = c("ensembl", "symbol"), input_type = c("log2count", "count"), output = c("tumor", "tumor_normal"),

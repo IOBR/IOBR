@@ -2,7 +2,7 @@
 % Please edit documentation in R/rbind_iobr.R
 \name{rbind_iobr}
 \alias{rbind_iobr}
-\title{Title rbind_iobr}
+\title{rbind_iobr}
 \usage{
 rbind_iobr(data1, data2, data3 = NULL)
 }

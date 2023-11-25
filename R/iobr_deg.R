@@ -32,6 +32,11 @@
 #'
 #' @examples
 #'
+#' data("eset_stad", package = "IOBR")
+#' data("stad_group", package = "IOBR")
+#' library(DESeq2)
+#' deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
+
 iobr_deg<-function(eset,
                    annotation    = NULL,
                    id_anno       = NULL,
@@ -93,8 +98,8 @@ iobr_deg<-function(eset,
     dds <- DESeq(dds, parallel = parallel) #,parallel = T
 
 
-    contrast<-c("deg_group", contrast)
-    res_tidy <- results(dds,tidy = T,contrast = contrast)
+    contrast <- c("deg_group", contrast)
+    res_tidy <- results(dds,tidy = T, contrast = contrast)
     res_tidy <- as.data.frame(res_tidy)
     # print(summary(res_tidy))
     #####################################

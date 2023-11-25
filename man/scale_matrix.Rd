@@ -16,6 +16,12 @@ scale_matrix(matrix, log2matrix = TRUE, manipulate = TRUE)
 \description{
 This function scales a given matrix and optionally performs additional manipulation. It can apply a logarithmic transformation (base 2) to the matrix, center and scale the values, and optionally manipulate the features based on a specified criteria.
 }
+\examples{
+data("eset_gse62254", package = "IOBR")
+head(eset_gse62254)
+eset2<- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+head(eset2)
+}
 \author{
 Dongqiang Zeng
 }

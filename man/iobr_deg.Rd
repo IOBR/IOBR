@@ -65,6 +65,13 @@ DEG object
 \description{
 This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
 }
+\examples{
+
+data("eset_stad", package = "IOBR")
+data("stad_group", package = "IOBR")
+library(DESeq2)
+deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
+}
 \author{
 Dongqiang Zeng
 }
