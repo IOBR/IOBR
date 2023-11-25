@@ -83,3 +83,14 @@ sig_heatmap(
 \description{
 The sig_heatmap function is used to generate a heatmap plot based on input data, grouping variables, and optional conditions. The function allows customization of various parameters such as palette selection, scaling, color boxes, plot dimensions, and more. It provides flexibility in visualizing relationships between variables and groups in a concise and informative manner.
 }
+\examples{
+data("tcga_stad_sig", package = "IOBR")
+data("tcga_stad_pdata", package = "IOBR")
+input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
+feas <- colnames(input)[grep(colnames(input), pattern = "MCPcounter")]
+sig_heatmap(input = input, features = feas , group = "subtype", scale = TRUE)
+
+}
+\author{
+Dongqiang Zeng
+}
