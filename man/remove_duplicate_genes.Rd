@@ -20,3 +20,6 @@ Remove duplicate gene symbol on a gene expression data
 eset<-remove_duplicate_genes(eset = eset,column_of_symbol = "symbol",method = "mean")
 summary(duplicated(rownames(eset)))
 }
+\author{
+Dongqiang Zeng
+}

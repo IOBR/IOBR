@@ -53,6 +53,12 @@ iobr_pca(
 \description{
 The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 }
+\examples{
+data("eset_stad", package = "IOBR")
+eset <- count2tpm(eset_stad)
+iobr_pca(eset, is.matrix = TRUE, scale = TRUE, is.log = TRUE, pdata = stad_group, id_pdata = "ID", group = "subtype")
+
+}
 \author{
 Dongqiang Zeng
 }

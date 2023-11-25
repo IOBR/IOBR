@@ -6,6 +6,7 @@
 
 #' Title sig_pheatmap
 #' @description The sig_pheatmap function is used to generate heatmaps. It takes a data frame as input and creates a heatmap with grouping variables based on the provided parameters. The parameters include the input data, the features to include in the heatmap, the grouping variable, and optional additional grouping variables. It also offers flexible options to specify colors, adjust the size and layout of the heatmap, and save output files. The function returns a list containing annotation data, cluster colors, the plot object, and the transformed input matrix, allowing users to further analyze and visualize the heatmap data.
+#'
 #' @param input This parameter represents the input data for the heatmap. It should be a data frame with variables in column
 #' @param feas This parameter specifies the features to include in the heatmap. It should be a vector containing the names of the columns in the "input" data frame.
 #' @param group This parameter indicates the grouping variable for the heatmap. It should be a column name in the "input" data frame.
@@ -30,12 +31,19 @@
 #' @param palette1 (default: 1): This parameter represents the palette number for grouping variable 1. The default value is 1.
 #' @param palette2 (default: 2): This parameter indicates the palette number for grouping variable 2. The default value is 2.
 #' @param palette3 (default: 3): This parameter specifies the palette number for grouping variable 3. The default value is 3.
+#' @param show_colnames (default: FALSE): This parameter determines whether to display colum names
 #'
 #' @return
 #' @export
 #'
 #' @author Dongqiang Zeng
 #' @examples
+#' data("tcga_stad_sig", package = "IOBR")
+#' data("tcga_stad_pdata", package = "IOBR")
+#' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
+#' feas <- colnames(input)[grep(colnames(input), pattern = "MCPcounter")]
+#' sig_pheatmap(input = input, feas = feas , group = "subtype", scale.matrix = TRUE)
+#'
 sig_pheatmap<- function(input, feas, group,
              group2               = NULL,
              group3               = NULL,
@@ -52,10 +60,11 @@ sig_pheatmap<- function(input, feas, group,
              cluster_cols         = TRUE,
              palette_for_heatmape = 6,
              scale.matrix         = TRUE,
-             cellwidth            = 9,
+             cellwidth            = 1,
              cellheight           = 9,
+             show_colnames        = FALSE,
              fig.type             = "pdf",
-             width                = 9,
+             width                = 6,
              height               = NULL,
              file_name_prefix     = 1){
 
@@ -208,6 +217,7 @@ sig_pheatmap<- function(input, feas, group,
     treeheight_row    = 6,
     clustering_method = "complete",
     show_rownames     = T, #show cluster names
+    show_colnames     = show_colnames,
     angle_col         = "45",
     # annotation_row    = annotation_row,
     annotation_col    = anno,

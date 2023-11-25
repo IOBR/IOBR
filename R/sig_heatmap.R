@@ -33,8 +33,14 @@
 #'
 #' @return
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
+#' data("tcga_stad_sig", package = "IOBR")
+#' data("tcga_stad_pdata", package = "IOBR")
+#' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
+#' feas <- colnames(input)[grep(colnames(input), pattern = "MCPcounter")]
+#' sig_heatmap(input = input, features = feas , group = "subtype", scale = TRUE)
+#'
 sig_heatmap<-function(input,
                       ID             = "ID",
                       features,
@@ -137,7 +143,7 @@ sig_heatmap<-function(input,
   # print(color_box)
   ####################################################
  if(scale){
-   scale = "column"
+   scale = "row"
  }else{
    pf_long_group$value[pf_long_group$value > 2.5] = 2.5
    pf_long_group$value[pf_long_group$value < -2.5] = -2.5

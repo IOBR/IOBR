@@ -14,18 +14,27 @@ iobr_deconvo_pieline(
 )
 }
 \arguments{
-\item{eset}{}
+\item{eset}{A gene expression dataset (e.g., expression set object) for TME analysis.}
 
-\item{project}{}
+\item{project}{A character string specifying the name of the project or analysis.}
 
-\item{array}{}
+\item{array}{A variable indicating the array type used in the gene expression dataset.}
 
-\item{tumor_type}{}
+\item{tumor_type}{A character string specifying the type of tumor (e.g., "stad" for stomach adenocarcinoma).}
 
-\item{path}{}
+\item{path}{A character string indicating the path for saving the output files. Default is "1-TME".}
 
-\item{permutation}{}
+\item{permutation}{An integer specifying the number of permutations for TME deconvolution. Default is 1000.}
 }
 \description{
-Title iobr_deconvo_pieline
+The iobr_deconvo_pipeline function is used to perform a comprehensive TME (Tumor Microenvironment) analysis pipeline on a gene expression dataset. The pipeline includes TME deconvolution using various methods, calculation of signature scores, and the merging of TME and signature score results.
+}
+\examples{
+
+data("eset_stad", package = "IOBR")
+eset <- count2tpm(eset_stad)
+res <- iobr_deconvo_pieline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
+}
+\author{
+Dongqiang Zeng
 }
