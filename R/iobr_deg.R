@@ -5,7 +5,6 @@
 
 
 #' iobr_deg
-#'
 #' @description This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
 #'
 #' @param eset The gene expression data matrix

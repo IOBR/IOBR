@@ -4,6 +4,9 @@
 
 #' Removing batch effect of two or three expression set
 #'
+#' @description
+#' This function is designed to remove batch effects from given expression datasets and visualize the corrected data using principal component analysis (PCA). It takes three expression datasets as input and performs batch effect correction using the "sva::ComBat" or "sva::ComBat_seq" methods. The function then generates PCA plots to compare the data before and after correction. The PCA plots are customized based on the specified parameters like data type, color palette, log transformation, and path for saving the plots.
+#'
 #' @param eset1 These are the expression sets for which you want to remove the batch effect.
 #' @param eset2 These are the expression sets for which you want to remove the batch effect.
 #' @param eset3 These are the expression sets for which you want to remove the batch effect. Input 'NULL' for eset3 if not available.
@@ -23,6 +26,8 @@
 #' @references Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078
 #' @references Leek, J. T., Johnson, W. E., Parker, H. S., Jaffe, A. E., & Storey, J. D. (2012). The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics, 28(6), 882-883.
 #' @examples
+#'
+#'
 remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = c("array", "count", "tpm"), cols = "normal", palette = "jama",
                                log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = "Result_PCA"){
 
@@ -106,7 +111,7 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
   p1 <-iobr_pca(data        = combined.expr,
                 is.matrix   = TRUE,
                 scale       = TRUE,
-                is.log      = TRUE,  #取对数+scale
+                is.log      = TRUE,
                 # geom.ind  = "point",
                 pdata       = batch,
                 id_pdata    = "ID",
@@ -120,8 +125,11 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
 
   p2 <-iobr_pca(data = combined.expr.combat,
                 is.matrix = TRUE,
-                scale = TRUE, is.log = TRUE,  #取对数+scale
-                pdata = batch, id_pdata = "ID", group = "batch",
+                scale = TRUE,
+                is.log = TRUE,
+                pdata = batch,
+                id_pdata = "ID",
+                group = "batch",
                 cols = cols,
                 palette = palette,
                 repel = repel,

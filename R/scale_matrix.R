@@ -15,6 +15,11 @@
 #'
 #' @author Dongqiang Zeng
 #' @examples
+#' data("eset_gse62254", package = "IOBR")
+#' head(eset_gse62254)
+#' eset2<- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+#' head(eset2)
+
 scale_matrix<-function(matrix, log2matrix = TRUE, manipulate = TRUE){
 
   if(log2matrix){
@@ -30,3 +35,4 @@ scale_matrix<-function(matrix, log2matrix = TRUE, manipulate = TRUE){
   }
   return(matrix)
 }
+

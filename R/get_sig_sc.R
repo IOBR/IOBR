@@ -1,11 +1,7 @@
 
 
-
-
-
-
-#' Gene lists from matrix of gene expression markers
-#' Get gene lists from matrix of gene expression markers for all identity classes
+#' get_sig_sc
+#' @description Get gene signature from single-cell differential analysis
 #' @param deg Matrix containing a ranked list of putative markers, and associated statistics (p-values, ROC score, etc.)
 #' @param cluster Name of the column in which the clusters are located
 #' @param gene Name of the column in which the markers are located
@@ -16,6 +12,9 @@
 #' @export
 #'
 #' @examples
+#' data('deg', package = "IOBR")
+#' get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
+
 get_sig_sc<-function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100){
 
   # cluster <- !!sym(cluster)

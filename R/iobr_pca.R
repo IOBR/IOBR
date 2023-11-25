@@ -55,7 +55,6 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
                                  geom.ind     = geom.ind, # show points only (nbut not "text")
                                  col.ind      = as.character(pdata[, group]), # color by groups
                                  palette      = cols,
-
                                  repel        = repel,
                                  addEllipses  = addEllipses, # Concentration ellipses
                                  legend.title = group)

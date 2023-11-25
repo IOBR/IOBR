@@ -3,7 +3,7 @@
 
 #' check_eset - Check integrity and outliers of expression set
 #'
-#' @description This function is used to check the integrity and outliers of the given eset dataset, providing corresponding warnings and print results. It detects the presence of missing values, infinite values, and features with zero standard deviation.
+#' @description This function is used to check the integrity and outliers of the given expression set, providing corresponding warnings and print results. It detects the presence of missing values, infinite values, and features with zero standard deviation.
 #' @param eset The matrix to be checked.
 #' @param print_result Whether to print the check results. Default is FALSE. If set to TRUE, it will print the results of each check.
 #' @param estimate_sd Whether to estimate the standard deviation. Default is FALSE. If set to TRUE, it will estimate the standard deviation for each feature and provide warnings and print results accordingly.

@@ -44,11 +44,13 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#'
+#' data(eset_tme_stad, package = "IOBR")
+#' get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
+
 get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pdata = "ID", var1, var2, scale = TRUE,
         subtype = NULL, na.subtype.rm = FALSE, color_subtype = NULL,  palette = "jama", index = NULL,
         method = "spearman", show_cor_result = T, col_line = NULL, id = "NULL",
-        show_lebel = FALSE, point_size = 4, title = NULL, alpha = 0.7,title_size = 1.5,
+        show_lebel = FALSE, point_size = 4, title = NULL, alpha = 0.5,title_size = 1.5,
         text_size = 10, axis_angle = 0, hjust = 0, show_plot = TRUE, fig.format = "png",
         fig.width = 7, fig.height = 7.3, path = NULL, save_plot = FALSE, add.hdr.line = FALSE){
 
@@ -58,14 +60,22 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
   if(is.null(pdata)){
 
     if(is.matrix){
+
+      if(scale) eset <- scale_matrix(matrix = eset, log2matrix = FALSE, manipulate = FALSE)
       data<- as.data.frame(rownames_to_column(as.data.frame(t(eset)), var = "ID"))
+      var1<- var1[var1%in%colnames(data)]
+      var2<- var2[var2%in%colnames(data)]
+
     }else{
       colnames(eset)[which(colnames(eset)==id_eset)]<-"ID"
       data <- eset
+      var1<- var1[var1%in%colnames(data)]
+      var2<- var2[var2%in%colnames(data)]
+      if(scale) data[,c(var1, var2)] <- scale(data[, c(var1, var2)])
     }
 
-    if(scale) data[,c(var1, var2)] <- scale(data[, c(var1, var2)])
-
+    # data[, unique(var1, var2)] <- apply(data[, unique(var1, var2)], 2, as.numeric)
+    print(data[,c(var1, var2)])
   }else{
     colnames(pdata)[which(colnames(pdata)==id_pdata)]<-"ID"
 
@@ -91,7 +101,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
   #######################################
 
   data<-as.data.frame(data)
-  cor_result<-cor.test(data[,var1], data[,var2],method = method)
+  cor_result<- cor.test(data[,var1], data[,var2], method = method)
   if(show_cor_result) print(cor_result)
 
   pvalue<- exact_pvalue(data[,var1], data[,var2],method = method)

@@ -26,8 +26,12 @@
 #'
 #' @return
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
+#' data("sig_stad", package = IOBR)
+#' table(sig_stad$Subtype, sig_stad$Lauren)
+#' percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
+
 percent_bar_plot<-function(input, x, y,
                            subset.x         = NULL,
                            color            = NULL,
@@ -121,27 +125,38 @@ percent_bar_plot<-function(input, x, y,
 
 #' pie_chart
 #'
-#' @param input Input data frame.
-#' @param var target
-#' @param color
-#' @param palette
-#' @param title
-#' @param text_size
-#' @param title_size
-#' @param var2
-#' @param type plot type
-#' @param show_freq
-#' @param add_sum
+#' @description
+#' This function generates a pie chart or a donut chart from the input data. It allows customization of various visual aspects such as colors, labels, and title.
+#'
+#' @param input The input dataframe.
+#' @param var The variable on which the pie chart or donut chart will be based.
+#' @param color Optional. The color palette for the chart. If not provided, a default color palette will be used.
+#' @param palette Optional. The color palette to be used if color is not specified. Default is "jama".
+#' @param title Optional. The title of the chart. Default is NULL.
+#' @param text_size  The size of the text on the chart. Default is 10.
+#' @param title_size The size of the title text on the chart. Default is 20.
+#' @param var2 Optional. A secondary variable for creating a donut chart. Default is NULL.
+#' @param type The type of chart to be generated. 1 for pie chart, 2 for donut chart, 3 for donut chart based on webr package.
+#' @param show_freq Boolean indicating whether to show frequencies on the chart. Default is FALSE.
+#' @param add_sum Boolean indicating whether to add the sum of frequencies to the chart. Default is FALSE.
 #'
 #' @return
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
+#' pie_chart(input = sig_stad, var = "Subtype",  palette = "jama")
+#' pie_chart(input = sig_stad, var = "Subtype",  palette = "nrc")
+
 pie_chart<-function(input, var, var2 = NULL,type = 2, show_freq = FALSE, color = NULL, palette = "jama", title=NULL, text_size = 10, title_size = 20, add_sum =FALSE){
 
-  input2<-input
+  input <- input[!is.na(input[,var]), ]
+  input <- as.data.frame(input)
+  input[, var] <- as.character(input[, var])
 
-  input<-as.data.frame(table(input[,var]))
+  input2<-input
+  input <-as.data.frame(table(input[,var]))
+
   colnames(input)[1]<-"var"
 
   input <- input %>%
