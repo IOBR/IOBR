@@ -94,6 +94,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
     }
 
     message("Done: Combing data...")
+    # print(head(data))
   }
 
   data<- data[!is.na(data[,var1]), ]

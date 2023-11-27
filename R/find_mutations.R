@@ -26,13 +26,22 @@
 #' @param gene_counts define the number of genes which will be shown in the oncoprint
 #' @param genes genes for drawing
 #' @param point_size default is 4.5
+#' @param point.alpha point.alpha of boxplot
 #'
 #' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
-find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5){
+#' # MAF data download from UCSC Xena hub
+#' maf_file<-"E:/18-Github/Organization/TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
+#' mut_list<-make_mut_matrix(maf = maf_file, isTCGA   = T, category = "multi")
+#' mut<-mut_list$snp
+#' res<-find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig, id_signature_matrix = "ID",signature = "CD_8_T_effector",min_mut_freq = 0.01, plot  = TRUE, jitter = TRUE, point.alpha = 0.25
+
+
+
+find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", point.alpha = 0.1, save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5){
 
 
 
@@ -155,7 +164,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           stat_compare_means(size=6)
 
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= point_size,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= point_size, alpha=point.alpha,color ="black")
         }
         ggsave(pl[[i]],filename = paste0(4+i,"-1-",gene,"-continue.pdf"),
                width = 4,height = 5.5,path = file_name)
@@ -226,7 +235,7 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size = point_size,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size = point_size,alpha=point.alpha,color ="black")
         }
 
         ggsave(pl[[i]],filename = paste0(4+i,"-2-",gene,"-binary.pdf"),
@@ -307,14 +316,14 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         pl[[i]]<-ggplot(dd, aes(x=mutation, y = !!sym(signature), fill=mutation)) +
           geom_boxplot(outlier.shape = NA,outlier.size = NA)+
           # geom_jitter(width = 0.25,size= 3.5,alpha=0.75,color ="black")+
-          scale_fill_manual(values= palettes(category = "box",palette = palette,show_col = show_col))+
+          scale_fill_manual(values= palettes(category = "box",palette = palette, show_col = show_col))+
           mytheme+theme(legend.position="none")+
           ggtitle(paste0(top10_genes[i]))+
           mytheme+
           stat_compare_means(comparisons = combn(as.character(unique(dd[,"mutation"])), 2, simplify=F),size=6)
 
         if(jitter){
-          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=point_size,alpha=0.75,color ="black")
+          pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size=point_size, alpha = point.alpha,color ="black")
         }
 
         ggsave(pl[[i]],filename = paste0(i,"-1-",gene,"-binary.pdf"),
