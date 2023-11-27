@@ -411,7 +411,7 @@ deconvo_ref<-function(eset, project = NULL, arrays = TRUE, method = "svr", perm 
   ###############################
   colnames(res)<-gsub(colnames(res),pattern = "\\.",replacement = "\\_")
   colnames(res)<-gsub(colnames(res),pattern = "\\ ",replacement = "\\_")
-  colnames(res)<-paste0(colnames(res),"_",method)
+  colnames(res)<-paste0(colnames(res),"_CIBERSORT")
   res<-as.data.frame(res)
 
   if(!is.null(project)){

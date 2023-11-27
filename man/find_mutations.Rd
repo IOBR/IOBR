@@ -12,6 +12,7 @@ find_mutations(
   min_mut_freq = 0.05,
   plot = TRUE,
   method = "multi",
+  point.alpha = 0.1,
   save_path = NULL,
   palette = "paired3",
   show_plot = TRUE,
@@ -41,6 +42,8 @@ find_mutations(
 
 \item{method}{multi or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed}
 
+\item{point.alpha}{point.alpha of boxplot}
+
 \item{save_path}{path to save plot and statistical analyses}
 
 \item{palette}{palette of box plot}
@@ -67,6 +70,13 @@ find_mutations(
 }
 \description{
 Searching for mutations related to signature score
+}
+\examples{
+# MAF data download from UCSC Xena hub
+maf_file<-"E:/18-Github/Organization/TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
+mut_list<-make_mut_matrix(maf = maf_file, isTCGA   = T, category = "multi")
+mut<-mut_list$snp
+res<-find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig, id_signature_matrix = "ID",signature = "CD_8_T_effector",min_mut_freq = 0.01, plot  = TRUE, jitter = TRUE, point.alpha = 0.25
 }
 \author{
 Dongqiang Zeng
