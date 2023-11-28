@@ -24,20 +24,22 @@
 #' # showing 20 tumor microenvironment cell proportion deconvoluted by CIBERSORT algorithm
 #' cell_bar_plot(input = sig_stad[1:20, ], id = "ID", features = colnames(sig_stad)[25:46])
 
-cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = NULL, pattern = "CIBERSORT", legend.position = "bottom",
+cell_bar_plot<- function(input, id = "ID", title = "Cell Fraction", features = NULL, pattern = NULL, legend.position = "bottom",
                          coord_filp = TRUE, palette = 3, show_col = F, cols = NULL){
 
   input<-as.data.frame(input)
   colnames(input)[which(colnames(input)==id)]<-"ID"
 
   if(is.null(features)){
+
+    if(is.null(pattern)) stop(">>>=== The 'pattern' parameter must be defined...")
     feas <- colnames(input)[str_detect(colnames(input), pattern = pattern)]
   }else{
+
     feas <- features
   }
 
   input <- input[, c("ID", feas)]
-
 
   input<-remove_names(input_df = input, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = "_")
   ##################
