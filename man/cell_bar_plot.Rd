@@ -9,7 +9,7 @@ cell_bar_plot(
   id = "ID",
   title = "Cell Fraction",
   features = NULL,
-  pattern = "CIBERSORT",
+  pattern = NULL,
   legend.position = "bottom",
   coord_filp = TRUE,
   palette = 3,
