@@ -8,7 +8,7 @@ PrognosticModel(
   x,
   y,
   scale = FALSE,
-  seed = "123456",
+  seed = 123456,
   train_ratio = 0.7,
   nfold = 10,
   plot = T
@@ -34,4 +34,11 @@ a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 }
 \description{
 Prognostic Model construction
+}
+\examples{
+data("imvigor210_sig", package = "IOBR")
+data("imvigor210_pdata",package = "IOBR")
+pdata_prog <- imvigor210_pdata \%>\% dplyr::select(ID, OS_days, OS_status) \%>\% mutate(OS_days = as.numeric(.$OS_days)) \%>\% mutate(OS_status = as.numeric(.$OS_status))
+prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog, scale = T, seed  = 123456, train_ratio = 0.7, nfold = 10, plot = T)
+
 }

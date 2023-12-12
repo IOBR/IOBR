@@ -11,9 +11,13 @@
 #' @return a list contain the results of 2 model (Lasso, Ridge) and the input train data.
 #'
 #' @export
-#'
-BinomialModel <- function(x, y,seed = "123456", scale = TRUE,
-                          train_ratio = 0.7, nfold = 10, plot = T){
+#' @examples
+#' data("imvigor210_sig", package = "IOBR")
+#' data("imvigor210_pdata",package = "IOBR")
+#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
+BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T){
 
   x<-as.data.frame(x)
   y<-as.data.frame(y)

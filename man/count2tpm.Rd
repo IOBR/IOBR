@@ -41,6 +41,19 @@ A TPM expression profile.
 \description{
 The count2tpm function is used to transform gene expression count data into Transcripts Per Million (TPM) values. This function supports gene IDs of type "Ensembl", "Entrez", or "Symbol", and retrieves gene length information using either an online connection to the bioMart database or a local dataset (specified by the source parameter). Missing values in count data can be checked and removed if check_data is set to TRUE. If gene length information is not provided through the effLength parameter, it will be obtained from the specified source. Based on the idType and org, the function identifies the matching identifiers in the count matrix to the annotation database and replaces them accordingly. After processing the gene names, lengths are obtained based on the idType. The function then calculates TPM values and removes any genes that do not have corresponding length information. The resulting TPM values are returned in a dataframe format. Additionally, duplicated genes are removed using the remove_duplicate_genes function before the final data frame is returned.
 }
+\examples{
+# Using the TCGA count data as an example
+data(eset_stad, package = "IOBR")
+# Transformation is accompanied by gene annotation
+eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+head(eset)
+
+# TPM transformations can also be performed using the gene symbol, but are not recommended
+data("anno_grch38", package = "IOBR")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
+head(eset)
+}
 \author{
 Wubing Zhang
 
