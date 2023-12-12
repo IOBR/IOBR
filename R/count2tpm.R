@@ -20,9 +20,14 @@
 #' @author Wubing Zhang
 #' @author Dongqiang Zeng
 #' @export
-#' @example
+#' @examples
+#' # Using the TCGA count data as an example
 #' data(eset_stad, package = "IOBR")
+#' # Transformation is accompanied by gene annotation
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' head(eset)
+#'
+#' # TPM transformations can also be performed using the gene symbol, but are not recommended
 #' data("anno_grch38", package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
