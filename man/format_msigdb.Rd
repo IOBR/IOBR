@@ -4,7 +4,7 @@
 \alias{format_msigdb}
 \title{Format input signatures from MsgiDB}
 \usage{
-format_msigdb(gmt, ont = "ont", gene = "gene")
+format_msigdb(gmt, ont = "term", gene = "gene")
 }
 \arguments{
 \item{gmt}{`signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`}
@@ -18,4 +18,9 @@ signature list
 }
 \description{
 Format input signatures from MsgiDB
+}
+\examples{
+# download gmt through: https://www.gsea-msigdb.org/gsea/msigdb/download_file.jsp?filePath=/msigdb/release/2023.2.Hs/h.all.v2023.2.Hs.symbols.gmt
+format_msigdb("E:/0-0-0-My Pipeline/00-Signature-collection/h.all.v2023.2.Hs.symbols.gmt", ont = "term")
+
 }

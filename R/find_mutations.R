@@ -39,8 +39,6 @@
 #' mut<-mut_list$snp
 #' res<-find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig, id_signature_matrix = "ID",signature = "CD_8_T_effector",min_mut_freq = 0.01, plot  = TRUE, jitter = TRUE, point.alpha = 0.25
 
-
-
 find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature, min_mut_freq = 0.05, plot = TRUE, method = "multi", point.alpha = 0.1, save_path = NULL,palette = "paired3", show_plot = TRUE, show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean", oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5){
 
 

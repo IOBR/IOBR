@@ -3,7 +3,7 @@
 
 
 
-#' Title: sig_box - Generate a Boxplot with Statistical Comparisons
+#' Title: sig_box - Generate a Box plot with Statistical Comparisons
 #'
 #' @description The sig_box function is designed to generate a boxplot with optional statistical comparisons. It takes in various parameters such as data, signature, variable, and more to customize the plot. It can be used to visualize and analyze data in a Seurat object or any other data frame.
 #' @param data The input data, which can be a Seurat object or a data frame.
@@ -25,10 +25,13 @@
 #'
 #' @return
 #' @export
-#'
-#' @examples
 #' @author Dongqiang Zeng
-#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T)
+#' @examples
+#' data("tcga_stad_pdata", package = "IOBR")
+#'
+#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T, palette = "jco")
+#'
+#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = FALSE, palette = "jco")
 sig_box<-function(data, signature, variable, angle_x_text = 0, hjust = 0.5, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
                   size_of_pvalue = 6, show_pvalue = TRUE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE){
 

@@ -13,10 +13,16 @@
 #' @param min.mad  (numeric, optional): The minimum allowable mad value. Default is 0.1.
 #' @param feas (character vector, optional): Additional features to include in the variable gene selection. Default is NULL.
 #'
+#' @author Dongqiang Zeng
 #' @return
 #' @export
 #'
 #' @examples
+#' # loading expression data
+#' data("eset_tme_stad", package = "IOBR")
+#' # Determination of filtration criteria
+#' eset <- find_variable_genes(eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25)
+#'
 find_variable_genes <- function(eset, data_type = c("count", "normalized"), methods = c( "low", "mad"), prop = 0.7,
                                 quantile = c(0.75, 0.5, 0.25), min.mad = 0.1, feas = NULL){
 
@@ -45,7 +51,9 @@ find_variable_genes <- function(eset, data_type = c("count", "normalized"), meth
     if(quantile==0.75) index = 4
     if(quantile==0.50) index = 3
     if(quantile==0.25) index = 2
-    feas2 <- rownames(eset)[which(m.mad > max(quantile(m.mad, probs=seq(0, 1, 0.25))[3], min.mad))]
+
+    message(paste0(">>>== ", quantile*100, "% of the variables will be filtered out..."))
+    feas2 <- rownames(eset)[which(m.mad > max(quantile(m.mad, probs=seq(0, 1, 0.25))[index], min.mad))]
   }else{
     feas2 <- NULL
   }

@@ -25,8 +25,7 @@
 #'tcga_crc_exp <- tcga_crc_exp[mad > 0.5, ]
 #'pd1 <- as.numeric(tcga_crc_exp["PDCD1", ])
 #'group <- ifelse(pd1 > mean(pd1), "high", "low")
-#'pd1_cor <- feature_select(x = tcga_crc_exp, y = pd1, method = "cor", family = "pearson",
-#'padjcut = 0.05, cutoff = 0.5)
+#'pd1_cor <- feature_select(x = tcga_crc_exp, y = pd1, method = "cor", family = "pearson", padjcut = 0.05, cutoff = 0.5)
 #'pd1_dif <- feature_select(x = tcga_crc_exp, y = pd1, method = "dif", padjcut = 0.05, cutoff = 2)
 #'pd1_dif_2 <- feature_select(x = tcga_crc_exp, y = group, method = "dif", padjcut = 0.05, cutoff = 2)
 

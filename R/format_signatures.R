@@ -10,7 +10,12 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-format_signatures<-function(sig_data,save_signature = FALSE, output_name = "signatures"){
+#'
+#' # load signature data frame
+#' data("sig_excel", package = "IOBR")
+#' # transform into gene list for IOBR functions
+#' format_signatures(sig_excel)
+format_signatures<-function(sig_data, save_signature = FALSE, output_name = "signatures"){
 
   message(paste0(">>> There are ",dim(sig_data)[2], "  signatures >>>" ))
 

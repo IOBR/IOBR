@@ -29,6 +29,9 @@
 #'
 #' @examples
 #'
+#'data("tcga_stad_pdata", package = "IOBR")
+#'sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus", time = "time", status = "OS_status")
+#'
 sig_surv_plot <- function(input_pdata,
                           signature,
                           project     = "KM",
@@ -100,7 +103,7 @@ sig_surv_plot <- function(input_pdata,
   message(paste(">>> Dataset's survival follow up time is range between",
               paste(round(summary(input_pdata$time),2)[c(1,6)],collapse = " to "),"months"))
   ######################################
-  #' calculate best cutoff
+  #calculate best cutoff
   res.cut<-surv_cutpoint(input_pdata,time = "time",event = "status",variables = signature)
   res.cut<-res.cut$cutpoint[[1]]
   message(paste0(">>> The best cutoff for " ,signature, " is: ",round(res.cut,2)))
@@ -135,7 +138,7 @@ sig_surv_plot <- function(input_pdata,
                   data = input_pdata)
   # input_pdata[,index]<-ifelse(input_pdata[,index]==1,"High","LOW")
   ############################################
-  #' define break time
+  #define break time
 
   if(break_month == "auto"){
     break_month<-break_month(input = input_pdata$time,block = 6)

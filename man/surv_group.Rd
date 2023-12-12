@@ -69,8 +69,9 @@ surv_group(
 Drawing KM-plot to a Categorical variable with two or more groups
 }
 \examples{
+data("tcga_stad_pdata", package = "IOBR")
+surv_group(input_pdata = tcga_stad_pdata, target_group = "TMEscore_plus_binary", time = "time", status = "OS_status")
 
-define break time
 }
 \author{
 Dongqiang Zeng

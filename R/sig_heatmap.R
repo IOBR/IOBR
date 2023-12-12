@@ -78,12 +78,12 @@ sig_heatmap<-function(input,
 
 
   input<-as.data.frame(input)
-  features<-features[features%in%colnames(input)]
+  features <- features[features%in%colnames(input)]
 
   colnames(input)[which(colnames(input)==ID)]<-"idd"
   # input<-column_to_rownames(input,var = "ID")
 
-  input<-input[,c("idd", group, features)]
+  input<- input[, c("idd", group, features)]
   colnames(input)[which(colnames(input)==group)]<-"target_group"
 
   input<- input[!is.na(input[,"target_group"]), ]

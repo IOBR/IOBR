@@ -27,7 +27,7 @@ iobr_deconvo_pieline <- function(eset, project, array, tumor_type, path = "1-TME
   #######################################
   path <- creat_folder(paste0(path))
   #############################################
-  eset<- log2eset(eset_tpm)
+  eset<- log2eset(eset)
   #############################################
 
   # tumor_type<-"stad"
@@ -59,6 +59,7 @@ iobr_deconvo_pieline <- function(eset, project, array, tumor_type, path = "1-TME
   sig_res<-calculate_sig_score(pdata = NULL,
                                eset = eset,
                                signature = signature_collection,
+                               adjust_eset = TRUE,
                                method = "integration",
                                mini_gene_count = 2)
   print(paste0( ">>>>> Signature esitmation was completed: ", project))
@@ -66,6 +67,7 @@ iobr_deconvo_pieline <- function(eset, project, array, tumor_type, path = "1-TME
   ########################################
   sig_go_kegg<-calculate_sig_score(pdata = NULL,
                                    eset = eset,
+                                   adjust_eset = TRUE,
                                    signature = c(hallmark,go_bp,go_cc,go_mf,kegg,reactome),
                                    method = "ssgsea",
                                    mini_gene_count = 2)

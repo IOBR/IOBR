@@ -50,6 +50,10 @@ sig_roc(
 \description{
 Drawing multiple AUC into one graph
 }
+\examples{
+data("tcga_stad_pdata", package = "IOBR")
+sig_roc(data = tcga_stad_pdata, response = "OS_status", variables = c("TMEscore_plus", "GZMB", "GNLY"))
+}
 \author{
 Dongqiang Zeng
 }

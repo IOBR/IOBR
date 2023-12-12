@@ -18,13 +18,29 @@
 #' @export
 #'
 #' @examples
-find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25){
+#'
+#' # loading expression data
+#' data("eset_tme_stad", package = "IOBR")
+#' colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
+#'
+#' data("pdata_sig_tme", package = "IOBR")
+#' res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
+#'
+#' # extracting top 15 markers of each TME clusters
+#' top15 <-  res$top_markers %>% dplyr:: group_by(cluster) %>%  dplyr::top_n(15, avg_log2FC)
+#'
+#' # visualization
+#' cols <- c('#2692a4','#fc0d3a','#ffbe0b')
+#' DoHeatmap(res$sce, top15$gene, group.colors = cols )+ scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11,"RdBu"))(256)))
+#'
+find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30){
 
   library(Seurat)
   if(dim(pdata)[2] == 2){
     pdata[,"newid"] <- pdata[, id_pdata]
   }
 
+  rownames(pdata) <- NULL
   pdata<-column_to_rownames(pdata, var = id_pdata)
   pdata<-pdata[rownames(pdata)%in%colnames(eset),]
   # print(mhead(pdata))
@@ -49,7 +65,7 @@ find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 
                    use.umi = FALSE)
   sce <- Seurat::FindVariableFeatures(object = sce, nfeatures = nfeatures)
   # length(VariableFeatures(sce))
-  sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce))
+  sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce), npcs = npcs)
   # sce <- FindNeighbors(object = sce, dims = 1:20, verbose = FALSE)
   # sce <- FindClusters(object = sce, resolution = 0.5,verbose = FALSE)
   meta <- sce@meta.data

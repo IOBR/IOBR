@@ -32,6 +32,12 @@ A vector of character strings representing the names of potential outlier sample
 \description{
 The "find_outlier_samples" function is designed to analyze gene expression data and identify potential outlier samples based on connectivity analysis. By utilizing the "WGCNA" package, this function calculates the normalized adjacency and connectivity z-scores for each sample. It further generates a connectivity plot, highlighting samples with connectivity z-scores greater than the specified y-intercept value. This function also allows for the option to plot hierarchical clustering and save the output files in a designated project folder. The returned result is a list of potential outlier samples, providing valuable insights for further analysis and data interpretation.
 }
+\examples{
+# loading expression data
+data("eset_tme_stad", package = "IOBR")
+outs <- find_outlier_samples(eset = eset_tme_stad)
+print(outs)
+}
 \author{
 Dongqiang Zeng
 }

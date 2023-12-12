@@ -3,7 +3,7 @@
 
 
 
-#' Converting muouse gene symbol to human gene symbol of expression set.
+#' Converting mouse gene symbol to human gene symbol of expression set.
 #'
 #' @param eset expression matrix or data frame
 #' @param source default is ensembl, if an error is reported, set parameter to `local` and mus_human_gene_symbol will be use to convert gene symbols
@@ -14,6 +14,7 @@
 #' @export
 #'
 #' @examples
+#'
 mouse2human_eset<-function(eset, source = "ensembl", is_matrix = T, column_of_symbol = NULL, verbose = FALSE){
 
 

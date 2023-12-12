@@ -19,7 +19,7 @@ combine_pd_eset(
 
 \item{pdata}{Phenotype data.}
 
-\item{id_pdata}{String indicating the column name in pdata that corresponds to the ID column.}
+\item{id_pdata}{String indicating the column name in pdata that corresponds to the eset column.}
 
 \item{feas}{Vector of feature names to include in the combined dataset. Default is NULL, which includes all features.}
 

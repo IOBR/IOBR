@@ -20,6 +20,11 @@ list of signatures
 Transform signature gene data into list format
 }
 \examples{
+
+# load signature data frame
+data("sig_excel", package = "IOBR")
+# transform into gene list for IOBR functions
+format_signatures(sig_excel)
 reading each column and transfer it to a list
 standerdized the name of list
 }

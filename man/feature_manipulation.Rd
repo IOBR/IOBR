@@ -2,12 +2,12 @@
 % Please edit documentation in R/feature_manipulation.R
 \name{feature_manipulation}
 \alias{feature_manipulation}
-\title{feature_manipulation - Manipulate features in a matrix or dataframe}
+\title{feature_manipulation - Manipulate features in a matrix or data frame}
 \usage{
 feature_manipulation(data, feature, is_matrix = FALSE, print_result = FALSE)
 }
 \arguments{
-\item{data}{The matrix or dataframe containing the features to be manipulated.}
+\item{data}{The matrix or data frame containing the features to be manipulated.}
 
 \item{feature}{The features to be manipulated. If is_matrix is set to TRUE, feature will be ignored.}
 
@@ -19,7 +19,13 @@ feature_manipulation(data, feature, is_matrix = FALSE, print_result = FALSE)
 filtered features
 }
 \description{
-This function allows for manipulation of features in a given matrix or dataframe. It can remove variables with missing values, non-numeric variables, infinite variables, and variables with zero standard deviation.
+This function allows for manipulation of features in a given matrix or data frame. It can remove variables with missing values, non-numeric variables, infinite variables, and variables with zero standard deviation.
+}
+\examples{
+# loading data
+data("eset_stad")
+# filtering features with NA or outlier
+feas <- feature_manipulation(data = eset, feature = rownames(eset), is_matrix = TRUE)
 }
 \author{
 Dongqiang Zeng

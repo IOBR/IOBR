@@ -16,3 +16,6 @@ output_sig(signatures, format = "csv", file.name)
 \description{
 save signature data into a data frame
 }
+\examples{
+output_sig(signature_collection, file.name = "signature")
+}

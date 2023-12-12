@@ -32,3 +32,13 @@ find_variable_genes(
 \description{
 This function identifies variable genes based on specified criteria in a given gene expression dataset.
 }
+\examples{
+# loading expression data
+data("eset_tme_stad", package = "IOBR")
+# Determination of filtration criteria
+eset <- find_variable_genes(eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25)
+
+}
+\author{
+Dongqiang Zeng
+}

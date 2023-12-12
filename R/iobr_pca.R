@@ -41,7 +41,9 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
 
   res.pca <- FactoMineR::PCA(data, ncp = ncp, graph = FALSE)
 
+  pdata <- as.data.frame(pdata)
   colnames(pdata)[which(colnames(pdata)==id_pdata)] <- "id"
+
   pdata <- pdata[pdata$id%in%rownames(data), ]
   pdata <- pdata[match(rownames(data), pdata$id), ]
 
@@ -50,9 +52,12 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
 
   cols <- get_cols(cols = cols, palette = palette, show_col = FALSE, seed = 123)
 
+  # print(cols)
+  # print(pdata[, group])
   cols <- cols[1:length(unique(pdata[, group]))]
 
-  print(paste0(">>-- colors for PCA: ", cols))
+  print(paste0(">>-- colors for PCA: "))
+  message(paste0(">>== ", cols))
   #########################################
   p <- factoextra:: fviz_pca_ind(res.pca,
                                  axes = axes,

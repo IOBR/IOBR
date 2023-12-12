@@ -63,7 +63,7 @@ percent_bar_plot(
 Function to create a percent bar plot.
 }
 \examples{
-data("sig_stad", package = IOBR)
+data("sig_stad", package = 'IOBR')
 table(sig_stad$Subtype, sig_stad$Lauren)
 percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
 }

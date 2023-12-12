@@ -61,8 +61,9 @@ Multiple survival KM-plot to a signature or gene
 }
 \examples{
 
-calculate best cutoff
-define break time
+data("tcga_stad_pdata", package = "IOBR")
+sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus", time = "time", status = "OS_status")
+
 }
 \author{
 Dongqiang Zeng

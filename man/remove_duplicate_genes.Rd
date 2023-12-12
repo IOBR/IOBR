@@ -17,8 +17,20 @@ remove_duplicate_genes(eset, column_of_symbol, method = "mean")
 Remove duplicate gene symbol on a gene expression data
 }
 \examples{
-eset<-remove_duplicate_genes(eset = eset,column_of_symbol = "symbol",method = "mean")
-summary(duplicated(rownames(eset)))
+
+# loading eset
+data("eset_stad", package = "IOBR")
+# annotation
+eset_stad <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+eset_stad <- rownames_to_column(eset_stad, var = "id")
+
+# Creating duplicate gene names
+eset_stad[2:3, "id"] <- "MT-CO1"
+# Counting the number of identical names
+summary(duplicated(eset_stad$id))
+# De-duplication of rows with the same gene name using the average value
+eset_stad<-remove_duplicate_genes(eset = eset_stad, column_of_symbol = "id", method = "mean")
+summary(duplicated(eset_stad$id))
 }
 \author{
 Dongqiang Zeng

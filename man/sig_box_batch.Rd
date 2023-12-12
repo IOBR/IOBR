@@ -78,3 +78,12 @@ sig_box_batch(
 \description{
 The sig_box_batch function is used to generate multiple signature box plots for analyzing the relationship between variables and groups in a given input data. It takes the input data, a vector of features or variables to analyze, and a vector of groups or categories to group the analysis by. The function allows customization of various parameters such as the path to save the figures, the appearance of the plots, and the statistical details to include. The generated figures are saved in the specified path or a default folder.
 }
+\examples{
+
+data("tcga_stad_pdata", package = "IOBR")
+sig_box_batch(data = tcga_stad_pdata, vars = c("TMEscore_plus", "GZMB"), groups = "subtype", jitter = T, palette = "jco")
+
+}
+\author{
+Dongqiang Zeng
+}

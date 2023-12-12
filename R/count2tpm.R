@@ -23,10 +23,10 @@
 #' @example
 #' data(eset_stad, package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#'
-#' data(eset_stad, package = "IOBR")
+#' data("anno_grch38", package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
+#' head(eset)
 
 count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "local", effLength = NULL, id = "id", gene_symbol = "symbol", length = "eff_length", check_data = FALSE){
 
@@ -66,17 +66,13 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
 
       len <- ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), "Length"]
       rownames(countMat) = ensembl[match(rownames(countMat),ensembl$ensembl_gene_id), 3]
-    }
-    else if(toupper(idType) == "SYMBOL")
-
+    }else if(toupper(idType) == "SYMBOL"){
       len <- ensembl[match(rownames(countMat), ensembl[,3]), "Length"]
-
-    else if(toupper(idType) == "ENTREZ")
-
+    }else if(toupper(idType) == "ENTREZ"){
       len <- ensembl[match(rownames(countMat), ensembl[,2]), "Length"]
-
-    else
+    }else{
       stop("Please input right type of gene name, such as `ensembl`, `entrez`, or `symbol` ...")
+    }
   }
 
 

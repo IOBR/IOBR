@@ -9,7 +9,7 @@
 #' @description combine_pd_eset combines the expression set (eset) with phenotype data (pdata).
 #' @param eset Expression set matrix or data frame.
 #' @param pdata Phenotype data.
-#' @param id_pdata String indicating the column name in pdata that corresponds to the ID column.
+#' @param id_pdata String indicating the column name in pdata that corresponds to the eset column.
 #' @param feas Vector of feature names to include in the combined dataset. Default is NULL, which includes all features.
 #' @param feature_manipulation Logical value indicating whether to perform feature manipulation on the data. Default is TRUE.
 #' @param scale Logical value indicating whether to scale the expression set. Default is TRUE.

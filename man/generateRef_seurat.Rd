@@ -51,9 +51,27 @@ generateRef_seurat(
 The "generateRef_seurat" function takes a Seurat object "sce" and additional parameters to perform various operations for generating reference gene expression data. The function allows for specifying cell types, proportions, assays, preprocessing options, and statistical testing parameters.
 }
 \examples{
+
+pbmc.data <- Read10X(data.dir = "E:/12-pkg-dev/IOBR-Project/8-IOBR2-Vignette/0-data/pbmc/filtered_gene_bc_matrices/hg19")
+Initialize the Seurat object with the raw (non-normalized data).
+pbmc <- CreateSeuratObject(counts = pbmc.data, project = "pbmc3k", min.cells = 3, min.features = 200)
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+pbmc <- ScaleData(pbmc, features =  rownames(pbmc))
+pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
+pbmc <- FindNeighbors(pbmc, dims = 1:10)
+pbmc <- FindClusters(pbmc, resolution = 0.5)
+pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
+
+# generate reference matrix
 sm<- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
+
+#load the bulk-seq data
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 svr<-deconvo_tme(eset = eset, reference  = sm,  method = "svr", arrays  = FALSE,absolute.mode = FALSE, perm = 100)
 
+}
+\author{
+Dongqiang Zeng
 }

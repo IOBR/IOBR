@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_box.R
 \name{sig_box}
 \alias{sig_box}
-\title{Title: sig_box - Generate a Boxplot with Statistical Comparisons}
+\title{Title: sig_box - Generate a Box plot with Statistical Comparisons}
 \usage{
 sig_box(
   data,
@@ -59,7 +59,13 @@ sig_box(
 \description{
 The sig_box function is designed to generate a boxplot with optional statistical comparisons. It takes in various parameters such as data, signature, variable, and more to customize the plot. It can be used to visualize and analyze data in a Seurat object or any other data frame.
 }
+\examples{
+data("tcga_stad_pdata", package = "IOBR")
+
+sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T, palette = "jco")
+
+sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = FALSE, palette = "jco")
+}
 \author{
 Dongqiang Zeng
-sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T)
 }

@@ -13,6 +13,7 @@
 #' @export
 #'
 #' @examples
+#' output_sig(signature_collection, file.name = "signature")
 
 output_sig<-function(signatures, format = "csv", file.name ){
 

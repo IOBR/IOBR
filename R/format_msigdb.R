@@ -11,7 +11,10 @@
 #' @export
 #'
 #' @examples
-format_msigdb<-function(gmt, ont = "ont", gene = "gene"){
+#' # download gmt through: https://www.gsea-msigdb.org/gsea/msigdb/download_file.jsp?filePath=/msigdb/release/2023.2.Hs/h.all.v2023.2.Hs.symbols.gmt
+#' format_msigdb("E:/0-0-0-My Pipeline/00-Signature-collection/h.all.v2023.2.Hs.symbols.gmt", ont = "term")
+#'
+format_msigdb<-function(gmt, ont = "term", gene = "gene"){
 
   sig <- clusterProfiler::read.gmt(paste0(gmt))
   ######################################

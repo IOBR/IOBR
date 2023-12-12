@@ -19,6 +19,10 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
+#' # loading expression data
+#' data("eset_tme_stad", package = "IOBR")
+#' outs <- find_outlier_samples(eset = eset_tme_stad)
+#' print(outs)
 find_outlier_samples<- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL){
 
   library(WGCNA)

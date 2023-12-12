@@ -26,6 +26,7 @@
 #' vars<-c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3", "PF4", "MYL9", "GNLY", "TREML1", "CA2")
 #' #Get extracted data frame
 #' eset<-extract_sc_data(sce= pbmc_small, vars= vars, assay= "RNA")
+#'
 extract_sc_data<-function(sce, vars = NULL, assay, slot = "scale.data", combine_meta_data = TRUE){
 
 

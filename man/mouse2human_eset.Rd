@@ -2,7 +2,7 @@
 % Please edit documentation in R/mouse2human_eset.R
 \name{mouse2human_eset}
 \alias{mouse2human_eset}
-\title{Converting muouse gene symbol to human gene symbol of expression set.}
+\title{Converting mouse gene symbol to human gene symbol of expression set.}
 \usage{
 mouse2human_eset(
   eset,
@@ -22,5 +22,5 @@ mouse2human_eset(
 \item{column_of_symbol}{default is null}
 }
 \description{
-Converting muouse gene symbol to human gene symbol of expression set.
+Converting mouse gene symbol to human gene symbol of expression set.
 }

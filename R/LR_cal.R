@@ -22,12 +22,12 @@
 #'
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl"){
 
-  if (!requireNamespace("easier", quietly = TRUE))   BiocManager::install("easier", dependencies = TRUE)
+  if (!requireNamespace("easier", quietly = TRUE))  BiocManager::install("easier", dependencies = FALSE)
 
   if(data_type=="count"){
 
     message(">>>=== count to TPM...")
-    eset <- count2tpm(countMat = eset, idType = id_type)
+    eset <- count2tpm(countMat = eset, idType = id_type, source = "local")
   }
   eset <- as.matrix(eset)
   # eset <- log2eset(eset)

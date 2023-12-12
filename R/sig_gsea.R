@@ -34,6 +34,12 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' data("eset_stad", package = "IOBR")
+#' data("stad_group", package = "IOBR")
+#' library(DESeq2)
+#' deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
+#' res <- sig_gsea(deg = deg, genesets = signature_tme)
+
 sig_gsea <-function(deg,
                     genesets          = NULL,
                     path              = NULL,
@@ -99,14 +105,12 @@ sig_gsea <-function(deg,
 
   #################################
   deg<-merge(deg,entrizid,by.x="symbol",by.y="SYMBOL",all.x=T,all.y=F)
-  #还是发现通过org.hs.eg.db注释所获得的ID更多
   ##################################
   gene_id_logfc <- deg %>%  dplyr::select(ENTREZID, logfc) %>%
     dplyr::distinct(ENTREZID,.keep_all = T) %>%
     filter(!is.na(ENTREZID)) %>%
     filter(!is.na(logfc)) %>%
     arrange(desc(logfc))
-  #按FC降序
   genelist<-gene_id_logfc$logfc
   names(genelist)<-gene_id_logfc$ENTREZID
   genelist<-genelist[order(genelist,decreasing = T)]
@@ -251,8 +255,6 @@ sig_gsea <-function(deg,
       }
 
     }
-
-    #' 画出P_value的barplot
     ################################################
     down_gogo<-hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore < 0,]
     if(!dim(down_gogo)[1]==0) down_gogo$group=-1
@@ -285,7 +287,6 @@ sig_gsea <-function(deg,
   }
 
     hall_gsea <- as.tibble(hall_gsea)
-    #' restore data
     hall_gsea_result<-list(up = hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore > 0,],
                            down = hall_gsea[hall_gsea$pvalue<0.05 & hall_gsea$enrichmentScore < 0,],
                            all = hall_gsea,
