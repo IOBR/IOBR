@@ -6,7 +6,7 @@
 
 #' Make mutation matrix using maf data
 #'
-#' @param maf file name of maf data
+#' @param maf file name or a maf object
 #' @param mut_data if maf data had beed loaded, this argument will be applied
 #' @param isTCGA logical variable,
 #' @param category if category is `multi`, four mutation matrix will be generated: all, snp, indel and frameshift
@@ -18,14 +18,22 @@
 #' @return
 #' @export
 #' @author Dongqian Zeng
+#' @author Shixiang Huang
 #'
 #' @examples
+#'
+#' library(TCGAbiolinks)
+#' query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking" )
+#' GDCdownload(query)
+#' maf <- GDCprepare(query)
+#' mut_list <- make_mut_matrix(maf = maf, isTCGA   = T, category = "multi")
+
 make_mut_matrix<-function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category = "multi", Tumor_Sample_Barcode = "Tumor_Sample_Barcode", Hugo_Symbol = "Hugo_Symbol", Variant_Classification = "Variant_Classification", Variant_Type = "Variant_Type"){
 
 
   if(!is.null(maf)){
 
-    mut_maf<-maftools:: read.maf(maf = maf,useAll = TRUE,isTCGA = isTCGA)
+    mut_maf<-maftools:: read.maf(maf = maf,useAll = TRUE, isTCGA = isTCGA)
 
     print(summary(mut_maf@data$Variant_Classification))
     print(summary(mut_maf@data$Variant_Type))
