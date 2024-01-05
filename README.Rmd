@@ -20,14 +20,14 @@ IOBR is an R package to perform comprehensive analysis of tumor microenvironment
 
 ### 1.Introduction
 
-- 1. IOBR collects 255 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
+- 1. IOBR collects 322 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
 - 2. IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`; 
 - 3. IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
 - 4. IOBR integrates multiple approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis.
 - 5. IOBR also integrates methods for batch visualization of subgroup characteristics.
 
 #### IOBR package workflow
-![IOBR logo](./man/figures/IOBR-Workflow.png)
+![IOBR workflow](./man/figures/IOBR-Workflow.png)
 
 ### 2.Installation
 It is essential that you have R 3.6.3 or above already installed on your computer or server. IOBR utilizes many other R packages that are currently available from CRAN, Bioconductor and GitHub. Before installing IOBR, please install all dependencies by executing the following command in R console:
@@ -50,7 +50,7 @@ for(i in 1:length(depens)){
 ```
 
 The package is not yet on CRAN or Bioconductor. You can install it from Github:
-```{r}
+```{r, message = FALSE, warning=FALSE}
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("IOBR/IOBR")
 ```
@@ -114,9 +114,10 @@ References
 ---------
 Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y,..., Liao W (2021) **IOBR**: Multi-Omics Immuno-Oncology Biological Research to Decode Tumor Microenvironment and Signatures. *Frontiers in Immunology*. 12:687975. [doi: 10.3389/fimmu.2021.687975](https://www.frontiersin.org/articles/10.3389/fimmu.2021.687975/full)
 
+Zeng D, Fang Y, …, Liao W (2024) IOBR2: Multidimensional Decoding of Tumor Microenvironment for Immuno-Oncology Research. bioRxiv.
 
 Reporting bugs
 ---------
 Please report bugs to the [Github issues page](https://github.com/IOBR/IOBR/issues)
 
-E-mail any questions to dongqiangzeng0808@gmail.com
+E-mail any questions to interlaken@smu.edu.cn or fyr_nate@163.com

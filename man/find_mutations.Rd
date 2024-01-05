@@ -14,7 +14,7 @@ find_mutations(
   method = "multi",
   point.alpha = 0.1,
   save_path = NULL,
-  palette = "paired3",
+  palette = "jco",
   show_plot = TRUE,
   show_col = FALSE,
   width = 8,

@@ -8,7 +8,7 @@ microenvironment and signatures for immuno-oncology.
 
 ### 1.Introduction
 
-- 1.  IOBR collects 255 published signature gene sets, involving tumor
+- 1.  IOBR collects 322 published signature gene sets, involving tumor
       microenvironment, tumor metabolism, m6A, exosomes, microsatellite
       instability, and tertiary lymphoid structure. Running the function
       `signature_collection_citation` to attain the source papers. The
@@ -32,8 +32,8 @@ microenvironment and signatures for immuno-oncology.
 #### IOBR package workflow
 
 <figure>
-<img src="./man/figures/IOBR-Workflow.png" alt="IOBR logo" />
-<figcaption aria-hidden="true">IOBR logo</figcaption>
+<img src="./man/figures/IOBR-Workflow.png" alt="IOBR workflow" />
+<figcaption aria-hidden="true">IOBR workflow</figcaption>
 </figure>
 
 ### 2.Installation
@@ -68,7 +68,6 @@ Github:
 ``` r
 if (!requireNamespace("IOBR", quietly = TRUE))
   devtools::install_github("IOBR/IOBR")
-#> Warning: 程辑包'tidyHeatmap'是用R版本4.2.3 来建造的
 ```
 
 Library R packages
@@ -137,7 +136,7 @@ signature_score_calculation_methods
 ``` r
 #References of collected signatures
 signature_collection_citation[!duplicated(signature_collection_citation$Journal),]
-#> # A tibble: 19 × 6
+#> # A tibble: 20 × 6
 #>    Signatures                         `Published year` Journal Title PMID  DOI  
 #>    <chr>                                         <dbl> <chr>   <chr> <chr> <chr>
 #>  1 CD_8_T_effector                                2018 Nature  TGFβ… 2944… 10.1…
@@ -154,11 +153,12 @@ signature_collection_citation[!duplicated(signature_collection_citation$Journal)
 #> 12 MC_Review_Exosome1                             2016 Molcul… Diag… 2718… 10.1…
 #> 13 CMLS_Review_Exosome                            2018 Cellul… Curr… 2873… 10.1…
 #> 14 Positive_regulation_of_exosomal_s…             2020 Gene O… http… <NA>  <NA> 
-#> 15 Molecular_Cancer_m6A                           2020 Molecu… m6A … <NA>  10.1…
+#> 15 Molecular_Cancer_m6A                           2020 Molecu… m6A … 3216… 10.1…
 #> 16 Ferroptosis                                    2020 IOBR    Cons… <NA>  <NA> 
 #> 17 T_cell_accumulation_Peng_et_al                 2018 Nature… Sign… 3012… 10.1…
 #> 18 Antigen_Processing_and_Presentati…             2020 Nature… Pan-… 3208… 10.1…
 #> 19 CD8_T_cells_Bindea_et_al                       2013 Immuni… Spat… 2413… 10.1…
+#> 20 ecm_myCAF                                      2020 Cancer… Sing… 3243… 10.1…
 
 #signature groups
 sig_group[1:3]
@@ -196,9 +196,12 @@ Microenvironment and Signatures. *Frontiers in Immunology*. 12:687975.
 [doi:
 10.3389/fimmu.2021.687975](https://www.frontiersin.org/articles/10.3389/fimmu.2021.687975/full)
 
+Zeng D, Fang Y, …, Liao W (2024) IOBR2: Multidimensional Decoding of
+Tumor Microenvironment for Immuno-Oncology Research. bioRxiv.
+
 ## Reporting bugs
 
 Please report bugs to the [Github issues
 page](https://github.com/IOBR/IOBR/issues)
 
-E-mail any questions to <dongqiangzeng0808@gmail.com>
+E-mail any questions to <interlaken@smu.edu.cn> or <fyr_nate@163.com>

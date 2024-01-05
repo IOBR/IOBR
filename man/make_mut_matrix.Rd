@@ -16,7 +16,7 @@ make_mut_matrix(
 )
 }
 \arguments{
-\item{maf}{file name of maf data}
+\item{maf}{file name or a maf object}
 
 \item{mut_data}{if maf data had beed loaded, this argument will be applied}
 
@@ -35,6 +35,16 @@ make_mut_matrix(
 \description{
 Make mutation matrix using maf data
 }
+\examples{
+
+library(TCGAbiolinks)
+query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking" )
+GDCdownload(query)
+maf <- GDCprepare(query)
+mut_list <- make_mut_matrix(maf = maf, isTCGA   = T, category = "multi")
+}
 \author{
 Dongqian Zeng
+
+Shixiang Huang
 }

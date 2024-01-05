@@ -169,13 +169,13 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
           pl[[i]]<-pl[[i]]+geom_jitter(width = 0.25,size= point_size, alpha=point.alpha,color ="black")
         }
         ggsave(pl[[i]],filename = paste0(4+i,"-1-",gene,"-continue.pdf"),
-               width = 4,height = 5.5,path = file_name)
+               width = 4,height = 5.8,path = file_name)
       }
       com_plot<- cowplot::plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
-                      labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
+                      labels = "AUTO",ncol = 5,nrow = 2,label_size = 32)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "3-Relevant_mutations_Continue.pdf",width = 14,height = 10,path = file_name)
+      ggsave(com_plot,filename = "3-Relevant_mutations_Continue.pdf",width = 14,height = 10.5,path = file_name)
       #####################################
     }
 
@@ -241,13 +241,13 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         }
 
         ggsave(pl[[i]],filename = paste0(4+i,"-2-",gene,"-binary.pdf"),
-               width = 4,height = 5.5,path = file_name)
+               width = 4,height = 5.8,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
-                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 36)
+                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 32)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "4-Relevant_mutations_binary.pdf",width = 14,height = 10,path = file_name)
+      ggsave(com_plot,filename = "4-Relevant_mutations_binary.pdf",width = 14,height = 10.5,path = file_name)
       #####################################
     }
 
@@ -329,13 +329,13 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
         }
 
         ggsave(pl[[i]],filename = paste0(i,"-1-",gene,"-binary.pdf"),
-               width = 4,height = 5.5,path = file_name)
+               width = 4,height = 5.8,path = file_name)
       }
       com_plot<-cowplot:: plot_grid(pl[[1]],pl[[2]],pl[[3]],pl[[4]],pl[[5]],pl[[6]],pl[[7]],pl[[8]],pl[[9]],pl[[10]],
-                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 15)
+                          labels = "AUTO",ncol = 5,nrow = 2,label_size = 32)
       if(show_plot) print(com_plot)
       #####################################
-      ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 14,height = 10,path = file_name)
+      ggsave(com_plot,filename = "0-Relevant_mutations_binary.pdf",width = 14,height = 10.5,path = file_name)
       #####################################
     }
 
