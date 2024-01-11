@@ -2,14 +2,14 @@
 
 
 
-#' Principal Component Analysis (PCA) Visualization Function
+#' Principal Component Analysis (PCA) Visualization
 #' @description The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 #'
 #' @param data The input data for PCA. It should be a matrix or a data frame.
 #' @param is.matrix Specifies whether the input data is a matrix. Default is TRUE.
 #' @param scale Specifies whether to scale the input data. Default is TRUE.
 #' @param is.log Specifies whether to log transform the input data. Default is FALSE.
-#' @param pdata Additional data associated with the principal components. It should be a data frame. Default is NULL.
+#' @param pdata Data frame containing sample ID and grouping status.
 #' @param id_pdata The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".
 #' @param group  The column name in 'pdata' that represents groups/categories to color the points. Default is NULL.
 #' @param cols The color scheme to be used for group categories. Default is "normal".
@@ -47,6 +47,7 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   pdata <- pdata[pdata$id%in%rownames(data), ]
   pdata <- pdata[match(rownames(data), pdata$id), ]
 
+
   message(print(table(pdata[, group])))
   ##########################################
 
@@ -54,9 +55,9 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
 
   # print(cols)
   # print(pdata[, group])
-  cols <- cols[1:length(unique(pdata[, group]))]
+  cols <- cols[1:length(unique(pdata[[group]]))]
 
-  print(paste0(">>-- colors for PCA: "))
+  print(paste0(">>== colors for group: "))
   message(paste0(">>== ", cols))
   #########################################
   p <- factoextra:: fviz_pca_ind(res.pca,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_pca.R
 \name{iobr_pca}
 \alias{iobr_pca}
-\title{Principal Component Analysis (PCA) Visualization Function}
+\title{Principal Component Analysis (PCA) Visualization}
 \usage{
 iobr_pca(
   data,
@@ -30,7 +30,7 @@ iobr_pca(
 
 \item{is.log}{Specifies whether to log transform the input data. Default is FALSE.}
 
-\item{pdata}{Additional data associated with the principal components. It should be a data frame. Default is NULL.}
+\item{pdata}{Data frame containing sample ID and grouping status.}
 
 \item{id_pdata}{The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".}
 

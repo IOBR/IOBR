@@ -22,6 +22,6 @@ Batch to conduct correlation analysis with multiple features
 
 # Loading TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Finding micro environmental scores associated with CD8 T cells
+# Finding microenvironmental scores associated with CD8 T cells
 batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }

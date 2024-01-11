@@ -15,7 +15,7 @@
 #'
 #' # Loading TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' # Finding micro environmental scores associated with CD8 T cells
+#' # Finding microenvironmental scores associated with CD8 T cells
 #' batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 
 batch_cor<-function(data, target, feature, method = "spearman"){
@@ -43,14 +43,15 @@ batch_cor<-function(data, target, feature, method = "spearman"){
                  p.value = bb$V1,
                  statistic = sapply(aa, getElement, name = "estimate"))
 
-  print(head(cc))
-  cc<-cc[base::order(cc$p.value, decreasing = FALSE),]
+  # cc<-cc[base::order(cc$p.value, decreasing = FALSE),]
   cc$p.adj <- p.adjust(cc$p.value,method = "BH")
   cc$log10pvalue<- -1*log10(cc$p.value)
   rownames(cc)<-NULL
   cc$stars <- cut(cc$p.value, breaks=c(-Inf,0.0001, 0.001, 0.01, 0.05,0.5, Inf),
                   label=c("****","***", "**", "*", "+",""))
+  cc<-cc[base::order(cc$p.value, decreasing = FALSE),]
   cc<-tibble::as_tibble(cc)
+  print(head(cc))
   return(cc)
 }
 
