@@ -23,7 +23,7 @@
 #' data(eset_stad, package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 
-anno_eset<- function(eset, annotation, symbol = "symbol", probe = "probe_id",method = "mean"){
+anno_eset<- function(eset, annotation, symbol = "symbol", probe = "probe_id", method = "mean"){
 
   annotation<-as.data.frame(annotation)
   colnames(annotation)[which(colnames(annotation)==symbol)]<-"symbol"
@@ -64,6 +64,11 @@ anno_eset<- function(eset, annotation, symbol = "symbol", probe = "probe_id",met
         tibble:: column_to_rownames(.,var = symbol)
     }else if(method == "sd"){
       order_index = apply(eset[,setdiff(colnames(eset),symbol)],1,function(x) sd(x,na.rm=T))
+      eset<-eset[order(order_index,decreasing=T),]
+      eset<-eset %>% distinct(!!sym(symbol),.keep_all = TRUE) %>%
+        tibble:: column_to_rownames(.,var = symbol)
+    }else if(method == "sum"){
+      order_index = apply(eset[,setdiff(colnames(eset),symbol)],1,function(x) sum(x,na.rm=T))
       eset<-eset[order(order_index,decreasing=T),]
       eset<-eset %>% distinct(!!sym(symbol),.keep_all = TRUE) %>%
         tibble:: column_to_rownames(.,var = symbol)
