@@ -22,7 +22,7 @@ user can choose `anno_hug133plus2`, `anno_rnaseq` and `anno_illumina` as input}
 
 \item{probe}{(Optional, defaults to "probe_id"): The column name in the annotation data.frame that represents the probe identifiers.}
 
-\item{method}{(Optional, defaults to "mean"): The method used to handle duplicate gene symbols; can be either "mean" or "sd".}
+\item{method}{(Optional, defaults to "mean"): The method used to handle duplicate gene symbols; can be either "mean", "sum" or "sd".}
 }
 \value{
 modified gene expression set
