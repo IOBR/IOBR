@@ -190,14 +190,15 @@ sig_group[1:3]
 
 ## References
 
+Zeng D, Fang Y, …, Liao W (2024) IOBR2: Multidimensional Decoding of
+Tumor Microenvironment for Immuno-Oncology Research. [bioRxiv,
+2024.01.13.575484](https://www.biorxiv.org/content/10.1101/2024.01.13.575484v2.full.pdf)
+
 Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y,…, Liao W (2021) **IOBR**:
 Multi-Omics Immuno-Oncology Biological Research to Decode Tumor
 Microenvironment and Signatures. *Frontiers in Immunology*. 12:687975.
 [doi:
 10.3389/fimmu.2021.687975](https://www.frontiersin.org/articles/10.3389/fimmu.2021.687975/full)
-
-Zeng D, Fang Y, …, Liao W (2024) IOBR2: Multidimensional Decoding of
-Tumor Microenvironment for Immuno-Oncology Research. bioRxiv.
 
 ## Reporting bugs
 
