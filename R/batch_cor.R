@@ -25,11 +25,11 @@ batch_cor<-function(data, target, feature, method = "spearman"){
   feature<-feature[feature%in%colnames(data)]
 
   if(length(feature)==0) stop(">>>== features were not in the colnames of data")
-  #############################################
+
   feature<-feature_manipulation(data = data, feature = feature)
 
   feature<-feature[!feature==target]
-  # print(feature[1:10])
+
 
   aa<-lapply(data[,feature], function(x) cor.test(x,data[,target],method = method))
 
