@@ -47,6 +47,9 @@ generateRef_seurat(
 
 \item{test.use}{(Default = "wilcox") A character string specifying the statistical test to be used.}
 }
+\value{
+A matrix containing aggregated expression data for the reference genes.
+}
 \description{
 The "generateRef_seurat" function takes a Seurat object "sce" and additional parameters to perform various operations for generating reference gene expression data. The function allows for specifying cell types, proportions, assays, preprocessing options, and statistical testing parameters.
 }

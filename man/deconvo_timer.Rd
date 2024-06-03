@@ -2,8 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_timer}
 \alias{deconvo_timer}
-\title{Deconvoluting using the TIMER technique
-Unlike the other methods, TIMER needs the specification of the cancer type for each sample.}
+\title{Deconvoluting using the TIMER technique}
 \usage{
 deconvo_timer(eset, project = NULL, indications = NULL)
 }
@@ -14,9 +13,11 @@ deconvo_timer(eset, project = NULL, indications = NULL)
 
 \item{indications}{a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'}
 }
+\value{
+A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_TIMER".
+}
 \description{
-Deconvoluting using the TIMER technique
-Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
+This function performs deconvolution of immune cell fractions using the TIMER (Tumor Immune Estimation Resource) technique. Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 }
 \examples{
 #' # Loading TCGA-STAD expresion data(raw count matrix)

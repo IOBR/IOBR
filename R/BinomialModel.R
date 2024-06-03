@@ -1,22 +1,22 @@
 #' Binomial Model construction
 #'
 #' @param x data.frame contains sample ID and features; The first column of x is the sample ID.
-#' @param y data.frame whose sample ID in the first column and the outcome of each sample in the second sample. Outcome value can be numeric or factor vector.
+#' @param y data.frame whose sample ID in the first column and the outcome of each sample in the second column. Outcome value can be numeric or factor vector.
 #' @param seed default 123456
-#' @param scale A logistic: should the x be scaled, default is TRUE.
+#' @param scale A logical: should the x be scaled, default is TRUE.
 #' @param train_ratio Value between 0-1, eg: 0.7; The ratio is used to split the x and y into training and testing data.
 #' @param nfold default 10
-#' @param plot A logistic, default is TRUE.
+#' @param plot A logical, default is TRUE.
 #'
-#' @return a list contain the results of 2 model (Lasso, Ridge) and the input train data.
+#' @return a list containing the results of 2 models (Lasso, Ridge) and the input training data.
 #'
 #' @export
 #' @examples
 #' data("imvigor210_sig", package = "IOBR")
-#' data("imvigor210_pdata",package = "IOBR")
-#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+#' data("imvigor210_pdata", package = "IOBR")
+#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
-#' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
+#' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE)
 BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T){
 
   x<-as.data.frame(x)
@@ -74,15 +74,25 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
 #######################################################
 #' Processing Data
 #'
-#' @param x
-#' @param y
-#' @param scale
-#' @param type
+#' @param x A data frame containing the input feature matrix, with the first column as sample ID. The feature matrix should contain numerical values for the features.
+#' @param y A data frame containing the input label matrix, with the first column as sample ID. For "binomial" type, it should contain a column named "Group". For "survival" type, it should include columns "time" and "status".
+#' @param scale A logical value indicating whether to standardize (center and scale) the feature matrix.
+#' @param type A string indicating the analysis type. Options are "binomial" (default) or "survival".
 #'
-#' @return
+#' @return A list containing the processed feature matrix, processed labels, and sample ID.
 #' @export
 #'
 #' @examples
+#' data("imvigor210_sig",package = "IOBR")
+#' data("imvigor210_pdata", package = "IOBR")
+#' 
+#' imvigor210_sig <- as.data.frame(imvigor210_sig)
+#' imvigor210_pdata <- as.data.frame(imvigor210_pdata)
+#' 
+#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' 
+#' result <- ProcessingData(imvigor210_sig, imvigor210_pdata, scale = TRUE, type = "binomial")
 ProcessingData <- function(x, y, scale, type = "binomial"){
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
@@ -124,16 +134,35 @@ ProcessingData <- function(x, y, scale, type = "binomial"){
 
 #' Regression Result
 #'
-#' @param train.x
-#' @param train.y
-#' @param test.x
-#' @param test.y
-#' @param model
+#' @param train.x A matrix or data frame containing the training features.
+#' @param train.y A vector containing the training labels.
+#' @param test.x A matrix or data frame containing the testing features.
+#' @param test.y A vector containing the testing labels.
+#' @param model A fitted regression model, typically a glmnet model.
 #'
-#' @return
+#' @return A list containing the fitted regression model, a data frame of model coefficients at lambda.min and lambda.1se, and a matrix of AUC values for the train and test datasets at lambda.min and lambda.1se.
 #' @export
 #'
 #' @examples
+#' data("imvigor210_sig", package = "IOBR")
+#' data("imvigor210_pdata", package = "IOBR")
+#' 
+#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' 
+#' imvigor210_sig <- as.data.frame(imvigor210_sig)
+#' pdata_group <- as.data.frame(pdata_group)
+#' 
+#' processdat <- ProcessingData(x = imvigor210_sig, y = imvigor210_pdata, scale = TRUE, type = "binomial")
+#' train_test <- SplitTrainTest(x = processdat$x_scale, y = processdat$y, train_ratio = 0.7, type = "binomial",
+#'                              seed = 123456)
+#' train.x = train_test$train.x; train.y <- train_test$train.y
+#' test.x = train_test$test.x; test.y <- train_test$test.y
+#' 
+#' lasso_model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial",
+#'                                  type.measure = "class", alpha = 1,  nfolds = 5)
+#' lasso_result <- RegressionResult(train.x = train.x, train.y = train.y,
+#'                                  test.x = test.x, test.y = test.y, model = lasso_model)
 RegressionResult <- function(train.x, train.y, test.x, test.y, model){
   coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
   coefs <- data.frame(feature = rownames(coefs), lambda.min =coefs[, 1], lambda.1se = coefs[, 2])
@@ -150,15 +179,28 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model){
 
 #' Enet
 #'
-#' @param train.x
-#' @param train.y
-#' @param lambdamax
-#' @param nfold
+#' @param train.x A matrix or data frame containing the training features.
+#' @param train.y A vector containing the training labels. This should be a binary factor.
+#' @param lambdamax The maximum value of lambda to be tested in the model tuning.
+#' @param nfold The number of folds for cross-validation. Default is the value of nfold.
 #'
-#' @return
+#' @return A list containing the best alpha and lambda values chosen by cross-validation.
 #' @export
 #'
 #' @examples
+#' set.seed(123456)
+#' 
+#' data("imvigor210_sig",package = "IOBR")
+#' data("imvigor210_pdata", package = "IOBR")
+#' 
+#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' 
+#' train_test <- SplitTrainTest(x = imvigor210_sig, y = pdata_group$BOR_binary, train_ratio = 0.7, type = "binomial",
+#'                              seed = 123456)
+#' 
+#' result <- Enet(train.x = train_test$train.x, train.y = train_test$train.y, lambdamax = 1, nfold = 10)
+#' print(result)
 Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
   grid <- expand.grid(.alpha = seq(0, 1, by = .2), .lambda = seq(0, lambdamax, length.out = 10))
   fitControl <- caret::trainControl(method = "repeatedcv",
@@ -178,15 +220,22 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
 
 #' BinomialAUC
 #'
-#' @param model
-#' @param newx
-#' @param s
-#' @param acture.y
+#' This function calculates the AUC (Area Under the Curve) for a given binomial model on new data.
 #'
-#' @return
+#' @param model A fitted model object, typically from glmnet.
+#' @param newx A matrix or data frame containing the new data features.
+#' @param s The value(s) of the penalty parameter lambda at which predictions are required.
+#' @param acture.y A vector containing the actual labels of the new data.
+#'
+#' @return A numeric value representing the AUC.
 #' @export
 #'
 #' @examples
+#' # Assuming model, test.x, and test.y are already defined
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial")
+#' auc <- BinomialAUC(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+#' print(auc)
 BinomialAUC <- function(model, newx, s, acture.y){
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
@@ -196,18 +245,27 @@ BinomialAUC <- function(model, newx, s, acture.y){
 
 #' Plot AUC
 #'
-#' @param train.x
-#' @param train.y
-#' @param test.x
-#' @param test.y
-#' @param model
-#' @param foldername
-#' @param modelname
+#' This function plots the AUC (Area Under the Curve) ROC (Receiver Operating Characteristic) curves for the given model on both training and testing datasets.
 #'
-#' @return
+#' @param train.x A matrix or data frame containing the training features.
+#'
+#' @param train.x A matrix or data frame containing the training features.
+#' @param train.y A vector containing the training labels.
+#' @param test.x A matrix or data frame containing the testing features.
+#' @param test.y A vector containing the testing labels.
+#' @param model A fitted model object, typically from glmnet.
+#' @param foldername A character string specifying the folder name where the plot will be saved.
+#' @param modelname A character string specifying the name of the model, used in the plot title and filename.
+#'
+#' @return A ggplot object containing the plotted ROC curves.
 #' @export
 #'
 #' @examples
+#' # Assuming train.x, train.y, test.x, and test.y are already defined
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial")
+#' p <- PlotAUC(train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
+#'              model = model, foldername = "plots", modelname = "lasso_model")
+#' print(p)
 PlotAUC <- function(train.x, train.y, test.x, test.y, model, foldername, modelname){
   mycols <- c("#E64B35FF", "#4DBBD5FF", "#00A087FF", "#3C5488FF",
               "#F39B7FFF", "#8491B4FF", "#91D1C2FF")
@@ -245,15 +303,22 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, foldername, modelna
 
 #' Calculate Pref
 #'
-#' @param model
-#' @param newx
-#' @param s
-#' @param acture.y
+#'This function calculates the performance of a given model on new data, returning the performance object.
 #'
-#' @return
+#' @param model A fitted model object, typically from glmnet.
+#' @param newx A matrix or data frame containing the new data features.
+#' @param s The value(s) of the penalty parameter lambda at which predictions are required.
+#' @param acture.y A vector containing the actual labels of the new data.
+#'
+#' @return A performance object from the ROCR package, which contains true positive rates and false positive rates.
 #' @export
 #'
 #' @examples
+#' # Assuming model, test.x, and test.y are already defined
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial")
+#' perf <- CalculatePref(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+#' plot(perf)
 CalculatePref<- function(model, newx, s, acture.y){
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
@@ -263,16 +328,26 @@ CalculatePref<- function(model, newx, s, acture.y){
 
 #' Split Train and Test data
 #'
-#' @param x
-#' @param y
-#' @param train_ratio
-#' @param type
-#' @param seed
+#' Splits the dataset into training and testing sets based on the specified ratio.
 #'
-#' @return
+#' @param x A matrix or data frame containing the feature data.
+#' @param y A vector or data frame containing the response data.
+#' @param train_ratio A numeric value indicating the proportion of the data to be used for training (e.g., 0.7 for 70%).
+#' @param type A string indicating the type of analysis. Options are "binomial" or "survival".
+#' @param seed An integer used to set the random seed for reproducibility.
+#'
+#' @return A list containing the training and testing feature and response data, and the indices of the training samples.
 #' @export
 #'
 #' @examples
+#' data("imvigor210_eset",package = "IOBR")
+#' data("imvigor210_pdata", package = "IOBR")
+#' imvigor210_pdata$Group <- ifelse(imvigor210_pdata$TumorPurity >= mean(imvigor210_pdata$TumorPurity, na.rm = TRUE), "High", "Low")
+#' split_data <- SplitTrainTest(imvigor210_eset, imvigor210_pdata$Group, train_ratio = 0.7, type = "binomial", seed = 123)
+#' train.x <- split_data$train.x
+#' train.y <- split_data$train.y
+#' test.x <- split_data$test.x
+#' test.y <- split_data$test.y
 SplitTrainTest <- function(x, y, train_ratio, type, seed){
   sizes <- round(nrow(x) * train_ratio)
   set.seed(seed)

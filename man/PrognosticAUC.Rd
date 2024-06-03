@@ -7,8 +7,26 @@
 PrognosticAUC(model, newx, s, acture.y)
 }
 \arguments{
-\item{acture.y}{}
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{newx}{A matrix or data frame containing the new data features.}
+
+\item{s}{The value(s) of the penalty parameter lambda at which predictions are required.}
+
+\item{acture.y}{A data frame containing the actual survival time and status (e.g., time and status columns).}
+}
+\value{
+A data frame containing AUC values at two different time points.
 }
 \description{
-Prognostic AUC
+This function calculates the Area Under the Curve (AUC) for a given prognostic model using time-dependent ROC analysis.
+}
+\examples{
+library(glmnet)
+library(timeROC)
+# train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+auc <- PrognosticAUC(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+print(auc)
 }

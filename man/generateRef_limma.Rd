@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateRef_limma.R
 \name{generateRef_limma}
 \alias{generateRef_limma}
-\title{Generate Reference signature matrix using limma}
+\title{Generate Reference Signature Matrix Using Limma}
 \usage{
 generateRef_limma(dat, pheno, FDR = 0.05)
 }
@@ -13,6 +13,16 @@ generateRef_limma(dat, pheno, FDR = 0.05)
 
 \item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
 }
+\value{
+A list containing:
+        - `reference_matrix`: A dataframe of median expression values for significantly expressed genes, with genes as rows.
+        - `G`: The number of probes used in the reference matrix that resulted in the lowest condition number.
+        - `condition_number`: The minimum condition number obtained from the analysis.
+        - `whole_matrix`: A matrix of median values across all samples and conditions for further analysis.
+}
 \description{
-Generate Reference signature matrix using limma
+This function performs differential expression analysis using the limma package to identify significantly
+expressed genes across different cell types specified in `pheno`. It computes median expression levels
+of these significant genes to create a reference signature matrix. The function is particularly useful
+for constructing signature matrices in gene expression studies involving multiple cell types or conditions.
 }

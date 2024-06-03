@@ -2,13 +2,23 @@
 % Please edit documentation in R/IPS_helper.R
 \name{ipsmap}
 \alias{ipsmap}
-\title{Title}
+\title{calculate Immunophenoscore
+Title}
 \usage{
 ipsmap(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{A numeric value representing the input score.}
+}
+\value{
+A numeric value representing the Immunophenoscore (IPS), scaled between 0 and 10.
 }
 \description{
+calculate Immunophenoscore
 Title
+}
+\examples{
+score <- 2.5
+ips <- ipsmap(score)
+print(ips)
 }

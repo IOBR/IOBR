@@ -7,8 +7,29 @@
 SplitTrainTest(x, y, train_ratio, type, seed)
 }
 \arguments{
-\item{seed}{}
+\item{x}{A matrix or data frame containing the feature data.}
+
+\item{y}{A vector or data frame containing the response data.}
+
+\item{train_ratio}{A numeric value indicating the proportion of the data to be used for training (e.g., 0.7 for 70%).}
+
+\item{type}{A string indicating the type of analysis. Options are "binomial" or "survival".}
+
+\item{seed}{An integer used to set the random seed for reproducibility.}
+}
+\value{
+A list containing the training and testing feature and response data, and the indices of the training samples.
 }
 \description{
-Split Train and Test data
+Splits the dataset into training and testing sets based on the specified ratio.
+}
+\examples{
+data("imvigor210_eset",package = "IOBR")
+data("imvigor210_pdata", package = "IOBR")
+imvigor210_pdata$Group <- ifelse(imvigor210_pdata$TumorPurity >= mean(imvigor210_pdata$TumorPurity, na.rm = TRUE), "High", "Low")
+split_data <- SplitTrainTest(imvigor210_eset, imvigor210_pdata$Group, train_ratio = 0.7, type = "binomial", seed = 123)
+train.x <- split_data$train.x
+train.y <- split_data$train.y
+test.x <- split_data$test.x
+test.y <- split_data$test.y
 }

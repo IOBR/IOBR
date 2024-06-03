@@ -15,11 +15,14 @@ eset_distribution(eset, quantile = 3, log = TRUE, project = NULL)
 
 \item{project}{Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.}
 }
+\value{
+This function does not return a value but saves boxplots and density plots as PNG files in the specified or default directory.
+}
 \description{
 eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
 }
 \examples{
-data(eset_gse62254, package = "IOBR")
-eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
+data("eset_stad",package = "IOBR")
+eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 eset_distribution(eset)
 }

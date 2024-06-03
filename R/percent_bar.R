@@ -4,7 +4,10 @@
 
 
 
-#' Function to create a percent bar plot.
+#' Create a Percent Bar Plot
+#'
+#' This function generates a bar plot that visualizes the percentage distribution of a variable grouped by another variable.
+#' It offers options to customize the plot's colors, title, axis labels, and more.
 #'
 #' @param input Input data frame.
 #' @param x Name of the x-axis variable.
@@ -24,7 +27,7 @@
 #' @param round.num Number of decimal places to round the proportion column.
 #' @param coord_flip Boolean indicating whether to flip the x and y axes.
 #'
-#' @return
+#' @return A ggplot object representing the percentage bar plot.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
@@ -140,7 +143,7 @@ percent_bar_plot<-function(input, x, y,
 #' @param show_freq Boolean indicating whether to show frequencies on the chart. Default is FALSE.
 #' @param add_sum Boolean indicating whether to add the sum of frequencies to the chart. Default is FALSE.
 #'
-#' @return
+#' @return Generate Pie or Donut Charts
 #' @export
 #' @author Dongqiang Zeng
 #'

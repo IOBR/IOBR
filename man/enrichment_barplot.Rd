@@ -25,7 +25,7 @@ enrichment_barplot(
 
 \item{pvalue}{The column name in the data frames that specifies the p-value. By default, it is set to "pvalue".}
 
-\item{group}{The column name in the data frames that specifies the group or condition. By default, it is set to "group". If this column is not present in the data frames, the function will automatically assign a group based on the up_terms and down_terms.}
+\item{group}{The column name in the data frames that specifies the group or condition. By default, it is set to "group". If this column is not present in the data frames, the function will automatically assign a group based on the up_terms and down_terms.  If the group is "Upregulated", it is assigned a value of 1, otherwise it is assigned a value of -1.}
 
 \item{palette}{The color palette to use for the barplot. By default, it is set to "jama".}
 
@@ -35,8 +35,29 @@ enrichment_barplot(
 
 \item{font_terms}{The font size for the x-axis and y-axis labels. By default, it is set to 15.}
 }
+\value{
+A ggplot object representing the enrichment bar plot.
+}
 \description{
-Enrichment bar plot with two directions
+This function creates a bar plot to visualize enrichment results, displaying both up-regulated and down-regulated terms or genes. The bar plot highlights the significance of each term or gene using -log10(p-value).
+}
+\examples{
+# Example data frames
+up_terms <- data.frame(
+  Description = c("Pathway1", "Pathway2", "Pathway3"),
+  pvalue      = c(0.001, 0.01, 0.05))
+
+down_terms <- data.frame(
+  Description = c("Pathway4", "Pathway5", "Pathway6"),
+  pvalue      = c(0.005, 0.02, 0.03))
+
+# Create enrichment bar plot using the function
+p <- enrichment_barplot(
+  up_terms   = up_terms,
+  down_terms = down_terms,
+  title      = "Custom Enrichment Plot")
+
+print(p)
 }
 \author{
 Dongqiang Zeng

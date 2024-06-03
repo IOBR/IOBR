@@ -3,9 +3,11 @@
 
 
 
-
-
 #' Searching for mutations related to signature score
+#'
+#' This function searches for mutations related to specific signature scores in a given mutation matrix.
+#' It integrates multiple statistical tests and visualization options, including oncoprints, to explore and
+#' display the relationships between mutations and signature scores.
 #'
 #' @param mutation_matrix mutation matrix with sample name in the row and genes in the column
 #' @param signature_matrix signature data frame with identifier and target signatures
@@ -29,7 +31,7 @@
 #' @param point.alpha point.alpha of boxplot
 #'
 #' @author Dongqiang Zeng
-#' @return
+#' @return A list of results including statistical tests and mutation data frames.
 #' @export
 #'
 #' @examples

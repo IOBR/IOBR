@@ -32,8 +32,13 @@ make_mut_matrix(
 
 \item{Variant_Type}{column name of variant type: SNP, INS, DEL}
 }
+\value{
+A list of matrices, each representing a different category of mutations as specified by `category`.
+}
 \description{
-Make mutation matrix using maf data
+This function constructs mutation matrices from MAF data, supporting multiple categories including all mutations,
+SNPs, indels, and frameshift mutations. It can handle both MAF file paths or MAF objects directly and is capable
+of processing data formatted according to TCGA standards.
 }
 \examples{
 

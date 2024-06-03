@@ -1,7 +1,8 @@
 
-
-
 #' Feature selection
+#'
+#' This function selects features based on correlation or differential expression methods. 
+#' It integrates tools from the limma package for differential expression and basic statistical tests for correlation analysis.
 #'
 #' @param x input matrix.Rownames should be features like gene symbols or cgi, colnames be samples
 #' @param y response variable. Data type can be quantitative, binary and survival. Survival type can be generated through ?survival::Surv
@@ -14,20 +15,21 @@
 #' @import glmnet
 #' @import limma
 #'
-#' @return
+#' @return Returns a vector of selected feature names based on the specified criteria.
 #' @export
 #'
 #' @examples
 #'
-#'data("crc_clin")
-#'data("tcga_crc_exp")
-#'mad <- apply(tcga_crc_exp, 1, mad)
-#'tcga_crc_exp <- tcga_crc_exp[mad > 0.5, ]
-#'pd1 <- as.numeric(tcga_crc_exp["PDCD1", ])
+#'data("imvigor210_eset",package = "IOBR")
+#'data("imvigor210_pdata", package = "IOBR")
+#'
+#'mad <- apply(imvigor210_eset, 1, mad)
+#'imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
+#'pd1 <- as.numeric(imvigor210_eset["PDCD1", ])
 #'group <- ifelse(pd1 > mean(pd1), "high", "low")
-#'pd1_cor <- feature_select(x = tcga_crc_exp, y = pd1, method = "cor", family = "pearson", padjcut = 0.05, cutoff = 0.5)
-#'pd1_dif <- feature_select(x = tcga_crc_exp, y = pd1, method = "dif", padjcut = 0.05, cutoff = 2)
-#'pd1_dif_2 <- feature_select(x = tcga_crc_exp, y = group, method = "dif", padjcut = 0.05, cutoff = 2)
+#'pd1_cor <- feature_select(x = imvigor210_eset, y = pd1, method = "cor", family = "pearson", padjcut = 0.05, cutoff = 0.5)
+#'pd1_dif <- feature_select(x = imvigor210_eset, y = pd1, method = "dif", padjcut = 0.05, cutoff = 2)
+#'pd1_dif_2 <- feature_select(x = imvigor210_eset, y = group, method = "dif", padjcut = 0.05, cutoff = 2)
 
 feature_select <- function(x, y, method = c("cor", "dif"),
                            family = c("spearman", "pearson"),
@@ -87,7 +89,11 @@ feature_select <- function(x, y, method = c("cor", "dif"),
   return(feature)
 }
 
-#' Title
+#' limma.dif
+#'
+#' This function performs differential expression analysis using the limma package on a given gene expression dataset. 
+#' It constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes statistics for 
+#' differential expression.
 #'
 #' @param exprdata input matrix.Rownames should be features like gene symbols or cgi, colnames be samples
 #' @param pdata phenotype data.Two-column dataframe which column 1 should be the same with the colnames of exprdata and column 2 are the grouping variable.

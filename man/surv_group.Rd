@@ -27,46 +27,49 @@ surv_group(
 )
 }
 \arguments{
-\item{input_pdata}{DATA}
+\item{input_pdata}{Data frame containing the survival time, status, and group variables.}
 
-\item{target_group}{target of binary variable}
+\item{target_group}{The name of the categorical variable in `input_pdata` used to define groups for survival analysis.}
 
-\item{ID}{identifier of data}
+\item{ID}{Identifier for the data rows; default is "ID".}
 
-\item{levels}{level of variable}
+\item{levels}{A vector of the levels or groups within the target group variable; defaults to c("High", "Low").}
 
-\item{reference_group}{default is}
+\item{reference_group}{The reference group against which other groups are compared in survival analysis; defaults to the first level if not specified.}
 
-\item{project}{name of main title}
+\item{project}{Name for the main title of the plot and part of the filename for saving the plot.}
 
-\item{time}{column name of follow up time}
+\item{time}{The column name in `input_pdata` representing follow-up time; default is "time".}
 
-\item{status}{status}
+\item{status}{The column name in `input_pdata` representing the event status; default is "status".}
 
-\item{time_type}{month or day}
+\item{time_type}{Unit of follow-up time, either "month" or "day"; default is "month".}
 
-\item{break_month}{break of time}
+\item{break_month}{Time intervals for breaking the follow-up period; default is "auto" which calculates based on data.}
 
-\item{cols}{if null, palette should be set}
+\item{cols}{Color vector for plots; if NULL, colors are selected based on `palette`.}
 
-\item{palette}{default is `jama`, if cols is null}
+\item{palette}{Color palette for plotting; default is "jama".}
 
-\item{mini_sig}{prefix of variable}
+\item{mini_sig}{A prefix used for variable naming in plots and files; default is "score".}
 
-\item{save_path}{default is KMplot}
+\item{save_path}{Directory where the output files will be stored; default is "KMplot".}
 
-\item{fig.type}{default is pdf, other option is png}
+\item{fig.type}{The format for saving plots, either "pdf" or "png"; default is "pdf".}
 
-\item{index}{folder name}
+\item{index}{Folder name or prefix for saving the plot; used in file naming.}
 
-\item{width}{default is 6}
+\item{width}{Width of the output plot; default is 6 inches.}
 
-\item{height}{default is 6.5}
+\item{height}{Height of the output plot; default is 6.5 inches.}
 
-\item{font.size.table}{default is 62}
+\item{font.size.table}{Font size for tables included in the plot; default is 62.}
+}
+\value{
+A list containing the ggsurvplot object and optionally comparison results if comparisons are enabled.
 }
 \description{
-Drawing KM-plot to a Categorical variable with two or more groups
+This function produces Kaplan-Meier survival plots for a given categorical variable with two or more groups. It allows customization of the analysis and visualization, including defining the time scale (months or days), breaking the follow-up time into intervals, selecting color palettes, and saving the plots. The function supports comparisons between groups using survival statistics and can handle additional grouping variables.
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")

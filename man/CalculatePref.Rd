@@ -7,8 +7,24 @@
 CalculatePref(model, newx, s, acture.y)
 }
 \arguments{
-\item{acture.y}{}
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{newx}{A matrix or data frame containing the new data features.}
+
+\item{s}{The value(s) of the penalty parameter lambda at which predictions are required.}
+
+\item{acture.y}{A vector containing the actual labels of the new data.}
+}
+\value{
+A performance object from the ROCR package, which contains true positive rates and false positive rates.
 }
 \description{
-Calculate Pref
+This function calculates the performance of a given model on new data, returning the performance object.
+}
+\examples{
+# Assuming model, test.x, and test.y are already defined
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial")
+perf <- CalculatePref(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+plot(perf)
 }

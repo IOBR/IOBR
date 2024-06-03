@@ -7,8 +7,33 @@
 outputGCT(input.f, output.f)
 }
 \arguments{
-\item{output.f}{}
+\item{input.f}{A data frame or a character string specifying the path to the input file. If a character string, the file should be a tab-separated table with row names.}
+
+\item{output.f}{A character string specifying the path to the output file.}
+}
+\value{
+No return value. The function writes the dataset to the specified output file in GCT format.
 }
 \description{
-outputGCT
+This function converts a gene expression dataset to a GCT format file.
+}
+\examples{
+# Create a sample input data frame
+sample_data <- data.frame(
+  Gene = c("BRCA1", "TP53", "EGFR"),
+  Sample1 = c(10, 15, 8),
+  Sample2 = c(12, 18, 7),
+  stringsAsFactors = FALSE
+)
+rownames(sample_data) <- sample_data$Gene
+sample_data <- sample_data[, -1]
+
+# Write the sample data to input.txt file
+write.table(sample_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+
+# Convert the input data frame to GCT format and save it to output.gct
+outputGCT(sample_data, "output.gct")
+
+# Convert the input.txt file to GCT format and save it to output.gct
+outputGCT("input.txt", "output.gct")
 }

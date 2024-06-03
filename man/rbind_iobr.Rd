@@ -19,3 +19,12 @@ The combined dataset resulting from the 'rbind' operation on the input datasets.
 \description{
 This function combines multiple datasets vertically using the 'rbind' operation. It takes in two required parameters, 'data1' and 'data2', and an optional parameter, 'data3'.
 }
+\examples{
+data1 <- data.frame(A = 1:5, B = letters[1:5])
+data2 <- data.frame(A = 6:10, B = letters[6:10])
+combined_data <- rbind_iobr(data1, data2)
+
+# With three datasets
+data3 <- data.frame(A = 11:15, B = letters[11:15])
+combined_data <- rbind_iobr(data1, data2, data3)
+}

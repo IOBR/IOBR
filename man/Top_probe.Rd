@@ -2,13 +2,27 @@
 % Please edit documentation in R/generateRef_DEseq2.R
 \name{Top_probe}
 \alias{Top_probe}
-\title{Top probe}
+\title{Top Probe Selector}
 \usage{
 Top_probe(dat, i)
 }
 \arguments{
-\item{i}{}
+\item{dat}{A data frame containing a column named "probe" among other data.}
+
+\item{i}{An integer indicating the number of top probes to return from the dataset.}
+}
+\value{
+A character vector containing the names of the top `i` probes.
 }
 \description{
-Top probe
+This function extracts the top `i` probes based on their ordering in the provided data frame. 
+If the number of rows in the data frame is less than or equal to `i`, it returns all probes.
+}
+\examples{
+# Assuming 'dat' is a data frame with at least one column named "probe"
+dat <- data.frame(probe = c("Probe1", "Probe2", "Probe3", "Probe4", "Probe5"),
+                  value = c(5, 3, 2, 4, 1))
+# Get the top 3 probes
+top_probes <- Top_probe(dat, 3)
+print(top_probes)
 }

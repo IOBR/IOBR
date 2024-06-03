@@ -20,6 +20,13 @@ remove_names(
 
 \item{variables}{colunm names or names of variable}
 }
+\value{
+The modified data frame with patterns replaced as specified.
+}
 \description{
-Batch to transform patterns to special character
+This function modifies column names or specified variables in a data frame by replacing certain patterns with either NA values or spaces. It allows targeting column names directly or any other specified column in the data frame.
+}
+\examples{
+data("imvigor210_sig",package = "IOBR")
+input <- remove_names(imvigor210_sig, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = NULL)
 }

@@ -13,13 +13,14 @@
 #' @param output_type  (optional, default = "tpm"): Indicates the output data type, accepting values "tpm", "log2tpm", or "count".
 #' @param annotation (optional, default = TRUE): A logical value determining whether gene annotation should be applied.
 #'
-#' @return
+#' @return A matrix or data frame of the preprocessed gene expression data.
 #' @export
 #'
 #' @author Dongqiang Zeng
 #' @examples
 #' # Expression matrix downloaded from UCSC Xena datasets: https://xenabrowser.net/datapages/
-#' eset <- tcga_rna_preps(eset = eset,  id_type = "ensembl", input_type = "log2count", output = "tumor", output_type = "count", annotation = TRUE)
+#' data("eset_stad", package = "IOBR")
+#' eset <- tcga_rna_preps(eset = eset_stad,  id_type = "ensembl", input_type = "count", output = "tumor", output_type = "tpm", annotation = TRUE)
 #'
 tcga_rna_preps <- function(eset, id_type = c("ensembl", "symbol"), input_type = c("log2count", "count"), output = c("tumor", "tumor_normal"),
                            output_type = c("tpm", "log2tpm", "count"), annotation = TRUE){

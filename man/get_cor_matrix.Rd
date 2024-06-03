@@ -56,8 +56,26 @@ get_cor_matrix(
 
 \item{round.num}{The number of decimal places to round the correlation values. Default is 1.}
 }
+\value{
+A ggplot object displaying the correlation matrix.
+}
 \description{
 The "get_cor_matrix" function calculates and visualizes the correlation matrix between two sets of variables in a dataset. It provides flexibility in defining correlation methods, handling missing values, and incorporating additional data. The function supports various correlation methods, such as Pearson correlation, and displays the correlation result in a customizable plot. The plot includes color-coded tiles representing the correlation value between each pair of variables. Additionally, the function offers options to save the plot and data for further analysis.
+}
+\examples{
+# Assuming 'data' is a data frame or matrix with genes or signatures as columns
+set.seed(123)
+data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
+colnames(data) <- paste("Gene", 1:10, sep = "_")
+
+# Define two sets of variables for correlation analysis
+feas1 <- c("Gene_1", "Gene_2", "Gene_3")
+feas2 <- c("Gene_4", "Gene_5", "Gene_6")
+
+# Generate and visualize the correlation matrix
+cor_plot <- get_cor_matrix(data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
+                           method = "spearman", project = "Example Correlation Matrix")
+print(cor_plot)
 }
 \author{
 Dongqiang Zeng

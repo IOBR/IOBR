@@ -15,8 +15,11 @@ batch_cor(data, target, feature, method = "spearman")
 
 \item{method}{A character specifying the correlation method to be used. Default value is "spearman".}
 }
+\value{
+A tibble containing the feature names, p-values, correlation coefficients, adjusted p-values, log10 p-values, and significance stars.
+}
 \description{
-Batch to conduct correlation analysis with multiple features
+This function performs batch correlation analysis between a target variable and multiple feature variables in a dataset.
 }
 \examples{
 

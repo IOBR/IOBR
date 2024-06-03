@@ -6,29 +6,31 @@
 
 #' Drawing KM-plot to a Categorical variable with two or more groups
 #'
-#' @param input_pdata DATA
-#' @param project name of main title
-#' @param time column name of follow up time
-#' @param status status
-#' @param time_type month or day
-#' @param break_month break of time
-#' @param palette default is `jama`, if cols is null
-#' @param save_path default is KMplot
-#' @param mini_sig prefix of variable
-#' @param target_group target of binary variable
-#' @param levels level of variable
-#' @param reference_group default is
-#' @param index folder name
-#' @param cols if null, palette should be set
-#' @param fig.type default is pdf, other option is png
-#' @param ID identifier of data
-#' @param width default is 6
-#' @param height default is 6.5
-#' @param font.size.table default is 62
+#' This function produces Kaplan-Meier survival plots for a given categorical variable with two or more groups. It allows customization of the analysis and visualization, including defining the time scale (months or days), breaking the follow-up time into intervals, selecting color palettes, and saving the plots. The function supports comparisons between groups using survival statistics and can handle additional grouping variables.
+#'
+#' @param input_pdata Data frame containing the survival time, status, and group variables.
+#' @param target_group The name of the categorical variable in `input_pdata` used to define groups for survival analysis.
+#' @param ID Identifier for the data rows; default is "ID".
+#' @param levels A vector of the levels or groups within the target group variable; defaults to c("High", "Low").
+#' @param reference_group The reference group against which other groups are compared in survival analysis; defaults to the first level if not specified.
+#' @param project Name for the main title of the plot and part of the filename for saving the plot.
+#' @param time The column name in `input_pdata` representing follow-up time; default is "time".
+#' @param status The column name in `input_pdata` representing the event status; default is "status".
+#' @param time_type Unit of follow-up time, either "month" or "day"; default is "month".
+#' @param break_month Time intervals for breaking the follow-up period; default is "auto" which calculates based on data.
+#' @param palette Color palette for plotting; default is "jama".
+#' @param save_path Directory where the output files will be stored; default is "KMplot".
+#' @param mini_sig A prefix used for variable naming in plots and files; default is "score".
+#' @param cols Color vector for plots; if NULL, colors are selected based on `palette`.
+#' @param fig.type The format for saving plots, either "pdf" or "png"; default is "pdf".
+#' @param width Width of the output plot; default is 6 inches.
+#' @param height Height of the output plot; default is 6.5 inches.
+#' @param font.size.table Font size for tables included in the plot; default is 62.
+#' @param index Folder name or prefix for saving the plot; used in file naming.
 #'
 #' @author Dongqiang Zeng
 #' @import survival
-#' @return
+#' @return A list containing the ggsurvplot object and optionally comparison results if comparisons are enabled.
 #' @export
 #'
 #' @examples
@@ -239,17 +241,23 @@ surv_group  <-function(input_pdata,
 
 
 
-#' break month
+#' Break Time Period into Equal Blocks
 #'
-#' @param input
-#' @param block
-#' @param time_type
+#' This function divides a given maximum time into specified equal blocks, allowing adjustments based on the time unit (e.g., months or days). It is useful for creating time intervals for further analysis or visualization.
 #'
-#' @author Dongqiang Zeng
-#' @return
+#' @param input Numeric vector or single numeric value representing time durations. 
+#' @param block The number of blocks to divide the time into; default is 6 blocks.
+#' @param time_type The unit of time in the input; either "month" for months or "day" for days, with default being "month".
+#'
+#' @return A numeric value representing the size of each block in the time unit specified.
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
+#' # Example with time in months
+#' break_month(input = c(12, 24, 36), block = 6)
+#'
+#' # Example with time in days, converting to months
+#' break_month(input = c(360, 720, 1080), block = 6, time_type = "day")
 break_month<-function(input, block = 6, time_type = "month"){
 
   max_time <-max(input)

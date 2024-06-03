@@ -29,6 +29,9 @@ combine_pd_eset(
 
 \item{choose_who_when_duplicate}{String indicating the preference when encountering duplicate IDs in pdata and eset.}
 }
+\value{
+A data frame combining phenotype data and expression set.
+}
 \description{
 combine_pd_eset combines the expression set (eset) with phenotype data (pdata).
 }

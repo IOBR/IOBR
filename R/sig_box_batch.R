@@ -31,7 +31,7 @@
 #' @param fig_type The file format to save the generated figures (e.g., "pdf").
 #' @param pattern_vars A logical value indicating whether the feature names specified in 'vars' should be treated as patterns to match. If set to TRUE, the function will search for matching column names in the input data and use them for analysis.
 #'
-#' @return
+#' @return Depending on `return_stat_res`, either saves plots to the specified directory or returns the statistical results.
 #' @export
 #' @author Dongqiang Zeng
 #'

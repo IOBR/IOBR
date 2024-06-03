@@ -12,7 +12,7 @@
 #' @param path A character string indicating the path for saving the output files. Default is "1-TME".
 #' @param permutation An integer specifying the number of permutations for TME deconvolution. Default is 1000.
 #'
-#' @return
+#' @return A data frame containing merged results of TME deconvolution and signature scores.
 #' @export
 #' @author Dongqiang Zeng
 #'

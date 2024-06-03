@@ -7,8 +7,19 @@
 GetOutlierGenes(cancers)
 }
 \arguments{
-\item{cancers}{}
+\item{cancers}{A dataframe with one column containing paths to gene expression files.}
+}
+\value{
+A vector of unique gene names identified as outliers across all given samples.
 }
 \description{
-Get Outlier Genes
+This function identifies outlier genes from multiple cancer datasets. 
+It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
+}
+\examples{
+cancers <- data.frame(ExpressionFiles = c("path/to/expression1.csv", 
+                                          "path/to/expression2.csv"))
+
+# Get outlier genes
+outlier_genes <- GetOutlierGenes(cancers)
 }

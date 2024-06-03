@@ -13,6 +13,15 @@ exact_pvalue(x, y, method)
 
 \item{method}{method used to conduct correlation analysis}
 }
+\value{
+A numeric value representing the exact p-value of the correlation.
+}
 \description{
-Calculate exact p value of correlation
+This function calculates the exact p-value for the correlation between two variables using a specified method.
+}
+\examples{
+
+# Loading TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+exact_pvalue(sig_stad$CD8.T.cells, sig_stad$CD_8_T_effector, method = "spearman")
 }

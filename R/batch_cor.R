@@ -2,13 +2,15 @@
 
 
 #' Batch to conduct correlation analysis with multiple features
-#'
+#' 
+#' This function performs batch correlation analysis between a target variable and multiple feature variables in a dataset.
+#' 
 #' @param data A data frame containing the dataset.
 #' @param target A character specifying the name of the target variable.
 #' @param feature A character vector specifying the names of the feature variables.
 #' @param method A character specifying the correlation method to be used. Default value is "spearman".
 #'
-#' @return
+#' @return A tibble containing the feature names, p-values, correlation coefficients, adjusted p-values, log10 p-values, and significance stars.
 #' @export
 #'
 #' @examples
@@ -58,14 +60,17 @@ batch_cor<-function(data, target, feature, method = "spearman"){
 
 #' Calculate exact p value of correlation
 #'
+#' This function calculates the exact p-value for the correlation between two variables using a specified method.
+#'
 #' @param x variables
 #' @param y variables
 #' @param method method used to conduct correlation analysis
 #'
-#' @return
+#' @return A numeric value representing the exact p-value of the correlation.
 #' @export
-#' @example
-#'
+#' 
+#' @examples
+#' 
 #' # Loading TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' exact_pvalue(sig_stad$CD8.T.cells, sig_stad$CD_8_T_effector, method = "spearman")

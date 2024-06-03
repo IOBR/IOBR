@@ -5,6 +5,8 @@
 
 
 #' Forest plot of survival analysis results.
+#' 
+#' This function, `sig_forest`, generates a forest plot displaying the hazard ratios (HRs), confidence intervals, and P-values for survival analysis signatures. It is designed to handle dataframes containing survival analysis results and allows customization of the plot features and aesthetics.
 #'
 #' @param signature column of signatures
 #' @param data survival result
@@ -17,7 +19,7 @@
 #' @param discrete_width discrete width, default is 35
 #' @param color_option default is 1, other option:2, 3
 #'
-#' @return
+#' @return A ggplot object representing the forest plot.
 #' @export
 #' @author Dongqiang Zeng
 #'

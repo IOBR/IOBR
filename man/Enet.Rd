@@ -7,8 +7,32 @@
 Enet(train.x, train.y, lambdamax, nfold = nfold)
 }
 \arguments{
-\item{nfold}{}
+\item{train.x}{A matrix or data frame containing the training features.}
+
+\item{train.y}{A vector containing the training labels. This should be a binary factor.}
+
+\item{lambdamax}{The maximum value of lambda to be tested in the model tuning.}
+
+\item{nfold}{The number of folds for cross-validation. Default is the value of nfold.}
+}
+\value{
+A list containing the best alpha and lambda values chosen by cross-validation.
 }
 \description{
 Enet
+}
+\examples{
+set.seed(123456)
+
+data("imvigor210_sig",package = "IOBR")
+data("imvigor210_pdata", package = "IOBR")
+
+pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+
+train_test <- SplitTrainTest(x = imvigor210_sig, y = pdata_group$BOR_binary, train_ratio = 0.7, type = "binomial",
+                             seed = 123456)
+
+result <- Enet(train.x = train_test$train.x, train.y = train_test$train.y, lambdamax = 1, nfold = 10)
+print(result)
 }

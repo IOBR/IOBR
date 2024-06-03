@@ -6,24 +6,26 @@
 
 
 #' Drawing multiple AUC into one graph
+#' 
+#' This function `sig_roc` creates ROC curves for evaluating the performance of one or more predictors in a binary classification task. It is primarily designed to assess how well variables can distinguish between two classes, such as disease vs. no disease. The function generates a plot for each variable and optionally compares their Areas Under the Curve (AUCs) using statistical tests.
 #'
-#' @param data data frame with response and variables
-#' @param variables variables
-#' @param fig.path default is current working directory
+#' @param data A data frame containing the response variable and predictors.
+#' @param response The name of the response variable in the data frame, typically a binary outcome.
+#' @param variables A vector of column names from `data` representing predictors for which ROC curves will be plotted.
+#' @param fig.path Optional; the path where the output plot will be saved, defaults to the current working directory.
 #' @param palette default is `jama`, if number of variables is bigger than colors of palettes, `random` color will be applied
-#' @param cols users can provide cols manually
-#' @param main main title of plot
-#' @param alpha default is 1
-#' @param response response name of data
-#' @param file.name file.name, default is
-#' @param compare default is FALSE
-#' @param compare_method  default is bootstrap, other option: “delong”, “venkatraman”
-#' @param boot.n default is 100 when bootstrap is chosen.
-#' @param smooth default is TRUE
+#' @param cols Optional; a vector of colors to use for the curves. If not provided, colors are taken from the specified palette.
+#' @param main The main title of the plot.
+#' @param alpha Transparency level of the plot colors; default is 1 (opaque).
+#' @param file.name Optional; the base name for the output file, defaults to "0-ROC of multiple variables" if not specified.
+#' @param compare Logical; if TRUE, compares the ROC curves using statistical tests; default is FALSE.
+#' @param compare_method  The method used for comparison if `compare` is TRUE; defaults to "bootstrap". Other options include "delong" and "venkatraman".
+#' @param boot.n Number of bootstrap replicates if the bootstrap method is used; default is 100.
+#' @param smooth Logical; if TRUE, the ROC curves are smoothed; default is TRUE
 #'
 #' @author Dongqiang Zeng
-#' @return
-#' @export
+#' @return A list containing the AUC values, legend names for the plot, and optionally the comparison results.
+#' @export 
 #'
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")

@@ -2,6 +2,7 @@
 
 
 #' Find markers in bulk
+#' 
 #' @description The goal of this function is to find relevant results from the given gene expression data and meta information.
 #'
 #' @param pdata A data frame containing the meta information of the samples.
@@ -14,7 +15,9 @@
 #' @param only.pos A logical value indicating whether to select only positive markers, default is TRUE.
 #' @param min.pct A numeric value representing the minimum percentage threshold for marker selection, default is 0.25.
 #'
-#' @return
+#' @import Seurat
+#' @import dplyr
+#' @return A list containing the Seurat object (`sce`), all markers identified (`markers`), and the top markers per group (`top_markers`).
 #' @export
 #'
 #' @examples

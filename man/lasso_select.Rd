@@ -23,8 +23,13 @@ lasso_select(
 
 \item{lambda}{"lambda.min" or "lambda.1se"}
 }
+\value{
+A vector of selected features that are nonzero in the LASSO model.
+}
 \description{
-Constructing predictive or prognostic model
+This function constructs predictive or prognostic models using LASSO (Least Absolute Shrinkage and Selection Operator)
+regression. It performs feature selection and model fitting for either binary classification or survival analysis, 
+based on cross-validation to optimize model parameters.
 }
 \examples{
 

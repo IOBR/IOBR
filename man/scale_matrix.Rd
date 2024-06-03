@@ -13,6 +13,9 @@ scale_matrix(matrix, log2matrix = TRUE, manipulate = TRUE)
 
 \item{manipulate}{Whether to perform additional manipulation on the matrix. Default is FALSE. If set to TRUE, the function will use the feature_manipulation function to manipulate the matrix based on specified criteria.}
 }
+\value{
+A data frame of the scaled and potentially manipulated matrix.
+}
 \description{
 This function scales a given matrix and optionally performs additional manipulation. It can apply a logarithmic transformation (base 2) to the matrix, center and scale the values, and optionally manipulate the features based on a specified criteria.
 }

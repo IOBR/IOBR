@@ -2,13 +2,35 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PlotTimeROC}
 \alias{PlotTimeROC}
-\title{Plot Time ROC}
+\title{Plot Time-dependent ROC Curves}
 \usage{
 PlotTimeROC(train.x, train.y, test.x, test.y, model, foldername, modelname)
 }
 \arguments{
-\item{modelname}{}
+\item{train.x}{A matrix or data frame containing the training features.}
+
+\item{train.y}{A data frame containing the training labels (time and status).}
+
+\item{test.x}{A matrix or data frame containing the testing features.}
+
+\item{test.y}{A data frame containing the testing labels (time and status).}
+
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{foldername}{A character string specifying the folder name where the plot will be saved.}
+
+\item{modelname}{A character string specifying the name of the model, used in the plot title and filename.}
+}
+\value{
+A ggplot object containing the plotted ROC curves.
 }
 \description{
-Plot Time ROC
+This function plots time-dependent ROC curves for a given prognostic model on both training and testing datasets.
+}
+\examples{
+# train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+p <- PlotTimeROC(train.x, train.y, test.x, test.y, model, foldername = "plots", modelname = "cox_model")
+print(p)
 }

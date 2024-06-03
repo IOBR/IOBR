@@ -83,6 +83,9 @@ sig_pheatmap(
 
 \item{file_name_prefix}{(default: 1): This parameter allows you to specify a prefix for the saved file name. The default value is 1.}
 }
+\value{
+A list containing the annotation data, cluster colors, the plot object, and the transformed input matrix.
+}
 \description{
 The sig_pheatmap function is used to generate heatmaps. It takes a data frame as input and creates a heatmap with grouping variables based on the provided parameters. The parameters include the input data, the features to include in the heatmap, the grouping variable, and optional additional grouping variables. It also offers flexible options to specify colors, adjust the size and layout of the heatmap, and save output files. The function returns a list containing annotation data, cluster colors, the plot object, and the transformed input matrix, allowing users to further analyze and visualize the heatmap data.
 }

@@ -2,13 +2,16 @@
 % Please edit documentation in R/timer.R
 \name{deconvolute_timer.default}
 \alias{deconvolute_timer.default}
-\title{deconvolute tumor microenvironment using timer}
+\title{Deconvolute Tumor Microenvironment Using TIMER}
 \usage{
 deconvolute_timer.default(args)
 }
 \arguments{
-\item{args}{environment}
+\item{args}{An environment or list containing parameters and file paths necessary for the function to execute. This should include `outdir` for output directory, `batch` for a file containing paths to expression data and cancer types.}
+}
+\value{
+Returns a matrix of abundance scores for different immune cell types across multiple cancer samples.
 }
 \description{
-deconvolute tumor microenvironment using timer
+This function performs deconvolution of the tumor microenvironment using the TIMER algorithm. It processes multiple cancer datasets, removes batch effects, and estimates immune cell type abundances. The function relies on specific data and helper functions to manage the expression data and analyze the tumor microenvironment.
 }

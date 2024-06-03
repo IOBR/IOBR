@@ -36,6 +36,9 @@ find_markers_in_bulk(
 
 \item{min.pct}{A numeric value representing the minimum percentage threshold for marker selection, default is 0.25.}
 }
+\value{
+A list containing the Seurat object (`sce`), all markers identified (`markers`), and the top markers per group (`top_markers`).
+}
 \description{
 The goal of this function is to find relevant results from the given gene expression data and meta information.
 }

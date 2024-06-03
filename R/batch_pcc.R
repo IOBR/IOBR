@@ -5,13 +5,14 @@
 #' @description  batch_pcc() provide a batch way to calculate the partial correlation coefficient between feature and others when
 #' controlling a third variable
 #' @param pdata_group matrix;data signature matrix with multiple features
-#' @param feature_data A data frame containing the feature data.
-#' @param id1 The name of the column in the pdata_group data frame representing the ID or identifier. The default value is "ID".
-#' @param id2 The name of the column in the feature_data data frame representing the ID or identifier. The default value is "ID".
+
+#' @param input A data frame containing both feature variables and the interference variable.
 #' @param interferenceid The name of the column in the feature_data data frame representing the interference variable.
-#' @param target The name of the column in the pdata_group data frame representing the target variable for correlation.
-#' @param method The correlation method to be used. The default value is "pearson"; one of "pearson"(default), "spearman" or "kendall"
-#' @return
+#' @param target The name of the column in the input data frame representing the target variable for correlation.
+#' @param features A character vector specifying the names of the feature variables.
+#' @param method The correlation method to be used. Default value is "pearson"; options are "pearson", "spearman", or "kendall".
+#' 
+#' @return A tibble containing the feature names, partial correlation coefficients, p-values, adjusted p-values, log10 p-values, and significance stars.
 #' @export
 #' @author Rongfang Shen
 #' @examples

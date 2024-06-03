@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateRef_rnaseq.R
 \name{generateRef_rnaseq}
 \alias{generateRef_rnaseq}
-\title{Generate reference gene matrix from DEGs result}
+\title{Generate Reference Gene Matrix from DEGs Using RNA-seq Data}
 \usage{
 generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 }
@@ -17,8 +17,19 @@ generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 
 \item{dat}{data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.}
 }
+\value{
+A list containing the reference matrix and additional diagnostic metrics:
+        - `reference_matrix`: A data frame of median expression values for significant probes.
+        - `G`: The optimal number of probes that minimizes the condition number.
+        - `condition_number`: The condition number corresponding to `G`.
+        - `whole_matrix`: The entire median expression matrix for further analyses.
+}
 \description{
-Generate reference gene matrix from DEGs result
+This function utilizes DESeq2 for differential expression analysis to generate a reference
+gene matrix from raw count RNA-seq data. It supports two modes: 'oneVSothers', which compares
+each cell type against all others, and 'pairs', which performs pairwise comparisons between
+cell types. The function computes the median expression levels of significant genes as part
+of the reference matrix output.
 }
 \author{
 Rongfang Shen

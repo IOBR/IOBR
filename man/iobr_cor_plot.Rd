@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_cor_plot.R
 \name{iobr_cor_plot}
 \alias{iobr_cor_plot}
-\title{Integrative correlation between phenotype and features}
+\title{Integrative Correlation Between Phenotype and Features}
 \usage{
 iobr_cor_plot(
   pdata_group,
@@ -86,8 +86,14 @@ iobr_cor_plot(
 
 \item{fig.type}{default is pdf, if not, figure will be saved in png format.}
 }
+\value{
+Various plots based on the analysis and possibly a dataframe of statistical results.
+}
 \description{
-Integrative correlation between phenotype and features
+This function performs an integrative correlation analysis between phenotype data and
+feature data. It supports handling both continuous and categorical phenotypes, filtering features based on
+adjusted p-value cutoffs, and visualizing results in various plot formats including box plots,
+heatmaps, and correlation plots.
 }
 \author{
 Dongqiang Zeng

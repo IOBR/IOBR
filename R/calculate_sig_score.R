@@ -447,7 +447,7 @@ calculate_sig_score_integration<-function(pdata = NULL,
 
 
 
-#' Calculating signature score  on a gene expression dataset
+#' Calculating signature score on a gene expression dataset
 #'
 #' @param pdata phenotype data of input sample
 #' @param eset normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
@@ -459,7 +459,6 @@ calculate_sig_score_integration<-function(pdata = NULL,
 #' @param column_of_sample Defines in which column of the `pdata` the identifier of the sample can be found.
 #' @param print_gene_propotion logical, print the proportion of signature genes in gene matrix
 #' @param print_filtered_signatures logical, print filtered signatures has gene count less than minimal gene count
-#' @param ...
 #' @param adjust_eset default is FALSE
 #' @param parallel.size default is 1
 #'

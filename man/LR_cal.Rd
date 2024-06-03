@@ -13,6 +13,9 @@ LR_cal(eset, data_type = c("count", "tpm"), id_type = "ensembl")
 
 \item{id_type}{Type of gene identifier, default is "ensembl".}
 }
+\value{
+A data frame containing ligand-receptor interaction scores
+}
 \description{
 Quantifies ligand-receptor interactions in the tumor microenvironment from bulk gene expression
 }

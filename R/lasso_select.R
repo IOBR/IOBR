@@ -1,6 +1,10 @@
 
 
 #' Constructing predictive or prognostic model
+#' 
+#' This function constructs predictive or prognostic models using LASSO (Least Absolute Shrinkage and Selection Operator)
+#' regression. It performs feature selection and model fitting for either binary classification or survival analysis, 
+#' based on cross-validation to optimize model parameters.
 #'
 #' @param x input matrix.Row names should be features like gene symbols or cgi, colnames be samples
 #' @param y response variable. can be binary and survival type.
@@ -8,7 +12,7 @@
 #' @param nfold number of `nfold` for cross-validation - default is 10
 #' @param lambda "lambda.min" or "lambda.1se"
 #'
-#' @return
+#' @return A vector of selected features that are nonzero in the LASSO model.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples

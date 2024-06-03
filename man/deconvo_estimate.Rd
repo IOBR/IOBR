@@ -13,6 +13,9 @@ deconvo_estimate(eset, project = NULL, platform = "affymetrix")
 
 \item{platform}{character string indicating platform type. Defaults to "affymetrix"}
 }
+\value{
+A data frame with the calculated stromal, immune, and ESTIMATE scores.
+}
 \description{
 Calculation of stromal, immune, and ESTIMATE scores
 }

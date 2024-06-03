@@ -8,7 +8,7 @@
 #' @param print_result Whether to print the check results. Default is FALSE. If set to TRUE, it will print the results of each check.
 #' @param estimate_sd Whether to estimate the standard deviation. Default is FALSE. If set to TRUE, it will estimate the standard deviation for each feature and provide warnings and print results accordingly.
 #'
-#' @return
+#' @return NULL. The function is called for its side effects of checking and optionally printing warnings about the integrity of the expression set.
 #' @export
 #'
 #' @author Dongqiang Zeng

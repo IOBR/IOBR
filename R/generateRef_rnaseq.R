@@ -1,4 +1,10 @@
-#' Generate reference gene matrix from DEGs result
+#' Generate Reference Gene Matrix from DEGs Using RNA-seq Data
+#'
+#' This function utilizes DESeq2 for differential expression analysis to generate a reference
+#' gene matrix from raw count RNA-seq data. It supports two modes: 'oneVSothers', which compares
+#' each cell type against all others, and 'pairs', which performs pairwise comparisons between
+#' cell types. The function computes the median expression levels of significant genes as part
+#' of the reference matrix output.
 #'
 #' @param dds raw count data from RNA-seq
 #' @param pheno  data frame or matrix;un-normalized counts of RNA-seq
@@ -8,7 +14,11 @@
 #' @importFrom  DESeq2 DESeqDataSetFromMatrix
 #' @importFrom  DESeq2 DESeq
 #'
-#' @return
+#' @return A list containing the reference matrix and additional diagnostic metrics:
+#'         - `reference_matrix`: A data frame of median expression values for significant probes.
+#'         - `G`: The optimal number of probes that minimizes the condition number.
+#'         - `condition_number`: The condition number corresponding to `G`.
+#'         - `whole_matrix`: The entire median expression matrix for further analyses.
 #' @author Rongfang Shen
 #' @export
 #'

@@ -15,7 +15,7 @@
 #' @param scale Logical value indicating whether to scale the expression set. Default is TRUE.
 #' @param choose_who_when_duplicate String indicating the preference when encountering duplicate IDs in pdata and eset.
 #'
-#' @return
+#' @return A data frame combining phenotype data and expression set.
 #' @export
 #'
 #' @examples

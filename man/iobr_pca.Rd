@@ -50,6 +50,9 @@ iobr_pca(
 
 \item{addEllipses}{Specifies whether to add concentration ellipses to the plot. Default is TRUE.}
 }
+\value{
+A ggplot object representing the PCA plot.
+}
 \description{
 The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 }

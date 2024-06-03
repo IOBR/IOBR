@@ -31,7 +31,7 @@
 #' @param id_condiction This parameter specifies the column name in the condiction data frame that represents the variables. The default value is "vars".
 #' @param col_condiction This parameter specifies the column name in the condiction data frame that represents the conditions. The default value is "condiction".
 #'
-#' @return
+#' @return A heatmap plot object.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples

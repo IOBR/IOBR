@@ -41,6 +41,9 @@ pie_chart(
 
 \item{add_sum}{Boolean indicating whether to add the sum of frequencies to the chart. Default is FALSE.}
 }
+\value{
+Generate Pie or Donut Charts
+}
 \description{
 This function generates a pie chart or a donut chart from the input data. It allows customization of various visual aspects such as colors, labels, and title.
 }

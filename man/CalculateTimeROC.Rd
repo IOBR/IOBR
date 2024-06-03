@@ -7,8 +7,30 @@
 CalculateTimeROC(model, newx, s, acture.y, foldername, modelname)
 }
 \arguments{
-\item{modelname}{}
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{newx}{A matrix or data frame containing the new data features.}
+
+\item{s}{The value(s) of the penalty parameter lambda at which predictions are required.}
+
+\item{acture.y}{A data frame containing the actual survival time and status (e.g., time and status columns).}
+
+\item{foldername}{A character string specifying the folder name where the plot will be saved.}
+
+\item{modelname}{A character string specifying the name of the model, used in the plot title and filename.}
+}
+\value{
+A timeROC object containing the ROC analysis results.
 }
 \description{
-Calculate Time ROC
+This function calculates the time-dependent ROC for a given prognostic model and saves the plot.
+}
+\examples{
+library(glmnet)
+library(timeROC)
+# train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+roc <- CalculateTimeROC(model, newx = test.x, s = "lambda.min", acture.y = test.y, foldername = "plots", modelname = "cox_model")
+print(roc)
 }

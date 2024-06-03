@@ -4,6 +4,9 @@
 
 #' Choose colors.
 #'
+#' This function selects color palettes based on the type of plot you want to color. It supports multiple categories
+#' and palette options, allowing for the adjustment of color intensity and the number of colors.
+#'
 #' @param category choose what type of plot you want to color,There are seven categories you can choose: `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`
 #' @param palette Each category has some options to choose
 #' @param alpha intensity of the color
@@ -12,10 +15,16 @@
 #' @param show_message print palettes that can be choose
 #'
 #' @author Dongqiang Zeng
-#' @return
+#' @return A vector of colors based on the selected options.
 #' @export
 #'
 #' @examples
+#' # Get a palette for box plots with the 'nrc' palette
+#' colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
+#'
+#' # Get a continuous color scale for heatmaps
+#' heatmap_colors <- palettes(category = "heatmap", palette = 1, counts = 100, show_col = TRUE)
+
 palettes<-function(category = "box", palette = "nrc", alpha = 1,counts = 50, show_col = TRUE, show_message = FALSE){
 
   if(show_message) message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))

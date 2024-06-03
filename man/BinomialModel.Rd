@@ -17,28 +17,28 @@ BinomialModel(
 \arguments{
 \item{x}{data.frame contains sample ID and features; The first column of x is the sample ID.}
 
-\item{y}{data.frame whose sample ID in the first column and the outcome of each sample in the second sample. Outcome value can be numeric or factor vector.}
+\item{y}{data.frame whose sample ID in the first column and the outcome of each sample in the second column. Outcome value can be numeric or factor vector.}
 
 \item{seed}{default 123456}
 
-\item{scale}{A logistic: should the x be scaled, default is TRUE.}
+\item{scale}{A logical: should the x be scaled, default is TRUE.}
 
 \item{train_ratio}{Value between 0-1, eg: 0.7; The ratio is used to split the x and y into training and testing data.}
 
 \item{nfold}{default 10}
 
-\item{plot}{A logistic, default is TRUE.}
+\item{plot}{A logical, default is TRUE.}
 }
 \value{
-a list contain the results of 2 model (Lasso, Ridge) and the input train data.
+a list containing the results of 2 models (Lasso, Ridge) and the input training data.
 }
 \description{
 Binomial Model construction
 }
 \examples{
 data("imvigor210_sig", package = "IOBR")
-data("imvigor210_pdata",package = "IOBR")
-pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+data("imvigor210_pdata", package = "IOBR")
+pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
 pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
-BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
+BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE)
 }

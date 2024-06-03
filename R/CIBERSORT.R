@@ -57,8 +57,10 @@
 #' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
 #' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
 #'
+#' @return A list containing the weights (`w`), root mean squared error (`mix_rmse`), and correlation coefficient (`mix_r`).
 #' @export
-#' @example
+#' 
+#' @examples
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
@@ -122,8 +124,10 @@ CoreAlg <- function(X, y, absolute, abs_method){
 #' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
 #' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
 #'
+#' @return A list containing the distribution of correlation coefficients from the permutations.
 #' @export
-#' @example
+#' 
+#' @examples
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
@@ -176,7 +180,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' level of all genes in the mixture. Multiple cell subset fractions by S.
 #' - no.sumto1 = remove sum to 1 constraint
 #' @author Aaron M. Newman, Stanford University (amnewman@stanford.edu)
-#' @return cibersrot with immune cell fractions
+#' @return A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
 #' @export
 #' @import e1071
 #' @import parallel

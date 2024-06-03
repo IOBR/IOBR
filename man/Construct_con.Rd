@@ -2,13 +2,28 @@
 % Please edit documentation in R/generateRef_limma.R
 \name{Construct_con}
 \alias{Construct_con}
-\title{Construct contrast}
+\title{Construct Contrast Matrix}
 \usage{
 Construct_con(pheno, mode)
 }
 \arguments{
-\item{mode}{}
+\item{pheno}{A factor variable with different levels representing groups or conditions to contrast.}
+
+\item{mode}{Currently unused but reserved for future extensions where different modes of contrast might be implemented.}
+}
+\value{
+A square matrix with dimensions equal to the number of levels in `pheno`. 
+        Each row represents a contrast where the corresponding level is compared against the average of others.
+        The matrix elements are set to -1 for non-diagonal cells (indicating comparison groups) 
+        and 1 for diagonal cells (indicating the group of interest).
 }
 \description{
-Construct contrast
+This function creates a contrast matrix for differential analysis, where each phenotype level is contrasted 
+against all other levels combined. This is particularly useful in linear models for comparing multiple groups.
+}
+\examples{
+# Example usage:
+pheno <- factor(c("A", "B", "C", "D"))
+contrast_matrix <- Construct_con(pheno, mode = NULL)
+print(contrast_matrix)
 }

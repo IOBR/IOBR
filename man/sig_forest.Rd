@@ -38,8 +38,11 @@ sig_forest(
 
 \item{color_option}{default is 1, other option:2, 3}
 }
+\value{
+A ggplot object representing the forest plot.
+}
 \description{
-Forest plot of survival analysis results.
+This function, `sig_forest`, generates a forest plot displaying the hazard ratios (HRs), confidence intervals, and P-values for survival analysis signatures. It is designed to handle dataframes containing survival analysis results and allows customization of the plot features and aesthetics.
 }
 \examples{
 sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))

@@ -7,8 +7,39 @@
 RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 }
 \arguments{
-\item{immune.cellType}{}
+\item{cancer.exp}{A matrix or data frame of cancer cell expression data with genes as rows and samples as columns.}
+
+\item{immune.exp}{A matrix or data frame of immune cell expression data with genes as rows and samples as columns.}
+
+\item{immune.cellType}{A vector indicating the cell type for each column in `immune.exp`.}
+}
+\value{
+A list containing three elements:
+  - The first element is the batch effect corrected cancer expression data.
+  - The second element is the batch effect corrected immune expression data.
+  - The third element is the aggregated immune expression data, with median values calculated for each cell type.
 }
 \description{
-Remove batch effect of expression set
+This function removes batch effects between two gene expression data sets, typically representing different sample types such as cancer cells and immune cells. The function aligns the gene names, combines the datasets, applies batch correction using ComBat from the sva package, and then separates the adjusted data sets. Additionally, it aggregates expression data for immune cell types by taking the median expression level across samples.
+}
+\examples{
+set.seed(123)  # For reproducibility
+gene_names <- paste0("Gene", 1:100)
+sample_names_cancer <- paste0("CancerSample", 1:10)
+cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
+                     dimnames = list(gene_names, sample_names_cancer))
+
+# Generate synthetic expression data for immune cells
+sample_names_immune <- paste0("ImmuneSample", 1:5)
+immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
+                     dimnames = list(gene_names, sample_names_immune))
+
+# Create a cell type vector for immune samples
+immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
+names(immune.cellType) <- sample_names_immune
+
+result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
+}
+\author{
+Bo Li
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/feature_selection.R
 \name{limma.dif}
 \alias{limma.dif}
-\title{Title}
+\title{limma.dif}
 \usage{
 limma.dif(exprdata, pdata, contrastfml)
 }
@@ -17,5 +17,7 @@ limma.dif(exprdata, pdata, contrastfml)
 a data frame return by limma::toptable, which genes at rows and following columns: genelist, logFC, AveExpr...
 }
 \description{
-Title
+This function performs differential expression analysis using the limma package on a given gene expression dataset. 
+It constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes statistics for 
+differential expression.
 }

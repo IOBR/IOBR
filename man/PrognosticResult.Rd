@@ -7,8 +7,26 @@
 PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \arguments{
-\item{test.y}{}
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{train.x}{A matrix or data frame containing the training features.}
+
+\item{train.y}{A vector containing the training labels.}
+
+\item{test.x}{A matrix or data frame containing the testing features.}
+
+\item{test.y}{A vector containing the testing labels.}
+}
+\value{
+A list containing the model, coefficients at lambda.min and lambda.1se, and AUC values for the train and test datasets at lambda.min and lambda.1se.
 }
 \description{
-Prognostic Result
+This function calculates the prognostic performance of a given model on both training and testing datasets.
+}
+\examples{
+# train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+result <- PrognosticResult(model, train.x, train.y, test.x, test.y)
+print(result)
 }

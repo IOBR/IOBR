@@ -1,49 +1,55 @@
 Package: IOBR
 Type: Package
 Title: Immune Oncology Biological Research
-Version: 0.99.8
-Author: Dongqiang Zeng, Yiran Fang, Zilan Ye, Rongfang Shen, Yi Xiong, Guangchuang Yu, Shixiang Huang
-Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
-Description: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures
+Version: 0.99.0
+Description: This package offers six modules for TME analysis based on multi-omics data. These modules cover data preprocessing, TME estimation, TME infiltrating patterns, cellular interactions, genome and TME interaction, and visualization for TME relevant features, as well as modelling based on key features. It integrates multiple vital microenvironmental analysis algorithms and signature estimation methods, simplifying the analysis and downstream visualization of the TME. In addition to providing a quick and easy way to construct gene signatures from scRNA-seq data, It also provides a way to construct a reference matrix for TME deconvolution from scRNA-seq data. The analysis pipeline and feature visualization are user-friendly and provide a comprehensive description of the complex TME, offering insights into tumour-immune interactions. 
+Authors@R: c(
+    person(given = "Dongqaing", family = "Zeng",  email = "interlaken@smu.edu.cn", role = c("aut", "cre", "cph"),
+    person(given = "Yiran",     family = "Fang",  email = "fyr_nate@163.com",      role = c("cre"),
+    person(given = "Zilan",     family = "Ye",    email = "yzlsibyl@163.com",      role = "ctb"),
+    person(given = "Rongfang",  family = "Shen",  email = "shenrf68@163.com",      role = "ctb"),
+    person(given = "Yi",        family = "Xiong", email = "390479311@qq.com",      role = "ctb"),
+    person(given = "Xi",        family = "Xu",    email = "",role = "ctb"),
+    person(given = "Guangda",   family = "Rong",  email = "",role = "ctb")
+        )
+Maintainer: Yiran Fang <fyr_nate@163.com>
 License: GPL-3
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.3
-Depends:
-  tibble,
-  dplyr,
-  ggplot2,
-  ggpubr,
-  survival,
-  ComplexHeatmap,
-  tidyHeatmap,
-  clusterProfiler,
-  patchwork,
-  survminer, 
-  R(>= 3.6.0)
-Imports: 
-  matrixStats,
-  corrplot,
-  e1071,
-  preprocessCore,
-  biomaRt, 
-  devtools, 
-  caret, 
-  glmnet, 
-  ppcor, 
-  timeROC,
-  pracma,
-  DESeq2, 
-  cowplot, 
-  limSolve, 
-  limma, 
-  purrr, 
-  stringr,
-  tidyverse
+LazyData: TRUE
+Depends: tibble, 
+         dplyr, 
+         ggplot2,
+         ggpubr,
+         survival,
+         ComplexHeatmap,
+         tidyHeatmap,
+         R(>= 3.5.0)
+Imports: matrixStats, 
+         survminer, 
+         corrplot,
+         e1071, 
+         preprocessCore,
+         biomaRt, 
+         devtools, 
+         caret, 
+         glmnet, 
+         ppcor, 
+         timeROC, 
+         pracma,
+         DESeq2, 
+         cowplot, 
+         limSolve, 
+         limma, 
+         purrr, 
+         stringr, 
+         tidyverse
+Suggests: testthat (>= 3.0.0),
+          knitr, 
+          rmarkdown
+bioViews: GeneExpression, DifferentialExpression, ImmunoOncology, Transcriptomics, Clustering, Survival, Visualization
+URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) , https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
-Suggests: 
-    testthat (>= 3.0.0),
-    knitr,
-    rmarkdown
 VignetteBuilder: knitr
-Config/testthat/edition: 3
+Encoding: UTF-8
+RoxygenNote: 7.3.1
+BiocType: Software
+

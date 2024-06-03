@@ -75,6 +75,9 @@ sig_box_batch(
 
 \item{fig_type}{The file format to save the generated figures (e.g., "pdf").}
 }
+\value{
+Depending on `return_stat_res`, either saves plots to the specified directory or returns the statistical results.
+}
 \description{
 The sig_box_batch function is used to generate multiple signature box plots for analyzing the relationship between variables and groups in a given input data. It takes the input data, a vector of features or variables to analyze, and a vector of groups or categories to group the analysis by. The function allows customization of various parameters such as the path to save the figures, the appearance of the plots, and the statistical details to include. The generated figures are saved in the specified path or a default folder.
 }

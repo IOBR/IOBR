@@ -70,16 +70,23 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 
 #' Prognostic Result
 #'
-#' @param model
-#' @param train.x
-#' @param train.y
-#' @param test.x
-#' @param test.y
+#' This function calculates the prognostic performance of a given model on both training and testing datasets.
 #'
-#' @return
+#' @param model A fitted model object, typically from glmnet.
+#' @param train.x A matrix or data frame containing the training features.
+#' @param train.y A vector containing the training labels.
+#' @param test.x A matrix or data frame containing the testing features.
+#' @param test.y A vector containing the testing labels.
+#'
+#' @return A list containing the model, coefficients at lambda.min and lambda.1se, and AUC values for the train and test datasets at lambda.min and lambda.1se.
 #' @export
 #'
 #' @examples
+#' # train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+#' result <- PrognosticResult(model, train.x, train.y, test.x, test.y)
+#' print(result)
 PrognosticResult <- function(model, train.x, train.y, test.x, test.y){
   coefs <- cbind(stats::coef(model, s = "lambda.min"), stats::coef(model, s = "lambda.1se"))
   coefs <- data.frame(feature = rownames(coefs), lambda.min =coefs[, 1], lambda.1se = coefs[, 2])
@@ -96,15 +103,24 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y){
 
 #' Prognostic AUC
 #'
-#' @param model
-#' @param newx
-#' @param s
-#' @param acture.y
+#' This function calculates the Area Under the Curve (AUC) for a given prognostic model using time-dependent ROC analysis.
 #'
-#' @return
+#' @param model A fitted model object, typically from glmnet.
+#' @param newx A matrix or data frame containing the new data features.
+#' @param s The value(s) of the penalty parameter lambda at which predictions are required.
+#' @param acture.y A data frame containing the actual survival time and status (e.g., time and status columns).
+#'
+#' @return A data frame containing AUC values at two different time points.
 #' @export
 #'
 #' @examples
+#' library(glmnet)
+#' library(timeROC)
+#' # train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+#' auc <- PrognosticAUC(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+#' print(auc)
 PrognosticAUC <- function(model, newx, s, acture.y){
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
@@ -123,17 +139,26 @@ PrognosticAUC <- function(model, newx, s, acture.y){
 
 #' Calculate Time ROC
 #'
-#' @param model
-#' @param newx
-#' @param s
-#' @param acture.y
-#' @param foldername
-#' @param modelname
+#' This function calculates the time-dependent ROC for a given prognostic model and saves the plot.
 #'
-#' @return
+#' @param model A fitted model object, typically from glmnet.
+#' @param newx A matrix or data frame containing the new data features.
+#' @param s The value(s) of the penalty parameter lambda at which predictions are required.
+#' @param acture.y A data frame containing the actual survival time and status (e.g., time and status columns).
+#' @param foldername A character string specifying the folder name where the plot will be saved.
+#' @param modelname A character string specifying the name of the model, used in the plot title and filename.
+#'
+#' @return A timeROC object containing the ROC analysis results.
 #' @export
 #'
 #' @examples
+#' library(glmnet)
+#' library(timeROC)
+#' # train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+#' roc <- CalculateTimeROC(model, newx = test.x, s = "lambda.min", acture.y = test.y, foldername = "plots", modelname = "cox_model")
+#' print(roc)
 CalculateTimeROC <- function(model, newx, s, acture.y, foldername, modelname){
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
@@ -147,20 +172,27 @@ CalculateTimeROC <- function(model, newx, s, acture.y, foldername, modelname){
   ROC
 }
 
-#' Plot Time ROC
+#' Plot Time-dependent ROC Curves
 #'
-#' @param train.x
-#' @param train.y
-#' @param test.x
-#' @param test.y
-#' @param model
-#' @param foldername
-#' @param modelname
+#' This function plots time-dependent ROC curves for a given prognostic model on both training and testing datasets.
 #'
-#' @return
+#' @param train.x A matrix or data frame containing the training features.
+#' @param train.y A data frame containing the training labels (time and status).
+#' @param test.x A matrix or data frame containing the testing features.
+#' @param test.y A data frame containing the testing labels (time and status).
+#' @param model A fitted model object, typically from glmnet.
+#' @param foldername A character string specifying the folder name where the plot will be saved.
+#' @param modelname A character string specifying the name of the model, used in the plot title and filename.
+#'
+#' @return A ggplot object containing the plotted ROC curves.
 #' @export
 #'
 #' @examples
+#' # train.x, train.y, test.x, test.y are the results of ProcessingData and SplitTrainTest functions
+#' set.seed(123)
+#' model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "cox")
+#' p <- PlotTimeROC(train.x, train.y, test.x, test.y, model, foldername = "plots", modelname = "cox_model")
+#' print(p)
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, foldername, modelname){
   mycols <- c("#E64B35FF", "#4DBBD5FF", "#00A087FF", "#3C5488FF",
               "#F39B7FFF", "#8491B4FF", "#91D1C2FF")

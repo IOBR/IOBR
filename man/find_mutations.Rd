@@ -68,8 +68,13 @@ find_mutations(
 
 \item{point_size}{default is 4.5}
 }
+\value{
+A list of results including statistical tests and mutation data frames.
+}
 \description{
-Searching for mutations related to signature score
+This function searches for mutations related to specific signature scores in a given mutation matrix.
+It integrates multiple statistical tests and visualization options, including oncoprints, to explore and
+display the relationships between mutations and signature scores.
 }
 \examples{
 # MAF data download from UCSC Xena hub

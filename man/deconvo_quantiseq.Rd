@@ -17,8 +17,11 @@ deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 
 \item{scale_mrna}{logistic variable}
 }
+\value{
+A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_quantiseq".
+}
 \description{
-Deconvoluting micrornvironment using the quanTIseq technique
+This function performs deconvolution of the tumor microenvironment using the quanTIseq technique. It estimates the fraction of different cell types in the expression dataset.
 }
 \examples{
 #' # Loading TCGA-STAD expresion data(raw count matrix)

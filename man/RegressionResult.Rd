@@ -7,8 +7,40 @@
 RegressionResult(train.x, train.y, test.x, test.y, model)
 }
 \arguments{
-\item{model}{}
+\item{train.x}{A matrix or data frame containing the training features.}
+
+\item{train.y}{A vector containing the training labels.}
+
+\item{test.x}{A matrix or data frame containing the testing features.}
+
+\item{test.y}{A vector containing the testing labels.}
+
+\item{model}{A fitted regression model, typically a glmnet model.}
+}
+\value{
+A list containing the fitted regression model, a data frame of model coefficients at lambda.min and lambda.1se, and a matrix of AUC values for the train and test datasets at lambda.min and lambda.1se.
 }
 \description{
 Regression Result
+}
+\examples{
+data("imvigor210_sig", package = "IOBR")
+data("imvigor210_pdata", package = "IOBR")
+
+pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+
+imvigor210_sig <- as.data.frame(imvigor210_sig)
+pdata_group <- as.data.frame(pdata_group)
+
+processdat <- ProcessingData(x = imvigor210_sig, y = imvigor210_pdata, scale = TRUE, type = "binomial")
+train_test <- SplitTrainTest(x = processdat$x_scale, y = processdat$y, train_ratio = 0.7, type = "binomial",
+                             seed = 123456)
+train.x = train_test$train.x; train.y <- train_test$train.y
+test.x = train_test$test.x; test.y <- train_test$test.y
+
+lasso_model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial",
+                                 type.measure = "class", alpha = 1,  nfolds = 5)
+lasso_result <- RegressionResult(train.x = train.x, train.y = train.y,
+                                 test.x = test.x, test.y = test.y, model = lasso_model)
 }

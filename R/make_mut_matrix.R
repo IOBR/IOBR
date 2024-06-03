@@ -5,6 +5,10 @@
 
 
 #' Make mutation matrix using maf data
+#' 
+#' This function constructs mutation matrices from MAF data, supporting multiple categories including all mutations,
+#' SNPs, indels, and frameshift mutations. It can handle both MAF file paths or MAF objects directly and is capable
+#' of processing data formatted according to TCGA standards.
 #'
 #' @param maf file name or a maf object
 #' @param mut_data if maf data had beed loaded, this argument will be applied
@@ -15,7 +19,7 @@
 #' @param Variant_Classification column name of variant classification: Frame_Shift_Del
 #' @param Variant_Type column name of variant type: SNP, INS, DEL
 #'
-#' @return
+#' @return A list of matrices, each representing a different category of mutations as specified by `category`.
 #' @export
 #' @author Dongqian Zeng
 #' @author Shixiang Huang

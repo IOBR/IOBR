@@ -13,8 +13,11 @@ remove_duplicate_genes(eset, column_of_symbol, method = "mean")
 
 \item{method}{method used to filter duplicate genes; default is mean value}
 }
+\value{
+A modified gene expression data frame with duplicates removed and selected method applied for aggregation.
+}
 \description{
-Remove duplicate gene symbol on a gene expression data
+This function removes duplicate gene symbols from a gene expression dataset. It offers the option to aggregate duplicate gene expressions using different methods such as mean or standard deviation.
 }
 \examples{
 

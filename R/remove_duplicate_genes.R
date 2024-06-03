@@ -3,11 +3,15 @@
 
 #' Remove duplicate gene symbol on a gene expression data
 #'
+#' This function removes duplicate gene symbols from a gene expression dataset. It offers the option to aggregate duplicate gene expressions using different methods such as mean or standard deviation.
+#'
 #' @param eset Gene expression data with gene symbol in `column_of_symbol`
 #' @param column_of_symbol name of column contained gene symbols
 #' @param method method used to filter duplicate genes; default is mean value
-#' @import tibble
-#' @return
+#' @import tibble dplyr
+#' @importFrom rlang sym
+#' 
+#' @return A modified gene expression data frame with duplicates removed and selected method applied for aggregation.
 #' @export
 #' @author Dongqiang Zeng
 #'

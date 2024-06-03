@@ -7,7 +7,7 @@
 mouse2human_eset(
   eset,
   source = "ensembl",
-  is_matrix = T,
+  is_matrix = TRUE,
   column_of_symbol = NULL,
   verbose = FALSE
 )
@@ -17,10 +17,29 @@ mouse2human_eset(
 
 \item{source}{default is ensembl, if an error is reported, set parameter to `local` and mus_human_gene_symbol will be use to convert gene symbols}
 
-\item{is_matrix}{default is T, if not, column_of_symbol must be se}
+\item{is_matrix}{Boolean indicating if 'eset' is a matrix; defaults to TRUE. If FALSE, 'column_of_symbol' must be specified.}
 
-\item{column_of_symbol}{default is null}
+\item{column_of_symbol}{default is null.Name of the column in 'eset' that contains gene symbols, if 'eset' is not a matrix. This parameter must be specified if 'is_matrix' is FALSE.}
+}
+\value{
+Returns the expression set with human gene symbols for further analysis.
 }
 \description{
-Converting mouse gene symbol to human gene symbol of expression set.
+This function converts mouse gene symbols to human gene symbols in an expression dataset. It supports using either an online resource (Ensembl) or a local dataset for conversion.
+}
+\examples{
+# Set the number of rows and columns
+num_rows <- 200
+num_cols <- 10
+
+# Generate sample names and mouse gene symbols
+sample_names <- paste0("Sample", 1:num_cols)
+mouse_genes <- paste0("MouseGene", 1:num_rows)
+
+# Create random data for the data frame
+data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
+df <- data
+
+rownames(df) <- anno_gc_vm32$symbol[1:200]
+human_data <- mouse2human_eset(df, source = "local", is_matrix = TRUE)
 }

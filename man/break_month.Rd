@@ -2,15 +2,29 @@
 % Please edit documentation in R/surv_group.R
 \name{break_month}
 \alias{break_month}
-\title{break month}
+\title{Break Time Period into Equal Blocks}
 \usage{
 break_month(input, block = 6, time_type = "month")
 }
 \arguments{
-\item{time_type}{}
+\item{input}{Numeric vector or single numeric value representing time durations.}
+
+\item{block}{The number of blocks to divide the time into; default is 6 blocks.}
+
+\item{time_type}{The unit of time in the input; either "month" for months or "day" for days, with default being "month".}
+}
+\value{
+A numeric value representing the size of each block in the time unit specified.
 }
 \description{
-break month
+This function divides a given maximum time into specified equal blocks, allowing adjustments based on the time unit (e.g., months or days). It is useful for creating time intervals for further analysis or visualization.
+}
+\examples{
+# Example with time in months
+break_month(input = c(12, 24, 36), block = 6)
+
+# Example with time in days, converting to months
+break_month(input = c(360, 720, 1080), block = 6, time_type = "day")
 }
 \author{
 Dongqiang Zeng

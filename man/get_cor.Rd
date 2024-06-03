@@ -104,6 +104,9 @@ get_cor(
 
 \item{add.hdr.line}{add.hdr.line}
 }
+\value{
+A ggplot object showing the correlation plot.
+}
 \description{
 The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
 }

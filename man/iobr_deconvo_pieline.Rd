@@ -26,6 +26,9 @@ iobr_deconvo_pieline(
 
 \item{permutation}{An integer specifying the number of permutations for TME deconvolution. Default is 1000.}
 }
+\value{
+A data frame containing merged results of TME deconvolution and signature scores.
+}
 \description{
 The iobr_deconvo_pipeline function is used to perform a comprehensive TME (Tumor Microenvironment) analysis pipeline on a gene expression dataset. The pipeline includes TME deconvolution using various methods, calculation of signature scores, and the merging of TME and signature score results.
 }

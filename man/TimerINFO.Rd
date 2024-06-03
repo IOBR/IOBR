@@ -7,7 +7,10 @@
 TimerINFO(string)
 }
 \arguments{
-\item{string}{}
+\item{string}{A character string representing the message to be displayed.}
+}
+\value{
+None; the function is used for its side effect of printing a message.
 }
 \description{
 This code is adapted from https://github.com/hanfeisun/TIMER, which
@@ -16,5 +19,13 @@ from http://cistrome.org/TIMER/download.html.
 }
 \details{
 The method is described in Li et al. Genome Biology 2016;17(1):174., PMID 27549193.
-TimerINFO
+Display Timed Information Messages
+
+This function formats and displays informational messages, primarily for timing or logging purposes. It is useful for tracking the progress or stages of execution within scripts, especially in long-running operations. The function outputs messages to the R console with a prefixed '##' to highlight them.
+}
+\examples{
+TimerINFO("Data processing started.")
+}
+\author{
+Bo Li
 }

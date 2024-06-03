@@ -7,8 +7,24 @@
 BinomialAUC(model, newx, s, acture.y)
 }
 \arguments{
-\item{acture.y}{}
+\item{model}{A fitted model object, typically from glmnet.}
+
+\item{newx}{A matrix or data frame containing the new data features.}
+
+\item{s}{The value(s) of the penalty parameter lambda at which predictions are required.}
+
+\item{acture.y}{A vector containing the actual labels of the new data.}
+}
+\value{
+A numeric value representing the AUC.
 }
 \description{
-BinomialAUC
+This function calculates the AUC (Area Under the Curve) for a given binomial model on new data.
+}
+\examples{
+# Assuming model, test.x, and test.y are already defined
+set.seed(123)
+model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial")
+auc <- BinomialAUC(model, newx = test.x, s = "lambda.min", acture.y = test.y)
+print(auc)
 }

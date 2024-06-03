@@ -13,7 +13,7 @@
 #' @param logfc_cutoff The fold change cutoff for log-fold changes. Values above or below this threshold are considered significant. Default is 0.
 #'
 #' @author Dongqiang Zeng
-#' @return
+#' @return A vector of feature names identified as the most variable, combining both upregulated and downregulated features.
 #' @export
 #'
 #' @examples

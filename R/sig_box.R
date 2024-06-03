@@ -23,7 +23,7 @@
 #' @param slot The slot name to extract data from in a Seurat object (default = "scale.data").
 #' @param scale Boolean flag indicating whether to scale the signature values (default = FALSE).
 #'
-#' @return
+#' @return Depending on `return_stat_res`, returns either a ggplot object of the boxplot or the results of the statistical comparison.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples

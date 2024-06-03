@@ -7,8 +7,29 @@
 ProcessingData(x, y, scale, type = "binomial")
 }
 \arguments{
-\item{type}{}
+\item{x}{A data frame containing the input feature matrix, with the first column as sample ID. The feature matrix should contain numerical values for the features.}
+
+\item{y}{A data frame containing the input label matrix, with the first column as sample ID. For "binomial" type, it should contain a column named "Group". For "survival" type, it should include columns "time" and "status".}
+
+\item{scale}{A logical value indicating whether to standardize (center and scale) the feature matrix.}
+
+\item{type}{A string indicating the analysis type. Options are "binomial" (default) or "survival".}
+}
+\value{
+A list containing the processed feature matrix, processed labels, and sample ID.
 }
 \description{
 Processing Data
+}
+\examples{
+data("imvigor210_sig",package = "IOBR")
+data("imvigor210_pdata", package = "IOBR")
+
+imvigor210_sig <- as.data.frame(imvigor210_sig)
+imvigor210_pdata <- as.data.frame(imvigor210_pdata)
+
+pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary == "NA", c("ID", "BOR_binary")]
+pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+
+result <- ProcessingData(imvigor210_sig, imvigor210_pdata, scale = TRUE, type = "binomial")
 }

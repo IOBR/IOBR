@@ -26,12 +26,16 @@ tcga_rna_preps(
 
 \item{annotation}{(optional, default = TRUE): A logical value determining whether gene annotation should be applied.}
 }
+\value{
+A matrix or data frame of the preprocessed gene expression data.
+}
 \description{
 The tcga_rna_preps function is designed to preprocess TCGA RNA-seq data for downstream analysis. Upon executing the function, it performs various operations based on the specified parameters, including modifying sample types, transforming input data, and annotating genes. The function returns the preprocessed RNA-seq gene expression data in the specified output format.
 }
 \examples{
 # Expression matrix downloaded from UCSC Xena datasets: https://xenabrowser.net/datapages/
-eset <- tcga_rna_preps(eset = eset,  id_type = "ensembl", input_type = "log2count", output = "tumor", output_type = "count", annotation = TRUE)
+data("eset_stad", package = "IOBR")
+eset <- tcga_rna_preps(eset = eset_stad,  id_type = "ensembl", input_type = "count", output = "tumor", output_type = "tpm", annotation = TRUE)
 
 }
 \author{
