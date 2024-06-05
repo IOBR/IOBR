@@ -165,12 +165,13 @@ sig_surv_plot <- function(input_pdata,
                  pval.size = 8,
                  pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
                                             paste("P = ",round(pvalue[,1],4), sep = "")),
-                              HR, CI, cut_off,sep = "\n"))
+                              HR, CI, cut_off,sep = "\n"),
+                 size = 0.4)
 
   res1 <- arrange_ggsurvplots(list(pp1), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(res1,filename = paste0(index,"-1-KMplot-best-cutoff-",signature,"-",project,".", fig.type),
+  ggsave(plot =  res1,filename = paste0(index,"-1-KMplot-best-cutoff-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
 
   ################################################
@@ -206,7 +207,8 @@ sig_surv_plot <- function(input_pdata,
                  surv.median.line = "h", # draw horizontal line at median survival
                  risk.table = T,tables.height = 0.25,
                  palette = cols,
-                 pval.size = 8)
+                 pval.size = 8,
+                 size = 0.4)
 
 
   fitd <- survdiff(Surv(time,status)~ group3,
@@ -245,7 +247,7 @@ sig_surv_plot <- function(input_pdata,
   res2 <- arrange_ggsurvplots(list(pp2), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(res2,filename = paste0(index,"-2-KMplot-3group-",signature,"-",project,".", fig.type),
+  ggsave(plot =  res2, filename = paste0(index,"-2-KMplot-3group-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
 
   ################################################
@@ -279,11 +281,12 @@ sig_surv_plot <- function(input_pdata,
                  pval.size = 8,
                  pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
                                             paste("P = ",round(pvalue[,1],4), sep = "")),
-                              HR, CI,sep = "\n"))
+                              HR, CI,sep = "\n"),
+                 size = 0.4)
 
   res3 <- arrange_ggsurvplots(list(pp3), print = FALSE, ncol = 1, nrow = 1)
   ##############################
-  ggsave(res3,filename = paste0(index,"-3-KMplot-2group-",signature,"-",project,".", fig.type),
+  ggsave(plot = res3, filename = paste0(index,"-3-KMplot-2group-",signature,"-",project,".", fig.type),
          width =6 ,height =6.5,path = save_path)
   #############################################
   input_pdata$group2<-ifelse(input_pdata$group2==1,"High","Low")
