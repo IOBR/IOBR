@@ -49,6 +49,12 @@ remove_duplicate_genes<-function(eset, column_of_symbol, method = "mean"){
       eset<-eset %>% distinct(!!sym(column_of_symbol),.keep_all = TRUE) %>%
         tibble:: column_to_rownames(.,var = column_of_symbol)
       return(eset)
+    }else if(method == "sum"){
+      order_index = apply(eset[,setdiff(colnames(eset),column_of_symbol)],1,function(x) sum(x,na.rm=T))
+      eset<-eset[order(order_index,decreasing=T),]
+      eset<-eset %>% distinct(!!sym(column_of_symbol),.keep_all = TRUE) %>%
+        tibble:: column_to_rownames(.,var = column_of_symbol)
+      return(eset)
     }
   }
 }
