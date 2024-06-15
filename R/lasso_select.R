@@ -34,10 +34,10 @@ lasso_select <- function(x, y, type =c("binary", "survival"), nfold = 10,
   x <- t(x)
   if (type == "binary"){
     cvfit = cv.glmnet(x, y,
-                      nfold,
+                      nfold, alpha = 1,
                       type.measure = "class")
   }else{
-    cvfit = cv.glmnet(x, y, nfold, family = "cox")
+    cvfit = cv.glmnet(x, y, nfold, alpha = 1, family = "cox")
   }
   myCoefs <- coef(cvfit, s = lambda);
   lasso_fea <- myCoefs@Dimnames[[1]][which(myCoefs != 0 )]

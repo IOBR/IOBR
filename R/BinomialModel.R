@@ -72,51 +72,78 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
 
 
 #######################################################
-#' Processing Data
+#' Processing Data for Model construction
 #'
-#' @param x
-#' @param y
-#' @param scale
-#' @param type
+#' This function preprocesses the data for binomial or survival analysis. It aligns and filters the data based on sample IDs,
+#' optionally scales the data, and makes sure the data types are appropriate for further modeling. It also handles survival data by filtering out
+#' entries where the time is non-positive and adjusts the data structure based on the type of analysis.
 #'
-#' @return
-#' @export
+#' @param x A data frame containing predictors with the first column being IDs.
+#' @param y A data frame containing the outcome variable with the first column being IDs. For survival analysis, it expects two additional columns for time and status.
+#' @param scale Logical, indicating whether the predictor variables should be scaled. When TRUE, predictors are centered and scaled.
+#' @param type Character string specifying the type of analysis. Possible values are "binomial" for binomial outcomes where y is a factor indicating group membership, or "survival" where y includes survival time and event status.
 #'
+#' @return A list containing three elements:
+#'   - `x_scale`: The processed predictor matrix with optional scaling applied.
+#'   - `y`: The outcome variable, processed according to the specified analysis type.
+#'   - `x_ID`: The IDs of the samples included in the analysis.
+#'
+#' @import dplyr
+#' @importFrom stats scale
 #' @examples
-ProcessingData <- function(x, y, scale, type = "binomial"){
+#' # For binomial analysis
+#' x <- data.frame(ID = 1:10, predictor1 = rnorm(10), predictor2 = rnorm(10))
+#' y <- data.frame(ID = 1:10, outcome = sample(c(0, 1), 10, replace = TRUE))
+#' result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
+#'
+#' # For survival analysis
+#' y <- data.frame(ID = 1:10, time = runif(10, 0, 100), status = sample(c(0, 1), 10, replace = TRUE))
+#' result <- ProcessingData(x, y, scale = FALSE, type = "survival")
+ProcessingData <- function(x, y, scale, type = "binomial") {
+  require(dplyr)
+
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
   x$ID <- as.character(x$ID)
   y$ID <- as.character(y$ID)
-  if (type == "survival"){
+
+  if (type == "survival") {
     colnames(y) <- c("ID", "time", "status")
     y <- dplyr::filter(y, time > 0)
   }
-  samples <- intersect(x$ID, y$ID)
 
-  if (length(samples) == 0){
-    stop("No same sample ID been found between input matrix x and y")
+  samples <- intersect(x$ID, y$ID)
+  if (length(samples) == 0) {
+    stop("No matching sample ID found between input matrices x and y.")
   }
+
   x <- x[match(samples, x$ID), ]
   y <- y[match(samples, y$ID), ]
-  if (type == "binomial"){
+
+  if (type == "binomial") {
     colnames(y) <- c("ID", "Group")
     y <- dplyr::pull(y, Group)
-    if (!is.factor(y)){
-      message(paste0("\n", ">>> Outcome is not a factor, transform it into factor vector."))
-      y <- y %>% as.factor()
+    if (!is.factor(y)) {
+      warning("Outcome is not a factor; transforming it into a factor vector.")
+      y <- as.factor(y)
     }
   }
-  if (type == "survival"){
+
+  if (type == "survival") {
     y <- y[, c("time", "status")]
   }
-  if (scale){
-    x_scale <- scale(x[, -1], center = TRUE, scale = TRUE)
-  }else{x_scale <- x[, -1]}
-  x_ID <- x[, "ID"]
-  ValueNA <- which(as.numeric(apply(x_scale, 2, function(z)sum(is.na(z)))) != 0)
-  if (length(ValueNA) > 0){x_scale <- x_scale[, -ValueNA]}
 
+  if (scale) {
+    x_scale <- scale(x[, -1], center = TRUE, scale = TRUE)
+  } else {
+    x_scale <- x[, -1]
+  }
+
+  x_ID <- x[, "ID"]
+  ValueNA <- which(as.numeric(apply(x_scale, 2, function(z) sum(is.na(z)))) != 0)
+  if (length(ValueNA) > 0) {
+    x_scale <- x_scale[, -ValueNA]
+  }
 
   return(list(x_scale = x_scale, y = y, x_ID = x_ID))
 }

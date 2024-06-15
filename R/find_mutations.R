@@ -501,6 +501,8 @@ find_mutations<-function(mutation_matrix, signature_matrix, id_signature_matrix 
     print(p)
   }
 
+  result$onco_plot <- p
+  result$box_plot <- com_plot
   return(result)
 
 }

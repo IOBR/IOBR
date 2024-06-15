@@ -4,42 +4,49 @@
 
 
 
-#' Drawing KM-plot to a Categorical variable with two or more groups
+#' Generate Kaplan-Meier Survival Plots for Categorical Groups
 #'
-#' @param input_pdata DATA
-#' @param project name of main title
-#' @param time column name of follow up time
-#' @param status status
-#' @param time_type month or day
-#' @param break_month break of time
-#' @param palette default is `jama`, if cols is null
-#' @param save_path default is KMplot
-#' @param mini_sig prefix of variable
-#' @param target_group target of binary variable
-#' @param levels level of variable
-#' @param reference_group default is
-#' @param index folder name
-#' @param cols if null, palette should be set
-#' @param fig.type default is pdf, other option is png
-#' @param ID identifier of data
-#' @param width default is 6
-#' @param height default is 6.5
-#' @param font.size.table default is 62
+#' This function creates Kaplan-Meier survival plots for data grouped by a categorical variable.
+#' It handles both binary and multi-level categorical groups, adjusts follow-up times, and allows for
+#' customizable plot aesthetics and output formats.
 #'
-#' @author Dongqiang Zeng
+#' @param input_pdata A data frame containing survival data and grouping variables.
+#' @param target_group The name of the column in input_pdata that contains the grouping variable.
+#' @param ID The name of the column in input_pdata that serves as a unique identifier for each row.
+#' @param levels A vector of names for the levels of the target_group; used for labeling in the plot.
+#' @param reference_group The reference level for comparison in survival analysis; used only for binary groups.
+#' @param project An optional title for the plot; used in file naming and plot subtitles.
+#' @param time The name of the column containing follow-up times.
+#' @param status The name of the column containing event indicators (1=event occurred, 0=censored).
+#' @param time_type Units of follow-up time ('month' or 'day'). Converts days to months if 'day' is selected.
+#' @param break_month The interval for breaking time on the X-axis of the plot. If 'auto', it is calculated automatically.
+#' @param cols A vector of colors for the plot lines; if NULL, uses a default palette based on 'palette' parameter.
+#' @param palette The name of the color palette to use if 'cols' is NULL. Common choices include 'jama' and other palette names from the `ggsci` package.
+#' @param mini_sig A prefix label for variables in the plot, typically indicating a scoring metric.
+#' @param save_path The directory path where the plot should be saved.
+#' @param fig.type The file format for the saved plot ('pdf' or 'png').
+#' @param index A unique identifier for the plot file, typically used in file naming.
+#' @param width The width of the output plot.
+#' @param height The height of the output plot.
+#' @param font.size.table The font size used in the plot's risk table.
+#'
+#' @return Saves the Kaplan-Meier plot to the specified path and returns the plot object.
+#' @import dplyr
+#' @import ggplot2
 #' @import survival
+#' @import survminer
+#' @author Dongqiang Zeng
 #' @return
-#' @export
 #'
 #' @examples
 #'data("tcga_stad_pdata", package = "IOBR")
 #'surv_group(input_pdata = tcga_stad_pdata, target_group = "TMEscore_plus_binary", time = "time", status = "OS_status")
-#'
+#' @export
 surv_group  <-function(input_pdata,
                        target_group,
                        ID              = "ID",
                        levels          = c("High","Low"),
-                       reference_group = "High",
+                       reference_group = NULL,
                        project         = NULL,
                        time            = "time",
                        status          = "status",
@@ -183,48 +190,84 @@ surv_group  <-function(input_pdata,
 
   }else{
 
-    # Sur <-   Surv(time = input_pd$time,event = input_pd$status)
-    # turn high to '1'
 
-    # print(unique(input_pd$target_group))
-    levels <- unique(input_pd$target_group)
-    print(levels)
-    #####################################
-    if(! reference_group%in% c(input_pd$target_group)) stop(">>>--- Reference_group must be one of target...")
-
-    input_pd$target_group<-ifelse(input_pd$target_group == reference_group, 1, 0)
-
-    pvalue<-getHRandCIfromCoxph(coxph(Surv(time = input_pd$time, event = input_pd$status)~input_pd$target_group,data = input_pd))
-
-    HR <- paste("Hazard Ratio = ", round(pvalue[,2],2), sep = "")
-
-    CI <- paste("95% CI: ", paste(round(pvalue[,3],2), round(pvalue[,4],2), sep = " - "), sep = "")
-    # cut_off<-paste("cutoff = ",round(res.cut,3),sep = "")
-    ###########################################
-    sfit <- surv_fit(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group,data = input_pd)
-    # input_pd[,index]<-ifelse(input_pd[,index]==1,"High","LOW")
-    ############################################
-    # define break time
+    if(is.null(reference_group)){
 
 
-    levels<-levels[order(levels)]
-    ###########################################
-    pp<-survminer:: ggsurvplot(sfit,
-                               data = input_pd,
-                               censor = TRUE,
-                               ncensor.plot = F,conf.int = F,
-                               xlim = c(0,max_month),
-                               break.time.by = break_month,
-                               xlab = "Months after diagnosis",
-                               legend.labs = c(paste0(levels[2]), paste0(levels[1])),
-                               submain= paste0(target_group," ",project),
-                               risk.table = T,
-                               tables.height = 0.20,
-                               palette = cols,
-                               pval.size = 8,
-                               pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
-                                                          paste("P = ",round(pvalue[,1],4), sep = "")),
-                                            HR, CI,sep = "\n"))
+      levels <- unique(input_pd$target_group)
+      levels <- levels[order(levels)]
+      #####################################
+      message(paste0('>>>--- Reference_group was not defined...'))
+
+      pvalue<-getHRandCIfromCoxph(coxph(Surv(time = input_pd$time, event = input_pd$status)~input_pd$target_group,data = input_pd))
+
+      HR <- paste("Hazard Ratio = ", round(pvalue[,2],2), sep = "")
+      CI <- paste("95% CI: ", paste(round(pvalue[,3],2), round(pvalue[,4],2), sep = " - "), sep = "")
+      # cut_off<-paste("cutoff = ",round(res.cut,3),sep = "")
+      ###########################################
+      sfit <- surv_fit(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group,data = input_pd)
+      # input_pd[,index]<-ifelse(input_pd[,index]==1,"High","LOW")
+      ###########################################
+      pp<-survminer:: ggsurvplot(sfit,
+                                 data = input_pd,
+                                 censor = TRUE,
+                                 ncensor.plot = F,conf.int = F,
+                                 xlim = c(0,max_month),
+                                 break.time.by = break_month,
+                                 xlab = "Months after diagnosis",
+                                 legend.labs = c(paste0(levels[1]), paste0(levels[2])),
+                                 submain= paste0(target_group," ",project),
+                                 risk.table = T,
+                                 tables.height = 0.20,
+                                 palette = cols,
+                                 pval.size = 8,
+                                 pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
+                                                            paste("P = ",round(pvalue[,1],4), sep = "")),
+                                              HR, CI,sep = "\n"))
+
+    }else{
+
+      # print(unique(input_pd$target_group))
+      levels <- unique(input_pd$target_group)
+      levels <- levels[order(levels)]
+      if(reference_group!=levels[1]){
+        levels <- c(levels[2], levels[1])
+      }
+      #####################################
+      if(! reference_group%in% c(input_pd$target_group)) stop(">>>--- Reference_group must be one of target...")
+
+      input_pd$target_group<-ifelse(input_pd$target_group == reference_group, 1, 0)
+
+      pvalue<-getHRandCIfromCoxph(coxph(Surv(time = input_pd$time, event = input_pd$status)~input_pd$target_group,data = input_pd))
+
+      HR <- paste("Hazard Ratio = ", round(pvalue[,2],2), sep = "")
+
+      CI <- paste("95% CI: ", paste(round(pvalue[,3],2), round(pvalue[,4],2), sep = " - "), sep = "")
+      # cut_off<-paste("cutoff = ",round(res.cut,3),sep = "")
+      ###########################################
+      sfit <- surv_fit(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group,data = input_pd)
+      # input_pd[,index]<-ifelse(input_pd[,index]==1,"High","LOW")
+      ############################################
+      # define break time
+      ###########################################
+      pp<-survminer:: ggsurvplot(sfit,
+                                 data = input_pd,
+                                 censor = TRUE,
+                                 ncensor.plot = F,conf.int = F,
+                                 xlim = c(0,max_month),
+                                 break.time.by = break_month,
+                                 xlab = "Months after diagnosis",
+                                 legend.labs = c(paste0(levels[2]), paste0(levels[1])),
+                                 submain= paste0(target_group," ",project),
+                                 risk.table = T,
+                                 tables.height = 0.20,
+                                 palette = cols,
+                                 pval.size = 8,
+                                 pval = paste(pval = ifelse(pvalue[,1] < 0.0001, "P < 0.0001",
+                                                            paste("P = ",round(pvalue[,1],4), sep = "")),
+                                              HR, CI,sep = "\n"))
+
+    }
 
   }
   pp<-list(pp)

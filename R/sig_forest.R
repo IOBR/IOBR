@@ -25,7 +25,10 @@
 #' sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))
 #' sig_forest(data = sig_surv_result, signature = "ID")
 #'
-sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95", CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25, discrete_width = 35, color_option = 1) {
+sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
+                     CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
+                     discrete_width = 35, color_option = 1,
+                     text.size = 13) {
 
 
   data<-as.data.frame(data)
@@ -73,18 +76,18 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
 
   pp<-ggplot(data=data,aes(x = HR,y = signature, color = P))+
     geom_errorbarh(aes(xmax= CI_up_0.95,xmin = CI_low_0.95),color="black",height=0,size=1.2)+
-    geom_point(aes(x = HR,y= signature),size=6,shape=16)+
+    geom_point(aes(x = HR,y= signature),size=4.5,shape=16)+
     geom_vline(xintercept = 1,linetype='dashed',size=0.8)+
     scale_x_continuous(breaks = c(0.5,1,1.50))+
     coord_trans(x='log2')+
-    ylab("Signatures")+
-    xlab(paste0("Hazard ratios of signatures"))+
+    ylab("Features")+
+    xlab(paste0("Hazard ratios of Features"))+
     labs(color="P value")+
     viridis::scale_color_viridis(option= color_option)+
 
     theme_light()+
     theme(axis.text.x = element_text(size = 15, color = "black", vjust = 0.5, hjust = 0.5, angle = 0))+
-    theme(axis.text.y = element_text(size = 16, color = "black", vjust = 0.5, hjust = 0.5, angle = 0))+
+    theme(axis.text.y = element_text(size = text.size, color = "black", vjust = 0.5, hjust = 0.5, angle = 0))+
     theme(title = element_text(size = 15,colour = "black", vjust = 0.5, hjust = 0.5))+
     scale_y_discrete(labels=function(x) stringr::str_wrap(x, width = discrete_width))
 
