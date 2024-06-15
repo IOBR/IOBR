@@ -23,7 +23,7 @@
 #' @param slot_out  (Default = "data") A character string specifying the slot used in the output.
 #'
 #' @author Dongqiang Zeng
-#' @return
+#' @return A matrix containing aggregated expression data for the reference genes.
 #' @export
 #'
 #' @examples

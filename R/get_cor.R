@@ -39,7 +39,7 @@
 #' @param id_eset The column name in eset that contains unique identifiers. Default is "ID".
 #' @param add.hdr.line add.hdr.line
 #'
-#' @return
+#' @return A ggplot object showing the correlation plot.
 #' @export
 #' @author Dongqiang Zeng
 #'

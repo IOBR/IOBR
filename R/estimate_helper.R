@@ -6,14 +6,29 @@
 ##-----------------------------------------------------------------------------
 #' estimateScore
 #'
-#' @param input.ds
-#' @param output.ds
-#' @param platform  "affymetrix", "agilent", "illumina"
+#' This function reads a gene expression dataset in GCT format, calculates enrichment scores
+#' for specific gene sets, and writes the computed scores to an output file. It supports multiple
+#' platform types and performs platform-specific calculations if necessary.
 #'
-#' @return
+#' @param input.ds A character string specifying the path to the input dataset file in GCT format.
+#'                 The file should have gene expression data with appropriate headers.
+#' @param output.ds A character string specifying the path to the output dataset file, where
+#'                  the calculated scores will be written.
+#' @param platform A character vector indicating the platform type. Must be one of "affymetrix",
+#'                 "agilent", or "illumina". Platform-specific calculations are performed
+#'                 based on this parameter.
+#'
+#' @return This function does not return a value but writes the computed scores to the specified
+#'         output file in GCT format.
 #' @export
 #'
 #' @examples
+#' # Path to input and output files
+#' input_file <- "path/to/input.gct"
+#' output_file <- "path/to/output.gct"
+#'
+#' # Perform score estimation for Affymetrix platform
+#' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
 estimateScore <- function(input.ds,
                           output.ds,
                           platform=c("affymetrix", "agilent", "illumina")) {
@@ -155,14 +170,30 @@ estimateScore <- function(input.ds,
 
 #' filterCommonGenes
 #'
-#' @param input.f input.f
-#' @param output.f output.f
-#' @param id "GeneSymbol", "EntrezID"
+#' This function filters and merges a dataset with a set of common genes.
 #'
-#' @return
+#' @param input.f A character string specifying the path to the input file or a connection object. The file should be a tab-separated table with row names.
+#' @param output.f A character string specifying the path to the output file.
+#' @param id A character string indicating the type of gene identifier to use. Can be either "GeneSymbol" or "EntrezID".
+#'
+#' @return No return value. The function writes the merged dataset to the specified output file.
 #' @export
 #'
 #' @examples
+#' # Create a sample common_genes dataframe
+#' common_genes <- data.frame(GeneSymbol = c("BRCA1", "TP53", "EGFR"),
+#'                            stringsAsFactors = FALSE)
+#'
+#' # Create a sample input dataframe
+#' input_data <- data.frame(GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
+#'                          Value = c(10, 15, 8, 12),
+#'                          stringsAsFactors = FALSE)
+#' 
+#' # Write the input data to input.txt file, including row names
+#' write.table(input_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+#' 
+#' # Call the filterCommonGenes function using the sample input.txt file
+#' filterCommonGenes("input.txt", "output.txt", id = "GeneSymbol")
 filterCommonGenes <- function(input.f,
                               output.f,
                               id=c("GeneSymbol", "EntrezID")) {
@@ -193,13 +224,33 @@ filterCommonGenes <- function(input.f,
 
 #' outputGCT
 #'
-#' @param input.f
-#' @param output.f
+#' This function converts a gene expression dataset to a GCT format file.
 #'
-#' @return
+#' @param input.f A data frame or a character string specifying the path to the input file. If a character string, the file should be a tab-separated table with row names.
+#' @param output.f A character string specifying the path to the output file.
+#'
+#' @return No return value. The function writes the dataset to the specified output file in GCT format.
 #' @export
 #'
 #' @examples
+#' # Create a sample input data frame
+#' sample_data <- data.frame(
+#'   Gene = c("BRCA1", "TP53", "EGFR"),
+#'   Sample1 = c(10, 15, 8),
+#'   Sample2 = c(12, 18, 7),
+#'   stringsAsFactors = FALSE
+#' )
+#' rownames(sample_data) <- sample_data$Gene
+#' sample_data <- sample_data[, -1]
+#'
+#' # Write the sample data to input.txt file
+#' write.table(sample_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+#'
+#' # Convert the input data frame to GCT format and save it to output.gct
+#' outputGCT(sample_data, "output.gct")
+#'
+#' # Convert the input.txt file to GCT format and save it to output.gct
+#' outputGCT("input.txt", "output.gct")
 outputGCT <- function(input.f,
                       output.f) {
 
@@ -239,15 +290,34 @@ outputGCT <- function(input.f,
 
 #' plotPurity
 #'
-#' @param scores
-#' @param samples default is all_samples
-#' @param platform "affymetrix", "agilent", "illumina"
-#' @param output.dir default is estimated_purity_plots
+#' This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
 #'
-#' @return
+#' @param scores A character string specifying the path to the input file containing ESTIMATE scores. The file should be a tab-separated table with appropriate headers.
+#' @param samples A character vector specifying the sample names to plot. The default is "all_samples", which plots all samples in the input file.
+#' @param platform A character string specifying the platform used for data collection. Can be "affymetrix", "agilent", or "illumina". Currently, only "affymetrix" is implemented.
+#' @param output.dir A character string specifying the directory to save the output plots. The default is "estimated_purity_plots".
+#'
+#' @return No return value. The function generates and saves scatterplots in the specified output directory.
 #' @export
 #'
 #' @examples
+#' # Create a sample scores file
+#' scores_data <- data.frame(
+#'   SampleID = c("Sample1", "Sample2", "Sample3"),
+#'   ESTIMATEScore = c(500, 450, 600),
+#'   TumorPurity = c(0.8, 0.7, 0.9),
+#'   Pred1 = c(0.75, 0.65, 0.85),
+#'   Pred2 = c(0.8, 0.7, 0.9),
+#'   Pred3 = c(0.85, 0.75, 0.95),
+#'   stringsAsFactors = FALSE
+#' )
+#' write.table(scores_data, file = "scores.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+#'
+#' # Plot purity for all samples
+#' plotPurity("scores.txt", platform = "affymetrix")
+#'
+#' # Plot purity for specific samples
+#' plotPurity("scores.txt", samples = c("Sample1", "Sample3"), platform = "affymetrix")
 plotPurity <- function(scores,
                        samples="all_samples",
                        platform=c("affymetrix", "agilent", "illumina"),
@@ -257,7 +327,7 @@ plotPurity <- function(scores,
   stopifnot((is.character(scores) && length(scores) == 1 && nzchar(scores)) ||
               (inherits(scores, "connection") && isOpen(scores, "r")))
   stopifnot(is.character(output.dir) && length(output.dir) == 1 && nzchar(output.dir))
-  platform <- match.arg(platform)
+  platform <- match.arg(platform, choices = c("affymetrix", "agilent", "illumina"))
 
   if (platform != "affymetrix"){
     stop("not implemented")

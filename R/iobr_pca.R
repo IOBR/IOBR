@@ -20,7 +20,7 @@
 #' @param addEllipses Specifies whether to add concentration ellipses to the plot. Default is TRUE.
 #' @param geom.ind The type of geometric representation for the points in the PCA plot. Default is "point".
 #'
-#' @return
+#' @return A ggplot object representing the PCA plot.
 #' @export
 #' @author Dongqiang Zeng
 #'

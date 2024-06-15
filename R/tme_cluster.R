@@ -15,7 +15,7 @@
 #' @param max.nc An integer specifying the maximum number of clusters to evaluate. Default is 6.
 #' @param scale A logical value indicating whether to scale the selected features. Default is TRUE.
 #'
-#' @return
+#' @return A data frame with clusters appended as a new column.
 #' @export
 #' @author Dongqiang Zeng
 #'

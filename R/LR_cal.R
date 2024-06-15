@@ -1,9 +1,5 @@
 
 
-
-
-
-
 #' LR_cal
 #'
 #' @description
@@ -13,7 +9,7 @@
 #' @param data_type Type of input data, possible values are "count" or "tpm".
 #' @param id_type Type of gene identifier, default is "ensembl".
 #'
-#' @return
+#' @return A data frame containing ligand-receptor interaction scores
 #' @export
 #'
 #' @examples

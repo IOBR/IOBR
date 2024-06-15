@@ -30,7 +30,7 @@
 #' @param width A numeric value specifying the width of the plot (default is 5).
 #' @param height A numeric value specifying the height of the plot (default is 5.2).
 #'
-#' @return
+#' @return A ggplot object representing the ROC plot.
 #' @export
 #'
 #' @examples

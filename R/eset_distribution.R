@@ -11,12 +11,12 @@
 #' @param log Logical value indicating whether to perform log2 transformation of the expression values.
 #' @param project Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.
 #'
-#' @return
+#' @return This function does not return a value but saves boxplots and density plots as PNG files in the specified or default directory.
 #' @export
 #'
 #' @examples
-#' data(eset_gse62254, package = "IOBR")
-#' eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
+#' data("eset_stad",package = "IOBR")
+#' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #' eset_distribution(eset)
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL){
 

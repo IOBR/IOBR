@@ -1,7 +1,12 @@
 
 
 
-#' Integrative correlation between phenotype and features
+#' Integrative Correlation Between Phenotype and Features
+#'
+#' This function performs an integrative correlation analysis between phenotype data and
+#' feature data. It supports handling both continuous and categorical phenotypes, filtering features based on
+#' adjusted p-value cutoffs, and visualizing results in various plot formats including box plots,
+#' heatmaps, and correlation plots.
 #'
 #' @param pdata_group A data frame to be analyzed, including id1 and phenotype data
 #' @param id1 column of identifier to pdata
@@ -32,7 +37,7 @@
 #'
 #' @import corrplot
 #' @author Dongqiang Zeng
-#' @return
+#' @return Various plots based on the analysis and possibly a dataframe of statistical results.
 #' @export
 #'
 #' @examples

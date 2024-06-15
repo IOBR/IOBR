@@ -12,6 +12,13 @@
 #' @export
 #'
 #' @examples
+#' data1 <- data.frame(A = 1:5, B = letters[1:5])
+#' data2 <- data.frame(A = 6:10, B = letters[6:10])
+#' combined_data <- rbind_iobr(data1, data2)
+#' 
+#' # With three datasets
+#' data3 <- data.frame(A = 11:15, B = letters[11:15])
+#' combined_data <- rbind_iobr(data1, data2, data3)
 rbind_iobr <- function(data1, data2, data3 = NULL){
 
   data2 <- assimilate_data(data_a = data1, data_b = data2)

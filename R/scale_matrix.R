@@ -10,7 +10,7 @@
 #' @param log2matrix Whether to apply a logarithmic transformation to the matrix. Default is TRUE. If set to TRUE, the matrix will be transformed using the log2eset function from the IOBR package.
 #' @param manipulate Whether to perform additional manipulation on the matrix. Default is FALSE. If set to TRUE, the function will use the feature_manipulation function to manipulate the matrix based on specified criteria.
 #'
-#' @return
+#' @return A data frame of the scaled and potentially manipulated matrix.
 #' @export
 #'
 #' @author Dongqiang Zeng

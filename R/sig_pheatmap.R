@@ -33,7 +33,7 @@
 #' @param palette3 (default: 3): This parameter specifies the palette number for grouping variable 3. The default value is 3.
 #' @param show_colnames (default: FALSE): This parameter determines whether to display colum names
 #'
-#' @return
+#' @return A list containing the annotation data, cluster colors, the plot object, and the transformed input matrix.
 #' @export
 #'
 #' @author Dongqiang Zeng

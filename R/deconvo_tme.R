@@ -265,8 +265,8 @@ deconvo_ips<-function(eset, project = NULL,plot){
 #' @param platform character string indicating platform type. Defaults to "affymetrix"
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
-#' @return
-#' @export
+#' @return A data frame with the calculated stromal, immune, and ESTIMATE scores.
+#' @export 
 #'
 #' @examples
 #' # Loading TCGA-STAD expresion data(raw count matrix)
@@ -326,8 +326,8 @@ deconvo_estimate<-function(eset, project = NULL,platform = "affymetrix"){
 #'
 #' @author Dongqiang Zeng
 #' @author Rongfang Shen
-#' @return
-#' @export
+#' @return A data frame with the estimated cell type fractions. The columns are named with the cell types and suffixed with "_CIBERSORT".
+#' @export 
 #'
 #' @examples
 #' # Loading TCGA-STAD expresion data(raw count matrix)
@@ -426,13 +426,14 @@ deconvo_ref<-function(eset, project = NULL, arrays = TRUE, method = "svr", perm 
 
 
 #' Deconvoluting using the TIMER technique
-#' Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
+#' 
+#' This function performs deconvolution of immune cell fractions using the TIMER (Tumor Immune Estimation Resource) technique. Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 #'
 #' @param eset  gene matrix
 #' @param project default is NULL, project name used to distinguish different data sets
 #' @param indications a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'
 #'
-#' @return
+#' @return A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_TIMER".
 #' @export
 #'
 #' @examples
@@ -477,13 +478,15 @@ deconvo_timer = function(eset,project = NULL,indications = NULL) {
 
 #' Deconvoluting micrornvironment using the quanTIseq technique
 #'
+#' This function performs deconvolution of the tumor microenvironment using the quanTIseq technique. It estimates the fraction of different cell types in the expression dataset.
+#'
 #' @param eset  gene expression data
 #' @param tumor logistic variable
 #' @param arrays logistic variable, is data generated from microarray
 #' @param scale_mrna logistic variable
 #' @param project default is NULL, project name used to distinguish different data sets
 #'
-#' @return
+#' @return A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_quantiseq".
 #' @export
 #'
 #' @examples

@@ -1,10 +1,6 @@
 
 
 
-
-
-
-
 #' Searching for mutations related to signature score
 #'
 #' @param mutation_matrix mutation matrix with sample name in the row and genes in the column

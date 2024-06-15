@@ -2,7 +2,11 @@
 
 
 
-#' Title find_variable_genes
+#' find_variable_genes
+#'
+#' This function identifies variable genes from a gene expression dataset based on specified criteria.
+#' It allows the use of multiple selection methods, including expression thresholding and variability estimation
+#' via median absolute deviation (MAD). The function can handle both count and normalized data.
 #'
 #' @description This function identifies variable genes based on specified criteria in a given gene expression dataset.
 #' @param eset The gene expression dataset as a matrix.
@@ -14,7 +18,7 @@
 #' @param feas (character vector, optional): Additional features to include in the variable gene selection. Default is NULL.
 #'
 #' @author Dongqiang Zeng
-#' @return
+#' @return A matrix subset of `eset` containing only the genes identified as variable according to the specified criteria.
 #' @export
 #'
 #' @examples

@@ -24,10 +24,23 @@
 #' @param round.num The number of decimal places to round the correlation values. Default is 1.
 #' @param font.size.star The font size of the significance stars in the plot. Default is 8.
 #'
-#' @return
+#' @return A ggplot object displaying the correlation matrix.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
+#' # Assuming 'data' is a data frame or matrix with genes or signatures as columns
+#' set.seed(123)
+#' data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
+#' colnames(data) <- paste("Gene", 1:10, sep = "_")
+#'
+#' # Define two sets of variables for correlation analysis
+#' feas1 <- c("Gene_1", "Gene_2", "Gene_3")
+#' feas2 <- c("Gene_4", "Gene_5", "Gene_6")
+#'
+#' # Generate and visualize the correlation matrix
+#' cor_plot <- get_cor_matrix(data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
+#'                            method = "spearman", project = "Example Correlation Matrix")
+#' print(cor_plot)
 get_cor_matrix<- function(data, feas1, feas2, method="pearson", path = NULL, index = 1, fig.type = "pdf", width = NULL, height = NULL,
                            project = NULL, is.matrix = FALSE, scale = T, font.size.star = 8, font.size = 15, fill_by_cor = FALSE, round.num = 1){
 
