@@ -1,37 +1,36 @@
 
-
-
-
-
-
-#' Forest plot of survival analysis results.
+#' Forest Plot for Survival Analysis Results
 #'
-#' @param signature column of signatures
-#' @param data survival result
-#' @param pvalue P value of survival result
-#' @param HR Hazard ratio of survival result
-#' @param CI_low_0.95 confidence interval
-#' @param CI_up_0.95 confidence interval
-#' @param n maximum of signatures
-#' @param max_character maximum of character
-#' @param discrete_width discrete width, default is 35
-#' @param color_option default is 1, other option:2, 3
+#' Generates a forest plot to visualize survival analysis results, showing hazard ratios (HRs), confidence intervals,
+#' and p-values for selected gene signatures or features. This function is useful for assessing the impact of various
+#' biomarkers on survival in a visually interpretable manner.
 #'
-#' @return
-#' @export
+#' @param data A data frame containing survival analysis results including p-values, HRs, and confidence intervals.
+#' @param signature The name of the column in `data` that contains the signatures or feature names.
+#' @param pvalue The name of the column in `data` that contains p-values; default is "P".
+#' @param HR The name of the column in `data` that contains hazard ratios; default is "HR".
+#' @param CI_low_0.95 The name of the column in `data` that contains the lower bound of the 95% confidence interval; default is "CI_low_0.95".
+#' @param CI_up_0.95 The name of the column in `data` that contains the upper bound of the 95% confidence interval; default is "CI_up_0.95".
+#' @param n The maximum number of signatures to display in the plot; default is 10.
+#' @param max_character The maximum number of characters for signature labels before wrapping; default is 25.
+#' @param discrete_width The width for discretizing long labels, default is 35.
+#' @param color_option Color option for the p-value gradient in the plot, with default 1 and alternatives 2 or 3.
+#' @param text.size Text size for the y-axis labels; default is 13.
+#'
 #' @author Dongqiang Zeng
+#' @return A ggplot object representing the forest plot, which is also printed to the display.
+#' @export
 #'
 #' @examples
 #' sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))
 #' sig_forest(data = sig_surv_result, signature = "ID")
-#'
 sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
                      CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
                      discrete_width = 35, color_option = 1,
                      text.size = 13) {
 
 
-  data<-as.data.frame(data)
+  data <- as.data.frame(data)
   colnames(data)[which(colnames(data)==signature)]<-"signature"
   colnames(data)[which(colnames(data)==pvalue)]<-"P"
   colnames(data)[which(colnames(data)==HR)]<-"HR"
@@ -42,7 +41,7 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
   data[,c("P","HR","CI_low_0.95","CI_up_0.95")]<-apply(data[,c("P","HR","CI_low_0.95","CI_up_0.95")],2,function(x) as.numeric(x))
 
   data<- data[complete.cases(data),]
-  #######################################
+
 
   if(dim(data)[1]>n){
     message(paste0("Top ", n," signatures will be shown"))
@@ -59,7 +58,6 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
     data<-data[order(data$HR,decreasing = T),]
     data$signature<-as.character(data$signature)
   }
-  #######################################
 
   if(max(nchar(data$signature))> max_character){
 
@@ -81,7 +79,7 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
     scale_x_continuous(breaks = c(0.5,1,1.50))+
     coord_trans(x='log2')+
     ylab("Features")+
-    xlab(paste0("Hazard ratios of Features"))+
+    xlab(paste0("Hazard Ratios of Features"))+
     labs(color="P value")+
     viridis::scale_color_viridis(option= color_option)+
 
@@ -91,6 +89,5 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
     theme(title = element_text(size = 15,colour = "black", vjust = 0.5, hjust = 0.5))+
     scale_y_discrete(labels=function(x) stringr::str_wrap(x, width = discrete_width))
 
- print(pp)
  return(pp)
 }

@@ -17,7 +17,6 @@
 #'         and optionally, the combined plot of ROC curves if `plot` is TRUE.
 #'
 #' @importFrom glmnet cv.glmnet
-#' @importFrom stats set.seed
 #' @import dplyr
 #' @import ggplot2
 #' @examples
@@ -31,13 +30,13 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   x<-as.data.frame(x)
   y<-as.data.frame(y)
 
-  message(paste0("\n", ">>> Processing data"))
+  message(paste0(">>> Processing data"))
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "survival")
   x_scale <- processdat$x_scale
   y <- processdat$y
   x_ID <- processdat$x_ID
 
-  message(paste0("\n", ">>> Spliting data into training and validation data"))
+  message(paste0( ">>> Spliting data into training and validation data"))
   train_test <- SplitTrainTest(x = x_scale, y = y, train_ratio = train_ratio,
                                type = "survival", seed = seed)
   train.x = train_test$train.x; train.y <- train_test$train.y
@@ -45,7 +44,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 
-  message(paste0("\n", ">>> Running ", "LASSO"))
+  message(paste0( ">>> Running ", "LASSO"))
   set.seed(seed)
   lasso_model <- glmnet::cv.glmnet(x = train.x, y = as.matrix(train.y),
                                    family = "cox", alpha = 1, nfolds = nfold)
@@ -55,7 +54,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
             test.x = test.x, test.y = test.y, model = lasso_model, modelname = "LASSO")
   }
 
-  message(paste0("\n", ">>> Running ", "RIDGE REGRESSION"))
+  message(paste0( ">>> Running ", "RIDGE REGRESSION"))
 
   set.seed(seed)
   ridge_model <- glmnet::cv.glmnet(x = train.x, y = as.matrix(train.y), family = "cox", alpha = 0, nfolds = nfold)
@@ -65,7 +64,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
    p2 <- PlotTimeROC(train.x = train.x, train.y = train.y,
                 test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE")
   }
-  message(paste0("\n", ">>> Done !"))
+  message(paste0(">>> Done !"))
   p <- p1+p2
   print(p)
   return(list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x))
@@ -93,7 +92,6 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #'
 #' @importFrom stats coef
 #' @importFrom purrr pmap
-#' @importFrom dplyr rbind
 #' @examples
 #' # Assuming 'fit' is a Cox model fitted using `glmnet`
 #' train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
@@ -206,21 +204,44 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
   return(ROC)
 }
 
-#' Plot Time ROC
+#' Plot Time-Dependent ROC Curves
 #'
-#' @param train.x
-#' @param train.y
-#' @param test.x
-#' @param test.y
-#' @param model
-#' @param modelname
-#' @param cols
-#' @param palette
+#' This function generates time-dependent Receiver Operating Characteristic (ROC) curves
+#' for evaluating the prognostic accuracy of models based on survival data. It handles
+#' both training and testing datasets to plot ROC curves at specific time quantiles.
+#' Customizable options for colors and legends are provided via function parameters.
 #'
-#' @return
+#' @param train.x Matrix or data frame containing the predictor variables used to fit
+#'        the model for the training dataset. These variables should correspond to the
+#'        same predictors used in model fitting.
+#' @param train.y Training dataset outcomes, which must include survival time and
+#'        event status (e.g., censoring status). This data should be formatted as a
+#'        two-column data frame or matrix where the first column is the survival time
+#'        and the second column is the event status.
+#' @param test.x Matrix or data frame containing the predictor variables used for
+#'        evaluating the model on the testing dataset. Like train.x, this should include
+#'        the same type of predictors used in model fitting.
+#' @param test.y Testing dataset outcomes, formatted in the same way as train.y, with
+#'        survival time and event status.
+#' @param model The model object used for predictions. Typically, this would be a model
+#'        object created by a survival analysis method compatible with time-dependent
+#'        ROC calculations.
+#' @param modelname A string representing the name of the model, used for creating
+#'        titles or labels in the plots.
+#' @param cols Optionally, a vector of colors for plotting. If not provided, colors
+#'        are automatically chosen based on the 'palette' parameter.
+#' @param palette A character string specifying the color palette to use if 'cols' is
+#'        not provided. The default is "jama", which refers to a pre-defined palette.
+#'
+#' @return A ggplot object representing the ROC curve plot for the provided model at
+#'         the specified time quantile. The plot includes both training and testing
+#'         datasets across different regularization strengths or model specifications.
+#'
 #' @export
 #'
 #' @examples
+#' # Assuming model and data are predefined:
+#' PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama"){
 
   if(is.null(cols)){

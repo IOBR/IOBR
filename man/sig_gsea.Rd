@@ -80,13 +80,22 @@ sig_gsea(
 
 \item{print_bar}{Default is TRUE}
 }
+\value{
+A list containing the GSEA results, including data frames for up-regulated and down-regulated gene sets,
+        the complete GSEA result, and the GSEA plot for the top significant terms if generated.
+}
 \description{
 The sig_gsea function conducts Gene Set Enrichment Analysis (GSEA) to identify significant gene sets based on differential gene expression data. It allows for customization of various parameters to tailor the analysis to specific needs. This function performs GSEA using the fgsea package and provides visualizations and results in the form of tables and plots. It also supports the utilization of user-defined gene sets or the use of predefined gene sets from the Molecular Signatures Database (MSigDB). The function further allows for customization of parameters such as organism, gene symbol type, visualization color palette, and significance thresholds. The results can be saved in Excel format, and plots can be saved in various image formats.
+}
+\details{
+The `sig_gsea` function performs Gene Set Enrichment Analysis (GSEA) using differential gene expression data. It
+supports using predefined gene sets from the Molecular Signatures Database (MSigDB) or user-defined gene sets.
+Results, including statistical significance, enrichment scores, and plots, are saved in specified formats.
 }
 \examples{
 data("eset_stad", package = "IOBR")
 data("stad_group", package = "IOBR")
-library(DESeq2)
+
 deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
 res <- sig_gsea(deg = deg, genesets = signature_tme)
 }

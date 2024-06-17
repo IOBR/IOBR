@@ -2,7 +2,7 @@
 % Please edit documentation in R/percent_bar.R
 \name{percent_bar_plot}
 \alias{percent_bar_plot}
-\title{Function to create a percent bar plot.}
+\title{Create a Percent Bar Plot}
 \usage{
 percent_bar_plot(
   input,
@@ -59,8 +59,12 @@ percent_bar_plot(
 
 \item{round.num}{Number of decimal places to round the proportion column.}
 }
+\value{
+A ggplot object representing the percentage bar plot.
+}
 \description{
-Function to create a percent bar plot.
+This function generates a bar plot that visualizes the percentage distribution of a variable grouped by another variable.
+It offers options to customize the plot's colors, title, axis labels, and more.
 }
 \examples{
 data("sig_stad", package = 'IOBR')

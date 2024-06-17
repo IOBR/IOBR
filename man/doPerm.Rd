@@ -17,6 +17,15 @@ doPerm(perm, X, Y, absolute, abs_method)
 
 \item{abs_method}{String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.}
 }
+\value{
+A list containing the distribution of correlation coefficients from the permutations.
+}
 \description{
 doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
+}
+\examples{
+X <- matrix(rnorm(100), nrow = 10)
+y <- rnorm(10)
+result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
+
 }

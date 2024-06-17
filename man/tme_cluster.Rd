@@ -33,6 +33,9 @@ tme_cluster(
 
 \item{max.nc}{An integer specifying the maximum number of clusters to evaluate. Default is 6.}
 }
+\value{
+A data frame with clusters appended as a new column.
+}
 \description{
 This function is designed to perform TME (Tumor Microenvironment) clustering analysis using the specified input dataset. The function allows for customization of various parameters to conduct clustering analysis, including the selection of features, scaling options, clustering method, and the range of cluster numbers to evaluate.
 }

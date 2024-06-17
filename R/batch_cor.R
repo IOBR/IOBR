@@ -1,23 +1,26 @@
 
 
 
-#' Batch to conduct correlation analysis with multiple features
+#' Batch Correlation Analysis
 #'
-#' @param data A data frame containing the dataset.
-#' @param target A character specifying the name of the target variable.
-#' @param feature A character vector specifying the names of the feature variables.
-#' @param method A character specifying the correlation method to be used. Default value is "spearman".
+#' Performs a batch correlation analysis between a target variable and multiple feature variables in a dataset.
+#' This function allows for the selection of the correlation method and applies corrections for multiple testing.
 #'
-#' @return
+#' @param data A data frame containing the dataset with both target and feature variables.
+#' @param target A character string specifying the name of the target variable within the dataset.
+#' @param feature A character vector specifying the names of the feature variables to be analyzed.
+#' @param method A character string specifying the correlation method to be used; default is "spearman".
+#'
+#' @return Returns a tibble containing the feature names, p-values, correlation coefficients, adjusted p-values,
+#'         log-transformed p-values, and significance stars based on p-value thresholds.
+#'
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
-#'
-#' # Loading TCGA-STAD microenvironment signature data
+#' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' # Finding microenvironmental scores associated with CD8 T cells
-#' batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
-
+#' # Conduct correlation analysis
+#' results <- batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 batch_cor<-function(data, target, feature, method = "spearman"){
 
   if(!target%in%colnames(data)) stop(">>>== target was not in the colnames of data")
@@ -56,20 +59,25 @@ batch_cor<-function(data, target, feature, method = "spearman"){
 }
 
 
-#' Calculate exact p value of correlation
+#' Calculate Exact P-value for Correlation
 #'
-#' @param x variables
-#' @param y variables
-#' @param method method used to conduct correlation analysis
+#' Computes the exact p-value for the correlation between two variables based on a specified method.
+#' This function is typically used to support detailed statistical tests in correlation studies.
 #'
-#' @return
+#' @param x A numeric vector of data points corresponding to the first variable.
+#' @param y A numeric vector of data points corresponding to the second variable.
+#' @param method A character string specifying the correlation method to be used; supports "spearman", "pearson", etc.
+#'
+#' @return Returns a single numeric value representing the p-value for the correlation test.
+#'
 #' @export
-#' @example
-#'
-#' # Loading TCGA-STAD microenvironment signature data
+#' @author Dongqiang Zeng
+#' @examples
+#' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' exact_pvalue(sig_stad$CD8.T.cells, sig_stad$CD_8_T_effector, method = "spearman")
-
+#' # Calculate exact p-value for correlation between two variables
+#' p_val <- exact_pvalue(x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector, method = "spearman")
+#' print(p_val)
 exact_pvalue<-function(x,y,method){
 
   l <- length(y)

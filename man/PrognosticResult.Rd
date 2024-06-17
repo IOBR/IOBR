@@ -2,13 +2,37 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticResult}
 \alias{PrognosticResult}
-\title{Prognostic Result}
+\title{Prognostic Results for Survival Models}
 \usage{
 PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \arguments{
-\item{test.y}{}
+\item{model}{A survival model object from which predictions and coefficients will be extracted.}
+
+\item{train.x}{Matrix or data frame of training predictors that were used to fit the model.}
+
+\item{train.y}{Training dataset outcomes, including survival time and status.}
+
+\item{test.x}{Matrix or data frame of testing predictors for evaluating the model.}
+
+\item{test.y}{Testing dataset outcomes, including survival time and status.}
+}
+\value{
+A list containing three elements:
+  - `model`: The model object passed to the function.
+  - `coefs`: A data frame of model coefficients extracted for `lambda.min` and `lambda.1se`.
+  - `AUC`: A data frame with the AUC values for training and testing datasets at both lambda values.
 }
 \description{
-Prognostic Result
+This function computes and compiles the prognostic results from a survival model, specifically designed for models
+like those created with `glmnet`. It calculates model coefficients at specific lambda values (`lambda.min` and `lambda.1se`)
+and computes Area Under the Curve (AUC) metrics for both training and testing datasets. The AUC calculations
+are performed at two regularization strengths for both train and test datasets.
+}
+\examples{
+# Assuming 'fit' is a Cox model fitted using `glmnet`
+train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
+test_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
+results <- PrognosticResult(model = fit, train.x = train_data$x, train.y = train_data$y,
+                            test.x = test_data$x, test.y = test_data$y)
 }

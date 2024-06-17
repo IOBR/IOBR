@@ -35,7 +35,7 @@ level of all genes in the mixture. Multiple cell subset fractions by S.
 - no.sumto1 = remove sum to 1 constraint}
 }
 \value{
-cibersrot with immune cell fractions
+A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
 }
 \description{
 CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.

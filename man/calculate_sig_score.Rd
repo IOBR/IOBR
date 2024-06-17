@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_sig_score.R
 \name{calculate_sig_score}
 \alias{calculate_sig_score}
-\title{Calculating signature score  on a gene expression dataset}
+\title{Calculating signature score on a gene expression dataset}
 \usage{
 calculate_sig_score(
   pdata = NULL,
@@ -45,7 +45,7 @@ default is 2 for PCA and z score function}
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 }
 \description{
-Calculating signature score  on a gene expression dataset
+Calculating signature score on a gene expression dataset
 }
 \examples{
 # Loading TCGA-STAD expresion data(raw count matrix)

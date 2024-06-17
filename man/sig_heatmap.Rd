@@ -80,6 +80,9 @@ sig_heatmap(
 
 \item{index}{default is nullThis parameter specifies the index number to be added to the filename of the resulting heatmap plot. If not specified, the index will be set to 1.}
 }
+\value{
+A heatmap plot object.
+}
 \description{
 The sig_heatmap function is used to generate a heatmap plot based on input data, grouping variables, and optional conditions. The function allows customization of various parameters such as palette selection, scaling, color boxes, plot dimensions, and more. It provides flexibility in visualizing relationships between variables and groups in a concise and informative manner.
 }

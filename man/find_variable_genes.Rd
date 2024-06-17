@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_variable_genes2.R
 \name{find_variable_genes}
 \alias{find_variable_genes}
-\title{Title find_variable_genes}
+\title{find_variable_genes}
 \usage{
 find_variable_genes(
   eset,
@@ -29,8 +29,16 @@ find_variable_genes(
 
 \item{feas}{(character vector, optional): Additional features to include in the variable gene selection. Default is NULL.}
 }
+\value{
+A matrix subset of `eset` containing only the genes identified as variable according to the specified criteria.
+}
 \description{
 This function identifies variable genes based on specified criteria in a given gene expression dataset.
+}
+\details{
+This function identifies variable genes from a gene expression dataset based on specified criteria.
+It allows the use of multiple selection methods, including expression thresholding and variability estimation
+via median absolute deviation (MAD). The function can handle both count and normalized data.
 }
 \examples{
 # loading expression data

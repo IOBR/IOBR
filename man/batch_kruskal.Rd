@@ -15,8 +15,14 @@ batch_kruskal(data, group, feature = NULL, feature_manipulation = FALSE)
 
 \item{feature_manipulation}{A logical value indicating whether feature manipulation should be performed. Default value is FALSE.}
 }
+\value{
+A tibble containing the feature names, p-values, adjusted p-values, log10 p-values, and significance stars.
+}
 \description{
 This function is used to efficiently perform the Kruskal-Wallis test on multiple continuous feature variables across different groups, providing statistical information such as p-values, adjusted p-values, and star ratings for significance.
+}
+\details{
+This function performs the Kruskal-Wallis test on multiple continuous feature variables across different groups, providing statistical information such as p-values, adjusted p-values, and star ratings for significance.
 }
 \examples{
 

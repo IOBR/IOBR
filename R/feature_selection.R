@@ -1,25 +1,23 @@
 
-#' Feature selection
+#' Feature Selection
 #'
-#' This function selects features based on correlation or differential expression methods. 
-#' It integrates tools from the limma package for differential expression and basic statistical tests for correlation analysis.
+#' This function selects features based on either correlation or differential expression analysis.
+#' It uses the 'limma' package for differential expression and basic statistical tests for correlation analysis.
 #'
-#' @param x input matrix.Rownames should be features like gene symbols or cgi, colnames be samples
-#' @param y response variable. Data type can be quantitative, binary and survival. Survival type can be generated through ?survival::Surv
-#' @param family For method="cor", useser can choose "spearman" or "pearson" .
-#' @param method Binary for method = "dif", quantitative response value for "dif" and "cor".
-#' @param cutoff Numeric. Estimate and log2FC cutoff value for correlation analysis and limma dif analysis.
-#' @param padjcut Numeric. Adjust P value cutoff.
+#' @param x A matrix with rownames representing features like gene symbols or cgi, and colnames as samples.
+#' @param y A response variable vector that can be quantitative, binary, or survival type.
+#' @param method Specifies the method for feature selection; "cor" for correlation or "dif" for differential expression.
+#' @param family Specifies the correlation method to use if method="cor"; options are "spearman" or "pearson".
+#' @param cutoff Numeric value for estimating and log2 fold change cutoff for correlation analysis and limma differential analysis.
+#' @param padjcut Numeric value for adjusted P-value cutoff.
 #'
 #' @import tidyverse
 #' @import glmnet
-#' @import limma
 #'
 #' @return Returns a vector of selected feature names based on the specified criteria.
 #' @export
 #'
 #' @examples
-#'
 #'data("imvigor210_eset",package = "IOBR")
 #'data("imvigor210_pdata", package = "IOBR")
 #'
@@ -89,21 +87,24 @@ feature_select <- function(x, y, method = c("cor", "dif"),
   return(feature)
 }
 
-#' limma.dif
+#' Differential Expression Analysis Using Limma
 #'
-#' This function performs differential expression analysis using the limma package on a given gene expression dataset. 
-#' It constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes statistics for 
-#' differential expression.
+#' Performs differential expression analysis using the limma package on a given gene expression dataset.
+#' Constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes
+#' statistics for differential expression.
 #'
-#' @param exprdata input matrix.Rownames should be features like gene symbols or cgi, colnames be samples
-#' @param pdata phenotype data.Two-column dataframe which column 1 should be the same with the colnames of exprdata and column 2 are the grouping variable.
-#' @param contrastfml see ?makeContrasts
-#' @import limma
+#' @param exprdata A matrix with rownames as features like gene symbols or cgi, and colnames as samples.
+#' @param pdata A two-column dataframe where the first column matches the colnames of exprdata and the second column contains the grouping variable.
+#' @param contrastfml A character vector for contrasts to be tested (see ?makeContrasts for more details).
 #'
-#' @return a data frame return by limma::toptable, which genes at rows and following columns: genelist, logFC, AveExpr...
+#' @return Returns a dataframe from limma::topTable, which includes genes as rows and columns like genelist, logFC, AveExpr, etc.
 #' @export
-#'
 #' @examples
+#' data("expression_data", package = "ExamplePackage")
+#' data("phenotype_data", package = "ExamplePackage")
+#'
+#' dif_results <- limma.dif(exprdata = expression_data, pdata = phenotype_data, contrastfml = "group1 - group2")
+#' print(dif_results)
 limma.dif <- function(exprdata, pdata, contrastfml){
   group_list <- as.character(pdata[, 2])
   design <- model.matrix(~0 + factor(group_list))

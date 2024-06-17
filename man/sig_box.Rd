@@ -56,6 +56,9 @@ sig_box(
 
 \item{scale}{Boolean flag indicating whether to scale the signature values (default = FALSE).}
 }
+\value{
+Depending on `return_stat_res`, returns either a ggplot object of the boxplot or the results of the statistical comparison.
+}
 \description{
 The sig_box function is designed to generate a boxplot with optional statistical comparisons. It takes in various parameters such as data, signature, variable, and more to customize the plot. It can be used to visualize and analyze data in a Seurat object or any other data frame.
 }

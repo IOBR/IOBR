@@ -7,19 +7,20 @@
 batch_pcc(input, interferenceid, target, features, method = "pearson")
 }
 \arguments{
+\item{input}{A data frame containing both feature variables and the interference variable.}
+
 \item{interferenceid}{The name of the column in the feature_data data frame representing the interference variable.}
 
-\item{target}{The name of the column in the pdata_group data frame representing the target variable for correlation.}
+\item{target}{The name of the column in the input data frame representing the target variable for correlation.}
 
-\item{method}{The correlation method to be used. The default value is "pearson"; one of "pearson"(default), "spearman" or "kendall"}
+\item{features}{A character vector specifying the names of the feature variables.}
+
+\item{method}{The correlation method to be used. Default value is "pearson"; options are "pearson", "spearman", or "kendall".}
 
 \item{pdata_group}{matrix;data signature matrix with multiple features}
-
-\item{feature_data}{A data frame containing the feature data.}
-
-\item{id1}{The name of the column in the pdata_group data frame representing the ID or identifier. The default value is "ID".}
-
-\item{id2}{The name of the column in the feature_data data frame representing the ID or identifier. The default value is "ID".}
+}
+\value{
+A tibble containing the feature names, partial correlation coefficients, p-values, adjusted p-values, log10 p-values, and significance stars.
 }
 \description{
 batch_pcc() provide a batch way to calculate the partial correlation coefficient between feature and others when

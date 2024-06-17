@@ -2,7 +2,7 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticModel}
 \alias{PrognosticModel}
-\title{Prognostic Model construction}
+\title{Prognostic Modeling for Survival Data}
 \usage{
 PrognosticModel(
   x,
@@ -11,34 +11,37 @@ PrognosticModel(
   seed = 123456,
   train_ratio = 0.7,
   nfold = 10,
-  plot = T
+  plot = TRUE
 )
 }
 \arguments{
-\item{x}{input matrix or data.frame where samples are in rows and features in columns; The first column of x is the sample ID of which column is "ID".}
+\item{x}{A matrix or data frame of predictor variables.}
 
-\item{y}{input matrix or data.frame with three column. Column names are "ID", "time", "status"}
+\item{y}{A vector or data frame of survival outcomes (typically including time and status).}
 
-\item{scale}{A logistic: should the x be scaled, default is TRUE.}
+\item{scale}{Logical; if TRUE, scales the predictor variables.}
 
-\item{seed}{default 123456}
+\item{seed}{Integer; a seed for random number generation to ensure reproducibility.}
 
-\item{train_ratio}{Value between 0-1; The ratio was used to split the x and y into training and testing data.}
+\item{train_ratio}{Numeric; the proportion of the data to use for training (e.g., 0.7 for 70%).}
 
-\item{nfold}{nfold default 10}
+\item{nfold}{Integer; the number of folds for cross-validation in model fitting.}
 
-\item{plot}{A logistic, default is TRUE.}
+\item{plot}{Logical; if TRUE, plots the ROC curves for the LASSO and Ridge models.}
 }
 \value{
-a list contain the results of 2 model (Lasso, Ridge) and the input train data.
+A list containing the results from the LASSO and Ridge regression models, the training data,
+        and optionally, the combined plot of ROC curves if `plot` is TRUE.
 }
 \description{
-Prognostic Model construction
+This function prepares the data, splits it into training and testing sets, and then
+fits LASSO and Ridge regression models using the `glmnet` package. It evaluates
+these models by calculating prognostic results and optionally plots ROC curves
+for each model. It is specifically tailored for survival analysis.
 }
 \examples{
 data("imvigor210_sig", package = "IOBR")
 data("imvigor210_pdata",package = "IOBR")
 pdata_prog <- imvigor210_pdata \%>\% dplyr::select(ID, OS_days, OS_status) \%>\% mutate(OS_days = as.numeric(.$OS_days)) \%>\% mutate(OS_status = as.numeric(.$OS_status))
 prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog, scale = T, seed  = 123456, train_ratio = 0.7, nfold = 10, plot = T)
-
 }

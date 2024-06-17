@@ -2,17 +2,31 @@
 % Please edit documentation in R/batch_cor.R
 \name{exact_pvalue}
 \alias{exact_pvalue}
-\title{Calculate exact p value of correlation}
+\title{Calculate Exact P-value for Correlation}
 \usage{
 exact_pvalue(x, y, method)
 }
 \arguments{
-\item{x}{variables}
+\item{x}{A numeric vector of data points corresponding to the first variable.}
 
-\item{y}{variables}
+\item{y}{A numeric vector of data points corresponding to the second variable.}
 
-\item{method}{method used to conduct correlation analysis}
+\item{method}{A character string specifying the correlation method to be used; supports "spearman", "pearson", etc.}
+}
+\value{
+Returns a single numeric value representing the p-value for the correlation test.
 }
 \description{
-Calculate exact p value of correlation
+Computes the exact p-value for the correlation between two variables based on a specified method.
+This function is typically used to support detailed statistical tests in correlation studies.
+}
+\examples{
+# Load TCGA-STAD microenvironment signature data
+data("sig_stad", package = "IOBR")
+# Calculate exact p-value for correlation between two variables
+p_val <- exact_pvalue(x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector, method = "spearman")
+print(p_val)
+}
+\author{
+Dongqiang Zeng
 }

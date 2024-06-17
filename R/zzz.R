@@ -30,14 +30,8 @@
 
                     " DQ Zeng, YR Fang, WJ Qiu, ..., GC Yu*, WJ Liao*, (2024) \n",
                     " IOBR2: Multidimensional Decoding Tumor Microenvironment for Immuno-Oncology Research. \n",
-                    " bioRxiv, 2024.01. 13.575484; \n",
+                    " bioRxiv, 2024.01.13.575484; \n",
                     " https://www.biorxiv.org/content/10.1101/2024.01.13.575484v2.full.pdf \n",
-                    "==========================================================================\n",
-                    " DQ Zeng, ZL Ye, RF Sheng, GC Yu, Y Xiong, ..., WJ Liao*.\n",
-                    " IOBR: Multi-omics Immuno-Oncology Biological Research to decode \n ",
-                    " tumor microenvironment and signatures. Frontiers in Immunology. 12:687975,(2021). \n",
-                    # " XXXX, 2020", "\n",
-                    " DOI: 10.3389/fimmu.2021.687975\n",
                     " Higly Cited Paper and Hot Paper of WOS\n",
                     "==========================================================================")
 

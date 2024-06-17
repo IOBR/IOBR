@@ -12,12 +12,36 @@ plotPurity(
 )
 }
 \arguments{
-\item{samples}{default is all_samples}
+\item{scores}{A character string specifying the path to the input file containing ESTIMATE scores. The file should be a tab-separated table with appropriate headers.}
 
-\item{platform}{"affymetrix", "agilent", "illumina"}
+\item{samples}{A character vector specifying the sample names to plot. The default is "all_samples", which plots all samples in the input file.}
 
-\item{output.dir}{default is estimated_purity_plots}
+\item{platform}{A character string specifying the platform used for data collection. Can be "affymetrix", "agilent", or "illumina". Currently, only "affymetrix" is implemented.}
+
+\item{output.dir}{A character string specifying the directory to save the output plots. The default is "estimated_purity_plots".}
+}
+\value{
+No return value. The function generates and saves scatterplots in the specified output directory.
 }
 \description{
-plotPurity
+This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
+}
+\examples{
+# Create a sample scores file
+scores_data <- data.frame(
+  SampleID = c("Sample1", "Sample2", "Sample3"),
+  ESTIMATEScore = c(500, 450, 600),
+  TumorPurity = c(0.8, 0.7, 0.9),
+  Pred1 = c(0.75, 0.65, 0.85),
+  Pred2 = c(0.8, 0.7, 0.9),
+  Pred3 = c(0.85, 0.75, 0.95),
+  stringsAsFactors = FALSE
+)
+write.table(scores_data, file = "scores.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+# Plot purity for all samples
+plotPurity("scores.txt", platform = "affymetrix")
+
+# Plot purity for specific samples
+plotPurity("scores.txt", samples = c("Sample1", "Sample3"), platform = "affymetrix")
 }

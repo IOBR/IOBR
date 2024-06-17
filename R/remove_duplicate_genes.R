@@ -1,13 +1,19 @@
 
 
 
-#' Remove duplicate gene symbol on a gene expression data
+#' Remove Duplicate Gene Symbols in Gene Expression Data
 #'
-#' @param eset Gene expression data with gene symbol in `column_of_symbol`
-#' @param column_of_symbol name of column contained gene symbols
-#' @param method method used to filter duplicate genes; default is mean value
-#' @import tibble
-#' @return
+#' This function addresses duplicate gene symbols in a gene expression dataset by aggregating
+#' the expression data for duplicate entries. Users can choose between mean, standard deviation, or sum
+#' for aggregation. This is useful for preparing data where duplicates can lead to issues in downstream analyses.
+#'
+#' @param eset A data frame or matrix representing gene expression data, with gene symbols as one of the columns.
+#' @param column_of_symbol The name of the column containing gene symbols in `eset`.
+#' @param method The aggregation method to apply for duplicate gene symbols: "mean" for averaging,
+#'        "sd" for standard deviation, or "sum" for the sum of values. Default is "mean".
+#'
+#' @return A modified version of `eset` where duplicate gene symbols have been aggregated according to the specified method.
+#'         The gene symbols are set as row names in the returned data frame or matrix.
 #' @export
 #' @author Dongqiang Zeng
 #'

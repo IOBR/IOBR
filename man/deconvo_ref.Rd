@@ -35,6 +35,9 @@ deconvo_ref(
 
 \item{abs.method}{abs.method, default is sig.score}
 }
+\value{
+A data frame with the estimated cell type fractions. The columns are named with the cell types and suffixed with "_CIBERSORT".
+}
 \description{
 Estimate the fraction of cell types using defined reference genes
 }

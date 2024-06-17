@@ -2,7 +2,7 @@
 % Please edit documentation in R/lasso_select.R
 \name{lasso_select}
 \alias{lasso_select}
-\title{Constructing predictive or prognostic model}
+\title{Extract features of Predictive or Prognostic Model Using LASSO Regression}
 \usage{
 lasso_select(
   x,
@@ -13,35 +13,35 @@ lasso_select(
 )
 }
 \arguments{
-\item{x}{input matrix.Row names should be features like gene symbols or cgi, colnames be samples}
+\item{x}{An input matrix with features like gene symbols or CGI as row names and samples as column names.}
 
-\item{y}{response variable. can be binary and survival type.}
+\item{y}{A response variable vector; can be binary (0 or 1) or survival data (survival time and event status).}
 
-\item{type}{"binary" or "survival"}
+\item{type}{A character string specifying the model type: "binary" for binary response models or "survival" for survival analysis.
+The default is set to "binary".}
 
-\item{nfold}{number of `nfold` for cross-validation - default is 10}
+\item{nfold}{The number of folds for cross-validation, with a default of 10.}
 
-\item{lambda}{"lambda.min" or "lambda.1se"}
+\item{lambda}{The regularization parameter selection method: "lambda.min" for the lambda that gives minimum mean
+cross-validated error or "lambda.1se" for the lambda that is one standard error away from the minimum.
+The default is set to "lambda.min".}
+}
+\value{
+A vector of selected feature names from the LASSO model that are non-zero in the optimal model.
 }
 \description{
-Constructing predictive or prognostic model
+This function applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or
+prognostic models. It is designed to handle both binary and survival type response variables, using cross-validation
+to optimize the model selection.
 }
 \examples{
-
-data("crc_clin")
-data("tcga_crc_exp")
-dat <- t(tcga_crc_exp)
-dat <- data.frame(patient = str_sub(rownames(dat), 1, 12), dat)
-dat <- merge(crc_clin, dat, by = "patient")
-dat <- dat[dat$OS_time > 0, ]
-x <- t(dat[, -c(1:3)])
-mad <- apply(x, 1, mad)
-x <- x[mad > 0.5, ]
-y <- Surv(dat$OS_time, dat$OS)
-pd1 <- as.numeric(dat[, "PDCD1"])
-group <- ifelse(pd1 > mean(pd1), 1, 0)
-sur_gene <- lasso_select(x = x, y = y, type = "survival", nfold = 10, lambda = "lambda.min")
-pd1_gene <- lasso_select(x = x, y = group, type = "binary", nfold = 10, lambda = "lambda.min")
+data("gene_expression", package = "examplePackage")
+survival_data <- survival::Surv(time = c(2, 4, 3), event = c(1, 0, 1))
+# Example for a binary response variable
+binary_outcome <- c(0, 1, 1)
+model_features_binary <- lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
+# Example for a survival response variable
+model_features_survival <- lasso_select(x = gene_expression, y = survival_data, type = "survival")
 }
 \author{
 Dongqiang Zeng

@@ -2,13 +2,43 @@
 % Please edit documentation in R/BinomialModel.R
 \name{SplitTrainTest}
 \alias{SplitTrainTest}
-\title{Split Train and Test data}
+\title{Split Data into Training and Testing Sets}
 \usage{
 SplitTrainTest(x, y, train_ratio, type, seed)
 }
 \arguments{
-\item{seed}{}
+\item{x}{A matrix or data frame containing the predictors or features.}
+
+\item{y}{A vector or matrix containing the outcomes associated with 'x'. The format can be either
+a simple vector for binomial outcomes or a matrix for survival outcomes.}
+
+\item{train_ratio}{A numeric value between 0 and 1 indicating the proportion of the data to use for training.
+For example, a 'train_ratio' of 0.7 means 70% of the data will be used for training.}
+
+\item{type}{A character string indicating the type of analysis; accepts "binomial" for binary outcomes or
+"survival" for survival analysis, which affects how 'y' data is handled during splitting.}
+
+\item{seed}{An integer used to set the seed for random sampling, ensuring reproducibility.}
+}
+\value{
+A list containing the training and testing subsets: 'train.x' and 'train.y' for training,
+        and 'test.x' and 'test.y' for testing. Also returns 'train_sample', which is a vector of indices
+        that were selected for the training set.
 }
 \description{
-Split Train and Test data
+This function divides the dataset into training and testing sets based on a specified proportion.
+It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
+according to the specified data type.
+}
+\examples{
+# Example for binomial data
+data_matrix <- matrix(rnorm(200), ncol = 2)
+outcome_vector <- rbinom(100, 1, 0.5)
+split_data <- SplitTrainTest(x = data_matrix, y = outcome_vector, train_ratio = 0.7, type = "binomial", seed = 123)
+print(split_data)
+
+# Example for survival data
+survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
+split_data_survival <- SplitTrainTest(x = data_matrix, y = survival_outcomes, train_ratio = 0.7, type = "survival", seed = 123)
+print(split_data_survival)
 }

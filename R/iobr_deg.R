@@ -2,41 +2,40 @@
 
 
 
-
-
-#' iobr_deg
-#' @description This function performs differential expression analysis on gene expression data using the DESeq2 or limma method. It filters low count data, calculates fold changes and adjusted p-values, and identifies differentially expressed genes (DEGs) based on specified cutoffs. It also provides optional visualization tools such as volcano plots and heatmaps. The function saves the results as an RData file and an Excel file.
+#' Differential Expression Analysis
 #'
-#' @param eset The gene expression data matrix
-#' @param annotation (Optional) The annotation object for mapping gene IDs to gene names. Default is NULL.
-#' @param pdata The DataFrame containing sample information and group labels.
-#' @param group_id The column name in "pdata" that specifies the group labels. Default value is "group".
-#' @param pdata_id The column name in "pdata" that specifies the sample IDs. Default value is "ID".
-#' @param array Logical value indicating whether to normalize the gene expression data using quantile normalization. Default value is TRUE.
-#' @param method The method to be used for differential expression analysis. Options are "DESeq2" or "limma". Default value is "DESeq2".
-#' @param contrast A character vector specifying the contrast for the analysis.  The first and second elements are the names of the two groups being compared. Default value is  "High" and "Low".
-#' @param padj_cutoff The adjusted p-value cutoff for determining significance. Default value is 0.01.
-#' @param logfc_cutoff The log2 fold change cutoff for determining significance. Default value is 0.5.
-#' @param volcano_plot Logical value indicating whether to generate a volcano plot. Default value is FALSE.
-#' @param col_volcano The color index for plotting the volcano plot. Default value is 1.
-#' @param heatmap Logical value indicating whether to generate a heatmap. Default value is TRUE.
-#' @param col_heatmap The color index for plotting the heatmap. Default value is 1.
-#' @param path path to save results
-#' @param parallel default is FALSE
-#' @param id_anno Identifier of annotation data matched to row names of eset
+#' Performs differential expression analysis on gene expression data using either the DESeq2 or limma method.
+#' It includes pre-processing steps like filtering low count data, and calculates fold changes and adjusted p-values.
+#' Optionally, it generates visualization outputs such as volcano plots and heatmaps. The results are saved in both
+#' RData and Excel file formats.
 #'
-#' @importFrom limma lmFit
-#' @author Dongqiang Zeng
-#' @return DEG object
+#' @param eset A matrix of gene expression data where rows represent genes and columns represent samples.
+#' @param annotation (Optional) An object for mapping gene IDs to gene names, defaults to NULL.
+#' @param pdata A DataFrame containing sample information and grouping labels necessary for differential analysis.
+#' @param group_id The name of the column in `pdata` that contains the grouping labels, defaults to 'group'.
+#' @param pdata_id The name of the column in `pdata` that specifies the sample IDs, defaults to 'ID'.
+#' @param array A logical indicating whether to perform quantile normalization on the expression data, defaults to TRUE.
+#' @param method The method used for differential expression analysis, with options 'DESeq2' or 'limma', default is 'DESeq2'.
+#' @param contrast Specifies the contrast groups for comparison, default is c("High", "Low").
+#' @param padj_cutoff The cutoff for adjusted p-values to determine significant changes, default is 0.01.
+#' @param logfc_cutoff The log2 fold change cutoff for significance, default is 0.5.
+#' @param volcano_plot A logical indicating if a volcano plot should be generated, default is FALSE.
+#' @param col_volcano Specifies the color index for the volcano plot, default is 1.
+#' @param heatmap A logical indicating if a heatmap should be generated, default is TRUE.
+#' @param col_heatmap Specifies the color index for the heatmap, default is 1.
+#' @param path The directory path where the results should be saved, if NULL, it defaults to creating a 'Result-of-DEGs' folder.
+#' @param parallel A logical value indicating if the DESeq2 or limma should run in parallel, default is FALSE.
+#' @param id_anno An optional parameter that specifies the identifier used to match the annotation data to the row names of `eset`.
+#'
+#' @return Returns an object containing the differentially expressed genes with additional statistics like log2 fold changes and adjusted p-values.
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
-#'
 #' data("eset_stad", package = "IOBR")
 #' data("stad_group", package = "IOBR")
 #' library(DESeq2)
 #' deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
-
 iobr_deg<-function(eset,
                    annotation    = NULL,
                    id_anno       = NULL,
@@ -55,7 +54,6 @@ iobr_deg<-function(eset,
                    col_heatmap  = 1,
                    parallel     = FALSE){
 
-  ############################################
   if(is.null(path)){
     # set path to store enrichment analyses result
     path <-creat_folder(paste0("Result-of-DEGs"))

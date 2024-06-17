@@ -26,8 +26,19 @@ palettes(
 
 \item{show_message}{print palettes that can be choose}
 }
+\value{
+A vector of colors based on the selected options.
+}
 \description{
-Choose colors.
+This function selects color palettes based on the type of plot you want to color. It supports multiple categories
+and palette options, allowing for the adjustment of color intensity and the number of colors.
+}
+\examples{
+# Get a palette for box plots with the 'nrc' palette
+colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
+
+# Get a continuous color scale for heatmaps
+heatmap_colors <- palettes(category = "heatmap", palette = 1, counts = 100, show_col = TRUE)
 }
 \author{
 Dongqiang Zeng

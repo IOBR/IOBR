@@ -2,13 +2,32 @@
 % Please edit documentation in R/BinomialModel.R
 \name{Enet}
 \alias{Enet}
-\title{Enet}
+\title{Elastic Net Model Fitting}
 \usage{
 Enet(train.x, train.y, lambdamax, nfold = nfold)
 }
 \arguments{
-\item{nfold}{}
+\item{train.x}{A matrix or data frame containing training predictors.}
+
+\item{train.y}{A numeric vector or factor representing the binary outcome for each sample in the training set.}
+
+\item{lambdamax}{The maximum value of lambda to consider in the regularization path.}
+
+\item{nfold}{The number of folds to use for cross-validation, which also determines the number of repeats for repeated CV.}
+}
+\value{
+A list containing the optimal values of alpha and lambda chosen based on cross-validation.
 }
 \description{
-Enet
+Fits an elastic net model using the `caret` package, allowing for both L1 (Lasso) and L2 (Ridge) regularization.
+The function uses cross-validation to identify the optimal alpha and lambda values that maximize accuracy.
+Alpha ranges from 0 (Ridge) to 1 (Lasso), with lambda controlling the strength of the regularization.
+}
+\examples{
+# Assuming 'train_data' and 'train_outcome' are already defined:
+train_data <- matrix(rnorm(100 * 10), ncol = 10)
+train_outcome <- rbinom(100, 1, 0.5)
+optimal_parameters <- Enet(train.x = train_data, train.y = train_outcome,
+                           lambdamax = 1, nfold = 10)
+print(optimal_parameters)
 }

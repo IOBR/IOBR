@@ -2,7 +2,7 @@
 % Please edit documentation in R/BinomialModel.R
 \name{BinomialModel}
 \alias{BinomialModel}
-\title{Binomial Model construction}
+\title{Binomial Model Construction}
 \usage{
 BinomialModel(
   x,
@@ -11,29 +11,35 @@ BinomialModel(
   scale = TRUE,
   train_ratio = 0.7,
   nfold = 10,
-  plot = T
+  plot = TRUE
 )
 }
 \arguments{
-\item{x}{data.frame contains sample ID and features; The first column of x is the sample ID.}
+\item{x}{A data.frame containing the sample ID and features; the first column must be the sample ID.}
 
-\item{y}{data.frame whose sample ID in the first column and the outcome of each sample in the second sample. Outcome value can be numeric or factor vector.}
+\item{y}{A data.frame where the first column is the sample ID and the second column is the outcome
+of each sample, which can be either numeric or a factor vector.}
 
-\item{seed}{default 123456}
+\item{seed}{An integer used to set the seed for random operations, default is 123456.}
 
-\item{scale}{A logistic: should the x be scaled, default is TRUE.}
+\item{scale}{A logical indicating whether the feature data (x) should be scaled, default is TRUE.}
 
-\item{train_ratio}{Value between 0-1, eg: 0.7; The ratio is used to split the x and y into training and testing data.}
+\item{train_ratio}{A numeric value between 0 and 1 specifying the proportion of the dataset to be
+used for training; e.g., 0.7 means 70% of the data is used for training.}
 
-\item{nfold}{default 10}
+\item{nfold}{The number of folds to use for cross-validation in model fitting, default is 10.}
 
-\item{plot}{A logistic, default is TRUE.}
+\item{plot}{A logical indicating whether to generate and display AUC plots, default is TRUE.}
 }
 \value{
-a list contain the results of 2 model (Lasso, Ridge) and the input train data.
+A list containing the results of the Lasso and Ridge models, and the input training data.
+        The list includes elements 'lasso_result', 'ridge_result', and 'train.x'.
 }
 \description{
-Binomial Model construction
+Constructs and evaluates binomial logistic regression models using Lasso and Ridge regularization.
+This function processes the input data, scales features if specified, splits the data into training
+and testing sets based on a provided ratio, and then fits both Lasso and Ridge models. It optionally
+generates AUC plots for model evaluation. The results, along with the training dataset, are returned.
 }
 \examples{
 data("imvigor210_sig", package = "IOBR")

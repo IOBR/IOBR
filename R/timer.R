@@ -60,16 +60,16 @@ timer_available_cancers <- c('kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kir
 #' sample_names_cancer <- paste0("CancerSample", 1:10)
 #' cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
 #'                      dimnames = list(gene_names, sample_names_cancer))
-#' 
+#'
 #' # Generate synthetic expression data for immune cells
 #' sample_names_immune <- paste0("ImmuneSample", 1:5)
 #' immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
 #'                      dimnames = list(gene_names, sample_names_immune))
-#' 
+#'
 #' # Create a cell type vector for immune samples
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 #' names(immune.cellType) <- sample_names_immune
-#' 
+#'
 #' result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   ## intersect the gene names of cancer.exp and immune.exp
@@ -100,20 +100,20 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   tmp0 <- c()
   for(kk in unique(names(immune.cellType))){
     tmp.vv <- which(names(immune.cellType) == kk)
-    
+
     if(length(tmp.vv) == 1){
       median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE], 1, median, na.rm = TRUE)
     } else {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
-    
+
     if(!exists("tmp0")){
       tmp0 <- median_expression
     } else {
       tmp0 <- cbind(tmp0, median_expression)
     }
   }
-  
+
   immune.exp.agg.br <- tmp0
   colnames(immune.exp.agg.br) <- unique(names(immune.cellType))
   return(list(as.matrix(dd.br), immune.exp.br, immune.exp.agg.br))
@@ -129,8 +129,8 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' If the cancer type from the batch is not recognized, the function will halt and
 #' report an error.
 #'
-#' @param args A list containing either a path to a batch file ('batch') or 
-#' direct expressions and category inputs ('expression' and 'category'). 
+#' @param args A list containing either a path to a batch file ('batch') or
+#' direct expressions and category inputs ('expression' and 'category').
 #' If 'batch' is provided, it should be a path to a comma-separated file where the
 #' second column contains cancer categories. If 'batch' is not provided, 'expression'
 #' and 'category' should be used to manually specify data.
@@ -139,6 +139,13 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' and one for cancer categories. Each row corresponds to a record from the input batch.
 #'
 #' @examples
+#' # Using a batch file:
+#' args <- list(batch = "path/to/batch_file.csv")
+#' result <- check_cancer_types(args)
+#'
+#' # Using direct inputs:
+#' args <- list(expression = c("exp1", "exp2"), category = c("lung", "breast"))
+#' result <- check_cancer_types(args)
 check_cancer_types <- function(args) {
   if (length(args$batch) != 0) {
     TimerINFO("Enter batch mode\n")
@@ -302,16 +309,16 @@ ParseInputExpression <- function(path) {
 #'
 #' @examples
 #' cancer_exp <- rnorm(100, mean = 5, sd = 1.5)
-#' 
+#'
 #' immune_exp <- rnorm(100, mean = 5, sd = 1.5)
-#' 
+#'
 #' expression_data <- data.frame(
 #'   Cancer_Expression = cancer_exp,
 #'   Immune_Expression = immune_exp
 #' )
-#' 
-#' DrawQQPlot(cancer.exp = expression_data$Cancer_Expression, 
-#'            immune.exp = expression_data$Immune_Expression, 
+#'
+#' DrawQQPlot(cancer.exp = expression_data$Cancer_Expression,
+#'            immune.exp = expression_data$Immune_Expression,
 #'            name = "Comparison of Gene Expression")
 DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
   ## q-q plot by sample should look like a straight line.
@@ -330,7 +337,7 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
 
 #' Get Outlier Genes
 #'
-#' This function identifies outlier genes from multiple cancer datasets. 
+#' This function identifies outlier genes from multiple cancer datasets.
 #' It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
 #'
 #' @param cancers A dataframe with one column containing paths to gene expression files.
@@ -339,9 +346,9 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
 #' @export
 #'
 #' @examples
-#' cancers <- data.frame(ExpressionFiles = c("path/to/expression1.csv", 
+#' cancers <- data.frame(ExpressionFiles = c("path/to/expression1.csv",
 #'                                           "path/to/expression2.csv"))
-#' 
+#'
 #' # Get outlier genes
 #' outlier_genes <- GetOutlierGenes(cancers)
 GetOutlierGenes <- function (cancers) {
@@ -371,6 +378,11 @@ GetOutlierGenes <- function (cancers) {
 #' @export
 #'
 #' @examples
+#' args <- list(
+#'   outdir = "path/to/output",
+#'   batch = "path/to/batch.csv"
+#' )
+#' results <- deconvolute_timer.default(args)
 deconvolute_timer.default = function(args) {
 
 

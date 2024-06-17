@@ -4,7 +4,7 @@
 
 
 
-#' Title combine_pd_eset
+#' combine pdata and eset
 #'
 #' @description combine_pd_eset combines the expression set (eset) with phenotype data (pdata).
 #' @param eset Expression set matrix or data frame.

@@ -2,13 +2,23 @@
 % Please edit documentation in R/IPS_helper.R
 \name{mapbw}
 \alias{mapbw}
-\title{Title}
+\title{Map Black and White Colors Based on Input Value}
 \usage{
 mapbw(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{A numeric value to be mapped to a color.}
+}
+\value{
+A color from the predefined black and white palette corresponding to the input value.
 }
 \description{
-Title
+This function maps a numeric input value to a color from a predefined black and white palette.
+}
+\examples{
+# Define a black and white palette with 1001 colors
+my_palette2 <- colorRampPalette(c("black", "white"))(1001)
+# Map a value to a color
+color <- mapbw(1.5)
+print(color)
 }

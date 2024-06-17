@@ -4,7 +4,7 @@
 #' expressed genes across different cell types specified in `pheno`. It computes median expression levels
 #' of these significant genes to create a reference signature matrix. The function is particularly useful
 #' for constructing signature matrices in gene expression studies involving multiple cell types or conditions.
-#' 
+#'
 #'
 #' @param dat data frame or matrix; gene probes in the row and samples in the column
 #' @param pheno character vector; cell type class of the samples
@@ -21,6 +21,11 @@
 #' @export
 #'
 #' @examples
+#' # Assume 'dat' is a matrix of gene expression data and 'pheno' is the corresponding cell type information
+#' dat <- matrix(rnorm(2000), nrow = 100)
+#' pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
+#' results <- generateRef_limma(dat, pheno)
+#' print(results)
 generateRef_limma <- function(dat, pheno, FDR = 0.05){
   pheno <- factor(pheno)
   design <- model.matrix(~0 + pheno)
@@ -65,15 +70,15 @@ generateRef_limma <- function(dat, pheno, FDR = 0.05){
 
 #' Construct Contrast Matrix
 #'
-#' This function creates a contrast matrix for differential analysis, where each phenotype level is contrasted 
+#' This function creates a contrast matrix for differential analysis, where each phenotype level is contrasted
 #' against all other levels combined. This is particularly useful in linear models for comparing multiple groups.
 #'
 #' @param pheno A factor variable with different levels representing groups or conditions to contrast.
 #' @param mode Currently unused but reserved for future extensions where different modes of contrast might be implemented.
 #'
-#' @return A square matrix with dimensions equal to the number of levels in `pheno`. 
+#' @return A square matrix with dimensions equal to the number of levels in `pheno`.
 #'         Each row represents a contrast where the corresponding level is compared against the average of others.
-#'         The matrix elements are set to -1 for non-diagonal cells (indicating comparison groups) 
+#'         The matrix elements are set to -1 for non-diagonal cells (indicating comparison groups)
 #'         and 1 for diagonal cells (indicating the group of interest).
 #' @export
 #'

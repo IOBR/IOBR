@@ -7,14 +7,25 @@
 merge_eset(eset1, eset2, eset3 = NULL)
 }
 \arguments{
-\item{eset1}{eset1}
+\item{eset1}{The first expression set to be merged.}
 
-\item{eset2}{eset2}
+\item{eset2}{The second expression set to be merged.}
 
-\item{eset3}{eset3, default is NULL}
+\item{eset3}{The optional third expression set to be merged; default is NULL.}
+}
+\value{
+A merged expression set from the input expression sets, with duplicate gene symbols removed.
 }
 \description{
-Merge expression sets by row names
+This function merges two or three expression sets by their row names, ensuring that 
+no duplicated gene symbols remain after the merge. It is particularly useful in 
+bioinformatics workflows where combining multiple datasets into a single expression 
+set is required for downstream analysis.
+}
+\examples{
+# Assuming `eset1`, `eset2`, and `eset3` are available in the environment
+# All three expression sets must have the same row names (gene symbols)
+merged_eset <- merge_eset(eset1, eset2, eset3)
 }
 \author{
 Dongqiang Zeng

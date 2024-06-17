@@ -2,14 +2,14 @@
 % Please edit documentation in R/surv_group.R
 \name{surv_group}
 \alias{surv_group}
-\title{Drawing KM-plot to a Categorical variable with two or more groups}
+\title{Generate Kaplan-Meier Survival Plots for Categorical Groups}
 \usage{
 surv_group(
   input_pdata,
   target_group,
   ID = "ID",
   levels = c("High", "Low"),
-  reference_group = "High",
+  reference_group = NULL,
   project = NULL,
   time = "time",
   status = "status",
@@ -27,51 +27,55 @@ surv_group(
 )
 }
 \arguments{
-\item{input_pdata}{DATA}
+\item{input_pdata}{A data frame containing survival data and grouping variables.}
 
-\item{target_group}{target of binary variable}
+\item{target_group}{The name of the column in input_pdata that contains the grouping variable.}
 
-\item{ID}{identifier of data}
+\item{ID}{The name of the column in input_pdata that serves as a unique identifier for each row.}
 
-\item{levels}{level of variable}
+\item{levels}{A vector of names for the levels of the target_group; used for labeling in the plot.}
 
-\item{reference_group}{default is}
+\item{reference_group}{The reference level for comparison in survival analysis; used only for binary groups.}
 
-\item{project}{name of main title}
+\item{project}{An optional title for the plot; used in file naming and plot subtitles.}
 
-\item{time}{column name of follow up time}
+\item{time}{The name of the column containing follow-up times.}
 
-\item{status}{status}
+\item{status}{The name of the column containing event indicators (1=event occurred, 0=censored).}
 
-\item{time_type}{month or day}
+\item{time_type}{Units of follow-up time ('month' or 'day'). Converts days to months if 'day' is selected.}
 
-\item{break_month}{break of time}
+\item{break_month}{The interval for breaking time on the X-axis of the plot. If 'auto', it is calculated automatically.}
 
-\item{cols}{if null, palette should be set}
+\item{cols}{A vector of colors for the plot lines; if NULL, uses a default palette based on 'palette' parameter.}
 
-\item{palette}{default is `jama`, if cols is null}
+\item{palette}{The name of the color palette to use if 'cols' is NULL. Common choices include 'jama' and other palette names from the `ggsci` package.}
 
-\item{mini_sig}{prefix of variable}
+\item{mini_sig}{A prefix label for variables in the plot, typically indicating a scoring metric.}
 
-\item{save_path}{default is KMplot}
+\item{save_path}{The directory path where the plot should be saved.}
 
-\item{fig.type}{default is pdf, other option is png}
+\item{fig.type}{The file format for the saved plot ('pdf' or 'png').}
 
-\item{index}{folder name}
+\item{index}{A unique identifier for the plot file, typically used in file naming.}
 
-\item{width}{default is 6}
+\item{width}{The width of the output plot.}
 
-\item{height}{default is 6.5}
+\item{height}{The height of the output plot.}
 
-\item{font.size.table}{default is 62}
+\item{font.size.table}{The font size used in the plot's risk table.}
+}
+\value{
+Saves the Kaplan-Meier plot to the specified path and returns the plot object.
 }
 \description{
-Drawing KM-plot to a Categorical variable with two or more groups
+This function creates Kaplan-Meier survival plots for data grouped by a categorical variable.
+It handles both binary and multi-level categorical groups, adjusts follow-up times, and allows for
+customizable plot aesthetics and output formats.
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
 surv_group(input_pdata = tcga_stad_pdata, target_group = "TMEscore_plus_binary", time = "time", status = "OS_status")
-
 }
 \author{
 Dongqiang Zeng

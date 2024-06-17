@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_cor_plot.R
 \name{iobr_cor_plot}
 \alias{iobr_cor_plot}
-\title{Integrative correlation between phenotype and features}
+\title{Integrative Correlation Between Phenotype and Features}
 \usage{
 iobr_cor_plot(
   pdata_group,
@@ -34,60 +34,76 @@ iobr_cor_plot(
 )
 }
 \arguments{
-\item{pdata_group}{A data frame to be analyzed, including id1 and phenotype data}
+\item{pdata_group}{A data frame containing phenotype data including an identifier column.}
 
-\item{id1}{column of identifier to pdata}
+\item{id1}{Column name in `pdata_group` serving as the identifier.}
 
-\item{feature_data}{A data frame which should contain the feature data.}
+\item{feature_data}{A data frame containing feature data corresponding to the identifiers.}
 
-\item{id2}{column of identifier of feature data}
+\item{id2}{Column name in `feature_data` serving as the identifier.}
 
-\item{target}{default is NULL, column of target variables if target is continuous}
+\item{target}{Optional; the column name for the target variable if continuous. Default is NULL.}
 
-\item{group}{The grouping variable, default is "group3".}
+\item{group}{The grouping variable name used for categorical analysis, default is "group3".}
 
-\item{is_target_continuous}{logical variable, if TRUE, new group will be generated based on the average or the third percentile}
+\item{is_target_continuous}{Logical; specifies if the target variable is continuous, affecting grouping strategy.}
 
-\item{padj_cutoff}{cutoff of adjust p-value to filter features when number of features is larger than `feature_limit`}
+\item{padj_cutoff}{Cutoff for adjusted p-values to filter features, default is 1.}
 
-\item{index}{index use to order the file name}
+\item{index}{Numeric index used to order file names for output.}
 
-\item{category}{`signature` or `gene`}
+\item{category}{Specifies if the data pertains to 'signature' or 'gene'.}
 
-\item{signature_group}{for signature group： `sig_group`, for gene_group `signature_collection` or `signature_tme`}
+\item{signature_group}{Grouping variable for signatures; differentiates between 'sig_group' for signature grouping
+or 'signature_collection'/'signature_tme' for gene grouping.}
 
-\item{ProjectID}{names to define the file names}
+\item{ProjectID}{Identifier for the project, used in file naming.}
 
-\item{palette_box}{palette for box plot}
+\item{palette_box}{Color palette for box plots.}
 
-\item{cols_box}{Color settings for the box, default is NULL.}
+\item{cols_box}{Optional; specific color settings for the box, default is NULL.}
 
-\item{palette_corplot}{palette for cor-plot}
+\item{palette_corplot}{Color palette for correlation plots.}
 
-\item{palette_heatmap}{palette for heat map}
+\item{palette_heatmap}{Index for heatmap color palette.}
 
-\item{feature_limit}{The limitation of a feature, default is 26.}
+\item{feature_limit}{Maximum number of features to consider, default is 26.}
 
-\item{character_limit}{The limitation of a character, default is 60.}
+\item{character_limit}{Maximum number of characters for variable labels, default is 60.}
 
-\item{show_heatmap_col_name}{A logical value to indicate if heatmap column names should be displayed, default is FALSE.}
+\item{show_heatmap_col_name}{Logical; if TRUE, shows column names on the heatmap.}
 
-\item{show_col}{A logical value to determine if the color should be shown, default is FALSE.}
+\item{show_col}{Logical; if TRUE, shows color codes for palettes.}
 
-\item{show_plot}{logical variable, if TRUE, plots will be print}
+\item{show_plot}{Logical; if TRUE, prints plots to the display.}
 
-\item{path}{The path for output file storing, default is NULL.}
+\item{path}{Optional; path to save output files. Default is NULL.}
 
-\item{discrete_x}{if maximal character length of variables is larger than discrete_x, label will be discrete}
+\item{discrete_x}{Numeric threshold for character length beyond which labels will be discretized.}
 
-\item{discrete_width}{numeric, default is 30, range from 20 to 80.}
+\item{discrete_width}{Numeric; specifies the width for label wrapping in plots.}
 
-\item{show_palettes}{default is FALSE}
+\item{show_palettes}{Logical; if TRUE, displays color palettes used.}
 
-\item{fig.type}{default is pdf, if not, figure will be saved in png format.}
+\item{fig.type}{Format for saving figures, default is 'pdf', can be changed to 'png'.}
+}
+\value{
+Depending on the configuration, this function returns various plots such as box plots, heatmaps, and correlation plots,
+        and may also return a dataframe containing statistical analysis results.
 }
 \description{
-Integrative correlation between phenotype and features
+Performs integrative correlation analysis between phenotype data and feature data, supporting both continuous
+and categorical phenotypes. This function filters features based on adjusted p-value cutoffs and can visualize
+results in various plot formats including box plots, heatmaps, and correlation plots.
+}
+\examples{
+# Assuming 'pdata_group' and 'feature_data' are predefined:
+pdata_group <- data.frame(ID = 1:100, phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
+feature_data <- data.frame(ID = 1:100, Feature1 = rnorm(100), Feature2 = rnorm(100))
+results <- iobr_cor_plot(pdata_group = pdata_group, feature_data = feature_data,
+                         id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
+                         show_plot = TRUE, path = "path/to/save/results")
+print(results)
 }
 \author{
 Dongqiang Zeng

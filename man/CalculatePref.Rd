@@ -2,13 +2,31 @@
 % Please edit documentation in R/BinomialModel.R
 \name{CalculatePref}
 \alias{CalculatePref}
-\title{Calculate Pref}
+\title{Calculate Performance Metrics}
 \usage{
 CalculatePref(model, newx, s, acture.y)
 }
 \arguments{
-\item{acture.y}{}
+\item{model}{A model object used to generate predictions.}
+
+\item{newx}{A matrix or data frame of new data on which the model will predict.}
+
+\item{s}{A character vector or single character string indicating the regularization strength at which
+the model should be evaluated. Common values are 'lambda.min' and 'lambda.1se' for models fitted with
+methods such as glmnet.}
+
+\item{acture.y}{A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.}
+}
+\value{
+A performance object from the ROCR package, which includes true positive and false positive rates.
 }
 \description{
-Calculate Pref
+Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
+This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
+assess the discriminative ability of the model under various regularization strengths specified by 's'.
+}
+\examples{
+# Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
+perf_metrics <- CalculatePref(model = fitted_model, newx = new_data, s = "lambda.min", acture.y = actual_outcomes)
+print(perf_metrics)
 }

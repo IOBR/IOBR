@@ -56,6 +56,9 @@ roc_time(
 
 \item{height}{A numeric value specifying the height of the plot (default is 5.2).}
 }
+\value{
+A ggplot object representing the ROC plot.
+}
 \description{
 The "roc_time" function generates a Receiver Operating Characteristic (ROC) plot over time to assess the predictive performance of one or more variables in survival analysis. It calculates the Area Under the Curve (AUC) for each specified time point and variable combination, and creates a multi-line ROC plot with corresponding AUC values annotated.
 }

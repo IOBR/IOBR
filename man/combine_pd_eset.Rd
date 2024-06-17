@@ -2,7 +2,7 @@
 % Please edit documentation in R/combine_pd_eset.R
 \name{combine_pd_eset}
 \alias{combine_pd_eset}
-\title{Title combine_pd_eset}
+\title{combine pdata and eset}
 \usage{
 combine_pd_eset(
   eset,
@@ -28,6 +28,9 @@ combine_pd_eset(
 \item{scale}{Logical value indicating whether to scale the expression set. Default is TRUE.}
 
 \item{choose_who_when_duplicate}{String indicating the preference when encountering duplicate IDs in pdata and eset.}
+}
+\value{
+A data frame combining phenotype data and expression set.
 }
 \description{
 combine_pd_eset combines the expression set (eset) with phenotype data (pdata).

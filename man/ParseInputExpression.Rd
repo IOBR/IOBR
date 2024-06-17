@@ -2,13 +2,29 @@
 % Please edit documentation in R/timer.R
 \name{ParseInputExpression}
 \alias{ParseInputExpression}
-\title{Input gene expression}
+\title{Parse Input Gene Expression Data}
 \usage{
 ParseInputExpression(path)
 }
 \arguments{
-\item{path}{path of data}
+\item{path}{The file path of the gene expression data in TSV format.
+The data should have gene identifiers as row names and sample identifiers
+as column headers. The first row and column are expected to be headers.}
+}
+\value{
+A numeric matrix of the gene expression data, with genes as rows and
+        samples as columns.
 }
 \description{
-Input gene expression
+This function reads gene expression data from a specified file path, expecting
+a tab-separated values (TSV) format with the first column as row names. It converts
+the loaded data into a numeric matrix, which is suitable for downstream analysis.
+Optionally, it can also modify the row names using `ConvertRownameToLoci` if uncommented.
+}
+\examples{
+# Path to gene expression data file
+example_path <- "path/to/gene_expression_data.csv"
+# Parse the gene expression data
+gene_expression_data <- ParseInputExpression(example_path)
+print(gene_expression_data)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_forest.R
 \name{sig_forest}
 \alias{sig_forest}
-\title{Forest plot of survival analysis results.}
+\title{Forest Plot for Survival Analysis Results}
 \usage{
 sig_forest(
   data,
@@ -14,37 +14,44 @@ sig_forest(
   n = 10,
   max_character = 25,
   discrete_width = 35,
-  color_option = 1
+  color_option = 1,
+  text.size = 13
 )
 }
 \arguments{
-\item{data}{survival result}
+\item{data}{A data frame containing survival analysis results including p-values, HRs, and confidence intervals.}
 
-\item{signature}{column of signatures}
+\item{signature}{The name of the column in `data` that contains the signatures or feature names.}
 
-\item{pvalue}{P value of survival result}
+\item{pvalue}{The name of the column in `data` that contains p-values; default is "P".}
 
-\item{HR}{Hazard ratio of survival result}
+\item{HR}{The name of the column in `data` that contains hazard ratios; default is "HR".}
 
-\item{CI_low_0.95}{confidence interval}
+\item{CI_low_0.95}{The name of the column in `data` that contains the lower bound of the 95% confidence interval; default is "CI_low_0.95".}
 
-\item{CI_up_0.95}{confidence interval}
+\item{CI_up_0.95}{The name of the column in `data` that contains the upper bound of the 95% confidence interval; default is "CI_up_0.95".}
 
-\item{n}{maximum of signatures}
+\item{n}{The maximum number of signatures to display in the plot; default is 10.}
 
-\item{max_character}{maximum of character}
+\item{max_character}{The maximum number of characters for signature labels before wrapping; default is 25.}
 
-\item{discrete_width}{discrete width, default is 35}
+\item{discrete_width}{The width for discretizing long labels, default is 35.}
 
-\item{color_option}{default is 1, other option:2, 3}
+\item{color_option}{Color option for the p-value gradient in the plot, with default 1 and alternatives 2 or 3.}
+
+\item{text.size}{Text size for the y-axis labels; default is 13.}
+}
+\value{
+A ggplot object representing the forest plot, which is also printed to the display.
 }
 \description{
-Forest plot of survival analysis results.
+Generates a forest plot to visualize survival analysis results, showing hazard ratios (HRs), confidence intervals,
+and p-values for selected gene signatures or features. This function is useful for assessing the impact of various
+biomarkers on survival in a visually interpretable manner.
 }
 \examples{
 sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))
 sig_forest(data = sig_surv_result, signature = "ID")
-
 }
 \author{
 Dongqiang Zeng

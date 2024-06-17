@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_mutations.R
 \name{find_mutations}
 \alias{find_mutations}
-\title{Searching for mutations related to signature score}
+\title{Mutation Analysis Related to Signature Scores}
 \usage{
 find_mutations(
   mutation_matrix,
@@ -28,55 +28,63 @@ find_mutations(
 )
 }
 \arguments{
-\item{mutation_matrix}{mutation matrix with sample name in the row and genes in the column}
+\item{mutation_matrix}{A matrix with sample names in the rows and genes in the columns representing mutation data.}
 
-\item{signature_matrix}{signature data frame with identifier and target signatures}
+\item{signature_matrix}{A dataframe with identifier and target signatures.}
 
-\item{id_signature_matrix}{column name of identifier}
+\item{id_signature_matrix}{The column name in the signature_matrix that acts as the identifier.}
 
-\item{signature}{name of target signature}
+\item{signature}{The name of the target signature for analysis.}
 
-\item{min_mut_freq}{minimum frequency of mutations}
+\item{min_mut_freq}{The minimum frequency of mutations required to consider a gene in the analysis.}
 
-\item{plot}{logical variable, if TRUE, plot will be save in the `save_path`}
+\item{plot}{A logical value; if TRUE, results will be plotted and saved at `save_path`.}
 
-\item{method}{multi or Wilcoxon test only, if `multi` is applied, both `cuzick test` and `wilcoxon` will be performed}
+\item{method}{Specifies the statistical test method; "multi" for both Cuzick and Wilcoxon tests or "Wilcoxon" for only the Wilcoxon test.}
 
-\item{point.alpha}{point.alpha of boxplot}
+\item{save_path}{The directory path where plots and statistical analysis results will be saved.}
 
-\item{save_path}{path to save plot and statistical analyses}
+\item{palette}{The color palette for box plots.}
 
-\item{palette}{palette of box plot}
+\item{show_plot}{A logical variable; if TRUE, plots will be rendered on display.}
 
-\item{show_plot}{logical variable, if TRUE, plot will be printed.}
+\item{show_col}{Whether to show the color code of the palette.}
 
-\item{show_col}{show code of palette}
+\item{width}{The width of the oncoprint plot.}
 
-\item{width}{width of oncoprint}
+\item{height}{The height of the oncoprint plot.}
 
-\item{height}{height of oncoprint}
+\item{oncoprint_group_by}{Specifies how to group the oncoprint, options are "mean" or "quantile".}
 
-\item{oncoprint_group_by}{signature must be group by mean or quantile}
+\item{oncoprint_col}{The color for mutations in the oncoprint.}
 
-\item{oncoprint_col}{color of mutation}
+\item{gene_counts}{The number of genes to display in the oncoprint.}
 
-\item{gene_counts}{define the number of genes which will be shown in the oncoprint}
+\item{jitter}{A logical value; if TRUE, adds jitter to the box plot points.}
 
-\item{jitter}{if true, each point will be drawn in the box plot with jitter}
+\item{genes}{A vector of gene names for drawing; if NULL, genes are selected based on mutation frequency.}
 
-\item{genes}{genes for drawing}
+\item{point_size}{The size of points in the box plot.}
 
-\item{point_size}{default is 4.5}
+\item{point_alpha}{The transparency level of points in the box plot.}
+}
+\value{
+Returns a list containing results from the statistical tests, oncoprint plots, and box plots.
 }
 \description{
-Searching for mutations related to signature score
+This function searches for mutations related to a specific signature score and conducts statistical tests to evaluate
+their significance. It can generate oncoprints and box plots to visualize the relationships and save the results.
 }
 \examples{
-# MAF data download from UCSC Xena hub
-maf_file<-"E:/18-Github/Organization/TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf"
-mut_list<-make_mut_matrix(maf = maf_file, isTCGA   = T, category = "multi")
-mut<-mut_list$snp
-res<-find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig, id_signature_matrix = "ID",signature = "CD_8_T_effector",min_mut_freq = 0.01, plot  = TRUE, jitter = TRUE, point.alpha = 0.25
+# Load mutation and signature data
+maf_file <- "path_to_maf_file"
+mut_list <- make_mut_matrix(maf = maf_file, isTCGA = TRUE, category = "multi")
+mut <- mut_list$snp
+# Assume 'tcga_stad_sig' is preloaded with appropriate data
+results <- find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig,
+                          id_signature_matrix = "ID", signature = "CD_8_T_effector",
+                          min_mut_freq = 0.01, plot = TRUE, method = "multi",
+                          save_path = "path_to_save_results")
 }
 \author{
 Dongqiang Zeng

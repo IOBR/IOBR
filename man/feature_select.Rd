@@ -2,7 +2,7 @@
 % Please edit documentation in R/feature_selection.R
 \name{feature_select}
 \alias{feature_select}
-\title{Feature selection}
+\title{Feature Selection}
 \usage{
 feature_select(
   x,
@@ -14,30 +14,34 @@ feature_select(
 )
 }
 \arguments{
-\item{x}{input matrix.Rownames should be features like gene symbols or cgi, colnames be samples}
+\item{x}{A matrix with rownames representing features like gene symbols or cgi, and colnames as samples.}
 
-\item{y}{response variable. Data type can be quantitative, binary and survival. Survival type can be generated through ?survival::Surv}
+\item{y}{A response variable vector that can be quantitative, binary, or survival type.}
 
-\item{method}{Binary for method = "dif", quantitative response value for "dif" and "cor".}
+\item{method}{Specifies the method for feature selection; "cor" for correlation or "dif" for differential expression.}
 
-\item{family}{For method="cor", useser can choose "spearman" or "pearson" .}
+\item{family}{Specifies the correlation method to use if method="cor"; options are "spearman" or "pearson".}
 
-\item{cutoff}{Numeric. Estimate and log2FC cutoff value for correlation analysis and limma dif analysis.}
+\item{cutoff}{Numeric value for estimating and log2 fold change cutoff for correlation analysis and limma differential analysis.}
 
-\item{padjcut}{Numeric. Adjust P value cutoff.}
+\item{padjcut}{Numeric value for adjusted P-value cutoff.}
+}
+\value{
+Returns a vector of selected feature names based on the specified criteria.
 }
 \description{
-Feature selection
+This function selects features based on either correlation or differential expression analysis.
+It uses the 'limma' package for differential expression and basic statistical tests for correlation analysis.
 }
 \examples{
+data("imvigor210_eset",package = "IOBR")
+data("imvigor210_pdata", package = "IOBR")
 
-data("crc_clin")
-data("tcga_crc_exp")
-mad <- apply(tcga_crc_exp, 1, mad)
-tcga_crc_exp <- tcga_crc_exp[mad > 0.5, ]
-pd1 <- as.numeric(tcga_crc_exp["PDCD1", ])
+mad <- apply(imvigor210_eset, 1, mad)
+imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
+pd1 <- as.numeric(imvigor210_eset["PDCD1", ])
 group <- ifelse(pd1 > mean(pd1), "high", "low")
-pd1_cor <- feature_select(x = tcga_crc_exp, y = pd1, method = "cor", family = "pearson", padjcut = 0.05, cutoff = 0.5)
-pd1_dif <- feature_select(x = tcga_crc_exp, y = pd1, method = "dif", padjcut = 0.05, cutoff = 2)
-pd1_dif_2 <- feature_select(x = tcga_crc_exp, y = group, method = "dif", padjcut = 0.05, cutoff = 2)
+pd1_cor <- feature_select(x = imvigor210_eset, y = pd1, method = "cor", family = "pearson", padjcut = 0.05, cutoff = 0.5)
+pd1_dif <- feature_select(x = imvigor210_eset, y = pd1, method = "dif", padjcut = 0.05, cutoff = 2)
+pd1_dif_2 <- feature_select(x = imvigor210_eset, y = group, method = "dif", padjcut = 0.05, cutoff = 2)
 }

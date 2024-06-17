@@ -2,13 +2,38 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{CalculateTimeROC}
 \alias{CalculateTimeROC}
-\title{Calculate Time ROC}
+\title{Calculate Time-Dependent ROC}
 \usage{
-CalculateTimeROC(model, newx, s, acture.y, foldername, modelname)
+CalculateTimeROC(model, newx, s, acture.y, modelname, time_prob = 0.9)
 }
 \arguments{
-\item{modelname}{}
+\item{model}{A survival model object from which predictions will be made.}
+
+\item{newx}{A matrix or data frame of new data points for which predictions need to be made.}
+
+\item{s}{The value of the penalty parameter 'lambda' at which predictions are requested.
+This can be a specific value or a character string specifying a criterion,
+such as 'lambda.min' or 'lambda.1se' which are commonly used in models like those from `glmnet`.}
+
+\item{acture.y}{A data frame containing the actual survival data, expected to have at least two columns:
+'time' which is the survival time, and 'status' which is the event indicator (1 if the event occurred, 0 otherwise).}
+
+\item{modelname}{A character string specifying the name of the model, used for identification in outputs or plots.}
+
+\item{time_prob}{A numeric value specifying the quantile of interest for the ROC calculation.
+The default is 0.9, which calculates the ROC at the 90th percentile of the survival time.}
+}
+\value{
+An object of class `timeROC` that contains the time-dependent ROC curve information.
 }
 \description{
-Calculate Time ROC
+This function computes the time-dependent Receiver Operating Characteristic (ROC) curve for a given survival model.
+It uses the `timeROC` package to compute ROC statistics based on predicted risk scores from the model and actual survival outcomes.
+This is particularly useful for evaluating the predictive accuracy of survival models at a specified time probability.
+}
+\examples{
+# Assuming 'fit' is a Cox proportional hazards model fitted using `coxph` or `glmnet`
+new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
+actual_outcome <- data.frame(time = rexp(100, rate = 0.1), status = rbinom(100, size = 1, prob = 0.5))
+roc_info <- CalculateTimeROC(fit, newx = new_data, s = "lambda.min", acture.y = actual_outcome, modelname = "Cox Model")
 }

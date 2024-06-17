@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_roc.R
 \name{sig_roc}
 \alias{sig_roc}
-\title{Drawing multiple AUC into one graph}
+\title{Plot ROC Curves and Compare Them}
 \usage{
 sig_roc(
   data,
@@ -21,34 +21,54 @@ sig_roc(
 )
 }
 \arguments{
-\item{data}{data frame with response and variables}
+\item{data}{A data frame containing the variables specified in `variables` and
+the binary outcome variable specified in `response`.}
 
-\item{response}{response name of data}
+\item{response}{A string specifying the name of the binary outcome variable in `data`.}
 
-\item{variables}{variables}
+\item{variables}{A vector of strings specifying the names of predictor variables
+in `data` for which ROC curves will be plotted.}
 
-\item{fig.path}{default is current working directory}
+\item{fig.path}{The directory path where the output PDF file containing the ROC plots
+will be saved. Default is the current working directory.}
 
-\item{main}{main title of plot}
+\item{main}{The main title for the ROC plot.}
 
-\item{file.name}{file.name, default is}
+\item{file.name}{The name of the output PDF file, without extension. If `NULL`, a
+default name "0-ROC of multiple variables" is used.}
 
-\item{palette}{default is `jama`, if number of variables is bigger than colors of palettes, `random` color will be applied}
+\item{palette}{The color palette to use for plotting the ROC curves. 'jama' is
+the default. If more variables than colors in the palette, a random palette
+is used unless specified in `cols`.}
 
-\item{cols}{users can provide cols manually}
+\item{cols}{A vector of colors to use for the ROC curves. If `NULL`, colors will
+be automatically assigned using the specified `palette`.}
 
-\item{alpha}{default is 1}
+\item{alpha}{The transparency level of colors used in the plot, where 1 is fully
+opaque and 0 is fully transparent. Default is 1.}
 
-\item{compare}{default is FALSE}
+\item{compare}{Logical; if `TRUE`, performs statistical comparison between the
+AUCs of the ROC curves using the method specified in `compare_method`.}
 
-\item{smooth}{default is TRUE}
+\item{smooth}{Logical; if `TRUE`, the ROC curves will be smoothed. Default is `TRUE`.}
 
-\item{compare_method}{default is bootstrap, other option: “delong”, “venkatraman”}
+\item{compare_method}{The method to use for comparing ROC curves if `compare` is TRUE.
+Default is "bootstrap". Other options include "delong" and "venkatraman".}
 
-\item{boot.n}{default is 100 when bootstrap is chosen.}
+\item{boot.n}{The number of bootstrap replications for estimating confidence intervals
+and comparing ROC curves if `compare_method` is "bootstrap". Default is 100.}
+}
+\value{
+A list containing the following components:
+  - `auc.out`: A data frame with columns "Name", "AUC", and "AUC CI" showing the AUC
+    and confidence intervals for each variable.
+  - `legend.name`: A vector of legend entries for the ROC plot.
+  - `p.out`: If `compare` is TRUE, a data frame comparing each pair of ROC curves with
+    columns "ROC1", "ROC2", and "p.value" indicating the p-values of the comparisons.
 }
 \description{
-Drawing multiple AUC into one graph
+This function generates Receiver Operating Characteristic (ROC) curves for multiple
+predictors and optionally compares them using statistical tests.
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")

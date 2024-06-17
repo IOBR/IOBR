@@ -3,7 +3,7 @@ Type: Package
 Title: Immune Oncology Biological Research
 Version: 0.99.8
 Author: Dongqiang Zeng, Yiran Fang, Zilan Ye, Rongfang Shen, Yi Xiong, Guangchuang Yu, Shixiang Huang
-Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
+Maintainer: Dongqiang Zeng <interlaken@smu.edu.cn>
 Description: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures
 License: GPL-3
 Encoding: UTF-8

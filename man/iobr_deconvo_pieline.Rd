@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_deconvo_pieline.R
 \name{iobr_deconvo_pieline}
 \alias{iobr_deconvo_pieline}
-\title{Title iobr_deconvo_pieline}
+\title{Tumor Microenvironment Analysis Pipeline}
 \usage{
 iobr_deconvo_pieline(
   eset,
@@ -14,26 +14,33 @@ iobr_deconvo_pieline(
 )
 }
 \arguments{
-\item{eset}{A gene expression dataset (e.g., expression set object) for TME analysis.}
+\item{eset}{A gene expression dataset, typically an expression set object, prepared for TME analysis.}
 
-\item{project}{A character string specifying the name of the project or analysis.}
+\item{project}{A character string specifying the project or analysis name, used for output file naming.}
 
-\item{array}{A variable indicating the array type used in the gene expression dataset.}
+\item{array}{A logical indicating whether the data comes from an array platform; influences deconvolution methods.}
 
-\item{tumor_type}{A character string specifying the type of tumor (e.g., "stad" for stomach adenocarcinoma).}
+\item{tumor_type}{A character string specifying the tumor type, which can tailor certain analysis aspects.}
 
-\item{path}{A character string indicating the path for saving the output files. Default is "1-TME".}
+\item{path}{A string indicating the output file path; defaults to "1-TME".}
 
-\item{permutation}{An integer specifying the number of permutations for TME deconvolution. Default is 1000.}
+\item{permutation}{An integer specifying the number of permutations to use in TME deconvolution methods; default is 1000.}
+}
+\value{
+A comprehensive dataset combining TME cell fractions, signature scores, and integrated TME-signature analysis.
+        This function saves several files to the specified path, documenting various stages of the analysis.
 }
 \description{
-The iobr_deconvo_pipeline function is used to perform a comprehensive TME (Tumor Microenvironment) analysis pipeline on a gene expression dataset. The pipeline includes TME deconvolution using various methods, calculation of signature scores, and the merging of TME and signature score results.
+The iobr_deconvo_pipeline function executes a comprehensive TME analysis on a gene expression dataset.
+This analysis includes TME deconvolution using various computational methods, calculation of signature scores,
+and integration of these data into a cohesive output. It is designed for in-depth exploration of the
+microenvironment's role in tumor biology based on gene expression profiles.
 }
 \examples{
-
 data("eset_stad", package = "IOBR")
-eset <- count2tpm(eset_stad)
-res <- iobr_deconvo_pieline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
+eset <- count2tpm(eset_stad)  # Prepare data
+# Run the pipeline
+res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
 }
 \author{
 Dongqiang Zeng

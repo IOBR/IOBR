@@ -2,26 +2,33 @@
 % Please edit documentation in R/batch_cor.R
 \name{batch_cor}
 \alias{batch_cor}
-\title{Batch to conduct correlation analysis with multiple features}
+\title{Batch Correlation Analysis}
 \usage{
 batch_cor(data, target, feature, method = "spearman")
 }
 \arguments{
-\item{data}{A data frame containing the dataset.}
+\item{data}{A data frame containing the dataset with both target and feature variables.}
 
-\item{target}{A character specifying the name of the target variable.}
+\item{target}{A character string specifying the name of the target variable within the dataset.}
 
-\item{feature}{A character vector specifying the names of the feature variables.}
+\item{feature}{A character vector specifying the names of the feature variables to be analyzed.}
 
-\item{method}{A character specifying the correlation method to be used. Default value is "spearman".}
+\item{method}{A character string specifying the correlation method to be used; default is "spearman".}
+}
+\value{
+Returns a tibble containing the feature names, p-values, correlation coefficients, adjusted p-values,
+        log-transformed p-values, and significance stars based on p-value thresholds.
 }
 \description{
-Batch to conduct correlation analysis with multiple features
+Performs a batch correlation analysis between a target variable and multiple feature variables in a dataset.
+This function allows for the selection of the correlation method and applies corrections for multiple testing.
 }
 \examples{
-
-# Loading TCGA-STAD microenvironment signature data
+# Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Finding microenvironmental scores associated with CD8 T cells
-batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+# Conduct correlation analysis
+results <- batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+}
+\author{
+Dongqiang Zeng
 }

@@ -2,20 +2,29 @@
 % Please edit documentation in R/feature_selection.R
 \name{limma.dif}
 \alias{limma.dif}
-\title{Title}
+\title{Differential Expression Analysis Using Limma}
 \usage{
 limma.dif(exprdata, pdata, contrastfml)
 }
 \arguments{
-\item{exprdata}{input matrix.Rownames should be features like gene symbols or cgi, colnames be samples}
+\item{exprdata}{A matrix with rownames as features like gene symbols or cgi, and colnames as samples.}
 
-\item{pdata}{phenotype data.Two-column dataframe which column 1 should be the same with the colnames of exprdata and column 2 are the grouping variable.}
+\item{pdata}{A two-column dataframe where the first column matches the colnames of exprdata and the second column contains the grouping variable.}
 
-\item{contrastfml}{see ?makeContrasts}
+\item{contrastfml}{A character vector for contrasts to be tested (see ?makeContrasts for more details).}
 }
 \value{
-a data frame return by limma::toptable, which genes at rows and following columns: genelist, logFC, AveExpr...
+Returns a dataframe from limma::topTable, which includes genes as rows and columns like genelist, logFC, AveExpr, etc.
 }
 \description{
-Title
+Performs differential expression analysis using the limma package on a given gene expression dataset.
+Constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes
+statistics for differential expression.
+}
+\examples{
+data("expression_data", package = "ExamplePackage")
+data("phenotype_data", package = "ExamplePackage")
+
+dif_results <- limma.dif(exprdata = expression_data, pdata = phenotype_data, contrastfml = "group1 - group2")
+print(dif_results)
 }

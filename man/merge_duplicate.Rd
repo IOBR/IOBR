@@ -2,13 +2,38 @@
 % Please edit documentation in R/merge_duplicate.R
 \name{merge_duplicate}
 \alias{merge_duplicate}
-\title{Merge data frames with duplicated column names}
+\title{Merge Data Frames Handling Duplicated Column Names}
 \usage{
 merge_duplicate(x, y, by.x, by.y, all.x, all.y, all = NULL, choose = "x")
 }
 \arguments{
-\item{choose}{}
+\item{x}{The first data frame to be merged.}
+
+\item{y}{The second data frame to be merged.}
+
+\item{by.x}{The column name(s) in `x` used for merging.}
+
+\item{by.y}{The column name(s) in `y` used for merging.}
+
+\item{all.x}{Logical indicating if all rows from `x` should be included in the output.}
+
+\item{all.y}{Logical indicating if all rows from `y` should be included in the output.}
+
+\item{all}{Logical indicating if all rows from both `x` and `y` should be included in the output,
+superseding `all.x` and `all.y` if not NULL.}
+
+\item{choose}{Specifies which data frame's duplicated non-joining columns should be retained: "x" or "y".}
+}
+\value{
+A data frame resulting from merging `x` and `y` according to the specified parameters.
 }
 \description{
-Merge data frames with duplicated column names
+This function merges two data frames by resolving duplicated column names based on user preference. 
+It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges 
+without losing important data integrity.
+}
+\examples{
+df1 <- data.frame(ID = 1:3, Name = c("A", "B", "C"), Value = 1:3)
+df2 <- data.frame(ID = 1:3, Name = c("X", "Y", "Z"), Score = 4:6)
+merged_df <- merge_duplicate(df1, df2, by.x = "ID", by.y = "ID", all.x = TRUE, all.y = FALSE, choose = "x")
 }

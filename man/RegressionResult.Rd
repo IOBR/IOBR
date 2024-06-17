@@ -2,13 +2,38 @@
 % Please edit documentation in R/BinomialModel.R
 \name{RegressionResult}
 \alias{RegressionResult}
-\title{Regression Result}
+\title{Regression Result Computation}
 \usage{
 RegressionResult(train.x, train.y, test.x, test.y, model)
 }
 \arguments{
-\item{model}{}
+\item{train.x}{A matrix or data frame of training predictors used to fit the model.}
+
+\item{train.y}{Training dataset outcomes, expected to be a binary vector indicating the presence or absence of an event.}
+
+\item{test.x}{A matrix or data frame of testing predictors used for evaluating the model.}
+
+\item{test.y}{Testing dataset outcomes, expected to be similar in format to train.y.}
+
+\item{model}{A model object from which coefficients will be extracted and used for evaluation.}
+}
+\value{
+A list containing the model object, a data frame of coefficients for different lambda values,
+        and a matrix of AUC values for both the training and testing sets, calculated at both lambda.min and lambda.1se.
 }
 \description{
-Regression Result
+Computes the regression results for given training and testing datasets using a specified model.
+It calculates the coefficients at specified regularization strengths (lambda.min and lambda.1se) and
+evaluates the model's performance using Area Under the Curve (AUC) for binomial outcomes.
+}
+\examples{
+# Assuming that `model` is already fitted using glmnet or a similar package:
+train_data <- matrix(rnorm(100 * 10), ncol = 10)
+train_outcome <- rbinom(100, 1, 0.5)
+test_data <- matrix(rnorm(100 * 10), ncol = 10)
+test_outcome <- rbinom(100, 1, 0.5)
+fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
+results <- RegressionResult(train.x = train_data, train.y = train_outcome,
+                            test.x = test_data, test.y = test_outcome,
+                            model = fitted_model)
 }
