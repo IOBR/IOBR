@@ -15,7 +15,7 @@ BinomialModel(
 )
 }
 \arguments{
-\item{x}{A data.frame containing the sample ID and features; the first column must be the sample ID.}
+\item{x}{A data.frame containing the sample ID and features, the first column must be the sample ID.}
 
 \item{y}{A data.frame where the first column is the sample ID and the second column is the outcome
 of each sample, which can be either numeric or a factor vector.}
@@ -25,7 +25,7 @@ of each sample, which can be either numeric or a factor vector.}
 \item{scale}{A logical indicating whether the feature data (x) should be scaled, default is TRUE.}
 
 \item{train_ratio}{A numeric value between 0 and 1 specifying the proportion of the dataset to be
-used for training; e.g., 0.7 means 70% of the data is used for training.}
+used for training, e.g., 0.7 means 70% of the data is used for training.}
 
 \item{nfold}{The number of folds to use for cross-validation in model fitting, default is 10.}
 

@@ -5,13 +5,13 @@
 #' and testing sets based on a provided ratio, and then fits both Lasso and Ridge models. It optionally
 #' generates AUC plots for model evaluation. The results, along with the training dataset, are returned.
 #'
-#' @param x A data.frame containing the sample ID and features; the first column must be the sample ID.
+#' @param x A data.frame containing the sample ID and features, the first column must be the sample ID.
 #' @param y A data.frame where the first column is the sample ID and the second column is the outcome
 #'          of each sample, which can be either numeric or a factor vector.
 #' @param seed An integer used to set the seed for random operations, default is 123456.
 #' @param scale A logical indicating whether the feature data (x) should be scaled, default is TRUE.
 #' @param train_ratio A numeric value between 0 and 1 specifying the proportion of the dataset to be
-#'                    used for training; e.g., 0.7 means 70% of the data is used for training.
+#'                    used for training, e.g., 0.7 means 70% of the data is used for training.
 #' @param nfold The number of folds to use for cross-validation in model fitting, default is 10.
 #' @param plot A logical indicating whether to generate and display AUC plots, default is TRUE.
 #'
@@ -37,8 +37,10 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
   print(message(paste0("\n", ">>> Spliting data into train and test data")))
   train_test <- SplitTrainTest(x = x_scale, y = y, train_ratio = train_ratio, type = "binomial",
                                seed = seed)
-  train.x = train_test$train.x; train.y <- train_test$train.y
-  test.x = train_test$test.x; test.y <- train_test$test.y
+  train.x = train_test$train.x
+  train.y <- train_test$train.y
+  test.x = train_test$test.x
+  test.y <- train_test$test.y
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 
@@ -130,7 +132,7 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
     colnames(y) <- c("ID", "Group")
     y <- dplyr::pull(y, Group)
     if (!is.factor(y)) {
-      warning("Outcome is not a factor; transforming it into a factor vector.")
+      warning("Outcome is not a factor, transforming it into a factor vector.")
       y <- as.factor(y)
     }
   }
@@ -273,8 +275,8 @@ BinomialAUC <- function(model, newx, s, acture.y){
 #' @param test.y A numeric or binary vector indicating the outcomes for the testing set.
 #' @param model A model object used to generate prediction probabilities for the ROC analysis.
 #' @param modelname A string representing the name of the model, used in the plot title and file name.
-#' @param cols Optional; a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
-#' @param palette Optional; a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
+#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
+#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
 #'
 #' @return A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
 #'
@@ -359,7 +361,7 @@ CalculatePref<- function(model, newx, s, acture.y){
 #'          a simple vector for binomial outcomes or a matrix for survival outcomes.
 #' @param train_ratio A numeric value between 0 and 1 indicating the proportion of the data to use for training.
 #'                    For example, a 'train_ratio' of 0.7 means 70% of the data will be used for training.
-#' @param type A character string indicating the type of analysis; accepts "binomial" for binary outcomes or
+#' @param type A character string indicating the type of analysis, accepts "binomial" for binary outcomes or
 #'             "survival" for survival analysis, which affects how 'y' data is handled during splitting.
 #' @param seed An integer used to set the seed for random sampling, ensuring reproducibility.
 #'
@@ -384,8 +386,8 @@ SplitTrainTest <- function(x, y, train_ratio, type, seed){
   set.seed(seed)
   train_sample <- sample(1:nrow(x), size = sizes, replace = F)
   test_sample <- setdiff(1:nrow(x), train_sample)
-  train.x <- x[train_sample, ];
-  test.x <- x[test_sample, ];
+  train.x <- x[train_sample, ]
+  test.x <- x[test_sample, ]
   if (type == "binomial"){
     train.y <- y[train_sample]
     test.y <- y[test_sample]

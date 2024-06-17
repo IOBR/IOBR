@@ -28,9 +28,9 @@ PlotAUC(
 
 \item{modelname}{A string representing the name of the model, used in the plot title and file name.}
 
-\item{cols}{Optional; a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
+\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
 
-\item{palette}{Optional; a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
 }
 \value{
 A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.

@@ -23,23 +23,23 @@ sig_forest(
 
 \item{signature}{The name of the column in `data` that contains the signatures or feature names.}
 
-\item{pvalue}{The name of the column in `data` that contains p-values; default is "P".}
+\item{pvalue}{The name of the column in `data` that contains p-values, default is "P".}
 
-\item{HR}{The name of the column in `data` that contains hazard ratios; default is "HR".}
+\item{HR}{The name of the column in `data` that contains hazard ratios, default is "HR".}
 
-\item{CI_low_0.95}{The name of the column in `data` that contains the lower bound of the 95% confidence interval; default is "CI_low_0.95".}
+\item{CI_low_0.95}{The name of the column in `data` that contains the lower bound of the 95% confidence interval, default is "CI_low_0.95".}
 
-\item{CI_up_0.95}{The name of the column in `data` that contains the upper bound of the 95% confidence interval; default is "CI_up_0.95".}
+\item{CI_up_0.95}{The name of the column in `data` that contains the upper bound of the 95% confidence interval, default is "CI_up_0.95".}
 
-\item{n}{The maximum number of signatures to display in the plot; default is 10.}
+\item{n}{The maximum number of signatures to display in the plot, default is 10.}
 
-\item{max_character}{The maximum number of characters for signature labels before wrapping; default is 25.}
+\item{max_character}{The maximum number of characters for signature labels before wrapping, default is 25.}
 
 \item{discrete_width}{The width for discretizing long labels, default is 35.}
 
 \item{color_option}{Color option for the p-value gradient in the plot, with default 1 and alternatives 2 or 3.}
 
-\item{text.size}{Text size for the y-axis labels; default is 13.}
+\item{text.size}{Text size for the y-axis labels, default is 13.}
 }
 \value{
 A ggplot object representing the forest plot, which is also printed to the display.
@@ -50,7 +50,7 @@ and p-values for selected gene signatures or features. This function is useful f
 biomarkers on survival in a visually interpretable manner.
 }
 \examples{
-sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary,variable = c(100:ncol(pdata_sig_tme_binary)))
+sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
 sig_forest(data = sig_surv_result, signature = "ID")
 }
 \author{

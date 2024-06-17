@@ -15,7 +15,7 @@ a simple vector for binomial outcomes or a matrix for survival outcomes.}
 \item{train_ratio}{A numeric value between 0 and 1 indicating the proportion of the data to use for training.
 For example, a 'train_ratio' of 0.7 means 70% of the data will be used for training.}
 
-\item{type}{A character string indicating the type of analysis; accepts "binomial" for binary outcomes or
+\item{type}{A character string indicating the type of analysis, accepts "binomial" for binary outcomes or
 "survival" for survival analysis, which affects how 'y' data is handled during splitting.}
 
 \item{seed}{An integer used to set the seed for random sampling, ensuring reproducibility.}

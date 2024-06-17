@@ -7,11 +7,11 @@
 #'
 #' @param x A matrix or data frame of predictor variables.
 #' @param y A vector or data frame of survival outcomes (typically including time and status).
-#' @param scale Logical; if TRUE, scales the predictor variables.
-#' @param seed Integer; a seed for random number generation to ensure reproducibility.
-#' @param train_ratio Numeric; the proportion of the data to use for training (e.g., 0.7 for 70%).
-#' @param nfold Integer; the number of folds for cross-validation in model fitting.
-#' @param plot Logical; if TRUE, plots the ROC curves for the LASSO and Ridge models.
+#' @param scale Logical, if TRUE, scales the predictor variables.
+#' @param seed Integer, a seed for random number generation to ensure reproducibility.
+#' @param train_ratio Numeric, the proportion of the data to use for training (e.g., 0.7 for 70%).
+#' @param nfold Integer, the number of folds for cross-validation in model fitting.
+#' @param plot Logical, if TRUE, plots the ROC curves for the LASSO and Ridge models.
 #'
 #' @return A list containing the results from the LASSO and Ridge regression models, the training data,
 #'         and optionally, the combined plot of ROC curves if `plot` is TRUE.
@@ -39,8 +39,10 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   message(paste0( ">>> Spliting data into training and validation data"))
   train_test <- SplitTrainTest(x = x_scale, y = y, train_ratio = train_ratio,
                                type = "survival", seed = seed)
-  train.x = train_test$train.x; train.y <- train_test$train.y
-  test.x = train_test$test.x; test.y <- train_test$test.y
+  train.x = train_test$train.x
+  train.y <- train_test$train.y
+  test.x = train_test$test.x
+  test.y <- train_test$test.y
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 

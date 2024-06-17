@@ -19,15 +19,15 @@ PrognosticModel(
 
 \item{y}{A vector or data frame of survival outcomes (typically including time and status).}
 
-\item{scale}{Logical; if TRUE, scales the predictor variables.}
+\item{scale}{Logical, if TRUE, scales the predictor variables.}
 
-\item{seed}{Integer; a seed for random number generation to ensure reproducibility.}
+\item{seed}{Integer, a seed for random number generation to ensure reproducibility.}
 
-\item{train_ratio}{Numeric; the proportion of the data to use for training (e.g., 0.7 for 70%).}
+\item{train_ratio}{Numeric, the proportion of the data to use for training (e.g., 0.7 for 70%).}
 
-\item{nfold}{Integer; the number of folds for cross-validation in model fitting.}
+\item{nfold}{Integer, the number of folds for cross-validation in model fitting.}
 
-\item{plot}{Logical; if TRUE, plots the ROC curves for the LASSO and Ridge models.}
+\item{plot}{Logical, if TRUE, plots the ROC curves for the LASSO and Ridge models.}
 }
 \value{
 A list containing the results from the LASSO and Ridge regression models, the training data,
