@@ -39,6 +39,8 @@ Imports:
   limma, 
   purrr, 
   stringr,
+  Seurat,
+  tidyr,
   tidyverse
 BugReports: https://github.com/IOBR/IOBR/issues
 Suggests: 

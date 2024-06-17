@@ -9,23 +9,25 @@
 #' @param y A data.frame where the first column is the sample ID and the second column is the outcome
 #'          of each sample, which can be either numeric or a factor vector.
 #' @param seed An integer used to set the seed for random operations, default is 123456.
-#' @param scale A logical indicating whether the feature data (x) should be scaled, default is TRUE.
+#' @param scale A logical indicating whether the feature data `x` should be scaled, default is TRUE.
 #' @param train_ratio A numeric value between 0 and 1 specifying the proportion of the dataset to be
-#'                    used for training, e.g., 0.7 means 70% of the data is used for training.
+#'                    used for training, e.g., 0.7 means 70 percent of the data is used for training.
 #' @param nfold The number of folds to use for cross-validation in model fitting, default is 10.
 #' @param plot A logical indicating whether to generate and display AUC plots, default is TRUE.
+#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
+#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
 #'
 #' @return A list containing the results of the Lasso and Ridge models, and the input training data.
 #'         The list includes elements 'lasso_result', 'ridge_result', and 'train.x'.
 #'
-#' @export
 #' @examples
 #' data("imvigor210_sig", package = "IOBR")
 #' data("imvigor210_pdata",package = "IOBR")
-#' pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+#' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary!="NA", c("ID","BOR_binary")]
 #' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
 #' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
-BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE){
+#' @export
+BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL){
 
   x<-as.data.frame(x)
   y<-as.data.frame(y)
@@ -52,8 +54,7 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
                                    test.x = test.x, test.y = test.y, model = lasso_model)
   if (plot){
     p1 <- PlotAUC(train.x = train.x, train.y = train.y,
-                 test.x = test.x, test.y = test.y, model = lasso_model,
-                 foldername = "5-1_Binomial_Model",
+                 test.x = test.x, test.y = test.y, model = lasso_model, cols = cols, palette = palette,
                  modelname = "lasso_model")
     print(p1)
   }
@@ -68,7 +69,7 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
   if (plot){
     p2 <- PlotAUC(train.x = train.x, train.y = train.y,
             test.x = test.x, test.y = test.y, model = ridge_model,
-            foldername = "5-1_Binomial_Model",
+            cols = cols, palette = palette,
             modelname = "ridge_model")
     print(p2)
   }
@@ -107,6 +108,7 @@ BinomialModel <- function(x, y,seed = 123456, scale = TRUE, train_ratio = 0.7, n
 #' # For survival analysis
 #' y <- data.frame(ID = 1:10, time = runif(10, 0, 100), status = sample(c(0, 1), 10, replace = TRUE))
 #' result <- ProcessingData(x, y, scale = FALSE, type = "survival")
+#' @export
 ProcessingData <- function(x, y, scale, type = "binomial") {
   require(dplyr)
 
@@ -172,7 +174,6 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #' @return A list containing the model object, a data frame of coefficients for different lambda values,
 #'         and a matrix of AUC values for both the training and testing sets, calculated at both lambda.min and lambda.1se.
 #'
-#' @export
 #' @examples
 #' # Assuming that `model` is already fitted using glmnet or a similar package:
 #' train_data <- matrix(rnorm(100 * 10), ncol = 10)
@@ -183,6 +184,7 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #' results <- RegressionResult(train.x = train_data, train.y = train_outcome,
 #'                             test.x = test_data, test.y = test_outcome,
 #'                             model = fitted_model)
+#' @export
 RegressionResult <- function(train.x, train.y, test.x, test.y, model){
   coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
   coefs <- data.frame(feature = rownames(coefs), lambda.min =coefs[, 1], lambda.1se = coefs[, 2])
@@ -210,7 +212,6 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model){
 #'
 #' @return A list containing the optimal values of alpha and lambda chosen based on cross-validation.
 #'
-#' @export
 #' @examples
 #' # Assuming 'train_data' and 'train_outcome' are already defined:
 #' train_data <- matrix(rnorm(100 * 10), ncol = 10)
@@ -218,6 +219,7 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model){
 #' optimal_parameters <- Enet(train.x = train_data, train.y = train_outcome,
 #'                            lambdamax = 1, nfold = 10)
 #' print(optimal_parameters)
+#' @export
 Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
   grid <- expand.grid(.alpha = seq(0, 1, by = .2), .lambda = seq(0, lambdamax, length.out = 10))
   fitControl <- caret::trainControl(method = "repeatedcv",
@@ -251,11 +253,11 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
 #'
 #' @return A numeric value representing the AUC for the model's predictions against actual outcomes.
 #'
-#' @export
 #' @examples
 #' # Assuming 'model', 'newx', and 'actual.y' are predefined:
 #' auc_value <- BinomialAUC(model = fitted_model, newx = test_data, s = "lambda.min", acture.y = test_outcomes)
 #' print(auc_value)
+#' @export
 BinomialAUC <- function(model, newx, s, acture.y){
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
@@ -279,12 +281,11 @@ BinomialAUC <- function(model, newx, s, acture.y){
 #' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
 #'
 #' @return A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
-#'
-#' @export
 #' @examples
 #' # Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
 #' PlotAUC(train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
 #'         model = fitted_model, modelname = "MyModel")
+#' @export
 PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama"){
 
   if(is.null(cols)){
@@ -337,11 +338,11 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'
 #' @return A performance object from the ROCR package, which includes true positive and false positive rates.
 #'
-#' @export
 #' @examples
 #' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
 #' perf_metrics <- CalculatePref(model = fitted_model, newx = new_data, s = "lambda.min", acture.y = actual_outcomes)
 #' print(perf_metrics)
+#' @export
 CalculatePref<- function(model, newx, s, acture.y){
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
@@ -352,15 +353,14 @@ CalculatePref<- function(model, newx, s, acture.y){
 
 #' Split Data into Training and Testing Sets
 #'
-#' This function divides the dataset into training and testing sets based on a specified proportion.
-#' It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
+#' This function divides the dataset into training and testing sets based on a specified proportion. It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
 #' according to the specified data type.
 #'
 #' @param x A matrix or data frame containing the predictors or features.
 #' @param y A vector or matrix containing the outcomes associated with 'x'. The format can be either
 #'          a simple vector for binomial outcomes or a matrix for survival outcomes.
 #' @param train_ratio A numeric value between 0 and 1 indicating the proportion of the data to use for training.
-#'                    For example, a 'train_ratio' of 0.7 means 70% of the data will be used for training.
+#'                    For example, a 'train_ratio' of 0.7 means 70 percent of the data will be used for training.
 #' @param type A character string indicating the type of analysis, accepts "binomial" for binary outcomes or
 #'             "survival" for survival analysis, which affects how 'y' data is handled during splitting.
 #' @param seed An integer used to set the seed for random sampling, ensuring reproducibility.
@@ -369,7 +369,6 @@ CalculatePref<- function(model, newx, s, acture.y){
 #'         and 'test.x' and 'test.y' for testing. Also returns 'train_sample', which is a vector of indices
 #'         that were selected for the training set.
 #'
-#' @export
 #' @examples
 #' # Example for binomial data
 #' data_matrix <- matrix(rnorm(200), ncol = 2)
@@ -381,6 +380,7 @@ CalculatePref<- function(model, newx, s, acture.y){
 #' survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
 #' split_data_survival <- SplitTrainTest(x = data_matrix, y = survival_outcomes, train_ratio = 0.7, type = "survival", seed = 123)
 #' print(split_data_survival)
+#' @export
 SplitTrainTest <- function(x, y, train_ratio, type, seed){
   sizes <- round(nrow(x) * train_ratio)
   set.seed(seed)

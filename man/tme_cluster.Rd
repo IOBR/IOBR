@@ -2,7 +2,7 @@
 % Please edit documentation in R/tme_cluster.R
 \name{tme_cluster}
 \alias{tme_cluster}
-\title{tme_cluster}
+\title{Identification of TME cluster}
 \usage{
 tme_cluster(
   input,

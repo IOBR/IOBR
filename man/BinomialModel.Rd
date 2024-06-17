@@ -11,7 +11,9 @@ BinomialModel(
   scale = TRUE,
   train_ratio = 0.7,
   nfold = 10,
-  plot = TRUE
+  plot = TRUE,
+  palette = "jama",
+  cols = NULL
 )
 }
 \arguments{
@@ -22,14 +24,18 @@ of each sample, which can be either numeric or a factor vector.}
 
 \item{seed}{An integer used to set the seed for random operations, default is 123456.}
 
-\item{scale}{A logical indicating whether the feature data (x) should be scaled, default is TRUE.}
+\item{scale}{A logical indicating whether the feature data `x` should be scaled, default is TRUE.}
 
 \item{train_ratio}{A numeric value between 0 and 1 specifying the proportion of the dataset to be
-used for training, e.g., 0.7 means 70% of the data is used for training.}
+used for training, e.g., 0.7 means 70 percent of the data is used for training.}
 
 \item{nfold}{The number of folds to use for cross-validation in model fitting, default is 10.}
 
 \item{plot}{A logical indicating whether to generate and display AUC plots, default is TRUE.}
+
+\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+
+\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
 }
 \value{
 A list containing the results of the Lasso and Ridge models, and the input training data.
@@ -44,7 +50,7 @@ generates AUC plots for model evaluation. The results, along with the training d
 \examples{
 data("imvigor210_sig", package = "IOBR")
 data("imvigor210_pdata",package = "IOBR")
-pdata_group <- imvigor210_pdata[!imvigor210_pdata$BOR_binary=="NA",c("ID","BOR_binary")]
+pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary!="NA", c("ID","BOR_binary")]
 pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
 BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
 }

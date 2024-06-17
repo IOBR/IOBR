@@ -6,12 +6,14 @@
 #' for each model. It is specifically tailored for survival analysis.
 #'
 #' @param x A matrix or data frame of predictor variables.
-#' @param y A vector or data frame of survival outcomes (typically including time and status).
+#' @param y A vector or data frame of survival outcomes, typically including time and status
 #' @param scale Logical, if TRUE, scales the predictor variables.
 #' @param seed Integer, a seed for random number generation to ensure reproducibility.
-#' @param train_ratio Numeric, the proportion of the data to use for training (e.g., 0.7 for 70%).
+#' @param train_ratio Numeric, the proportion of the data to use for training, e.g., 0.7 for 70 percent
 #' @param nfold Integer, the number of folds for cross-validation in model fitting.
 #' @param plot Logical, if TRUE, plots the ROC curves for the LASSO and Ridge models.
+#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
+#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
 #'
 #' @return A list containing the results from the LASSO and Ridge regression models, the training data,
 #'         and optionally, the combined plot of ROC curves if `plot` is TRUE.
@@ -25,7 +27,7 @@
 #' pdata_prog <- imvigor210_pdata %>% dplyr::select(ID, OS_days, OS_status) %>% mutate(OS_days = as.numeric(.$OS_days)) %>% mutate(OS_status = as.numeric(.$OS_status))
 #' prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog, scale = T, seed  = 123456, train_ratio = 0.7, nfold = 10, plot = T)
 #' @export
-PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7, nfold = 10, plot = TRUE){
+PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL){
 
   x<-as.data.frame(x)
   y<-as.data.frame(y)
@@ -63,7 +65,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   ridge_result <- PrognosticResult(model = ridge_model, train.x, train.y, test.x, test.y)
 
   if (plot){
-   p2 <- PlotTimeROC(train.x = train.x, train.y = train.y,
+   p2 <- PlotTimeROC(train.x = train.x, train.y = train.y, cols = cols, palette = palette,
                 test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE")
   }
   message(paste0(">>> Done !"))
@@ -239,11 +241,10 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #'         the specified time quantile. The plot includes both training and testing
 #'         datasets across different regularization strengths or model specifications.
 #'
-#' @export
-#'
 #' @examples
 #' # Assuming model and data are predefined:
 #' PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
+#' @export
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama"){
 
   if(is.null(cols)){

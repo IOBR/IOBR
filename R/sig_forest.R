@@ -9,8 +9,8 @@
 #' @param signature The name of the column in `data` that contains the signatures or feature names.
 #' @param pvalue The name of the column in `data` that contains p-values, default is "P".
 #' @param HR The name of the column in `data` that contains hazard ratios, default is "HR".
-#' @param CI_low_0.95 The name of the column in `data` that contains the lower bound of the 95% confidence interval, default is "CI_low_0.95".
-#' @param CI_up_0.95 The name of the column in `data` that contains the upper bound of the 95% confidence interval, default is "CI_up_0.95".
+#' @param CI_low_0.95 The name of the column in `data` that contains the lower bound of the 0.95 confidence interval, default is "CI_low_0.95".
+#' @param CI_up_0.95 The name of the column in `data` that contains the upper bound of the 0.95 confidence interval, default is "CI_up_0.95".
 #' @param n The maximum number of signatures to display in the plot, default is 10.
 #' @param max_character The maximum number of characters for signature labels before wrapping, default is 25.
 #' @param discrete_width The width for discretizing long labels, default is 35.
@@ -18,12 +18,12 @@
 #' @param text.size Text size for the y-axis labels, default is 13.
 #'
 #' @author Dongqiang Zeng
-#' @return A ggplot object representing the forest plot, which is also printed to the display.
-#' @export
+#' @return A ggplot2 object representing the forest plot
 #'
 #' @examples
 #' sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
 #' sig_forest(data = sig_surv_result, signature = "ID")
+#' @export
 sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
                      CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
                      discrete_width = 35, color_option = 1,

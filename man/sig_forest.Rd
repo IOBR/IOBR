@@ -27,9 +27,9 @@ sig_forest(
 
 \item{HR}{The name of the column in `data` that contains hazard ratios, default is "HR".}
 
-\item{CI_low_0.95}{The name of the column in `data` that contains the lower bound of the 95% confidence interval, default is "CI_low_0.95".}
+\item{CI_low_0.95}{The name of the column in `data` that contains the lower bound of the 0.95 confidence interval, default is "CI_low_0.95".}
 
-\item{CI_up_0.95}{The name of the column in `data` that contains the upper bound of the 95% confidence interval, default is "CI_up_0.95".}
+\item{CI_up_0.95}{The name of the column in `data` that contains the upper bound of the 0.95 confidence interval, default is "CI_up_0.95".}
 
 \item{n}{The maximum number of signatures to display in the plot, default is 10.}
 
@@ -42,7 +42,7 @@ sig_forest(
 \item{text.size}{Text size for the y-axis labels, default is 13.}
 }
 \value{
-A ggplot object representing the forest plot, which is also printed to the display.
+A ggplot2 object representing the forest plot
 }
 \description{
 Generates a forest plot to visualize survival analysis results, showing hazard ratios (HRs), confidence intervals,

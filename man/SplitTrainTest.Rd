@@ -13,7 +13,7 @@ SplitTrainTest(x, y, train_ratio, type, seed)
 a simple vector for binomial outcomes or a matrix for survival outcomes.}
 
 \item{train_ratio}{A numeric value between 0 and 1 indicating the proportion of the data to use for training.
-For example, a 'train_ratio' of 0.7 means 70% of the data will be used for training.}
+For example, a 'train_ratio' of 0.7 means 70 percent of the data will be used for training.}
 
 \item{type}{A character string indicating the type of analysis, accepts "binomial" for binary outcomes or
 "survival" for survival analysis, which affects how 'y' data is handled during splitting.}
@@ -26,8 +26,7 @@ A list containing the training and testing subsets: 'train.x' and 'train.y' for 
         that were selected for the training set.
 }
 \description{
-This function divides the dataset into training and testing sets based on a specified proportion.
-It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
+This function divides the dataset into training and testing sets based on a specified proportion. It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
 according to the specified data type.
 }
 \examples{

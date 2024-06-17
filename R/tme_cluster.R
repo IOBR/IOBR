@@ -2,8 +2,8 @@
 
 
 
-#' tme_cluster
-#' @description
+#' Identification of TME cluster
+#'
 #' This function is designed to perform TME (Tumor Microenvironment) clustering analysis using the specified input dataset. The function allows for customization of various parameters to conduct clustering analysis, including the selection of features, scaling options, clustering method, and the range of cluster numbers to evaluate.
 #'
 #' @param input  A data frame containing the input dataset for TME clustering analysis.

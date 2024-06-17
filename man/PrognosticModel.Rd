@@ -11,23 +11,29 @@ PrognosticModel(
   seed = 123456,
   train_ratio = 0.7,
   nfold = 10,
-  plot = TRUE
+  plot = TRUE,
+  palette = "jama",
+  cols = NULL
 )
 }
 \arguments{
 \item{x}{A matrix or data frame of predictor variables.}
 
-\item{y}{A vector or data frame of survival outcomes (typically including time and status).}
+\item{y}{A vector or data frame of survival outcomes, typically including time and status}
 
 \item{scale}{Logical, if TRUE, scales the predictor variables.}
 
 \item{seed}{Integer, a seed for random number generation to ensure reproducibility.}
 
-\item{train_ratio}{Numeric, the proportion of the data to use for training (e.g., 0.7 for 70%).}
+\item{train_ratio}{Numeric, the proportion of the data to use for training, e.g., 0.7 for 70 percent}
 
 \item{nfold}{Integer, the number of folds for cross-validation in model fitting.}
 
 \item{plot}{Logical, if TRUE, plots the ROC curves for the LASSO and Ridge models.}
+
+\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+
+\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
 }
 \value{
 A list containing the results from the LASSO and Ridge regression models, the training data,
