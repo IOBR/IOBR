@@ -89,5 +89,5 @@ sig_forest<-function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI
     theme(title = element_text(size = 15,colour = "black", vjust = 0.5, hjust = 0.5))+
     scale_y_discrete(labels=function(x) stringr::str_wrap(x, width = discrete_width))
 
- return(pp)
+  return(pp)
 }
