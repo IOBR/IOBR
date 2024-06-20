@@ -9,14 +9,14 @@
 #' @param data_type Type of input data, possible values are "count" or "tpm".
 #' @param id_type Type of gene identifier, default is "ensembl".
 #'
+#' @references Lapuente-Santana, van Genderen, M., Hilbers, P., Finotello, F., & Eduati, F. (2021). 'Interpretable systems biomarkers predict response to immune-checkpoint inhibitors.' Patterns (New York, N.Y.), 2(8), 100293. https://doi.org/10.1016/j.patter.2021.100293
 #' @return A data frame containing ligand-receptor interaction scores
 #' @export
 #'
 #' @examples
 #' data("eset_stad", package = "IOBR")
 #' lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
-#'
-LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl"){
+LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan"){
 
   if (!requireNamespace("easier", quietly = TRUE))  BiocManager::install("easier", dependencies = FALSE)
 
@@ -30,12 +30,9 @@ LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl"){
 
   feas <- feature_manipulation(data = eset, feature = rownames(eset), is_matrix = TRUE)
   eset <- eset[rownames(eset)%in%feas, ]
-  res <- easier::compute_LR_pairs(RNA_tpm = eset, cancer_type = "pancan", verbose = TRUE)
+  res <- easier::compute_LR_pairs(RNA_tpm = eset, cancer_type = cancer_type, verbose = TRUE)
 
   res <- rownames_to_column(res, var = "ID")
 
 }
-
-
-
 
