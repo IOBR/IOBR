@@ -4,7 +4,12 @@
 \alias{LR_cal}
 \title{LR_cal}
 \usage{
-LR_cal(eset, data_type = c("count", "tpm"), id_type = "ensembl")
+LR_cal(
+  eset,
+  data_type = c("count", "tpm"),
+  id_type = "ensembl",
+  cancer_type = "pancan"
+)
 }
 \arguments{
 \item{eset}{ExpressionSet object containing gene expression data.}
@@ -22,5 +27,7 @@ Quantifies ligand-receptor interactions in the tumor microenvironment from bulk 
 \examples{
 data("eset_stad", package = "IOBR")
 lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
-
+}
+\references{
+Lapuente-Santana, van Genderen, M., Hilbers, P., Finotello, F., & Eduati, F. (2021). 'Interpretable systems biomarkers predict response to immune-checkpoint inhibitors.' Patterns (New York, N.Y.), 2(8), 100293. https://doi.org/10.1016/j.patter.2021.100293
 }
