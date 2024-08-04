@@ -24,7 +24,7 @@
 #' eset <- count2tpm(eset_stad)  # Prepare data
 #' # Run the pipeline
 #' res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
-iobr_deconvo_pieline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000){
+iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000){
 
 
   #######################################
@@ -59,6 +59,7 @@ iobr_deconvo_pieline <- function(eset, project, array, tumor_type, path = "1-TME
   print(paste0( ">>>>> TME cell deconvolution was completed: ", project))
   #######################################
 
+  data(signature_collection, package = "IOBR")
   sig_res<-calculate_sig_score(pdata = NULL,
                                eset = eset,
                                signature = signature_collection,
