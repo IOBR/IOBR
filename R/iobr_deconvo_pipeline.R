@@ -2,7 +2,7 @@
 
 #' Tumor Microenvironment Analysis Pipeline
 #'
-#' The iobr_deconvo_pipeline function executes a comprehensive TME analysis on a gene expression dataset.
+#' The `iobr_deconvo_pipeline` function executes a comprehensive TME analysis on a gene expression dataset.
 #' This analysis includes TME deconvolution using various computational methods, calculation of signature scores,
 #' and integration of these data into a cohesive output. It is designed for in-depth exploration of the
 #' microenvironment's role in tumor biology based on gene expression profiles.
@@ -16,8 +16,8 @@
 #'
 #' @return A comprehensive dataset combining TME cell fractions, signature scores, and integrated TME-signature analysis.
 #'         This function saves several files to the specified path, documenting various stages of the analysis.
-#' @export
 #' @author Dongqiang Zeng
+#' @export
 #'
 #' @examples
 #' data("eset_stad", package = "IOBR")
@@ -29,9 +29,9 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TM
 
   #######################################
   path <- creat_folder(paste0(path))
-  #############################################
+  #######################################
   eset<- log2eset(eset)
-  #############################################
+  #######################################
 
   # tumor_type<-"stad"
   #########################################
