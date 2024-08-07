@@ -40,14 +40,15 @@ combine_pd_eset<- function(eset, pdata, id_pdata = "ID", feas = NULL,  feature_m
   eset<-eset[rownames(eset)%in%feas_filter, ]
   eset<-t(eset)
   if(scale) eset<-scale(eset, scale = T, center = T)
+
   eset<-rownames_to_column(as.data.frame(eset), var = "ID")
 
   colnames(pdata)[which(colnames(pdata)==id_pdata)]<- "ID"
 
   if(choose_who_when_duplicate=="eset"){
-    choose<-"X"
+    choose<-"x"
   }else{
-    choose="Y"
+    choose="y"
   }
   pd_eset<- merge_duplicate(pdata, eset, by.x = "ID", by.y = "ID", choose = choose, all = FALSE)
   return(pd_eset)

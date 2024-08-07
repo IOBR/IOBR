@@ -5,8 +5,8 @@
 
 #' Merge Data Frames Handling Duplicated Column Names
 #'
-#' This function merges two data frames by resolving duplicated column names based on user preference. 
-#' It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges 
+#' This function merges two data frames by resolving duplicated column names based on user preference.
+#' It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges
 #' without losing important data integrity.
 #'
 #' @param x The first data frame to be merged.
