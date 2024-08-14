@@ -28,8 +28,8 @@ superseding `all.x` and `all.y` if not NULL.}
 A data frame resulting from merging `x` and `y` according to the specified parameters.
 }
 \description{
-This function merges two data frames by resolving duplicated column names based on user preference. 
-It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges 
+This function merges two data frames by resolving duplicated column names based on user preference.
+It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges
 without losing important data integrity.
 }
 \examples{

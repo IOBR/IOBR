@@ -1,0 +1,59 @@
+citHeader("To cite IOBR in publications use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = title = "IOBR2: Multidimensional Decoding of Tumor Microenvironment for Immuno-Oncology Research",
+  author   = personList(
+             as.person("Dongqiang Zeng"),
+             as.person("Yiran Fang"),
+             as.person("Peng Luo"),
+             as.person("Wenjun Qiu"),
+             as.person("Shixiang Wang"),
+             as.person("Rongfang Shen"),
+             as.person("Wenchao Gu"),
+             as.person("Xiatong Huang"),
+             as.person("Qianqian Mao"),
+             as.person("Yonghong Lai"),
+             as.person("Xi Xu"),
+             as.person("Min Shi"),
+             as.person("Guangchuang Yu"),
+             as.person("Wangjun Liao")
+         ),
+  journal  = "bioRxiv",
+  year     = "2024",
+  doi      = "https://doi.org/10.1101/2024.01.13.575484",
+  note = "preprint (which was not certified by peer review) is the author/funder, who has granted bioRxiv a license to display the preprint in perpetuity. It is made available under a CC-BY-NC-ND 4.0 International license."
+)
+
+
+citHeader("Please, also consider citing:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "IOBR: Multi-Omics Immuno-Oncology Biological Research to Decode Tumor Microenvironment and Signatures",
+  author   = personList(
+             as.person("Dongqiang Zeng"),
+             as.person("Zilan Ye"),
+             as.person("Rongfang Shen"),
+             as.person("Guangchuang Yu"),
+             as.person("Jiani Wu"),
+             as.person("Yi Xiong"),
+             as.person("Rui Zhou"),
+             as.person("Wenjun Qiu"),
+             as.person("Na Huang"),
+             as.person("Li Sun"),
+             as.person("Xuejun Li"),
+             as.person("Jianping Bin"),
+             as.person("Yulin Liao"),
+             as.person("Min Shi"),
+             as.person("Wangjun Liao")
+             ),
+  journal  = "Frontiers in Immunology",
+  year     = "2021",
+  volume   = "12",
+  pages    = "687975",
+  doi      = "10.3389/fimmu.2021.687975",
+  textVersion = "Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y, Zhou R, Qiu W, Huang N, Sun L, Li X, Bin J, Liao Y, Shi M, Liao W. IOBR: Multi-Omics Immuno-Oncology Biological Research to Decode Tumor Microenvironment and Signatures. Front Immunol. 2021;12:687975. doi:10.3389/fimmu.2021.687975."
+)
+
+
