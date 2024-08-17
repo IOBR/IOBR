@@ -25,27 +25,18 @@
 ##' @export
 ##' @import survival
 getHRandCIfromCoxph <- function(coxphData) {
-  # Check if coxphData is a valid coxph object
+
   stopifnot(is(coxphData, "coxph"))
 
-  # Extract coefficients and confidence intervals
-  summary_data <- summary(coxphData)
-  coef_data <- summary_data$coefficients
-  conf_int <- summary_data$conf.int
-
-  # Prepare the output
-  results <- data.frame(
-    P = coef_data[, "Pr(>|z|)"],
-    HR = exp(coef_data[, "coef"]),
-    CI_low = exp(conf_int[, "lower .95"]),
-    CI_high = exp(conf_int[, "upper .95"])
+  tmp <- cbind(
+    summary(coxphData)$coef[,
+                            c("Pr(>|z|)", "exp(coef)"),
+                            drop=FALSE],
+    summary(coxphData)$conf[,
+                            c("lower .95", "upper .95"),
+                            drop=FALSE]
   )
-
-  # Round the results for better readability
-  results$HR <- round(results$HR, 4)
-  results$CI_low <- round(results$CI_low, 4)
-  results$CI_high <- round(results$CI_high, 4)
-  results$P <- round(results$P, 4)
-
-  return(results)
+  colnames(tmp) <- c("P","HR","CI_low_0.95","CI_up_0.95")
+  tmp[,2:4]<-round(tmp[,2:4],digits=4)
+  return(tmp)
 }
