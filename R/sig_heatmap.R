@@ -30,6 +30,7 @@
 #' @param condiction This parameter is an optional data frame that defines additional conditions to be applied in the heatmap. It should have two columns: one specifying the variables and another specifying the conditions. The default value is NULL.
 #' @param id_condiction This parameter specifies the column name in the condiction data frame that represents the variables. The default value is "vars".
 #' @param col_condiction This parameter specifies the column name in the condiction data frame that represents the conditions. The default value is "condiction".
+#' @param cols_condiction  This parameter is a vector of colors to be used for the condiction variable.
 #'
 #' @return A heatmap plot object.
 #' @export
@@ -48,6 +49,7 @@ sig_heatmap<-function(input,
                       condiction            = NULL,
                       id_condiction         = "vars",
                       col_condiction        = "condiction",
+                      cols_condiction       = NULL,
                       scale                 = FALSE,
                       palette               = 2,
                       palette_group         = "jama",
@@ -132,7 +134,12 @@ sig_heatmap<-function(input,
 
     n<- length(target_level1)
     # print(n)
-    color_box1<-color_box[1:n]
+    if(is.null(cols_condiction)){
+      color_box1<-color_box[1:n]
+    }else{
+      color_box1 <- cols_condiction
+    }
+
   }
 
   target_level2<- unique(as.character(pf_long_group$target_group))
@@ -145,8 +152,8 @@ sig_heatmap<-function(input,
  if(scale){
    scale = "row"
  }else{
-   pf_long_group$value[pf_long_group$value > 2.5] = 2.5
-   pf_long_group$value[pf_long_group$value < -2.5] = -2.5
+   pf_long_group$value[pf_long_group$value > 3] = 3
+   pf_long_group$value[pf_long_group$value < -3] = -3
    scale = "none"
  }
 
