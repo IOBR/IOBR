@@ -33,6 +33,9 @@ batch_cor<-function(data, target, feature, method = "spearman"){
 
   feature<-feature[!feature==target]
 
+  data <- data[!is.na(data[,target]), ]
+
+  feature <- feature[sapply(data[, feature], function(x) sd(x, na.rm = TRUE) > 0)]
 
   aa<-lapply(data[,feature], function(x) cor.test(x,data[,target],method = method))
 
