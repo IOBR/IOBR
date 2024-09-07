@@ -12,6 +12,7 @@ sig_heatmap(
   condiction = NULL,
   id_condiction = "vars",
   col_condiction = "condiction",
+  cols_condiction = NULL,
   scale = FALSE,
   palette = 2,
   palette_group = "jama",
@@ -45,6 +46,8 @@ sig_heatmap(
 \item{id_condiction}{This parameter specifies the column name in the condiction data frame that represents the variables. The default value is "vars".}
 
 \item{col_condiction}{This parameter specifies the column name in the condiction data frame that represents the conditions. The default value is "condiction".}
+
+\item{cols_condiction}{This parameter is a vector of colors to be used for the condiction variable.}
 
 \item{scale}{This parameter specifies whether to scale the heatmap by column. If set to TRUE, the heatmap will be scaled by column. The default value is FALSE.}
 

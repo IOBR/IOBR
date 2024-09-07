@@ -280,15 +280,37 @@ calculate_sig_score_ssgsea<-function(pdata = NULL,
     feas<-feature_manipulation(data=eset,is_matrix = T)
     eset<-eset[rownames(eset)%in%feas,]
   }
+  
   ##############################
-  res <- GSVA:: gsva(as.matrix(eset),
-                     signature,
-                     method="ssgsea",
-                     kcdf="Gaussian",
-                     min.sz= mini_gene_count,
-                     ssgsea.norm=T,
-                     parallel.sz = parallel.size)
-
+  # Check the formal argument of GSVA::gsva
+  FA <- formals(GSVA::gsva)
+  
+  if (is.null(FA[["method"]])) {
+    params <- gsvaParam(as.matrix(eset), 
+                        signature, 
+                        minSize = mini_gene_count, 
+                        maxSize = Inf, 
+                        kcdf = "Gaussian", 
+                        tau = 1, 
+                        maxDiff = TRUE, 
+                        absRanking = FALSE)
+    
+    res <- GSVA::gsva(params, 
+                      verbose = TRUE, 
+                      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE))
+    
+    
+  } else {
+    res <- GSVA:: gsva(as.matrix(eset),
+                       signature,
+                       method="ssgsea",
+                       kcdf="Gaussian",
+                       min.sz= mini_gene_count,
+                       ssgsea.norm=T,
+                       parallel.sz = parallel.size)
+  }
+  
+  ##############################
   res<-as.data.frame(t(res))
   res<-rownames_to_column(res,var = "ID")
 
@@ -419,13 +441,36 @@ calculate_sig_score_integration<-function(pdata = NULL,
   }
   ############################
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
-  res <-GSVA::gsva(as.matrix(eset),
-                   signature,
-                  method     ="ssgsea",
-                  kcdf       ="Gaussian",
-                  min.sz     = mini_gene_count,
-                  ssgsea.norm= T,
-                  parallel.sz= parallel.size)
+  
+  # Check the formal argument of GSVA::gsva
+  FA <- formals(GSVA::gsva)
+  
+  if (is.null(FA[["method"]])) {
+    params <- gsvaParam(as.matrix(eset), 
+                        signature, 
+                        minSize = mini_gene_count, 
+                        maxSize = Inf, 
+                        kcdf = "Gaussian", 
+                        tau = 1, 
+                        maxDiff = TRUE, 
+                        absRanking = FALSE)
+    
+    res <- GSVA::gsva(params, 
+                      verbose = TRUE, 
+                      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE))
+    
+    
+  } else {
+    res <- GSVA::gsva(as.matrix(eset),
+                      signature,
+                      method     ="ssgsea",
+                      kcdf       ="Gaussian",
+                      min.sz     = mini_gene_count,
+                      ssgsea.norm= T,
+                      parallel.sz= parallel.size)
+  }
+  
+  #####################
   res<-as.data.frame(t(res))
   if ("TMEscoreA_CIR"%in% colnames(res) & "TMEscoreB_CIR"%in%colnames(res)) {
     res[,"TMEscore_CIR"]<-res[,"TMEscoreA_CIR"] - res[,"TMEscoreB_CIR"]

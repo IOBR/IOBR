@@ -95,10 +95,28 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   # Transform the expression to rank
   expr <- apply(expr, 2, rank)
 
+  # Check the formal argument of GSVA::gsva
+  FA <- formals(GSVA::gsva)
+  
   # Run ssGSEA analysis for the ranked gene expression dataset
-  scores <- GSVA::gsva(expr, signatures,
-                       method = "ssgsea",
-                       ssgsea.norm = FALSE)
+  if (is.null(FA[["method"]])) {
+    params <- gsvaParam(as.matrix(expr), 
+                        signatures, 
+                        minSize = 1, 
+                        maxSize = Inf, 
+                        kcdf = "Gaussian", 
+                        tau = 1, 
+                        maxDiff = TRUE, 
+                        absRanking = FALSE)
+    
+    scores <- GSVA::gsva(params, 
+                         verbose = TRUE, 
+                         BPPARAM = BiocParallel::SerialParam(progressbar = TRUE))
+  } else {
+    scores <- GSVA::gsva(expr, signatures, 
+                         method = "ssgsea", 
+                         ssgsea.norm = FALSE)
+  }
 
   scores = scores - apply(scores,1,min)
 
