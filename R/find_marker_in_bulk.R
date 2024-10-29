@@ -37,42 +37,43 @@
 #' DoHeatmap(res$sce, top15$gene, group.colors = cols )+ scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11,"RdBu"))(256)))
 #'
 find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30){
-
+  
   library(Seurat)
   if(dim(pdata)[2] == 2){
     pdata[,"newid"] <- pdata[, id_pdata]
   }
-
+  
   rownames(pdata) <- NULL
   pdata<-column_to_rownames(pdata, var = id_pdata)
   pdata<-pdata[rownames(pdata)%in%colnames(eset),]
   # print(mhead(pdata))
-
+  
   feas<-rownames(eset)
   feas<-feature_manipulation(data = eset, feature = feas, is_matrix = TRUE)
-
+  
   eset<-eset[rownames(eset)%in%feas, ]
   eset<- eset[,colnames(eset)%in%rownames(pdata)]
-
+  
   # print(mhead(eset))
-
+  
   sce <- Seurat:: CreateSeuratObject(counts = eset,
-                            meta.data = pdata,
-                            min.cells = 0,
-                            min.features = 0,
-                            project = "sce")
+                                     meta.data = pdata,
+                                     min.cells = 0,
+                                     min.features = 0,
+                                     project = "sce")
   # print(head(sce@meta.data) )
+  sce <- Seurat::NormalizeData(sce)
+  sce@assays[["RNA"]]@layers[["data"]]<-sce@assays[["RNA"]]@layers[["counts"]]
   sce <- Seurat:: ScaleData(object = sce,
-                   # vars.to.regress = c('nCount_RNA'),
-                   model.use = 'linear',
-                   use.umi = FALSE)
+                           
+                            use.umi = FALSE)
   sce <- Seurat::FindVariableFeatures(object = sce, nfeatures = nfeatures)
   # length(VariableFeatures(sce))
   sce <- Seurat::RunPCA(object = sce, pc.genes = VariableFeatures(sce), npcs = npcs)
   # sce <- FindNeighbors(object = sce, dims = 1:20, verbose = FALSE)
   # sce <- FindClusters(object = sce, resolution = 0.5,verbose = FALSE)
   meta <- sce@meta.data
-
+  
   Idents(sce) <- as.character( meta[,group])
   print(table(Seurat::Idents(sce)))
   sce.markers <- Seurat::FindAllMarkers(object = sce, only.pos = only.pos, min.pct = min.pct, thresh.use = thresh.use, logfc.threshold = thresh.use)
