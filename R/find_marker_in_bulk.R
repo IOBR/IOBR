@@ -65,7 +65,8 @@ find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 
   sce <- Seurat::NormalizeData(sce)
   sce@assays[["RNA"]]@layers[["data"]]<-sce@assays[["RNA"]]@layers[["counts"]]
   sce <- Seurat:: ScaleData(object = sce,
-                           
+                            # vars.to.regress = c('nCount_RNA'),
+                            model.use = 'linear',
                             use.umi = FALSE)
   sce <- Seurat::FindVariableFeatures(object = sce, nfeatures = nfeatures)
   # length(VariableFeatures(sce))
