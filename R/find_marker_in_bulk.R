@@ -62,8 +62,14 @@ find_markers_in_bulk<-function(pdata, eset, group, id_pdata = "ID", nfeatures = 
                                      min.features = 0,
                                      project = "sce")
   # print(head(sce@meta.data) )
-  sce <- Seurat::NormalizeData(sce)
-  sce@assays[["RNA"]]@layers[["data"]]<-sce@assays[["RNA"]]@layers[["counts"]]
+  seurat_version <- packageVersion("Seurat")
+  if (seurat_version >= "5.0.0") {
+    sce <- Seurat::NormalizeData(sce)
+    sce@assays[["RNA"]]@layers[["data"]]<-sce@assays[["RNA"]]@layers[["counts"]]
+    message("Seurat version 5 or above.")
+  } else {
+    message("Seurat version is below 5.0.0.")
+  }
   sce <- Seurat:: ScaleData(object = sce,
                             # vars.to.regress = c('nCount_RNA'),
                             model.use = 'linear',
