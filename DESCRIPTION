@@ -45,6 +45,6 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) , https://iobr.github.io/
 BugReports: https://github.com/IOBR/IOBR/issues
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 BiocType: Software
 Config/testthat/edition: 3

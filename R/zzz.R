@@ -50,10 +50,9 @@
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
 
                     " DQ Zeng, YR Fang, WJ Qiu, ..., GC Yu*, WJ Liao*, (2024) \n",
-                    " IOBR2: Multidimensional Decoding Tumor Microenvironment for Immuno-Oncology Research. \n",
-                    " bioRxiv, 2024.01.13.575484; \n",
-                    " https://www.biorxiv.org/content/10.1101/2024.01.13.575484v2.full.pdf \n",
-                    " Higly Cited Paper and Hot Paper of WOS\n",
+                    " Enhancing immuno-oncology investigations through multidimensional decoding \n",
+                    " of tumor microenvironment with IOBR 2.0. (2024) Cell Reports Methods \n",
+                    " https://doi.org/10.1016/j.crmeth.2024.100910 \n",
                     "==========================================================================")
 
   packageStartupMessage(paste0(msg, citation))
