@@ -137,7 +137,7 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
                                 fc.name         = "avg_log2FC")
 
   # DT::datatable(sce.markers)
-  # print(head(sce.markers))
+  print(head(sce.markers))
   ####################################
   refgene <- sce.markers %>% dplyr:: group_by(cluster) %>%  dplyr::top_n(n_ref_genes, avg_log2FC)
 
