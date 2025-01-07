@@ -19,6 +19,7 @@
 #'
 #' @author Wubing Zhang
 #' @author Dongqiang Zeng
+#' @author Yiran Fang
 #' @export
 #' @examples
 #' # Using the TCGA count data as an example
@@ -233,7 +234,11 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa",  source = "loca
   TPM <- TPM[!is.na(rownames(TPM)),]
   TPM <- TPM[!rownames(TPM)==" ",]
 
-  TPM <- rownames_to_column(as.data.frame(TPM), var = "symbol")
+  # TPM <- rownames_to_column(as.data.frame(TPM), var = "symbol")
+  symbol.id = rownames(TPM)
+  TPM = as.data.frame(TPM)
+  TPM$symbol = symbol.id
+
   TPM <- remove_duplicate_genes(eset = TPM, column_of_symbol = "symbol")
   # TPM <- TPM[,!is.na(colnames(TPM))]
   # TPM <- TPM[,!colnames(TPM)==" "]

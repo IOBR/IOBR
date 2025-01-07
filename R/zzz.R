@@ -49,7 +49,7 @@
 
   citation <-paste0(" If you use ", pkgname, " in published research, please cite:\n",
 
-                    " DQ Zeng, YR Fang, WJ Qiu, ..., GC Yu*, WJ Liao*, (2024) \n",
+                    " DQ Zeng, YR Fang, ..., GC Yu*, WJ Liao*, \n",
                     " Enhancing immuno-oncology investigations through multidimensional decoding \n",
                     " of tumor microenvironment with IOBR 2.0. (2024) Cell Reports Methods \n",
                     " https://doi.org/10.1016/j.crmeth.2024.100910 \n",
