@@ -51,8 +51,12 @@
 
                     " DQ Zeng, YR Fang, ..., GC Yu*, WJ Liao*, \n",
                     " Enhancing immuno-oncology investigations through multidimensional decoding \n",
-                    " of tumor microenvironment with IOBR 2.0. (2024) Cell Reports Methods \n",
-                    " https://doi.org/10.1016/j.crmeth.2024.100910 \n",
+                    " of tumor microenvironment with IOBR 2.0. Cell Rep Methods 4, 100910 (2024). \n",
+                    " &  \n",
+                    " YR Fang, ..., WJ Liao*, DQ Zeng*, \n",
+                    " Systematic Investigation of Tumor Microenvironment and , \n",
+                    " Antitumor Immunity With IOBR, Med Research (2025). \n",
+                    " https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001 \n",
                     "==========================================================================")
 
   packageStartupMessage(paste0(msg, citation))
