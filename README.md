@@ -186,10 +186,15 @@ sig_group[1:3]
 
 ## References
 
-Zeng D, Fang Y, …, Liao W. Enhancing Immuno-Oncology Investigations
+Zeng DQ, Fang YR, …, Liao WJ. Enhancing Immuno-Oncology Investigations
 Through Multidimensional Decoding of Tumour Microenvironment with IOBR
 2.0, **Cell Reports Methods**, 2024
 <https://doi.org/10.1016/j.crmeth.2024.100910>
+
+Fang YR, …, Liao WJ, Zeng DQ, Systematic Investigation of Tumor
+Microenvironment and Antitumor Immunity With IOBR, **Med Research**,
+2025 [Link to
+paper](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001)
 
 ## Reporting bugs
 
