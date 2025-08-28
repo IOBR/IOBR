@@ -24,7 +24,7 @@
 #' res <- tme_cluster(input = tcga_stad_sig, features = NULL, pattern = "xCell", id = "ID", method = "kmeans", min_nc = 2, max.nc = 6)
 #' sig_heatmap(input = res, features = colnames(res)[3:ncol(res)], group = "cluster")
 
-tme_cluster <- function(input, features = NULL, pattern = NULL, id = NULL, scale = TRUE, method = "kmeans", min_nc = 2, max.nc = 6, print_result = FALSE){
+tme_cluster <- function(input, features = NULL, pattern = NULL, id = NULL, scale = TRUE, method = "kmeans", min_nc = 2, max.nc = 6){
 
 
   input <- as.data.frame(input)
@@ -51,7 +51,7 @@ tme_cluster <- function(input, features = NULL, pattern = NULL, id = NULL, scale
 
   if(scale){
     input[, features] <- scale(input[, features], scale = TRUE, center = TRUE)
-    features <- feature_manipulation(data = input, feature = features, print_result = print_result)
+    features <- feature_manipulation(data = input, feature = features, print_result = FALSE)
     input <- input[, colnames(input)%in%features]
   }
   # print(input)
