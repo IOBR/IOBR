@@ -36,7 +36,8 @@ Imports: matrixStats,
          stringr, 
          Seurat,
          tidyr,
-         tidyverse
+         tidyverse,
+         GSVA
 Suggests: testthat (>= 3.0.0),
           knitr, 
           rmarkdown
