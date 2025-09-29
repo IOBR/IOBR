@@ -1,52 +1,78 @@
 Package: IOBR
-Type: Package
 Title: Immune Oncology Biological Research
-Version: 0.99.0
-Description: This package offers six modules for TME analysis based on multi-omics data. These modules cover data preprocessing, TME estimation, TME infiltrating patterns, cellular interactions, genome and TME interaction, and visualization for TME relevant features, as well as modelling based on key features. It integrates multiple vital microenvironmental analysis algorithms and signature estimation methods, simplifying the analysis and downstream visualization of the TME. In addition to providing a quick and easy way to construct gene signatures from scRNA-seq data, It also provides a way to construct a reference matrix for TME deconvolution from scRNA-seq data. The analysis pipeline and feature visualization are user-friendly and provide a comprehensive description of the complex TME, offering insights into tumour-immune interactions. 
+Version: 2.0.0
+Authors@R: c(
+    person("Dongqiang", "Zeng", , "xx@qq.com", role = "aut"),
+    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9855-7357")),
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9855-7357")),
+    person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
+    person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
+  )
 Maintainer: Yiran Fang <fyr_nate@163.com>
+Description: This package offers six modules for TME analysis based on
+    multi-omics data. These modules cover data preprocessing, TME
+    estimation, TME infiltrating patterns, cellular interactions, genome
+    and TME interaction, and visualization for TME relevant features, as
+    well as modelling based on key features. It integrates multiple vital
+    microenvironmental analysis algorithms and signature estimation
+    methods, simplifying the analysis and downstream visualization of the
+    TME. In addition to providing a quick and easy way to construct gene
+    signatures from scRNA-seq data, It also provides a way to construct a
+    reference matrix for TME deconvolution from scRNA-seq data. The
+    analysis pipeline and feature visualization are user-friendly and
+    provide a comprehensive description of the complex TME, offering
+    insights into tumour-immune interactions.
 License: GPL-3
-LazyData: TRUE
-Depends: tibble, 
-         dplyr, 
-         ggplot2,
-         ggpubr,
-         survival,
-         ComplexHeatmap,
-         tidyHeatmap,
-         clusterProfiler,
-         patchwork,
-         survminer, 
-         R(>= 3.6.0)
-Imports: matrixStats, 
-         corrplot,
-         e1071, 
-         preprocessCore,
-         biomaRt, 
-         devtools, 
-         caret, 
-         glmnet, 
-         ppcor, 
-         timeROC, 
-         pracma,
-         DESeq2, 
-         cowplot, 
-         limSolve, 
-         limma, 
-         purrr, 
-         stringr, 
-         Seurat,
-         tidyr,
-         tidyverse,
-         GSVA
-Suggests: testthat (>= 3.0.0),
-          knitr, 
-          rmarkdown,
-          prettydoc
-bioViews: GeneExpression, DifferentialExpression, ImmunoOncology, Transcriptomics, Clustering, Survival, Visualization
-URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) , https://iobr.github.io/book/ (docs)
+URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
+    https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
-VignetteBuilder: knitr
-Encoding: UTF-8
-RoxygenNote: 7.3.2
+Depends: 
+    clusterProfiler,
+    ComplexHeatmap,
+    dplyr,
+    ggplot2,
+    ggpubr,
+    patchwork,
+    R(>= 3.6.0),
+    survival,
+    survminer,
+    tibble,
+    tidyHeatmap
+Imports: 
+    biomaRt,
+    caret,
+    corrplot,
+    cowplot,
+    DESeq2,
+    devtools,
+    e1071,
+    glmnet,
+    GSVA,
+    limma,
+    limSolve,
+    matrixStats,
+    ppcor,
+    pracma,
+    preprocessCore,
+    purrr,
+    Seurat,
+    stringr,
+    tidyr,
+    tidyverse,
+    timeROC
+Suggests: 
+    knitr,
+    prettydoc,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 BiocType: Software
+bioViews: GeneExpression, DifferentialExpression, ImmunoOncology,
+    Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: TRUE
+RoxygenNote: 7.3.2
