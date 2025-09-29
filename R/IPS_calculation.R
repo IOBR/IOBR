@@ -99,7 +99,7 @@ IPS_calculation<-function(project=NULL, eset, plot = FALSE){
     IPS[i]<-ipsmap(AZ[i])
 
 
-    #' if TRUE, plot will be saved
+    # if TRUE, plot will be saved
 
     if (plot) {
 

@@ -21,7 +21,6 @@ IPS score data frame
 This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
-if TRUE, plot will be saved
 file to deposit reslut
 首先构建图的储存文件夹
 }
