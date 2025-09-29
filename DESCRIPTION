@@ -40,7 +40,8 @@ Imports: matrixStats,
          GSVA
 Suggests: testthat (>= 3.0.0),
           knitr, 
-          rmarkdown
+          rmarkdown,
+          prettydoc
 bioViews: GeneExpression, DifferentialExpression, ImmunoOncology, Transcriptomics, Clustering, Survival, Visualization
 URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) , https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
