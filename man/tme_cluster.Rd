@@ -12,8 +12,7 @@ tme_cluster(
   scale = TRUE,
   method = "kmeans",
   min_nc = 2,
-  max.nc = 6,
-  print_result = FALSE
+  max.nc = 6
 )
 }
 \arguments{
