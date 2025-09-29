@@ -6,7 +6,7 @@
     GNU Fortran (Ubuntu 13.2.0-23ubuntu3) 13.2.0
 * running under: Ubuntu 24.04.3 LTS
 * using session charset: UTF-8
-* using options ‘--no-examples --no-tests --no-manual --no-vignettes --no-build-vignettes’
+* using options ‘--no-examples --no-tests --no-manual --no-vignettes’
 * checking for file ‘./DESCRIPTION’ ... OK
 * this is package ‘IOBR’ version ‘2.0.0’
 * package encoding: UTF-8
