@@ -5,7 +5,7 @@ Authors@R: c(
     person("Dongqiang", "Zeng", , "xx@qq.com", role = "aut"),
     person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-9855-7357")),
     person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
     person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
