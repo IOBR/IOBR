@@ -407,6 +407,9 @@ plotPurity <- function(scores,
          xlim=xlim,
          ylab="Tumor purity",
          ylim=c(0, 1))
+    # Store original par settings and restore on exit
+    old_par <- par(no.readonly = TRUE)
+    on.exit(par(old_par))
     par(new=TRUE)
     points(Affy.model$ESTIMATEScore, Affy.model$tumor.purity, cex=0.75, col="lightgrey")
     if (withinMinMax) {

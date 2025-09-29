@@ -56,6 +56,9 @@ sig_roc<-function(data,
                   smooth         = TRUE,
                   compare_method = "bootstrap",
                   boot.n         = 100){
+  # Store current pROC options and set progress to none
+  old_options <- getOption("pROCProgress")
+  on.exit(options(pROCProgress = old_options))
   options(pROCProgress = list(name = "none"))
 
 
