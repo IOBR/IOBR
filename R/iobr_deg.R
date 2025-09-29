@@ -186,7 +186,9 @@ iobr_deg<-function(eset,
 
     message(">>>== limma was selected for differential gene analysis of Array data \n")
 
-    library(limma)
+    if (!requireNamespace("limma", quietly = TRUE)) {
+      stop("Package 'limma' is required but not installed.")
+    }
     pdata$deg_group<-ifelse(pdata$deg_group==contrast[2],"group1","group2")
     ################################
     message(paste0("group1 = ", contrast[2]))

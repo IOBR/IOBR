@@ -53,7 +53,9 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
                                assay_out = "RNA", slot_out = "data", verbose = FALSE, only.pos = TRUE, n_ref_genes = 50,
                                logfc.threshold = 0.15, test.use = "wilcox"){
 
-  library(Seurat)
+  if (!requireNamespace("Seurat", quietly = TRUE)) {
+    stop("Package 'Seurat' is required but not installed.")
+  }
   # if(!is.null(path)){
   #   file_store<-path
   # }else{

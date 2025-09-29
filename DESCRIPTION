@@ -10,6 +10,7 @@ Authors@R: c(
     person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
     person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
   )
+Author: Dongqiang Zeng [aut], Yiran Fang [aut, cre], Shixiang Wang [aut], Qingcong Luo [aut], Hongqian Qian [aut]
 Maintainer: Yiran Fang <fyr_nate@163.com>
 Description: This package offers six modules for TME analysis based on
     multi-omics data. These modules cover data preprocessing, TME
@@ -29,40 +30,43 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
     https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
-    clusterProfiler,
-    ComplexHeatmap,
-    dplyr,
-    ggplot2,
-    ggpubr,
-    patchwork,
-    R(>= 3.6.0),
-    survival,
-    survminer,
-    tibble,
-    tidyHeatmap
+    R(>= 3.6.0)
 Imports: 
     biomaRt,
     caret,
+    clusterProfiler,
+    ComplexHeatmap,
     corrplot,
     cowplot,
     DESeq2,
     devtools,
+    dplyr,
     e1071,
+    ggplot2,
+    ggpubr,
     glmnet,
     GSVA,
     limma,
     limSolve,
+    Matrix,
     matrixStats,
+    patchwork,
     ppcor,
     pracma,
     preprocessCore,
     purrr,
     Seurat,
     stringr,
+    survival,
+    survminer,
+    tibble,
+    tidyHeatmap,
     tidyr,
     tidyverse,
-    timeROC
+    timeROC,
+    WGCNA
 Suggests: 
+    easier,
     knitr,
     prettydoc,
     rmarkdown,

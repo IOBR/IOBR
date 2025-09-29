@@ -25,7 +25,9 @@
 #' print(outs)
 find_outlier_samples<- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL){
 
-  library(WGCNA)
+  if (!requireNamespace("WGCNA", quietly = TRUE)) {
+    stop("Package 'WGCNA' is required but not installed.")
+  }
   path<- creat_folder(project)
 
   if(is.null(index)) index <- 1

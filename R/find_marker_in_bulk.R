@@ -40,10 +40,13 @@
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {
 
 
-  library(Seurat)
-  library(Matrix)
-  library(tibble)
-  library(dplyr)
+  # Check required packages
+  if (!requireNamespace("Seurat", quietly = TRUE)) {
+    stop("Package 'Seurat' is required but not installed.")
+  }
+  if (!requireNamespace("Matrix", quietly = TRUE)) {
+    stop("Package 'Matrix' is required but not installed.")
+  }
 
   # 转换输入数据格式
   if (!inherits(eset, "dgCMatrix")) {
@@ -98,7 +101,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     counts <- GetAssayData(sce, assay = "RNA", slot = "counts")
     gene_var <- Matrix::rowVars(counts)
     top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
-    VariableFeatures(sce) <<- top_genes  # 使用 <<- 修改父环境变量
+    VariableFeatures(sce) <- top_genes  # Assign variable features
   })
 
   # 降维和标记物识别

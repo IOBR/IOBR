@@ -17,24 +17,13 @@
 #
 
 .onLoad <- function(libname, pkgname) {
-  suppressPackageStartupMessages({
-    library(ComplexHeatmap, quietly = TRUE, warn.conflicts = FALSE)
-    library(tidyHeatmap, quietly = TRUE, warn.conflicts = FALSE)
-    library(clusterProfiler, quietly = TRUE, warn.conflicts = FALSE)
-    library(tibble, quietly = TRUE, warn.conflicts = FALSE)
-    library(tidyverse, quietly = TRUE, warn.conflicts = FALSE)
-    library(survival, quietly = TRUE, warn.conflicts = FALSE)
-    library(survminer, quietly = TRUE, warn.conflicts = FALSE)
-    library(ggplot2, quietly = TRUE, warn.conflicts = FALSE)
-    library(patchwork, quietly = TRUE, warn.conflicts = FALSE)
-    library(ggpubr, quietly = TRUE, warn.conflicts = FALSE)
-    library(limma, quietly = TRUE, warn.conflicts = FALSE)
-    library(limSolve, quietly = TRUE, warn.conflicts = FALSE)
-    library(preprocessCore, quietly = TRUE, warn.conflicts = FALSE)
-    library(e1071, quietly = TRUE, warn.conflicts = FALSE)
-    library(GSVA, quietly = TRUE, warn.conflicts = FALSE)
-    # Add other packages as necessary
-  })
+  # Check that required packages are available
+  invisible(suppressPackageStartupMessages({
+    sapply(c("ComplexHeatmap", "tidyHeatmap", "clusterProfiler", "tibble", 
+             "tidyverse", "survival", "survminer", "ggplot2", "patchwork",
+             "ggpubr", "limma", "limSolve", "preprocessCore", "e1071", "GSVA"),
+           requireNamespace, quietly = TRUE)
+  }))
 }
 
 

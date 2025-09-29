@@ -156,13 +156,13 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y){
 PrognosticAUC <- function(model, newx, s, acture.y){
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
-  with(timerocDat,
-       ROC <<- timeROC::timeROC(T = time, delta = status,
-                                marker = risk, cause = 1,
-                                weighting = "marginal",
-                                time = quantile(time, probs = c(0.3, 0.9)),
-                                ROC = TRUE,
-                                iid = TRUE))
+  ROC <- with(timerocDat,
+       timeROC::timeROC(T = time, delta = status,
+                        marker = risk, cause = 1,
+                        weighting = "marginal",
+                        time = quantile(time, probs = c(0.3, 0.9)),
+                        ROC = TRUE,
+                        iid = TRUE))
   AUC <- data.frame(probs.3 = ROC$AUC[1], probs.9 = ROC$AUC[2])
   return(AUC)
 }
@@ -198,13 +198,13 @@ PrognosticAUC <- function(model, newx, s, acture.y){
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9){
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
-  with(timerocDat,
-       ROC <<- timeROC::timeROC(T = time, delta = status,
-                                marker = risk, cause = 1,
-                                weighting = "marginal",
-                                time = quantile(time, probs =time_prob),
-                                ROC = TRUE,
-                                iid = TRUE))
+  ROC <- with(timerocDat,
+       timeROC::timeROC(T = time, delta = status,
+                        marker = risk, cause = 1,
+                        weighting = "marginal",
+                        time = quantile(time, probs =time_prob),
+                        ROC = TRUE,
+                        iid = TRUE))
   return(ROC)
 }
 
