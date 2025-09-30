@@ -1,7 +1,3 @@
-
-
-
-
 # CIBERSORT R script v1.04 (last updated 10-24-2016)
 # Note: Signature matrix construction is not currently available; use java version for full functionality.
 # Author: Aaron M. Newman, Stanford University (amnewman@stanford.edu)
@@ -44,12 +40,12 @@
 # License: http://cibersort.stanford.edu/CIBERSORT_License.txt
 
 
-#dependencies
+# dependencies
 # library(e1071)
 # library(parallel)
 # library(preprocessCore)
 
-#Core algorithm
+# Core algorithm
 #' Title CoreAlg
 #' @description CoreAlg performs nu-regression using support vector machines (SVM) and calculates weights, root mean squared error (RMSE), and correlation coefficient (R).
 #' @param X Input matrix or data frame containing the predictor variables.
@@ -59,63 +55,70 @@
 #'
 #' @return A list containing the weights (`w`), root mean squared error (`mix_rmse`), and correlation coefficient (`mix_r`).
 #' @export
-#' 
+#'
 #' @examples
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
 #'
-CoreAlg <- function(X, y, absolute, abs_method){
-
-  #try different values of nu
+CoreAlg <- function(X, y, absolute, abs_method) {
+  # try different values of nu
   svn_itor <- 3
 
-  res <- function(i){
-    if(i==1){nus <- 0.25}
-    if(i==2){nus <- 0.5}
-    if(i==3){nus <- 0.75}
-    model<-svm(X,y,type="nu-regression",kernel="linear",nu=nus,scale=F)
+  res <- function(i) {
+    if (i == 1) {
+      nus <- 0.25
+    }
+    if (i == 2) {
+      nus <- 0.5
+    }
+    if (i == 3) {
+      nus <- 0.75
+    }
+    model <- svm(X, y, type = "nu-regression", kernel = "linear", nu = nus, scale = F)
     model
   }
 
-  if(Sys.info()['sysname'] == 'Windows') out <- mclapply(1:svn_itor, res, mc.cores=1) else
-    out <- mclapply(1:svn_itor, res, mc.cores=svn_itor)
+  if (Sys.info()["sysname"] == "Windows") {
+    out <- mclapply(1:svn_itor, res, mc.cores = 1)
+  } else {
+    out <- mclapply(1:svn_itor, res, mc.cores = svn_itor)
+  }
 
-  nusvm <- rep(0,svn_itor)
-  corrv <- rep(0,svn_itor)
+  nusvm <- rep(0, svn_itor)
+  corrv <- rep(0, svn_itor)
 
-  #do cibersort
+  # do cibersort
   t <- 1
-  while(t <= svn_itor) {
-    weights = t(out[[t]]$coefs) %*% out[[t]]$SV
-    weights[which(weights<0)]<-0
-    w<-weights/sum(weights)
-    u <- sweep(X,MARGIN=2,w,'*')
+  while (t <= svn_itor) {
+    weights <- t(out[[t]]$coefs) %*% out[[t]]$SV
+    weights[which(weights < 0)] <- 0
+    w <- weights / sum(weights)
+    u <- sweep(X, MARGIN = 2, w, "*")
     k <- apply(u, 1, sum)
     nusvm[t] <- sqrt((mean((k - y)^2)))
     corrv[t] <- cor(k, y)
     t <- t + 1
   }
 
-  #pick best model
+  # pick best model
   rmses <- nusvm
   mn <- which.min(rmses)
   model <- out[[mn]]
 
-  #get and normalize coefficients
+  # get and normalize coefficients
   q <- t(model$coefs) %*% model$SV
-  q[which(q<0)]<-0
-  if(!absolute || abs_method == 'sig.score') w <- (q/sum(q)) #relative space (returns fractions)
-  if(absolute && abs_method == 'no.sumto1') w <- q #absolute space (returns scores)
+  q[which(q < 0)] <- 0
+  if (!absolute || abs_method == "sig.score") w <- (q / sum(q)) # relative space (returns fractions)
+  if (absolute && abs_method == "no.sumto1") w <- q # absolute space (returns scores)
 
   mix_rmse <- rmses[mn]
   mix_r <- corrv[mn]
 
   newList <- list("w" = w, "mix_rmse" = mix_rmse, "mix_r" = mix_r)
-
 }
 
-#do permutations
+# do permutations
 #' Title
 #' @description doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
 #' @param perm Number of permutations to perform.
@@ -126,34 +129,37 @@ CoreAlg <- function(X, y, absolute, abs_method){
 #'
 #' @return A list containing the distribution of correlation coefficients from the permutations.
 #' @export
-#' 
+#'
 #' @examples
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
 #'
-doPerm <- function(perm, X, Y, absolute, abs_method){
+doPerm <- function(perm, X, Y, absolute, abs_method) {
   itor <- 1
   Ylist <- as.list(data.matrix(Y))
   dist <- matrix()
 
-  while(itor <= perm){
-    #print(itor)
+  while (itor <= perm) {
+    # print(itor)
 
-    #random mixture
-    yr <- as.numeric(Ylist[sample(length(Ylist),dim(X)[1])])
+    # random mixture
+    yr <- as.numeric(Ylist[sample(length(Ylist), dim(X)[1])])
 
-    #standardize mixture
+    # standardize mixture
     yr <- (yr - mean(yr)) / sd(yr)
 
-    #run CIBERSORT core algorithm
+    # run CIBERSORT core algorithm
     result <- CoreAlg(X, yr, absolute, abs_method)
 
     mix_r <- result$mix_r
 
-    #store correlation
-    if(itor == 1) {dist <- mix_r}
-    else {dist <- rbind(dist, mix_r)}
+    # store correlation
+    if (itor == 1) {
+      dist <- mix_r
+    } else {
+      dist <- rbind(dist, mix_r)
+    }
 
     itor <- itor + 1
   }
@@ -192,47 +198,49 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' @import stringr
 #' @examples
 #' data("eset_gse62254", package = "IOBR")
-#' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN=TRUE, absolute=FALSE)
+#' cibersort <- CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN = TRUE, absolute = FALSE)
 #' head(cibersort)
-
-CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute, abs_method='sig.score'){
-
-
-  if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0){
+CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute, abs_method = "sig.score") {
+  if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0) {
     stop("None identical gene between eset and reference had been found.
          Check your eset using: intersect(rownames(eset), rownames(reference))")
   }
 
-  if(absolute && abs_method != 'no.sumto1' && abs_method != 'sig.score')
+  if (absolute && abs_method != "no.sumto1" && abs_method != "sig.score") {
     stop("abs_method must be set to either 'sig.score' or 'no.sumto1'")
+  }
 
-  #read in data
-  X<- sig_matrix
+  # read in data
+  X <- sig_matrix
   # X <- read.table(sig_matrix,header=T,sep="\t",row.names=1,check.names=F)
-  Y <- rownames_to_column(mixture_file,var = "symbol")
-  #to prevent crashing on duplicated gene symbols, add unique numbers to identical names
-  dups <- dim(Y)[1] - length(unique(Y[,1]))
-  if(dups > 0) {
-    warning(paste(dups," duplicated gene symbol(s) found in mixture file!",sep=""))
-    rownames(Y) <- make.names(Y[,1], unique=TRUE)
-  }else {rownames(Y) <- Y[,1]}
-  Y <- Y[,-1]
+  Y <- rownames_to_column(mixture_file, var = "symbol")
+  # to prevent crashing on duplicated gene symbols, add unique numbers to identical names
+  dups <- dim(Y)[1] - length(unique(Y[, 1]))
+  if (dups > 0) {
+    warning(paste(dups, " duplicated gene symbol(s) found in mixture file!", sep = ""))
+    rownames(Y) <- make.names(Y[, 1], unique = TRUE)
+  } else {
+    rownames(Y) <- Y[, 1]
+  }
+  Y <- Y[, -1]
   ###################################
   X <- data.matrix(X)
   Y <- data.matrix(Y)
 
-  #order
-  X <- X[order(rownames(X)),]
-  Y <- Y[order(rownames(Y)),]
+  # order
+  X <- X[order(rownames(X)), ]
+  Y <- Y[order(rownames(Y)), ]
 
-  P <- perm #number of permutations
+  P <- perm # number of permutations
 
-  #anti-log if max < 50 in mixture file
-  if(max(Y) < 50) {Y <- 2^Y}
+  # anti-log if max < 50 in mixture file
+  if (max(Y) < 50) {
+    Y <- 2^Y
+  }
 
-  #quantile normalization of mixture file
+  # quantile normalization of mixture file
   # library(preprocessCore)
-  if(QN == TRUE){
+  if (QN == TRUE) {
     tmpc <- colnames(Y)
     tmpr <- rownames(Y)
     Y <- normalize.quantiles(Y)
@@ -240,75 +248,83 @@ CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute
     rownames(Y) <- tmpr
   }
 
-  #store original mixtures
+  # store original mixtures
   Yorig <- Y
-  Ymedian <- max(median(Yorig),1)
+  Ymedian <- max(median(Yorig), 1)
 
-  #intersect genes
+  # intersect genes
   Xgns <- row.names(X)
   Ygns <- row.names(Y)
   YintX <- Ygns %in% Xgns
-  Y <- Y[YintX,]
+  Y <- Y[YintX, ]
   XintY <- Xgns %in% row.names(Y)
-  X <- X[XintY,]
+  X <- X[XintY, ]
 
-  #standardize sig matrix
+  # standardize sig matrix
   X <- (X - mean(X)) / sd(as.vector(X))
 
-  #empirical null distribution of correlation coefficients
-  if(P > 0) {nulldist <- sort(doPerm(P, X, Y, absolute, abs_method)$dist)}
+  # empirical null distribution of correlation coefficients
+  if (P > 0) {
+    nulldist <- sort(doPerm(P, X, Y, absolute, abs_method)$dist)
+  }
 
-  header <- c('Mixture',colnames(X),"P-value","Correlation","RMSE")
-  if(absolute) header <- c(header, paste('Absolute score (',abs_method,')',sep=""))
+  header <- c("Mixture", colnames(X), "P-value", "Correlation", "RMSE")
+  if (absolute) header <- c(header, paste("Absolute score (", abs_method, ")", sep = ""))
 
   output <- matrix()
   itor <- 1
   mixtures <- dim(Y)[2]
   pval <- 9999
 
-  #iterate through mixtures
-  while(itor <= mixtures){
+  # iterate through mixtures
+  while (itor <= mixtures) {
+    y <- Y[, itor]
 
-    y <- Y[,itor]
-
-    #standardize mixture
+    # standardize mixture
     y <- (y - mean(y)) / sd(y)
 
-    #run SVR core algorithm
+    # run SVR core algorithm
     result <- CoreAlg(X, y, absolute, abs_method)
 
-    #get results
+    # get results
     w <- result$w
     mix_r <- result$mix_r
     mix_rmse <- result$mix_rmse
 
-    if(absolute && abs_method == 'sig.score') {
-      w <- w * median(Y[,itor]) / Ymedian
+    if (absolute && abs_method == "sig.score") {
+      w <- w * median(Y[, itor]) / Ymedian
     }
 
-    #calculate p-value
-    if(P > 0) {pval <- 1 - (which.min(abs(nulldist - mix_r)) / length(nulldist))}
+    # calculate p-value
+    if (P > 0) {
+      pval <- 1 - (which.min(abs(nulldist - mix_r)) / length(nulldist))
+    }
 
-    #print output
-    out <- c(colnames(Y)[itor],w,pval,mix_r,mix_rmse)
-    if(absolute) out <- c(out, sum(w))
-    if(itor == 1) {output <- out}
-    else {output <- rbind(output, out)}
+    # print output
+    out <- c(colnames(Y)[itor], w, pval, mix_r, mix_rmse)
+    if (absolute) out <- c(out, sum(w))
+    if (itor == 1) {
+      output <- out
+    } else {
+      output <- rbind(output, out)
+    }
 
     itor <- itor + 1
-
   }
 
-  #save results
+  # save results
   # write.table(rbind(header,output), file="CIBERSORT-Results.txt", sep="\t", row.names=F, col.names=F, quote=F)
 
-  #return matrix object containing all results
-  obj <- rbind(header,output)
-  obj <- obj[,-1]
-  obj <- obj[-1,]
-  obj <- matrix(as.numeric(unlist(obj)),nrow=nrow(obj))
+  # return matrix object containing all results
+  obj <- rbind(header, output)
+  obj <- obj[, -1]
+  obj <- obj[-1, ]
+  obj <- matrix(as.numeric(unlist(obj)), nrow = nrow(obj))
   rownames(obj) <- colnames(Y)
-  if(!absolute){colnames(obj) <- c(colnames(X),"P-value","Correlation","RMSE")}
-  else{colnames(obj) <- c(colnames(X),"P-value","Correlation","RMSE",paste('Absolute score (',abs_method,')',sep=""))}
+  if (!absolute) {
+    colnames(obj) <- c(colnames(X), "P-value", "Correlation", "RMSE")
+  } else {
+    colnames(obj) <- c(colnames(X), "P-value", "Correlation", "RMSE", paste("Absolute score (", abs_method, ")", sep = ""))
+  }
   obj
 }

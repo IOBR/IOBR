@@ -1,6 +1,3 @@
-
-
-
 #' Source code for the TIMER deconvolution method.
 #'
 #' This code is adapted from https://github.com/hanfeisun/TIMER, which
@@ -22,7 +19,7 @@
 #' @examples
 #' TimerINFO("Data processing started.")
 TimerINFO <- function(string) {
-  message(sprintf('## %s\n', string))
+  message(sprintf("## %s\n", string))
 }
 
 
@@ -31,10 +28,12 @@ TimerINFO <- function(string) {
 #' TIMER signatures are cancer specific. This is the list of available cancer types.
 #'
 #' @export
-timer_available_cancers <- c('kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg',
-                         'lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct',
-                         'ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca',
-                         'uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol')
+timer_available_cancers <- c(
+  "kich", "blca", "brca", "cesc", "gbm", "hnsc", "kirp", "lgg",
+  "lihc", "luad", "lusc", "prad", "sarc", "pcpg", "paad", "tgct",
+  "ucec", "ov", "skcm", "dlbc", "kirc", "acc", "meso", "thca",
+  "uvm", "ucs", "thym", "esca", "stad", "read", "coad", "chol"
+)
 
 
 #' Remove batch effect of expression set
@@ -55,16 +54,20 @@ timer_available_cancers <- c('kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kir
 #' @export
 #'
 #' @examples
-#' set.seed(123)  # For reproducibility
+#' set.seed(123) # For reproducibility
 #' gene_names <- paste0("Gene", 1:100)
 #' sample_names_cancer <- paste0("CancerSample", 1:10)
-#' cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
-#'                      dimnames = list(gene_names, sample_names_cancer))
+#' cancer.exp <- matrix(runif(1000, 1, 1000),
+#'   nrow = 100, ncol = 10,
+#'   dimnames = list(gene_names, sample_names_cancer)
+#' )
 #'
 #' # Generate synthetic expression data for immune cells
 #' sample_names_immune <- paste0("ImmuneSample", 1:5)
-#' immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
-#'                      dimnames = list(gene_names, sample_names_immune))
+#' immune.exp <- matrix(runif(500, 1, 1000),
+#'   nrow = 100, ncol = 5,
+#'   dimnames = list(gene_names, sample_names_immune)
+#' )
 #'
 #' # Create a cell type vector for immune samples
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
@@ -85,29 +88,29 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 
   tmp.dd <- cbind(tmp.dd[tmp.ss, ], immune.exp[tmp.ss, ])
   tmp.dd <- as.matrix(tmp.dd)
-  mode(tmp.dd) <- 'numeric'
+  mode(tmp.dd) <- "numeric"
 
   ## remove batch effects
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
-  tmp.dd0 <-sva:: ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
+  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
 
   ## separate cancer and immune expression data after batch effect removing
   dd.br <- tmp.dd0[, 1:N1]
-  immune.exp.br <- tmp.dd0[, (N1+1):(N1+N2)]
+  immune.exp.br <- tmp.dd0[, (N1 + 1):(N1 + N2)]
 
   ## a immune category has multiple samples, use the median expression level for a gene
   tmp0 <- c()
-  for(kk in unique(names(immune.cellType))){
+  for (kk in unique(names(immune.cellType))) {
     tmp.vv <- which(names(immune.cellType) == kk)
 
-    if(length(tmp.vv) == 1){
+    if (length(tmp.vv) == 1) {
       median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE], 1, median, na.rm = TRUE)
     } else {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
 
-    if(!exists("tmp0")){
+    if (!exists("tmp0")) {
       tmp0 <- median_expression
     } else {
       tmp0 <- cbind(tmp0, median_expression)
@@ -149,16 +152,16 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 check_cancer_types <- function(args) {
   if (length(args$batch) != 0) {
     TimerINFO("Enter batch mode\n")
-    cancers <- as.matrix(read.table(args$batch, sep=","))
+    cancers <- as.matrix(read.table(args$batch, sep = ","))
   } else {
-    cancers<- c(args$expression, args$category)
+    cancers <- c(args$expression, args$category)
     dim(cancers) <- c(1, 2)
   }
   # print(cancers)
   for (i in seq(nrow(cancers))) {
     cancer.category <- cancers[i, 2]
     if (!(cancer.category %in% timer_available_cancers)) {
-      stop(paste('unknown cancers:', cancer.category))
+      stop(paste("unknown cancers:", cancer.category))
     }
   }
   return(cancers)
@@ -183,33 +186,39 @@ check_cancer_types <- function(args) {
 #'
 #' @examples
 #' # Generate some example data
-#' XX <- matrix(runif(100), nrow=10, ncol=10)
-#' colnames(XX) <- paste("CellType", 1:10, sep="")
+#' XX <- matrix(runif(100), nrow = 10, ncol = 10)
+#' colnames(XX) <- paste("CellType", 1:10, sep = "")
 #' YY <- runif(10)
 #'
 #' # Apply the Abbas constrained regression method
 #' results <- GetFractions.Abbas(XX, YY)
 #' print(results)
-GetFractions.Abbas <- function(XX, YY, w=NA){
-  ss.remove=c()
-  ss.names=colnames(XX)
-  while(T){
-    if(length(ss.remove)==0)tmp.XX=XX else{
-      if(is.null(ncol(tmp.XX)))return(rep(0, ncol(XX)))
-      tmp.XX=tmp.XX[, -ss.remove]
+GetFractions.Abbas <- function(XX, YY, w = NA) {
+  ss.remove <- c()
+  ss.names <- colnames(XX)
+  while (T) {
+    if (length(ss.remove) == 0) {
+      tmp.XX <- XX
+    } else {
+      if (is.null(ncol(tmp.XX))) {
+        return(rep(0, ncol(XX)))
+      }
+      tmp.XX <- tmp.XX[, -ss.remove]
     }
-    if(length(ss.remove)>0){
-      ss.names=ss.names[-ss.remove]
-      if(length(ss.names)==0)return(rep(0, ncol(XX)))
+    if (length(ss.remove) > 0) {
+      ss.names <- ss.names[-ss.remove]
+      if (length(ss.names) == 0) {
+        return(rep(0, ncol(XX)))
+      }
     }
-    if(is.na(w[1]))tmp=lsfit(tmp.XX, YY, intercept=F) else tmp=lsfit(tmp.XX, YY, w, intercept=F)
-    if(is.null(ncol(tmp.XX)))tmp.beta=tmp$coefficients[1] else tmp.beta=tmp$coefficients[1:(ncol(tmp.XX)+0)]
-    if(min(tmp.beta>0))break
-    ss.remove=which.min(tmp.beta)
+    if (is.na(w[1])) tmp <- lsfit(tmp.XX, YY, intercept = F) else tmp <- lsfit(tmp.XX, YY, w, intercept = F)
+    if (is.null(ncol(tmp.XX))) tmp.beta <- tmp$coefficients[1] else tmp.beta <- tmp$coefficients[1:(ncol(tmp.XX) + 0)]
+    if (min(tmp.beta > 0)) break
+    ss.remove <- which.min(tmp.beta)
   }
-  tmp.F=rep(0, ncol(XX))
-  names(tmp.F)=colnames(XX)
-  tmp.F[ss.names]=tmp.beta
+  tmp.F <- rep(0, ncol(XX))
+  names(tmp.F) <- colnames(XX)
+  tmp.F[ss.names] <- tmp.beta
   return(tmp.F)
 }
 
@@ -231,7 +240,7 @@ GetFractions.Abbas <- function(XX, YY, w=NA){
 #'
 #' @examples
 #' # Assume `data` is your original gene expression matrix with compound row names
-#' example_data <- matrix(runif(20), ncol=5)
+#' example_data <- matrix(runif(20), ncol = 5)
 #' rownames(example_data) <- c("LOC101", "LOC102", "LOC103", "LOC104")
 #' # Process the data to convert row names
 #' processed_data <- ConvertRownameToLoci(example_data)
@@ -248,7 +257,7 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
   ## Returns:
   ##   Modified geneExpression
 
-  tmp <- strsplit(rownames(cancerGeneExpression), '\\|')
+  tmp <- strsplit(rownames(cancerGeneExpression), "\\|")
   tmp <- sapply(tmp, function(x) x[[1]])
   tmp.vv <- which(nchar(tmp) > 1)
   rownames(cancerGeneExpression) <- tmp
@@ -282,9 +291,9 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
 #' gene_expression_data <- ParseInputExpression(example_path)
 #' print(gene_expression_data)
 ParseInputExpression <- function(path) {
-  ret <- read.csv(path, sep='\t', row.names=1)
+  ret <- read.csv(path, sep = "\t", row.names = 1)
   ret <- as.matrix(ret)
-  mode(ret) <- 'numeric'
+  mode(ret) <- "numeric"
   # ret <- ConvertRownameToLoci(ret)
   return(ret)
 }
@@ -317,22 +326,26 @@ ParseInputExpression <- function(path) {
 #'   Immune_Expression = immune_exp
 #' )
 #'
-#' DrawQQPlot(cancer.exp = expression_data$Cancer_Expression,
-#'            immune.exp = expression_data$Immune_Expression,
-#'            name = "Comparison of Gene Expression")
-DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
+#' DrawQQPlot(
+#'   cancer.exp = expression_data$Cancer_Expression,
+#'   immune.exp = expression_data$Immune_Expression,
+#'   name = "Comparison of Gene Expression"
+#' )
+DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
   ## q-q plot by sample should look like a straight line.
   ## Extreme values may saturate for Affy array data, but most of the data should align well.
-  qq <- qqplot(cancer.exp, immune.exp, xlab='Tumor Expression', ylab='Ref Expression',
-         main='Sample-Sample Q-Q plot')
-  mtext(name, col="gray11")
+  qq <- qqplot(cancer.exp, immune.exp,
+    xlab = "Tumor Expression", ylab = "Ref Expression",
+    main = "Sample-Sample Q-Q plot"
+  )
+  mtext(name, col = "gray11")
 
   # get part of the points for fit linear, remove bottom 40%, and top 10%
   start <- 0.4 * length(qq$x)
   end <- 0.9 * length(qq$x)
-  qq.sub <- list(x=qq$x[start:end], y=qq$y[start:end])
-  fit <-lm(y ~ x, data=qq.sub)
-  abline(fit, col="blue")
+  qq.sub <- list(x = qq$x[start:end], y = qq$y[start:end])
+  fit <- lm(y ~ x, data = qq.sub)
+  abline(fit, col = "blue")
 }
 
 #' Get Outlier Genes
@@ -346,12 +359,14 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name='') {
 #' @export
 #'
 #' @examples
-#' cancers <- data.frame(ExpressionFiles = c("path/to/expression1.csv",
-#'                                           "path/to/expression2.csv"))
+#' cancers <- data.frame(ExpressionFiles = c(
+#'   "path/to/expression1.csv",
+#'   "path/to/expression2.csv"
+#' ))
 #'
 #' # Get outlier genes
 #' outlier_genes <- GetOutlierGenes(cancers)
-GetOutlierGenes <- function (cancers) {
+GetOutlierGenes <- function(cancers) {
   ## Return a union of  outlier genes.
   ## The top 5 expressed genes in each sample is treated as outlier here.
   outlier.total <- c()
@@ -359,7 +374,7 @@ GetOutlierGenes <- function (cancers) {
     cancer.expFile <- cancers[i, 1]
     cancer.expression <- ParseInputExpression(cancer.expFile)
     for (j in 1:ncol(cancer.expression)) {
-      outlier <- rownames(cancer.expression)[tail(order(cancer.expression[,j]), 5)]
+      outlier <- rownames(cancer.expression)[tail(order(cancer.expression[, j]), 5)]
       outlier.total <- c(outlier.total, outlier)
     }
   }
@@ -383,15 +398,13 @@ GetOutlierGenes <- function (cancers) {
 #'   batch = "path/to/batch.csv"
 #' )
 #' results <- deconvolute_timer.default(args)
-deconvolute_timer.default = function(args) {
-
-
+deconvolute_timer.default <- function(args) {
   # data("cancer_type_genes")
   # data("immuneCuratedData")
 
-  cancers = check_cancer_types(args)
+  cancers <- check_cancer_types(args)
 
-  TimerINFO('Loading immune gene expression')
+  TimerINFO("Loading immune gene expression")
 
   immune <- immuneCuratedData
   immune.geneExpression <- immune$genes
@@ -402,15 +415,15 @@ deconvolute_timer.default = function(args) {
   outlier.genes <- sort(GetOutlierGenes(cancers))
 
 
-  print(paste("Outlier genes:", paste(outlier.genes, collapse=' ')))
+  print(paste("Outlier genes:", paste(outlier.genes, collapse = " ")))
 
   dir.create(args$outdir, showWarnings = FALSE, recursive = TRUE)
-  if (!dir.exists(paste(args$outdir, '/results', sep=''))) {
-    dir.create(paste(args$outdir, '/results', sep=''))
+  if (!dir.exists(paste(args$outdir, "/results", sep = ""))) {
+    dir.create(paste(args$outdir, "/results", sep = ""))
   }
 
   abundance.score.matrix <- c()
-  pdf(paste(args$outdir, '/results/output.pdf', sep=''))
+  pdf(paste(args$outdir, "/results/output.pdf", sep = ""))
   for (i in 1:nrow(cancers)) {
     cancer.expFile <- cancers[i, 1]
     cancer.category <- cancers[i, 2]
@@ -418,12 +431,12 @@ deconvolute_timer.default = function(args) {
     #                                          package = "IOBR", mustWork = TRUE)
     cancer.expression <- ParseInputExpression(cancer.expFile)
     index <- !(row.names(cancer.expression) %in% outlier.genes)
-    cancer.expression <- cancer.expression[index, , drop=FALSE]
+    cancer.expression <- cancer.expression[index, , drop = FALSE]
     cancer.colnames <- colnames(cancer.expression)
 
     TimerINFO(paste("Removing the batch effect of", cancer.expFile))
     for (j in 1:length(cancer.colnames)) {
-      DrawQQPlot(cancer.expression[,j], immune.geneExpression[,1], name=cancer.colnames[j])
+      DrawQQPlot(cancer.expression[, j], immune.geneExpression[, 1], name = cancer.colnames[j])
     }
 
     tmp <- RemoveBatchEffect(cancer.expression, immune.geneExpression, immune.cellTypes)
@@ -431,33 +444,35 @@ deconvolute_timer.default = function(args) {
     immune.expNormMedian <- tmp[[3]]
 
     for (j in 1:length(cancer.colnames)) {
-      DrawQQPlot(cancer.expNorm[,j], immune.expNormMedian[,1],
-               name=paste("After batch removing and aggregating for", cancer.colnames[j]))
+      DrawQQPlot(cancer.expNorm[, j], immune.expNormMedian[, 1],
+        name = paste("After batch removing and aggregating for", cancer.colnames[j])
+      )
     }
 
-    gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes)==cancer.category)]]
+    gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
-    XX = immune.expNormMedian[gene.selected.marker, c(-4)]
-    YY = cancer.expNorm[gene.selected.marker, , drop=FALSE]
+    XX <- immune.expNormMedian[gene.selected.marker, c(-4)]
+    YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
 
     for (j in 1:length(cancer.colnames)) {
-      fractions <- GetFractions.Abbas(XX, YY[,j])
+      fractions <- GetFractions.Abbas(XX, YY[, j])
       # print (paste("Fractions for", cancer.expFile, cancer.colnames[j]))
       # print (fractions)
-      barplot(fractions, cex.names=0.8, names.arg=names(fractions), xlab="cell type", ylab="abundance",
-          main=paste("Abundance estimation for", cancer.colnames[j]))
+      barplot(fractions,
+        cex.names = 0.8, names.arg = names(fractions), xlab = "cell type", ylab = "abundance",
+        main = paste("Abundance estimation for", cancer.colnames[j])
+      )
       box()
 
       abundance.score.matrix <- cbind(abundance.score.matrix, fractions)
       colnames(abundance.score.matrix)[ncol(abundance.score.matrix)] <- cancer.colnames[j]
     }
-
   }
 
   dev.off()
-  write.table(abundance.score.matrix, paste(args$outdir, '/results/score_matrix.txt', sep=''),
-      sep="\t", quote=FALSE, row.names=TRUE, col.names=NA)
+  write.table(abundance.score.matrix, paste(args$outdir, "/results/score_matrix.txt", sep = ""),
+    sep = "\t", quote = FALSE, row.names = TRUE, col.names = NA
+  )
 
   return(abundance.score.matrix)
 }
-

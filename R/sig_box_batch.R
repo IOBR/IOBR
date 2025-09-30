@@ -1,9 +1,3 @@
-
-
-
-
-
-
 #' Title sig_box_batch
 #'
 #' @description The sig_box_batch function is used to generate multiple signature box plots for analyzing the relationship between variables and groups in a given input data. It takes the input data, a vector of features or variables to analyze, and a vector of groups or categories to group the analysis by. The function allows customization of various parameters such as the path to save the figures, the appearance of the plots, and the statistical details to include. The generated figures are saved in the specified path or a default folder.
@@ -43,63 +37,59 @@
 sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL, index = 0, angle_x_text = 0,
                           hjust = 0.5, palette = "jama", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 8,
                           size_of_pvalue = 4.5, show_pvalue = TRUE, return_stat_res = FALSE, assay = NULL, slot = "scale.data",
-                          scale = FALSE, height = 5, width = 3.5, fig_type = "pdf", max_count_feas = 30){
-
-
-
-  if(pattern_vars){
+                          scale = FALSE, height = 5, width = 3.5, fig_type = "pdf", max_count_feas = 30) {
+  if (pattern_vars) {
     vars_com <- c(NULL)
     for (i in 1:length(vars)) {
       vars_loop <- colnames(input)[str_detect(colnames(input), pattern = vars[i])]
       vars_com <- c(vars_com, vars_loop)
     }
     vars <- unique(vars_com[!is.na(vars_com)])
-    if(length(vars)>max_count_feas) vars <- vars[1:max_count_feas]
+    if (length(vars) > max_count_feas) vars <- vars[1:max_count_feas]
     message(">>>== Variables that will be analysised :")
     message(paste0(vars, collapse = ", "))
   }
   ########################################
-  if(length(vars)==1 & length(groups)==1) stop(">>>== `sig_box_batch` is suitable for cases where the `vars` or `groups` is greater than one ")
+  if (length(vars) == 1 & length(groups) == 1) stop(">>>== `sig_box_batch` is suitable for cases where the `vars` or `groups` is greater than one ")
 
-  if(is.null(path)){
+  if (is.null(path)) {
     path <- creat_folder("1-sig-box-batch")
-  }else{
+  } else {
     path <- creat_folder(path)
   }
   ########################################
 
-  if(length(vars)>1){
+  if (length(vars) > 1) {
     for (i in 1:length(vars)) {
-
       message(paste0(">>>== Processing feature: ", vars[i], "/n"))
-      p<- sig_box(
-          data            = input,
-          signature       = vars[i],
-          variable        = groups,
-          angle_x_text    = angle_x_text,
-          hjust           = hjust,
-          palette         = palette,
-          cols            = cols,
-          jitter          = jitter,
-          point_size      = point_size,
-          size_of_font    = size_of_font,
-          size_of_pvalue  = size_of_pvalue,
-          show_pvalue     = show_pvalue,
-          return_stat_res = return_stat_res,
-          assay           = assay,
-          slot            = slot,
-          scale           = scale)
+      p <- sig_box(
+        data            = input,
+        signature       = vars[i],
+        variable        = groups,
+        angle_x_text    = angle_x_text,
+        hjust           = hjust,
+        palette         = palette,
+        cols            = cols,
+        jitter          = jitter,
+        point_size      = point_size,
+        size_of_font    = size_of_font,
+        size_of_pvalue  = size_of_pvalue,
+        show_pvalue     = show_pvalue,
+        return_stat_res = return_stat_res,
+        assay           = assay,
+        slot            = slot,
+        scale           = scale
+      )
 
-      ggsave(filename = paste0(index+i, "-", vars[i], "-and-", groups, ".", fig_type), height = height, width = width, path = path$folder_name)
+      ggsave(filename = paste0(index + i, "-", vars[i], "-and-", groups, ".", fig_type), height = height, width = width, path = path$folder_name)
     }
   }
 
 
-  if(length(groups)>1){
+  if (length(groups) > 1) {
     for (i in 1:length(groups)) {
-
       message(paste0(">>>== Processing feature: ", groups[i], "/n"))
-      p<- sig_box(
+      p <- sig_box(
         data            = input,
         signature       = vars,
         variable        = groups[i],
@@ -115,7 +105,8 @@ sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL
         return_stat_res = return_stat_res,
         assay           = assay,
         slot            = slot,
-        scale           = scale)
+        scale           = scale
+      )
 
       height_index <- height
 
@@ -123,7 +114,7 @@ sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL
       levs <- length(levs[!is.na(levs)])
       height <- 2 + height_index * levs
 
-      ggsave(filename = paste0(index+i, "-", vars, "-and-", groups[i], ".", fig_type), height = height, width = width, path = path$folder_name)
+      ggsave(filename = paste0(index + i, "-", vars, "-and-", groups[i], ".", fig_type), height = height, width = width, path = path$folder_name)
     }
   }
 

@@ -1,8 +1,3 @@
-
-
-
-
-
 #' Transform features with Inf or NA to other number
 #'
 #' @param data A data frame containing the data to be transformed.
@@ -22,41 +17,37 @@
 #' transform_data(data_matrix, feature = c("A", "B"), data_type = "Inf", into = "mean")
 #' # Replace zeros with -1 in column C
 #' transform_data(data_matrix, feature = "C", data_type = "zero", into = -1)
-transform_data<-function(data, feature, data_type= c("NA", "Inf", "zero"), into = 0){
-  feature<-colnames(data)[colnames(data)%in%feature]
+transform_data <- function(data, feature, data_type = c("NA", "Inf", "zero"), into = 0) {
+  feature <- colnames(data)[colnames(data) %in% feature]
 
-  if(data_type == "NA"){
-    for(i in 1:length(feature) ){
-      var<-feature[i]
-      j<-which(colnames(data)==var)
+  if (data_type == "NA") {
+    for (i in 1:length(feature)) {
+      var <- feature[i]
+      j <- which(colnames(data) == var)
 
-      if(into=="mean"){
-        data[is.na(data[,var]),j]<-mean(data[,j], na.rm = TRUE )
-      }else{
-        data[is.na(data[,var]),j]<- into
+      if (into == "mean") {
+        data[is.na(data[, var]), j] <- mean(data[, j], na.rm = TRUE)
+      } else {
+        data[is.na(data[, var]), j] <- into
       }
     }
-  }else if(data_type == "Inf"){
-    for(i in 1:length(feature) ){
-      var<-feature[i]
-      j<-which(colnames(data)==var)
+  } else if (data_type == "Inf") {
+    for (i in 1:length(feature)) {
+      var <- feature[i]
+      j <- which(colnames(data) == var)
 
-      if(into=="mean"){
-        data[is.infinite(data[,var]),j]<-mean(data[,j], na.rm = TRUE )
-      }else{
-        data[is.infinite(data[,var]),j]<- into
+      if (into == "mean") {
+        data[is.infinite(data[, var]), j] <- mean(data[, j], na.rm = TRUE)
+      } else {
+        data[is.infinite(data[, var]), j] <- into
       }
-
     }
-  }else if(data_type == "zero"){
-    for(i in 1:length(feature) ){
-      var<-feature[i]
-      j<-which(colnames(data)==var)
-      data[data[,var]== 0,j]<- into
+  } else if (data_type == "zero") {
+    for (i in 1:length(feature)) {
+      var <- feature[i]
+      j <- which(colnames(data) == var)
+      data[data[, var] == 0, j] <- into
     }
   }
   return(data)
 }
-
-
-

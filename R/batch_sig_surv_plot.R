@@ -1,4 +1,3 @@
-
 #' Batch Signature Survival Plot
 #'
 #' This function generates survival plots for multiple projects based on input data and signature scores.
@@ -33,7 +32,7 @@
 #' @importFrom survminer surv_cutpoint
 #' @import survival
 #' @author Dongqiang Zeng
-#' 
+#'
 #' @return A data frame containing the combined data from all projects after survival analysis.
 #' @export
 #'
@@ -42,52 +41,51 @@
 #' data("sig_stad", package = "IOBR")
 #' # Generating survival plots for multiple projects
 #' sig_stad <- as.data.frame(sig_stad)
-#' result <- batch_sig_surv_plot(input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID", column_of_Project = "ProjectID", project = NULL,
-#'                               time = "OS_time", status = "OS_status", time_type = "month", break_month = "auto", palette = "jama",
-#'                               cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf")
+#' result <- batch_sig_surv_plot(
+#'   input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID", column_of_Project = "ProjectID", project = NULL,
+#'   time = "OS_time", status = "OS_status", time_type = "month", break_month = "auto", palette = "jama",
+#'   cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"
+#' )
 #' print(result)
-batch_sig_surv_plot<-function(input_pdata,signature, ID = "ID", column_of_Project="ProjectID", project = NULL, time = "time", status = "status", time_type = "day", break_month = "auto",
-                                palette="jama", cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"){
-  
+batch_sig_surv_plot <- function(input_pdata, signature, ID = "ID", column_of_Project = "ProjectID", project = NULL, time = "time", status = "status", time_type = "day", break_month = "auto",
+                                palette = "jama", cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf") {
   input_pdata <- as.data.frame(input_pdata)
-  goi<-as.character(levels(as.factor(as.character(input_pdata[,column_of_Project]))))
-  
+  goi <- as.character(levels(as.factor(as.character(input_pdata[, column_of_Project]))))
+
   # message(summary(as.factor(as.character(input_pdata[,column_of_Project]))))
-  
-  colnames(input_pdata)[which(colnames(input_pdata)==column_of_Project)]<-"ProjectID"
-  
-  input_pdata[,"ProjectID"]<-as.character(input_pdata[,"ProjectID"])
+
+  colnames(input_pdata)[which(colnames(input_pdata) == column_of_Project)] <- "ProjectID"
+
+  input_pdata[, "ProjectID"] <- as.character(input_pdata[, "ProjectID"])
   ####################################
-  
-  input_pdata_com<-data.frame(NULL)
-  
+
+  input_pdata_com <- data.frame(NULL)
+
   for (i in 1:length(goi)) {
-    
-    var<-goi[i]
-    message(">>> Preprocessing dataset: ",var)
-    pd<-input_pdata[input_pdata$ProjectID%in%var,]
-    
-    pd<-sig_surv_plot(
+    var <- goi[i]
+    message(">>> Preprocessing dataset: ", var)
+    pd <- input_pdata[input_pdata$ProjectID %in% var, ]
+
+    pd <- sig_surv_plot(
       input_pdata = pd,
-      signature   = signature,
-      project     = var,
-      ID          = ID,
-      time        = time,
-      status      = status,
-      time_type   = time_type,
+      signature = signature,
+      project = var,
+      ID = ID,
+      time = time,
+      status = status,
+      time_type = time_type,
       break_month = break_month,
-      cols        = cols,
-      palette     = palette,
-      show_col    =show_col,
-      mini_sig    = mini_sig,
-      fig.type    = fig.type,
-      save_path   = save_path,
-      index       = i)
-    
-    input_pdata_com<-rbind(input_pdata_com, pd$data)
-    
+      cols = cols,
+      palette = palette,
+      show_col = show_col,
+      mini_sig = mini_sig,
+      fig.type = fig.type,
+      save_path = save_path,
+      index = i
+    )
+
+    input_pdata_com <- rbind(input_pdata_com, pd$data)
   }
-  
+
   return(input_pdata_com)
-  
 }

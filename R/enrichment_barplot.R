@@ -1,9 +1,3 @@
-
-
-
-
-
-
 #' Enrichment bar plot with two directions
 #'
 #' This function creates a bar plot to visualize enrichment results, displaying both up-regulated and down-regulated terms or genes. The bar plot highlights the significance of each term or gene using -log10(p-value).
@@ -26,58 +20,59 @@
 #' # Example data frames
 #' up_terms <- data.frame(
 #'   Description = c("Pathway1", "Pathway2", "Pathway3"),
-#'   pvalue      = c(0.001, 0.01, 0.05))
-#' 
+#'   pvalue      = c(0.001, 0.01, 0.05)
+#' )
+#'
 #' down_terms <- data.frame(
 #'   Description = c("Pathway4", "Pathway5", "Pathway6"),
-#'   pvalue      = c(0.005, 0.02, 0.03))
-#' 
+#'   pvalue      = c(0.005, 0.02, 0.03)
+#' )
+#'
 #' # Create enrichment bar plot using the function
 #' p <- enrichment_barplot(
 #'   up_terms   = up_terms,
 #'   down_terms = down_terms,
-#'   title      = "Custom Enrichment Plot")
-#' 
+#'   title      = "Custom Enrichment Plot"
+#' )
+#'
 #' print(p)
-
-enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pvalue = "pvalue", group = "group", palette = "jama", title = "Gene Ontology Enrichment", width_wrap = 30, font_terms = 15){
-
-  up_terms<- as.data.frame(up_terms)
-  down_terms<-as.data.frame(down_terms)
-  dat<-rbind(as.data.frame(up_terms), as.data.frame(down_terms))
+enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pvalue = "pvalue", group = "group", palette = "jama", title = "Gene Ontology Enrichment", width_wrap = 30, font_terms = 15) {
+  up_terms <- as.data.frame(up_terms)
+  down_terms <- as.data.frame(down_terms)
+  dat <- rbind(as.data.frame(up_terms), as.data.frame(down_terms))
   ############################################
-  colnames(dat)[which(colnames(dat)== terms )]<- "terms"
-  colnames(dat)[which(colnames(dat)== pvalue )]<- "pvalue"
+  colnames(dat)[which(colnames(dat) == terms)] <- "terms"
+  colnames(dat)[which(colnames(dat) == pvalue)] <- "pvalue"
 
-  if(!group%in%colnames(dat)){
-    dat$group <-ifelse( dat$terms %in% up_terms[,terms], 1, -1)
-  }else{
-    colnames(dat)[which(colnames(dat)== group )]<- "group"
+  if (!group %in% colnames(dat)) {
+    dat$group <- ifelse(dat$terms %in% up_terms[, terms], 1, -1)
+  } else {
+    colnames(dat)[which(colnames(dat) == group)] <- "group"
   }
 
-  dat$terms<- gsub(dat$terms, pattern = "\\_",replacement = " ")
+  dat$terms <- gsub(dat$terms, pattern = "\\_", replacement = " ")
   dat$pvalue <- -log10(as.numeric(dat$pvalue))
-  dat$pvalue<- dat$pvalue*dat$group
-  dat$pvalue<- as.numeric(dat$pvalue)
-  dat<-dat[order(dat$pvalue,decreasing = F),]
+  dat$pvalue <- dat$pvalue * dat$group
+  dat$pvalue <- as.numeric(dat$pvalue)
+  dat <- dat[order(dat$pvalue, decreasing = F), ]
 
   # print(dat)
-  color<- palettes(category = "box", palette = palette, alpha = 1, show_col = FALSE)
+  color <- palettes(category = "box", palette = palette, alpha = 1, show_col = FALSE)
 
-  p<- ggplot(dat, aes(x=reorder(terms,order(pvalue, decreasing = F)), y=pvalue, fill=group)) +
-    geom_bar(stat="identity") +
-    scale_fill_gradient(low = color[1],high = color[2],guide = FALSE) +
-    scale_x_discrete(name ="Pathway names",labels=function(x) str_wrap(x, width = width_wrap)) +
-    scale_y_continuous(name ="log10(P.value)") +
-    coord_flip() + theme_light()+
-    theme(plot.title = element_text(hjust = 0),
-          axis.title=element_text(size=rel(1.3)),
-          axis.text.x= element_text(face="plain",size=font_terms, angle=0,color="black"),
-          axis.text.y= element_text(face="plain",size=font_terms, angle=0,color="black"))+
+  p <- ggplot(dat, aes(x = reorder(terms, order(pvalue, decreasing = F)), y = pvalue, fill = group)) +
+    geom_bar(stat = "identity") +
+    scale_fill_gradient(low = color[1], high = color[2], guide = FALSE) +
+    scale_x_discrete(name = "Pathway names", labels = function(x) str_wrap(x, width = width_wrap)) +
+    scale_y_continuous(name = "log10(P.value)") +
+    coord_flip() +
+    theme_light() +
+    theme(
+      plot.title = element_text(hjust = 0),
+      axis.title = element_text(size = rel(1.3)),
+      axis.text.x = element_text(face = "plain", size = font_terms, angle = 0, color = "black"),
+      axis.text.y = element_text(face = "plain", size = font_terms, angle = 0, color = "black")
+    ) +
     ggtitle(title)
 
   return(p)
-
 }
-
-

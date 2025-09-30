@@ -1,7 +1,3 @@
-
-
-
-
 #' Principal Component Analysis (PCA) Visualization
 #' @description The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 #'
@@ -30,21 +26,20 @@
 #' iobr_pca(eset, is.matrix = TRUE, scale = TRUE, is.log = TRUE, pdata = stad_group, id_pdata = "ID", group = "subtype")
 #'
 iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata, id_pdata = "ID", group = NULL,
-                     geom.ind = "point", cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE){
-
-  if(is.log) data <- log2eset(data+1)
+                     geom.ind = "point", cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE) {
+  if (is.log) data <- log2eset(data + 1)
   feas <- feature_manipulation(data = data, feature = rownames(data), is_matrix = TRUE)
-  data <-data[rownames(data)%in%feas, ]
+  data <- data[rownames(data) %in% feas, ]
   #######################################
-  if(is.matrix) data <- t(data)
-  if(scale) data <- scale(data)
+  if (is.matrix) data <- t(data)
+  if (scale) data <- scale(data)
 
   res.pca <- FactoMineR::PCA(data, ncp = ncp, graph = FALSE)
 
   pdata <- as.data.frame(pdata)
-  colnames(pdata)[which(colnames(pdata)==id_pdata)] <- "id"
+  colnames(pdata)[which(colnames(pdata) == id_pdata)] <- "id"
 
-  pdata <- pdata[pdata$id%in%rownames(data), ]
+  pdata <- pdata[pdata$id %in% rownames(data), ]
   pdata <- pdata[match(rownames(data), pdata$id), ]
 
 
@@ -60,14 +55,14 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   print(paste0(">>== colors for group: "))
   message(paste0(">>== ", cols))
   #########################################
-  p <- factoextra:: fviz_pca_ind(res.pca,
-                                 axes = axes,
-                                 geom.ind     = geom.ind, # show points only (nbut not "text")
-                                 col.ind      = as.character(pdata[, group]), # color by groups
-                                 palette      = cols,
-                                 repel        = repel,
-                                 addEllipses  = addEllipses, # Concentration ellipses
-                                 legend.title = group)
+  p <- factoextra::fviz_pca_ind(res.pca,
+    axes = axes,
+    geom.ind = geom.ind, # show points only (nbut not "text")
+    col.ind = as.character(pdata[, group]), # color by groups
+    palette = cols,
+    repel = repel,
+    addEllipses = addEllipses, # Concentration ellipses
+    legend.title = group
+  )
   return(p)
-
 }

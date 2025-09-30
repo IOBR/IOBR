@@ -1,7 +1,3 @@
-
-
-
-
 ## Rd
 ## description >> Takes as input an expression matrix and a list of marker features and return summarized expression values
 ## argument
@@ -12,11 +8,13 @@
 ## keyword >> methods
 ## end
 
-appendSignatures=function(xp,markers){
-  res=as.data.frame(do.call(cbind,
-                            lapply(markers,function(x){
-                              apply(xp[intersect(row.names(xp),x),,drop=F],2,mean,na.rm=T)
-                            })))
+appendSignatures <- function(xp, markers) {
+  res <- as.data.frame(do.call(
+    cbind,
+    lapply(markers, function(x) {
+      apply(xp[intersect(row.names(xp), x), , drop = F], 2, mean, na.rm = T)
+    })
+  ))
   res
 }
 
@@ -32,58 +30,55 @@ appendSignatures=function(xp,markers){
 ## examples >> heatmap(as.matrix(ExampleEstimates),col=colorRampPalette(c("blue","white","red"))(100))
 ## end
 
-MCPcounter.estimate=function(
-  expression,
-  featuresType=c("affy133P2_probesets","HUGO_symbols","ENTREZ_ID","ENSEMBL_ID")[1],
-  probesets=read.table(curl:::curl("https://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/probesets.txt"),sep="\t",stringsAsFactors=FALSE,colClasses="character"),
-  genes=read.table(curl:::curl("https://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/genes.txt"),sep="\t",stringsAsFactors=FALSE,header=TRUE,colClasses="character",check.names=FALSE)
-){
+MCPcounter.estimate <- function(
+    expression,
+    featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID")[1],
+    probesets = read.table(curl:::curl("https://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/probesets.txt"), sep = "\t", stringsAsFactors = FALSE, colClasses = "character"),
+    genes = read.table(curl:::curl("https://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/genes.txt"), sep = "\t", stringsAsFactors = FALSE, header = TRUE, colClasses = "character", check.names = FALSE)) {
   ## marker.names=c("T cells","CD8 T cells","Cytotoxic lymphocytes","NK cells","B lineage","Monocytic lineage","Myeloid dendritic cells","Neutrophils","Endothelial cells","Fibroblasts")
 
 
-  if(featuresType=="affy133P2_probesets"){
-    features=probesets
-    markers.names = unique(features[, 2])
-    features=split(features[,1],features[,2])
-    features=lapply(features,intersect,x=rownames(expression))
-    features=features[sapply(features,function(x)length(x)>0)]
-    missing.populations=setdiff(markers.names,names(features))
-    features=features[intersect(markers.names,names(features))]
-
+  if (featuresType == "affy133P2_probesets") {
+    features <- probesets
+    markers.names <- unique(features[, 2])
+    features <- split(features[, 1], features[, 2])
+    features <- lapply(features, intersect, x = rownames(expression))
+    features <- features[sapply(features, function(x) length(x) > 0)]
+    missing.populations <- setdiff(markers.names, names(features))
+    features <- features[intersect(markers.names, names(features))]
   } else {
-    markersG=genes
+    markersG <- genes
   }
 
-  if(featuresType=="HUGO_symbols"){
-    features=subset(markersG,get("HUGO symbols")%in%rownames(expression))
-    markers.names = unique(features[, "Cell population"])
-    features=split(features[,"HUGO symbols"],features[,"Cell population"])
-    missing.populations=setdiff(markers.names,names(features))
-    features=features[intersect(markers.names,names(features))]
-
+  if (featuresType == "HUGO_symbols") {
+    features <- subset(markersG, get("HUGO symbols") %in% rownames(expression))
+    markers.names <- unique(features[, "Cell population"])
+    features <- split(features[, "HUGO symbols"], features[, "Cell population"])
+    missing.populations <- setdiff(markers.names, names(features))
+    features <- features[intersect(markers.names, names(features))]
   }
 
-  if(featuresType=="ENTREZ_ID"){
-    features=subset(markersG,ENTREZID%in%rownames(expression))
-    markers.names = unique(features[, "Cell population"])
-    features=split(features[,"ENTREZID"],features[,"Cell population"])
-    missing.populations=setdiff(markers.names,names(features))
-    features=features[intersect(markers.names,names(features))]
+  if (featuresType == "ENTREZ_ID") {
+    features <- subset(markersG, ENTREZID %in% rownames(expression))
+    markers.names <- unique(features[, "Cell population"])
+    features <- split(features[, "ENTREZID"], features[, "Cell population"])
+    missing.populations <- setdiff(markers.names, names(features))
+    features <- features[intersect(markers.names, names(features))]
   }
 
-  if(featuresType=="ENSEMBL_ID"){
-    features=subset(markersG,get("ENSEMBL ID")%in%rownames(expression))
-    markers.names = unique(features[, "Cell population"])
-    features=split(features[,"ENSEMBL ID"],features[,"Cell population"])
-    missing.populations=setdiff(markers.names,names(features))
-    features=features[intersect(markers.names,names(features))]
+  if (featuresType == "ENSEMBL_ID") {
+    features <- subset(markersG, get("ENSEMBL ID") %in% rownames(expression))
+    markers.names <- unique(features[, "Cell population"])
+    features <- split(features[, "ENSEMBL ID"], features[, "Cell population"])
+    missing.populations <- setdiff(markers.names, names(features))
+    features <- features[intersect(markers.names, names(features))]
   }
 
 
-  if(length(missing.populations)>0){
-    warning(paste("Found no markers for population(s):",paste(missing.populations,collapse=", ")))
+  if (length(missing.populations) > 0) {
+    warning(paste("Found no markers for population(s):", paste(missing.populations, collapse = ", ")))
   }
-  t(appendSignatures(expression,features))
+  t(appendSignatures(expression, features))
 }
 
 ## Rd
@@ -96,14 +91,14 @@ MCPcounter.estimate=function(
 ## keyword >> methods
 ## end
 
-test_for_infiltration=function(MCPcounterMatrix,platform=c("133P2","133A","HG1")[1]){
-  MCPcounterMatrix=t(MCPcounterMatrix)
-  params=null_models[grep(platform,colnames(null_models))]
-  rownames(params)=null_models[,"Cell.population"]
-  colnames(params)=sub(platform,"",colnames(params),fixed=T)
-  res=sapply(colnames(MCPcounterMatrix),function(x){
-    pnorm(MCPcounterMatrix[,x],mean=params[x,"mu."],sd=params[x,"sigma."],lower.tail=F)
+test_for_infiltration <- function(MCPcounterMatrix, platform = c("133P2", "133A", "HG1")[1]) {
+  MCPcounterMatrix <- t(MCPcounterMatrix)
+  params <- null_models[grep(platform, colnames(null_models))]
+  rownames(params) <- null_models[, "Cell.population"]
+  colnames(params) <- sub(platform, "", colnames(params), fixed = T)
+  res <- sapply(colnames(MCPcounterMatrix), function(x) {
+    pnorm(MCPcounterMatrix[, x], mean = params[x, "mu."], sd = params[x, "sigma."], lower.tail = F)
   })
-  rownames(res)=rownames(MCPcounterMatrix)
+  rownames(res) <- rownames(MCPcounterMatrix)
   res
 }

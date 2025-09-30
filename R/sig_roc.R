@@ -1,6 +1,3 @@
-
-
-
 #' Plot ROC Curves and Compare Them
 #'
 #' This function generates Receiver Operating Characteristic (ROC) curves for multiple
@@ -43,19 +40,19 @@
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")
 #' sig_roc(data = tcga_stad_pdata, response = "OS_status", variables = c("TMEscore_plus", "GZMB", "GNLY"))
-sig_roc<-function(data,
-                  response,
-                  variables,
-                  fig.path       = ".",
-                  main           = NULL,
-                  file.name      = NULL,
-                  palette        = "jama",
-                  cols           = NULL,
-                  alpha          = 1,
-                  compare        = FALSE,
-                  smooth         = TRUE,
-                  compare_method = "bootstrap",
-                  boot.n         = 100){
+sig_roc <- function(data,
+                    response,
+                    variables,
+                    fig.path = ".",
+                    main = NULL,
+                    file.name = NULL,
+                    palette = "jama",
+                    cols = NULL,
+                    alpha = 1,
+                    compare = FALSE,
+                    smooth = TRUE,
+                    compare_method = "bootstrap",
+                    boot.n = 100) {
   # Store current pROC options and set progress to none
   old_options <- getOption("pROCProgress")
   on.exit(options(pROCProgress = old_options))
@@ -75,21 +72,21 @@ sig_roc<-function(data,
   }
 
   data <- data[!is.na(data[[response]]), ]
-  variables<-variables[variables%in%colnames(data)]
+  variables <- variables[variables %in% colnames(data)]
 
 
-  input<-as.data.frame(data[,c(response,variables)])
+  input <- as.data.frame(data[, c(response, variables)])
 
   message(">>>== head of input data: ")
   print(head(input))
 
-  var_counts<-length(variables[variables%in%colnames(data)])
+  var_counts <- length(variables[variables %in% colnames(data)])
 
-  if(is.null(cols)){
-    cols<- palettes(palette = palette, alpha = alpha, show_col = FALSE, show_message = FALSE)
+  if (is.null(cols)) {
+    cols <- palettes(palette = palette, alpha = alpha, show_col = FALSE, show_message = FALSE)
 
-    if(var_counts> length(cols)){
-      cols<- palettes(category = "random", alpha = alpha, show_col = FALSE, show_message = FALSE)
+    if (var_counts > length(cols)) {
+      cols <- palettes(category = "random", alpha = alpha, show_col = FALSE, show_message = FALSE)
     }
   }
 
@@ -97,79 +94,80 @@ sig_roc<-function(data,
 
   auc.out <- c()
 
-  if(is.null(file.name)) file.name<- "0-ROC of multiple variables"
+  if (is.null(file.name)) file.name <- "0-ROC of multiple variables"
 
-  outfile = file.path(fig.path, paste(file.name, ".pdf",sep=""))
+  outfile <- file.path(fig.path, paste(file.name, ".pdf", sep = ""))
 
   pdf(file = outfile, width = 5, height = 5)
 
-  on.exit(dev.off(), add = TRUE)  # Ensure graphics device is shut off when function exits
-  x <- pROC:: plot.roc(input[,1],input[,2],
-                       ylim=c(0,1),
-                       xlim=c(1,0),
-                       smooth= smooth,
-                       ci=TRUE,
-                       main = main ,
-                       col=cols[2],
-                       lwd=1.5,
-                       legacy.axes=T,
-                       xlab = "False Positive Rate",
-                       ylab = "True Positive Rate")
+  on.exit(dev.off(), add = TRUE) # Ensure graphics device is shut off when function exits
+  x <- pROC::plot.roc(input[, 1], input[, 2],
+    ylim = c(0, 1),
+    xlim = c(1, 0),
+    smooth = smooth,
+    ci = TRUE,
+    main = main,
+    col = cols[2],
+    lwd = 1.5,
+    legacy.axes = T,
+    xlab = "False Positive Rate",
+    ylab = "True Positive Rate"
+  )
 
-  ci.lower <- round(as.numeric(x$ci[1]),3)
-  ci.upper <- round(as.numeric(x$ci[3]),3)
+  ci.lower <- round(as.numeric(x$ci[1]), 3)
+  ci.upper <- round(as.numeric(x$ci[3]), 3)
 
-  auc.ci <- c(colnames(input)[2],round(as.numeric(x$auc),3),paste(ci.lower,ci.upper,sep="-"))
-  auc.out <- rbind(auc.out,auc.ci)
+  auc.ci <- c(colnames(input)[2], round(as.numeric(x$auc), 3), paste(ci.lower, ci.upper, sep = "-"))
+  auc.out <- rbind(auc.out, auc.ci)
   ##############################
-  for (i in 3:ncol(input)){
-    x <-pROC::plot.roc(input[,1],input[,i],
-                  add        =T,
-                  smooth     =smooth,
-                  ci         =TRUE,
-                  col        =cols[i],
-                  lwd        =2,
-                  legacy.axes=T,
-                  xlab = "False Positive Rate",
-                  ylab = "True Positive Rate")
+  for (i in 3:ncol(input)) {
+    x <- pROC::plot.roc(input[, 1], input[, i],
+      add = T,
+      smooth = smooth,
+      ci = TRUE,
+      col = cols[i],
+      lwd = 2,
+      legacy.axes = T,
+      xlab = "False Positive Rate",
+      ylab = "True Positive Rate"
+    )
 
-    ci.lower <- round(as.numeric(x$ci[1]),3)
-    ci.upper <- round(as.numeric(x$ci[3]),3)
-    auc.ci <- c(colnames(input)[i],round(as.numeric(x$auc),3),paste(ci.lower,ci.upper,sep="-"))
-    auc.out <- rbind(auc.out,auc.ci)
+    ci.lower <- round(as.numeric(x$ci[1]), 3)
+    ci.upper <- round(as.numeric(x$ci[3]), 3)
+    auc.ci <- c(colnames(input)[i], round(as.numeric(x$auc), 3), paste(ci.lower, ci.upper, sep = "-"))
+    auc.out <- rbind(auc.out, auc.ci)
   }
 
   auc.out <- as.data.frame(auc.out)
-  colnames(auc.out) <- c("Name","AUC","AUC CI")
+  colnames(auc.out) <- c("Name", "AUC", "AUC CI")
 
-  legend.name <- paste(colnames(input)[2:length(input)]," AUC = ", auc.out$AUC, sep=" ")
+  legend.name <- paste(colnames(input)[2:length(input)], " AUC = ", auc.out$AUC, sep = " ")
   legend("bottomright",
-         legend=legend.name,
-         col = cols[2:length(input)],
-         lwd = 2,
-         bty="n")
+    legend = legend.name,
+    col = cols[2:length(input)],
+    lwd = 2,
+    bty = "n"
+  )
 
   # dev.off()
   ###################################################
-  if(compare){
+  if (compare) {
     p.out <- c()
 
-    for (i in 2:(ncol(input)-1)){
-      for (j in (i+1):ncol(input)){
-        p <-pROC:: roc.test(input[,1],input[,i],input[,j], method = compare_method, boot.n = boot.n, progress = "none")
-        p.tmp <- c(colnames(input)[i],colnames(input)[j],p$p.value)
-        p.out <- rbind(p.out,p.tmp)
+    for (i in 2:(ncol(input) - 1)) {
+      for (j in (i + 1):ncol(input)) {
+        p <- pROC::roc.test(input[, 1], input[, i], input[, j], method = compare_method, boot.n = boot.n, progress = "none")
+        p.tmp <- c(colnames(input)[i], colnames(input)[j], p$p.value)
+        p.out <- rbind(p.out, p.tmp)
       }
     }
     p.out <- as.data.frame(p.out)
     # head(p.out)
-    colnames(p.out) <- c("ROC1","ROC2","p.value")
+    colnames(p.out) <- c("ROC1", "ROC2", "p.value")
     p.out$p.value <- round(as.numeric(p.out$p.value), 5)
 
-    return(list(auc.out = auc.out, legend.name = legend.name, p.out = p.out ))
-  }else{
-    return(list(auc.out = auc.out, legend.name = legend.name ))
+    return(list(auc.out = auc.out, legend.name = legend.name, p.out = p.out))
+  } else {
+    return(list(auc.out = auc.out, legend.name = legend.name))
   }
-
-
 }

@@ -1,8 +1,3 @@
-
-
-
-
-
 #' scale_matrix - Scale and manipulate a matrix
 #'
 #' @description This function scales a given matrix and optionally performs additional manipulation. It can apply a logarithmic transformation (base 2) to the matrix, center and scale the values, and optionally manipulate the features based on a specified criteria.
@@ -17,22 +12,19 @@
 #' @examples
 #' data("eset_gse62254", package = "IOBR")
 #' head(eset_gse62254)
-#' eset2<- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+#' eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 #' head(eset2)
-
-scale_matrix<-function(matrix, log2matrix = TRUE, manipulate = TRUE){
-
-  if(log2matrix){
-    matrix<- IOBR::log2eset(matrix+1)
+scale_matrix <- function(matrix, log2matrix = TRUE, manipulate = TRUE) {
+  if (log2matrix) {
+    matrix <- IOBR::log2eset(matrix + 1)
   }
-  matrix<-as.data.frame(t(matrix))
-  matrix<-scale(matrix,center = T,scale = T)
-  matrix<-as.data.frame(t(matrix))
+  matrix <- as.data.frame(t(matrix))
+  matrix <- scale(matrix, center = T, scale = T)
+  matrix <- as.data.frame(t(matrix))
 
-  if(manipulate){
-    feas<-feature_manipulation(data = matrix, feature = rownames(matrix), is_matrix = TRUE, print_result = TRUE)
-    matrix<- matrix[rownames(matrix)%in%feas, ]
+  if (manipulate) {
+    feas <- feature_manipulation(data = matrix, feature = rownames(matrix), is_matrix = TRUE, print_result = TRUE)
+    matrix <- matrix[rownames(matrix) %in% feas, ]
   }
   return(matrix)
 }
-

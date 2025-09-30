@@ -22,64 +22,77 @@
 #'
 #' @examples
 #' data("imvigor210_sig", package = "IOBR")
-#' data("imvigor210_pdata",package = "IOBR")
-#' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary!="NA", c("ID","BOR_binary")]
+#' data("imvigor210_pdata", package = "IOBR")
+#' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
 #' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
 #' @export
-BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL){
-
-  x<-as.data.frame(x)
-  y<-as.data.frame(y)
+BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
+  x <- as.data.frame(x)
+  y <- as.data.frame(y)
   print(message(paste0("\n", ">>> Processing data")))
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "binomial")
   x_scale <- processdat$x_scale
   y <- processdat$y
-  x_ID <-processdat$x_ID
+  x_ID <- processdat$x_ID
   print(message(paste0("\n", ">>> Spliting data into train and test data")))
-  train_test <- SplitTrainTest(x = x_scale, y = y, train_ratio = train_ratio, type = "binomial",
-                               seed = seed)
-  train.x = train_test$train.x
+  train_test <- SplitTrainTest(
+    x = x_scale, y = y, train_ratio = train_ratio, type = "binomial",
+    seed = seed
+  )
+  train.x <- train_test$train.x
   train.y <- train_test$train.y
-  test.x = train_test$test.x
+  test.x <- train_test$test.x
   test.y <- train_test$test.y
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 
   print(message(paste0("\n", ">>> Running ", "LASSO")))
   set.seed(seed)
-  lasso_model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial",
-                     type.measure = "class", alpha = 1,  nfolds = nfold)
-  lasso_result <- RegressionResult(train.x = train.x, train.y = train.y,
-                                   test.x = test.x, test.y = test.y, model = lasso_model)
-  if (plot){
-    p1 <- PlotAUC(train.x = train.x, train.y = train.y,
-                 test.x = test.x, test.y = test.y, model = lasso_model, cols = cols, palette = palette,
-                 modelname = "lasso_model")
+  lasso_model <- glmnet::cv.glmnet(
+    x = train.x, y = train.y, family = "binomial",
+    type.measure = "class", alpha = 1, nfolds = nfold
+  )
+  lasso_result <- RegressionResult(
+    train.x = train.x, train.y = train.y,
+    test.x = test.x, test.y = test.y, model = lasso_model
+  )
+  if (plot) {
+    p1 <- PlotAUC(
+      train.x = train.x, train.y = train.y,
+      test.x = test.x, test.y = test.y, model = lasso_model, cols = cols, palette = palette,
+      modelname = "lasso_model"
+    )
     print(p1)
   }
 
   print(message(paste0("\n", ">>> Running ", "RIDGE REGRESSION")))
 
   set.seed(seed)
-  ridge_model <- glmnet::cv.glmnet(x = train.x, y = train.y, family = "binomial",
-                           type.measure = "class", alpha = 0, nfolds = nfold)
-  ridge_result <- RegressionResult(train.x = train.x, train.y = train.y,
-                                   test.x = test.x, test.y = test.y, model = ridge_model)
-  if (plot){
-    p2 <- PlotAUC(train.x = train.x, train.y = train.y,
-            test.x = test.x, test.y = test.y, model = ridge_model,
-            cols = cols, palette = palette,
-            modelname = "ridge_model")
+  ridge_model <- glmnet::cv.glmnet(
+    x = train.x, y = train.y, family = "binomial",
+    type.measure = "class", alpha = 0, nfolds = nfold
+  )
+  ridge_result <- RegressionResult(
+    train.x = train.x, train.y = train.y,
+    test.x = test.x, test.y = test.y, model = ridge_model
+  )
+  if (plot) {
+    p2 <- PlotAUC(
+      train.x = train.x, train.y = train.y,
+      test.x = test.x, test.y = test.y, model = ridge_model,
+      cols = cols, palette = palette,
+      modelname = "ridge_model"
+    )
     print(p2)
   }
   print(message(paste0("\n", ">>> Running ", "Elastic Network.")))
 
   message(paste0("\n", ">>> Done !"))
-  return(list(lasso_result = lasso_result, ridge_result = ridge_result,
-              train.x = return.x))
-
-
+  return(list(
+    lasso_result = lasso_result, ridge_result = ridge_result,
+    train.x = return.x
+  ))
 }
 
 
@@ -181,22 +194,29 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #' test_data <- matrix(rnorm(100 * 10), ncol = 10)
 #' test_outcome <- rbinom(100, 1, 0.5)
 #' fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
-#' results <- RegressionResult(train.x = train_data, train.y = train_outcome,
-#'                             test.x = test_data, test.y = test_outcome,
-#'                             model = fitted_model)
+#' results <- RegressionResult(
+#'   train.x = train_data, train.y = train_outcome,
+#'   test.x = test_data, test.y = test_outcome,
+#'   model = fitted_model
+#' )
 #' @export
-RegressionResult <- function(train.x, train.y, test.x, test.y, model){
+RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
   coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
-  coefs <- data.frame(feature = rownames(coefs), lambda.min =coefs[, 1], lambda.1se = coefs[, 2])
-  newx = list(train.x, train.x, test.x, test.x)
-  s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y = list(train.y, train.y, test.y, test.y)
+  coefs <- data.frame(feature = rownames(coefs), lambda.min = coefs[, 1], lambda.1se = coefs[, 2])
+  newx <- list(train.x, train.x, test.x, test.x)
+  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
+  acture.y <- list(train.y, train.y, test.y, test.y)
   args <- list(newx, s, acture.y)
-  AUC <-  args %>% purrr::pmap_dbl(BinomialAUC, model = model) %>%
-    matrix(., ncol = 2, byrow = T,
-           dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se")))
-  resultreturn <- list(model = model, coefs = coefs,
-                       AUC = AUC)
+  AUC <- args %>%
+    purrr::pmap_dbl(BinomialAUC, model = model) %>%
+    matrix(.,
+      ncol = 2, byrow = T,
+      dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se"))
+    )
+  resultreturn <- list(
+    model = model, coefs = coefs,
+    AUC = AUC
+  )
 }
 
 #' Elastic Net Model Fitting
@@ -216,24 +236,30 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model){
 #' # Assuming 'train_data' and 'train_outcome' are already defined:
 #' train_data <- matrix(rnorm(100 * 10), ncol = 10)
 #' train_outcome <- rbinom(100, 1, 0.5)
-#' optimal_parameters <- Enet(train.x = train_data, train.y = train_outcome,
-#'                            lambdamax = 1, nfold = 10)
+#' optimal_parameters <- Enet(
+#'   train.x = train_data, train.y = train_outcome,
+#'   lambdamax = 1, nfold = 10
+#' )
 #' print(optimal_parameters)
 #' @export
-Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
+Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
   grid <- expand.grid(.alpha = seq(0, 1, by = .2), .lambda = seq(0, lambdamax, length.out = 10))
-  fitControl <- caret::trainControl(method = "repeatedcv",
-                             number = nfold,
-                             repeats = nfold)
-  enetFit <- caret::train(x = train.x, y = factor(train.y),
-                     method = "glmnet",
-                     family = "binomial",
-                     trControl = fitControl,
-                     metric = "Accuracy", tuneGrid = grid)
+  fitControl <- caret::trainControl(
+    method = "repeatedcv",
+    number = nfold,
+    repeats = nfold
+  )
+  enetFit <- caret::train(
+    x = train.x, y = factor(train.y),
+    method = "glmnet",
+    family = "binomial",
+    trControl = fitControl,
+    metric = "Accuracy", tuneGrid = grid
+  )
   chose_alpha <- enetFit$bestTune[, 1]
   chose_lambda <- enetFit$bestTune[, 2]
   list(chose_alpha = chose_alpha, chose_lambda = chose_lambda)
-  }
+}
 
 
 
@@ -258,7 +284,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold){
 #' auc_value <- BinomialAUC(model = fitted_model, newx = test_data, s = "lambda.min", acture.y = test_outcomes)
 #' print(auc_value)
 #' @export
-BinomialAUC <- function(model, newx, s, acture.y){
+BinomialAUC <- function(model, newx, s, acture.y) {
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
   auc <- as.numeric(ROCR::performance(pred, "auc")@y.values)
@@ -283,41 +309,55 @@ BinomialAUC <- function(model, newx, s, acture.y){
 #' @return A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
 #' @examples
 #' # Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
-#' PlotAUC(train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
-#'         model = fitted_model, modelname = "MyModel")
+#' PlotAUC(
+#'   train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
+#'   model = fitted_model, modelname = "MyModel"
+#' )
 #' @export
-PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama"){
-
-  if(is.null(cols)){
-    cols<-IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
-  }else{
-    cols<-cols
+PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama") {
+  if (is.null(cols)) {
+    cols <- IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
+  } else {
+    cols <- cols
   }
 
-  newx = list(train.x, train.x, test.x, test.x)
-  s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y = list(train.y, train.y, test.y, test.y)
+  newx <- list(train.x, train.x, test.x, test.x)
+  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
+  acture.y <- list(train.y, train.y, test.y, test.y)
   args <- list(newx, s, acture.y)
   pref <- args %>% purrr::pmap(CalculatePref, model = model)
-  aucs <- args %>% purrr::pmap_dbl(BinomialAUC, model = model) %>% round(., 2)
-  legend.name <- paste(c("train_lambda.min", "train_lambda.1se",
-                         "test_lambda.min", "test_lambda.1se"), "AUC", aucs,sep=" ")
-  names(pref) <- c("train_lambda.min", "train_lambda.1se",
-                   "test_lambda.min", "test_lambda.1se")
-  plotdat <- lapply(pref, function(z){
+  aucs <- args %>%
+    purrr::pmap_dbl(BinomialAUC, model = model) %>%
+    round(., 2)
+  legend.name <- paste(c(
+    "train_lambda.min", "train_lambda.1se",
+    "test_lambda.min", "test_lambda.1se"
+  ), "AUC", aucs, sep = " ")
+  names(pref) <- c(
+    "train_lambda.min", "train_lambda.1se",
+    "test_lambda.min", "test_lambda.1se"
+  )
+  plotdat <- lapply(pref, function(z) {
     data.frame(x = z@x.values[[1]], y = z@y.values[[1]])
   }) %>% plyr::ldply(., .fun = "rbind", .id = "s")
   plotdat$s <- factor(plotdat$s, levels = names(pref))
   p <- ggplot2::ggplot(plotdat, aes(x = x, y = y)) +
-    geom_path(aes(color= s)) + geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
-    xlab("False positive rate") + ylab("True positive rate") +
-    theme_bw() + scale_color_manual(values = cols,
-                                    labels = legend.name) +
+    geom_path(aes(color = s)) +
+    geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+    xlab("False positive rate") +
+    ylab("True positive rate") +
+    theme_bw() +
+    scale_color_manual(
+      values = cols,
+      labels = legend.name
+    ) +
     ggtitle(str_replace(modelname, "_", " ")) +
     theme(legend.title = element_blank()) +
-    theme(plot.title=element_text(size=rel(2),hjust=0.5),
-            axis.text.x= element_text(face="plain",angle=0,hjust = 1,color="black"),
-            axis.text.y= element_text(face="plain",angle=30,hjust = 1,color="black"))
+    theme(
+      plot.title = element_text(size = rel(2), hjust = 0.5),
+      axis.text.x = element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
+      axis.text.y = element_text(face = "plain", angle = 30, hjust = 1, color = "black")
+    )
 
   return(p)
 }
@@ -343,10 +383,10 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' perf_metrics <- CalculatePref(model = fitted_model, newx = new_data, s = "lambda.min", acture.y = actual_outcomes)
 #' print(perf_metrics)
 #' @export
-CalculatePref<- function(model, newx, s, acture.y){
+CalculatePref <- function(model, newx, s, acture.y) {
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
-  perf <- ROCR::performance(pred,"tpr","fpr")
+  perf <- ROCR::performance(pred, "tpr", "fpr")
   return(perf)
 }
 
@@ -381,23 +421,23 @@ CalculatePref<- function(model, newx, s, acture.y){
 #' split_data_survival <- SplitTrainTest(x = data_matrix, y = survival_outcomes, train_ratio = 0.7, type = "survival", seed = 123)
 #' print(split_data_survival)
 #' @export
-SplitTrainTest <- function(x, y, train_ratio, type, seed){
+SplitTrainTest <- function(x, y, train_ratio, type, seed) {
   sizes <- round(nrow(x) * train_ratio)
   set.seed(seed)
   train_sample <- sample(1:nrow(x), size = sizes, replace = F)
   test_sample <- setdiff(1:nrow(x), train_sample)
   train.x <- x[train_sample, ]
   test.x <- x[test_sample, ]
-  if (type == "binomial"){
+  if (type == "binomial") {
     train.y <- y[train_sample]
     test.y <- y[test_sample]
   }
-  if (type == "survival"){
+  if (type == "survival") {
     train.y <- y[train_sample, ]
     test.y <- y[test_sample, ]
   }
-  return(list(train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
-              train_sample = train_sample))
+  return(list(
+    train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
+    train_sample = train_sample
+  ))
 }
-
-

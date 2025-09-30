@@ -1,5 +1,3 @@
-
-
 #' Extract features of Predictive or Prognostic Model Using LASSO Regression
 #'
 #' This function applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or
@@ -26,20 +24,22 @@
 #' model_features_binary <- lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
 #' # Example for a survival response variable
 #' model_features_survival <- lasso_select(x = gene_expression, y = survival_data, type = "survival")
-lasso_select <- function(x, y, type =c("binary", "survival"), nfold = 10,
-                         lambda = c("lambda.min", "lambda.1se")){
-  type = match.arg(type)
-  lambda = match.arg(lambda)
+lasso_select <- function(x, y, type = c("binary", "survival"), nfold = 10,
+                         lambda = c("lambda.min", "lambda.1se")) {
+  type <- match.arg(type)
+  lambda <- match.arg(lambda)
   x <- t(x)
-  if (type == "binary"){
-    cvfit = cv.glmnet(x, y,
-                      nfold, alpha = 1,
-                      type.measure = "class")
-  }else{
-    cvfit = cv.glmnet(x, y, nfold, alpha = 1, family = "cox")
+  if (type == "binary") {
+    cvfit <- cv.glmnet(x, y,
+      nfold,
+      alpha = 1,
+      type.measure = "class"
+    )
+  } else {
+    cvfit <- cv.glmnet(x, y, nfold, alpha = 1, family = "cox")
   }
-  myCoefs <- coef(cvfit, s = lambda);
-  lasso_fea <- myCoefs@Dimnames[[1]][which(myCoefs != 0 )]
+  myCoefs <- coef(cvfit, s = lambda)
+  lasso_fea <- myCoefs@Dimnames[[1]][which(myCoefs != 0)]
   lasso_fea <- lasso_fea[-1]
   feature <- lasso_fea
   return(feature)

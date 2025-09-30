@@ -28,44 +28,54 @@
 #' pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
 #' results <- generateRef_limma(dat, pheno)
 #' print(results)
-generateRef_limma <- function(dat, pheno, FDR = 0.05){
+generateRef_limma <- function(dat, pheno, FDR = 0.05) {
   pheno <- factor(pheno)
-  design <- model.matrix(~0 + pheno)
-  colnames(design) <- stringr:: str_sub(colnames(design), 6)
+  design <- model.matrix(~ 0 + pheno)
+  colnames(design) <- stringr::str_sub(colnames(design), 6)
   rownames(design) <- colnames(dat)
   con <- Construct_con(pheno = pheno)
-  fit <- limma::lmFit(dat, design) %>% limma::contrasts.fit(., con) %>% limma::eBayes()
+  fit <- limma::lmFit(dat, design) %>%
+    limma::contrasts.fit(., con) %>%
+    limma::eBayes()
   dif <- list()
   dif <- colnames(con) %>%
-    purrr::map(function(x) limma::topTable(fit, adjust.method="BH", coef = x, number = Inf)) %>%
-    lapply(., function(x)data.frame(probe = rownames(x), x)) %>%
-    purrr::map(function(x)filter(x,adj.P.Val < FDR)) %>%
-    purrr::map(function(x)arrange(x, desc(logFC)))
+    purrr::map(function(x) limma::topTable(fit, adjust.method = "BH", coef = x, number = Inf)) %>%
+    lapply(., function(x) data.frame(probe = rownames(x), x)) %>%
+    purrr::map(function(x) filter(x, adj.P.Val < FDR)) %>%
+    purrr::map(function(x) arrange(x, desc(logFC)))
 
-  median_value <- t(dat) %>% as.data.frame() %>%
-    split(., pheno) %>% map(function(x) matrixStats:: colMedians(as.matrix(x)))
+  median_value <- t(dat) %>%
+    as.data.frame() %>%
+    split(., pheno) %>%
+    map(function(x) matrixStats::colMedians(as.matrix(x)))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
   con_nums <- c()
-  for (i in 50:200){
-    probes <- dif %>% map(function(x)Top_probe(dat = x, i = i)) %>%
-      unlist() %>% unique()
+  for (i in 50:200) {
+    probes <- dif %>%
+      map(function(x) Top_probe(dat = x, i = i)) %>%
+      unlist() %>%
+      unique()
     tmpdat <- median_value[probes, ]
-    #condition number
+    # condition number
     con_num <- kappa(tmpdat)
     con_nums <- c(con_nums, con_num)
   }
   i <- c(50:200)[which.min(con_nums)]
-  probes <- dif %>% map(function(x)Top_probe(dat = x, i = i)) %>%
-    unlist() %>% unique()
+  probes <- dif %>%
+    map(function(x) Top_probe(dat = x, i = i)) %>%
+    unlist() %>%
+    unique()
   reference <- median_value[probes, ]
   reference <- data.frame(NAME = rownames(reference), reference)
   G <- i
   condition_number <- min(con_nums)
 
-  return(list(reference_matrix = reference, G = G, condition_number = condition_number,
-              whole_matrix = median_value))
+  return(list(
+    reference_matrix = reference, G = G, condition_number = condition_number,
+    whole_matrix = median_value
+  ))
 }
 
 
@@ -89,7 +99,7 @@ generateRef_limma <- function(dat, pheno, FDR = 0.05){
 #' pheno <- factor(c("A", "B", "C", "D"))
 #' contrast_matrix <- Construct_con(pheno, mode = NULL)
 #' print(contrast_matrix)
-Construct_con <- function(pheno, mode){
+Construct_con <- function(pheno, mode) {
   n <- length(levels(pheno))
   con <- matrix(-1, n, n)
   diag(con) <- 1

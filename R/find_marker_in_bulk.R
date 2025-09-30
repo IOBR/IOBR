@@ -1,6 +1,3 @@
-
-
-
 #' Find markers in bulk
 #'
 #' @description The goal of this function is to find relevant results from the given gene expression data and meta information.
@@ -30,16 +27,15 @@
 #' res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
 #'
 #' # extracting top 15 markers of each TME clusters
-#' top15 <-  res$top_markers %>% dplyr:: group_by(cluster) %>%  dplyr::top_n(15, avg_log2FC)
+#' top15 <- res$top_markers %>%
+#'   dplyr::group_by(cluster) %>%
+#'   dplyr::top_n(15, avg_log2FC)
 #'
 #' # visualization
-#' cols <- c('#2692a4','#fc0d3a','#ffbe0b')
-#' DoHeatmap(res$sce, top15$gene, group.colors = cols )+ scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11,"RdBu"))(256)))
+#' cols <- c("#2692a4", "#fc0d3a", "#ffbe0b")
+#' DoHeatmap(res$sce, top15$gene, group.colors = cols) + scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11, "RdBu"))(256)))
 #'
-
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {
-
-
   # Check required packages
   if (!requireNamespace("Seurat", quietly = TRUE)) {
     stop("Package 'Seurat' is required but not installed.")
@@ -55,7 +51,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
 
   # 处理元数据
   if (ncol(pdata) == 2) {
-    pdata[,"newid"] <- pdata[, id_pdata]
+    pdata[, "newid"] <- pdata[, id_pdata]
   }
   pdata <- tibble::column_to_rownames(pdata, var = id_pdata)
   pdata <- pdata[rownames(pdata) %in% colnames(eset), ]
@@ -78,7 +74,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     # Seurat v5+ 的处理逻辑
     message("Using Seurat v5+ workflow")
     sce <- NormalizeData(sce)
-    sce[["RNA"]]$data <- LayerData(sce, assay = "RNA", layer = "counts")  # 兼容v5的Layer访问
+    sce[["RNA"]]$data <- LayerData(sce, assay = "RNA", layer = "counts") # 兼容v5的Layer访问
     sce <- ScaleData(sce, layer = "data")
   } else {
     # Seurat v4及以下版本的处理逻辑
@@ -88,21 +84,24 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
   }
 
   # 特征选择
-  tryCatch({
-    sce <- FindVariableFeatures(
-      object = sce,
-      selection.method = "vst",
-      nfeatures = nfeatures,
-      mean.cutoff = c(0.1, 8),
-      dispersion.cutoff = c(1, Inf)
-    )
-  }, error = function(e) {
-    message("Error in FindVariableFeatures: ", e$message)
-    counts <- GetAssayData(sce, assay = "RNA", slot = "counts")
-    gene_var <- Matrix::rowVars(counts)
-    top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
-    VariableFeatures(sce) <- top_genes  # Assign variable features
-  })
+  tryCatch(
+    {
+      sce <- FindVariableFeatures(
+        object = sce,
+        selection.method = "vst",
+        nfeatures = nfeatures,
+        mean.cutoff = c(0.1, 8),
+        dispersion.cutoff = c(1, Inf)
+      )
+    },
+    error = function(e) {
+      message("Error in FindVariableFeatures: ", e$message)
+      counts <- GetAssayData(sce, assay = "RNA", slot = "counts")
+      gene_var <- Matrix::rowVars(counts)
+      top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
+      VariableFeatures(sce) <- top_genes # Assign variable features
+    }
+  )
 
   # 降维和标记物识别
   sce <- RunPCA(object = sce, features = VariableFeatures(sce), npcs = npcs)
@@ -124,4 +123,3 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
 
   return(list(sce = sce, markers = sce.markers, top_markers = topN))
 }
-
