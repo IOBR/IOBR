@@ -35,7 +35,7 @@ A license an the binary can be obtained from https://cibersort.stanford.edu.
 # Loading TCGA-STAD expresion data(raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-cibersort_result<-deconvo_cibersort(eset = eset,project = "TCGA-STAD", arrays = FALSE, absolute = FALSE, perm = 500)
+cibersort_result <- deconvo_cibersort(eset = eset, project = "TCGA-STAD", arrays = FALSE, absolute = FALSE, perm = 500)
 }
 \author{
 Dongqiang Zeng

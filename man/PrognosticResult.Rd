@@ -33,6 +33,8 @@ are performed at two regularization strengths for both train and test datasets.
 # Assuming 'fit' is a Cox model fitted using `glmnet`
 train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
 test_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
-results <- PrognosticResult(model = fit, train.x = train_data$x, train.y = train_data$y,
-                            test.x = test_data$x, test.y = test_data$y)
+results <- PrognosticResult(
+  model = fit, train.x = train_data$x, train.y = train_data$y,
+  test.x = test_data$x, test.y = test_data$y
+)
 }

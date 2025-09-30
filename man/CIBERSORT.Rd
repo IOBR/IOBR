@@ -42,7 +42,7 @@ CIBERSORT is an analytical tool developed by Newman et al. to provide an estimat
 }
 \examples{
 data("eset_gse62254", package = "IOBR")
-cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN=TRUE, absolute=FALSE)
+cibersort <- CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN = TRUE, absolute = FALSE)
 head(cibersort)
 }
 \author{

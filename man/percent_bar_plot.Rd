@@ -67,7 +67,7 @@ This function generates a bar plot that visualizes the percentage distribution o
 It offers options to customize the plot's colors, title, axis labels, and more.
 }
 \examples{
-data("sig_stad", package = 'IOBR')
+data("sig_stad", package = "IOBR")
 table(sig_stad$Subtype, sig_stad$Lauren)
 percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
 }

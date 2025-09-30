@@ -17,9 +17,9 @@ merge_eset(eset1, eset2, eset3 = NULL)
 A merged expression set from the input expression sets, with duplicate gene symbols removed.
 }
 \description{
-This function merges two or three expression sets by their row names, ensuring that 
-no duplicated gene symbols remain after the merge. It is particularly useful in 
-bioinformatics workflows where combining multiple datasets into a single expression 
+This function merges two or three expression sets by their row names, ensuring that
+no duplicated gene symbols remain after the merge. It is particularly useful in
+bioinformatics workflows where combining multiple datasets into a single expression
 set is required for downstream analysis.
 }
 \examples{

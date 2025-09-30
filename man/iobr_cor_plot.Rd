@@ -100,9 +100,11 @@ results in various plot formats including box plots, heatmaps, and correlation p
 # Assuming 'pdata_group' and 'feature_data' are predefined:
 pdata_group <- data.frame(ID = 1:100, phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
 feature_data <- data.frame(ID = 1:100, Feature1 = rnorm(100), Feature2 = rnorm(100))
-results <- iobr_cor_plot(pdata_group = pdata_group, feature_data = feature_data,
-                         id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
-                         show_plot = TRUE, path = "path/to/save/results")
+results <- iobr_cor_plot(
+  pdata_group = pdata_group, feature_data = feature_data,
+  id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
+  show_plot = TRUE, path = "path/to/save/results"
+)
 print(results)
 }
 \author{

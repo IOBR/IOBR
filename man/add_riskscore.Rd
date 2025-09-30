@@ -40,7 +40,7 @@ based on the provided Cox proportional hazards model or logistic regression.
 }
 \examples{
 data(ovarian)
-ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status", vars=c("resid.ds", "rx", "ecog.ps"))
+ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status", vars = c("resid.ds", "rx", "ecog.ps"))
 }
 \author{
 Dongqiang Zeng

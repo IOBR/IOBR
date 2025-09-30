@@ -64,9 +64,11 @@ This function generates survival plots for multiple projects based on input data
 data("sig_stad", package = "IOBR")
 # Generating survival plots for multiple projects
 sig_stad <- as.data.frame(sig_stad)
-result <- batch_sig_surv_plot(input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID", column_of_Project = "ProjectID", project = NULL,
-                              time = "OS_time", status = "OS_status", time_type = "month", break_month = "auto", palette = "jama",
-                              cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf")
+result <- batch_sig_surv_plot(
+  input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID", column_of_Project = "ProjectID", project = NULL,
+  time = "OS_time", status = "OS_status", time_type = "month", break_month = "auto", palette = "jama",
+  cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"
+)
 print(result)
 }
 \author{

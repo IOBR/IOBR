@@ -30,6 +30,6 @@ A list containing top n gene markers of each cell types
 Get gene signature from single-cell differential analysis
 }
 \examples{
-data('deg', package = "IOBR")
+data("deg", package = "IOBR")
 get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
 }

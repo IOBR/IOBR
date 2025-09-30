@@ -23,7 +23,7 @@ eset <- count2tpm(eset_stad, idType = "ensembl")
 head(eset)
 eset <- scale_matrix(eset, manipulate = TRUE)
 
-res  <- calculate_sig_score(eset = eset, signature = signature_collection[1:4], method = "integration")
+res <- calculate_sig_score(eset = eset, signature = signature_collection[1:4], method = "integration")
 head(res)
 res <- select_method(res, method = "PCA")
 head(res)

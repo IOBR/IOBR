@@ -35,7 +35,7 @@ The tcga_rna_preps function is designed to preprocess TCGA RNA-seq data for down
 \examples{
 # Expression matrix downloaded from UCSC Xena datasets: https://xenabrowser.net/datapages/
 data("eset_stad", package = "IOBR")
-eset <- tcga_rna_preps(eset = eset_stad,  id_type = "ensembl", input_type = "count", output = "tumor", output_type = "tpm", annotation = TRUE)
+eset <- tcga_rna_preps(eset = eset_stad, id_type = "ensembl", input_type = "count", output = "tumor", output_type = "tpm", annotation = TRUE)
 
 }
 \author{

@@ -17,8 +17,10 @@ This function identifies outlier genes from multiple cancer datasets.
 It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
 }
 \examples{
-cancers <- data.frame(ExpressionFiles = c("path/to/expression1.csv",
-                                          "path/to/expression2.csv"))
+cancers <- data.frame(ExpressionFiles = c(
+  "path/to/expression1.csv",
+  "path/to/expression2.csv"
+))
 
 # Get outlier genes
 outlier_genes <- GetOutlierGenes(cancers)

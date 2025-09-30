@@ -21,7 +21,7 @@ Estimating immune microenvironment using MCP-counter
 # Loading TCGA-STAD expresion data(raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-mcp_result<-deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
+mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 
 }
 \author{

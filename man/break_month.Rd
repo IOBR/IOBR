@@ -29,7 +29,7 @@ blocks <- break_month(input = time_data)
 print(blocks)
 
 # Example with time in days
-day_data <- c(720, 1080, 360, 1440)  # Corresponding to 24, 36, 12, 48 months
+day_data <- c(720, 1080, 360, 1440) # Corresponding to 24, 36, 12, 48 months
 blocks_days <- break_month(input = day_data, time_type = "day")
 print(blocks_days)
 }

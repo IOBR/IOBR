@@ -17,7 +17,7 @@ output_sig(signatures, format = "csv", file.name)
 Returns the data frame containing the processed signature data. This data frame is also saved to the specified file format.
 }
 \description{
-This function saves the provided signature data into a specified file format. It supports saving as CSV or RData format. 
+This function saves the provided signature data into a specified file format. It supports saving as CSV or RData format.
 The function can handle single signature strings or lists of signatures, converting them into a data frame for storage.
 }
 \examples{

@@ -147,9 +147,9 @@ these cases differently, you can remove the duplicates before calling
 res1 <- EPIC(melanoma_data$counts)
 res1$cellFractions
 res2 <- EPIC(melanoma_data$counts, TRef)
-res3 <- EPIC(bulk=melanoma_data$counts, reference=TRef)
-res4 <- EPIC(melanoma_data$counts, reference="TRef")
-res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub=c(Bcells=1, otherCells=5))
+res3 <- EPIC(bulk = melanoma_data$counts, reference = TRef)
+res4 <- EPIC(melanoma_data$counts, reference = "TRef")
+res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(Bcells = 1, otherCells = 5))
 # Various possible ways of calling EPIC function. res 1 to 4 should
 # give exactly the same outputs, and the elements res1$cellFractions
 # should be equal to the example predictions found in

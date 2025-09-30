@@ -48,8 +48,8 @@ Generate Pie or Donut Charts
 This function generates a pie chart or a donut chart from the input data. It allows customization of various visual aspects such as colors, labels, and title.
 }
 \examples{
-pie_chart(input = sig_stad, var = "Subtype",  palette = "jama")
-pie_chart(input = sig_stad, var = "Subtype",  palette = "nrc")
+pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
+pie_chart(input = sig_stad, var = "Subtype", palette = "nrc")
 }
 \author{
 Dongqiang Zeng

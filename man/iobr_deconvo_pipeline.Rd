@@ -38,7 +38,7 @@ microenvironment's role in tumor biology based on gene expression profiles.
 }
 \examples{
 data("eset_stad", package = "IOBR")
-eset <- count2tpm(eset_stad)  # Prepare data
+eset <- count2tpm(eset_stad) # Prepare data
 # Run the pipeline
 res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
 }

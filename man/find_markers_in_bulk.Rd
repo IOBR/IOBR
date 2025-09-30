@@ -52,10 +52,12 @@ data("pdata_sig_tme", package = "IOBR")
 res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
 
 # extracting top 15 markers of each TME clusters
-top15 <-  res$top_markers \%>\% dplyr:: group_by(cluster) \%>\%  dplyr::top_n(15, avg_log2FC)
+top15 <- res$top_markers \%>\%
+  dplyr::group_by(cluster) \%>\%
+  dplyr::top_n(15, avg_log2FC)
 
 # visualization
-cols <- c('#2692a4','#fc0d3a','#ffbe0b')
-DoHeatmap(res$sce, top15$gene, group.colors = cols )+ scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11,"RdBu"))(256)))
+cols <- c("#2692a4", "#fc0d3a", "#ffbe0b")
+DoHeatmap(res$sce, top15$gene, group.colors = cols) + scale_fill_gradientn(colours = rev(colorRampPalette(RColorBrewer::brewer.pal(11, "RdBu"))(256)))
 
 }

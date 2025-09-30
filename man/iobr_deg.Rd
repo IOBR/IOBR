@@ -72,7 +72,7 @@ RData and Excel file formats.
 data("eset_stad", package = "IOBR")
 data("stad_group", package = "IOBR")
 library(DESeq2)
-deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
+deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
 }
 \author{
 Dongqiang Zeng

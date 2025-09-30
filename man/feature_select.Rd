@@ -34,7 +34,7 @@ This function selects features based on either correlation or differential expre
 It uses the 'limma' package for differential expression and basic statistical tests for correlation analysis.
 }
 \examples{
-data("imvigor210_eset",package = "IOBR")
+data("imvigor210_eset", package = "IOBR")
 data("imvigor210_pdata", package = "IOBR")
 
 mad <- apply(imvigor210_eset, 1, mad)

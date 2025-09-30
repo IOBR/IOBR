@@ -35,7 +35,7 @@ of the reference matrix output.
 # Assume 'dds' as raw count data and 'pheno' as cell type information
 dds <- matrix(rpois(200 * 10, lambda = 10), ncol = 10)
 pheno <- sample(c("Type1", "Type2", "Type3"), 10, replace = TRUE)
-dat <- matrix(rnorm(200 * 10), ncol = 10)  # Simulated FPKM data
+dat <- matrix(rnorm(200 * 10), ncol = 10) # Simulated FPKM data
 results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 print(results)
 }

@@ -43,10 +43,10 @@ of processing data formatted according to TCGA standards.
 \examples{
 
 library(TCGAbiolinks)
-query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking" )
+query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking")
 GDCdownload(query)
 maf <- GDCprepare(query)
-mut_list <- make_mut_matrix(maf = maf, isTCGA   = T, category = "multi")
+mut_list <- make_mut_matrix(maf = maf, isTCGA = T, category = "multi")
 }
 \author{
 Dongqian Zeng

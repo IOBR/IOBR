@@ -22,7 +22,7 @@ This function scales a given matrix and optionally performs additional manipulat
 \examples{
 data("eset_gse62254", package = "IOBR")
 head(eset_gse62254)
-eset2<- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 head(eset2)
 }
 \author{

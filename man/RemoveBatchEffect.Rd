@@ -23,16 +23,20 @@ A list containing three elements:
 This function removes batch effects between two gene expression data sets, typically representing different sample types such as cancer cells and immune cells. The function aligns the gene names, combines the datasets, applies batch correction using ComBat from the sva package, and then separates the adjusted data sets. Additionally, it aggregates expression data for immune cell types by taking the median expression level across samples.
 }
 \examples{
-set.seed(123)  # For reproducibility
+set.seed(123) # For reproducibility
 gene_names <- paste0("Gene", 1:100)
 sample_names_cancer <- paste0("CancerSample", 1:10)
-cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
-                     dimnames = list(gene_names, sample_names_cancer))
+cancer.exp <- matrix(runif(1000, 1, 1000),
+  nrow = 100, ncol = 10,
+  dimnames = list(gene_names, sample_names_cancer)
+)
 
 # Generate synthetic expression data for immune cells
 sample_names_immune <- paste0("ImmuneSample", 1:5)
-immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
-                     dimnames = list(gene_names, sample_names_immune))
+immune.exp <- matrix(runif(500, 1, 1000),
+  nrow = 100, ncol = 5,
+  dimnames = list(gene_names, sample_names_immune)
+)
 
 # Create a cell type vector for immune samples
 immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")

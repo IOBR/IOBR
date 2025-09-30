@@ -33,7 +33,9 @@ train_outcome <- rbinom(100, 1, 0.5)
 test_data <- matrix(rnorm(100 * 10), ncol = 10)
 test_outcome <- rbinom(100, 1, 0.5)
 fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
-results <- RegressionResult(train.x = train_data, train.y = train_outcome,
-                            test.x = test_data, test.y = test_outcome,
-                            model = fitted_model)
+results <- RegressionResult(
+  train.x = train_data, train.y = train_outcome,
+  test.x = test_data, test.y = test_outcome,
+  model = fitted_model
+)
 }

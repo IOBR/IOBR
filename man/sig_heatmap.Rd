@@ -94,7 +94,7 @@ data("tcga_stad_sig", package = "IOBR")
 data("tcga_stad_pdata", package = "IOBR")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 feas <- colnames(input)[grep(colnames(input), pattern = "MCPcounter")]
-sig_heatmap(input = input, features = feas , group = "subtype", scale = TRUE)
+sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
 
 }
 \author{

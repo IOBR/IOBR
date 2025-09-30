@@ -66,7 +66,9 @@ The "roc_time" function generates a Receiver Operating Characteristic (ROC) plot
 data("tcga_stad_sig", package = "IOBR")
 data("pdata_stad", package = "IOBR")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
-roc_time(input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
-time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS")
+roc_time(
+  input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
+  time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS"
+)
 
 }

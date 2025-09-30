@@ -45,17 +45,20 @@ This function creates a bar plot to visualize enrichment results, displaying bot
 # Example data frames
 up_terms <- data.frame(
   Description = c("Pathway1", "Pathway2", "Pathway3"),
-  pvalue      = c(0.001, 0.01, 0.05))
+  pvalue      = c(0.001, 0.01, 0.05)
+)
 
 down_terms <- data.frame(
   Description = c("Pathway4", "Pathway5", "Pathway6"),
-  pvalue      = c(0.005, 0.02, 0.03))
+  pvalue      = c(0.005, 0.02, 0.03)
+)
 
 # Create enrichment bar plot using the function
 p <- enrichment_barplot(
   up_terms   = up_terms,
   down_terms = down_terms,
-  title      = "Custom Enrichment Plot")
+  title      = "Custom Enrichment Plot"
+)
 
 print(p)
 }

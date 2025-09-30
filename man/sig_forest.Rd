@@ -50,7 +50,7 @@ and p-values for selected gene signatures or features. This function is useful f
 biomarkers on survival in a visually interpretable manner.
 }
 \examples{
-sig_surv_result<- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
+sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
 sig_forest(data = sig_surv_result, signature = "ID")
 }
 \author{

@@ -96,7 +96,7 @@ Results, including statistical significance, enrichment scores, and plots, are s
 data("eset_stad", package = "IOBR")
 data("stad_group", package = "IOBR")
 
-deg<- iobr_deg(eset  = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV","GS"), path = "STAD")
+deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
 res <- sig_gsea(deg = deg, genesets = signature_tme)
 }
 \author{
