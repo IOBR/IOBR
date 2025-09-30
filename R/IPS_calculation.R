@@ -12,7 +12,11 @@
 #'
 #' @return IPS score data frame
 #' @export
-#' @import tidyverse
+#' @import dplyr
+#' @import tibble
+#' @import tidyr
+#' @import purrr
+#' @import stringr
 #' @import ggplot2
 #' @import grid
 #' @examples

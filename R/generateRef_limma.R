@@ -9,7 +9,9 @@
 #' @param dat data frame or matrix; gene probes in the row and samples in the column
 #' @param pheno character vector; cell type class of the samples
 #' @param FDR numeric; genes with BH adjust p value < FDR are considered significant.
-#' @import tidyverse
+#' @import dplyr
+#' @import tibble
+#' @import tidyr
 #' @import stringr
 #' @import purrr
 #'

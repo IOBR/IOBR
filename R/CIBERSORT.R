@@ -185,7 +185,11 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' @import e1071
 #' @import parallel
 #' @import preprocessCore
-#' @import tidyverse
+#' @import dplyr
+#' @import tibble
+#' @import tidyr
+#' @import purrr
+#' @import stringr
 #' @examples
 #' data("eset_gse62254", package = "IOBR")
 #' cibersort<-CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN=TRUE, absolute=FALSE)

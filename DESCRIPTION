@@ -55,6 +55,7 @@ Imports:
     pracma,
     preprocessCore,
     purrr,
+    readr,
     Seurat,
     stringr,
     survival,
@@ -62,7 +63,6 @@ Imports:
     tibble,
     tidyHeatmap,
     tidyr,
-    tidyverse,
     timeROC,
     WGCNA
 Suggests: 

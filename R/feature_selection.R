@@ -11,7 +11,11 @@
 #' @param cutoff Numeric value for estimating and log2 fold change cutoff for correlation analysis and limma differential analysis.
 #' @param padjcut Numeric value for adjusted P-value cutoff.
 #'
-#' @import tidyverse
+#' @import dplyr
+#' @import tibble
+#' @import tidyr
+#' @import purrr
+#' @import stringr
 #' @import glmnet
 #'
 #' @return Returns a vector of selected feature names based on the specified criteria.
