@@ -188,7 +188,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method) {
 #' @author Aaron M. Newman, Stanford University (amnewman@stanford.edu)
 #' @return A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
 #' @export
-#' @import e1071
+#' @importFrom e1071 svm
 #' @import parallel
 #' @import preprocessCore
 #' @import dplyr
