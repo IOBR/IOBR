@@ -39,7 +39,6 @@ Imports:
     corrplot,
     cowplot,
     DESeq2,
-    devtools,
     dplyr,
     e1071,
     ggplot2,
