@@ -22,39 +22,40 @@ iobr_pca(
 )
 }
 \arguments{
-\item{data}{The input data for PCA. It should be a matrix or a data frame.}
+\item{data}{Input data for PCA: matrix or data frame.}
 
-\item{is.matrix}{Specifies whether the input data is a matrix. Default is TRUE.}
+\item{is.matrix}{Logical indicating if input is a matrix. Default is TRUE.}
 
-\item{scale}{Specifies whether to scale the input data. Default is TRUE.}
+\item{scale}{Logical indicating whether to scale the data. Default is TRUE.}
 
-\item{is.log}{Specifies whether to log transform the input data. Default is FALSE.}
+\item{is.log}{Logical indicating whether to log-transform the data. Default is FALSE.}
 
-\item{pdata}{Data frame containing sample ID and grouping status.}
+\item{pdata}{Data frame with sample IDs and grouping information.}
 
-\item{id_pdata}{The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".}
+\item{id_pdata}{Column name in `pdata` for sample IDs. Default is "ID".}
 
-\item{group}{The column name in 'pdata' that represents groups/categories to color the points. Default is NULL.}
+\item{group}{Column name in `pdata` for grouping variable. Default is NULL.}
 
-\item{geom.ind}{The type of geometric representation for the points in the PCA plot. Default is "point".}
+\item{geom.ind}{Type of geometric representation for points. Default is "point".}
 
-\item{cols}{The color scheme to be used for group categories. Default is "normal".}
+\item{cols}{Color scheme for groups. Default is "normal".}
 
-\item{palette}{The color palette to be used for group categories. Default is "jama".}
+\item{palette}{Color palette for groups. Default is "jama".}
 
-\item{repel}{Specifies whether to repel the data points to avoid overlap. Default is FALSE.}
+\item{repel}{Logical indicating whether to repel overlapping points. Default is FALSE.}
 
-\item{ncp}{The number of dimensions to keep in the PCA. Default is 5.}
+\item{ncp}{Number of principal components to retain. Default is 5.}
 
-\item{axes}{The dimensions/axes to be plotted. Default is c(1, 2).}
+\item{axes}{Principal components to plot (e.g., c(1, 2)). Default is c(1, 2).}
 
-\item{addEllipses}{Specifies whether to add concentration ellipses to the plot. Default is TRUE.}
+\item{addEllipses}{Logical indicating whether to add concentration ellipses. Default is TRUE.}
 }
 \value{
-A ggplot object representing the PCA plot.
+A ggplot object of the PCA plot.
 }
 \description{
-The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
+This function performs Principal Component Analysis (PCA) on gene expression data,
+reduces dimensionality while preserving variance, and generates a scatter plot visualization.
 }
 \examples{
 data("eset_stad", package = "IOBR")

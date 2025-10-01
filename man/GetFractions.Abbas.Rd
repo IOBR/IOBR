@@ -24,8 +24,8 @@ they are non-negative, which corresponds to realistic proportions of cell types.
 }
 \examples{
 # Generate some example data
-XX <- matrix(runif(100), nrow=10, ncol=10)
-colnames(XX) <- paste("CellType", 1:10, sep="")
+XX <- matrix(runif(100), nrow = 10, ncol = 10)
+colnames(XX) <- paste("CellType", 1:10, sep = "")
 YY <- runif(10)
 
 # Apply the Abbas constrained regression method

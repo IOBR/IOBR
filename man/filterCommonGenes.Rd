@@ -21,13 +21,17 @@ This function filters and merges a dataset with a set of common genes.
 }
 \examples{
 # Create a sample common_genes dataframe
-common_genes <- data.frame(GeneSymbol = c("BRCA1", "TP53", "EGFR"),
-                           stringsAsFactors = FALSE)
+common_genes <- data.frame(
+  GeneSymbol = c("BRCA1", "TP53", "EGFR"),
+  stringsAsFactors = FALSE
+)
 
 # Create a sample input dataframe
-input_data <- data.frame(GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
-                         Value = c(10, 15, 8, 12),
-                         stringsAsFactors = FALSE)
+input_data <- data.frame(
+  GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
+  Value = c(10, 15, 8, 12),
+  stringsAsFactors = FALSE
+)
 
 # Write the input data to input.txt file, including row names
 write.table(input_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)

@@ -23,51 +23,69 @@ batch_sig_surv_plot(
 )
 }
 \arguments{
-\item{input_pdata}{This parameter represents the input data for the survival analysis. It is expected to be a data frame.}
+\item{input_pdata}{Data frame containing survival data and signature scores.}
 
-\item{signature}{This parameter specifies the column name in input_pdata that represents the target signature for survival analysis.}
+\item{signature}{Character string specifying the column name of the target signature
+for survival analysis.}
 
-\item{ID}{This optional parameter represents the column name in input_pdata that contains the unique identifier for each data point. The default value is "ID".}
+\item{ID}{Character string specifying the column name containing unique identifiers.
+Default is \code{"ID"}.}
 
-\item{column_of_Project}{A character string specifying the name of the column representing the project IDs. Default is "ProjectID".}
+\item{column_of_Project}{Character string specifying the column name containing
+project identifiers. Default is \code{"ProjectID"}.}
 
-\item{project}{A character string specifying the project name. Default is NULL.}
+\item{project}{Character string or vector specifying project name(s) to analyze.
+If \code{NULL}, all projects are analyzed. Default is \code{NULL}.}
 
-\item{time}{A character string specifying the name of the column representing the time variable. Default is "time".}
+\item{time}{Character string specifying the column name containing time-to-event data.
+Default is \code{"time"}.}
 
-\item{status}{A character string specifying the name of the column representing the status variable. Default is "status".}
+\item{status}{Character string specifying the column name containing event status.
+Default is \code{"status"}.}
 
-\item{time_type}{A character string specifying the type of time variable. Default is "day".Options are "day" and "month".}
+\item{time_type}{Character string specifying the time unit. Options are \code{"day"}
+or \code{"month"}. Default is \code{"day"}.}
 
-\item{break_month}{A character string specifying the break interval for the time variable. Default is "auto".}
+\item{break_month}{Numeric value or \code{"auto"} specifying the interval for time
+axis breaks in months. Default is \code{"auto"}.}
 
-\item{palette}{A character string specifying the color palette to be used for the plots. Default is "jama".}
+\item{palette}{Character string specifying the color palette. Default is \code{"jama"}.}
 
-\item{cols}{A vector specifying custom colors for the plots. Default is NULL.}
+\item{cols}{Character vector of custom colors. If \code{NULL}, palette is used.
+Default is \code{NULL}.}
 
-\item{mini_sig}{A character string specifying the minimum signature score. Default is "score".}
+\item{mini_sig}{Character string for the signature label in the legend. Default is
+\code{"score"}.}
 
-\item{save_path}{A character string specifying the path where the plots will be saved. Default is "Multiple-KM-plot".}
+\item{save_path}{Character string specifying the directory path for saving plots.
+Default is \code{"Multiple-KM-plot"}.}
 
-\item{show_col}{A logical value indicating whether to show colors in the plots. Default is TRUE.}
+\item{show_col}{Logical indicating whether to display color information. Default is
+\code{TRUE}.}
 
-\item{fig.type}{A character string specifying the file type for saving the plots. Default is "pdf".}
+\item{fig.type}{Character string specifying the output file format (\code{"pdf"},
+\code{"png"}, etc.). Default is \code{"pdf"}.}
 }
 \value{
-A data frame containing the combined data from all projects after survival analysis.
+Data frame containing combined survival analysis results from all projects.
 }
 \description{
-This function generates survival plots for multiple projects based on input data and signature scores.
+Generates Kaplan-Meier survival plots for multiple projects or cohorts based on
+signature scores. Automatically determines optimal cutpoints for signature
+stratification and creates publication-ready survival curves.
 }
 \examples{
-# Loading TCGA-STAD microenvironment signature data
+# Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Generating survival plots for multiple projects
 sig_stad <- as.data.frame(sig_stad)
-result <- batch_sig_surv_plot(input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID", column_of_Project = "ProjectID", project = NULL,
-                              time = "OS_time", status = "OS_status", time_type = "month", break_month = "auto", palette = "jama",
-                              cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf")
-print(result)
+# Generate survival plots for multiple projects
+result <- batch_sig_surv_plot(
+  input_pdata = sig_stad, signature = "T.cells.CD8", ID = "ID",
+  column_of_Project = "ProjectID", project = NULL, time = "OS_time",
+  status = "OS_status", time_type = "month", break_month = "auto",
+  palette = "jama", cols = NULL, mini_sig = "score",
+  save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"
+)
 }
 \author{
 Dongqiang Zeng

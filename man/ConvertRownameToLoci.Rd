@@ -23,7 +23,7 @@ row names formatted as 'LOC389332|389332', and it will simplify these to 'LOC389
 }
 \examples{
 # Assume `data` is your original gene expression matrix with compound row names
-example_data <- matrix(runif(20), ncol=5)
+example_data <- matrix(runif(20), ncol = 5)
 rownames(example_data) <- c("LOC101", "LOC102", "LOC103", "LOC104")
 # Process the data to convert row names
 processed_data <- ConvertRownameToLoci(example_data)

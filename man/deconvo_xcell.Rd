@@ -2,28 +2,37 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_xcell}
 \alias{deconvo_xcell}
-\title{Decoding immune microenvironment using xCell}
+\title{Deconvolve Immune Microenvironment Using xCell}
 \usage{
 deconvo_xcell(eset, project = NULL, arrays = FALSE)
 }
 \arguments{
-\item{eset}{expression set with genes at row, sample ID at column}
+\item{eset}{Gene expression matrix with genes in rows and samples in columns.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Character string specifying an optional project name to distinguish
+different datasets. If provided, a \code{ProjectID} column is added. Default is
+\code{NULL}.}
 
-\item{array}{transcrptomic data type}
+\item{arrays}{Logical indicating whether the data is from microarray (\code{TRUE})
+or RNA-seq (\code{FALSE}). Default is \code{FALSE}.}
 }
 \value{
-xCell with immune cell fractions
+Data frame containing xCell enrichment scores for immune and stromal cell
+  types. Sample IDs are in the first column, and cell type columns are suffixed
+  with \code{_xCell}.
 }
 \description{
-Decoding immune microenvironment using xCell
+Estimates immune cell fractions in the tumor microenvironment using the xCell
+algorithm. xCell provides cell type enrichment scores for 64 immune and stromal
+cell types from gene expression data.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
+# Load TCGA-STAD expression data (raw count matrix)
+data("eset_stad", package = "IOBR")
+# Convert to TPM
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-xcell_result<-deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
+# Run xCell deconvolution
+xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 
 }
 \author{

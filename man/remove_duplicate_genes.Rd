@@ -36,7 +36,7 @@ eset_stad[2:3, "id"] <- "MT-CO1"
 # Counting the number of identical names
 summary(duplicated(eset_stad$id))
 # De-duplication of rows with the same gene name using the average value
-eset_stad<-remove_duplicate_genes(eset = eset_stad, column_of_symbol = "id", method = "mean")
+eset_stad <- remove_duplicate_genes(eset = eset_stad, column_of_symbol = "id", method = "mean")
 summary(duplicated(eset_stad$id))
 }
 \author{

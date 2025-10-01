@@ -34,7 +34,9 @@ expression_data <- data.frame(
   Immune_Expression = immune_exp
 )
 
-DrawQQPlot(cancer.exp = expression_data$Cancer_Expression,
-           immune.exp = expression_data$Immune_Expression,
-           name = "Comparison of Gene Expression")
+DrawQQPlot(
+  cancer.exp = expression_data$Cancer_Expression,
+  immune.exp = expression_data$Immune_Expression,
+  name = "Comparison of Gene Expression"
+)
 }

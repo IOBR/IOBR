@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_box.R
 \name{sig_box}
 \alias{sig_box}
-\title{Title: sig_box - Generate a Box plot with Statistical Comparisons}
+\title{Signature Box Plot with Statistical Comparisons}
 \usage{
 sig_box(
   data,
@@ -24,50 +24,67 @@ sig_box(
 )
 }
 \arguments{
-\item{data}{The input data, which can be a Seurat object or a data frame.}
+\item{data}{Data frame or Seurat object containing the signature and grouping variable.}
 
-\item{signature}{The column name representing the y-axis values in the plot.}
+\item{signature}{Character string specifying the column name (or feature name in
+Seurat) for the signature values to plot on the y-axis.}
 
-\item{variable}{The column name representing the x-axis values in the plot.}
+\item{variable}{Character string specifying the grouping variable column name for
+the x-axis.}
 
-\item{angle_x_text}{The angle (in degrees) at which x-axis text labels should be displayed (default = 0).}
+\item{angle_x_text}{Numeric value specifying the rotation angle for x-axis labels
+(in degrees). Default is 0.}
 
-\item{hjust}{The horizontal justification of x-axis text labels (default = 0.5).}
+\item{hjust}{Numeric value specifying the horizontal justification of x-axis labels.
+Default is 0.5.}
 
-\item{palette}{The color palette to use for filling the boxplots (default = "nrc").}
+\item{palette}{Character string specifying the color palette name. Default is
+\code{"nrc"}.}
 
-\item{cols}{Optional vector of colors to use for filling the boxplots (default = NULL).}
+\item{cols}{Character vector of custom fill colors. If \code{NULL}, palette is used.
+Default is \code{NULL}.}
 
-\item{jitter}{Boolean flag indicating whether to add jitter to the data points (default = FALSE).}
+\item{jitter}{Logical indicating whether to add jittered points to the box plot.
+Default is \code{FALSE}.}
 
-\item{point_size}{The size of the data points when jitter is enabled (default = 5).}
+\item{point_size}{Numeric value specifying the size of jittered points. Default is 5.}
 
-\item{size_of_font}{The font size for axis labels and text (default = 10).}
+\item{size_of_font}{Numeric value specifying the base font size. Default is 10.}
 
-\item{size_of_pvalue}{The font size for the statistical comparison results (default = 6).}
+\item{size_of_pvalue}{Numeric value specifying the font size for p-values. Default
+is 6.}
 
-\item{show_pvalue}{Boolean flag indicating whether to display the statistical comparison results (default = TRUE).}
+\item{show_pvalue}{Logical indicating whether to display statistical comparison
+p-values on the plot. Default is \code{TRUE}.}
 
-\item{return_stat_res}{Boolean flag indicating whether to return the statistical comparison results (default = FALSE).}
+\item{return_stat_res}{Logical indicating whether to return statistical test results
+instead of the plot. Default is \code{FALSE}.}
 
-\item{assay}{The name of the assay to extract data from in a Seurat object (default = NULL, uses the default assay).}
+\item{assay}{Character string specifying the assay name (for Seurat objects). Default
+is \code{NULL}.}
 
-\item{slot}{The slot name to extract data from in a Seurat object (default = "scale.data").}
+\item{slot}{Character string specifying the slot name (for Seurat objects). Default
+is \code{"scale.data"}.}
 
-\item{scale}{Boolean flag indicating whether to scale the signature values (default = FALSE).}
+\item{scale}{Logical indicating whether to scale signature values (z-score
+transformation). Default is \code{FALSE}.}
 }
 \value{
-Depending on `return_stat_res`, returns either a ggplot object of the boxplot or the results of the statistical comparison.
+If \code{return_stat_res = FALSE}, returns a ggplot2 object. If
+  \code{return_stat_res = TRUE}, returns a data frame containing statistical test
+  results.
 }
 \description{
-The sig_box function is designed to generate a boxplot with optional statistical comparisons. It takes in various parameters such as data, signature, variable, and more to customize the plot. It can be used to visualize and analyze data in a Seurat object or any other data frame.
+Creates box plots to visualize signature distributions across groups with optional
+statistical pairwise comparisons. Supports both data frames and Seurat objects for
+single-cell data visualization.
 }
 \examples{
+# Load example data
 data("tcga_stad_pdata", package = "IOBR")
-
-sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = T, palette = "jco")
-
-sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus", variable = "subtype", jitter = FALSE, palette = "jco")
+# Create box plot with statistical comparisons
+sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus",
+        variable = "subtype", jitter = TRUE, palette = "jco")
 }
 \author{
 Dongqiang Zeng

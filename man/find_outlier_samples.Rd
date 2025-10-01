@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_outlier_samples.R
 \name{find_outlier_samples}
 \alias{find_outlier_samples}
-\title{Identification of Potential Outlier Samples in Gene Expression Data}
+\title{Identify Outlier Samples in Gene Expression Data}
 \usage{
 find_outlier_samples(
   eset,
@@ -14,26 +14,26 @@ find_outlier_samples(
 )
 }
 \arguments{
-\item{eset}{A gene expression matrix data. It is the input data on which the function will operate.}
+\item{eset}{Numeric matrix. Gene expression data with genes as rows and samples as columns.}
 
-\item{yinter}{A numeric value representing the y-intercept for the horizontal line on the connectivity plot. It is used to identify potential outliers in the data.}
+\item{yinter}{Numeric. Y-intercept threshold for identifying outliers in the connectivity plot. Default is -3.}
 
-\item{project}{A string indicating the project name associated with the analysis. It is used to create a folder for saving the output files.}
+\item{project}{Character. Project name for output folder creation. Default is "find_outlier_eset".}
 
-\item{plot_hculst}{A logical value indicating whether to plot the hierarchical clustering of samples. If set to TRUE, the hierarchical clustering plot will be generated.}
+\item{plot_hculst}{Logical. Whether to plot hierarchical clustering of samples. Default is FALSE.}
 
-\item{show_plot}{A logical value indicating whether to display the connectivity plot. If set to TRUE, the connectivity plot will be shown.}
+\item{show_plot}{Logical. Whether to display the connectivity plot. Default is TRUE.}
 
-\item{index}{default is null.}
+\item{index}{Integer or NULL. Index for output file naming. Default is NULL.}
 }
 \value{
-A vector of character strings representing the names of potential outlier samples identified based on the connectivity analysis. These samples have connectivity z-scores greater than the absolute value of yinter.
+Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).
 }
 \description{
-The "find_outlier_samples" function is designed to analyze gene expression data and identify potential outlier samples based on connectivity analysis. By utilizing the "WGCNA" package, this function calculates the normalized adjacency and connectivity z-scores for each sample. It further generates a connectivity plot, highlighting samples with connectivity z-scores greater than the specified y-intercept value. This function also allows for the option to plot hierarchical clustering and save the output files in a designated project folder. The returned result is a list of potential outlier samples, providing valuable insights for further analysis and data interpretation.
+Analyzes gene expression data to identify potential outlier samples using connectivity analysis via the WGCNA package. Calculates normalized adjacency and connectivity z-scores for each sample, generates connectivity plots, and optionally performs hierarchical clustering. Outlier samples are those with connectivity z-scores exceeding the specified threshold.
 }
 \examples{
-# loading expression data
+# Load expression data
 data("eset_tme_stad", package = "IOBR")
 outs <- find_outlier_samples(eset = eset_tme_stad)
 print(outs)

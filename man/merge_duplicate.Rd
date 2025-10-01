@@ -2,35 +2,32 @@
 % Please edit documentation in R/merge_duplicate.R
 \name{merge_duplicate}
 \alias{merge_duplicate}
-\title{Merge Data Frames Handling Duplicated Column Names}
+\title{Merge Data Frames with Duplicated Column Names}
 \usage{
 merge_duplicate(x, y, by.x, by.y, all.x, all.y, all = NULL, choose = "x")
 }
 \arguments{
-\item{x}{The first data frame to be merged.}
+\item{x}{Data frame. First data frame to merge.}
 
-\item{y}{The second data frame to be merged.}
+\item{y}{Data frame. Second data frame to merge.}
 
-\item{by.x}{The column name(s) in `x` used for merging.}
+\item{by.x}{Character. Column name(s) in `x` used for merging.}
 
-\item{by.y}{The column name(s) in `y` used for merging.}
+\item{by.y}{Character. Column name(s) in `y` used for merging.}
 
-\item{all.x}{Logical indicating if all rows from `x` should be included in the output.}
+\item{all.x}{Logical. Include all rows from `x` in output. Default is FALSE.}
 
-\item{all.y}{Logical indicating if all rows from `y` should be included in the output.}
+\item{all.y}{Logical. Include all rows from `y` in output. Default is FALSE.}
 
-\item{all}{Logical indicating if all rows from both `x` and `y` should be included in the output,
-superseding `all.x` and `all.y` if not NULL.}
+\item{all}{Logical or NULL. If not NULL, include all rows from both `x` and `y`, overriding `all.x` and `all.y`.}
 
-\item{choose}{Specifies which data frame's duplicated non-joining columns should be retained: "x" or "y".}
+\item{choose}{Character. Which data frame's duplicated non-joining columns to retain: "x" or "y". Default is "x".}
 }
 \value{
-A data frame resulting from merging `x` and `y` according to the specified parameters.
+Data frame resulting from merging `x` and `y` according to specified parameters.
 }
 \description{
-This function merges two data frames by resolving duplicated column names based on user preference.
-It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges
-without losing important data integrity.
+Merges two data frames, resolving duplicated column names according to user preference. Allows selection of which data frame's duplicated columns to retain, ensuring data integrity during merging.
 }
 \examples{
 df1 <- data.frame(ID = 1:3, Name = c("A", "B", "C"), Value = 1:3)

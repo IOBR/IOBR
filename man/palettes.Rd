@@ -2,7 +2,7 @@
 % Please edit documentation in R/palettes.R
 \name{palettes}
 \alias{palettes}
-\title{Choose colors.}
+\title{Select Color Palettes for Visualization}
 \usage{
 palettes(
   category = "box",
@@ -14,30 +14,26 @@ palettes(
 )
 }
 \arguments{
-\item{category}{choose what type of plot you want to color,There are seven categories you can choose: `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`}
+\item{category}{Character. Plot/palette category: one of `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`.}
 
-\item{palette}{Each category has some options to choose}
+\item{palette}{Character or numeric. Palette name or index (varies by category).}
 
-\item{alpha}{intensity of the color}
+\item{alpha}{Numeric. Alpha (transparency) scaling factor. Default is 1.}
 
-\item{counts}{number of colors, only affect continue colors}
+\item{counts}{Integer. Number of colors (for continuous palettes). Default is 50.}
 
-\item{show_col}{logical variable, if TRUE, color will be print and show in the R studio}
+\item{show_col}{Logical. If TRUE, prints the palette. Default is TRUE.}
 
-\item{show_message}{print palettes that can be choose}
+\item{show_message}{Logical. If TRUE, prints available options. Default is FALSE.}
 }
 \value{
-A vector of colors based on the selected options.
+Character vector of hex color codes.
 }
 \description{
-This function selects color palettes based on the type of plot you want to color. It supports multiple categories
-and palette options, allowing for the adjustment of color intensity and the number of colors.
+Provides curated qualitative, sequential, and diverging palettes for multiple plot types. Supports intensity adjustment and preview.
 }
 \examples{
-# Get a palette for box plots with the 'nrc' palette
 colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
-
-# Get a continuous color scale for heatmaps
 heatmap_colors <- palettes(category = "heatmap", palette = 1, counts = 100, show_col = TRUE)
 }
 \author{

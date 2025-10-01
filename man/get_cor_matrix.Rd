@@ -73,8 +73,10 @@ feas1 <- c("Gene_1", "Gene_2", "Gene_3")
 feas2 <- c("Gene_4", "Gene_5", "Gene_6")
 
 # Generate and visualize the correlation matrix
-cor_plot <- get_cor_matrix(data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
-                           method = "spearman", project = "Example Correlation Matrix")
+cor_plot <- get_cor_matrix(
+  data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
+  method = "spearman", project = "Example Correlation Matrix"
+)
 print(cor_plot)
 }
 \author{

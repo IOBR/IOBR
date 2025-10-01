@@ -49,8 +49,8 @@ generates AUC plots for model evaluation. The results, along with the training d
 }
 \examples{
 data("imvigor210_sig", package = "IOBR")
-data("imvigor210_pdata",package = "IOBR")
-pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary!="NA", c("ID","BOR_binary")]
+data("imvigor210_pdata", package = "IOBR")
+pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
 BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
 }

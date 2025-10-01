@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_wilcoxon.R
 \name{batch_wilcoxon}
 \alias{batch_wilcoxon}
-\title{Batch to conduct wilcoxon test between two groups}
+\title{Batch Wilcoxon Rank-Sum Test Between Two Groups}
 \usage{
 batch_wilcoxon(
   data,
@@ -12,24 +12,24 @@ batch_wilcoxon(
 )
 }
 \arguments{
-\item{data}{A data frame containing the input data for analysis.}
+\item{data}{Data frame. Input data for analysis.}
 
-\item{target}{The name of the column in the data frame that represents the group labels. The default value is "group".}
+\item{target}{Character. Name of the column representing group labels. Default is "group".}
 
-\item{feature}{A character vector specifying the names of the features or variables to be analyzed. If NULL, all continuous features in the data frame will be used. Default value is NULL.}
+\item{feature}{Character vector or NULL. Names of features to analyze. If NULL, all continuous features are used. Default is NULL.}
 
-\item{feature_manipulation}{A logical value indicating whether feature manipulation is required. If TRUE, a custom feature manipulation function will be applied to the data. Default value is FALSE.}
+\item{feature_manipulation}{Logical. Whether to apply custom feature manipulation. Default is FALSE.}
 }
 \value{
-statistical result
+Data frame with statistical results for each feature (p-value, adjusted p-value, log p-value, significance stars).
 }
 \description{
-The batch_wilcoxon function performs Wilcoxon rank-sum tests on a given data set to compare the distribution of a specified feature between two groups. It computes the p-values and ranks the significant features based on the p-values. The function returns a data frame with the feature names, p-values, adjusted p-values, logarithm of p-values, and a star rating based on the p-value ranges.
+Performs Wilcoxon rank-sum tests on a dataset to compare the distribution of specified features between two groups. Computes p-values, adjusts for multiple testing, and ranks features by significance. Returns a data frame with feature names, p-values, adjusted p-values, log-transformed p-values, and significance stars.
 }
 \examples{
-# Loading TCGA-STAD microenvironment signature data
+# Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Finding microenvironmental scores associated with Gender
+# Find microenvironmental scores associated with Gender
 batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }
 \author{

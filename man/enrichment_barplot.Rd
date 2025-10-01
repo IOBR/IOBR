@@ -2,7 +2,7 @@
 % Please edit documentation in R/enrichment_barplot.R
 \name{enrichment_barplot}
 \alias{enrichment_barplot}
-\title{Enrichment bar plot with two directions}
+\title{Enrichment Bar Plot with Two Directions}
 \usage{
 enrichment_barplot(
   up_terms,
@@ -17,47 +17,36 @@ enrichment_barplot(
 )
 }
 \arguments{
-\item{up_terms}{A data frame containing the information for up-regulated terms}
+\item{up_terms}{Data frame for up-regulated terms.}
 
-\item{down_terms}{A data frame containing the information for down-regulated terms or genes.}
+\item{down_terms}{Data frame for down-regulated terms.}
 
-\item{terms}{The column name in the data frames that specifies the term or gene description. By default, it is set to "Description".}
+\item{terms}{Column name for term descriptions. Default is "Description".}
 
-\item{pvalue}{The column name in the data frames that specifies the p-value. By default, it is set to "pvalue".}
+\item{pvalue}{Column name for p-values. Default is "pvalue".}
 
-\item{group}{The column name in the data frames that specifies the group or condition. By default, it is set to "group". If this column is not present in the data frames, the function will automatically assign a group based on the up_terms and down_terms.  If the group is "Upregulated", it is assigned a value of 1, otherwise it is assigned a value of -1.}
+\item{group}{Column name for group indicator. Default is "group".}
 
-\item{palette}{The color palette to use for the barplot. By default, it is set to "jama".}
+\item{palette}{Color palette. Default is "jama".}
 
-\item{title}{The title for the barplot. By default, it is set to "Gene Ontology Enrichment".}
+\item{title}{Plot title. Default is "Gene Ontology Enrichment".}
 
-\item{width_wrap}{The maximum width for wrapping the pathway names on the x-axis labels. By default, it is set to 30 characters.}
+\item{width_wrap}{Maximum width for wrapping pathway names. Default is 30.}
 
-\item{font_terms}{The font size for the x-axis and y-axis labels. By default, it is set to 15.}
+\item{font_terms}{Font size for axis labels. Default is 15.}
 }
 \value{
-A ggplot object representing the enrichment bar plot.
+A ggplot object of the enrichment bar plot.
 }
 \description{
-This function creates a bar plot to visualize enrichment results, displaying both up-regulated and down-regulated terms or genes. The bar plot highlights the significance of each term or gene using -log10(p-value).
+Creates a bar plot visualizing enrichment results for up-regulated and down-regulated terms,
+using -log10(p-values) to indicate significance.
 }
 \examples{
-# Example data frames
-up_terms <- data.frame(
-  Description = c("Pathway1", "Pathway2", "Pathway3"),
-  pvalue      = c(0.001, 0.01, 0.05))
-
-down_terms <- data.frame(
-  Description = c("Pathway4", "Pathway5", "Pathway6"),
-  pvalue      = c(0.005, 0.02, 0.03))
-
-# Create enrichment bar plot using the function
-p <- enrichment_barplot(
-  up_terms   = up_terms,
-  down_terms = down_terms,
-  title      = "Custom Enrichment Plot")
-
-print(p)
+up_terms <- data.frame(Description = c("Pathway1", "Pathway2"), pvalue = c(0.001, 0.01))
+down_terms <- data.frame(Description = c("Pathway4", "Pathway5"), pvalue = c(0.005, 0.02))
+p <- enrichment_barplot(up_terms = up_terms, down_terms = down_terms,
+                        title = "Custom Enrichment Plot")
 }
 \author{
 Dongqiang Zeng

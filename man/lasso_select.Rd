@@ -2,7 +2,7 @@
 % Please edit documentation in R/lasso_select.R
 \name{lasso_select}
 \alias{lasso_select}
-\title{Extract features of Predictive or Prognostic Model Using LASSO Regression}
+\title{Feature Selection for Predictive or Prognostic Models Using LASSO Regression}
 \usage{
 lasso_select(
   x,
@@ -13,35 +13,30 @@ lasso_select(
 )
 }
 \arguments{
-\item{x}{An input matrix with features like gene symbols or CGI as row names and samples as column names.}
+\item{x}{A numeric matrix. Features (e.g., gene symbols or CGI) as row names and samples as column names.}
 
-\item{y}{A response variable vector; can be binary (0 or 1) or survival data (survival time and event status).}
+\item{y}{A response variable vector. Can be binary (0/1) or survival data (e.g., survival time and event status).}
 
-\item{type}{A character string specifying the model type: "binary" for binary response models or "survival" for survival analysis.
-The default is set to "binary".}
+\item{type}{Character. Model type: "binary" for binary response or "survival" for survival analysis. Default is "binary".}
 
-\item{nfold}{The number of folds for cross-validation, with a default of 10.}
+\item{nfold}{Integer. Number of folds for cross-validation. Default is 10.}
 
-\item{lambda}{The regularization parameter selection method: "lambda.min" for the lambda that gives minimum mean
-cross-validated error or "lambda.1se" for the lambda that is one standard error away from the minimum.
-The default is set to "lambda.min".}
+\item{lambda}{Character. Regularization parameter selection: "lambda.min" (minimum mean cross-validated error) or "lambda.1se" (one standard error from minimum). Default is "lambda.min".}
 }
 \value{
-A vector of selected feature names from the LASSO model that are non-zero in the optimal model.
+Character vector of selected feature names with non-zero coefficients in the optimal LASSO model.
 }
 \description{
-This function applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or
-prognostic models. It is designed to handle both binary and survival type response variables, using cross-validation
-to optimize the model selection.
+Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or prognostic models. Supports both binary and survival response variables, utilizing cross-validation for optimal model selection.
 }
 \examples{
 data("gene_expression", package = "examplePackage")
 survival_data <- survival::Surv(time = c(2, 4, 3), event = c(1, 0, 1))
-# Example for a binary response variable
+# Binary response example
 binary_outcome <- c(0, 1, 1)
-model_features_binary <- lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
-# Example for a survival response variable
-model_features_survival <- lasso_select(x = gene_expression, y = survival_data, type = "survival")
+lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
+# Survival response example
+lasso_select(x = gene_expression, y = survival_data, type = "survival")
 }
 \author{
 Dongqiang Zeng

@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_mutations.R
 \name{find_mutations}
 \alias{find_mutations}
-\title{Mutation Analysis Related to Signature Scores}
+\title{Analyze Mutations Related to Signature Scores}
 \usage{
 find_mutations(
   mutation_matrix,
@@ -28,59 +28,57 @@ find_mutations(
 )
 }
 \arguments{
-\item{mutation_matrix}{A matrix with sample names in the rows and genes in the columns representing mutation data.}
+\item{mutation_matrix}{A matrix of mutation data with samples in rows and genes in columns.}
 
-\item{signature_matrix}{A dataframe with identifier and target signatures.}
+\item{signature_matrix}{A data frame with sample identifiers and signature scores.}
 
-\item{id_signature_matrix}{The column name in the signature_matrix that acts as the identifier.}
+\item{id_signature_matrix}{Column name in `signature_matrix` for sample identifiers.}
 
-\item{signature}{The name of the target signature for analysis.}
+\item{signature}{Name of the target signature for analysis.}
 
-\item{min_mut_freq}{The minimum frequency of mutations required to consider a gene in the analysis.}
+\item{min_mut_freq}{Minimum mutation frequency required for gene inclusion. Default is 0.05.}
 
-\item{plot}{A logical value; if TRUE, results will be plotted and saved at `save_path`.}
+\item{plot}{Logical indicating whether to generate and save plots. Default is TRUE.}
 
-\item{method}{Specifies the statistical test method; "multi" for both Cuzick and Wilcoxon tests or "Wilcoxon" for only the Wilcoxon test.}
+\item{method}{Statistical test method: "multi" for both Cuzick and Wilcoxon, or "Wilcoxon" only. Default is "multi".}
 
-\item{save_path}{The directory path where plots and statistical analysis results will be saved.}
+\item{save_path}{Directory to save plots and results. If NULL, uses signature name.}
 
-\item{palette}{The color palette for box plots.}
+\item{palette}{Color palette for box plots. Default is "jco".}
 
-\item{show_plot}{A logical variable; if TRUE, plots will be rendered on display.}
+\item{show_plot}{Logical indicating whether to display plots. Default is TRUE.}
 
-\item{show_col}{Whether to show the color code of the palette.}
+\item{show_col}{Logical indicating whether to show color codes. Default is FALSE.}
 
-\item{width}{The width of the oncoprint plot.}
+\item{width}{Width of oncoprint plot. Default is 8.}
 
-\item{height}{The height of the oncoprint plot.}
+\item{height}{Height of oncoprint plot. Default is 4.}
 
-\item{oncoprint_group_by}{Specifies how to group the oncoprint, options are "mean" or "quantile".}
+\item{oncoprint_group_by}{Grouping method for oncoprint: "mean" or "quantile". Default is "mean".}
 
-\item{oncoprint_col}{The color for mutations in the oncoprint.}
+\item{oncoprint_col}{Color for mutations in oncoprint. Default is "#224444".}
 
-\item{gene_counts}{The number of genes to display in the oncoprint.}
+\item{gene_counts}{Number of genes to display in oncoprint. Default is 10.}
 
-\item{jitter}{A logical value; if TRUE, adds jitter to the box plot points.}
+\item{jitter}{Logical indicating whether to add jitter to box plot points. Default is FALSE.}
 
-\item{genes}{A vector of gene names for drawing; if NULL, genes are selected based on mutation frequency.}
+\item{genes}{Optional vector of gene names; if NULL, selects based on frequency.}
 
-\item{point_size}{The size of points in the box plot.}
+\item{point_size}{Size of points in box plot. Default is 4.5.}
 
-\item{point_alpha}{The transparency level of points in the box plot.}
+\item{point_alpha}{Transparency of points in box plot. Default is 0.1.}
 }
 \value{
-Returns a list containing results from the statistical tests, oncoprint plots, and box plots.
+A list containing statistical test results, oncoprint plots, and box plots.
 }
 \description{
-This function searches for mutations related to a specific signature score and conducts statistical tests to evaluate
-their significance. It can generate oncoprints and box plots to visualize the relationships and save the results.
+This function identifies mutations associated with a specific signature score, performs statistical tests
+for significance, and generates oncoprints and box plots to visualize relationships.
 }
 \examples{
 # Load mutation and signature data
-maf_file <- "path_to_maf_file"
-mut_list <- make_mut_matrix(maf = maf_file, isTCGA = TRUE, category = "multi")
+mut_list <- make_mut_matrix(maf = "path_to_maf_file", isTCGA = TRUE, category = "multi")
 mut <- mut_list$snp
-# Assume 'tcga_stad_sig' is preloaded with appropriate data
 results <- find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig,
                           id_signature_matrix = "ID", signature = "CD_8_T_effector",
                           min_mut_freq = 0.01, plot = TRUE, method = "multi",

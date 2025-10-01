@@ -2,7 +2,7 @@
 % Please edit documentation in R/roc_time.R
 \name{roc_time}
 \alias{roc_time}
-\title{roc_time}
+\title{Time-dependent ROC Curve for Survival Analysis}
 \usage{
 roc_time(
   input,
@@ -24,49 +24,50 @@ roc_time(
 )
 }
 \arguments{
-\item{input}{The input data frame containing the variables for analysis.}
+\item{input}{Data frame. Input data containing variables for analysis.}
 
-\item{vars}{A character vector specifying the variable(s) to be used in the analysis.}
+\item{vars}{Character vector. Variable(s) to be evaluated.}
 
-\item{time}{A character specifying the name of the time variable in the input data frame (default is "time").}
+\item{time}{Character. Name of the time variable in the input data. Default is "time".}
 
-\item{status}{A character specifying the name of the status variable in the input data frame (default is "status").}
+\item{status}{Character. Name of the status variable in the input data. Default is "status".}
 
-\item{time_point}{An integer or vector specifying the time point(s) for analysis (default is 12).}
+\item{time_point}{Integer or vector. Time point(s) for ROC analysis. Default is 12.}
 
-\item{time_type}{A character specifying the type of time (e.g., "month" or "day", default is "month").}
+\item{time_type}{Character. Time unit (e.g., "month" or "day"). Default is "month".}
 
-\item{palette}{A character specifying the color palette for the plot (default is "jama").}
+\item{palette}{Character. Color palette for the plot. Default is "jama".}
 
-\item{cols}{A character specifying the color scheme for the plot (default is "normal").}
+\item{cols}{Character. Color scheme for the plot. Default is "normal".}
 
-\item{seed}{An integer specifying the seed for reproducibility (default is 1234).}
+\item{seed}{Integer. Random seed for reproducibility. Default is 1234.}
 
-\item{show_col}{A logical value indicating whether to display the color palette (default is FALSE).}
+\item{show_col}{Logical. Whether to display the color palette. Default is FALSE.}
 
-\item{path}{A character specifying the path to save the plot (default is NULL).}
+\item{path}{Character or NULL. Path to save the plot. Default is NULL.}
 
-\item{main}{A character specifying the main title of the plot (default is "PFS").}
+\item{main}{Character. Main title of the plot. Default is "PFS".}
 
-\item{index}{An integer specifying the index for the plot filename (default is 1).}
+\item{index}{Integer. Index for plot filename. Default is 1.}
 
-\item{fig.type}{A character specifying the type of output file (e.g., "pdf", or "png", default is "pdf").}
+\item{fig.type}{Character. Output file type (e.g., "pdf", "png"). Default is "pdf".}
 
-\item{width}{A numeric value specifying the width of the plot (default is 5).}
+\item{width}{Numeric. Width of the plot. Default is 5.}
 
-\item{height}{A numeric value specifying the height of the plot (default is 5.2).}
+\item{height}{Numeric. Height of the plot. Default is 5.2.}
 }
 \value{
-A ggplot object representing the ROC plot.
+A ggplot object representing the time-dependent ROC plot.
 }
 \description{
-The "roc_time" function generates a Receiver Operating Characteristic (ROC) plot over time to assess the predictive performance of one or more variables in survival analysis. It calculates the Area Under the Curve (AUC) for each specified time point and variable combination, and creates a multi-line ROC plot with corresponding AUC values annotated.
+Generates a time-dependent Receiver Operating Characteristic (ROC) plot to evaluate the predictive performance of one or more variables in survival analysis. Calculates the Area Under the Curve (AUC) for each specified time point and variable, and creates a multi-line ROC plot with annotated AUC values.
 }
 \examples{
 data("tcga_stad_sig", package = "IOBR")
 data("pdata_stad", package = "IOBR")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
-roc_time(input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
-time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS")
-
+roc_time(
+  input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
+  time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS"
+)
 }

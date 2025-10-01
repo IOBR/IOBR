@@ -10,3 +10,14 @@
 ^\./tests/GSE100935_series_matrix\.txt\.gz$
 ^TCGA\.STAD\.mutect\.c06465a3-50e7-46f7-b2dd-7bd654ca206b\.DR-10\.0\.somatic\.maf$
 ^5-update-gene-signatures\.R$
+^\.github$
+^copilot-instructions\.md$
+^complete_package_check\.sh$
+^DEVTOOLS_CHECK_STATUS\.md$
+^FULL_CHECK_DOCUMENTATION\.md$
+^PACKAGE_CHECK_SUMMARY\.md$
+^DEVTOOLS_CHECK_RESULTS\.md$
+^FIXES_APPLIED\.md$
+^ROXYGEN2_DOCUMENTATION_STANDARDS\.md$
+^FINAL_QA_REPORT\.md$
+^COMPLETE_WORK_SUMMARY\.md$

@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_cor_plot.R
 \name{iobr_cor_plot}
 \alias{iobr_cor_plot}
-\title{Integrative Correlation Between Phenotype and Features}
+\title{Integrative Correlation Analysis Between Phenotype and Features}
 \usage{
 iobr_cor_plot(
   pdata_group,
@@ -34,75 +34,102 @@ iobr_cor_plot(
 )
 }
 \arguments{
-\item{pdata_group}{A data frame containing phenotype data including an identifier column.}
+\item{pdata_group}{Data frame containing phenotype data with an identifier column.}
 
-\item{id1}{Column name in `pdata_group` serving as the identifier.}
+\item{id1}{Character string specifying the column name in \code{pdata_group} serving
+as the sample identifier.}
 
-\item{feature_data}{A data frame containing feature data corresponding to the identifiers.}
+\item{feature_data}{Data frame containing feature data with corresponding identifiers.}
 
-\item{id2}{Column name in `feature_data` serving as the identifier.}
+\item{id2}{Character string specifying the column name in \code{feature_data} serving
+as the sample identifier.}
 
-\item{target}{Optional; the column name for the target variable if continuous. Default is NULL.}
+\item{target}{Character string specifying the target variable column name for
+continuous analysis. Default is \code{NULL}.}
 
-\item{group}{The grouping variable name used for categorical analysis, default is "group3".}
+\item{group}{Character string specifying the grouping variable name for categorical
+analysis. Default is \code{"group3"}.}
 
-\item{is_target_continuous}{Logical; specifies if the target variable is continuous, affecting grouping strategy.}
+\item{is_target_continuous}{Logical indicating whether the target variable is
+continuous, which affects grouping strategy. Default is \code{TRUE}.}
 
-\item{padj_cutoff}{Cutoff for adjusted p-values to filter features, default is 1.}
+\item{padj_cutoff}{Numeric value specifying the adjusted p-value cutoff for filtering
+features. Default is 1.}
 
-\item{index}{Numeric index used to order file names for output.}
+\item{index}{Numeric index used for ordering output file names. Default is 1.}
 
-\item{category}{Specifies if the data pertains to 'signature' or 'gene'.}
+\item{category}{Character string specifying the data category: \code{"signature"}
+or \code{"gene"}.}
 
-\item{signature_group}{Grouping variable for signatures; differentiates between 'sig_group' for signature grouping
-or 'signature_collection'/'signature_tme' for gene grouping.}
+\item{signature_group}{Character string specifying the grouping variable for
+signatures. Options include \code{"sig_group"} for signature grouping or
+\code{"signature_collection"}/\code{"signature_tme"} for gene grouping.}
 
-\item{ProjectID}{Identifier for the project, used in file naming.}
+\item{ProjectID}{Character string specifying the project identifier for file naming.}
 
-\item{palette_box}{Color palette for box plots.}
+\item{palette_box}{Character string or integer specifying the color palette for
+box plots.}
 
-\item{cols_box}{Optional; specific color settings for the box, default is NULL.}
+\item{cols_box}{Character vector of specific colors for box plots. Default is
+\code{NULL}.}
 
-\item{palette_corplot}{Color palette for correlation plots.}
+\item{palette_corplot}{Character string or integer specifying the color palette for
+correlation plots.}
 
-\item{palette_heatmap}{Index for heatmap color palette.}
+\item{palette_heatmap}{Integer specifying the color palette index for heatmaps.}
 
-\item{feature_limit}{Maximum number of features to consider, default is 26.}
+\item{feature_limit}{Integer specifying the maximum number of features to display.
+Default is 26.}
 
-\item{character_limit}{Maximum number of characters for variable labels, default is 60.}
+\item{character_limit}{Integer specifying the maximum number of characters for
+variable labels. Default is 60.}
 
-\item{show_heatmap_col_name}{Logical; if TRUE, shows column names on the heatmap.}
+\item{show_heatmap_col_name}{Logical indicating whether to display column names on
+heatmaps. Default is \code{TRUE}.}
 
-\item{show_col}{Logical; if TRUE, shows color codes for palettes.}
+\item{show_col}{Logical indicating whether to display color codes for palettes.
+Default is \code{FALSE}.}
 
-\item{show_plot}{Logical; if TRUE, prints plots to the display.}
+\item{show_plot}{Logical indicating whether to display plots. Default is \code{TRUE}.}
 
-\item{path}{Optional; path to save output files. Default is NULL.}
+\item{path}{Character string specifying the directory path for saving output files.
+Default is \code{NULL}.}
 
-\item{discrete_x}{Numeric threshold for character length beyond which labels will be discretized.}
+\item{discrete_x}{Numeric threshold for character length beyond which labels are
+discretized. Default is 25.}
 
-\item{discrete_width}{Numeric; specifies the width for label wrapping in plots.}
+\item{discrete_width}{Numeric value specifying the width for label wrapping in plots.
+Default is 25.}
 
-\item{show_palettes}{Logical; if TRUE, displays color palettes used.}
+\item{show_palettes}{Logical indicating whether to display color palettes. Default
+is \code{FALSE}.}
 
-\item{fig.type}{Format for saving figures, default is 'pdf', can be changed to 'png'.}
+\item{fig.type}{Character string specifying the format for saving figures (\code{"pdf"},
+\code{"png"}, etc.). Default is \code{"pdf"}.}
 }
 \value{
-Depending on the configuration, this function returns various plots such as box plots, heatmaps, and correlation plots,
-        and may also return a dataframe containing statistical analysis results.
+Depending on configuration, returns ggplot2 objects (box plots, heatmaps,
+  correlation plots) and/or a data frame containing statistical analysis results.
 }
 \description{
-Performs integrative correlation analysis between phenotype data and feature data, supporting both continuous
-and categorical phenotypes. This function filters features based on adjusted p-value cutoffs and can visualize
-results in various plot formats including box plots, heatmaps, and correlation plots.
+Performs comprehensive correlation analysis between phenotype data and feature data,
+supporting both continuous and categorical phenotypes. Filters features based on
+statistical significance and generates publication-ready visualizations including
+box plots, heatmaps, and correlation plots.
 }
 \examples{
-# Assuming 'pdata_group' and 'feature_data' are predefined:
-pdata_group <- data.frame(ID = 1:100, phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
-feature_data <- data.frame(ID = 1:100, Feature1 = rnorm(100), Feature2 = rnorm(100))
-results <- iobr_cor_plot(pdata_group = pdata_group, feature_data = feature_data,
-                         id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
-                         show_plot = TRUE, path = "path/to/save/results")
+# Create example phenotype and feature data
+pdata_group <- data.frame(ID = 1:100,
+                          phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
+feature_data <- data.frame(ID = 1:100,
+                           Feature1 = rnorm(100),
+                           Feature2 = rnorm(100))
+# Perform correlation analysis
+results <- iobr_cor_plot(
+  pdata_group = pdata_group, feature_data = feature_data,
+  id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
+  show_plot = TRUE, path = "path/to/save/results"
+)
 print(results)
 }
 \author{

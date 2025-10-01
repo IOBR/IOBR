@@ -27,7 +27,9 @@ Alpha ranges from 0 (Ridge) to 1 (Lasso), with lambda controlling the strength o
 # Assuming 'train_data' and 'train_outcome' are already defined:
 train_data <- matrix(rnorm(100 * 10), ncol = 10)
 train_outcome <- rbinom(100, 1, 0.5)
-optimal_parameters <- Enet(train.x = train_data, train.y = train_outcome,
-                           lambdamax = 1, nfold = 10)
+optimal_parameters <- Enet(
+  train.x = train_data, train.y = train_outcome,
+  lambdamax = 1, nfold = 10
+)
 print(optimal_parameters)
 }

@@ -34,7 +34,7 @@ The "best_cutoff" function is used to find the best cutoff point for a continuou
 # Loading TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Finding the best cutoff value of TMEscore for survival
-sig_stad2 <- best_cutoff2(pdata = sig_stad, variable = "TMEscore_CIR", time = "OS_time",status = "OS_status", PrintResult = T)
+sig_stad2 <- best_cutoff2(pdata = sig_stad, variable = "TMEscore_CIR", time = "OS_time", status = "OS_status", PrintResult = T)
 sig_stad2$best_cutoff
 
 }

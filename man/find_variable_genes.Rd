@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_variable_genes2.R
 \name{find_variable_genes}
 \alias{find_variable_genes}
-\title{find_variable_genes}
+\title{Identify Variable Genes in Expression Data}
 \usage{
 find_variable_genes(
   eset,
@@ -15,37 +15,31 @@ find_variable_genes(
 )
 }
 \arguments{
-\item{eset}{The gene expression dataset as a matrix.}
+\item{eset}{Numeric matrix. Gene expression data (genes as rows, samples as columns).}
 
-\item{data_type}{(character, optional): The type of data in the dataset. Default is "count". Possible values: "count", "normalized".}
+\item{data_type}{Character. Type of data: "count" or "normalized". Default is "count".}
 
-\item{methods}{(character vector, optional): The methods to be used for gene selection. Default is c("low", "mad"). Possible values: "low", "mad".}
+\item{methods}{Character vector. Methods for gene selection: "low", "mad". Default is c("low", "mad").}
 
-\item{prop}{(numeric, optional): The proportion of samples in which a gene should be expressed. Default is 0.7.}
+\item{prop}{Numeric. Proportion of samples in which a gene must be expressed. Default is 0.7.}
 
-\item{quantile}{(numeric vector, optional): The quantiles used to calculate the minimum allowable median absolute deviation (mad) value. Default is c(0.75, 0.5, 0.25).}
+\item{quantile}{Numeric vector. Quantiles for minimum MAD threshold. Default is c(0.75, 0.5, 0.25).}
 
-\item{min.mad}{(numeric, optional): The minimum allowable mad value. Default is 0.1.}
+\item{min.mad}{Numeric. Minimum allowable MAD value. Default is 0.1.}
 
-\item{feas}{(character vector, optional): Additional features to include in the variable gene selection. Default is NULL.}
+\item{feas}{Character vector or NULL. Additional features to include. Default is NULL.}
 }
 \value{
-A matrix subset of `eset` containing only the genes identified as variable according to the specified criteria.
+Matrix subset of `eset` containing only variable genes identified by the specified criteria.
 }
 \description{
-This function identifies variable genes based on specified criteria in a given gene expression dataset.
-}
-\details{
-This function identifies variable genes from a gene expression dataset based on specified criteria.
-It allows the use of multiple selection methods, including expression thresholding and variability estimation
-via median absolute deviation (MAD). The function can handle both count and normalized data.
+Identifies variable genes from a gene expression dataset using specified selection criteria. Supports multiple methods, including expression thresholding and variability estimation via median absolute deviation (MAD). Handles both count and normalized data.
 }
 \examples{
-# loading expression data
+# Load expression data
 data("eset_tme_stad", package = "IOBR")
-# Determination of filtration criteria
+# Filter variable genes
 eset <- find_variable_genes(eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25)
-
 }
 \author{
 Dongqiang Zeng

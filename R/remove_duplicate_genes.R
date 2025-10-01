@@ -1,6 +1,3 @@
-
-
-
 #' Remove Duplicate Gene Symbols in Gene Expression Data
 #'
 #' This function addresses duplicate gene symbols in a gene expression dataset by aggregating
@@ -30,38 +27,39 @@
 #' # Counting the number of identical names
 #' summary(duplicated(eset_stad$id))
 #' # De-duplication of rows with the same gene name using the average value
-#' eset_stad<-remove_duplicate_genes(eset = eset_stad, column_of_symbol = "id", method = "mean")
+#' eset_stad <- remove_duplicate_genes(eset = eset_stad, column_of_symbol = "id", method = "mean")
 #' summary(duplicated(eset_stad$id))
+remove_duplicate_genes <- function(eset, column_of_symbol, method = "mean") {
+  eset <- as.data.frame(eset)
+  rownames(eset) <- NULL
 
-remove_duplicate_genes<-function(eset, column_of_symbol, method = "mean"){
-  eset<-as.data.frame(eset)
-  rownames(eset)<-NULL
+  dups <- dim(eset)[1] - length(unique(eset[, column_of_symbol]))
 
-  dups <- dim(eset)[1] - length(unique(eset[,column_of_symbol]))
-
-  if(dups==0){
-    eset<-tibble:: column_to_rownames(eset,var = column_of_symbol)
+  if (dups == 0) {
+    eset <- tibble::column_to_rownames(eset, var = column_of_symbol)
     return(eset)
-  }else{
-    if(method=="mean"){
-      order_index=apply(eset[,setdiff(colnames(eset),column_of_symbol)],1,function(x) mean(x,na.rm=T))
-      eset<-eset[order(order_index,decreasing=T),]
-      eset<-eset %>%dplyr:: distinct(!!sym(column_of_symbol),.keep_all = TRUE) %>%
-        tibble:: column_to_rownames(.,var = column_of_symbol)
+  } else {
+    if (method == "mean") {
+      order_index <- apply(eset[, setdiff(colnames(eset), column_of_symbol)], 1, function(x) mean(x, na.rm = T))
+      eset <- eset[order(order_index, decreasing = T), ]
+      eset <- eset %>%
+        dplyr::distinct(!!sym(column_of_symbol), .keep_all = TRUE) %>%
+        tibble::column_to_rownames(., var = column_of_symbol)
       return(eset)
-    }else if(method == "sd"){
-      order_index = apply(eset[,setdiff(colnames(eset),column_of_symbol)],1,function(x) sd(x,na.rm=T))
-      eset<-eset[order(order_index,decreasing=T),]
-      eset<-eset %>% distinct(!!sym(column_of_symbol),.keep_all = TRUE) %>%
-        tibble:: column_to_rownames(.,var = column_of_symbol)
+    } else if (method == "sd") {
+      order_index <- apply(eset[, setdiff(colnames(eset), column_of_symbol)], 1, function(x) sd(x, na.rm = T))
+      eset <- eset[order(order_index, decreasing = T), ]
+      eset <- eset %>%
+        distinct(!!sym(column_of_symbol), .keep_all = TRUE) %>%
+        tibble::column_to_rownames(., var = column_of_symbol)
       return(eset)
-    }else if(method == "sum"){
-      order_index = apply(eset[,setdiff(colnames(eset),column_of_symbol)],1,function(x) sum(x,na.rm=T))
-      eset<-eset[order(order_index,decreasing=T),]
-      eset<-eset %>% distinct(!!sym(column_of_symbol),.keep_all = TRUE) %>%
-        tibble:: column_to_rownames(.,var = column_of_symbol)
+    } else if (method == "sum") {
+      order_index <- apply(eset[, setdiff(colnames(eset), column_of_symbol)], 1, function(x) sum(x, na.rm = T))
+      eset <- eset[order(order_index, decreasing = T), ]
+      eset <- eset %>%
+        distinct(!!sym(column_of_symbol), .keep_all = TRUE) %>%
+        tibble::column_to_rownames(., var = column_of_symbol)
       return(eset)
     }
   }
 }
-

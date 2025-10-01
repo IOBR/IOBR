@@ -39,26 +39,28 @@ The dependencies includs `tibble`, `survival`, `survminer`, `limma`, `limSolve`,
 # options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
 if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
 
-depens<-c('tibble', 'survival', 'survminer', 'limma', "DESeq2","devtools", 'limSolve', 'GSVA', 'e1071', 'preprocessCore', 
-          "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor",  "timeROC", "pracma", "factoextra", 
-          "FactoMineR", "WGCNA", "patchwork", 'ggplot2', "biomaRt", 'ggpubr', 'ComplexHeatmap')
-for(i in 1:length(depens)){
-  depen<-depens[i]
-  if (!requireNamespace(depen, quietly = TRUE))  BiocManager::install(depen,update = FALSE)
+depens <- c(
+  "tibble", "survival", "survminer", "limma", "DESeq2", "devtools", "limSolve", "GSVA", "e1071", "preprocessCore",
+  "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor", "timeROC", "pracma", "factoextra",
+  "FactoMineR", "WGCNA", "patchwork", "ggplot2", "biomaRt", "ggpubr", "ComplexHeatmap"
+)
+for (i in 1:length(depens)) {
+  depen <- depens[i]
+  if (!requireNamespace(depen, quietly = TRUE)) BiocManager::install(depen, update = FALSE)
 }
-
 ```
 
 The package is not yet on CRAN or Bioconductor. You can install it from Github:
 ```{r, message = FALSE, warning=FALSE}
-if (!requireNamespace("IOBR", quietly = TRUE))
+if (!requireNamespace("IOBR", quietly = TRUE)) {
   devtools::install_github("IOBR/IOBR")
+}
 ```
 
 Library R packages
 
 ```{r,message = FALSE, warning=FALSE}
-library(IOBR) 
+library(IOBR)
 ```
 
 ### 3.Manual
@@ -102,10 +104,10 @@ signature_score_calculation_methods
 
 ## 5.Signature collection
 ```{r}
-#References of collected signatures
-signature_collection_citation[!duplicated(signature_collection_citation$Journal),]
+# References of collected signatures
+signature_collection_citation[!duplicated(signature_collection_citation$Journal), ]
 
-#signature groups
+# signature groups
 sig_group[1:3]
 ```
 

@@ -45,7 +45,8 @@ library(DESeq2)
 colData <- data.frame(
   celltype = phenotype,
   condition = c("treated", "control", "treated", "control"),
-  row.names = colnames(rawCountData))
+  row.names = colnames(rawCountData)
+)
 # Assuming the design matrix is based on the condition
-dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~ condition)
+dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~condition)
 }

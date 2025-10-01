@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_cor.R
 \name{get_cor}
 \alias{get_cor}
-\title{Calculate and Visualize Correlation between Two Variables}
+\title{Calculate and Visualize Correlation Between Two Variables}
 \usage{
 get_cor(
   eset,
@@ -40,78 +40,79 @@ get_cor(
 )
 }
 \arguments{
-\item{eset}{A dataset containing the variables of interest.}
+\item{eset}{Dataset containing the variables.}
 
-\item{pdata}{An optional data frame providing additional data for the analysis. Default is NULL.}
+\item{pdata}{Optional data frame with additional information. Default is NULL.}
 
-\item{is.matrix}{Whether the eset is a matrix data with feature as row names}
+\item{is.matrix}{Logical indicating if eset is a matrix with features as rows.}
 
-\item{id_eset}{The column name in eset that contains unique identifiers. Default is "ID".}
+\item{id_eset}{ID column in eset. Default is "ID".}
 
-\item{id_pdata}{The column name in pdata that contains unique identifiers. Default is "ID".}
+\item{id_pdata}{ID column in pdata. Default is "ID".}
 
-\item{var1}{The name of the first variable to analyze.}
+\item{var1}{Name of the first variable.}
 
-\item{var2}{The name of the second variable to analyze.}
+\item{var2}{Name of the second variable.}
 
-\item{scale}{Whether to scale the data. Default is TRUE.}
+\item{scale}{Logical indicating whether to scale data. Default is TRUE.}
 
-\item{subtype}{An optional variable that represents subtypes/categories in the analysis. Default is NULL.}
+\item{subtype}{Optional grouping variable for coloring points.}
 
-\item{na.subtype.rm}{Whether to remove NA values in the subtype variable. Default is FALSE.}
+\item{na.subtype.rm}{Logical indicating whether to remove NA in subtype. Default is FALSE.}
 
-\item{color_subtype}{The color palette for the subtypes/categories. Default is NULL.}
+\item{color_subtype}{Colors for subtypes. Default is NULL.}
 
-\item{palette}{The name of the color palette. Default is "jama".}
+\item{palette}{Color palette. Default is "jama".}
 
-\item{index}{The index of the plot. Default is NULL.}
+\item{index}{Plot index. Default is NULL.}
 
-\item{method}{The correlation method to use. Default is "spearman".}
+\item{method}{Correlation method. Default is "spearman".}
 
-\item{show_cor_result}{Whether to print the correlation result. Default is TRUE.}
+\item{show_cor_result}{Logical indicating whether to print correlation result. Default is TRUE.}
 
-\item{col_line}{The color of the line in the correlation plot. Default is NULL.}
+\item{col_line}{Color of regression line. Default is NULL.}
 
-\item{id}{The ID column name to use for labeling points on the plot. Default is "NULL".}
+\item{id}{Column for point labels. Default is "NULL".}
 
-\item{show_lebel}{Whether to show labels on the plot. Default is FALSE.}
+\item{show_lebel}{Logical indicating whether to show labels. Default is FALSE.}
 
-\item{point_size}{The size of the points on the plot. Default is 4.}
+\item{point_size}{Size of points. Default is 4.}
 
-\item{title}{The title of the plot. Default is NULL.}
+\item{title}{Plot title. Default is NULL.}
 
-\item{alpha}{The transparency level of points on the plot. Default is 0.7.}
+\item{alpha}{Transparency of points. Default is 0.5.}
 
-\item{title_size}{The size of the title on the plot. Default is 2.}
+\item{title_size}{Title size. Default is 1.5.}
 
-\item{text_size}{The size of the text on the plot. Default is 15.}
+\item{text_size}{Text size. Default is 10.}
 
-\item{axis_angle}{The rotation angle of the axes labels on the plot. Default is 0.}
+\item{axis_angle}{Axis label angle. Default is 0.}
 
-\item{hjust}{The horizontal justification of the axes labels on the plot. Default is 0.}
+\item{hjust}{Horizontal justification. Default is 0.}
 
-\item{show_plot}{Whether to display the plot. Default is TRUE.}
+\item{show_plot}{Logical indicating whether to display plot. Default is TRUE.}
 
-\item{fig.format}{The format of the saved figure. Default is "png".}
+\item{fig.format}{Figure format. Default is "png".}
 
-\item{fig.width}{The width of the saved figure. Default is 7.}
+\item{fig.width}{Figure width. Default is 7.}
 
-\item{fig.height}{The height of the saved figure. Default is 7.3.}
+\item{fig.height}{Figure height. Default is 7.3.}
 
-\item{path}{The path where the figure will be saved. Default is NULL.}
+\item{path}{Save path. Default is NULL.}
 
-\item{save_plot}{Whether to save the plot as a file. Default is FALSE.}
+\item{save_plot}{Logical indicating whether to save plot. Default is FALSE.}
 
-\item{add.hdr.line}{add.hdr.line}
+\item{add.hdr.line}{Logical for adding header line. Default is FALSE.}
 }
 \value{
-A ggplot object showing the correlation plot.
+A ggplot object of the correlation plot.
 }
 \description{
-The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
+This function calculates and visualizes the correlation between two variables,
+with options for scaling, handling missing values, and incorporating grouping data.
 }
 \examples{
-data(eset_tme_stad, package = "IOBR")
+data("eset_tme_stad", package = "IOBR")
 get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
 }
 \author{

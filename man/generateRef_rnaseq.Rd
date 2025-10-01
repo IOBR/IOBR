@@ -2,42 +2,33 @@
 % Please edit documentation in R/generateRef_rnaseq.R
 \name{generateRef_rnaseq}
 \alias{generateRef_rnaseq}
-\title{Generate Reference Gene Matrix from DEGs Using RNA-seq Data}
+\title{Generate Reference Gene Matrix from RNA-seq DEGs}
 \usage{
 generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 }
 \arguments{
-\item{dds}{raw count data from RNA-seq}
+\item{dds}{Raw count data from RNA-seq.}
 
-\item{pheno}{data frame or matrix;un-normalized counts of RNA-seq}
+\item{pheno}{Character vector of cell type classes.}
 
-\item{mode}{mode "oneVSothers" or "pairs"; two modes for identifying significantly differentially expressed genes}
+\item{mode}{"oneVSothers" or "pairs" for DEG identification.}
 
-\item{FDR}{character vector; cell type class of the samples}
+\item{FDR}{Numeric threshold for adjusted p-values. Default is 0.05.}
 
-\item{dat}{data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.}
+\item{dat}{Normalized expression data (e.g., FPKM, TPM).}
 }
 \value{
-A list containing the reference matrix and additional diagnostic metrics:
-        - `reference_matrix`: A data frame of median expression values for significant probes.
-        - `G`: The optimal number of probes that minimizes the condition number.
-        - `condition_number`: The condition number corresponding to `G`.
-        - `whole_matrix`: The entire median expression matrix for further analyses.
+A list containing reference matrix, optimal G, condition number, and whole matrix.
 }
 \description{
-This function utilizes DESeq2 for differential expression analysis to generate a reference
-gene matrix from raw count RNA-seq data. It supports two modes: 'oneVSothers', which compares
-each cell type against all others, and 'pairs', which performs pairwise comparisons between
-cell types. The function computes the median expression levels of significant genes as part
-of the reference matrix output.
+Uses DESeq2 to identify differentially expressed genes and create a reference matrix
+from median expression levels across cell types.
 }
 \examples{
-# Assume 'dds' as raw count data and 'pheno' as cell type information
 dds <- matrix(rpois(200 * 10, lambda = 10), ncol = 10)
 pheno <- sample(c("Type1", "Type2", "Type3"), 10, replace = TRUE)
-dat <- matrix(rnorm(200 * 10), ncol = 10)  # Simulated FPKM data
+dat <- matrix(rnorm(200 * 10), ncol = 10)
 results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
-print(results)
 }
 \author{
 Rongfang Shen

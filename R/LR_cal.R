@@ -1,5 +1,3 @@
-
-
 #' LR_cal
 #'
 #' @description
@@ -16,13 +14,13 @@
 #' @examples
 #' data("eset_stad", package = "IOBR")
 #' lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
-LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan"){
-
-  library("easier")
+LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
+  if (!requireNamespace("easier", quietly = TRUE)) {
+    stop("Package 'easier' is required but not installed. Please install it to use this function.")
+  }
   # if (!requireNamespace("easier", quietly = TRUE))  BiocManager::install("easier", dependencies = FALSE)
 
-  if(data_type=="count"){
-
+  if (data_type == "count") {
     message(">>>=== count to TPM...")
     eset <- count2tpm(countMat = eset, idType = id_type, source = "local")
   }
@@ -30,10 +28,8 @@ LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", can
   # eset <- log2eset(eset)
 
   feas <- feature_manipulation(data = eset, feature = rownames(eset), is_matrix = TRUE)
-  eset <- eset[rownames(eset)%in%feas, ]
+  eset <- eset[rownames(eset) %in% feas, ]
   res <- easier::compute_LR_pairs(RNA_tpm = eset, cancer_type = cancer_type, verbose = TRUE)
 
   res <- rownames_to_column(res, var = "ID")
-
 }
-

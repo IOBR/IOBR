@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove_names.R
 \name{remove_names}
 \alias{remove_names}
-\title{Batch to transform patterns to special character}
+\title{Remove Patterns from Column Names or Variables}
 \usage{
 remove_names(
   input_df,
@@ -12,21 +12,22 @@ remove_names(
 )
 }
 \arguments{
-\item{input_df}{input data frame}
+\item{input_df}{Input data frame.}
 
-\item{patterns_to_na}{patterns that will be transform into NA}
+\item{variable}{Column to modify: "colnames" for column names, or a specific column name. Default is "colnames".}
 
-\item{patterns_space}{patterns that will be transform into space}
+\item{patterns_to_na}{Vector of patterns to replace with empty string. Default uses predefined patterns.}
 
-\item{variables}{colunm names or names of variable}
+\item{patterns_space}{Vector of patterns to replace with spaces. Default is NULL.}
 }
 \value{
-The modified data frame with patterns replaced as specified.
+Modified data frame with patterns replaced.
 }
 \description{
-This function modifies column names or specified variables in a data frame by replacing certain patterns with either NA values or spaces. It allows targeting column names directly or any other specified column in the data frame.
+This function modifies column names or specified variables in a data frame by replacing
+specified patterns with NA or spaces.
 }
 \examples{
-data("imvigor210_sig",package = "IOBR")
+data("imvigor210_sig", package = "IOBR")
 input <- remove_names(imvigor210_sig, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = NULL)
 }

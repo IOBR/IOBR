@@ -2,23 +2,23 @@
 % Please edit documentation in R/log2eset.R
 \name{log2eset}
 \alias{log2eset}
-\title{Judge whether the expression set needs log2 transformation}
+\title{Log2 Transformation of Gene Expression Matrix}
 \usage{
 log2eset(eset = NULL)
 }
 \arguments{
-\item{eset}{gene expression set with row as genes and sample in the column}
+\item{eset}{Numeric matrix. Gene expression data with genes as rows and samples as columns.}
 }
 \value{
-gene expression set
+Numeric matrix. Log2-transformed gene expression data (if transformation was needed).
 }
 \description{
-Judge whether the expression set needs log2 transformation
+Determines whether a gene expression matrix requires log2 transformation and applies it if necessary.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+# Load TCGA-STAD expression data (raw count matrix)
 data("eset_stad", package = "IOBR")
-# transform count data to tpm
+# Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
 eset <- log2eset(eset)
 }

@@ -20,31 +20,31 @@
 #' expressionData <- matrix(runif(1000 * 4, min = 0, max = 10), ncol = 4)
 #' rownames(expressionData) <- paste("Gene", 1:1000, sep = "_")
 #' colnames(expressionData) <- paste("Sample", 1:4, sep = "_")
-#' 
+#'
 #' # Create phenotype data for the samples
 #' phenotype <- c("celltype1", "celltype2", "celltype1", "celltype2")
-#' 
+#'
 #' # Simulate raw count data for 1000 genes across 4 samples
 #' rawCountData <- matrix(sample(1:100, 1000 * 4, replace = TRUE), ncol = 4)
 #' rownames(rawCountData) <- paste("Gene", 1:1000, sep = "_")
 #' colnames(rawCountData) <- paste("Sample", 1:4, sep = "_")
-#' 
+#'
 #' # Create column data for building a DESeqDataSet
 #' library(DESeq2)
 #' colData <- data.frame(
 #'   celltype = phenotype,
 #'   condition = c("treated", "control", "treated", "control"),
-#'   row.names = colnames(rawCountData))
+#'   row.names = colnames(rawCountData)
+#' )
 #' # Assuming the design matrix is based on the condition
-#' dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~ condition)
-
-generateRef <- function(dds, pheno, FDR = 0.05, dat, method = "limma"){
+#' dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~condition)
+generateRef <- function(dds, pheno, FDR = 0.05, dat, method = "limma") {
   print(message(paste0("\n", ">>> Running differentially expressed genes using ", method)))
-  res = switch(method,
-               limma = generateRef_limma(dat, pheno, FDR),
-               DESeq2 = generateRef_DEseq2(dat, pheno, FDR, dds))
-  ref<-res$reference_matrix
-  res$reference_matrix<-ref[,-1]
+  res <- switch(method,
+    limma = generateRef_limma(dat, pheno, FDR),
+    DESeq2 = generateRef_DEseq2(dat, pheno, FDR, dds)
+  )
+  ref <- res$reference_matrix
+  res$reference_matrix <- ref[, -1]
   return(res)
 }
-

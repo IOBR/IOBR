@@ -2,32 +2,44 @@
 % Please edit documentation in R/batch_kruskal.R
 \name{batch_kruskal}
 \alias{batch_kruskal}
-\title{batch_kruskal}
+\title{Batch Kruskal-Wallis Test}
 \usage{
 batch_kruskal(data, group, feature = NULL, feature_manipulation = FALSE)
 }
 \arguments{
-\item{data}{A data frame containing the dataset.}
+\item{data}{Data frame containing the dataset for analysis.}
 
-\item{group}{A character specifying the name of the grouping variable.}
+\item{group}{Character string specifying the name of the grouping variable.}
 
-\item{feature}{A character vector specifying the names of the feature variables. If not specified, all continuous features will be estimated.}
+\item{feature}{Character vector specifying the names of feature variables to test.
+If \code{NULL}, the user is prompted to select all continuous features or specify
+features manually. Default is \code{NULL}.}
 
-\item{feature_manipulation}{A logical value indicating whether feature manipulation should be performed. Default value is FALSE.}
+\item{feature_manipulation}{Logical indicating whether to apply feature manipulation
+to filter valid features. Default is \code{FALSE}.}
 }
 \value{
-A tibble containing the feature names, p-values, adjusted p-values, log10 p-values, and significance stars.
+Tibble containing the following columns for each feature:
+\itemize{
+  \item \code{sig_names}: Feature name
+  \item \code{p.value}: Raw p-value from Kruskal-Wallis test
+  \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
+  \item \code{log10pvalue}: Negative log10-transformed p-value
+  \item \code{stars}: Significance stars based on p-value thresholds
+}
 }
 \description{
-This function is used to efficiently perform the Kruskal-Wallis test on multiple continuous feature variables across different groups, providing statistical information such as p-values, adjusted p-values, and star ratings for significance.
-}
-\details{
-This function performs the Kruskal-Wallis test on multiple continuous feature variables across different groups, providing statistical information such as p-values, adjusted p-values, and star ratings for significance.
+Performs Kruskal-Wallis rank sum tests on multiple continuous features across
+different groups. Computes p-values, adjusts for multiple testing, and ranks
+features by significance.
 }
 \examples{
-
-# Loading TCGA-STAD micro environment signature score data
+# Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Finding micro environmental scores associated with TCGA molecular subtype
-batch_kruskal(data = sig_stad, group = "Subtype", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+# Test features associated with TCGA molecular subtype
+batch_kruskal(data = sig_stad, group = "Subtype",
+              feature = colnames(sig_stad)[69:ncol(sig_stad)])
+}
+\author{
+Dongqiang Zeng
 }

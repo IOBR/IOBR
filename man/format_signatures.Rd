@@ -2,28 +2,28 @@
 % Please edit documentation in R/format_signatures.R
 \name{format_signatures}
 \alias{format_signatures}
-\title{Transform signature gene data into list format}
+\title{Transform Signature Data into List Format}
 \usage{
 format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
 }
 \arguments{
-\item{sig_data}{signature data with signature name as column name and genes in row, using `NA` to substitude the missing value}
+\item{sig_data}{Data frame with signature names as columns and genes in rows; use NA for missing values.}
 
-\item{save_signature}{logical, save siganture list as RData}
+\item{save_signature}{Logical indicating whether to save the signature list as RData. Default is FALSE.}
 
-\item{output_name}{string of name to save signature RData}
+\item{output_name}{String for the output RData file name. Default is "signatures".}
 }
 \value{
-list of signatures
+A list of signatures.
 }
 \description{
-Transform signature gene data into list format
+This function converts signature data from a data frame (with signatures as columns and genes as rows)
+into a list format suitable for IOBR functions, replacing NA values appropriately.
 }
 \examples{
-
-# load signature data frame
+# Load signature data frame
 data("sig_excel", package = "IOBR")
-# transform into gene list for IOBR functions
+# Transform into gene list for IOBR functions
 format_signatures(sig_excel)
 reading each column and transfer it to a list
 standerdized the name of list

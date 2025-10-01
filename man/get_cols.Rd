@@ -22,5 +22,5 @@ Vector of colors
 Set and view the color palettes
 }
 \examples{
-mycols<-get_cols()
+mycols <- get_cols()
 }

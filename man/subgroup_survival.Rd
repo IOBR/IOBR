@@ -2,7 +2,7 @@
 % Please edit documentation in R/subgroup_survival.R
 \name{subgroup_survival}
 \alias{subgroup_survival}
-\title{Title Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis}
+\title{Subgroup Survival Analysis Using Cox Proportional Hazards Models}
 \usage{
 subgroup_survival(
   pdata,
@@ -13,35 +13,31 @@ subgroup_survival(
 )
 }
 \arguments{
-\item{pdata}{data combine variables, follow up time, and outcome;}
+\item{pdata}{Data frame containing variables, follow-up time, and outcome.}
 
-\item{time_name}{column name of follow up time}
+\item{time_name}{Character. Column name of follow-up time. Default is "time".}
 
-\item{status_name}{column name of outcome event}
+\item{status_name}{Character. Column name of event status (1/0). Default is "status".}
 
-\item{variables}{object that have several levles;}
+\item{variables}{Character vector. Subgrouping variables (each processed independently).}
 
-\item{object}{target that use to calculate coxph fit;
-If target has two levels which name `High` and `Low` group, please transform `High` into `0` and `Low` into `1` before executing the command}
+\item{object}{Character. Variable of interest used in Cox model. If it has levels "High" and "Low", recode "High" to 0 and "Low" to 1 before calling.}
+}
+\value{
+Data frame summarizing subgroup Cox results (HR, CI, p-value).
 }
 \description{
-Title Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis
+Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional hazards models across specified subgroups.
 }
 \examples{
-
-#source data and filter NA
 data(subgroup_data)
-input <- subgroup_data \%>\% filter(time > 0) \%>\% filter(!is.na(status)) \%>\% filter(!is.na(AJCC_stage))
-
-##for binary variable
-data1 <- subgroup_survival(pdata = input,time_name ="time", status_name = "status",
-variables = c("ProjectID", "AJCC_stage"), object ="score_binary" )
-data1
-
-##for continue variables
-data2 <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
-variables = c("ProjectID", "AJCC_stage"), object = "score" )
-data2
+input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
+# Binary variable example
+res_bin <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
+  variables = c("ProjectID", "AJCC_stage"), object = "score_binary")
+# Continuous variable example
+res_cont <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
+  variables = c("ProjectID", "AJCC_stage"), object = "score")
 }
 \author{
 Dongqiang Zeng
