@@ -1,20 +1,21 @@
-#' Batch to conduct wilcoxon test between two groups
+#' Batch Wilcoxon Rank-Sum Test Between Two Groups
 #'
-#' @description The batch_wilcoxon function performs Wilcoxon rank-sum tests on a given data set to compare the distribution of a specified feature between two groups. It computes the p-values and ranks the significant features based on the p-values. The function returns a data frame with the feature names, p-values, adjusted p-values, logarithm of p-values, and a star rating based on the p-value ranges.
-#' @param data A data frame containing the input data for analysis.
-#' @param target The name of the column in the data frame that represents the group labels. The default value is "group".
-#' @param feature A character vector specifying the names of the features or variables to be analyzed. If NULL, all continuous features in the data frame will be used. Default value is NULL.
-#' @param feature_manipulation A logical value indicating whether feature manipulation is required. If TRUE, a custom feature manipulation function will be applied to the data. Default value is FALSE.
+#' Performs Wilcoxon rank-sum tests on a dataset to compare the distribution of specified features between two groups. Computes p-values, adjusts for multiple testing, and ranks features by significance. Returns a data frame with feature names, p-values, adjusted p-values, log-transformed p-values, and significance stars.
 #'
-#' @return statistical result
+#' @param data Data frame. Input data for analysis.
+#' @param target Character. Name of the column representing group labels. Default is "group".
+#' @param feature Character vector or NULL. Names of features to analyze. If NULL, all continuous features are used. Default is NULL.
+#' @param feature_manipulation Logical. Whether to apply custom feature manipulation. Default is FALSE.
+#'
+#' @return Data frame with statistical results for each feature (p-value, adjusted p-value, log p-value, significance stars).
 #' @export
 #' @import dplyr
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
-#' # Loading TCGA-STAD microenvironment signature data
+#' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' # Finding microenvironmental scores associated with Gender
+#' # Find microenvironmental scores associated with Gender
 #' batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 batch_wilcoxon <- function(data, target = "group", feature = NULL, feature_manipulation = FALSE) {
   data <- as.data.frame(data)

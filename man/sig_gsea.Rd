@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_gsea.R
 \name{sig_gsea}
 \alias{sig_gsea}
-\title{sig_gsea - Perform Gene Set Enrichment Analysis}
+\title{Perform Gene Set Enrichment Analysis (GSEA)}
 \usage{
 sig_gsea(
   deg,
@@ -32,71 +32,102 @@ sig_gsea(
 )
 }
 \arguments{
-\item{deg}{Differential expressed genes object, typically a data frame that contains gene symbols, log fold changes, and other relevant information.}
+\item{deg}{Data frame containing differential expression results with gene symbols
+and log fold changes.}
 
-\item{genesets}{This parameter allows you to specify a custom set of gene sets to be used in the enrichment analysis. If not provided, the function will use the gene sets available in the "msigdb" database based on the selected organism.}
+\item{genesets}{List of custom gene sets for enrichment analysis. If \code{NULL},
+MSigDB gene sets are used based on \code{org} and \code{category}. Default is
+\code{NULL}.}
 
-\item{path}{The path parameter represents the location where the enrichment analysis results will be stored. If not specified, a default path named "1-GSEA-result" will be created in the current working directory.}
+\item{path}{Character string specifying the directory path for saving results.
+Default is \code{"1-GSEA-result"}.}
 
-\item{gene_symbol}{his parameter specifies the column name in the deg data frame that contains the gene symbols. The default value is "symbol".}
+\item{gene_symbol}{Character string specifying the column name in \code{deg}
+containing gene symbols. Default is \code{"symbol"}.}
 
-\item{logfc}{Specifies the column name in the deg data frame that contains the log fold change values. The default value is "log2FoldChange".}
+\item{logfc}{Character string specifying the column name in \code{deg} containing
+log fold change values. Default is \code{"log2FoldChange"}.}
 
-\item{org}{This parameter is used to select the organism for which the enrichment analysis will be performed. The options are "hsa" for Homo sapiens and "mus" for Mus musculus.}
+\item{org}{Character string specifying the organism. Options are \code{"hsa"}
+(Homo sapiens) or \code{"mus"} (Mus musculus). Default is \code{"hsa"}.}
 
-\item{msigdb}{A logical parameter indicating whether to use the gene sets from the "msigdb" database. If set to TRUE, the function will retrieve gene sets from "msigdb" based on the selected organism and category.}
+\item{msigdb}{Logical indicating whether to use MSigDB gene sets. Default is
+\code{TRUE}.}
 
-\item{category}{Specifies the category of gene sets to be used from the "msigdb" database. The default category is "H", representing Hallmark gene sets.}
+\item{category}{Character string specifying the MSigDB category (e.g., \code{"H"}
+for Hallmark, \code{"C2"} for curated gene sets). Default is \code{"H"}.}
 
-\item{subcategory}{Allows you to specify a subcategory of gene sets from the "msigdb" database. If not provided, all gene sets within the selected category will be used.}
+\item{subcategory}{Character string specifying the MSigDB subcategory to filter
+gene sets. Default is \code{NULL}.}
 
-\item{palette_bar}{Specifies the color palette for the barplot used to visualize the enriched gene sets. The default value is "nrc".}
+\item{palette_bar}{Character string or integer specifying the color palette for
+bar plots. Default is \code{"jama"}.}
 
-\item{palette_gsea}{Specifies the color palette for the GSEA plots. The default value is 2.}
+\item{palette_gsea}{Integer specifying the color palette for GSEA plots. Default
+is 2.}
 
-\item{show_bar}{Specifies the number of enriched gene sets to show in the barplot. The default value is 10.}
+\item{show_bar}{Integer specifying the number of top enriched gene sets to display
+in the bar plot. Default is 10.}
 
-\item{show_col}{A logical parameter indicating whether to show the color names in the barplot. The default value is FALSE.}
+\item{show_col}{Logical indicating whether to display color names in the bar plot.
+Default is \code{FALSE}.}
 
-\item{show_plot}{A logical parameter indicating whether to display the GSEA plots. The default value is FALSE.}
+\item{show_plot}{Logical indicating whether to display GSEA enrichment plots.
+Default is \code{FALSE}.}
 
-\item{show_gsea}{Specifies the number of most significant gene sets to show in the GSEA plots. The default value is 8.}
+\item{show_gsea}{Integer specifying the number of top significant gene sets for
+which to generate GSEA plots. Default is 8.}
 
-\item{show_path_n}{Specifies the number of paths to show in the GSEA plots. The default value is 20.}
+\item{show_path_n}{Integer specifying the number of pathways to display in GSEA
+plots. Default is 20.}
 
-\item{plot_single_sig}{A logical parameter indicating whether to plot each significant gene set separately. The default value is TRUE.}
+\item{plot_single_sig}{Logical indicating whether to generate separate plots for
+each significant gene set. Default is \code{TRUE}.}
 
-\item{project}{Specifies the name of the project or category for the analysis. If not provided, it will be set as "custom_sig".}
+\item{project}{Character string specifying the project name for output files.
+Default is \code{"custom_sig"}.}
 
-\item{minGSSize}{Specifies the minimum gene set size to consider for enrichment analysis. Gene sets below this size will be excluded. The default value is 10.}
+\item{minGSSize}{Integer specifying the minimum gene set size for analysis.
+Default is 10.}
 
-\item{maxGSSize}{Specifies the maximum gene set size to consider for enrichment analysis. Gene sets above this size will be excluded. The default value is 500.}
+\item{maxGSSize}{Integer specifying the maximum gene set size for analysis.
+Default is 500.}
 
-\item{verbose}{A logical parameter indicating whether to display additional information and messages during the analysis. The default value is TRUE.}
+\item{verbose}{Logical indicating whether to display progress messages. Default
+is \code{TRUE}.}
 
-\item{seed}{A logical parameter indicating whether to use a random seed for reproducibility in the analysis. The default value is FALSE.}
+\item{seed}{Logical indicating whether to set a random seed for reproducibility.
+Default is \code{FALSE}.}
 
-\item{fig.type}{Specifies the file type for saving the GSEA plots. The default value is "pdf".}
+\item{fig.type}{Character string specifying the file format for saving plots
+(e.g., \code{"pdf"}, \code{"png"}). Default is \code{"pdf"}.}
 
-\item{print_bar}{Default is TRUE}
+\item{print_bar}{Logical indicating whether to save and print the bar plot.
+Default is \code{TRUE}.}
 }
 \value{
-A list containing the GSEA results, including data frames for up-regulated and down-regulated gene sets,
-        the complete GSEA result, and the GSEA plot for the top significant terms if generated.
+List containing:
+\itemize{
+  \item \code{up}: Data frame of up-regulated enriched gene sets
+  \item \code{down}: Data frame of down-regulated enriched gene sets
+  \item \code{gsea_result}: Complete GSEA result object
+  \item \code{gsea_plots}: List of GSEA enrichment plots (if generated)
+}
 }
 \description{
-The sig_gsea function conducts Gene Set Enrichment Analysis (GSEA) to identify significant gene sets based on differential gene expression data. It allows for customization of various parameters to tailor the analysis to specific needs. This function performs GSEA using the fgsea package and provides visualizations and results in the form of tables and plots. It also supports the utilization of user-defined gene sets or the use of predefined gene sets from the Molecular Signatures Database (MSigDB). The function further allows for customization of parameters such as organism, gene symbol type, visualization color palette, and significance thresholds. The results can be saved in Excel format, and plots can be saved in various image formats.
-}
-\details{
-The `sig_gsea` function performs Gene Set Enrichment Analysis (GSEA) using differential gene expression data. It
-supports using predefined gene sets from the Molecular Signatures Database (MSigDB) or user-defined gene sets.
-Results, including statistical significance, enrichment scores, and plots, are saved in specified formats.
+Conducts Gene Set Enrichment Analysis to identify significantly enriched gene sets
+from differential gene expression data. Supports MSigDB gene sets or custom gene
+signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
+# Load example data
 data("eset_stad", package = "IOBR")
 data("stad_group", package = "IOBR")
-
-deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
+# Perform differential expression analysis
+deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype",
+                pdata_id = "ID", array = FALSE, method = "DESeq2",
+                contrast = c("EBV", "GS"), path = "STAD")
+# Run GSEA with custom gene sets
 res <- sig_gsea(deg = deg, genesets = signature_tme)
 }
 \author{

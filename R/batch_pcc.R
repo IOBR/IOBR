@@ -1,23 +1,40 @@
-#' Batch way to calculate the partial correlation coefficient
+#' Batch Calculation of Partial Correlation Coefficients
 #'
-#' @description  batch_pcc() provide a batch way to calculate the partial correlation coefficient between feature and others when
-#' controlling a third variable
-#' @param pdata_group matrix;data signature matrix with multiple features
-
-#' @param input A data frame containing both feature variables and the interference variable.
-#' @param interferenceid The name of the column in the feature_data data frame representing the interference variable.
-#' @param target The name of the column in the input data frame representing the target variable for correlation.
-#' @param features A character vector specifying the names of the feature variables.
-#' @param method The correlation method to be used. Default value is "pearson"; options are "pearson", "spearman", or "kendall".
+#' @description
+#' Computes partial correlation coefficients between multiple features and a target
+#' variable while controlling for an interference (confounding) variable. Adjusts
+#' p-values for multiple testing using the Benjamini-Hochberg method.
 #'
-#' @return A tibble containing the feature names, partial correlation coefficients, p-values, adjusted p-values, log10 p-values, and significance stars.
-#' @export
+#' @param input Data frame containing feature variables, target variable, and
+#'   interference variable.
+#' @param interferenceid Character string specifying the column name of the
+#'   interference (confounding) variable to control for.
+#' @param target Character string specifying the column name of the target variable.
+#' @param features Character vector specifying the column names of feature variables
+#'   to correlate with the target.
+#' @param method Character string specifying the correlation method. Options are
+#'   \code{"pearson"}, \code{"spearman"}, or \code{"kendall"}. Default is
+#'   \code{"pearson"}.
+#'
+#' @return Tibble containing the following columns for each feature:
+#' \itemize{
+#'   \item \code{sig_names}: Feature name
+#'   \item \code{p.value}: Raw p-value
+#'   \item \code{statistic}: Partial correlation coefficient
+#'   \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
+#'   \item \code{log10pvalue}: Negative log10-transformed p-value
+#'   \item \code{stars}: Significance stars based on adjusted p-value thresholds
+#' }
+#'
 #' @author Rongfang Shen
+#' @export
 #' @examples
-#' # Loading TCGA-STAD microenvironment signature data
+#' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' # Finding Pan_F_TBRs associated signature score excluding the effects of tumour purity.
-#' res <- batch_pcc(input = sig_stad, interferenceid = "TumorPurity_estimate", target = "Pan_F_TBRs", method = "pearson", features = colnames(sig_stad)[70:ncol(sig_stad)])
+#' # Calculate partial correlations controlling for tumor purity
+#' res <- batch_pcc(input = sig_stad, interferenceid = "TumorPurity_estimate",
+#'                  target = "Pan_F_TBRs", method = "pearson",
+#'                  features = colnames(sig_stad)[70:ncol(sig_stad)])
 batch_pcc <- function(input, interferenceid, target, features, method = "pearson") {
   dat <- input
   features <- setdiff(features, c(unique(interferenceid, target)))

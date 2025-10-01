@@ -2,25 +2,33 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_mcpcounter}
 \alias{deconvo_mcpcounter}
-\title{Estimating immune microenvironment using MCP-counter}
+\title{Deconvolve Immune Microenvironment Using MCP-Counter}
 \usage{
 deconvo_mcpcounter(eset, project = NULL)
 }
 \arguments{
-\item{eset}{expression set with genes at row, sample ID at column}
+\item{eset}{Gene expression matrix with genes (HUGO symbols) in rows and samples in
+columns.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Character string specifying an optional project name to distinguish
+different datasets. If provided, a \code{ProjectID} column is added. Default is
+\code{NULL}.}
 }
 \value{
-MCPcounter with immune cell fractions
+Data frame containing MCP-counter immune cell abundance estimates with sample
+  IDs in the first column. Cell population columns are suffixed with \code{_MCPcounter}.
 }
 \description{
-Estimating immune microenvironment using MCP-counter
+Estimates immune cell abundances in the tumor microenvironment using the MCP-counter
+(Microenvironment Cell Populations-counter) algorithm. Quantifies multiple immune and
+stromal cell populations from bulk gene expression data.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
+# Load TCGA-STAD expression data (raw count matrix)
+data("eset_stad", package = "IOBR")
+# Convert to TPM
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+# Run MCP-counter deconvolution
 mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 
 }

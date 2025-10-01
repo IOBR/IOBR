@@ -1,35 +1,32 @@
-#' Prognostic Modeling for Survival Data
+#' Build Prognostic Models Using LASSO and Ridge Regression
 #'
-#' This function prepares the data, splits it into training and testing sets, and then
-#' fits LASSO and Ridge regression models using the `glmnet` package. It evaluates
-#' these models by calculating prognostic results and optionally plots ROC curves
-#' for each model. It is specifically tailored for survival analysis.
+#' This function prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models
+#' for survival analysis. It evaluates the models and optionally plots time-dependent ROC curves.
 #'
 #' @param x A matrix or data frame of predictor variables.
-#' @param y A vector or data frame of survival outcomes, typically including time and status
-#' @param scale Logical, if TRUE, scales the predictor variables.
-#' @param seed Integer, a seed for random number generation to ensure reproducibility.
-#' @param train_ratio Numeric, the proportion of the data to use for training, e.g., 0.7 for 70 percent
-#' @param nfold Integer, the number of folds for cross-validation in model fitting.
-#' @param plot Logical, if TRUE, plots the ROC curves for the LASSO and Ridge models.
-#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
-#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
+#' @param y A data frame of survival outcomes, including time and status columns.
+#' @param scale Logical indicating whether to scale predictor variables. Default is FALSE.
+#' @param seed Integer seed for random number generation to ensure reproducibility.
+#' @param train_ratio Numeric proportion of data for training (e.g., 0.7). Default is 0.7.
+#' @param nfold Integer number of folds for cross-validation. Default is 10.
+#' @param plot Logical indicating whether to plot ROC curves. Default is TRUE.
+#' @param cols Optional vector of colors for ROC curves. If NULL, uses default palette.
+#' @param palette String specifying color palette. Default is "jama".
 #'
-#' @return A list containing the results from the LASSO and Ridge regression models, the training data,
-#'         and optionally, the combined plot of ROC curves if `plot` is TRUE.
-#'
+#' @return A list containing results from LASSO and Ridge models, training data, and optionally ROC plots.
 #' @importFrom glmnet cv.glmnet
 #' @import dplyr
 #' @import ggplot2
+#' @export
 #' @examples
 #' data("imvigor210_sig", package = "IOBR")
 #' data("imvigor210_pdata", package = "IOBR")
 #' pdata_prog <- imvigor210_pdata %>%
 #'   dplyr::select(ID, OS_days, OS_status) %>%
-#'   mutate(OS_days = as.numeric(.$OS_days)) %>%
-#'   mutate(OS_status = as.numeric(.$OS_status))
-#' prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog, scale = T, seed = 123456, train_ratio = 0.7, nfold = 10, plot = T)
-#' @export
+#'   mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
+#' prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog,
+#'                                      scale = TRUE, seed = 123456,
+#'                                      train_ratio = 0.7, nfold = 10, plot = TRUE)
 PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   x <- as.data.frame(x)
   y <- as.data.frame(y)

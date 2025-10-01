@@ -2,20 +2,20 @@
 % Please edit documentation in R/assimilate_data.R
 \name{assimilate_data}
 \alias{assimilate_data}
-\title{Assimilate data with similar columns}
+\title{Harmonize Two Data Frames by Column Structure}
 \usage{
 assimilate_data(data_a, data_b)
 }
 \arguments{
-\item{data_a}{original data frame}
+\item{data_a}{Data frame. Reference data frame whose column structure should be matched.}
 
-\item{data_b}{manipulated data frame}
+\item{data_b}{Data frame. Data frame to be conformed to `data_a`.}
 }
 \value{
-data_b
+Data frame `data_b` with added missing columns (NA-filled) and reordered to match `data_a`.
 }
 \description{
-Assimilate data with similar columns
+Adds missing columns (filled with NA) to a secondary data frame so that its column set and order match a reference data frame.
 }
 \examples{
 pdata_a <- as.data.frame(array(3, c(5, 9)))

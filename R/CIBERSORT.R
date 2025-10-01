@@ -46,12 +46,15 @@
 # library(preprocessCore)
 
 # Core algorithm
-#' Title CoreAlg
-#' @description CoreAlg performs nu-regression using support vector machines (SVM) and calculates weights, root mean squared error (RMSE), and correlation coefficient (R).
-#' @param X Input matrix or data frame containing the predictor variables.
-#' @param y Numeric vector containing the response variable.
-#' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
-#' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
+#' Perform Nu-Regression Using Support Vector Machines
+#'
+#' This function performs nu-regression using support vector machines (SVM) and calculates weights,
+#' root mean squared error (RMSE), and correlation coefficient (R).
+#'
+#' @param X A matrix or data frame containing the predictor variables.
+#' @param y A numeric vector containing the response variable.
+#' @param absolute Logical indicating whether to use absolute space for weights. Default is FALSE.
+#' @param abs_method String specifying the method for absolute space weights: "sig.score" or "no.sumto1".
 #'
 #' @return A list containing the weights (`w`), root mean squared error (`mix_rmse`), and correlation coefficient (`mix_r`).
 #' @export

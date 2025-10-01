@@ -1,25 +1,25 @@
-#' roc_time
-#' @description
-#' The "roc_time" function generates a Receiver Operating Characteristic (ROC) plot over time to assess the predictive performance of one or more variables in survival analysis. It calculates the Area Under the Curve (AUC) for each specified time point and variable combination, and creates a multi-line ROC plot with corresponding AUC values annotated.
+#' Time-dependent ROC Curve for Survival Analysis
 #'
-#' @param input The input data frame containing the variables for analysis.
-#' @param vars A character vector specifying the variable(s) to be used in the analysis.
-#' @param time A character specifying the name of the time variable in the input data frame (default is "time").
-#' @param status A character specifying the name of the status variable in the input data frame (default is "status").
-#' @param time_point An integer or vector specifying the time point(s) for analysis (default is 12).
-#' @param time_type A character specifying the type of time (e.g., "month" or "day", default is "month").
-#' @param palette A character specifying the color palette for the plot (default is "jama").
-#' @param cols A character specifying the color scheme for the plot (default is "normal").
-#' @param seed An integer specifying the seed for reproducibility (default is 1234).
-#' @param show_col A logical value indicating whether to display the color palette (default is FALSE).
-#' @param path A character specifying the path to save the plot (default is NULL).
-#' @param main A character specifying the main title of the plot (default is "PFS").
-#' @param index An integer specifying the index for the plot filename (default is 1).
-#' @param fig.type A character specifying the type of output file (e.g., "pdf", or "png", default is "pdf").
-#' @param width A numeric value specifying the width of the plot (default is 5).
-#' @param height A numeric value specifying the height of the plot (default is 5.2).
+#' Generates a time-dependent Receiver Operating Characteristic (ROC) plot to evaluate the predictive performance of one or more variables in survival analysis. Calculates the Area Under the Curve (AUC) for each specified time point and variable, and creates a multi-line ROC plot with annotated AUC values.
 #'
-#' @return A ggplot object representing the ROC plot.
+#' @param input Data frame. Input data containing variables for analysis.
+#' @param vars Character vector. Variable(s) to be evaluated.
+#' @param time Character. Name of the time variable in the input data. Default is "time".
+#' @param status Character. Name of the status variable in the input data. Default is "status".
+#' @param time_point Integer or vector. Time point(s) for ROC analysis. Default is 12.
+#' @param time_type Character. Time unit (e.g., "month" or "day"). Default is "month".
+#' @param palette Character. Color palette for the plot. Default is "jama".
+#' @param cols Character. Color scheme for the plot. Default is "normal".
+#' @param seed Integer. Random seed for reproducibility. Default is 1234.
+#' @param show_col Logical. Whether to display the color palette. Default is FALSE.
+#' @param path Character or NULL. Path to save the plot. Default is NULL.
+#' @param main Character. Main title of the plot. Default is "PFS".
+#' @param index Integer. Index for plot filename. Default is 1.
+#' @param fig.type Character. Output file type (e.g., "pdf", "png"). Default is "pdf".
+#' @param width Numeric. Width of the plot. Default is 5.
+#' @param height Numeric. Height of the plot. Default is 5.2.
+#'
+#' @return A ggplot object representing the time-dependent ROC plot.
 #' @export
 #'
 #' @examples
@@ -30,7 +30,6 @@
 #'   input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
 #'   time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS"
 #' )
-#'
 roc_time <- function(input, vars, time = "time", status = "status", time_point = 12, time_type = "month",
                      palette = "jama", cols = "normal", seed = 1234, show_col = FALSE, path = NULL, main = "PFS", index = 1,
                      fig.type = "pdf", width = 5, height = 5.2) {

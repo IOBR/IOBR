@@ -1,30 +1,24 @@
-#' Make mutation matrix using maf data
+#' Construct Mutation Matrices from MAF Data
 #'
-#' This function constructs mutation matrices from MAF data, supporting multiple categories including all mutations,
-#' SNPs, indels, and frameshift mutations. It can handle both MAF file paths or MAF objects directly and is capable
-#' of processing data formatted according to TCGA standards.
+#' Builds mutation presence/absence matrices from MAF input (file path or MAF object). Supports multiple categories: all mutations, SNPs, indels, and frameshift mutations. When category = "multi", returns a list of matrices for each category. Compatible with TCGA-formatted data.
 #'
-#' @param maf file name or a maf object
-#' @param mut_data if maf data had beed loaded, this argument will be applied
-#' @param isTCGA logical variable,
-#' @param category if category is `multi`, four mutation matrix will be generated: all, snp, indel and frameshift
-#' @param Tumor_Sample_Barcode column name of tumor sample
-#' @param Hugo_Symbol column name of gene symbol
-#' @param Variant_Classification column name of variant classification: Frame_Shift_Del
-#' @param Variant_Type column name of variant type: SNP, INS, DEL
+#' @param maf Character or MAF object. Path to MAF file or an already loaded MAF object.
+#' @param mut_data Data frame or NULL. Preloaded MAF-like data (used if 'maf' is NULL).
+#' @param isTCGA Logical. Whether the MAF follows TCGA conventions. Default is TRUE.
+#' @param category Character. Mutation category: "all", "snp", "indel", "frameshift", or "multi". Default is "multi".
+#' @param Tumor_Sample_Barcode Character. Column name for tumor sample IDs. Default is "Tumor_Sample_Barcode".
+#' @param Hugo_Symbol Character. Column name for gene symbols. Default is "Hugo_Symbol".
+#' @param Variant_Classification Character. Column name for variant classification (e.g., Frame_Shift_Del). Default is "Variant_Classification".
+#' @param Variant_Type Character. Column name for variant type (e.g., SNP, INS, DEL). Default is "Variant_Type".
 #'
-#' @return A list of matrices, each representing a different category of mutations as specified by `category`.
+#' @return List of mutation matrices (if category = "multi") or a single matrix for the specified category.
 #' @export
 #' @author Dongqian Zeng
 #' @author Shixiang Huang
 #'
 #' @examples
-#'
-#' library(TCGAbiolinks)
-#' query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking")
-#' GDCdownload(query)
-#' maf <- GDCprepare(query)
-#' mut_list <- make_mut_matrix(maf = maf, isTCGA = T, category = "multi")
+#' # See maftools and TCGAbiolinks documentation for obtaining MAF input
+#' # mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
 make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE, category = "multi", Tumor_Sample_Barcode = "Tumor_Sample_Barcode", Hugo_Symbol = "Hugo_Symbol", Variant_Classification = "Variant_Classification", Variant_Type = "Variant_Type") {
   if (!is.null(maf)) {
     mut_maf <- maftools::read.maf(maf = maf, useAll = TRUE, isTCGA = isTCGA)

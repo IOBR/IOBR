@@ -2,7 +2,7 @@
 % Please edit documentation in R/combine_pd_eset.R
 \name{combine_pd_eset}
 \alias{combine_pd_eset}
-\title{combine pdata and eset}
+\title{Combine Phenotype Data and Expression Set}
 \usage{
 combine_pd_eset(
   eset,
@@ -15,35 +15,47 @@ combine_pd_eset(
 )
 }
 \arguments{
-\item{eset}{Expression set matrix or data frame.}
+\item{eset}{Expression matrix with genes/features in rows and samples in columns.}
 
-\item{pdata}{Phenotype data.}
+\item{pdata}{Data frame containing phenotype/clinical data.}
 
-\item{id_pdata}{String indicating the column name in pdata that corresponds to the eset column.}
+\item{id_pdata}{Character string specifying the column name in \code{pdata} containing
+sample identifiers. Default is \code{"ID"}.}
 
-\item{feas}{Vector of feature names to include in the combined dataset. Default is NULL, which includes all features.}
+\item{feas}{Character vector specifying features to include from \code{eset}. If
+\code{NULL}, all features are used. Default is \code{NULL}.}
 
-\item{feature_manipulation}{Logical value indicating whether to perform feature manipulation on the data. Default is TRUE.}
+\item{feature_manipulation}{Logical indicating whether to apply feature manipulation
+to filter valid features. Default is \code{TRUE}.}
 
-\item{scale}{Logical value indicating whether to scale the expression set. Default is TRUE.}
+\item{scale}{Logical indicating whether to scale (standardize) expression data.
+Default is \code{TRUE}.}
 
-\item{choose_who_when_duplicate}{String indicating the preference when encountering duplicate IDs in pdata and eset.}
+\item{choose_who_when_duplicate}{Character string specifying which data to prefer when
+duplicate columns exist. Options are \code{"eset"} or \code{"pdata"}. Default is
+\code{"eset"}.}
 }
 \value{
-A data frame combining phenotype data and expression set.
+Data frame combining phenotype data and (transposed) expression data, with
+  samples in rows and features/phenotypes in columns.
 }
 \description{
-combine_pd_eset combines the expression set (eset) with phenotype data (pdata).
+Merges phenotype data with an expression matrix by matching sample IDs. Optionally
+filters features, applies feature manipulation, and scales expression data before
+combining.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+# Load TCGA-STAD expression data
 data("eset_stad", package = "IOBR")
-# transform count data to tpm
+# Convert to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
 colnames(eset) <- substring(colnames(eset), 1, 12)
-# Loading TCGA-STAD microenvironment signature data
+# Load phenotype data
 data("sig_stad", package = "IOBR")
-eset <- count2tpm(eset_stad)
-colnames(eset) <- substring(colnames(eset), 1, 12)
-input <- combine_pd_eset(eset = eset, pdata = sig_stad, feas = unique(unlist(signature_collection)))
+# Combine phenotype and expression data
+input <- combine_pd_eset(eset = eset, pdata = sig_stad,
+                         feas = unique(unlist(signature_collection)))
+}
+\author{
+Dongqiang Zeng
 }

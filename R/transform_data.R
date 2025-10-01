@@ -1,11 +1,13 @@
-#' Transform features with Inf or NA to other number
+#' Transform NA, Inf, or Zero Values in Data
 #'
-#' @param data A data frame containing the data to be transformed.
-#' @param feature A vector of column names in 'data' where transformations will be applied.
-#' @param data_type The type of data to be transformed: "NA", "Inf", or "zero".
-#' @param into The value to replace 'data_type' with; default is 0. If 'into' is "mean", it replaces with the column mean.
+#' Replaces NA, Inf, or zero values in specified columns of a data frame with a user-defined value or the column mean.
 #'
-#' @return Returns the data frame with specified transformations applied to the indicated features.
+#' @param data Data frame. Input data to be transformed.
+#' @param feature Character vector. Column names in 'data' to apply transformation.
+#' @param data_type Character. Type of value to replace: "NA", "Inf", or "zero".
+#' @param into Value to replace specified type with. Default is 0. If "mean", replaces with column mean.
+#'
+#' @return Data frame with specified transformations applied to selected features.
 #' @author Dongqiang Zeng
 #' @export
 #'
@@ -13,7 +15,7 @@
 #' data_matrix <- data.frame(A = c(1, 2, NA, 4, Inf), B = c(Inf, 2, 3, 4, 5), C = c(0, 0, 0, 1, 2))
 #' # Replace NAs with 0
 #' transform_data(data_matrix, feature = c("A", "B"), data_type = "NA")
-#' # Replace Infinite values with the mean of the column
+#' # Replace Inf values with the mean of the column
 #' transform_data(data_matrix, feature = c("A", "B"), data_type = "Inf", into = "mean")
 #' # Replace zeros with -1 in column C
 #' transform_data(data_matrix, feature = "C", data_type = "zero", into = -1)

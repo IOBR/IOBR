@@ -2,7 +2,7 @@
 % Please edit documentation in R/iobr_deconvo_pipeline.R
 \name{iobr_deconvo_pipeline}
 \alias{iobr_deconvo_pipeline}
-\title{Tumor Microenvironment Analysis Pipeline}
+\title{Tumor Microenvironment (TME) Deconvolution Pipeline}
 \usage{
 iobr_deconvo_pipeline(
   eset,
@@ -14,32 +14,27 @@ iobr_deconvo_pipeline(
 )
 }
 \arguments{
-\item{eset}{A gene expression dataset, typically an expression set object, prepared for TME analysis.}
+\item{eset}{Numeric matrix. Gene expression (TPM/log scale) with genes in rows.}
 
-\item{project}{A character string specifying the project or analysis name, used for output file naming.}
+\item{project}{Character. Project name (used in output naming).}
 
-\item{array}{A logical indicating whether the data comes from an array platform; influences deconvolution methods.}
+\item{array}{Logical. Whether data originated from an array platform. Affects deconvolution choices.}
 
-\item{tumor_type}{A character string specifying the tumor type, which can tailor certain analysis aspects.}
+\item{tumor_type}{Character. Tumor type code (e.g., "stad") used by certain methods.}
 
-\item{path}{A string indicating the output file path; defaults to "1-TME".}
+\item{path}{Character. Output directory. Default is "1-TME".}
 
-\item{permutation}{An integer specifying the number of permutations to use in TME deconvolution methods; default is 1000.}
+\item{permutation}{Integer. Number of permutations for CIBERSORT (and similar). Default is 1000.}
 }
 \value{
-A comprehensive dataset combining TME cell fractions, signature scores, and integrated TME-signature analysis.
-        This function saves several files to the specified path, documenting various stages of the analysis.
+Data frame integrating cell fractions and signature scores (also writes intermediate outputs to disk).
 }
 \description{
-The `iobr_deconvo_pipeline` function executes a comprehensive TME analysis on a gene expression dataset.
-This analysis includes TME deconvolution using various computational methods, calculation of signature scores,
-and integration of these data into a cohesive output. It is designed for in-depth exploration of the
-microenvironment's role in tumor biology based on gene expression profiles.
+Executes an integrated TME analysis on a gene expression matrix: performs immune/stromal cell deconvolution using multiple algorithms, computes signature scores, and aggregates results. Designed for exploratory immunogenomic profiling.
 }
 \examples{
 data("eset_stad", package = "IOBR")
-eset <- count2tpm(eset_stad) # Prepare data
-# Run the pipeline
+eset <- count2tpm(eset_stad)
 res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
 }
 \author{

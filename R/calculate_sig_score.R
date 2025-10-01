@@ -1,10 +1,17 @@
-#' List of supported signature score calculation methods
+#' List of Supported Signature Score Calculation Methods
 #'
-#' The methods currently supported are
-#' `PCA`, `ssGSEA`, `z-score`, `Integration`
+#' @description
+#' A named vector containing the supported methods for calculating signature scores.
+#' Methods include PCA, ssGSEA, z-score, and Integration. The names represent display
+#' names while values represent internal method identifiers.
 #'
-#' The object is a named vector. The names correspond to the display name of the method,
-#' the values to the internal name.
+#' @format Named character vector with the following elements:
+#' \describe{
+#'   \item{PCA}{Principal Component Analysis method (internal: "pca")}
+#'   \item{ssGSEA}{Single-sample Gene Set Enrichment Analysis (internal: "ssgsea")}
+#'   \item{z-score}{Z-score transformation method (internal: "zscore")}
+#'   \item{Integration}{Integration method (internal: "integration")}
+#' }
 #'
 #' @export
 
@@ -19,28 +26,39 @@ signature_score_calculation_methods <- c(
 
 
 
-#' Calculating signature score using PCA method
+#' Calculate Signature Score Using PCA Method
 #'
-#' @param pdata phenotype data of input sample;
-#' if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset
-#' @param eset normalized transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
-#' Gene expression data should be scale before signature score estimation
-#' @param signature List of gene signatures;
-#' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set
-#' @param column_of_sample  Defines in which column of pdata the sample identifier can be found.
-#' @param adjust_eset remove variables with missing value, sd =0, and Inf value
+#' @description
+#' Computes signature scores for gene sets using Principal Component Analysis (PCA).
+#' The first principal component is extracted from gene expression data for each
+#' signature and used as the signature score.
+#'
+#' @param pdata Data frame containing phenotype data. If \code{NULL}, a data frame with
+#'   \code{Index} and \code{ID} columns is created from \code{eset} column names.
+#'   Default is \code{NULL}.
+#' @param eset Matrix of normalized gene expression data (CPM, TPM, RPKM, FPKM, etc.)
+#'   with genes in rows and samples in columns.
+#' @param signature List of gene signatures, where each element is a character vector
+#'   of gene names.
+#' @param mini_gene_count Integer specifying the minimum number of genes required in
+#'   the expression set for a signature to be included. Default is 3.
+#' @param column_of_sample Character string specifying the column in \code{pdata}
+#'   containing sample identifiers. Default is \code{"ID"}.
+#' @param adjust_eset Logical indicating whether to remove features with missing values,
+#'   zero standard deviation, or infinite values. Default is \code{FALSE}.
+#'
+#' @return Tibble containing sample identifiers and signature scores (signatures in
+#'   columns, samples in rows). Special combined scores (e.g., TMEscore_CIR) are
+#'   calculated if corresponding signature pairs are present.
 #'
 #' @author Dongqiang Zeng
-#' @return signature scores for gene sets; signatures in columns, samples in rows
 #' @export
-#'
 #' @examples
-#'
-#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' # Load TCGA-STAD expression data (raw count matrix)
 #' data("eset_stad", package = "IOBR")
-#' # transform count data to tpm
+#' # Transform count data to TPM
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' # signature score estimation using PCA method
+#' # Calculate signature scores using PCA method
 #' calculate_sig_score_pca(eset = eset, signature = signature_tme)
 calculate_sig_score_pca <- function(pdata = NULL,
                                     eset,
@@ -116,26 +134,38 @@ calculate_sig_score_pca <- function(pdata = NULL,
 
 
 
-#' Calculating signature score using z-score method
+#' Calculate Signature Score Using Z-Score Method
 #'
-#' @param pdata phenotype data of input sample;
-#' if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset
-#' @param eset normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)
-#' @param signature List of gene signatures
-#' @param mini_gene_count filter out signatures with genes less than minimal gene in expression set;
-#' @param column_of_sample  Defines in which column of pdata the sample identifier can be found
-#' @param adjust_eset remove variables with missing value, sd =0, and Inf value
+#' @description
+#' Computes signature scores for gene sets using the z-score transformation method.
+#' Gene expression values are standardized and averaged across genes within each
+#' signature to produce signature scores.
+#'
+#' @param pdata Data frame containing phenotype data. If \code{NULL}, a data frame with
+#'   \code{Index} and \code{ID} columns is created from \code{eset} column names.
+#'   Default is \code{NULL}.
+#' @param eset Matrix of normalized gene expression data (CPM, TPM, RPKM, FPKM, etc.)
+#'   with genes in rows and samples in columns.
+#' @param signature List of gene signatures, where each element is a character vector
+#'   of gene names.
+#' @param mini_gene_count Integer specifying the minimum number of genes required in
+#'   the expression set for a signature to be included. Default is 3.
+#' @param column_of_sample Character string specifying the column in \code{pdata}
+#'   containing sample identifiers. Default is \code{"ID"}.
+#' @param adjust_eset Logical indicating whether to remove features with missing values,
+#'   zero standard deviation, or infinite values. Default is \code{FALSE}.
+#'
+#' @return Data frame containing phenotype data and signature scores (signatures in
+#'   columns, samples in rows).
 #'
 #' @author Dongqiang Zeng
-#' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
-#'
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' # Load TCGA-STAD expression data (raw count matrix)
 #' data("eset_stad", package = "IOBR")
-#' # transform count data to tpm
+#' # Transform count data to TPM
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' # signature score estimation using z-score method
+#' # Calculate signature scores using z-score method
 #' calculate_sig_score_zscore(eset = eset, signature = signature_tme)
 calculate_sig_score_zscore <- function(pdata = NULL,
                                        eset,

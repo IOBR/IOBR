@@ -15,32 +15,41 @@ add_riskscore(
 )
 }
 \arguments{
-\item{input}{A data frame containing the data to be analyzed.}
+\item{input}{Data frame containing the variables for analysis.}
 
-\item{family}{A character string specifying whether to use "cox" for Cox regression
-or "binary" for logistic regression. Defaults to "cox".}
+\item{family}{Character string specifying the model family: \code{"cox"} for Cox
+proportional hazards regression or \code{"binary"} for logistic regression.
+Default is \code{"cox"}.}
 
-\item{target}{The name of the target variable (only used if family = "binary").}
+\item{target}{Character string specifying the target variable name. Required when
+\code{family = "binary"}.}
 
-\item{time}{The name of the time to event variable (only used if family = "cox").}
+\item{time}{Character string specifying the time-to-event variable name. Required
+when \code{family = "cox"}.}
 
-\item{status}{The name of the event status variable (only used if family = "cox").}
+\item{status}{Character string specifying the event status variable name. Required
+when \code{family = "cox"}.}
 
-\item{vars}{A vector of variable names to include in the model.}
+\item{vars}{Character vector of variable names to include in the model.}
 
-\item{new_var_name}{The name of the new variable to be created for storing risk scores.
-Defaults to "riskscore".}
+\item{new_var_name}{Character string specifying the name for the new risk score
+column. Default is \code{"riskscore"}.}
 }
 \value{
-The input data frame with an additional column containing the risk scores.
+Data frame identical to \code{input} with an additional column containing
+  risk scores (linear predictors for Cox models or predicted probabilities for
+  logistic models).
 }
 \description{
-This function computes a risk score for each observation in the dataset
-based on the provided Cox proportional hazards model or logistic regression.
+Computes a risk score for each observation based on Cox proportional hazards
+regression or binary logistic regression. The function fits the specified model
+and returns the dataset with an added risk score column.
 }
 \examples{
+# Example with survival data
 data(ovarian)
-ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status", vars = c("resid.ds", "rx", "ecog.ps"))
+ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status",
+                                 vars = c("resid.ds", "rx", "ecog.ps"))
 }
 \author{
 Dongqiang Zeng

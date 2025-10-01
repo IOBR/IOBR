@@ -1,18 +1,17 @@
-#' save signature data into a data frame
+#' Save Signature Data to File
 #'
-#' This function saves the provided signature data into a specified file format. It supports saving as CSV or RData format.
-#' The function can handle single signature strings or lists of signatures, converting them into a data frame for storage.
+#' This function saves signature data to a specified file format, supporting CSV or RData.
+#' It handles single signatures or lists of signatures, converting them to a data frame for storage.
 #'
+#' @param signatures Signature data: a list or single string of signatures.
+#' @param format Output format: "csv" or "rdata". Default is "csv".
+#' @param file.name Name of the output file without extension.
 #'
-#' @param signatures output signatures, a list or a string
-#' @param format output format
-#' @param file.name file name of output data
-#'
-#' @return Returns the data frame containing the processed signature data. This data frame is also saved to the specified file format.
+#' @return A data frame containing the processed signature data, also saved to the specified file.
 #' @export
 #'
 #' @examples
-#' output_sig(signature_collection, file.name = "signature")
+#' output_sig(signatures = signature_collection, format = "csv", file.name = "my_signatures")
 output_sig <- function(signatures, format = "csv", file.name) {
   if (length(signatures) <= 1) {
     signatures <- as.data.frame(signatures)

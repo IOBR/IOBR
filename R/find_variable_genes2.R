@@ -1,28 +1,24 @@
-#' find_variable_genes
+#' Identify Variable Genes in Expression Data
 #'
-#' This function identifies variable genes from a gene expression dataset based on specified criteria.
-#' It allows the use of multiple selection methods, including expression thresholding and variability estimation
-#' via median absolute deviation (MAD). The function can handle both count and normalized data.
+#' Identifies variable genes from a gene expression dataset using specified selection criteria. Supports multiple methods, including expression thresholding and variability estimation via median absolute deviation (MAD). Handles both count and normalized data.
 #'
-#' @description This function identifies variable genes based on specified criteria in a given gene expression dataset.
-#' @param eset The gene expression dataset as a matrix.
-#' @param data_type (character, optional): The type of data in the dataset. Default is "count". Possible values: "count", "normalized".
-#' @param methods  (character vector, optional): The methods to be used for gene selection. Default is c("low", "mad"). Possible values: "low", "mad".
-#' @param prop (numeric, optional): The proportion of samples in which a gene should be expressed. Default is 0.7.
-#' @param quantile  (numeric vector, optional): The quantiles used to calculate the minimum allowable median absolute deviation (mad) value. Default is c(0.75, 0.5, 0.25).
-#' @param min.mad  (numeric, optional): The minimum allowable mad value. Default is 0.1.
-#' @param feas (character vector, optional): Additional features to include in the variable gene selection. Default is NULL.
+#' @param eset Numeric matrix. Gene expression data (genes as rows, samples as columns).
+#' @param data_type Character. Type of data: "count" or "normalized". Default is "count".
+#' @param methods Character vector. Methods for gene selection: "low", "mad". Default is c("low", "mad").
+#' @param prop Numeric. Proportion of samples in which a gene must be expressed. Default is 0.7.
+#' @param quantile Numeric vector. Quantiles for minimum MAD threshold. Default is c(0.75, 0.5, 0.25).
+#' @param min.mad Numeric. Minimum allowable MAD value. Default is 0.1.
+#' @param feas Character vector or NULL. Additional features to include. Default is NULL.
 #'
+#' @return Matrix subset of `eset` containing only variable genes identified by the specified criteria.
 #' @author Dongqiang Zeng
-#' @return A matrix subset of `eset` containing only the genes identified as variable according to the specified criteria.
 #' @export
 #'
 #' @examples
-#' # loading expression data
+#' # Load expression data
 #' data("eset_tme_stad", package = "IOBR")
-#' # Determination of filtration criteria
+#' # Filter variable genes
 #' eset <- find_variable_genes(eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25)
-#'
 find_variable_genes <- function(eset, data_type = c("count", "normalized"), methods = c("low", "mad"), prop = 0.7,
                                 quantile = c(0.75, 0.5, 0.25), min.mad = 0.1, feas = NULL) {
   eset <- as.matrix(eset)

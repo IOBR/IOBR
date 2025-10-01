@@ -1,22 +1,24 @@
 #' Principal Component Analysis (PCA) Visualization
-#' @description The iobr_pca function performs Principal Component Analysis (PCA), which reduces the dimensionality of data while maintaining most of the original variance, and visualizes the PCA results on a scatter plot.
 #'
-#' @param data The input data for PCA. It should be a matrix or a data frame.
-#' @param is.matrix Specifies whether the input data is a matrix. Default is TRUE.
-#' @param scale Specifies whether to scale the input data. Default is TRUE.
-#' @param is.log Specifies whether to log transform the input data. Default is FALSE.
-#' @param pdata Data frame containing sample ID and grouping status.
-#' @param id_pdata The column name in 'pdata' that represents the ID for matching with 'data'. Default is "ID".
-#' @param group  The column name in 'pdata' that represents groups/categories to color the points. Default is NULL.
-#' @param cols The color scheme to be used for group categories. Default is "normal".
-#' @param palette The color palette to be used for group categories. Default is "jama".
-#' @param repel Specifies whether to repel the data points to avoid overlap. Default is FALSE.
-#' @param ncp The number of dimensions to keep in the PCA. Default is 5.
-#' @param axes  The dimensions/axes to be plotted. Default is c(1, 2).
-#' @param addEllipses Specifies whether to add concentration ellipses to the plot. Default is TRUE.
-#' @param geom.ind The type of geometric representation for the points in the PCA plot. Default is "point".
+#' This function performs Principal Component Analysis (PCA) on gene expression data,
+#' reduces dimensionality while preserving variance, and generates a scatter plot visualization.
 #'
-#' @return A ggplot object representing the PCA plot.
+#' @param data Input data for PCA: matrix or data frame.
+#' @param is.matrix Logical indicating if input is a matrix. Default is TRUE.
+#' @param scale Logical indicating whether to scale the data. Default is TRUE.
+#' @param is.log Logical indicating whether to log-transform the data. Default is FALSE.
+#' @param pdata Data frame with sample IDs and grouping information.
+#' @param id_pdata Column name in `pdata` for sample IDs. Default is "ID".
+#' @param group Column name in `pdata` for grouping variable. Default is NULL.
+#' @param cols Color scheme for groups. Default is "normal".
+#' @param palette Color palette for groups. Default is "jama".
+#' @param repel Logical indicating whether to repel overlapping points. Default is FALSE.
+#' @param ncp Number of principal components to retain. Default is 5.
+#' @param axes Principal components to plot (e.g., c(1, 2)). Default is c(1, 2).
+#' @param addEllipses Logical indicating whether to add concentration ellipses. Default is TRUE.
+#' @param geom.ind Type of geometric representation for points. Default is "point".
+#'
+#' @return A ggplot object of the PCA plot.
 #' @export
 #' @author Dongqiang Zeng
 #'

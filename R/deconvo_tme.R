@@ -25,19 +25,33 @@ tme_deconvolution_methods <- c(
 
 
 
-#' Decoding immune microenvironment using xCell
+#' Deconvolve Immune Microenvironment Using xCell
 #'
-#' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different data sets
-#' @param array transcrptomic data type
-#' @return xCell with immune cell fractions
+#' @description
+#' Estimates immune cell fractions in the tumor microenvironment using the xCell
+#' algorithm. xCell provides cell type enrichment scores for 64 immune and stromal
+#' cell types from gene expression data.
+#'
+#' @param eset Gene expression matrix with genes in rows and samples in columns.
+#' @param project Character string specifying an optional project name to distinguish
+#'   different datasets. If provided, a \code{ProjectID} column is added. Default is
+#'   \code{NULL}.
+#' @param arrays Logical indicating whether the data is from microarray (\code{TRUE})
+#'   or RNA-seq (\code{FALSE}). Default is \code{FALSE}.
+#'
+#' @return Data frame containing xCell enrichment scores for immune and stromal cell
+#'   types. Sample IDs are in the first column, and cell type columns are suffixed
+#'   with \code{_xCell}.
+#'
+#' @author Dongqiang Zeng
 #' @export
 #' @importFrom tibble rownames_to_column
-#' @author Dongqiang Zeng
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' # Load TCGA-STAD expression data (raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # Convert to TPM
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' # Run xCell deconvolution
 #' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 #'
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
@@ -63,18 +77,31 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 
 
 
-#' Estimating immune microenvironment using MCP-counter
+#' Deconvolve Immune Microenvironment Using MCP-Counter
 #'
-#' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different data sets
-#' @return MCPcounter with immune cell fractions
+#' @description
+#' Estimates immune cell abundances in the tumor microenvironment using the MCP-counter
+#' (Microenvironment Cell Populations-counter) algorithm. Quantifies multiple immune and
+#' stromal cell populations from bulk gene expression data.
+#'
+#' @param eset Gene expression matrix with genes (HUGO symbols) in rows and samples in
+#'   columns.
+#' @param project Character string specifying an optional project name to distinguish
+#'   different datasets. If provided, a \code{ProjectID} column is added. Default is
+#'   \code{NULL}.
+#'
+#' @return Data frame containing MCP-counter immune cell abundance estimates with sample
+#'   IDs in the first column. Cell population columns are suffixed with \code{_MCPcounter}.
+#'
+#' @author Dongqiang Zeng
 #' @export
 #' @importFrom tibble rownames_to_column
-#' @author Dongqiang Zeng
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' # Load TCGA-STAD expression data (raw count matrix)
+#' data("eset_stad", package = "IOBR")
+#' # Convert to TPM
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' # Run MCP-counter deconvolution
 #' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 #'
 deconvo_mcpcounter <- function(eset, project = NULL) {
@@ -107,18 +134,21 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 
 
 
-#' Estimating immune microenvironment using EPIC: FOR RNAseq mostly
+#' Deconvolve Immune Microenvironment Using EPIC
 #'
-#' @param eset expression set with genes at row, sample ID at column
-#' @param project project name used to distinguish different data sets
-#' @param tumor is input sample tumor or normal
-#' @return EPIC with immune cell fractions
+#' This function estimates immune cell fractions in the tumor microenvironment using the EPIC algorithm,
+#' primarily designed for RNA-seq data.
+#'
+#' @param eset A gene expression matrix with genes in rows and samples in columns.
+#' @param project Optional project name to distinguish different datasets.
+#' @param tumor Logical indicating whether the input samples are tumor (TRUE) or normal (FALSE).
+#' @return A data frame containing EPIC immune cell fraction estimates with sample IDs.
 #' @export
 #' @importFrom tibble rownames_to_column
 #' @author Dongqiang Zeng
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' # Load TCGA-STAD expression data (raw count matrix)
+#' data("eset_stad", package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 #'

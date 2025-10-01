@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_surv.R
 \name{batch_surv}
 \alias{batch_surv}
-\title{batch_surv - Batch Survival Analysis Function}
+\title{Batch Survival Analysis}
 \usage{
 batch_surv(
   pdata,
@@ -13,28 +13,34 @@ batch_surv(
 )
 }
 \arguments{
-\item{pdata}{The data frame containing the data.}
+\item{pdata}{Data frame containing survival time, event status, and predictor variables.}
 
-\item{variable}{The variables to perform survival analysis on.}
+\item{variable}{Character vector specifying the names of predictor variables to analyze.}
 
-\item{time}{The column name representing time. Default is "time".}
+\item{time}{Character string specifying the column name containing follow-up time.
+Default is \code{"time"}.}
 
-\item{status}{The column name representing status. Default is "status".}
+\item{status}{Character string specifying the column name containing event status
+(1 = event occurred, 0 = censored). Default is \code{"status"}.}
 
-\item{best_cutoff}{Whether to use the best cutoff for survival analysis. Default is FALSE. If set to TRUE, the function will calculate hazard ratios and confidence intervals for the binary version of the variables using the best cutoff method.}
+\item{best_cutoff}{Logical indicating whether to compute optimal cutoffs for
+continuous variables and analyze dichotomized versions. Default is \code{FALSE}.}
 }
 \value{
-A data frame containing hazard ratios and confidence intervals.
+Data frame containing hazard ratios (HR), 95% confidence intervals (CI),
+  and p-values for each variable, sorted by p-value.
 }
 \description{
-This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
+Performs Cox proportional hazards regression analysis on multiple variables.
+Optionally determines optimal cutoffs to dichotomize continuous predictors before
+modeling. Returns hazard ratios, confidence intervals, and p-values for each variable.
 }
 \examples{
-
-# Loading TCGA-STAD microenvironment signature data
+# Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Identifying signatures associated with gastric cancer patient survival
-batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)], time = "OS_time", status = "OS_status")
+# Perform batch survival analysis
+batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
+           time = "OS_time", status = "OS_status")
 }
 \author{
 Dongqiang Zeng

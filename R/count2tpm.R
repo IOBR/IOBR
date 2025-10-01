@@ -1,30 +1,45 @@
-#' Convert read counts to transcripts per million (TPM)
-#' @description The count2tpm function is used to transform gene expression count data into Transcripts Per Million (TPM) values. This function supports gene IDs of type "Ensembl", "Entrez", or "Symbol", and retrieves gene length information using either an online connection to the bioMart database or a local dataset (specified by the source parameter). Missing values in count data can be checked and removed if check_data is set to TRUE. If gene length information is not provided through the effLength parameter, it will be obtained from the specified source. Based on the idType and org, the function identifies the matching identifiers in the count matrix to the annotation database and replaces them accordingly. After processing the gene names, lengths are obtained based on the idType. The function then calculates TPM values and removes any genes that do not have corresponding length information. The resulting TPM values are returned in a dataframe format. Additionally, duplicated genes are removed using the remove_duplicate_genes function before the final data frame is returned.
+#' Convert Read Counts to Transcripts Per Million (TPM)
 #'
-#' @param countMat The count matrix that needs to be transformed to TPM.
-#' @param idType (Optional, defaults to "Ensembl"): Type of the gene identifier, it can be "Ensembl", "Entrez" or "Symbol".
-#' @param org  (Optional, defaults to "hsa"): The organism for which the analysis is needed, options include "hsa" (Human), "mmus" (Mouse), and others.
-#' @param source (Optional, defaults to "local"): The source from where the gene lengths are retrieved; it can be either "biomart" or "local". Other option is `biomart`. user can also provide `effLength` manually, if `idType` is `ensembl`, and source is set to `local`, `effLength` was provided by IOBR which was estimated by function `getGeneLengthAndGCContent` of EDASeq package at 2023-02-10.
-#' @param effLength (Optional, defaults to NULL): The effective gene length used for TPM transformation.
-#' @param id (Optional, defaults to "id"): The column name in effLength that represents the gene identifier.
-#' @param length (Optional, defaults to "eff_length"): The column name in effLength that represents the gene length.
-#' @param gene_symbol (Optional, defaults to "symbol"): The column name in effLength that represents the gene symbol.
-#' @param check_data (Optional, defaults to FALSE): Whether to check if there are missing values in the count matrix.
+#' @description
+#' Transforms gene expression count data into Transcripts Per Million (TPM) values,
+#' normalizing for gene length and library size. Supports multiple gene ID types and
+#' can retrieve gene length information from BioMart or use local datasets.
 #'
-#' @return A TPM expression profile.
+#' @param countMat Numeric matrix of raw read counts with genes in rows and samples
+#'   in columns.
+#' @param idType Character string specifying the gene identifier type. Options are
+#'   \code{"Ensembl"}, \code{"Entrez"}, or \code{"Symbol"}. Default is \code{"Ensembl"}.
+#' @param org Character string specifying the organism. Options include \code{"hsa"}
+#'   (human) or \code{"mmus"} (mouse). Default is \code{"hsa"}.
+#' @param source Character string specifying the source for gene length information.
+#'   Options are \code{"biomart"} (retrieve from Ensembl BioMart) or \code{"local"}
+#'   (use local dataset). Default is \code{"local"}.
+#' @param effLength Data frame containing effective gene length information. If
+#'   \code{NULL}, lengths are retrieved based on \code{source}. Default is \code{NULL}.
+#' @param id Character string specifying the column name in \code{effLength} containing
+#'   gene identifiers. Default is \code{"id"}.
+#' @param gene_symbol Character string specifying the column name in \code{effLength}
+#'   containing gene symbols. Default is \code{"symbol"}.
+#' @param length Character string specifying the column name in \code{effLength}
+#'   containing gene lengths. Default is \code{"eff_length"}.
+#' @param check_data Logical indicating whether to check for missing values in the
+#'   count matrix. Default is \code{FALSE}.
+#'
+#' @return Data frame of TPM-normalized expression values with genes in rows and
+#'   samples in columns.
 #'
 #' @author Wubing Zhang
 #' @author Dongqiang Zeng
 #' @author Yiran Fang
 #' @export
 #' @examples
-#' # Using the TCGA count data as an example
+#' # Load TCGA count data
 #' data(eset_stad, package = "IOBR")
-#' # Transformation is accompanied by gene annotation
+#' # Transform to TPM using local gene annotation
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' head(eset)
 #'
-#' # TPM transformations can also be performed using the gene symbol, but are not recommended
+#' # Alternative: TPM transformation using gene symbols (not recommended)
 #' data("anno_grch38", package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")

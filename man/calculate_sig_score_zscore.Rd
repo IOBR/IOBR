@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_sig_score.R
 \name{calculate_sig_score_zscore}
 \alias{calculate_sig_score_zscore}
-\title{Calculating signature score using z-score method}
+\title{Calculate Signature Score Using Z-Score Method}
 \usage{
 calculate_sig_score_zscore(
   pdata = NULL,
@@ -14,31 +14,40 @@ calculate_sig_score_zscore(
 )
 }
 \arguments{
-\item{pdata}{phenotype data of input sample;
-if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset}
+\item{pdata}{Data frame containing phenotype data. If \code{NULL}, a data frame with
+\code{Index} and \code{ID} columns is created from \code{eset} column names.
+Default is \code{NULL}.}
 
-\item{eset}{normalizaed  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
+\item{eset}{Matrix of normalized gene expression data (CPM, TPM, RPKM, FPKM, etc.)
+with genes in rows and samples in columns.}
 
-\item{signature}{List of gene signatures}
+\item{signature}{List of gene signatures, where each element is a character vector
+of gene names.}
 
-\item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set;}
+\item{mini_gene_count}{Integer specifying the minimum number of genes required in
+the expression set for a signature to be included. Default is 3.}
 
-\item{column_of_sample}{Defines in which column of pdata the sample identifier can be found}
+\item{column_of_sample}{Character string specifying the column in \code{pdata}
+containing sample identifiers. Default is \code{"ID"}.}
 
-\item{adjust_eset}{remove variables with missing value, sd =0, and Inf value}
+\item{adjust_eset}{Logical indicating whether to remove features with missing values,
+zero standard deviation, or infinite values. Default is \code{FALSE}.}
 }
 \value{
-data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
+Data frame containing phenotype data and signature scores (signatures in
+  columns, samples in rows).
 }
 \description{
-Calculating signature score using z-score method
+Computes signature scores for gene sets using the z-score transformation method.
+Gene expression values are standardized and averaged across genes within each
+signature to produce signature scores.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+# Load TCGA-STAD expression data (raw count matrix)
 data("eset_stad", package = "IOBR")
-# transform count data to tpm
+# Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
-# signature score estimation using z-score method
+# Calculate signature scores using z-score method
 calculate_sig_score_zscore(eset = eset, signature = signature_tme)
 }
 \author{

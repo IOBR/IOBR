@@ -2,48 +2,39 @@
 % Please edit documentation in R/generateRef_DEseq2.R
 \name{generateRef_DEseq2}
 \alias{generateRef_DEseq2}
-\title{Generate Reference Signature Matrix using DESeq2}
+\title{Generate Reference Signature Matrix Using DESeq2}
 \usage{
 generateRef_DEseq2(dds, pheno, FDR = 0.05, dat)
 }
 \arguments{
-\item{dds}{raw count data from RNA-seq}
+\item{dds}{Raw count data from RNA-seq (matrix).}
 
-\item{pheno}{character vector; cell type class of the samples}
+\item{pheno}{Character vector of cell type classes for samples.}
 
-\item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
+\item{FDR}{Numeric threshold for adjusted p-values to consider genes significant. Default is 0.05.}
 
-\item{dat}{data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.}
+\item{dat}{Normalized expression data (e.g., FPKM, TPM) for calculating median expression.}
 }
 \value{
-A list containing the following elements:
-        - `reference_matrix`: A dataframe with the median expression values of significant genes across cell types.
-        - `G`: The optimal number of probes that minimizes the condition number.
-        - `condition_number`: The minimum condition number corresponding to the optimal number of probes.
-        - `whole_matrix`: The whole median expression matrix used for further analysis or validation.
+A list containing:
+  - `reference_matrix`: Data frame of median expression for significant genes across cell types.
+  - `G`: Optimal number of probes minimizing condition number.
+  - `condition_number`: Minimum condition number.
+  - `whole_matrix`: Full median expression matrix.
 }
 \description{
-This function performs differential expression analysis using the DESeq2 package
-to identify genes that are significantly expressed across different cell types,
-as specified in `pheno`. It calculates median expression levels of these significant
-genes to form a reference signature matrix.
+This function uses DESeq2 to perform differential expression analysis across cell types,
+identifies significantly expressed genes, and creates a reference signature matrix from median expression levels.
 }
 \examples{
-# Example usage assuming 'dds' is a DESeq2 dataset and 'dat' is normalized data:
-# Load raw count data
+# Example assuming 'dds' is raw counts and 'dat' is normalized data
 dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 colnames(dds) <- paste("Sample", 1:20, sep = "_")
 rownames(dds) <- paste("Gene", 1:100, sep = "_")
-
-# Create phenotype data
 pheno <- rep(c("Type1", "Type2"), each = 10)
-
-# Load normalized data
 dat <- matrix(runif(2000), nrow = 100, ncol = 20)
 rownames(dat) <- rownames(dds)
 colnames(dat) <- colnames(dds)
-
-# Generate reference signature matrix
 result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 print(result$reference_matrix)
 }

@@ -2,28 +2,34 @@
 % Please edit documentation in R/check_eset.R
 \name{check_eset}
 \alias{check_eset}
-\title{check_eset - Check integrity and outliers of expression set}
+\title{Check Integrity and Outliers of Expression Set}
 \usage{
 check_eset(eset, print_result = FALSE, estimate_sd = FALSE)
 }
 \arguments{
-\item{eset}{The matrix to be checked.}
+\item{eset}{Expression matrix with genes/features in rows and samples in columns.}
 
-\item{print_result}{Whether to print the check results. Default is FALSE. If set to TRUE, it will print the results of each check.}
+\item{print_result}{Logical indicating whether to print detailed check results to
+the console. Default is \code{FALSE}.}
 
-\item{estimate_sd}{Whether to estimate the standard deviation. Default is FALSE. If set to TRUE, it will estimate the standard deviation for each feature and provide warnings and print results accordingly.}
+\item{estimate_sd}{Logical indicating whether to check for features with zero
+standard deviation. Default is \code{FALSE}.}
 }
 \value{
-NULL. The function is called for its side effects of checking and optionally printing warnings about the integrity of the expression set.
+Invisibly returns \code{NULL}. Function is called for its side effects
+  (printing messages and issuing warnings).
 }
 \description{
-This function is used to check the integrity and outliers of the given expression set, providing corresponding warnings and print results. It detects the presence of missing values, infinite values, and features with zero standard deviation.
+Performs quality checks on an expression matrix to identify missing values, infinite
+values, and features with zero variance. Issues warnings when potential problems are
+detected that may affect downstream analyses.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+# Load TCGA-STAD expression data
 data("eset_stad", package = "IOBR")
-# transform count data to tpm
+# Convert counts to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
+# Check expression set integrity
 check_eset(eset)
 }
 \author{

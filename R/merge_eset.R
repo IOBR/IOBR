@@ -1,22 +1,16 @@
-#' Merge expression sets by row names
+#' Merge Expression Sets by Row Names
 #'
-#' This function merges two or three expression sets by their row names, ensuring that
-#' no duplicated gene symbols remain after the merge. It is particularly useful in
-#' bioinformatics workflows where combining multiple datasets into a single expression
-#' set is required for downstream analysis.
+#' Merges two or three expression sets by row names (gene symbols), removing duplicates.
 #'
-#' @param eset1 The first expression set to be merged.
-#' @param eset2 The second expression set to be merged.
-#' @param eset3 The optional third expression set to be merged; default is NULL.
+#' @param eset1 First expression set.
+#' @param eset2 Second expression set.
+#' @param eset3 Optional third expression set. Default is NULL.
 #'
-#' @return A merged expression set from the input expression sets, with duplicate gene symbols removed.
+#' @return Merged expression set with duplicates removed.
 #' @export
-#'
 #' @author Dongqiang Zeng
-#'
 #' @examples
-#' # Assuming `eset1`, `eset2`, and `eset3` are available in the environment
-#' # All three expression sets must have the same row names (gene symbols)
+#' # Assuming eset1, eset2, eset3 have same row names
 #' merged_eset <- merge_eset(eset1, eset2, eset3)
 merge_eset <- function(eset1, eset2, eset3 = NULL) {
   eset <- merge(eset1, eset2, by = "row.names", all = FALSE)

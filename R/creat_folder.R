@@ -1,14 +1,14 @@
-#' Title creates a new folder or directory
+#' Create Nested Output Folders
 #'
-#' @description creat_folder creates a new folder or directory at the specified path and returns information about the created folder.
-#' @param f1 The name of the first level folder.
-#' @param f2 The name of the second level folder (optional).
-#' @param return An optional parameter to specify the information to return.
-#' @param f3 The name of the third level folder (optional).
+#' Creates one to three nested folders (if not existing) under the current working directory and returns their names and absolute path.
 #'
-#' @return A list with the folder_name and abspath
+#' @param f1 Character. First-level folder name.
+#' @param f2 Character or NULL. Second-level folder name.
+#' @param f3 Character or NULL. Third-level folder name.
+#' @param return Deprecated (not used). Kept for backward compatibility.
+#'
+#' @return List with elements: `folder_name` (relative) and `abspath` (absolute path ending with '/').
 #' @export
-#'
 #' @examples
 #' creat_folder("1-result")
 creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {

@@ -1,45 +1,33 @@
 #' Plot ROC Curves and Compare Them
 #'
-#' This function generates Receiver Operating Characteristic (ROC) curves for multiple
-#' predictors and optionally compares them using statistical tests.
+#' This function generates Receiver Operating Characteristic (ROC) curves for multiple predictors
+#' and optionally performs statistical comparisons between them.
 #'
-#' @param data A data frame containing the variables specified in `variables` and
-#'   the binary outcome variable specified in `response`.
-#' @param response A string specifying the name of the binary outcome variable in `data`.
-#' @param variables A vector of strings specifying the names of predictor variables
-#'   in `data` for which ROC curves will be plotted.
-#' @param fig.path The directory path where the output PDF file containing the ROC plots
-#'   will be saved. Default is the current working directory.
-#' @param main The main title for the ROC plot.
-#' @param file.name The name of the output PDF file, without extension. If `NULL`, a
-#'   default name "0-ROC of multiple variables" is used.
-#' @param palette The color palette to use for plotting the ROC curves. 'jama' is
-#'   the default. If more variables than colors in the palette, a random palette
-#'   is used unless specified in `cols`.
-#' @param cols A vector of colors to use for the ROC curves. If `NULL`, colors will
-#'   be automatically assigned using the specified `palette`.
-#' @param alpha The transparency level of colors used in the plot, where 1 is fully
-#'   opaque and 0 is fully transparent. Default is 1.
-#' @param compare Logical; if `TRUE`, performs statistical comparison between the
-#'   AUCs of the ROC curves using the method specified in `compare_method`.
-#' @param smooth Logical; if `TRUE`, the ROC curves will be smoothed. Default is `TRUE`.
-#' @param compare_method The method to use for comparing ROC curves if `compare` is TRUE.
-#'   Default is "bootstrap". Other options include "delong" and "venkatraman".
-#' @param boot.n The number of bootstrap replications for estimating confidence intervals
-#'   and comparing ROC curves if `compare_method` is "bootstrap". Default is 100.
+#' @param data A data frame containing the predictor variables and the binary outcome variable.
+#' @param response The name of the binary outcome variable in `data`.
+#' @param variables A vector of names of predictor variables in `data` for which ROC curves will be plotted.
+#' @param fig.path Directory path to save the output PDF file. Default is the current working directory.
+#' @param main Main title for the ROC plot.
+#' @param file.name Name of the output PDF file without extension. Default is "0-ROC of multiple variables".
+#' @param palette Color palette for plotting ROC curves. Default is "jama".
+#' @param cols Optional vector of colors for ROC curves. If NULL, colors are assigned automatically.
+#' @param alpha Transparency level of colors (1 = opaque, 0 = transparent). Default is 1.
+#' @param compare Logical indicating whether to perform statistical comparison of AUCs. Default is FALSE.
+#' @param smooth Logical indicating whether to smooth ROC curves. Default is TRUE.
+#' @param compare_method Method for comparing ROC curves if `compare` is TRUE. Default is "bootstrap".
+#' @param boot.n Number of bootstrap replications for comparison. Default is 100.
 #'
-#' @return A list containing the following components:
-#'   - `auc.out`: A data frame with columns "Name", "AUC", and "AUC CI" showing the AUC
-#'     and confidence intervals for each variable.
-#'   - `legend.name`: A vector of legend entries for the ROC plot.
-#'   - `p.out`: If `compare` is TRUE, a data frame comparing each pair of ROC curves with
-#'     columns "ROC1", "ROC2", and "p.value" indicating the p-values of the comparisons.
+#' @return A list containing:
+#'   - `auc.out`: Data frame with AUC values and confidence intervals for each variable.
+#'   - `legend.name`: Vector of legend entries for the plot.
+#'   - `p.out`: If `compare` is TRUE, data frame with p-values from pairwise comparisons.
 #' @author Dongqiang Zeng
 #' @export
 #'
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")
-#' sig_roc(data = tcga_stad_pdata, response = "OS_status", variables = c("TMEscore_plus", "GZMB", "GNLY"))
+#' sig_roc(data = tcga_stad_pdata, response = "OS_status",
+#'         variables = c("TMEscore_plus", "GZMB", "GNLY"))
 sig_roc <- function(data,
                     response,
                     variables,

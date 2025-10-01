@@ -2,26 +2,27 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_epic}
 \alias{deconvo_epic}
-\title{Estimating immune microenvironment using EPIC: FOR RNAseq mostly}
+\title{Deconvolve Immune Microenvironment Using EPIC}
 \usage{
 deconvo_epic(eset, project = NULL, tumor)
 }
 \arguments{
-\item{eset}{expression set with genes at row, sample ID at column}
+\item{eset}{A gene expression matrix with genes in rows and samples in columns.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Optional project name to distinguish different datasets.}
 
-\item{tumor}{is input sample tumor or normal}
+\item{tumor}{Logical indicating whether the input samples are tumor (TRUE) or normal (FALSE).}
 }
 \value{
-EPIC with immune cell fractions
+A data frame containing EPIC immune cell fraction estimates with sample IDs.
 }
 \description{
-Estimating immune microenvironment using EPIC: FOR RNAseq mostly
+This function estimates immune cell fractions in the tumor microenvironment using the EPIC algorithm,
+primarily designed for RNA-seq data.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
+# Load TCGA-STAD expression data (raw count matrix)
+data("eset_stad", package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 

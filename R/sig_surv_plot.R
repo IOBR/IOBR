@@ -1,31 +1,32 @@
-#' Multiple survival KM-plot to a signature or gene
+#' Generate Kaplan-Meier Survival Plot for Signature
 #'
-#' @param input_pdata This parameter represents the input data for the survival analysis. It is expected to be a data frame.
-#' @param signature This parameter specifies the column name in input_pdata that represents the target signature for survival analysis.
-#' @param project This optional parameter represents the project name. The default value is "KM".
-#' @param time This optional parameter represents the column name in input_pdata that contains the time variable for survival analysis. The default value is "time".
-#' @param status This optional parameter represents the column name in input_pdata that contains the survival status variable. The default value is "status".
-#' @param time_type This optional parameter specifies the time unit used in the analysis. The default value is "month".
-#' @param break_month This optional parameter specifies the interval at which the time axis breaks should be made in the Kaplan-Meier plot. The default value is "auto".
-#' @param palette This optional parameter allows the user to specify the palette type if cols is not provided. The default value is "jama".
-#' @param save_path This optional parameter specifies the directory path for saving the plot. The default value is "KM-plot".
-#' @param mini_sig This optional parameter represents the label for the mini signature in the legend. The default value is "score".
-#' @param show_col logical variable, if TRUE, color will be print and show in the R studio
-#' @param index This parameter represents the index for multiple plots generated in a single run. It is used as the prefix in the filename. The default value is 1.
-#' @param cols This optional parameter allows the user to specify the color palette for the plot. If not specified, a default palette will be used.
-#' @param fig.type This optional parameter specifies the file format for saving the plot. The default value is "png".
-#' @param ID This optional parameter represents the column name in input_pdata that contains the unique identifier for each data point. The default value is "ID".
+#' Creates Kaplan-Meier survival plots for a given signature or gene, with automatic cutoff determination.
 #'
+#' @param input_pdata Data frame with survival data and signature scores.
+#' @param signature Column name of the target signature.
+#' @param project Project name for output. Default is "KM".
+#' @param time Column name for survival time. Default is "time".
+#' @param status Column name for survival status. Default is "status".
+#' @param time_type Time unit. Default is "month".
+#' @param break_month Time axis breaks. Default is "auto".
+#' @param palette Color palette if cols not provided. Default is "jama".
+#' @param save_path Directory for saving plots. Default is "KM-plot".
+#' @param mini_sig Label for low score group. Default is "score".
+#' @param show_col Logical indicating whether to show colors. Default is TRUE.
+#' @param index Index for multiple plots. Default is 1.
+#' @param cols Optional color vector.
+#' @param fig.type File format. Default is "png".
+#' @param ID Column name for sample IDs. Default is "ID".
+#'
+#' @return Survival analysis results.
 #' @importFrom survminer surv_cutpoint
 #' @import survival
-#' @author Dongqiang Zeng
-#' @return survival
 #' @export
-#'
+#' @author Dongqiang Zeng
 #' @examples
-#'
 #' data("tcga_stad_pdata", package = "IOBR")
-#' sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus", time = "time", status = "OS_status")
+#' sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
+#'               time = "time", status = "OS_status")
 #'
 sig_surv_plot <- function(input_pdata,
                           signature,

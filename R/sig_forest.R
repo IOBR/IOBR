@@ -1,28 +1,26 @@
 #' Forest Plot for Survival Analysis Results
 #'
-#' Generates a forest plot to visualize survival analysis results, showing hazard ratios (HRs), confidence intervals,
-#' and p-values for selected gene signatures or features. This function is useful for assessing the impact of various
-#' biomarkers on survival in a visually interpretable manner.
+#' Generates a forest plot to visualize hazard ratios, confidence intervals, and p-values
+#' for gene signatures or features from survival analysis.
 #'
-#' @param data A data frame containing survival analysis results including p-values, HRs, and confidence intervals.
-#' @param signature The name of the column in `data` that contains the signatures or feature names.
-#' @param pvalue The name of the column in `data` that contains p-values, default is "P".
-#' @param HR The name of the column in `data` that contains hazard ratios, default is "HR".
-#' @param CI_low_0.95 The name of the column in `data` that contains the lower bound of the 0.95 confidence interval, default is "CI_low_0.95".
-#' @param CI_up_0.95 The name of the column in `data` that contains the upper bound of the 0.95 confidence interval, default is "CI_up_0.95".
-#' @param n The maximum number of signatures to display in the plot, default is 10.
-#' @param max_character The maximum number of characters for signature labels before wrapping, default is 25.
-#' @param discrete_width The width for discretizing long labels, default is 35.
-#' @param color_option Color option for the p-value gradient in the plot, with default 1 and alternatives 2 or 3.
-#' @param text.size Text size for the y-axis labels, default is 13.
+#' @param data Data frame with survival analysis results including p-values, HRs, and CIs.
+#' @param signature Column name for signatures or feature names.
+#' @param pvalue Column name for p-values. Default is "P".
+#' @param HR Column name for hazard ratios. Default is "HR".
+#' @param CI_low_0.95 Column name for lower CI bound. Default is "CI_low_0.95".
+#' @param CI_up_0.95 Column name for upper CI bound. Default is "CI_up_0.95".
+#' @param n Maximum number of signatures to display. Default is 10.
+#' @param max_character Maximum characters for labels before wrapping. Default is 25.
+#' @param discrete_width Width for discretizing long labels. Default is 35.
+#' @param color_option Color option for p-value gradient (1, 2, or 3). Default is 1.
+#' @param text.size Text size for y-axis labels. Default is 13.
 #'
+#' @return A ggplot2 object of the forest plot.
+#' @export
 #' @author Dongqiang Zeng
-#' @return A ggplot2 object representing the forest plot
-#'
 #' @examples
 #' sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
 #' sig_forest(data = sig_surv_result, signature = "ID")
-#' @export
 sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
                        CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
                        discrete_width = 35, color_option = 1,

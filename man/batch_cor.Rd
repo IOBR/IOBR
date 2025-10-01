@@ -7,27 +7,39 @@
 batch_cor(data, target, feature, method = "spearman")
 }
 \arguments{
-\item{data}{A data frame containing the dataset with both target and feature variables.}
+\item{data}{Data frame containing the target and feature variables.}
 
-\item{target}{A character string specifying the name of the target variable within the dataset.}
+\item{target}{Character string specifying the name of the target variable.}
 
-\item{feature}{A character vector specifying the names of the feature variables to be analyzed.}
+\item{feature}{Character vector specifying the names of feature variables to
+correlate with the target.}
 
-\item{method}{A character string specifying the correlation method to be used; default is "spearman".}
+\item{method}{Character string specifying the correlation method. Options are
+\code{"spearman"}, \code{"pearson"}, or \code{"kendall"}. Default is
+\code{"spearman"}.}
 }
 \value{
-Returns a tibble containing the feature names, p-values, correlation coefficients, adjusted p-values,
-        log-transformed p-values, and significance stars based on p-value thresholds.
+Tibble containing the following columns for each feature:
+\itemize{
+  \item \code{sig_names}: Feature name
+  \item \code{p.value}: Raw p-value
+  \item \code{statistic}: Correlation coefficient
+  \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
+  \item \code{log10pvalue}: Negative log10-transformed p-value
+  \item \code{stars}: Significance stars based on p-value thresholds
+}
 }
 \description{
-Performs a batch correlation analysis between a target variable and multiple feature variables in a dataset.
-This function allows for the selection of the correlation method and applies corrections for multiple testing.
+Performs correlation analysis between a target variable and multiple feature
+variables. Computes correlation coefficients, p-values, and adjusts for multiple
+testing using the Benjamini-Hochberg method.
 }
 \examples{
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
-# Conduct correlation analysis
-results <- batch_cor(data = sig_stad, target = "CD_8_T_effector", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+# Perform batch correlation analysis
+results <- batch_cor(data = sig_stad, target = "CD_8_T_effector",
+                     feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }
 \author{
 Dongqiang Zeng

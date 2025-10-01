@@ -2,7 +2,7 @@
 % Please edit documentation in R/sig_box_batch.R
 \name{sig_box_batch}
 \alias{sig_box_batch}
-\title{Title sig_box_batch}
+\title{Batch Signature Box Plots for Group Comparisons}
 \usage{
 sig_box_batch(
   input,
@@ -31,61 +31,59 @@ sig_box_batch(
 )
 }
 \arguments{
-\item{input}{The input data for analysis.}
+\item{input}{Data frame. Input data for analysis.}
 
-\item{vars}{A vector of features or variables to analyze.}
+\item{vars}{Character vector. Features or variables to analyze.}
 
-\item{groups}{A vector of groups or categories to group the analysis by.}
+\item{groups}{Character vector. Grouping variable(s) for comparison.}
 
-\item{pattern_vars}{A logical value indicating whether the feature names specified in 'vars' should be treated as patterns to match. If set to TRUE, the function will search for matching column names in the input data and use them for analysis.}
+\item{pattern_vars}{Logical. Whether to treat 'vars' as patterns for matching column names. Default is FALSE.}
 
-\item{path}{The path to save the generated figures. If not specified, a default folder named "1-sig-box-batch" will be created.}
+\item{path}{Character or NULL. Directory to save plots. If NULL, uses default "1-sig-box-batch".}
 
-\item{index}{The index number to start naming the generated figures.}
+\item{index}{Integer. Starting index for plot filenames. Default is 0.}
 
-\item{angle_x_text}{The angle of the x-axis labels in the figures.}
+\item{angle_x_text}{Numeric. Angle of x-axis labels. Default is 0.}
 
-\item{hjust}{The horizontal alignment of the x-axis labels in the figures.}
+\item{hjust}{Numeric. Horizontal justification of x-axis labels. Default is 0.5.}
 
-\item{palette}{The color palette to use for the figures.}
+\item{palette}{Character. Color palette for plots. Default is "jama".}
 
-\item{cols}{A vector of colors to use for the elements in the figures.}
+\item{cols}{Character vector or NULL. Colors for plot elements.}
 
-\item{jitter}{A logical value indicating whether to add jitter to the points in the figures.}
+\item{jitter}{Logical. Whether to add jitter to points. Default is FALSE.}
 
-\item{point_size}{The size of the points in the figures.}
+\item{point_size}{Numeric. Size of points. Default is 5.}
 
-\item{size_of_font}{The size of the font in the figures.}
+\item{size_of_font}{Numeric. Font size. Default is 8.}
 
-\item{size_of_pvalue}{The size of the p-value text in the figures.}
+\item{size_of_pvalue}{Numeric. Size of p-value text. Default is 4.5.}
 
-\item{show_pvalue}{A logical value indicating whether to show the p-value in the figures.}
+\item{show_pvalue}{Logical. Whether to display p-values. Default is TRUE.}
 
-\item{return_stat_res}{A logical value indicating whether to return the statistical results.}
+\item{return_stat_res}{Logical. Whether to return statistical results instead of saving plots. Default is FALSE.}
 
-\item{assay}{The assay or data type to use for analysis (for Seurat object)}
+\item{assay}{Character or NULL. Assay type for Seurat objects.}
 
-\item{slot}{The slot in the data to use for analysis. (for Seurat object)}
+\item{slot}{Character. Data slot for Seurat objects. Default is "scale.data".}
 
-\item{scale}{A logical value indicating whether to scale the data before analysis.}
+\item{scale}{Logical. Whether to scale data before analysis. Default is FALSE.}
 
-\item{height}{The height of the generated figures.}
+\item{height}{Numeric. Height of plots. Default is 5.}
 
-\item{width}{The width of the generated figures.}
+\item{width}{Numeric. Width of plots. Default is 3.5.}
 
-\item{fig_type}{The file format to save the generated figures (e.g., "pdf").}
+\item{fig_type}{Character. File format for plots (e.g., "pdf"). Default is "pdf".}
 }
 \value{
-Depending on `return_stat_res`, either saves plots to the specified directory or returns the statistical results.
+If `return_stat_res` is TRUE, returns a data frame of statistical results; otherwise, saves plots to the specified directory.
 }
 \description{
-The sig_box_batch function is used to generate multiple signature box plots for analyzing the relationship between variables and groups in a given input data. It takes the input data, a vector of features or variables to analyze, and a vector of groups or categories to group the analysis by. The function allows customization of various parameters such as the path to save the figures, the appearance of the plots, and the statistical details to include. The generated figures are saved in the specified path or a default folder.
+Generates multiple box plots for specified features (signatures) across groups in the input data. Supports customization of plot appearance, output path, statistical annotation, and compatibility with Seurat objects. Plots are saved to the specified directory or a default folder.
 }
 \examples{
-
 data("tcga_stad_pdata", package = "IOBR")
-sig_box_batch(data = tcga_stad_pdata, vars = c("TMEscore_plus", "GZMB"), groups = "subtype", jitter = T, palette = "jco")
-
+sig_box_batch(input = tcga_stad_pdata, vars = c("TMEscore_plus", "GZMB"), groups = "subtype", jitter = TRUE, palette = "jco")
 }
 \author{
 Dongqiang Zeng

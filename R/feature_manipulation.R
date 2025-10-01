@@ -1,19 +1,21 @@
-#' feature_manipulation - Manipulate features in a matrix or data frame
+#' Manipulate Features in a Matrix or Data Frame
 #'
-#' @description This function allows for manipulation of features in a given matrix or data frame. It can remove variables with missing values, non-numeric variables, infinite variables, and variables with zero standard deviation.
-#' @param data The matrix or data frame containing the features to be manipulated.
-#' @param print_result Whether to print the manipulation results. Default is FALSE. If set to TRUE, it will print the results of each manipulation step.
-#' @param feature The features to be manipulated. If is_matrix is set to TRUE, feature will be ignored.
-#' @param is_matrix Whether the data is in matrix format. Default is FALSE. If set to TRUE, the function will treat data as a matrix and extract the column names as features.
+#' This function performs feature manipulation on a given matrix or data frame by removing variables
+#' with missing values, non-numeric variables, infinite values, and variables with zero standard deviation.
 #'
-#' @return filtered features
+#' @param data A matrix or data frame containing the features to be manipulated.
+#' @param print_result Logical indicating whether to print the results of each manipulation step. Default is FALSE.
+#' @param feature A vector of feature names to manipulate. Ignored if `is_matrix` is TRUE.
+#' @param is_matrix Logical indicating whether the input data is in matrix format. If TRUE, feature names are extracted from column names. Default is FALSE.
+#'
+#' @return A vector of filtered feature names after removing problematic variables.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' # loading data
-#' data("eset_stad")
-#' # filtering features with NA or outlier
-#' feas <- feature_manipulation(data = eset, feature = rownames(eset), is_matrix = TRUE)
+#' # Load example data
+#' data("eset_stad", package = "IOBR")
+#' # Filter features with NA or outliers
+#' feas <- feature_manipulation(data = eset_stad, feature = rownames(eset_stad), is_matrix = TRUE)
 feature_manipulation <- function(data, feature, is_matrix = FALSE, print_result = FALSE) {
   if (is_matrix) {
     data <- as.data.frame(t(data))

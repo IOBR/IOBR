@@ -1,20 +1,17 @@
-#' Merge Data Frames Handling Duplicated Column Names
+#' Merge Data Frames with Duplicated Column Names
 #'
-#' This function merges two data frames by resolving duplicated column names based on user preference.
-#' It provides options to choose which data frame's duplicated columns to keep, ensuring smooth merges
-#' without losing important data integrity.
+#' Merges two data frames, resolving duplicated column names according to user preference. Allows selection of which data frame's duplicated columns to retain, ensuring data integrity during merging.
 #'
-#' @param x The first data frame to be merged.
-#' @param y The second data frame to be merged.
-#' @param by.x The column name(s) in `x` used for merging.
-#' @param by.y The column name(s) in `y` used for merging.
-#' @param all.x Logical indicating if all rows from `x` should be included in the output.
-#' @param all.y Logical indicating if all rows from `y` should be included in the output.
-#' @param all Logical indicating if all rows from both `x` and `y` should be included in the output,
-#'        superseding `all.x` and `all.y` if not NULL.
-#' @param choose Specifies which data frame's duplicated non-joining columns should be retained: "x" or "y".
+#' @param x Data frame. First data frame to merge.
+#' @param y Data frame. Second data frame to merge.
+#' @param by.x Character. Column name(s) in `x` used for merging.
+#' @param by.y Character. Column name(s) in `y` used for merging.
+#' @param all.x Logical. Include all rows from `x` in output. Default is FALSE.
+#' @param all.y Logical. Include all rows from `y` in output. Default is FALSE.
+#' @param all Logical or NULL. If not NULL, include all rows from both `x` and `y`, overriding `all.x` and `all.y`.
+#' @param choose Character. Which data frame's duplicated non-joining columns to retain: "x" or "y". Default is "x".
 #'
-#' @return A data frame resulting from merging `x` and `y` according to the specified parameters.
+#' @return Data frame resulting from merging `x` and `y` according to specified parameters.
 #' @export
 #' @examples
 #' df1 <- data.frame(ID = 1:3, Name = c("A", "B", "C"), Value = 1:3)

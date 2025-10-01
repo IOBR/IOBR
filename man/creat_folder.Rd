@@ -2,24 +2,24 @@
 % Please edit documentation in R/creat_folder.R
 \name{creat_folder}
 \alias{creat_folder}
-\title{Title creates a new folder or directory}
+\title{Create Nested Output Folders}
 \usage{
 creat_folder(f1, f2 = NULL, f3 = NULL, return = NULL)
 }
 \arguments{
-\item{f1}{The name of the first level folder.}
+\item{f1}{Character. First-level folder name.}
 
-\item{f2}{The name of the second level folder (optional).}
+\item{f2}{Character or NULL. Second-level folder name.}
 
-\item{f3}{The name of the third level folder (optional).}
+\item{f3}{Character or NULL. Third-level folder name.}
 
-\item{return}{An optional parameter to specify the information to return.}
+\item{return}{Deprecated (not used). Kept for backward compatibility.}
 }
 \value{
-A list with the folder_name and abspath
+List with elements: `folder_name` (relative) and `abspath` (absolute path ending with '/').
 }
 \description{
-creat_folder creates a new folder or directory at the specified path and returns information about the created folder.
+Creates one to three nested folders (if not existing) under the current working directory and returns their names and absolute path.
 }
 \examples{
 creat_folder("1-result")

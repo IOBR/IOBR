@@ -1,50 +1,76 @@
-#' Integrative Correlation Between Phenotype and Features
+#' Integrative Correlation Analysis Between Phenotype and Features
 #'
-#' Performs integrative correlation analysis between phenotype data and feature data, supporting both continuous
-#' and categorical phenotypes. This function filters features based on adjusted p-value cutoffs and can visualize
-#' results in various plot formats including box plots, heatmaps, and correlation plots.
+#' @description
+#' Performs comprehensive correlation analysis between phenotype data and feature data,
+#' supporting both continuous and categorical phenotypes. Filters features based on
+#' statistical significance and generates publication-ready visualizations including
+#' box plots, heatmaps, and correlation plots.
 #'
-#' @param pdata_group A data frame containing phenotype data including an identifier column.
-#' @param id1 Column name in `pdata_group` serving as the identifier.
-#' @param feature_data A data frame containing feature data corresponding to the identifiers.
-#' @param id2 Column name in `feature_data` serving as the identifier.
-#' @param target Optional; the column name for the target variable if continuous. Default is NULL.
-#' @param group The grouping variable name used for categorical analysis, default is "group3".
-#' @param is_target_continuous Logical; specifies if the target variable is continuous, affecting grouping strategy.
-#' @param padj_cutoff Cutoff for adjusted p-values to filter features, default is 1.
-#' @param index Numeric index used to order file names for output.
-#' @param signature_group Grouping variable for signatures; differentiates between 'sig_group' for signature grouping
-#'        or 'signature_collection'/'signature_tme' for gene grouping.
-#' @param category Specifies if the data pertains to 'signature' or 'gene'.
-#' @param ProjectID Identifier for the project, used in file naming.
-#' @param feature_limit Maximum number of features to consider, default is 26.
-#' @param character_limit Maximum number of characters for variable labels, default is 60.
-#' @param palette_box Color palette for box plots.
-#' @param palette_corplot Color palette for correlation plots.
-#' @param palette_heatmap Index for heatmap color palette.
-#' @param show_heatmap_col_name Logical; if TRUE, shows column names on the heatmap.
-#' @param show_col Logical; if TRUE, shows color codes for palettes.
-#' @param show_plot Logical; if TRUE, prints plots to the display.
-#' @param path Optional; path to save output files. Default is NULL.
-#' @param discrete_x Numeric threshold for character length beyond which labels will be discretized.
-#' @param show_palettes Logical; if TRUE, displays color palettes used.
-#' @param discrete_width Numeric; specifies the width for label wrapping in plots.
-#' @param fig.type Format for saving figures, default is 'pdf', can be changed to 'png'.
-#' @param cols_box Optional; specific color settings for the box, default is NULL.
+#' @param pdata_group Data frame containing phenotype data with an identifier column.
+#' @param id1 Character string specifying the column name in \code{pdata_group} serving
+#'   as the sample identifier.
+#' @param feature_data Data frame containing feature data with corresponding identifiers.
+#' @param id2 Character string specifying the column name in \code{feature_data} serving
+#'   as the sample identifier.
+#' @param target Character string specifying the target variable column name for
+#'   continuous analysis. Default is \code{NULL}.
+#' @param group Character string specifying the grouping variable name for categorical
+#'   analysis. Default is \code{"group3"}.
+#' @param is_target_continuous Logical indicating whether the target variable is
+#'   continuous, which affects grouping strategy. Default is \code{TRUE}.
+#' @param padj_cutoff Numeric value specifying the adjusted p-value cutoff for filtering
+#'   features. Default is 1.
+#' @param index Numeric index used for ordering output file names. Default is 1.
+#' @param signature_group Character string specifying the grouping variable for
+#'   signatures. Options include \code{"sig_group"} for signature grouping or
+#'   \code{"signature_collection"}/\code{"signature_tme"} for gene grouping.
+#' @param category Character string specifying the data category: \code{"signature"}
+#'   or \code{"gene"}.
+#' @param ProjectID Character string specifying the project identifier for file naming.
+#' @param feature_limit Integer specifying the maximum number of features to display.
+#'   Default is 26.
+#' @param character_limit Integer specifying the maximum number of characters for
+#'   variable labels. Default is 60.
+#' @param palette_box Character string or integer specifying the color palette for
+#'   box plots.
+#' @param palette_corplot Character string or integer specifying the color palette for
+#'   correlation plots.
+#' @param palette_heatmap Integer specifying the color palette index for heatmaps.
+#' @param show_heatmap_col_name Logical indicating whether to display column names on
+#'   heatmaps. Default is \code{TRUE}.
+#' @param show_col Logical indicating whether to display color codes for palettes.
+#'   Default is \code{FALSE}.
+#' @param show_plot Logical indicating whether to display plots. Default is \code{TRUE}.
+#' @param path Character string specifying the directory path for saving output files.
+#'   Default is \code{NULL}.
+#' @param discrete_x Numeric threshold for character length beyond which labels are
+#'   discretized. Default is 25.
+#' @param show_palettes Logical indicating whether to display color palettes. Default
+#'   is \code{FALSE}.
+#' @param discrete_width Numeric value specifying the width for label wrapping in plots.
+#'   Default is 25.
+#' @param fig.type Character string specifying the format for saving figures (\code{"pdf"},
+#'   \code{"png"}, etc.). Default is \code{"pdf"}.
+#' @param cols_box Character vector of specific colors for box plots. Default is
+#'   \code{NULL}.
 #'
+#' @return Depending on configuration, returns ggplot2 objects (box plots, heatmaps,
+#'   correlation plots) and/or a data frame containing statistical analysis results.
+#'
+#' @author Dongqiang Zeng
+#' @export
 #' @import ggplot2
 #' @import dplyr
 #' @import tidyr
 #' @import purrr
-#' @author Dongqiang Zeng
-#'
-#' @return Depending on the configuration, this function returns various plots such as box plots, heatmaps, and correlation plots,
-#'         and may also return a dataframe containing statistical analysis results.
-#' @export
 #' @examples
-#' # Assuming 'pdata_group' and 'feature_data' are predefined:
-#' pdata_group <- data.frame(ID = 1:100, phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
-#' feature_data <- data.frame(ID = 1:100, Feature1 = rnorm(100), Feature2 = rnorm(100))
+#' # Create example phenotype and feature data
+#' pdata_group <- data.frame(ID = 1:100,
+#'                           phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
+#' feature_data <- data.frame(ID = 1:100,
+#'                            Feature1 = rnorm(100),
+#'                            Feature2 = rnorm(100))
+#' # Perform correlation analysis
 #' results <- iobr_cor_plot(
 #'   pdata_group = pdata_group, feature_data = feature_data,
 #'   id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,

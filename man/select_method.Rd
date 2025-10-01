@@ -2,29 +2,25 @@
 % Please edit documentation in R/select_method.R
 \name{select_method}
 \alias{select_method}
-\title{Choose which method to conduct following analysis}
+\title{Select a Signature Scoring Method Subset}
 \usage{
 select_method(data, method = "ssGSEA")
 }
 \arguments{
-\item{data}{signature matrix}
+\item{data}{Data frame or matrix. Integrated signature score matrix.}
 
-\item{method}{choose method to analysis, contain three methodologies : PCA, ssGSEA, zScore}
+\item{method}{Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive). Default "ssGSEA".}
 }
 \value{
-filtered signature score matrix
+Matrix/data frame containing only the selected method's scores.
 }
 \description{
-Choose which method to conduct following analysis
+Filters an integrated signature score matrix to retain results from a specified method (PCA, ssGSEA, or zscore) and strips method suffixes from column names.
 }
 \examples{
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(eset_stad, idType = "ensembl")
-head(eset)
 eset <- scale_matrix(eset, manipulate = TRUE)
-
 res <- calculate_sig_score(eset = eset, signature = signature_collection[1:4], method = "integration")
-head(res)
-res <- select_method(res, method = "PCA")
-head(res)
+select_method(res, method = "PCA")
 }

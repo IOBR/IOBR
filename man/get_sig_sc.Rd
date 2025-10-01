@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sig_sc.R
 \name{get_sig_sc}
 \alias{get_sig_sc}
-\title{get_sig_sc}
+\title{Extract Top Marker Genes from Single-Cell Differential Results}
 \usage{
 get_sig_sc(
   deg,
@@ -13,21 +13,21 @@ get_sig_sc(
 )
 }
 \arguments{
-\item{deg}{Matrix containing a ranked list of putative markers, and associated statistics (p-values, ROC score, etc.)}
+\item{deg}{Data frame or matrix. Ranked marker statistics (e.g., p-value, log2FC, etc.).}
 
-\item{cluster}{Name of the column in which the clusters are located}
+\item{cluster}{Character. Column name containing cluster identifiers. Default "cluster".}
 
-\item{gene}{Name of the column in which the markers are located}
+\item{gene}{Character. Column name containing gene identifiers. Default "gene".}
 
-\item{avg_log2FC}{Name of the column in which the average log2FC values are located}
+\item{avg_log2FC}{Character. Column name for average log2 fold change. Default "avg_log2FC".}
 
-\item{n}{Number of selected top ranked markers}
+\item{n}{Integer. Number of top markers per cluster. Default 100.}
 }
 \value{
-A list containing top n gene markers of each cell types
+List of character vectors; each element contains the top N genes for a cluster.
 }
 \description{
-Get gene signature from single-cell differential analysis
+Selects the top N marker genes per cluster from a ranked differential expression result table.
 }
 \examples{
 data("deg", package = "IOBR")

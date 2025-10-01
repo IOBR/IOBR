@@ -2,7 +2,8 @@
 % Please edit documentation in R/quantiseq_helper.R
 \name{quantiseq_helper}
 \alias{quantiseq_helper}
-\title{Helper functions for quanTIseq}
+\title{Helper Functions for quanTIseq}
 \description{
-Source code from https://github.com/FFinotello/quanTIseq
+This package provides helper functions for quanTIseq deconvolution method.
+Source code adapted from https://github.com/FFinotello/quanTIseq.
 }

@@ -1,24 +1,19 @@
-#' Choose colors.
+#' Select Color Palettes for Visualization
 #'
-#' This function selects color palettes based on the type of plot you want to color. It supports multiple categories
-#' and palette options, allowing for the adjustment of color intensity and the number of colors.
+#' Provides curated qualitative, sequential, and diverging palettes for multiple plot types. Supports intensity adjustment and preview.
 #'
-#' @param category choose what type of plot you want to color,There are seven categories you can choose: `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`
-#' @param palette Each category has some options to choose
-#' @param alpha intensity of the color
-#' @param counts number of colors, only affect continue colors
-#' @param show_col logical variable, if TRUE, color will be print and show in the R studio
-#' @param show_message print palettes that can be choose
+#' @param category Character. Plot/palette category: one of `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`.
+#' @param palette Character or numeric. Palette name or index (varies by category).
+#' @param alpha Numeric. Alpha (transparency) scaling factor. Default is 1.
+#' @param counts Integer. Number of colors (for continuous palettes). Default is 50.
+#' @param show_col Logical. If TRUE, prints the palette. Default is TRUE.
+#' @param show_message Logical. If TRUE, prints available options. Default is FALSE.
 #'
+#' @return Character vector of hex color codes.
 #' @author Dongqiang Zeng
-#' @return A vector of colors based on the selected options.
 #' @export
-#'
 #' @examples
-#' # Get a palette for box plots with the 'nrc' palette
 #' colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
-#'
-#' # Get a continuous color scale for heatmaps
 #' heatmap_colors <- palettes(category = "heatmap", palette = 1, counts = 100, show_col = TRUE)
 palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, show_col = TRUE, show_message = FALSE) {
   if (show_message) message(paste0("There are seven categories you can choose: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap "))

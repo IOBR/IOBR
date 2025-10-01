@@ -2,28 +2,27 @@
 % Please edit documentation in R/rbind_iobr.R
 \name{rbind_iobr}
 \alias{rbind_iobr}
-\title{rbind_iobr}
+\title{Row Bind Multiple Data Sets}
 \usage{
 rbind_iobr(data1, data2, data3 = NULL)
 }
 \arguments{
-\item{data1}{The first dataset to be combined. It should be a data.frame or a matrix.}
+\item{data1}{Data frame or matrix. First dataset to combine.}
 
-\item{data2}{The second dataset to be combined. It should be a data.frame or a matrix.}
+\item{data2}{Data frame or matrix. Second dataset to combine.}
 
-\item{data3}{(Optional) An additional dataset to be combined. It should be a data.frame or a matrix. Default value is NULL.}
+\item{data3}{Data frame or matrix, optional. Additional dataset to combine. Default is NULL.}
 }
 \value{
-The combined dataset resulting from the 'rbind' operation on the input datasets.
+Combined data frame or matrix resulting from row binding the input datasets.
 }
 \description{
-This function combines multiple datasets vertically using the 'rbind' operation. It takes in two required parameters, 'data1' and 'data2', and an optional parameter, 'data3'.
+Combines two or three data frames or matrices vertically using the `rbind` operation. Ensures compatibility of input data before binding.
 }
 \examples{
 data1 <- data.frame(A = 1:5, B = letters[1:5])
 data2 <- data.frame(A = 6:10, B = letters[6:10])
 combined_data <- rbind_iobr(data1, data2)
-
 # With three datasets
 data3 <- data.frame(A = 11:15, B = letters[11:15])
 combined_data <- rbind_iobr(data1, data2, data3)

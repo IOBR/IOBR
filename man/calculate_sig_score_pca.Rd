@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_sig_score.R
 \name{calculate_sig_score_pca}
 \alias{calculate_sig_score_pca}
-\title{Calculating signature score using PCA method}
+\title{Calculate Signature Score Using PCA Method}
 \usage{
 calculate_sig_score_pca(
   pdata = NULL,
@@ -14,33 +14,41 @@ calculate_sig_score_pca(
 )
 }
 \arguments{
-\item{pdata}{phenotype data of input sample;
-if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset}
+\item{pdata}{Data frame containing phenotype data. If \code{NULL}, a data frame with
+\code{Index} and \code{ID} columns is created from \code{eset} column names.
+Default is \code{NULL}.}
 
-\item{eset}{normalized transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.),
-Gene expression data should be scale before signature score estimation}
+\item{eset}{Matrix of normalized gene expression data (CPM, TPM, RPKM, FPKM, etc.)
+with genes in rows and samples in columns.}
 
-\item{signature}{List of gene signatures;}
+\item{signature}{List of gene signatures, where each element is a character vector
+of gene names.}
 
-\item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set}
+\item{mini_gene_count}{Integer specifying the minimum number of genes required in
+the expression set for a signature to be included. Default is 3.}
 
-\item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
+\item{column_of_sample}{Character string specifying the column in \code{pdata}
+containing sample identifiers. Default is \code{"ID"}.}
 
-\item{adjust_eset}{remove variables with missing value, sd =0, and Inf value}
+\item{adjust_eset}{Logical indicating whether to remove features with missing values,
+zero standard deviation, or infinite values. Default is \code{FALSE}.}
 }
 \value{
-signature scores for gene sets; signatures in columns, samples in rows
+Tibble containing sample identifiers and signature scores (signatures in
+  columns, samples in rows). Special combined scores (e.g., TMEscore_CIR) are
+  calculated if corresponding signature pairs are present.
 }
 \description{
-Calculating signature score using PCA method
+Computes signature scores for gene sets using Principal Component Analysis (PCA).
+The first principal component is extracted from gene expression data for each
+signature and used as the signature score.
 }
 \examples{
-
-# Loading TCGA-STAD expresion data(raw count matrix)
+# Load TCGA-STAD expression data (raw count matrix)
 data("eset_stad", package = "IOBR")
-# transform count data to tpm
+# Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
-# signature score estimation using PCA method
+# Calculate signature scores using PCA method
 calculate_sig_score_pca(eset = eset, signature = signature_tme)
 }
 \author{

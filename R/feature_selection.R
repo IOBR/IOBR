@@ -1,14 +1,13 @@
-#' Feature Selection
+#' Feature Selection via Correlation or Differential Expression
 #'
-#' This function selects features based on either correlation or differential expression analysis.
-#' It uses the 'limma' package for differential expression and basic statistical tests for correlation analysis.
+#' Selects informative features using either correlation with a quantitative response or differential expression (limma) for binary/continuous responses.
 #'
-#' @param x A matrix with rownames representing features like gene symbols or cgi, and colnames as samples.
-#' @param y A response variable vector that can be quantitative, binary, or survival type.
-#' @param method Specifies the method for feature selection; "cor" for correlation or "dif" for differential expression.
-#' @param family Specifies the correlation method to use if method="cor"; options are "spearman" or "pearson".
-#' @param cutoff Numeric value for estimating and log2 fold change cutoff for correlation analysis and limma differential analysis.
-#' @param padjcut Numeric value for adjusted P-value cutoff.
+#' @param x Numeric matrix. Features (rows) by samples (columns).
+#' @param y Numeric or factor. Response vector (quantitative or binary).
+#' @param method Character. "cor" (correlation) or "dif" (differential expression). Default c("cor","dif").
+#' @param family Character. Correlation method if method = "cor": "spearman" or "pearson".
+#' @param cutoff Numeric. Absolute correlation (for cor) or |log2FC| (for dif) threshold.
+#' @param padjcut Numeric. Adjusted p-value cutoff.
 #'
 #' @import dplyr
 #' @import tibble
@@ -17,13 +16,11 @@
 #' @import stringr
 #' @import glmnet
 #'
-#' @return Returns a vector of selected feature names based on the specified criteria.
+#' @return Character vector of selected feature names.
 #' @export
 #'
 #' @examples
 #' data("imvigor210_eset", package = "IOBR")
-#' data("imvigor210_pdata", package = "IOBR")
-#'
 #' mad <- apply(imvigor210_eset, 1, mad)
 #' imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
 #' pd1 <- as.numeric(imvigor210_eset["PDCD1", ])

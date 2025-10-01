@@ -1,19 +1,18 @@
-#' scale_matrix - Scale and manipulate a matrix
+#' Scale and Manipulate a Matrix
 #'
-#' @description This function scales a given matrix and optionally performs additional manipulation. It can apply a logarithmic transformation (base 2) to the matrix, center and scale the values, and optionally manipulate the features based on a specified criteria.
+#' This function scales a given matrix, optionally applies logarithmic transformation,
+#' and performs feature manipulation to remove problematic variables.
+#'
 #' @param matrix The matrix to be scaled and manipulated.
-#' @param log2matrix Whether to apply a logarithmic transformation to the matrix. Default is TRUE. If set to TRUE, the matrix will be transformed using the log2eset function from the IOBR package.
-#' @param manipulate Whether to perform additional manipulation on the matrix. Default is FALSE. If set to TRUE, the function will use the feature_manipulation function to manipulate the matrix based on specified criteria.
+#' @param log2matrix Logical indicating whether to apply log2 transformation. Default is TRUE.
+#' @param manipulate Logical indicating whether to perform feature manipulation. Default is TRUE.
 #'
-#' @return A data frame of the scaled and potentially manipulated matrix.
+#' @return A data frame of the scaled and manipulated matrix.
 #' @export
-#'
 #' @author Dongqiang Zeng
 #' @examples
 #' data("eset_gse62254", package = "IOBR")
-#' head(eset_gse62254)
 #' eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
-#' head(eset2)
 scale_matrix <- function(matrix, log2matrix = TRUE, manipulate = TRUE) {
   if (log2matrix) {
     matrix <- IOBR::log2eset(matrix + 1)

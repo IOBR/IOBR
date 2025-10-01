@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_mut_matrix.R
 \name{make_mut_matrix}
 \alias{make_mut_matrix}
-\title{Make mutation matrix using maf data}
+\title{Construct Mutation Matrices from MAF Data}
 \usage{
 make_mut_matrix(
   maf = NULL,
@@ -16,37 +16,31 @@ make_mut_matrix(
 )
 }
 \arguments{
-\item{maf}{file name or a maf object}
+\item{maf}{Character or MAF object. Path to MAF file or an already loaded MAF object.}
 
-\item{mut_data}{if maf data had beed loaded, this argument will be applied}
+\item{mut_data}{Data frame or NULL. Preloaded MAF-like data (used if 'maf' is NULL).}
 
-\item{isTCGA}{logical variable,}
+\item{isTCGA}{Logical. Whether the MAF follows TCGA conventions. Default is TRUE.}
 
-\item{category}{if category is `multi`, four mutation matrix will be generated: all, snp, indel and frameshift}
+\item{category}{Character. Mutation category: "all", "snp", "indel", "frameshift", or "multi". Default is "multi".}
 
-\item{Tumor_Sample_Barcode}{column name of tumor sample}
+\item{Tumor_Sample_Barcode}{Character. Column name for tumor sample IDs. Default is "Tumor_Sample_Barcode".}
 
-\item{Hugo_Symbol}{column name of gene symbol}
+\item{Hugo_Symbol}{Character. Column name for gene symbols. Default is "Hugo_Symbol".}
 
-\item{Variant_Classification}{column name of variant classification: Frame_Shift_Del}
+\item{Variant_Classification}{Character. Column name for variant classification (e.g., Frame_Shift_Del). Default is "Variant_Classification".}
 
-\item{Variant_Type}{column name of variant type: SNP, INS, DEL}
+\item{Variant_Type}{Character. Column name for variant type (e.g., SNP, INS, DEL). Default is "Variant_Type".}
 }
 \value{
-A list of matrices, each representing a different category of mutations as specified by `category`.
+List of mutation matrices (if category = "multi") or a single matrix for the specified category.
 }
 \description{
-This function constructs mutation matrices from MAF data, supporting multiple categories including all mutations,
-SNPs, indels, and frameshift mutations. It can handle both MAF file paths or MAF objects directly and is capable
-of processing data formatted according to TCGA standards.
+Builds mutation presence/absence matrices from MAF input (file path or MAF object). Supports multiple categories: all mutations, SNPs, indels, and frameshift mutations. When category = "multi", returns a list of matrices for each category. Compatible with TCGA-formatted data.
 }
 \examples{
-
-library(TCGAbiolinks)
-query <- GDCquery(project = "TCGA-STAD", data.category = "Simple Nucleotide Variation", access = "open", data.type = "Masked Somatic Mutation", workflow.type = "Aliquot Ensemble Somatic Variant Merging and Masking")
-GDCdownload(query)
-maf <- GDCprepare(query)
-mut_list <- make_mut_matrix(maf = maf, isTCGA = T, category = "multi")
+# See maftools and TCGAbiolinks documentation for obtaining MAF input
+# mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
 }
 \author{
 Dongqian Zeng

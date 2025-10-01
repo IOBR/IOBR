@@ -1,9 +1,11 @@
-#' Assimilate data with similar columns
+#' Harmonize Two Data Frames by Column Structure
 #'
-#' @param data_a original data frame
-#' @param data_b manipulated data frame
+#' Adds missing columns (filled with NA) to a secondary data frame so that its column set and order match a reference data frame.
 #'
-#' @return  data_b
+#' @param data_a Data frame. Reference data frame whose column structure should be matched.
+#' @param data_b Data frame. Data frame to be conformed to `data_a`.
+#'
+#' @return Data frame `data_b` with added missing columns (NA-filled) and reordered to match `data_a`.
 #' @export
 #'
 #' @examples

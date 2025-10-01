@@ -1,10 +1,10 @@
-#' Helper functions for quanTIseq
+#' Helper Functions for quanTIseq
 #'
-#' Source code from https://github.com/FFinotello/quanTIseq
+#' This package provides helper functions for quanTIseq deconvolution method.
+#' Source code adapted from https://github.com/FFinotello/quanTIseq.
 #'
 #' @name quantiseq_helper
-#'
-#' @importFrom  limSolve lsei
+#' @importFrom limSolve lsei
 NULL
 
 fixMixture <- function(mix.mat, arrays = FALSE) {

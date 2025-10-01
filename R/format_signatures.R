@@ -1,17 +1,19 @@
-#' Transform signature gene data into list format
+#' Transform Signature Data into List Format
 #'
-#' @param sig_data signature data with signature name as column name and genes in row, using `NA` to substitude the missing value
-#' @param save_signature logical, save siganture list as RData
-#' @param output_name string of name to save signature RData
+#' This function converts signature data from a data frame (with signatures as columns and genes as rows)
+#' into a list format suitable for IOBR functions, replacing NA values appropriately.
 #'
-#' @return list of signatures
+#' @param sig_data Data frame with signature names as columns and genes in rows; use NA for missing values.
+#' @param save_signature Logical indicating whether to save the signature list as RData. Default is FALSE.
+#' @param output_name String for the output RData file name. Default is "signatures".
+#'
+#' @return A list of signatures.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#'
-#' # load signature data frame
+#' # Load signature data frame
 #' data("sig_excel", package = "IOBR")
-#' # transform into gene list for IOBR functions
+#' # Transform into gene list for IOBR functions
 #' format_signatures(sig_excel)
 format_signatures <- function(sig_data, save_signature = FALSE, output_name = "signatures") {
   message(paste0(">>> There are ", dim(sig_data)[2], "  signatures >>>"))

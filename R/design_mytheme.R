@@ -1,26 +1,29 @@
-#' design_mytheme
+#' Design Custom Theme for ggplot2 Plots
 #'
-#' @description This function modifies a ggplot2 theme based on user-defined parameters for various plot elements. It allows customization of the theme's appearance, including title size, axis size, legend position, and more.
-#' @param plot_title_size The size of the plot title. Default is 2.
-#' @param axis_title_size The size of the axis titles. Default is 2.
+#' @description This function creates a customized ggplot2 theme based on user-specified parameters for plot elements such as title size, axis sizes, legend settings, and theme style. It supports various base themes and allows fine-tuning of visual aspects for publication-quality plots.
+#' @param theme The base theme for the plot. Options include "light", "bw", "classic", and "classic2". Default is "light".
+#' @param plot_title_size The relative size of the plot title. Default is 2.
+#' @param axis_title_size The relative size of the axis titles. Default is 2.
 #' @param axis_text_size The size of the axis tick mark labels. Default is 12.
-#' @param axis_angle  The angle of rotation for the x-axis tick mark labels. Default is 60.
-#' @param legend.position The position of the legend in the plot. Options include "none", "left", "right", "bottom", and "top". Default is NULL.
-#' @param legend.direction The direction of the legend items. Options include "horizontal" and "vertical". Default is NULL.
-#' @param hjust horizontal justification
+#' @param axis_angle The angle of rotation for the x-axis tick mark labels. Default is 60.
+#' @param hjust Horizontal justification for x-axis text. Default is 1.
+#' @param legend.position The position of the legend in the plot. Options include "none", "left", "right", "bottom", and "top". Default is "bottom".
+#' @param legend.direction The direction of the legend items. Options include "horizontal" and "vertical". Default is "horizontal".
 #' @param legend.size The size of the legend key. Default is 0.25.
-#' @param theme The desired theme for the plot. Options include "light", "bw", "classic", and "classic2". Default is "light".
+#' @param legend.key.height The height of the legend key in cm. Default is 0.5.
+#' @param legend.key.width The width of the legend key in cm. Default is 0.5.
 #' @param legend.size.text The size of the legend text labels. Default is 10.
-#' @param legend.key.height The height of the legend key. Default is 0.5.
-#' @param legend.key.width The width of the legend key. Default is 0.5.
 #' @param legend.box The orientation of the legend box. Options include "horizontal" and "vertical". Default is "horizontal".
 #'
 #' @author Dongqiang Zeng
-#' @return mytheme
+#' @return A ggplot2 theme object that can be added to a ggplot.
 #' @export
 #'
 #' @examples
-#' mytheme <- design_mytheme()
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+#' mytheme <- design_mytheme(theme = "bw", plot_title_size = 1.5, axis_text_size = 14)
+#' p + mytheme + ggtitle("Example Plot")
 design_mytheme <- function(theme = "light",
                            plot_title_size = 2,
                            axis_title_size = 2,

@@ -1,3 +1,21 @@
+#' Package Startup and Initialization
+#'
+#' @description Internal startup hooks for the IOBR package.
+#' The \code{.onLoad} hook performs non-intrusive checks for optional (suggested)
+#' namespaces using \code{requireNamespace()}, avoiding hard dependencies. The
+#' \code{.onAttach} hook prints a concise startup message that includes the
+#' package version, tutorial URL, issue tracker link, and recommended citation
+#' information for published use.
+#'
+#' @details These functions are for internal package initialization and are not
+#' intended for direct invocation by end users. The availability checks executed
+#' in \code{.onLoad} are silent and do not attach or load optional packages;
+#' they only detect presence so runtime code can adapt accordingly.
+#'
+#' @keywords internal
+#' @noRd
+#' @importFrom utils packageDescription
+
 #
 # .onLoad <- function(libname, pkgname) {
 #
@@ -29,7 +47,6 @@
 }
 
 
-##' @importFrom utils packageDescription
 .onAttach <- function(libname, pkgname) {
   pkgVersion <- packageDescription(pkgname, fields = "Version")
   msg <- paste0(

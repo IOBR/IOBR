@@ -1,14 +1,16 @@
-#' Judge whether the expression set needs log2 transformation
+#' Log2 Transformation of Gene Expression Matrix
 #'
-#' @param eset gene expression set with row as genes and sample in the column
+#' Determines whether a gene expression matrix requires log2 transformation and applies it if necessary.
 #'
-#' @return gene expression set
+#' @param eset Numeric matrix. Gene expression data with genes as rows and samples as columns.
+#'
+#' @return Numeric matrix. Log2-transformed gene expression data (if transformation was needed).
 #' @export
 #'
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
+#' # Load TCGA-STAD expression data (raw count matrix)
 #' data("eset_stad", package = "IOBR")
-#' # transform count data to tpm
+#' # Transform count data to TPM
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' eset <- log2eset(eset)
 log2eset <- function(eset = NULL) {

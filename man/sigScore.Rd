@@ -2,20 +2,26 @@
 % Please edit documentation in R/sigScore.R
 \name{sigScore}
 \alias{sigScore}
-\title{Calculate siganture score using PCA function}
+\title{Calculate Signature Score Using PCA or Mean Methods}
 \usage{
 sigScore(eset, methods = "PCA")
 }
 \arguments{
-\item{eset}{normalized count matrix; rows are all genes in the signature that shall be summarized into one score; columns are samples}
+\item{eset}{Normalized count matrix; rows are genes in the signature to be summarized into one score; columns are samples.}
 
-\item{methods}{character vector defining whether signature scores shall be based on principal component 1 ("PC", default) or z-scores (other value)}
+\item{methods}{Character vector defining whether signature scores shall be based on principal component 1 ("PCA", default) or mean values (any other value).}
 }
 \value{
-numeric vector of length ncol(eset); a score summarizing the rows of eset
+Numeric vector of length ncol(eset); a score summarizing the rows of eset.
 }
 \description{
-Calculate siganture score using PCA function
+Computes signature scores from gene expression data using either Principal Component Analysis (PCA) or mean-based approaches.
+}
+\examples{
+# Example usage with PCA method
+sigScore(eset = expression_matrix, methods = "PCA")
+# Example usage with mean method
+sigScore(eset = expression_matrix, methods = "mean")
 }
 \author{
 Dorothee Nickles, Dongqiang Zeng

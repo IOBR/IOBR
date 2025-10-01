@@ -1,44 +1,40 @@
-#' Mutation Analysis Related to Signature Scores
+#' Analyze Mutations Related to Signature Scores
 #'
-#' This function searches for mutations related to a specific signature score and conducts statistical tests to evaluate
-#' their significance. It can generate oncoprints and box plots to visualize the relationships and save the results.
+#' This function identifies mutations associated with a specific signature score, performs statistical tests
+#' for significance, and generates oncoprints and box plots to visualize relationships.
 #'
-#' @param mutation_matrix A matrix with sample names in the rows and genes in the columns representing mutation data.
-#' @param signature_matrix A dataframe with identifier and target signatures.
-#' @param id_signature_matrix The column name in the signature_matrix that acts as the identifier.
-#' @param signature The name of the target signature for analysis.
-#' @param min_mut_freq The minimum frequency of mutations required to consider a gene in the analysis.
-#' @param plot A logical value; if TRUE, results will be plotted and saved at `save_path`.
-#' @param method Specifies the statistical test method; "multi" for both Cuzick and Wilcoxon tests or "Wilcoxon" for only the Wilcoxon test.
-#' @param save_path The directory path where plots and statistical analysis results will be saved.
-#' @param palette The color palette for box plots.
-#' @param show_plot A logical variable; if TRUE, plots will be rendered on display.
-#' @param show_col Whether to show the color code of the palette.
-#' @param width The width of the oncoprint plot.
-#' @param height The height of the oncoprint plot.
-#' @param oncoprint_group_by Specifies how to group the oncoprint, options are "mean" or "quantile".
-#' @param oncoprint_col The color for mutations in the oncoprint.
-#' @param jitter A logical value; if TRUE, adds jitter to the box plot points.
-#' @param gene_counts The number of genes to display in the oncoprint.
-#' @param genes A vector of gene names for drawing; if NULL, genes are selected based on mutation frequency.
-#' @param point_size The size of points in the box plot.
-#' @param point_alpha The transparency level of points in the box plot.
+#' @param mutation_matrix A matrix of mutation data with samples in rows and genes in columns.
+#' @param signature_matrix A data frame with sample identifiers and signature scores.
+#' @param id_signature_matrix Column name in `signature_matrix` for sample identifiers.
+#' @param signature Name of the target signature for analysis.
+#' @param min_mut_freq Minimum mutation frequency required for gene inclusion. Default is 0.05.
+#' @param plot Logical indicating whether to generate and save plots. Default is TRUE.
+#' @param method Statistical test method: "multi" for both Cuzick and Wilcoxon, or "Wilcoxon" only. Default is "multi".
+#' @param save_path Directory to save plots and results. If NULL, uses signature name.
+#' @param palette Color palette for box plots. Default is "jco".
+#' @param show_plot Logical indicating whether to display plots. Default is TRUE.
+#' @param show_col Logical indicating whether to show color codes. Default is FALSE.
+#' @param width Width of oncoprint plot. Default is 8.
+#' @param height Height of oncoprint plot. Default is 4.
+#' @param oncoprint_group_by Grouping method for oncoprint: "mean" or "quantile". Default is "mean".
+#' @param oncoprint_col Color for mutations in oncoprint. Default is "#224444".
+#' @param gene_counts Number of genes to display in oncoprint. Default is 10.
+#' @param genes Optional vector of gene names; if NULL, selects based on frequency.
+#' @param point_size Size of points in box plot. Default is 4.5.
+#' @param point_alpha Transparency of points in box plot. Default is 0.1.
+#' @param jitter Logical indicating whether to add jitter to box plot points. Default is FALSE.
 #'
-#' @return Returns a list containing results from the statistical tests, oncoprint plots, and box plots.
+#' @return A list containing statistical test results, oncoprint plots, and box plots.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
 #' # Load mutation and signature data
-#' maf_file <- "path_to_maf_file"
-#' mut_list <- make_mut_matrix(maf = maf_file, isTCGA = TRUE, category = "multi")
+#' mut_list <- make_mut_matrix(maf = "path_to_maf_file", isTCGA = TRUE, category = "multi")
 #' mut <- mut_list$snp
-#' # Assume 'tcga_stad_sig' is preloaded with appropriate data
-#' results <- find_mutations(
-#'   mutation_matrix = mut, signature_matrix = tcga_stad_sig,
-#'   id_signature_matrix = "ID", signature = "CD_8_T_effector",
-#'   min_mut_freq = 0.01, plot = TRUE, method = "multi",
-#'   save_path = "path_to_save_results"
-#' )
+#' results <- find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig,
+#'                           id_signature_matrix = "ID", signature = "CD_8_T_effector",
+#'                           min_mut_freq = 0.01, plot = TRUE, method = "multi",
+#'                           save_path = "path_to_save_results")
 find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,
                            min_mut_freq = 0.05, plot = TRUE, method = "multi", point.alpha = 0.1,
                            save_path = NULL, palette = "jco", show_plot = TRUE,

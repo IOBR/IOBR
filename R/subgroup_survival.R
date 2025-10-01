@@ -1,29 +1,26 @@
-##' Title Extract hazard ratio and confidence intervals from a coxph object of subgroup analysis
-##'
-##' @param pdata     data combine variables, follow up time, and outcome;
-##' @param variables  object that have several levles;
-##' @param time_name     column name of follow up time
-##' @param status_name   column name of outcome event
-##' @param object    target that use to calculate coxph fit;
-##' If target has two levels which name `High` and `Low` group, please transform `High` into `0` and `Low` into `1` before executing the command
-##' @author Dongqiang Zeng
-##' @export
-##' @import survival
-##' @examples
-##'
-##' #source data and filter NA
-##' data(subgroup_data)
-##' input <- subgroup_data %>% filter(time > 0) %>% filter(!is.na(status)) %>% filter(!is.na(AJCC_stage))
-##'
-##' ##for binary variable
-##' data1 <- subgroup_survival(pdata = input,time_name ="time", status_name = "status",
-##' variables = c("ProjectID", "AJCC_stage"), object ="score_binary" )
-##' data1
-##'
-##' ##for continue variables
-##' data2 <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
-##' variables = c("ProjectID", "AJCC_stage"), object = "score" )
-##' data2
+#' Subgroup Survival Analysis Using Cox Proportional Hazards Models
+#'
+#' Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional hazards models across specified subgroups.
+#'
+#' @param pdata Data frame containing variables, follow-up time, and outcome.
+#' @param variables Character vector. Subgrouping variables (each processed independently).
+#' @param time_name Character. Column name of follow-up time. Default is "time".
+#' @param status_name Character. Column name of event status (1/0). Default is "status".
+#' @param object Character. Variable of interest used in Cox model. If it has levels "High" and "Low", recode "High" to 0 and "Low" to 1 before calling.
+#'
+#' @return Data frame summarizing subgroup Cox results (HR, CI, p-value).
+#' @author Dongqiang Zeng
+#' @export
+#' @import survival
+#' @examples
+#' data(subgroup_data)
+#' input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
+#' # Binary variable example
+#' res_bin <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
+#'   variables = c("ProjectID", "AJCC_stage"), object = "score_binary")
+#' # Continuous variable example
+#' res_cont <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
+#'   variables = c("ProjectID", "AJCC_stage"), object = "score")
 
 subgroup_survival <- function(pdata, time_name = "time", status_name = "status", variables, object) {
   P <- 1

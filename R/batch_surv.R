@@ -1,24 +1,32 @@
-#' batch_surv - Batch Survival Analysis Function
+#' Batch Survival Analysis
 #'
-#' @description  This function is used to perform batch survival analysis. It calculates hazard ratios and confidence intervals for the specified variables based on the given data containing time-related information.
+#' @description
+#' Performs Cox proportional hazards regression analysis on multiple variables.
+#' Optionally determines optimal cutoffs to dichotomize continuous predictors before
+#' modeling. Returns hazard ratios, confidence intervals, and p-values for each variable.
 #'
-#' @param pdata The data frame containing the data.
-#' @param time  The column name representing time. Default is "time".
-#' @param status The column name representing status. Default is "status".
-#' @param variable The variables to perform survival analysis on.
-#' @param best_cutoff Whether to use the best cutoff for survival analysis. Default is FALSE. If set to TRUE, the function will calculate hazard ratios and confidence intervals for the binary version of the variables using the best cutoff method.
+#' @param pdata Data frame containing survival time, event status, and predictor variables.
+#' @param variable Character vector specifying the names of predictor variables to analyze.
+#' @param time Character string specifying the column name containing follow-up time.
+#'   Default is \code{"time"}.
+#' @param status Character string specifying the column name containing event status
+#'   (1 = event occurred, 0 = censored). Default is \code{"status"}.
+#' @param best_cutoff Logical indicating whether to compute optimal cutoffs for
+#'   continuous variables and analyze dichotomized versions. Default is \code{FALSE}.
+#'
+#' @return Data frame containing hazard ratios (HR), 95% confidence intervals (CI),
+#'   and p-values for each variable, sorted by p-value.
 #'
 #' @author Dongqiang Zeng
-#' @importFrom  survival coxph
-#' @importFrom survival Surv
 #' @export
-#' @return A data frame containing hazard ratios and confidence intervals.
+#' @importFrom survival coxph
+#' @importFrom survival Surv
 #' @examples
-#'
-#' # Loading TCGA-STAD microenvironment signature data
+#' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
-#' # Identifying signatures associated with gastric cancer patient survival
-#' batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)], time = "OS_time", status = "OS_status")
+#' # Perform batch survival analysis
+#' batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
+#'            time = "OS_time", status = "OS_status")
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
   pdata <- as.data.frame(pdata)
 

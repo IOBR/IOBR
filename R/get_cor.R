@@ -1,45 +1,46 @@
-#' Calculate and Visualize Correlation between Two Variables
-#' @description The "get_cor" function calculates and visualizes the correlation between two variables in a dataset. It provides options to scale the data, handle missing values, and incorporate additional data. The function supports various correlation methods and can display the correlation result. It generates a correlation plot with optional subtypes or categories, including a regression line. The plot can be customized with color palettes, labels, and titles. Additionally, the function allows saving the plot and data for further analysis.
+#' Calculate and Visualize Correlation Between Two Variables
 #'
-#' @param eset A dataset containing the variables of interest.
-#' @param pdata An optional data frame providing additional data for the analysis. Default is NULL.
-#' @param var1 The name of the first variable to analyze.
-#' @param var2 The name of the second variable to analyze.
-#' @param subtype An optional variable that represents subtypes/categories in the analysis. Default is NULL.
-#' @param na.subtype.rm Whether to remove NA values in the subtype variable. Default is FALSE.
-#' @param color_subtype The color palette for the subtypes/categories. Default is NULL.
-#' @param palette The name of the color palette. Default is "jama".
-#' @param index The index of the plot. Default is NULL.
-#' @param method The correlation method to use. Default is "spearman".
-#' @param show_cor_result Whether to print the correlation result. Default is TRUE.
-#' @param col_line The color of the line in the correlation plot. Default is NULL.
-#' @param id  The ID column name to use for labeling points on the plot. Default is "NULL".
-#' @param show_lebel  Whether to show labels on the plot. Default is FALSE.
-#' @param point_size The size of the points on the plot. Default is 4.
-#' @param title The title of the plot. Default is NULL.
-#' @param alpha The transparency level of points on the plot. Default is 0.7.
-#' @param title_size The size of the title on the plot. Default is 2.
-#' @param text_size The size of the text on the plot. Default is 15.
-#' @param axis_angle The rotation angle of the axes labels on the plot. Default is 0.
-#' @param hjust The horizontal justification of the axes labels on the plot. Default is 0.
-#' @param show_plot Whether to display the plot. Default is TRUE.
-#' @param fig.format The format of the saved figure. Default is "png".
-#' @param fig.width The width of the saved figure. Default is 7.
-#' @param fig.height The height of the saved figure. Default is 7.3.
-#' @param path  The path where the figure will be saved. Default is NULL.
-#' @param save_plot Whether to save the plot as a file. Default is FALSE.
-#' @param id_pdata The column name in pdata that contains unique identifiers. Default is "ID".
-#' @param scale Whether to scale the data. Default is TRUE.
-#' @param is.matrix Whether the eset is a matrix data with feature as row names
-#' @param id_eset The column name in eset that contains unique identifiers. Default is "ID".
-#' @param add.hdr.line add.hdr.line
+#' This function calculates and visualizes the correlation between two variables,
+#' with options for scaling, handling missing values, and incorporating grouping data.
 #'
-#' @return A ggplot object showing the correlation plot.
+#' @param eset Dataset containing the variables.
+#' @param pdata Optional data frame with additional information. Default is NULL.
+#' @param var1 Name of the first variable.
+#' @param var2 Name of the second variable.
+#' @param subtype Optional grouping variable for coloring points.
+#' @param na.subtype.rm Logical indicating whether to remove NA in subtype. Default is FALSE.
+#' @param color_subtype Colors for subtypes. Default is NULL.
+#' @param palette Color palette. Default is "jama".
+#' @param index Plot index. Default is NULL.
+#' @param method Correlation method. Default is "spearman".
+#' @param show_cor_result Logical indicating whether to print correlation result. Default is TRUE.
+#' @param col_line Color of regression line. Default is NULL.
+#' @param id Column for point labels. Default is "NULL".
+#' @param show_lebel Logical indicating whether to show labels. Default is FALSE.
+#' @param point_size Size of points. Default is 4.
+#' @param title Plot title. Default is NULL.
+#' @param alpha Transparency of points. Default is 0.5.
+#' @param title_size Title size. Default is 1.5.
+#' @param text_size Text size. Default is 10.
+#' @param axis_angle Axis label angle. Default is 0.
+#' @param hjust Horizontal justification. Default is 0.
+#' @param show_plot Logical indicating whether to display plot. Default is TRUE.
+#' @param fig.format Figure format. Default is "png".
+#' @param fig.width Figure width. Default is 7.
+#' @param fig.height Figure height. Default is 7.3.
+#' @param path Save path. Default is NULL.
+#' @param save_plot Logical indicating whether to save plot. Default is FALSE.
+#' @param id_pdata ID column in pdata. Default is "ID".
+#' @param scale Logical indicating whether to scale data. Default is TRUE.
+#' @param is.matrix Logical indicating if eset is a matrix with features as rows.
+#' @param id_eset ID column in eset. Default is "ID".
+#' @param add.hdr.line Logical for adding header line. Default is FALSE.
+#'
+#' @return A ggplot object of the correlation plot.
 #' @export
 #' @author Dongqiang Zeng
-#'
 #' @examples
-#' data(eset_tme_stad, package = "IOBR")
+#' data("eset_tme_stad", package = "IOBR")
 #' get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
 get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pdata = "ID", var1, var2, scale = TRUE,
                     subtype = NULL, na.subtype.rm = FALSE, color_subtype = NULL, palette = "jama", index = NULL,

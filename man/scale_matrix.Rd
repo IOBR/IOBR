@@ -2,28 +2,27 @@
 % Please edit documentation in R/scale_matrix.R
 \name{scale_matrix}
 \alias{scale_matrix}
-\title{scale_matrix - Scale and manipulate a matrix}
+\title{Scale and Manipulate a Matrix}
 \usage{
 scale_matrix(matrix, log2matrix = TRUE, manipulate = TRUE)
 }
 \arguments{
 \item{matrix}{The matrix to be scaled and manipulated.}
 
-\item{log2matrix}{Whether to apply a logarithmic transformation to the matrix. Default is TRUE. If set to TRUE, the matrix will be transformed using the log2eset function from the IOBR package.}
+\item{log2matrix}{Logical indicating whether to apply log2 transformation. Default is TRUE.}
 
-\item{manipulate}{Whether to perform additional manipulation on the matrix. Default is FALSE. If set to TRUE, the function will use the feature_manipulation function to manipulate the matrix based on specified criteria.}
+\item{manipulate}{Logical indicating whether to perform feature manipulation. Default is TRUE.}
 }
 \value{
-A data frame of the scaled and potentially manipulated matrix.
+A data frame of the scaled and manipulated matrix.
 }
 \description{
-This function scales a given matrix and optionally performs additional manipulation. It can apply a logarithmic transformation (base 2) to the matrix, center and scale the values, and optionally manipulate the features based on a specified criteria.
+This function scales a given matrix, optionally applies logarithmic transformation,
+and performs feature manipulation to remove problematic variables.
 }
 \examples{
 data("eset_gse62254", package = "IOBR")
-head(eset_gse62254)
 eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
-head(eset2)
 }
 \author{
 Dongqiang Zeng
