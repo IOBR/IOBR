@@ -31,17 +31,17 @@
 #' table(sig_stad2$TMEscore_CIR_binary)
 best_cutoff <- function(pdata, variable, time = "time", status = "status", PrintResult = T) {
   pdata <- as.data.frame(pdata)
-  colnames(pdata)[which(colnames(pdata) == time)] <- "time"
-  colnames(pdata)[which(colnames(pdata) == status)] <- "status"
+  colnames(pdata)[which(colnames(pdata) == time)] <- "time_iobr"
+  colnames(pdata)[which(colnames(pdata) == status)] <- "status_iobr"
 
-  pdata <- pdata[!is.na(pdata$time), ]
-  pdata <- pdata[!is.na(pdata$status), ]
+  pdata <- pdata[!is.na(pdata$time_iobr), ]
+  pdata <- pdata[!is.na(pdata$status_iobr), ]
 
-  pdata$time <- as.numeric(pdata$time)
-  pdata$status <- as.numeric(pdata$status)
+  pdata$time <- as.numeric(pdata$time_iobr)
+  pdata$status <- as.numeric(pdata$status_iobr)
 
-  y <- Surv(pdata$time, pdata$status)
-  iscutoff <- surv_cutpoint(pdata, time = "time", event = "status", variables = variable)
+  y <- Surv(pdata$time_iobr, pdata$status_iobr)
+  iscutoff <- surv_cutpoint(pdata, time = "time_iobr", event = "status_iobr", variables = variable)
 
   aa <- paste(">>>-- The best cutoff is = ", iscutoff$cutpoint$cutpoint)
   message(aa)
@@ -59,7 +59,7 @@ best_cutoff <- function(pdata, variable, time = "time", status = "status", Print
     print(list(best_cutoff = aa, cox_continuous_object = bb, summary_binary_variable = cc, cox_binary_object = dd))
   }
 
-  colnames(pdata)[which(colnames(pdata) == "time")] <- time
-  colnames(pdata)[which(colnames(pdata) == "status")] <- status
+  colnames(pdata)[which(colnames(pdata) == "time_iobr")] <- time
+  colnames(pdata)[which(colnames(pdata) == "status_iobr")] <- status
   return(pdata)
 }
