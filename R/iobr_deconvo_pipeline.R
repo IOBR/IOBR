@@ -13,7 +13,7 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' data("eset_stad", package = "IOBR")
+#' utils::data("eset_stad", package = "IOBR",envir=environment())
 #' eset <- count2tpm(eset_stad)
 #' res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000) {
@@ -49,7 +49,7 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TM
   print(paste0(">>>>> TME cell deconvolution was completed: ", project))
   #######################################
 
-  data(signature_collection, package = "IOBR")
+  .load_data("signature_collection")
   sig_res <- calculate_sig_score(
     pdata = NULL,
     eset = eset,

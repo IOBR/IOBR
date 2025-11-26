@@ -14,7 +14,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("eset_stad", package = "IOBR")
+#' utils::data("eset_stad", package = "IOBR",envir=environment())
 #' eset <- tcga_rna_pres(eset = eset_stad, id_type = "ensembl", input_type = "count",
 #'                       output = "tumor", output_type = "tpm", annotation = TRUE)
 #'
@@ -56,7 +56,7 @@ tcga_rna_preps <- function(eset, id_type = c("ensembl", "symbol"), input_type = 
     eset_tpm <- eset
     if (id_type == "ensembl" & annotation) {
       message(">>== Annotation... ")
-      data("anno_grch38", package = "IOBR")
+      anno_grch38 <- .load_data("anno_grch38")
       eset_tpm <- anno_eset(eset = eset_tpm, annotation = anno_grch38, probe = "id", symbol = "symbol")
     }
   }

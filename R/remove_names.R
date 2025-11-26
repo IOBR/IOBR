@@ -1,3 +1,9 @@
+#' Default pattern list for name cleaning
+#'
+#' A character vector of common substrings to remove from feature names
+#' (used in \code{remove_names()} and other helper functions).
+#'
+#' @format A character vector of length 12.
 #' @export
 patterns_to_na <- c("_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MCP", "HALLMARK_", "_CIBERSORT", "xcell", "_timer", "_mcp", "_epic")
 

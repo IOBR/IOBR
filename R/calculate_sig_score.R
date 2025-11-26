@@ -528,7 +528,10 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' @param print_filtered_signatures logical, print filtered signatures has gene count less than minimal gene count
 #' @param adjust_eset default is FALSE
 #' @param parallel.size default is 1
-#'
+#' @param ... Additional arguments passed to the specific scoring methods
+#'   ({calculate_sig_score_pca()},{calculate_sig_score_zscore()},
+#'   {calculate_sig_score_ssgsea()}, or {calculate_sig_score_integration()}).
+#'   
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
 #' @author Dongqiang Zeng
@@ -553,7 +556,7 @@ calculate_sig_score <- function(pdata = NULL,
                                 adjust_eset = FALSE,
                                 parallel.size = 1L,
                                 print_filtered_signatures = FALSE, ...) {
-  if (class(signature) == "list") {
+  if (inherits(signature, "list")) {
     signature <- lapply(signature, function(x) na.omit(x))
     signature <- lapply(signature, function(x) as.character(x))
     signature <- lapply(signature, function(x) unique(x))

@@ -40,6 +40,10 @@ default is 2 for PCA and z score function}
 \item{parallel.size}{default is 1}
 
 \item{print_filtered_signatures}{logical, print filtered signatures has gene count less than minimal gene count}
+
+\item{...}{Additional arguments passed to the specific scoring methods
+({calculate_sig_score_pca()},{calculate_sig_score_zscore()},
+{calculate_sig_score_ssgsea()}, or {calculate_sig_score_integration()}).}
 }
 \value{
 data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows

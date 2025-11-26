@@ -74,6 +74,10 @@ sig_box_batch(
 \item{width}{Numeric. Width of plots. Default is 3.5.}
 
 \item{fig_type}{Character. File format for plots (e.g., "pdf"). Default is "pdf".}
+
+\item{max_count_feas}{Integer. Maximum number of features to analyze when `pattern_vars = TRUE`. 
+If the matched variable count exceeds this limit, only the first `max_count_feas` features are used. 
+Default is 30.}
 }
 \value{
 If `return_stat_res` is TRUE, returns a data frame of statistical results; otherwise, saves plots to the specified directory.

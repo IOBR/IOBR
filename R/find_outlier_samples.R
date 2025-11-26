@@ -56,7 +56,7 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   p <- p + design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
   if (show_plot) print(p)
 
-  ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
+  ggsave(plot = p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]
 

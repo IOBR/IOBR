@@ -65,7 +65,6 @@
 #'
 #' @author Dongqiang Zeng
 #' @export
-#' @import DESeq2
 #' @examples
 #' # Load example data
 #' data("eset_stad", package = "IOBR")
@@ -124,7 +123,10 @@ sig_gsea <- function(deg,
   message("`>>>--- Parametar org must be one of: hsa or mus`")
   if (org == "hsa") {
     database <- "org.Hs.eg.db"
-    if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) BiocManager::install("org.Hs.eg.db")
+    if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
+      stop("Package 'org.Hs.eg.db' is required. Please install it via BiocManager::install('org.Hs.eg.db').",
+           call. = FALSE)
+    }
     entrizid <- clusterProfiler::bitr(deg$symbol,
       fromType = "SYMBOL",
       toType = c("GENENAME", "ENTREZID"),
@@ -132,7 +134,10 @@ sig_gsea <- function(deg,
     )
   } else if (org == "mus") {
     database <- "org.Mm.eg.db"
-    if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) BiocManager::install("org.Mm.eg.db")
+    if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) {
+      stop("Package 'org.Mm.eg.db' is required. Please install it via BiocManager::install('org.Mm.eg.db').",
+           call. = FALSE)
+    }
     entrizid <- clusterProfiler::bitr(deg$symbol,
       fromType = "SYMBOL",
       toType = c("GENENAME", "ENTREZID"),
@@ -194,15 +199,22 @@ sig_gsea <- function(deg,
 
     if (org == "hsa") {
       database <- "org.Hs.eg.db"
-      entrizid <- bitr(term2genes$symbol,
+      if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
+        stop("Package 'org.Hs.eg.db' is required. Please install it via BiocManager::install('org.Hs.eg.db').",
+             call. = FALSE)
+      }
+      entrizid <- clusterProfiler::bitr(term2genes$symbol,
         fromType = "SYMBOL",
         toType = c("GENENAME", "ENTREZID"),
         OrgDb = database
       )
     } else if (org == "mus") {
       database <- "org.Mm.eg.db"
-      if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) BiocManager::install("org.Mm.eg.db")
-      entrizid <- bitr(term2genes$symbol,
+      if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) {
+        stop("Package 'org.Mm.eg.db' is required. Please install it via BiocManager::install('org.Mm.eg.db').",
+             call. = FALSE)
+      }
+      entrizid <- clusterProfiler::bitr(term2genes$symbol,
         fromType = "SYMBOL",
         toType = c("GENENAME", "ENTREZID"),
         OrgDb = database

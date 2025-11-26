@@ -23,6 +23,8 @@ deconvo_cibersort(
 \item{perm}{permutation to run CIBERSORT}
 
 \item{absolute}{logical: Runs CIBERSORT in absolute mode}
+
+\item{abs_method}{Character string specifying how to compute absolute abundance}
 }
 \value{
 cibersrot with immune cell fractions

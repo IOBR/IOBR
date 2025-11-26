@@ -26,10 +26,13 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' # Example with survival data
-#' data(ovarian)
-#' ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status",
-#'                                  vars = c("resid.ds", "rx", "ecog.ps"))
+#' if (requireNamespace("survival", quietly = TRUE)) {
+#'   data("ovarian", package = "survival")
+#'   ovarian$rscore <- add_riskscore(
+#'     ovarian, time = "time", status = "status",
+#'     vars = c("resid.ds", "rx", "ecog.ps")
+#'   )
+#' }
 add_riskscore <- function(input, family = "cox", target = NULL, time = NULL, status = NULL, vars, new_var_name = "riskscore") {
   # Check the 'family' parameter and perform the corresponding model fitting
   if (family == "cox") {
