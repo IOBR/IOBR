@@ -65,8 +65,8 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     # Seurat v5+ 的处理逻辑
     message("Using Seurat v5+ workflow")
     sce <- NormalizeData(sce)
-    sce[["RNA"]]$data <- LayerData(sce, assay = "RNA", layer = "counts") # 兼容v5的Layer访问
-    sce <- ScaleData(sce, layer = "data")
+    sce <- NormalizeData(sce, assay = "RNA", normalization.method = "LogNormalize") # 兼容v5的Layer访问
+    sce <- ScaleData(sce, assay = "RNA")
   } else {
     # Seurat v4及以下版本的处理逻辑
     message("Using Seurat v4 workflow")
@@ -88,7 +88,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     error = function(e) {
       message("Error in FindVariableFeatures: ", e$message)
       counts <- GetAssayData(sce, assay = "RNA", slot = "counts")
-      gene_var <- Matrix::rowVars(counts)
+      gene_var <- matrixStats::rowVars(counts)
       top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
       VariableFeatures(sce) <- top_genes # Assign variable features
     }

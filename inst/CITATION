@@ -2,7 +2,7 @@ citHeader("To cite IOBR in publications use:")
 
 bibentry(
   bibtype  = "Article",
-  title    = title = "IOBR2: Multidimensional Decoding of Tumor Microenvironment for Immuno-Oncology Research",
+  title    ="IOBR2: Multidimensional Decoding of Tumor Microenvironment for Immuno-Oncology Research",
   author   = personList(
              as.person("Dongqiang Zeng"),
              as.person("Yiran Fang"),

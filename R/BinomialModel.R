@@ -123,7 +123,6 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, 
 #' result <- ProcessingData(x, y, scale = FALSE, type = "survival")
 #' @export
 ProcessingData <- function(x, y, scale, type = "binomial") {
-  require(dplyr)
 
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
@@ -281,6 +280,9 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #'
 #' @examples
 #' # Assuming 'model', 'newx', and 'actual.y' are predefined:
+#' fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
+#' test_data <- matrix(rnorm(100 * 10), ncol = 10)|
+#' test_outcomes <- rbinom(100, 1, 0.5)
 #' auc_value <- BinomialAUC(model = fitted_model, newx = test_data, s = "lambda.min", acture.y = test_outcomes)
 #' print(auc_value)
 #' @export

@@ -7,6 +7,7 @@
 #' @param source default is ensembl, if an error is reported, set parameter to `local` and mus_human_gene_symbol will be use to convert gene symbols
 #' @param is_matrix Boolean indicating if 'eset' is a matrix; defaults to TRUE. If FALSE, 'column_of_symbol' must be specified.
 #' @param column_of_symbol default is null.Name of the column in 'eset' that contains gene symbols, if 'eset' is not a matrix. This parameter must be specified if 'is_matrix' is FALSE.
+#' @param verbose Logical; if `TRUE`, prints information about available Ensembl datasets. Defaults to `FALSE`.
 #'
 #' @return Returns the expression set with human gene symbols for further analysis.
 #' @export
@@ -36,7 +37,6 @@ mouse2human_eset <- function(eset, source = "ensembl", is_matrix = TRUE, column_
 
 
   if (source == "ensembl") {
-    require("biomaRt")
     ensembl <- biomaRt::useEnsembl(biomart = "ensembl")
     if (verbose) print(head(listDatasets(ensembl)))
     # Basic function to convert mouse to human gene names
