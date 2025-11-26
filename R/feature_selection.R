@@ -105,11 +105,32 @@ feature_select <- function(x, y, method = c("cor", "dif"),
 #' @return Returns a dataframe from limma::topTable, which includes genes as rows and columns like genelist, logFC, AveExpr, etc.
 #' @export
 #' @examples
-#' data("expression_data", package = "ExamplePackage")
-#' data("phenotype_data", package = "ExamplePackage")
+#' # Toy example with 100 genes and 6 samples
+#' set.seed(123)
+#' exprdata <- matrix(
+#'   rnorm(100 * 6),
+#'   nrow = 100,
+#'   ncol = 6,
+#'   dimnames = list(
+#'     paste0("gene", 1:100),
+#'     paste0("sample", 1:6)
+#'   )
+#' )
 #'
-#' dif_results <- limma.dif(exprdata = expression_data, pdata = phenotype_data, contrastfml = "group1 - group2")
-#' print(dif_results)
+#' # Phenotype data: 3 vs 3
+#' pdata <- data.frame(
+#'   sample = colnames(exprdata),
+#'   group  = rep(c("group1", "group2"), each = 3),
+#'   stringsAsFactors = FALSE
+#' )
+#'
+#' # Differential expression: group1 vs group2
+#' res <- limma.dif(
+#'   exprdata   = exprdata,
+#'   pdata      = pdata,
+#'   contrastfml = "group1 - group2"
+#' )
+#' head(res)
 limma.dif <- function(exprdata, pdata, contrastfml) {
   group_list <- as.character(pdata[, 2])
   design <- model.matrix(~ 0 + factor(group_list))
@@ -118,10 +139,10 @@ limma.dif <- function(exprdata, pdata, contrastfml) {
   if (!all(colnames(exprdata) == pdata[, 1])) {
     stop(" expression data do not match pdata")
   }
-  contrast.matrix <- makeContrasts(contrasts = contrastfml, levels = design)
-  fit <- lmFit(exprdata, design)
-  fit <- contrasts.fit(fit, contrast.matrix)
-  fit <- eBayes(fit)
-  dif <- topTable(fit, adjust.method = "BH", coef = contrastfml, number = Inf)
+  contrast.matrix <- limma::makeContrasts(contrasts = contrastfml, levels = design)
+  fit <- limma::lmFit(exprdata, design)
+  fit <- limma::contrasts.fit(fit, contrast.matrix)
+  fit <- limma::eBayes(fit)
+  dif <- limma::topTable(fit, adjust.method = "BH", coef = contrastfml, number = Inf)
   return(dif)
 }

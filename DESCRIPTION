@@ -2,16 +2,14 @@ Package: IOBR
 Title: Immune Oncology Biological Research
 Version: 0.99.99
 Authors@R: c(
-    person("Dongqiang", "Zeng", , "xx@qq.com", role = "aut"),
-    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre"),
+    person("Dongqiang", "Zeng",email ="xx@qq.com", role = "aut"),
+    person("Yiran", "Fang",email ="fyr_nate@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut"),
+    person("Shixiang", "Wang",email ="w_shixiang@163.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
-    person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
+    person("Qingcong", "Luo",email ="xx@qq.com", role = "aut"),
+    person("Hongqian", "Qian",email ="xx@qq.com", role = "aut")
   )
-Author: Dongqiang Zeng [aut], Yiran Fang [aut, cre], Shixiang Wang [aut], Qingcong Luo [aut], Hongqian Qian [aut]
-Maintainer: Yiran Fang <fyr_nate@163.com>
 Description: This package offers six modules for TME analysis based on
     multi-omics data. These modules cover data preprocessing, TME
     estimation, TME infiltrating patterns, cellular interactions, genome
@@ -25,7 +23,7 @@ Description: This package offers six modules for TME analysis based on
     analysis pipeline and feature visualization are user-friendly and
     provide a comprehensive description of the complex TME, offering
     insights into tumour-immune interactions.
-License: GPL-3
+License: GPL-3 + file LICENSE
 URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
     https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
@@ -47,9 +45,7 @@ Imports:
     GSVA,
     limma,
     limSolve,
-    Matrix,
     matrixStats,
-    patchwork,
     ppcor,
     pracma,
     preprocessCore,
@@ -63,19 +59,24 @@ Imports:
     tidyHeatmap,
     tidyr,
     timeROC,
-    WGCNA
+    methods
 Suggests: 
     easier,
     knitr,
     prettydoc,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    WGCNA,
+    Matrix,
+    patchwork
 VignetteBuilder: 
     knitr
 BiocType: Software
-bioViews: GeneExpression, DifferentialExpression, ImmunoOncology,
+biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: TRUE
+LazyData: FALSE
 RoxygenNote: 7.3.3

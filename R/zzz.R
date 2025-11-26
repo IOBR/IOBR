@@ -24,7 +24,7 @@
 #   invisible(suppressPackageStartupMessages(library("clusterProfiler")))
 #
 #   invisible(suppressPackageStartupMessages(
-#     sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", "patchwork",
+#     sapply(c("tibble", "tidyverse", "survival", "survminer", "ggplot2", 
 #              "ggpubr","limma","limSolve","preprocessCore","e1071","GSVA"),
 #            requireNamespace, quietly = TRUE)
 #     ))
@@ -37,7 +37,7 @@
     sapply(
       c(
         "ComplexHeatmap", "tidyHeatmap", "clusterProfiler", "tibble",
-        "tidyverse", "survival", "survminer", "ggplot2", "patchwork",
+        "tidyverse", "survival", "survminer", "ggplot2", 
         "ggpubr", "limma", "limSolve", "preprocessCore", "e1071", "GSVA"
       ),
       requireNamespace,
