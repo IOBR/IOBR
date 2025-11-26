@@ -86,7 +86,7 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   expr <- expr[shared.genes, ]
   if (dim(expr)[1] < 5000) {
     print(paste("ERROR: not enough genes"))
-    return - 1
+    return(-1)
   }
 
   # Transform the expression to rank

@@ -12,7 +12,7 @@ find_mutations(
   min_mut_freq = 0.05,
   plot = TRUE,
   method = "multi",
-  point.alpha = 0.1,
+  point_alpha = 0.1,
   save_path = NULL,
   palette = "jco",
   show_plot = TRUE,
@@ -42,6 +42,8 @@ find_mutations(
 
 \item{method}{Statistical test method: "multi" for both Cuzick and Wilcoxon, or "Wilcoxon" only. Default is "multi".}
 
+\item{point_alpha}{Transparency of points in box plot. Default is 0.1.}
+
 \item{save_path}{Directory to save plots and results. If NULL, uses signature name.}
 
 \item{palette}{Color palette for box plots. Default is "jco".}
@@ -65,8 +67,6 @@ find_mutations(
 \item{genes}{Optional vector of gene names; if NULL, selects based on frequency.}
 
 \item{point_size}{Size of points in box plot. Default is 4.5.}
-
-\item{point_alpha}{Transparency of points in box plot. Default is 0.1.}
 }
 \value{
 A list containing statistical test results, oncoprint plots, and box plots.

@@ -197,7 +197,7 @@ iobr_cor_plot <- function(pdata_group,
 
   pf_stat <- pf
   ####################################################################
-  if (!class(signature_group) == "list") stop(">>> Signature_group must be a list.")
+  if (!inherits(signature_group, "list")) stop(">>> Signature_group must be a list.")
   ####################################################################
 
   all_sig <- unique(unlist(group_list))

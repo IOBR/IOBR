@@ -17,6 +17,8 @@ LR_cal(
 \item{data_type}{Type of input data, possible values are "count" or "tpm".}
 
 \item{id_type}{Type of gene identifier, default is "ensembl".}
+
+\item{cancer_type}{Character string specifying the cancer type used by easier.}
 }
 \value{
 A data frame containing ligand-receptor interaction scores
