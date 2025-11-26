@@ -34,13 +34,13 @@
 #' @export
 #' @examples
 #' # Load TCGA count data
-#' data(eset_stad, package = "IOBR")
+#' utils::data(eset_stad, package = "IOBR",envir = environment())
 #' # Transform to TPM using local gene annotation
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' head(eset)
 #'
 #' # Alternative: TPM transformation using gene symbols (not recommended)
-#' data("anno_grch38", package = "IOBR")
+#' utils::data("anno_grch38", package = "IOBR",envir = environment())
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
 #' head(eset)
@@ -92,7 +92,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
 
   if (source == "local" & tolower(idType) == "ensembl" & org == "hsa") {
     rownames(countMat) <- substring(rownames(countMat), 1, 15)
-    data("anno_grch38", package = "IOBR")
+    .load_data("anno_grch38")
     message(">>>--- Using variables (anno_grch38) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
 

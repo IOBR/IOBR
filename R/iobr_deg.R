@@ -28,8 +28,8 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("eset_stad", package = "IOBR")
-#' data("stad_group", package = "IOBR")
+#' utils::data("eset_stad", package = "IOBR",envir=environment())
+#' utils::data("stad_group", package = "IOBR",envir=environment())
 #' library(DESeq2)
 #' deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
 iobr_deg <- function(eset,
@@ -115,7 +115,7 @@ iobr_deg <- function(eset,
       # DEG <- rownames_to_column(DEG, var = "row")
 
       message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg` \n")
-      data("anno_grch38", package = "IOBR")
+      anno_grch38 <- .load_data("anno_grch38")
       DEG <- merge(DEG, anno_grch38, by.x = "row", by.y = "id", all = FALSE)
     }
 
