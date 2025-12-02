@@ -49,7 +49,7 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TM
   print(paste0(">>>>> TME cell deconvolution was completed: ", project))
   #######################################
 
-  .load_data("signature_collection")
+  signature_collection <- .load_data("signature_collection")
   sig_res <- calculate_sig_score(
     pdata = NULL,
     eset = eset,
