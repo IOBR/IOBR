@@ -2,7 +2,7 @@ Package: IOBR
 Type: Package
 Title: Immune Oncology Biological Research
 Version: 0.99.9
-Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong
+Author: Dongqiang Zeng, Zilan Ye, Rongfang Shen, Yi Xiong, Shixiang Wang, Hongqian Qian
 Maintainer: Dongqiang Zeng <dongqiangzeng0808@gmail.com>
 Description: Multi-omics Immuno-Oncology Biological Research to decode tumor microenvironment and signatures
 License: GPL-3
