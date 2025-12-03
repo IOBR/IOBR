@@ -196,6 +196,71 @@ Microenvironment and Antitumor Immunity With IOBR, **Med Research**,
 2025 [Link to
 paper](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001)
 
+## AI Assistant
+
+IOBR now includes an integrated AI assistant with Retrieval-Augmented Generation (RAG) capabilities. The assistant helps you:
+
+- Ask natural language questions about IOBR functionality
+- Get AI-generated answers with R code examples
+- View source documentation supporting each answer
+- Work with multiple LLM providers (OpenAI, Anthropic, Hugging Face, or custom endpoints)
+
+### Quick Start
+
+#### 1. Install dependencies
+
+``` r
+install.packages(c("shiny", "httr2", "jsonlite"))
+```
+
+#### 2. Set up your API key
+
+``` r
+# For OpenAI
+Sys.setenv(OPENAI_API_KEY = "your-api-key")
+```
+
+#### 3. Launch the Shiny app
+
+``` r
+shiny::runApp(system.file("shiny", package = "IOBR"))
+```
+
+Or use programmatically:
+
+``` r
+# Configure provider
+provider <- list(
+  name = "openai",
+  api_key = Sys.getenv("OPENAI_API_KEY")
+)
+
+# Create index (first time only)
+iobr_ai_init(provider = provider)
+
+# Query the assistant
+result <- iobr_ai_query(
+  "How do I perform TME deconvolution with CIBERSORT?",
+  provider = provider
+)
+cat(result$answer)
+```
+
+### Features
+
+- **Multiple Providers**: Supports OpenAI, Anthropic, Hugging Face, and custom endpoints
+- **Safe by Design**: No automatic code execution - all generated code is displayed for manual review
+- **Full Provenance**: Every answer includes source references with similarity scores
+- **Interactive UI**: User-friendly Shiny interface for configuration and querying
+- **Programmatic API**: All features accessible via R functions for automation
+
+For detailed documentation, see `inst/ai/README.md` or run:
+
+``` r
+?iobr_ai_init
+?iobr_ai_query
+```
+
 ## Reporting bugs
 
 Please report bugs to the [Github issues
