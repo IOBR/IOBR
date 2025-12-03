@@ -13,6 +13,7 @@ tests/testthat
 ./tests/GSE100935_series_matrix.txt.gz
 TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf
 5-update-gene-signatures.R
+inst/ai/iobr_embeddings.rds
 ..Rcheck/
 *.tar.gz
 *.zip
