@@ -8,7 +8,6 @@ README.Rmd
 2-bulid-IOBR-used-data.R
 3-Testing-functions.R
 4-new-function-exploring.R
-tests/testthat
 ./tests/TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf
 ./tests/GSE100935_series_matrix.txt.gz
 TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf
