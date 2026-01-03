@@ -78,5 +78,5 @@ biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: FALSE
+LazyData: TRUE
 RoxygenNote: 7.3.3
