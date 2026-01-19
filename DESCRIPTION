@@ -70,7 +70,10 @@ Suggests:
     org.Mm.eg.db,
     WGCNA,
     Matrix,
-    patchwork
+    patchwork,
+    shiny,
+    httr,
+    jsonlite
 VignetteBuilder: 
     knitr
 BiocType: Software
