@@ -33,6 +33,8 @@ percentiles of survival time, which are commonly used thresholds to assess short
 \examples{
 # Assuming 'fit' is a fitted survival model such as from `coxph` or `glmnet`
 new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-actual_outcome <- data.frame(time = rexp(100, rate = 0.1), status = rbinom(100, size = 1, prob = 0.5))
+actual_outcome <- data.frame(
+  time = rexp(100, rate = 0.1),
+  status = rbinom(100, size = 1, prob = 0.5))
 auc_results <- PrognosticAUC(fit, newx = new_data, s = "lambda.min", acture.y = actual_outcome)
 }

@@ -64,12 +64,15 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
       "ptroglodytes", "rnorvegicus", "sscrofa"
     ), "_gene_ensembl")
     type <- c("ensembl_gene_id", "entrezgene_id", "hgnc_symbol", "start_position", "end_position")
-    if (org == "mmu") type[3] <- "mgi_symbol"
+    if (org == "mmus") type[3] <- "mgi_symbol"
     # listEnsemblArchives()
     # listMarts()
     # listAttributes()
     ds <- datasets[grepl(org, datasets)]
-    mart <- biomaRt::useMart(host = "www.ensembl.org", biomart = "ENSEMBL_MART_ENSEMBL", dataset = ds)
+    mart <- biomaRt::useMart(
+      host = "https://www.ensembl.org",
+      biomart = "ENSEMBL_MART_ENSEMBL", 
+      dataset = ds)
     ensembl <- biomaRt::getBM(attributes = type, mart = mart)
     #######################################
 
@@ -151,7 +154,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
   if (source == "local" & tolower(idType) == "ensembl" & org == "mmus") {
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
-
+    .load_data("anno_gc_vm32")
     length_ensembl <- anno_gc_vm32[, c("id", "eff_length", "symbol")]
     length_ensembl <- length_ensembl[order(length_ensembl$eff_length, decreasing = T), ]
 
@@ -165,7 +168,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
     message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL ID as row names")
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
-
+    .load_data("anno_gc_vm32")
     length_ensembl <- anno_gc_vm32[, c("mgi_id", "eff_length", "symbol")]
     length_ensembl <- length_ensembl[order(length_ensembl$eff_length, decreasing = T), ]
     colnames(length_ensembl)[1] <- "id"
@@ -181,6 +184,7 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
     message(">>>--- This is a fuzzy calculation. We recommend that users provide expression matrices with ENSEMBL ID as row names")
     message(">>>--- Using variables (anno_gc_vm32) and gene lengths (eff_length)  built into the IOBR package to perform TPM transformation")
     message(">>>--- The gene lengths (eff_length) was estimated by function `getGeneLengthAndGCContent` from EDASeq package with default parameters at 2023-02-10")
+    .load_data("anno_gc_vm32")
     length_ensembl <- anno_gc_vm32[, c("symbol", "eff_length", "gc")]
     length_ensembl <- length_ensembl[order(length_ensembl$eff_length, decreasing = T), ]
 
