@@ -20,7 +20,8 @@ get_cor_matrix(
   font.size.star = 8,
   font.size = 15,
   fill_by_cor = FALSE,
-  round.num = 1
+  round.num = 1,
+  cols = NULL
 )
 }
 \arguments{
@@ -55,6 +56,9 @@ get_cor_matrix(
 \item{fill_by_cor}{A logical value indicating whether to fill the tiles in the plot according to the correlation values. Default is FALSE.}
 
 \item{round.num}{The number of decimal places to round the correlation values. Default is 1.}
+
+\item{cols}{Character vector. Custom colors for correlation gradient 
+(low, mid, high). If NULL, uses default blue-white-red. Default is NULL.}
 }
 \value{
 A ggplot object displaying the correlation matrix.
