@@ -16,7 +16,8 @@ sig_box(
   point_size = 5,
   size_of_font = 10,
   size_of_pvalue = 6,
-  show_pvalue = TRUE,
+  show_pairwise_p = TRUE,
+  show_overall_p = FALSE,
   return_stat_res = FALSE,
   assay = NULL,
   slot = "scale.data",
@@ -54,8 +55,11 @@ Default is \code{FALSE}.}
 \item{size_of_pvalue}{Numeric value specifying the font size for p-values. Default
 is 6.}
 
-\item{show_pvalue}{Logical indicating whether to display statistical comparison
-p-values on the plot. Default is \code{TRUE}.}
+\item{show_pairwise_p}{Logical indicating whether to display pairwise comparison
+p-values between groups. Default is \code{TRUE}.}
+
+\item{show_overall_p}{Logical indicating whether to display the overall group
+difference p-value. Default is \code{FALSE}.}
 
 \item{return_stat_res}{Logical indicating whether to return statistical test results
 instead of the plot. Default is \code{FALSE}.}

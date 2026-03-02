@@ -41,9 +41,11 @@ It creates plots for both training and testing data sets, using specified lambda
 automatically handles the selection of color palettes and saves the resulting plots in a specified directory.
 }
 \examples{
+\dontrun{
 # Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
 PlotAUC(
   train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
   model = fitted_model, modelname = "MyModel"
 )
+}
 }

@@ -18,7 +18,7 @@ sig_surv_plot(
   show_col = TRUE,
   mini_sig = "score",
   fig.type = "png",
-  save_path = "KM-plot",
+  save_path = NULL,
   index = 1
 )
 }
@@ -49,7 +49,7 @@ sig_surv_plot(
 
 \item{fig.type}{File format. Default is "png".}
 
-\item{save_path}{Directory for saving plots. Default is "KM-plot".}
+\item{save_path}{Directory for saving plots. If NULL, plots are not saved. Default is NULL.}
 
 \item{index}{Index for multiple plots. Default is 1.}
 }

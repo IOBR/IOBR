@@ -87,7 +87,9 @@ Generates multiple box plots for specified features (signatures) across groups i
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
-sig_box_batch(input = tcga_stad_pdata, vars = c("TMEscore_plus", "GZMB"), groups = "subtype", jitter = TRUE, palette = "jco")
+sig_box_batch(input = tcga_stad_pdata,
+  vars = c("TMEscore_plus", "GZMB"), 
+  groups = "subtype", jitter = TRUE, palette = "jco")
 }
 \author{
 Dongqiang Zeng

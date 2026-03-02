@@ -8,7 +8,7 @@ sig_roc(
   data,
   response,
   variables,
-  fig.path = ".",
+  fig.path = NULL,
   main = NULL,
   file.name = NULL,
   palette = "jama",
@@ -27,7 +27,7 @@ sig_roc(
 
 \item{variables}{A vector of names of predictor variables in `data` for which ROC curves will be plotted.}
 
-\item{fig.path}{Directory path to save the output PDF file. Default is the current working directory.}
+\item{fig.path}{Directory path to save the output PDF file. Default is NULL.}
 
 \item{main}{Main title for the ROC plot.}
 
