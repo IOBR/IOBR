@@ -59,12 +59,85 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   # normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)
   # data("xCell.data")
+  ## ---- minimal guardrails (added) ----
+  rn <- rownames(eset)
+  if (is.null(rn) || length(rn) == 0) {
+    stop(
+      "xCell requires gene identifiers as rownames of 'eset'.\n",
+      "Your input has no rownames. Please set rownames to HGNC gene symbols (RNA-seq, arrays=FALSE) ",
+      "or use arrays=TRUE for microarray/probe IDs after appropriate mapping.",
+      call. = FALSE
+    )
+  }
+  rn <- as.character(rn)
+  
+  # quick heuristics
+  ensg_frac <- mean(grepl("^ENSG", rn))
+  ensver_frac <- mean(grepl("\\.\\d+$", rn))
+  probe_frac <- mean(grepl("(_at$|_s_at$|_x_at$|^AFFX)", rn, ignore.case = TRUE))
+  has_space <- any(grepl("\\s", rn))
+  all_lower <- all(rn == tolower(rn))
+  
+  # best-effort overlap check with xCell signatures (won't fail if unavailable)
+  overlap_checked <- FALSE
+  overlap_n <- NA_integer_
+  if (requireNamespace("xCell", quietly = TRUE)) {
+    geneSets <- NULL
+    for (obj in c("geneSets", "xCell.data", "xCell.signatures", "signatures")) {
+      if (exists(obj, envir = asNamespace("xCell"), inherits = FALSE)) {
+        geneSets <- get(obj, envir = asNamespace("xCell"), inherits = FALSE)
+        break
+      }
+    }
+    if (is.list(geneSets)) {
+      all_gs <- unique(unlist(geneSets, use.names = FALSE))
+      if (length(all_gs) > 0) {
+        overlap_n <- length(intersect(rn, all_gs))
+        overlap_checked <- TRUE
+      }
+    }
+  }
+  
+  if (isTRUE(overlap_checked) && overlap_n == 0L) {
+    stop(
+      "xCell identifier mismatch: none of the gene identifiers in your expression matrix ",
+      "could be matched to xCell gene signatures.\n\n",
+      "Expected: HGNC gene symbols as rownames when arrays=FALSE (RNA-seq mode).\n",
+      sprintf("Detected: ENSG-like %.1f%%; Ensembl version suffix %.1f%%; probe-like %.1f%%.\n",
+              100 * ensg_frac, 100 * ensver_frac, 100 * probe_frac),
+      "Common fixes:\n",
+      "  1) Ensembl IDs: remove version suffix and map Ensembl -> HGNC SYMBOL.\n",
+      "  2) Microarray probe IDs: set arrays=TRUE and/or map probes -> HGNC SYMBOL.\n",
+      "  3) Formatting: trim whitespace, fix case, and ensure '-' vs '.' is correct.\n",
+      call. = FALSE
+    )
+  }
+  
+  if (!isTRUE(overlap_checked) && (ensg_frac > 0.5 || probe_frac > 0.5)) {
+    stop(
+      "xCell input gene identifier format is likely incompatible.\n",
+      "xCell requires HGNC gene symbols as rownames in RNA-seq mode (arrays=FALSE).\n",
+      sprintf("Detected ENSG-like %.1f%%; probe-like %.1f%%.\n",
+              100 * ensg_frac, 100 * probe_frac),
+      "Please map identifiers to HGNC symbols, or set arrays=TRUE for microarray data.",
+      call. = FALSE
+    )
+  }
+  
+  if (has_space) {
+    warning("xCell: rownames contain whitespace; consider trimws() to avoid mapping issues.", call. = FALSE)
+  }
+  if (all_lower) {
+    warning("xCell: rownames are all lowercase; xCell signatures are usually HGNC uppercase symbols.", call. = FALSE)
+  }
+  ## ---- end guardrails ----
+  
   rnaseq <- !arrays
   res <- xCellAnalysis(eset, rnaseq = rnaseq)
   res <- as.data.frame(t(res))
   ###########################################
-  colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
-  colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
+  colnames(res) <- gsub(pattern = "\\ ", replacement = "\\_",colnames(res))
+  colnames(res) <- gsub(pattern = "\\ ", replacement = "\\_",colnames(res))
   colnames(res) <- paste0(colnames(res), "_xCell")
 
   if (!is.null(project)) {
@@ -161,7 +234,7 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 
   ref <- ifelse(tumor, "TRef", "BRef")
   ##############################
-  out <- IOBR::EPIC(bulk = eset, reference = ref, mRNA_cell = NULL, scaleExprs = TRUE)
+  out <- EPIC(bulk = eset, reference = ref, mRNA_cell = NULL, scaleExprs = TRUE)
   res <- as.data.frame((out$cellFractions))
   ####################################
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
@@ -192,6 +265,7 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' @param arrays logical: Runs methods in a mode optimized for microarray data.
 #' @param absolute logical: Runs CIBERSORT in absolute mode
 #' @param perm permutation to run CIBERSORT
+#' @param abs_method Character string specifying how to compute absolute abundance
 #' @return cibersrot with immune cell fractions
 #' @author Dongqiang Zeng
 #' @export
@@ -200,7 +274,9 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' # Loading TCGA-STAD expresion data(raw count matrix)
 #' data(eset_stad, package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#' cibersort_result <- deconvo_cibersort(eset = eset, project = "TCGA-STAD", arrays = FALSE, absolute = FALSE, perm = 500)
+#' cibersort_result <- deconvo_cibersort(
+#'   eset = eset, project = "TCGA-STAD",
+#'   arrays = FALSE, absolute = FALSE, perm = 500)
 deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score") {
   if (absolute) {
     message(paste0("\n", ">>> Running ", "CIBERSORT in absolute mode"))
@@ -247,10 +323,13 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
 #'
 #' @param eset expression set with genes at row, sample ID at column
 #' @param project project name used to distinguish different data sets
+#' @param plot Logical; whether to visualize the calculated Immunophenoscore (IPS)
+#'   results. If \code{TRUE}, the function generates a summary plot of IPS scores
+#'   across samples or groups. If \code{FALSE}, only the numeric IPS data frame is
+#'   returned without plotting. Default is \code{FALSE}.
 #' @return IPS data frame
 #' @export
 #' @import ggplot2
-#' @import cowplot
 #' @import grid
 #' @author Dongqiang Zeng
 #' @examples
@@ -427,7 +506,7 @@ deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", per
     while (itor <= samples) {
       BB <- eset[, itor]
       BB <- (BB - mean(BB)) / sd(BB)
-      out <- lsei(AA, BB, EE, FF, GG, HH)
+      out <- limSolve::lsei(AA, BB, EE, FF, GG, HH)
       out.all <- rbind(out.all, out$X)
       itor <- itor + 1
     }
@@ -468,15 +547,26 @@ deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", per
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_timer(eset = eset, project = "stad")
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
-  indications <- tolower(indications)
-  checkmate::assert("indications fit to mixture matrix", length(indications) == ncol(eset))
+  if (!is.null(indications)) {
+    indications <- tolower(indications)
+    
+    # Alternative to checkmate::assert
+    if (length(indications) != ncol(eset)) {
+      stop(
+        "Length of 'indications' (", length(indications), 
+        ") does not match number of columns in 'eset' (", ncol(eset), ").",
+        call. = FALSE
+      )
+    }
+  }
   args <- new.env()
   args$outdir <- tempdir()
   args$batch <- tempfile()
   lapply(unique(indications), function(ind) {
     tmp_file <- tempfile()
     tmp_mat <- eset[, indications == ind, drop = FALSE] %>% as_tibble(rownames = "gene_symbol")
-    readr::write_tsv(tmp_mat, tmp_file)
+    #readr::write_tsv(tmp_mat, tmp_file)
+    write.table(tmp_mat, tmp_file, sep = "\t", quote = FALSE, row.names = FALSE)
     cat(paste0(tmp_file, ",", ind, "\n"), file = args$batch, append = TRUE)
   })
   # reorder results to be consistent with input matrix
@@ -549,12 +639,12 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #'   Either: A numeric matrix or data.frame with HGNC gene symbols as row names and sample identifiers as column names. In both cases.
 #' @param project project name used to distinguish different data sets, default is NULL
 #' @param method a string specifying the method.
-#' Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`，`timer`, `quantiseq`.
+#' Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`,`timer`, `quantiseq`.
 #' @param tumor logical. use a signature matrix/procedure optimized for tumor samples,
 #'   if supported by the method. Currently affects `EPIC`
 #' @param arrays Runs methods in a mode optimized for microarray data.
 #'   Currently affects `CIBERSORT`, `svr` and `xCell`.
-#' @param perm  set permutations for statistical analysis (≥100 permutations recommended).
+#' @param perm  set permutations for statistical analysis (>=100 permutations recommended).
 #' Currently affects `CIBERSORT` and `svr_ref`
 #' @param reference immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq
 #' @param scale_reference a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svr` and `lsei` method
@@ -572,12 +662,12 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #'     calculated cell fractions for each sample.
 #' @author Dongqiang Zeng
 #' @author Rongfang Shen
-#' @references 1. Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.
-#' 2. Vegesna R, Kim H, Torres-Garcia W, …, Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612.
-#' 3. Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., …, Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34.
-#' 4. Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.
+#' @references 1. Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., ... Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453-457.
+#' 2. Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612.
+#' 3. Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34.
+#' 4. Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., ... Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.
 #' 5. P. Charoentong et al., Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017).
-#' 6. Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218.
+#' 6. Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., ... de Reynies, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218.
 #' 7. Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220.
 #' 8. Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476.
 #' @name deconvo_tme
@@ -605,7 +695,17 @@ deconvo_tme <- function(eset,
                         abs.method = "sig.score",
                         ...) {
   # message(paste0("\n", ">>> Running ", method))
-
+  # 1. Check if input contains Ensembl IDs
+  if (any(grepl("ENSG000", rownames(eset)))) {
+    stop
+    ("Error: Ensembl IDs detected. Methods like CIBERSORT require Gene Symbols. Please convert IDs first.")
+  }
+  
+  # 2. Check if data might be log-transformed (typically TPM maximum > 50)
+  if (max(eset, na.rm = TRUE) < 50) {
+    warning
+    ("Note: Data values appear small. Ensure input is in TPM/FPKM scale, not log-transformed.")
+  }
   # run selected method
   res <- switch(method,
     xcell = deconvo_xcell(eset, project, arrays = arrays, ...),

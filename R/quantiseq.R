@@ -27,7 +27,6 @@
 #' @param rmgenes Default: "default" for RNAseq, "none" for microArray data
 #'
 #' @import preprocessCore
-#' @importFrom limSolve lsei
 #' @export
 deconvolute_quantiseq.default <- function(mix.mat,
                                           arrays = FALSE,

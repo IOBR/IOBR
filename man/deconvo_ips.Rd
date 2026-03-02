@@ -12,9 +12,9 @@ deconvo_ips(eset, project = NULL, plot)
 \item{project}{project name used to distinguish different data sets}
 
 \item{plot}{Logical; whether to visualize the calculated Immunophenoscore (IPS)
-results. If {TRUE}, the function generates a summary plot of IPS scores
-across samples or groups. If {FALSE}, only the numeric IPS data frame is
-returned without plotting. Default is {FALSE}.}
+results. If \code{TRUE}, the function generates a summary plot of IPS scores
+across samples or groups. If \code{FALSE}, only the numeric IPS data frame is
+returned without plotting. Default is \code{FALSE}.}
 }
 \value{
 IPS data frame

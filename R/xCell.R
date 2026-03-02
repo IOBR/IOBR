@@ -20,16 +20,16 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
   if (is.null(signatures)) {
-    signatures <- xCell.data$signatures
+    signatures <- xCell::xCell.data$signatures
   }
   if (is.null(genes)) {
-    genes <- xCell.data$genes
+    genes <- xCell::xCell.data$genes
   }
   if (is.null(spill)) {
     if (rnaseq == TRUE) {
-      spill <- xCell.data$spill
+      spill <- xCell::xCell.data$spill
     } else {
-      spill <- xCell.data$spill.array
+      spill <- xCell::xCell.data$spill.array
     }
   }
 
@@ -93,11 +93,35 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   expr <- apply(expr, 2, rank)
 
   # Check the formal argument of GSVA::gsva
-  FA <- formals(GSVA::gsva)
-
-  # Run ssGSEA analysis for the ranked gene expression dataset
-  if (is.null(FA[["method"]])) {
-    params <- gsvaParam(as.matrix(expr),
+  # FA <- formals(GSVA::gsva)
+  # 
+  # # Run ssGSEA analysis for the ranked gene expression dataset
+  # if (is.null(FA[["method"]])) {
+  #   params <- GSVA::gsvaParam(as.matrix(expr),
+  #     signatures,
+  #     minSize = 1,
+  #     maxSize = Inf,
+  #     kcdf = "Gaussian",
+  #     tau = 1,
+  #     maxDiff = TRUE,
+  #     absRanking = FALSE
+  #   )
+  #   rlang::check_installed("BiocParallel")
+  #   scores <- GSVA::gsva(params,
+  #     verbose = TRUE,
+  #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+  #   )
+  # } else {
+  #   scores <- GSVA::gsva(expr, signatures,
+  #     method = "ssgsea",
+  #     ssgsea.norm = FALSE
+  #   )
+  # }
+  scores <- tryCatch({
+    
+    # 新版 GSVA 推荐写法：gsvaParam + gsva(params)
+    params <- GSVA::gsvaParam(
+      as.matrix(expr),
       signatures,
       minSize = 1,
       maxSize = Inf,
@@ -106,18 +130,26 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
       maxDiff = TRUE,
       absRanking = FALSE
     )
-
-    scores <- GSVA::gsva(params,
+    
+    rlang::check_installed("BiocParallel")
+    GSVA::gsva(
+      params,
       verbose = TRUE,
       BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
     )
-  } else {
-    scores <- GSVA::gsva(expr, signatures,
+    
+  }, error = function(e) {
+    
+    # 回退旧版 gsva 接口
+    GSVA::gsva(
+      expr,
+      signatures,
       method = "ssgsea",
       ssgsea.norm = FALSE
     )
-  }
-
+    
+  })
+  
   scores <- scores - apply(scores, 1, min)
 
   # Combine signatures for same cell types
@@ -185,11 +217,18 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
   diag(K) <- 1
   rows <- rownames(transformedScores)[rownames(transformedScores) %in%
     rownames(K)]
-  scores <- apply(transformedScores[rows, ], 2, function(x) {
-    pracma::lsqlincon(K[rows, rows],
-      x,
-      lb = 0
-    )
+  ## 用 limSolve::lsei 代替 pracma::lsqlincon -----------------
+  rlang::check_installed("limSolve")
+  scores <- apply(transformedScores[rows, , drop = FALSE], 2, function(x) {
+    # 非负约束：G = 单位矩阵, H = 0 向量
+    G <- diag(nrow(K[rows, rows]))
+    H <- rep(0, nrow(G))
+    res <- limSolve::lsei(A = K[rows, rows],
+                          B = x,
+                          G = G,
+                          H = H,
+                          verbose = FALSE)
+    pmax(res$X, 0)          # 再保险截断负值
   })
 
   scores[scores < 0] <- 0
@@ -232,12 +271,12 @@ microenvironmentScores <- function(adjustedScores) {
 xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = T, file.name = NULL) {
   if (is.null(beta_params)) {
     if (rnaseq == T) {
-      beta_params <- xCell.data$spill$beta_params
+      beta_params <- xCell::xCell.data$spill$beta_params
     } else {
-      beta_params <- xCell.data$spill.array$beta_params
+      beta_params <- xCell::xCell.data$spill.array$beta_params
     }
   }
-  scores <- scores[rownames(scores) %in% colnames(xCell.data$spill$beta_params[[1]]), ]
+  scores <- scores[rownames(scores) %in% colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
   pvals <- matrix(0, nrow(scores), ncol(scores))
   rownames(pvals) <- rownames(scores)
   eps <- 1e-3
@@ -292,6 +331,7 @@ xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5, nperm
       beta_dist[i, ] <- rep(eps, 100000)
     } else {
       x <- x + eps
+      rlang::check_installed("MASS")
       beta_params <- MASS::fitdistr(x / ((1 + 2 * eps) * (max(x))) + eps, "beta", list(shape1 = 1, shape2 = 1), lower = eps)
       beta_dist[i, ] <- stats::rbeta(100000, beta_params$estimate[1], beta_params$estimate[2])
       beta_dist[i, ] <- ((1 + 2 * eps) * (max(x))) * beta_dist[i, ]

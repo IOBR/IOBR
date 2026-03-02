@@ -10,7 +10,10 @@ CIBERSORT(
   perm,
   QN = TRUE,
   absolute,
-  abs_method = "sig.score"
+  abs_method = "sig.score",
+  parallel = FALSE,
+  num_cores = 2,
+  seed = NULL
 )
 }
 \arguments{
@@ -33,6 +36,15 @@ If LM22 is used, this score will capture total immune content.}
 level of all genes in the signature matrix divided by the median expression
 level of all genes in the mixture. Multiple cell subset fractions by S.
 - no.sumto1 = remove sum to 1 constraint}
+
+\item{parallel}{Logical. Enable parallel execution? (default = FALSE)}
+
+\item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
+
+\item{seed}{Integer. Random seed for reproducible permutation testing. 
+If \code{NULL} (default), uses current random state. Set to a specific 
+value (e.g., 123) for reproducible results across runs. Applies to both 
+parallel and serial permutation.}
 }
 \value{
 A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
@@ -42,7 +54,9 @@ CIBERSORT is an analytical tool developed by Newman et al. to provide an estimat
 }
 \examples{
 data("eset_gse62254", package = "IOBR")
-cibersort <- CIBERSORT(sig_matrix = lm22, mixture_file = eset_gse62254, perm = 100, QN = TRUE, absolute = FALSE)
+cibersort <- CIBERSORT(sig_matrix = lm22,
+  mixture_file = eset_gse62254, perm = 100, 
+  QN = TRUE, absolute = FALSE)
 head(cibersort)
 }
 \author{

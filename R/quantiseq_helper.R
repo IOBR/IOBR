@@ -4,7 +4,6 @@
 #' Source code adapted from https://github.com/FFinotello/quanTIseq.
 #'
 #' @name quantiseq_helper
-#' @importFrom limSolve lsei
 NULL
 
 fixMixture <- function(mix.mat, arrays = FALSE) {
@@ -139,11 +138,12 @@ quanTIseq <- function(currsig, currmix, scaling, method) {
 }
 
 DClsei <- function(b, A, G, H, scaling) {
+  rlang::check_installed("limSolve")
   sc <- norm(A, "2")
   A <- A / sc
   b <- b / sc
 
-  res <- lsei(
+  res <- limSolve::lsei(
     A = A,
     B = b,
     G = G,
@@ -165,9 +165,9 @@ DCrr <- function(b, A, method, scaling) {
   # Robust regression
   m <- paste0("psi.", method)
   if (m == "psi.hampel") {
-    bres <- rlm(b ~ A, psi = m, a = 1.5, b = 3.5, c = 8, maxit = 1e3)
+    bres <- MASS::rlm(b ~ A, psi = m, a = 1.5, b = 3.5, c = 8, maxit = 1e3)
   } else {
-    bres <- rlm(b ~ A, psi = m, maxit = 1e3)
+    bres <- MASS::rlm(b ~ A, psi = m, maxit = 1e3)
   }
   est <- bres$coefficients
 
