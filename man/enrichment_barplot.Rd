@@ -11,6 +11,7 @@ enrichment_barplot(
   pvalue = "pvalue",
   group = "group",
   palette = "jama",
+  cols = NULL,
   title = "Gene Ontology Enrichment",
   width_wrap = 30,
   font_terms = 15
@@ -28,6 +29,8 @@ enrichment_barplot(
 \item{group}{Column name for group indicator. Default is "group".}
 
 \item{palette}{Color palette. Default is "jama".}
+
+\item{cols}{Character vector. Custom colors for bars. If NULL, uses palette. Default is NULL.}
 
 \item{title}{Plot title. Default is "Gene Ontology Enrichment".}
 

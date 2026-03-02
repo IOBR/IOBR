@@ -12,6 +12,7 @@
 #' @param cols_condiction Character vector. Colors for conditions.
 #' @param scale Logical. Scale features by column. Default FALSE.
 #' @param palette Integer or character. Palette index/name for heatmap colors. Default 2.
+#' @param cols_heatmap Character vector. Custom colors for heatmap (e.g., c("blue", "white", "red")). Default NULL.
 #' @param palette_group Character. Palette group for group colors. Default "jama".
 #' @param show_col Logical. Whether to display color vector. Default FALSE.
 #' @param show_palettes Logical. Whether to print palette options. Default FALSE.
@@ -48,6 +49,7 @@ sig_heatmap <- function(input,
                         cols_condiction = NULL,
                         scale = FALSE,
                         palette = 2,
+                        cols_heatmap = NULL, 
                         palette_group = "jama",
                         show_col = F,
                         show_palettes = F,
@@ -63,14 +65,22 @@ sig_heatmap <- function(input,
                         show_heatmap_col_name = F,
                         path = NULL,
                         index = NULL) {
+  # if (!is.null(path)) {
+  #   file_store <- path
+  # } else {
+  #   file_store <- paste0("1-", group, "-relevant-varbiles-heatmap")
+  # }
+  # 
+  # if (!file.exists(file_store)) dir.create(file_store)
+  # abspath <- paste(getwd(), "/", file_store, "/", sep = "")
+  # 修改（有条件创建）
   if (!is.null(path)) {
     file_store <- path
+    if (!file.exists(file_store)) dir.create(file_store)
+    abspath <- paste(getwd(), "/", file_store, "/", sep = "")
   } else {
-    file_store <- paste0("1-", group, "-relevant-varbiles-heatmap")
+    abspath <- NULL  # 不创建目录
   }
-
-  if (!file.exists(file_store)) dir.create(file_store)
-  abspath <- paste(getwd(), "/", file_store, "/", sep = "")
 
 
   input <- as.data.frame(input)
@@ -105,10 +115,34 @@ sig_heatmap <- function(input,
   } else {
     height_heatmap <- height
   }
-
-  ####################################################
-  heatmap_col <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
-
+  
+  
+  # heatmap_col <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
+  # 
+  # # # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
+  # if (length(heatmap_col) >= 3) {
+  #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col[1:3])
+  # } else {
+  #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+  # }
+  
+  
+  # --- 修改开始：支持自定义热图颜色 ---
+  if (!is.null(cols_heatmap)) {
+    # 如果用户传入了颜色向量，优先使用
+    heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), cols_heatmap[1:3])
+  } else {
+    # 否则执行原有的逻辑
+    heatmap_col_vec <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
+    
+    if (length(heatmap_col_vec) >= 3) {
+      heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col_vec[1:3])
+    } else {
+      heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+    }
+  }
+  # --- 修改结束 ---
+  
 
   if (!is.null(cols_group)) {
     color_box <- cols_group
@@ -149,52 +183,104 @@ sig_heatmap <- function(input,
   }
 
   ####################################################
+  
+  # 在 heatmap 调用前，确保数据是标准 data.frame
+  pf_long_group <- as.data.frame(pf_long_group)
+  
+  
+  # if (is.null(condiction)) {
+  #   pp <- pf_long_group %>%
+  #     dplyr::group_by(target_group) %>%
+  #     tidyHeatmap::heatmap(
+  #       .column           = idd,
+  #       .row              = variables,
+  #       .value            = value,
+  #       palette_grouping  = list(c(color_box2)),
+  #       scale             = scale,
+  #       column_title      = column_title,
+  #       row_title         = row_title,
+  #       # annotation      = group2,
+  #       palette_value     = heatmap_col,
+  #       show_column_names = show_heatmap_col_name,
+  #       column_names_gp   = grid::gpar(fontsize = size_col),
+  #       row_names_gp      = grid::gpar(fontsize = size_row),
+  #       column_names_rot  = angle_col
+  #     )
+  # } else {
+  #   pp <- pf_long_group %>%
+  #     dplyr::group_by(target_group, condiction) %>%
+  #     tidyHeatmap::heatmap(
+  #       .column           = idd,
+  #       .row              = variables,
+  #       .value            = value,
+  #       palette_grouping  = list(c(color_box1), c(color_box2)),
+  #       scale             = scale,
+  #       column_title      = column_title,
+  #       row_title         = row_title,
+  #       # annotation      = group2,
+  #       palette_value     = heatmap_col,
+  #       show_column_names = show_heatmap_col_name,
+  #       column_names_gp   = grid::gpar(fontsize = size_col),
+  #       row_names_gp      = grid::gpar(fontsize = size_row),
+  #       column_names_rot  = angle_col
+  #     )
+  # }
+  # 
+  
+  #修改heatmap调用
   if (is.null(condiction)) {
     pp <- pf_long_group %>%
       dplyr::group_by(target_group) %>%
       tidyHeatmap::heatmap(
-        .column           = idd,
-        .row              = variables,
-        .value            = value,
-        palette_grouping  = list(c(color_box2)),
-        scale             = scale,
-        column_title      = column_title,
-        row_title         = row_title,
-        # annotation      = group2,
-        palette_value     = heatmap_col,
+        .column = idd,
+        .row = variables,
+        .value = value,
+        palette_grouping = list(c(color_box2)),
+        scale = scale,
+        column_title = column_title,
+        row_title = row_title,
+        palette_value = heatmap_col,
         show_column_names = show_heatmap_col_name,
-        column_names_gp   = grid::gpar(fontsize = size_col),
-        row_names_gp      = grid::gpar(fontsize = size_row),
-        column_names_rot  = angle_col
+        column_names_gp = grid::gpar(fontsize = size_col),  
+        row_names_gp = grid::gpar(fontsize = size_row),      
+        column_names_rot = angle_col
       )
   } else {
     pp <- pf_long_group %>%
-      dplyr::group_by(target_group, condiction) %>%
+      dplyr::group_by(target_group) %>%
       tidyHeatmap::heatmap(
-        .column           = idd,
-        .row              = variables,
-        .value            = value,
-        palette_grouping  = list(c(color_box1), c(color_box2)),
-        scale             = scale,
-        column_title      = column_title,
-        row_title         = row_title,
-        # annotation      = group2,
-        palette_value     = heatmap_col,
+        .column = idd,
+        .row = variables,
+        .value = value,
+        palette_grouping = list(c(color_box1), c(color_box2)),
+        scale = scale,
+        column_title = column_title,
+        row_title = row_title,
+        palette_value = heatmap_col,
         show_column_names = show_heatmap_col_name,
-        column_names_gp   = grid::gpar(fontsize = size_col),
-        row_names_gp      = grid::gpar(fontsize = size_row),
-        column_names_rot  = angle_col
+        column_names_gp = grid::gpar(fontsize = size_col),  
+        row_names_gp = grid::gpar(fontsize = size_row),      
+        column_names_rot = angle_col
       )
   }
-
-
+  
   if (show_plot) print(pp)
 
-  if (is.null(index)) index <- 1
-  pp %>% tidyHeatmap::save_pdf(paste0(abspath, index, "-", group, "-tidyheatmap.pdf"),
-    width = width,
-    height = height_heatmap
-  )
+  # if (is.null(index)) index <- 1
+  # pp %>% tidyHeatmap::save_pdf(paste0(abspath, index, "-", group, "-tidyheatmap.pdf"),
+  #   width = width,
+  #   height = height_heatmap
+  # )
+  
+  ## 可选保存：只有调用者显式给路径时才写文件
+  if (!is.null(path)) {
+    if (is.null(index)) index <- 1
+    pp %>% tidyHeatmap::save_pdf(
+      paste0(abspath, index, "-", group, "-tidyheatmap.pdf"),
+      width = width,
+      height =height_heatmap
+    )
+  }
 
   return(pp)
 }

@@ -11,7 +11,7 @@
 #'   MSigDB gene sets are used based on \code{org} and \code{category}. Default is
 #'   \code{NULL}.
 #' @param path Character string specifying the directory path for saving results.
-#'   Default is \code{"1-GSEA-result"}.
+#'   Default is NULL.
 #' @param gene_symbol Character string specifying the column name in \code{deg}
 #'   containing gene symbols. Default is \code{"symbol"}.
 #' @param logfc Character string specifying the column name in \code{deg} containing
@@ -28,6 +28,12 @@
 #'   bar plots. Default is \code{"jama"}.
 #' @param palette_gsea Integer specifying the color palette for GSEA plots. Default
 #'   is 2.
+#' @param cols_gsea Character vector specifying custom colors for GSEA enrichment 
+#'   plots. If \code{NULL}, colors are automatically generated using \code{palette_gsea}.
+#'   Default is \code{NULL}.
+#' @param cols_bar Character vector specifying custom colors for the enrichment 
+#'   bar plot. If \code{NULL}, colors are automatically generated using \code{palette_bar}.
+#'   Default is \code{NULL}.
 #' @param show_bar Integer specifying the number of top enriched gene sets to display
 #'   in the bar plot. Default is 10.
 #' @param show_col Logical indicating whether to display color names in the bar plot.
@@ -86,6 +92,8 @@ sig_gsea <- function(deg,
                      subcategory = NULL,
                      palette_bar = "jama",
                      palette_gsea = 2,
+                     cols_gsea = NULL,
+                     cols_bar = NULL,
                      show_bar = 10,
                      show_col = FALSE,
                      show_plot = FALSE,
@@ -100,14 +108,17 @@ sig_gsea <- function(deg,
                      fig.type = "pdf",
                      print_bar = TRUE) {
   # set path to store enrichment analyses result
-  if (is.null(path)) {
-    file_store <- paste0("1-GSEA-result")
-  } else {
+  if (!is.null(path)) {
     file_store <- path
+    if (!file.exists(file_store)) dir.create(file_store)
+    abspath <- paste(getwd(), "/", file_store, "/", sep = "")
+    save_results <- TRUE
+  } else {
+    save_results <- FALSE
+    file_store <- NULL
+    abspath <- NULL
   }
 
-  if (!file.exists(file_store)) dir.create(file_store)
-  abspath <- paste(getwd(), "/", file_store, "/", sep = "")
   #################################################
 
   # if(!is.null(input)) (load(paste0(file_source,"/",input)))
@@ -161,6 +172,7 @@ sig_gsea <- function(deg,
 
 
   if (is.null(genesets)) {
+    rlang::check_installed("msigdbr")
     if (org == "hsa") {
       species <- "Homo sapiens"
     } else if (org == "mus") {
@@ -168,9 +180,9 @@ sig_gsea <- function(deg,
     }
     ##################################################
     message(">>>---- Categories that can be choosed... ")
-
+    
     m_df <- msigdbr::msigdbr(species = species)
-    a <- m_df %>%
+    a <- m_df %>% 
       dplyr::distinct(gs_cat, gs_subcat) %>%
       dplyr::arrange(gs_cat, gs_subcat)
     print(as.data.frame(a))
@@ -243,14 +255,22 @@ sig_gsea <- function(deg,
     seed          = FALSE,
     by            = "fgsea"
   )
-
+  rlang::check_installed("DOSE")
   if (org == "hsa") {
     hall_gsea <- DOSE::setReadable(hall_gsea, OrgDb = "org.Hs.eg.db", keyType = "ENTREZID")
   } else if (org == "mus") {
     hall_gsea <- DOSE::setReadable(hall_gsea, OrgDb = "org.Mm.eg.db", keyType = "ENTREZID")
   }
 
-  writexl::write_xlsx(as.data.frame(hall_gsea), paste0(abspath, "1-", category, "_GSEA_significant_results.xlsx"))
+  #writexl::write_xlsx(as.data.frame(hall_gsea), paste0(abspath, "1-", category, "_GSEA_significant_results.xlsx"))
+  
+  if (save_results) {
+   csv_file <- paste0(abspath, "1-", category, "_GSEA_significant_results.csv")
+   write.csv(as.data.frame(hall_gsea), file = csv_file, row.names = FALSE)
+   message(">>> GSEA results written to ", csv_file,
+            "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  }
+  
   # save(hall_gsea,file = paste(abspath,"2-",category,"_GSEA_result.RData",sep = ""))
 
   ###########################################
@@ -266,8 +286,14 @@ sig_gsea <- function(deg,
     ###############################################
 
     # gseacol<- palettes(category = "random", palette = palette_gsea, show_col = FALSE, show_message = F)
-    gseacol <- get_cols(palette = palette_gsea, show_col = FALSE)
+    # 修改后
+    if (is.null(cols_gsea)) {
+      gseacol <- get_cols(palette = palette_gsea, show_col = FALSE)
+    } else {
+      gseacol <- cols_gsea
+    }
     ###############################################
+    rlang::check_installed("enrichplot")
     GSEAPLOT <- enrichplot::gseaplot2(
       x = hall_gsea,
       geneSetID = paths,
@@ -275,12 +301,14 @@ sig_gsea <- function(deg,
       color = gseacol[1:length(paths)],
       pvalue_table = TRUE
     )
-
+   
+    if (save_results) {
     ggplot2::ggsave(
       filename = paste0("2-", category, "_Top_", show_gsea, "_GSEA_plot.", fig.type),
       plot = GSEAPLOT, path = file_store,
       width = 11, height = 7, dpi = 300
     )
+    }
 
     if (show_plot) print(GSEAPLOT)
     ###############################################
@@ -308,10 +336,12 @@ sig_gsea <- function(deg,
         # +design_mytheme(axis_angle = 0, hjust = 0.5)
 
         if (show_plot) print(gseaplot)
+        if (save_results) {
         ggplot2::ggsave(
           filename = paste0(i + 4, "-GSEA_plot-", single_path, ".", fig.type), plot = gseaplot,
           path = file_store, width = 11, height = 7.5, dpi = 300
         )
+        }
       }
     }
     ################################################
@@ -334,16 +364,19 @@ sig_gsea <- function(deg,
         up_terms = up_gogo,
         down_terms = down_gogo,
         palette = palette_bar,
+        cols = cols_bar,
         title = "GSEA-Enrichment",
         width_wrap = 30
       )
 
       n_bar <- c(dim(up_gogo)[1] + dim(down_gogo)[1])
       height_bar <- 0.5 * n_bar + 3
+      if (save_results) {
       ggplot2::ggsave(
         filename = paste0("3-", category, "_GSEA_barplot.", fig.type), plot = gsea_bar,
         path = file_store, width = 6, height = height_bar
       )
+      }
 
       if (show_plot) print(gsea_bar)
       ######################################################
@@ -356,7 +389,9 @@ sig_gsea <- function(deg,
       all = hall_gsea,
       plot_top = GSEAPLOT
     )
+    if (save_results) {
     save(hall_gsea_result, file = paste(abspath, "0-", category, "_combined_GSEA_result.RData", sep = ""))
+    }
     #######################################################
   } else {
     hall_gsea_result <- hall_gsea

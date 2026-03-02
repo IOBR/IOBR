@@ -16,6 +16,8 @@ sig_gsea(
   subcategory = NULL,
   palette_bar = "jama",
   palette_gsea = 2,
+  cols_gsea = NULL,
+  cols_bar = NULL,
   show_bar = 10,
   show_col = FALSE,
   show_plot = FALSE,
@@ -40,7 +42,7 @@ MSigDB gene sets are used based on \code{org} and \code{category}. Default is
 \code{NULL}.}
 
 \item{path}{Character string specifying the directory path for saving results.
-Default is \code{"1-GSEA-result"}.}
+Default is NULL.}
 
 \item{gene_symbol}{Character string specifying the column name in \code{deg}
 containing gene symbols. Default is \code{"symbol"}.}
@@ -65,6 +67,14 @@ bar plots. Default is \code{"jama"}.}
 
 \item{palette_gsea}{Integer specifying the color palette for GSEA plots. Default
 is 2.}
+
+\item{cols_gsea}{Character vector specifying custom colors for GSEA enrichment 
+plots. If \code{NULL}, colors are automatically generated using \code{palette_gsea}.
+Default is \code{NULL}.}
+
+\item{cols_bar}{Character vector specifying custom colors for the enrichment 
+bar plot. If \code{NULL}, colors are automatically generated using \code{palette_bar}.
+Default is \code{NULL}.}
 
 \item{show_bar}{Integer specifying the number of top enriched gene sets to display
 in the bar plot. Default is 10.}
