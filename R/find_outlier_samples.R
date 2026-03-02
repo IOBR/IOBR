@@ -8,6 +8,7 @@
 #' @param plot_hculst Logical. Whether to plot hierarchical clustering of samples. Default is FALSE.
 #' @param show_plot Logical. Whether to display the connectivity plot. Default is TRUE.
 #' @param index Integer or NULL. Index for output file naming. Default is NULL.
+#' @param save Logical. Whether to save plots to files. If FALSE, plots are displayed but not saved. Default is TRUE.
 #'
 #' @return Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).
 #' @export
@@ -17,15 +18,19 @@
 #' data("eset_tme_stad", package = "IOBR")
 #' outs <- find_outlier_samples(eset = eset_tme_stad)
 #' print(outs)
-find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL) {
+find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL,save = TRUE) {
   if (!requireNamespace("WGCNA", quietly = TRUE)) {
     stop("Package 'WGCNA' is required but not installed.")
   }
-  path <- creat_folder(project)
+  if (save) {
+    path <- creat_folder(project)
+  } else {
+    path <- NULL
+  }
 
   if (is.null(index)) index <- 1
 
-  if (plot_hculst) {
+  if (save && plot_hculst) {
     tree.combat <- eset %>%
       t() %>%
       dist() %>%
@@ -55,8 +60,10 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
   p <- p + design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
   if (show_plot) print(p)
-
+  
+  if (save) {
   ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
+  }
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]
 

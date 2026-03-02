@@ -11,7 +11,8 @@
 #' @param plot Logical indicating whether to generate and save plots. Default is TRUE.
 #' @param method Statistical test method: "multi" for both Cuzick and Wilcoxon, or "Wilcoxon" only. Default is "multi".
 #' @param save_path Directory to save plots and results. If NULL, uses signature name.
-#' @param palette Color palette for box plots. Default is "jco".
+#' @param palette Color palette for box plots(used when cols is NULL). Default is "jco".
+#' @param cols Character vector. Custom colors for box plots. If NULL, uses palette. Default is NULL.
 #' @param show_plot Logical indicating whether to display plots. Default is TRUE.
 #' @param show_col Logical indicating whether to show color codes. Default is FALSE.
 #' @param width Width of oncoprint plot. Default is 8.
@@ -36,18 +37,19 @@
 #'                           min_mut_freq = 0.01, plot = TRUE, method = "multi",
 #'                           save_path = "path_to_save_results")
 find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,
-                           min_mut_freq = 0.05, plot = TRUE, method = "multi", point.alpha = 0.1,
-                           save_path = NULL, palette = "jco", show_plot = TRUE,
+                           min_mut_freq = 0.05, plot = TRUE, method = "multi", point_alpha = 0.1,
+                           save_path = NULL, palette = "jco", cols = NULL,show_plot = TRUE,
                            show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean",
                            oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5) {
-  if (is.null(save_path)) {
-    file_name <- paste0(signature, "-relevant-mutations")
-  } else {
+  rlang::check_installed("ggpubr")
+  rlang::check_installed("PMCMRplus")
+  if (!is.null(save_path)) {
     file_name <- save_path
+    if (!file.exists(file_name)) dir.create(file_name)
+    abspath <- paste0(getwd(), "/", file_name, "/")
+  } else {
+    abspath <- NULL
   }
-
-  if (!file.exists(file_name)) dir.create(file_name)
-  abspath <- paste0(getwd(), "/", file_name, "/")
   #######################################################
   signature_matrix <- as.data.frame(signature_matrix)
 
@@ -106,7 +108,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       legend.text = element_text(colour = "black", size = 10, face = "plain")
     )
 
-
+  fill_colors <- if (is.null(cols)) {
+    palettes(category = "box", palette = palette, show_col = show_col)
+  } else {
+    cols
+  }
+  
   if (method == "multi") {
     if (!is.null(genes)) {
       if (length(genes) < 10) {
@@ -131,7 +138,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     res1 <- res1[order(res1$p.value, decreasing = F), ]
     print(res1[1:10, ])
 
-    write.csv(res1, paste0(abspath, "1-cuzickTest-test-relevant-mutations.csv"))
+    # write.csv(res1, paste0(abspath, "1-cuzickTest-test-relevant-mutations.csv"))
+    if (!is.null(save_path)) {
+      write.csv(res1, paste0(abspath, "1-cuzickTest-test-relevant-mutations.csv"))
+    }
 
 
     if (plot) {
@@ -156,13 +166,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         pl[[i]] <- ggplot(dd, aes(x = mutation, y = !!sym(signature), fill = mutation)) +
           geom_boxplot(outlier.shape = NA, outlier.size = -0.5) +
           # geom_jitter(width = 0.25,size= 5.9,alpha=0.75,color ="black")+
-          scale_fill_manual(values = palettes(category = "box", palette = palette, show_col = show_col)) +
+          scale_fill_manual(values = fill_colors) +
           mytheme +
           theme(legend.position = "none") +
           ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6) +
-          stat_compare_means(size = 6)
+          ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6) 
 
         if (jitter) {
           pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
@@ -172,9 +181,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           width = 4, height = 5.8, path = file_name
         )
       }
-      com_plot <- cowplot::plot_grid(pl[[1]], pl[[2]], pl[[3]], pl[[4]], pl[[5]], pl[[6]], pl[[7]], pl[[8]], pl[[9]], pl[[10]],
-        labels = "AUTO", ncol = 5, nrow = 2, label_size = 32
-      )
+      rlang::check_installed("patchwork")
+      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
+                                        ncol = 5, nrow = 2,
+                                        labels = "AUTO",
+                                        label_size = 32)
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "3-Relevant_mutations_Continue.pdf", width = 14, height = 10.5, path = file_name)
@@ -187,7 +198,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     part2 <- sig_mut2[, input_genes]
     part2[part2 >= 1] <- 1
     sig_mut2 <- cbind(patr1, part2)
-    sig_mut2 <- column_to_rownames(sig_mut2, var = "ID")
+    sig_mut2 <- column_to_rownames(sig_mut2, var = "ID")  
 
     input2 <- sig_mut2
 
@@ -238,11 +249,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         pl[[i]] <- ggplot(dd, aes(x = mutation, y = !!sym(signature), fill = mutation)) +
           geom_boxplot(outlier.shape = NA, outlier.size = -0.5) +
           # geom_jitter(width = 0.25,size=5.5,alpha=0.75,color ="black")+
-          scale_fill_manual(values = palettes(category = "box", palette = palette, show_col = show_col)) +
+          scale_fill_manual(values = fill_colors) +
           theme(legend.position = "none") +
           ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
+          ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
         if (jitter) {
           pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
         }
@@ -252,9 +263,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           width = 4, height = 5.8, path = file_name
         )
       }
-      com_plot <- cowplot::plot_grid(pl[[1]], pl[[2]], pl[[3]], pl[[4]], pl[[5]], pl[[6]], pl[[7]], pl[[8]], pl[[9]], pl[[10]],
-        labels = "AUTO", ncol = 5, nrow = 2, label_size = 32
-      )
+      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
+                                        ncol = 5, nrow = 2,
+                                        labels = "AUTO",
+                                        label_size = 32)
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "4-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
@@ -327,12 +339,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         pl[[i]] <- ggplot(dd, aes(x = mutation, y = !!sym(signature), fill = mutation)) +
           geom_boxplot(outlier.shape = NA, outlier.size = NA) +
           # geom_jitter(width = 0.25,size= 3.5,alpha=0.75,color ="black")+
-          scale_fill_manual(values = palettes(category = "box", palette = palette, show_col = show_col)) +
+          scale_fill_manual(values = fill_colors) +
           mytheme +
           theme(legend.position = "none") +
           ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
+          ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
 
         if (jitter) {
           pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
@@ -343,9 +355,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           width = 4, height = 5.8, path = file_name
         )
       }
-      com_plot <- cowplot::plot_grid(pl[[1]], pl[[2]], pl[[3]], pl[[4]], pl[[5]], pl[[6]], pl[[7]], pl[[8]], pl[[9]], pl[[10]],
-        labels = "AUTO", ncol = 5, nrow = 2, label_size = 32
-      )
+      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
+                                        ncol = 5, nrow = 2,
+                                        labels = "AUTO",
+                                        label_size = 32)
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "0-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
@@ -518,9 +531,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
 
   # fig.path<-paste0(getwd(),"/",save_path)
   # save to pdf
-  pdf(file.path(abspath, paste0("0-OncoPrint-", signature, ".pdf")), width = width, height = height)
-  draw(p)
-  invisible(dev.off())
+  if (!is.null(save_path)) {
+    pdf(file.path(abspath, paste0("0-OncoPrint-", signature, ".pdf")), width = width, height = height)
+    draw(p)
+    invisible(dev.off())
+  }
   # print to screen
   # draw(p)
   if (show_plot) {

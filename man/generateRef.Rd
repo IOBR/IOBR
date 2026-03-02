@@ -48,5 +48,6 @@ colData <- data.frame(
   row.names = colnames(rawCountData)
 )
 # Assuming the design matrix is based on the condition
-dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~condition)
+dds_object <- DESeqDataSetFromMatrix(
+  countData = rawCountData, colData = colData, design = ~condition)
 }

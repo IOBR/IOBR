@@ -16,7 +16,7 @@ remove_batcheffect(
   check_eset = TRUE,
   adjust_eset = TRUE,
   repel = FALSE,
-  path = "Result_PCA"
+  path = NULL
 )
 }
 \arguments{
@@ -42,7 +42,7 @@ remove_batcheffect(
 
 \item{repel}{whether to add labels to the PCA plot. Default is FALSE.}
 
-\item{path}{Directory where the results should be saved. If it is NULL, results will be saved in a folder "Combat_PCA".}
+\item{path}{Directory where the results should be saved. Default is NULL (display only, no saving).}
 }
 \value{
 eset after batch correction
@@ -51,10 +51,12 @@ eset after batch correction
 This function is designed to remove batch effects from given expression datasets and visualize the corrected data using principal component analysis (PCA). It takes three expression datasets as input and performs batch effect correction using the "sva::ComBat" or "sva::ComBat_seq" methods. The function then generates PCA plots to compare the data before and after correction. The PCA plots are customized based on the specified parameters like data type, color palette, log transformation, and path for saving the plots.
 }
 \examples{
-data("eset_stad", package = "IOBR")
-data("eset_blca", package = "IOBR")
+\dontrun{
 # The returned matrix is the count matrix after removing the batches.
+# eset_blca is an internal dataset in IOBR
+# To use this example, you need to load TCGA-BLCA data separately
 eset <- remove_batcheffect(eset_stad, eset_blca, id_type = "ensembl", data_type = "count")
+}
 }
 \references{
 Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078

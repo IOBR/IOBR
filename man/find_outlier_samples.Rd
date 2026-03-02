@@ -10,7 +10,8 @@ find_outlier_samples(
   project = "find_outlier_eset",
   plot_hculst = FALSE,
   show_plot = TRUE,
-  index = NULL
+  index = NULL,
+  save = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ find_outlier_samples(
 \item{show_plot}{Logical. Whether to display the connectivity plot. Default is TRUE.}
 
 \item{index}{Integer or NULL. Index for output file naming. Default is NULL.}
+
+\item{save}{Logical. Whether to save plots to files. If FALSE, plots are displayed but not saved. Default is TRUE.}
 }
 \value{
 Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).

@@ -15,6 +15,7 @@ find_mutations(
   point_alpha = 0.1,
   save_path = NULL,
   palette = "jco",
+  cols = NULL,
   show_plot = TRUE,
   show_col = FALSE,
   width = 8,
@@ -46,7 +47,9 @@ find_mutations(
 
 \item{save_path}{Directory to save plots and results. If NULL, uses signature name.}
 
-\item{palette}{Color palette for box plots. Default is "jco".}
+\item{palette}{Color palette for box plots(used when cols is NULL). Default is "jco".}
+
+\item{cols}{Character vector. Custom colors for box plots. If NULL, uses palette. Default is NULL.}
 
 \item{show_plot}{Logical indicating whether to display plots. Default is TRUE.}
 

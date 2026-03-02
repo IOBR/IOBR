@@ -12,7 +12,6 @@
 #'
 #' @return A list containing the reference signature matrix and possibly other elements depending on the analysis method used.
 #'         The cells of the matrix represent the median expression level of identified significant genes across samples grouped by cell type.
-#' @import DESeq2
 #' @export
 #'
 #' @examples
@@ -37,8 +36,10 @@
 #'   row.names = colnames(rawCountData)
 #' )
 #' # Assuming the design matrix is based on the condition
-#' dds_object <- DESeqDataSetFromMatrix(countData = rawCountData, colData = colData, design = ~condition)
+#' dds_object <- DESeqDataSetFromMatrix(
+#'   countData = rawCountData, colData = colData, design = ~condition)
 generateRef <- function(dds, pheno, FDR = 0.05, dat, method = "limma") {
+  rlang::check_installed("DESeq2")
   print(message(paste0("\n", ">>> Running differentially expressed genes using ", method)))
   res <- switch(method,
     limma = generateRef_limma(dat, pheno, FDR),
