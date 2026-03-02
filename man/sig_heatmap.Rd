@@ -15,6 +15,7 @@ sig_heatmap(
   cols_condiction = NULL,
   scale = FALSE,
   palette = 2,
+  cols_heatmap = NULL,
   palette_group = "jama",
   show_col = F,
   show_palettes = F,
@@ -52,6 +53,8 @@ sig_heatmap(
 \item{scale}{Logical. Scale features by column. Default FALSE.}
 
 \item{palette}{Integer or character. Palette index/name for heatmap colors. Default 2.}
+
+\item{cols_heatmap}{Character vector. Custom colors for heatmap (e.g., c("blue", "white", "red")). Default NULL.}
 
 \item{palette_group}{Character. Palette group for group colors. Default "jama".}
 

@@ -39,9 +39,23 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
   dat <- input
   features <- setdiff(features, c(unique(interferenceid, target)))
 
+  ## 替代 ppcor::pcor.test ---------------------------------
+  pcor_test <- function(x, y, z, method = c("pearson", "spearman", "kendall")) {
+    method <- match.arg(method)
+    dat <- cbind(x, y, z) |> na.omit()
+    if (nrow(dat) < 4) return(list(estimate = NA_real_, p.value = NA_real_))
+    R <- cor(dat, method = method)
+    rxy <- R["x", "y"]; rxz <- R["x", "z"]; ryz <- R["y", "z"]
+    rho <- (rxy - rxz * ryz) / sqrt((1 - rxz^2) * (1 - ryz^2))
+    n <- nrow(dat)
+    tstat <- rho * sqrt((n - 3) / (1 - rho^2))
+    pval  <- 2 * pt(abs(tstat), df = n - 3, lower.tail = FALSE)
+    list(estimate = rho, p.value = pval)
+  }
+  
   aa <- dat[, features] %>%
     tibble::as_tibble() %>%
-    map(ppcor::pcor.test, y = dat[, target], z = dat[, interferenceid], method = method)
+    map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
   pvalue <- aa %>% purrr::map_dbl("p.value")
   statistic <- aa %>% purrr::map_dbl("estimate")
   cc <- data.frame(

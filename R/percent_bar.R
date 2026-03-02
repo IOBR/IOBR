@@ -77,9 +77,9 @@ percent_bar_plot <- function(input, x, y,
     color <- color
   } else {
     if (is.null(palette)) {
-      color <- IOBR::palettes(category = "random", show_col = T, show_message = T)
+      color <- palettes(category = "random", show_col = T, show_message = T)
     } else {
-      color <- IOBR::palettes(category = "box", palette = palette, show_col = T, show_message = T)
+      color <- palettes(category = "box", palette = palette, show_col = T, show_message = T)
     }
   }
 
@@ -171,9 +171,9 @@ pie_chart <- function(input, var, var2 = NULL, type = 2, show_freq = FALSE, colo
     color <- color
   } else {
     if (is.null(palette)) {
-      color <- IOBR::palettes(category = "random", show_col = T, show_message = T)
+      color <- palettes(category = "random", show_col = T, show_message = T)
     } else {
-      color <- IOBR::palettes(category = "box", palette = palette, show_col = T, show_message = T)
+      color <- palettes(category = "box", palette = palette, show_col = T, show_message = T)
     }
   }
 
@@ -240,6 +240,8 @@ pie_chart <- function(input, var, var2 = NULL, type = 2, show_freq = FALSE, colo
   if (type == 3) {
     # https://rpubs.com/cardiomoon/398623
     if (is.null(var2)) stop("var2 must be defined!")
+    rlang::check_installed("webr", 
+                           reason = "to create PieDonut plots (type 3)")
     pp <- webr::PieDonut(input2, aes(pies = !!sym(var), donuts = !!sym(var2)),
       explode = 1, pieLabelSize = 7,
       donutLabelSize = 5

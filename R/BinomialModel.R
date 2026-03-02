@@ -25,7 +25,13 @@
 #' data("imvigor210_pdata", package = "IOBR")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
-#' BinomialModel(x = imvigor210_sig, y = pdata_group, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = T)
+#' BinomialModel(x = imvigor210_sig,
+#'  y = pdata_group,
+#'  seed = 123456,
+#'  scale = TRUE,
+#'  train_ratio = 0.7, 
+#'  nfold = 10,
+#'  plot = TRUE)
 #' @export
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   x <- as.data.frame(x)
@@ -242,31 +248,32 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
 #' print(optimal_parameters)
 #' @export
 Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
-  grid <- expand.grid(.alpha = seq(0, 1, by = .2), .lambda = seq(0, lambdamax, length.out = 10))
-  fitControl <- caret::trainControl(
-    method = "repeatedcv",
-    number = nfold,
-    repeats = nfold
-  )
-  enetFit <- caret::train(
-    x = train.x, y = factor(train.y),
-    method = "glmnet",
-    family = "binomial",
-    trControl = fitControl,
-    metric = "Accuracy", tuneGrid = grid
-  )
-  chose_alpha <- enetFit$bestTune[, 1]
-  chose_lambda <- enetFit$bestTune[, 2]
-  list(chose_alpha = chose_alpha, chose_lambda = chose_lambda)
+  ## ✅ 1. 自建网格 + cv.glmnet 代替 caret -----------------
+  alpha.grid  <- seq(0, 1, by = 0.2)          # 0→Ridge, 1→Lasso
+  lambda.grid <- seq(0, lambdamax, length.out = 10)
+  
+  tune.res <- expand.grid(alpha = alpha.grid, lambda = lambda.grid)
+  
+  cv.fit <- pmap(tune.res, function(alpha, lambda) {
+    fit <- cv.glmnet(train.x, factor(train.y),
+                     family = "binomial", alpha = alpha, lambda = lambda,
+                     nfolds = nfold, type.measure = "class")
+    c(alpha = alpha, lambda = lambda,
+      Accuracy = max(fit$cvm))          # 取最大交叉验证 Accuracy
+  }) %>% bind_rows()
+  
+  best <- tune.res[which.max(cv.fit$Accuracy), ]   # 选最优组合
+  ## ----------------------------------------------------
+  
+  list(chose_alpha = best$alpha, chose_lambda = best$lambda)
 }
-
 
 
 #' Calculate Area Under the Curve (AUC) for Binomial Model
 #'
 #' This function computes the AUC for a binomial model's predictions on a given dataset.
 #' It uses the specified regularization strengths to generate predictions, which are then
-#' evaluated against actual outcomes to compute the AUC using the ROCR package. This function
+#' evaluated against actual outcomes to compute the AUC using the pROC package. This function
 #' is typically used to assess model performance in classification tasks.
 #'
 #' @param model A model object fitted using a binomial distribution, from which predictions will be generated.
@@ -279,18 +286,30 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' @return A numeric value representing the AUC for the model's predictions against actual outcomes.
 #'
 #' @examples
-#' # Assuming 'model', 'newx', and 'actual.y' are predefined:
-#' fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
+#' \dontrun{# Assuming 'model', 'newx', and 'actual.y' are predefined:
+#' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
 #' test_data <- matrix(rnorm(100 * 10), ncol = 10)|
 #' test_outcomes <- rbinom(100, 1, 0.5)
-#' auc_value <- BinomialAUC(model = fitted_model, newx = test_data, s = "lambda.min", acture.y = test_outcomes)
+#' auc_value <- BinomialAUC(model = fitted_model, 
+#'   newx = test_data, 
+#'   s = "lambda.min",
+#'   acture.y = test_outcomes)
 #' print(auc_value)
+#' }
 #' @export
 BinomialAUC <- function(model, newx, s, acture.y) {
+  rlang::check_installed("pROC")                 
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  pred <- ROCR::prediction(prob, acture.y)
-  auc <- as.numeric(ROCR::performance(pred, "auc")@y.values)
-  return(auc)
+  # 安全处理：针对不同情况
+  if (is.matrix(prob) && ncol(prob) > 1) {
+    # 如果是多列矩阵，取第二列（通常是正类概率）
+    prob <- prob[, 2]
+  }
+  # 如果不是矩阵，或者只有一列，直接使用
+  
+  roc_obj <- pROC::roc(acture.y, as.numeric(prob))  # 添加as.numeric确保是向量
+  auc_value <- pROC::auc(roc_obj)
+  return(as.numeric(auc_value))
 }
 
 #' Plot AUC ROC Curves
@@ -310,15 +329,17 @@ BinomialAUC <- function(model, newx, s, acture.y) {
 #'
 #' @return A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
 #' @examples
+#' \dontrun{
 #' # Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
 #' PlotAUC(
 #'   train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
 #'   model = fitted_model, modelname = "MyModel"
 #' )
+#' }
 #' @export
 PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama") {
   if (is.null(cols)) {
-    cols <- IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
+    cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   } else {
     cols <- cols
   }
@@ -368,7 +389,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' Calculate Performance Metrics
 #'
 #' Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-#' This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
+#' This function uses the pROC package to evaluate model effectiveness at different thresholds, helping to
 #' assess the discriminative ability of the model under various regularization strengths specified by 's'.
 #'
 #' @param model A model object used to generate predictions.
@@ -378,19 +399,38 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'          methods such as glmnet.
 #' @param acture.y A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.
 #'
-#' @return A performance object from the ROCR package, which includes true positive and false positive rates.
+#' @return A performance object from the pROC package, which includes true positive and false positive rates.
 #'
 #' @examples
 #' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-#' perf_metrics <- CalculatePref(model = fitted_model, newx = new_data, s = "lambda.min", acture.y = actual_outcomes)
+#' perf_metrics <- CalculatePref(model = fitted_model,
+#'   newx = new_data, s = "lambda.min",
+#'   acture.y = actual_outcomes)
 #' print(perf_metrics)
 #' @export
 CalculatePref <- function(model, newx, s, acture.y) {
+  rlang::check_installed("pROC")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  pred <- ROCR::prediction(prob, acture.y)
-  perf <- ROCR::performance(pred, "tpr", "fpr")
-  return(perf)
+  # 安全的最小改动：处理矩阵情况
+  if (is.matrix(prob)) {
+    if (ncol(prob) > 1) {
+      # 多列矩阵，取第二列（正类概率）
+      prob_vector <- prob[, 2]
+    } else {
+      # 单列矩阵，直接取第一列
+      prob_vector <- prob[, 1]
+    }
+  } else {
+    # 不是矩阵，直接使用
+    prob_vector <-prob
+  }
+  roc_obj <- pROC::roc(acture.y, prob_vector)  # <-- 修改在这里
+  ## 构造与 ROCR 相同字段名的 list 对象，直接 drop-in
+  structure(list(x.values = list(1 - roc_obj$specificities),
+                 y.values = list(roc_obj$sensitivities)),
+            class = "performance")   # 保持原 class，下游代码零改动
 }
+
 
 
 #' Split Data into Training and Testing Sets
@@ -415,12 +455,16 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #' # Example for binomial data
 #' data_matrix <- matrix(rnorm(200), ncol = 2)
 #' outcome_vector <- rbinom(100, 1, 0.5)
-#' split_data <- SplitTrainTest(x = data_matrix, y = outcome_vector, train_ratio = 0.7, type = "binomial", seed = 123)
+#' split_data <- SplitTrainTest(
+#'   x = data_matrix, y = outcome_vector,
+#'   train_ratio = 0.7, type = "binomial", seed = 123)
 #' print(split_data)
 #'
 #' # Example for survival data
 #' survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
-#' split_data_survival <- SplitTrainTest(x = data_matrix, y = survival_outcomes, train_ratio = 0.7, type = "survival", seed = 123)
+#' split_data_survival <- SplitTrainTest(
+#'   x = data_matrix, y = survival_outcomes, 
+#'   train_ratio = 0.7, type = "survival", seed = 123)
 #' print(split_data_survival)
 #' @export
 SplitTrainTest <- function(x, y, train_ratio, type, seed) {

@@ -93,6 +93,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   ## remove batch effects
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
+  rlang::check_installed(c("sva","BiocParallel"))
   tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
 
   ## separate cancer and immune expression data after batch effect removing

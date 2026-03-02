@@ -9,8 +9,6 @@
 #' @param FDR Numeric threshold for adjusted p-values. Default is 0.05.
 #' @param dat Normalized expression data (e.g., FPKM, TPM).
 #' @return A list containing reference matrix, optimal G, condition number, and whole matrix.
-#' @importFrom DESeq2 DESeqDataSetFromMatrix
-#' @importFrom DESeq2 DESeq
 #' @export
 #' @author Rongfang Shen
 #' @examples
@@ -19,6 +17,7 @@
 #' dat <- matrix(rnorm(200 * 10), ncol = 10)
 #' results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat) {
+  rlang::check_installed("DESeq2")
   if (!all(colnames(dds) == colnames(dat))) {
     stop("The sample order of dds and dat much be identical")
   }
@@ -73,7 +72,7 @@ generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat
   median_value <- t(dat) %>%
     as.data.frame() %>%
     split(., pheno) %>%
-    purrr::map(function(x) matrixStats::colMedians(as.matrix(x)))
+    purrr::map(function(x) apply(as.matrix(x), 2, median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 

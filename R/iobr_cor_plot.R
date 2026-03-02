@@ -63,6 +63,9 @@
 #' @import dplyr
 #' @import tidyr
 #' @import purrr
+#' @importFrom ComplexHeatmap Heatmap rowAnnotation draw anno_text
+#' @importFrom grDevices colorRampPalette 
+#' @importFrom stats hclust cutree
 #' @examples
 #' # Create example phenotype and feature data
 #' pdata_group <- data.frame(ID = 1:100,
@@ -103,6 +106,7 @@ iobr_cor_plot <- function(pdata_group,
                           discrete_width = 20,
                           show_palettes = FALSE,
                           fig.type = "pdf") {
+  rlang::check_installed("ggpubr")
   if (!is.null(path)) {
     file_store <- path
   } else {
@@ -334,7 +338,7 @@ iobr_cor_plot <- function(pdata_group,
     }
 
     ######################################################
-    p <- ggboxplot(pf_long_group_box, x = "variables", y = "value", fill = target_binary) +
+    p <- ggpubr::ggboxplot(pf_long_group_box, x = "variables", y = "value", fill = target_binary) +
       scale_fill_manual(values = color_box) +
       ylab(paste0(title.y)) +
       # xlab("")+
@@ -365,10 +369,10 @@ iobr_cor_plot <- function(pdata_group,
     #################################################
     max_variables <- max(pf_long_group_box$value)
     group_box <- sym(target_binary)
-    pp1 <- p + stat_compare_means(aes(group = !!group_box, label = paste0("p = ", ..p.format..)),
+    pp1 <- p + ggpubr::stat_compare_means(aes(group = !!group_box, label = paste0("p = ", ..p.format..)),
       size = 2.6, label.y = max_variables - 0.3
     )
-    pp2 <- p + stat_compare_means(aes(group = !!group_box),
+    pp2 <- p + ggpubr::compare_means(aes(group = !!group_box),
       label = "p.signif",
       size = 6, label.y = max_variables - 0.6
     )
@@ -453,7 +457,9 @@ iobr_cor_plot <- function(pdata_group,
           patterns_space = NULL
         )
       }
-
+      
+      rlang::check_installed("Hmisc")
+      
       bbcor <- Hmisc::rcorr(as.matrix(pf_cor), type = "spearman")
       bbcor$P[is.na(bbcor$P)] <- 0
       ###################################
@@ -469,46 +475,75 @@ iobr_cor_plot <- function(pdata_group,
         ),
         width = width_heatmap, height = height_heatmap
       )
+      rlang::check_installed("corrplot")
       corrplot::corrplot(bbcor$r,
-        type = "lower",
-        order = "hclust",
-        p.mat = bbcor$P,
-        sig.level = 0.05,
-        tl.srt = 45,
-        tl.col = "black",
-        tl.cex = 1.3,
-        addrect = 2,
-        rect.col = "black",
-        rect.lwd = 3,
-        col = colorRampPalette(col)(50)
+                         type = "lower",
+                         order = "hclust",
+                         p.mat = bbcor$P,
+                         sig.level = 0.05,
+                         tl.srt = 45,
+                         tl.col = "black",
+                         tl.cex = 1.3,
+                         addrect = 2,
+                         rect.col = "black",
+                         rect.lwd = 3,
+                         col = colorRampPalette(col)(50)
       )
       dev.off()
       corrplot::corrplot(bbcor$r,
-        type = "lower",
-        order = "hclust",
-        p.mat = bbcor$P,
-        sig.level = 0.05,
-        tl.srt = 45,
-        tl.col = "black",
-        tl.cex = 1,
-        addrect = 2,
-        rect.col = "black",
-        rect.lwd = 3,
-        col = colorRampPalette(col)(50)
+                         type = "lower",
+                         order = "hclust",
+                         p.mat = bbcor$P,
+                         sig.level = 0.05,
+                         tl.srt = 45,
+                         tl.col = "black",
+                         tl.cex = 1,
+                         addrect = 2,
+                         rect.col = "black",
+                         rect.lwd = 3,
+                         col = colorRampPalette(col)(50)
       )
+      ## =====================================================
       ########################################
       lab_size <- 13 - max(nchar(pf_long_group$variables)) / 4 # size of coefficient
       tl_cex <- 20 - max(nchar(pf_long_group$variables)) / 9 # size of signature name
-      p <- ggcorrplot::ggcorrplot(bbcor$r,
-        hc.order = TRUE, type = "lower", p.mat = bbcor$P, lab = TRUE,
-        pch.cex = 4.3,
-        lab_size = lab_size,
-        tl.cex = tl_cex,
-        title = names(group_list)[index_i],
-        ggtheme = ggplot2::theme_bw,
-        colors = col
-      ) +
-        theme(plot.title = element_text(size = rel(2.5), hjust = 0.5))
+      # p <- ggcorrplot::ggcorrplot(bbcor$r,
+      #   hc.order = TRUE, type = "lower", p.mat = bbcor$P, lab = TRUE,
+      #   pch.cex = 4.3,
+      #   lab_size = lab_size,
+      #   tl.cex = tl_cex,
+      #   title = names(group_list)[index_i],
+      #   ggtheme = ggplot2::theme_bw,
+      #   colors = col
+      # ) +
+      #   theme(plot.title = element_text(size = rel(2.5), hjust = 0.5))
+      
+      #替换ggcorrplot
+      corr <- bbcor$r
+      p.mat <- bbcor$P
+      corr[upper.tri(corr)] <- NA
+      if (TRUE) {                       # hc.order = TRUE
+        hc <- hclust(dist(corr))
+        corr <- corr[hc$order, hc$order]
+        p.mat  <- p.mat[hc$order, hc$order]
+      }
+      df <- as.data.frame.table(corr, stringsAsFactors = FALSE)
+      colnames(df) <- c("row", "col", "corr")
+      df$row <- factor(df$row, levels = rev(unique(df$row)))
+      df$col <- factor(df$col, levels = unique(df$col))
+      df$stars <- ifelse(p.mat < 0.05 & !is.na(p.mat), "*", "")
+      col_fun <- grDevices::colorRampPalette(c("darkblue", "white", "darkred"))
+      
+      p <- ggplot2::ggplot(df, ggplot2::aes(x = col, y = row, fill = corr, label = sprintf("%.2f", corr))) +
+        ggplot2::geom_tile(color = "grey90") +
+        ggplot2::geom_text(color = "black", size = lab_size) +
+        ggplot2::geom_text(ggplot2::aes(label = stars), color = "red", size = lab_size * 1.2, fontface = "bold") +
+        ggplot2::scale_fill_gradientn(colours = col_fun(50), limits = c(-1, 1)) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = tl_cex * 5),
+                       axis.text.y = ggplot2::element_text(size = tl_cex * 5),
+                       plot.title = ggplot2::element_text(hjust = 0.5)) +
+        ggplot2::ggtitle(title)
       ######################################
       ggsave(p,
         filename = paste0(

@@ -69,10 +69,12 @@ Optionally, it generates visualization outputs such as volcano plots and heatmap
 RData and Excel file formats.
 }
 \examples{
-data("eset_stad", package = "IOBR")
-data("stad_group", package = "IOBR")
+utils::data("eset_stad", package = "IOBR",envir=environment())
+utils::data("stad_group", package = "IOBR",envir=environment())
 library(DESeq2)
-deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
+deg <- iobr_deg(eset = eset_stad, pdata = stad_group,
+  group_id = "subtype", pdata_id = "ID", array = FALSE,
+  method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
 }
 \author{
 Dongqiang Zeng

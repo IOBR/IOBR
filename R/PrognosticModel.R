@@ -159,7 +159,9 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #' @examples
 #' # Assuming 'fit' is a fitted survival model such as from `coxph` or `glmnet`
 #' new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-#' actual_outcome <- data.frame(time = rexp(100, rate = 0.1), status = rbinom(100, size = 1, prob = 0.5))
+#' actual_outcome <- data.frame(
+#'   time = rexp(100, rate = 0.1),
+#'   status = rbinom(100, size = 1, prob = 0.5))
 #' auc_results <- PrognosticAUC(fit, newx = new_data, s = "lambda.min", acture.y = actual_outcome)
 #' @export
 PrognosticAUC <- function(model, newx, s, acture.y) {
@@ -205,8 +207,11 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @examples
 #' # Assuming 'fit' is a Cox proportional hazards model fitted using `coxph` or `glmnet`
 #' new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-#' actual_outcome <- data.frame(time = rexp(100, rate = 0.1), status = rbinom(100, size = 1, prob = 0.5))
-#' roc_info <- CalculateTimeROC(fit, newx = new_data, s = "lambda.min", acture.y = actual_outcome, modelname = "Cox Model")
+#' actual_outcome <- data.frame(time = rexp(100, rate = 0.1),
+#'   status = rbinom(100, size = 1, prob = 0.5))
+#' roc_info <- CalculateTimeROC(fit, newx = new_data,
+#'   s = "lambda.min", acture.y = actual_outcome,
+#'   modelname = "Cox Model")
 #' @export
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
   riskscore <- stats::predict(model, newx = newx, s = s)
@@ -264,7 +269,7 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #' @export
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama") {
   if (is.null(cols)) {
-    cols <- IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
+    cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   } else {
     cols <- cols
   }

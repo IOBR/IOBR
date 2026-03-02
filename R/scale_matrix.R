@@ -15,7 +15,7 @@
 #' eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 scale_matrix <- function(matrix, log2matrix = TRUE, manipulate = TRUE) {
   if (log2matrix) {
-    matrix <- IOBR::log2eset(matrix + 1)
+    matrix <- log2eset(matrix + 1)
   }
   matrix <- as.data.frame(t(matrix))
   matrix <- scale(matrix, center = T, scale = T)

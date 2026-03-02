@@ -1,6 +1,8 @@
 #' Set and view the color palettes
 #'
-#' @param cols Vector of colors, users can define the cols manually.  This may also be a single character, such as normal and random,  to a palette as specified by `palettes(){IOBR}`
+#' @param cols Vector of colors, users can define the cols manually. This may 
+#'   also be a single character, such as normal and random, to a palette as 
+#'   specified by \code{palettes} in the IOBR package.
 #' @param palette Numeric value corresponding with color palette. Default is 1, other options: 2, 3, 4
 #' @param show_col Whether to show color palettes
 #' @param seed Seed of the random number generator, default is 123. The parameter works when cols ="random"

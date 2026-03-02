@@ -60,7 +60,9 @@ reduces dimensionality while preserving variance, and generates a scatter plot v
 \examples{
 data("eset_stad", package = "IOBR")
 eset <- count2tpm(eset_stad)
-iobr_pca(eset, is.matrix = TRUE, scale = TRUE, is.log = TRUE, pdata = stad_group, id_pdata = "ID", group = "subtype")
+iobr_pca(eset, is.matrix = TRUE, scale = TRUE,
+  is.log = TRUE, pdata = stad_group,
+  id_pdata = "ID", group = "subtype")
 
 }
 \author{

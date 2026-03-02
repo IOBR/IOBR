@@ -8,6 +8,7 @@
 #' @param title Plot title. Default is "Gene Ontology Enrichment".
 #' @param width_wrap Maximum width for wrapping pathway names. Default is 30.
 #' @param palette Color palette. Default is "jama".
+#' @param cols Character vector. Custom colors for bars. If NULL, uses palette. Default is NULL.
 #' @param terms Column name for term descriptions. Default is "Description".
 #' @param pvalue Column name for p-values. Default is "pvalue".
 #' @param group Column name for group indicator. Default is "group".
@@ -21,7 +22,8 @@
 #' down_terms <- data.frame(Description = c("Pathway4", "Pathway5"), pvalue = c(0.005, 0.02))
 #' p <- enrichment_barplot(up_terms = up_terms, down_terms = down_terms,
 #'                         title = "Custom Enrichment Plot")
-enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pvalue = "pvalue", group = "group", palette = "jama", title = "Gene Ontology Enrichment", width_wrap = 30, font_terms = 15) {
+enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pvalue = "pvalue", group = "group", palette = "jama",
+                               cols = NULL, title = "Gene Ontology Enrichment", width_wrap = 30, font_terms = 15) {
   up_terms <- as.data.frame(up_terms)
   down_terms <- as.data.frame(down_terms)
   dat <- rbind(as.data.frame(up_terms), as.data.frame(down_terms))
@@ -42,7 +44,13 @@ enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pval
   dat <- dat[order(dat$pvalue, decreasing = F), ]
 
   # print(dat)
-  color <- palettes(category = "box", palette = palette, alpha = 1, show_col = FALSE)
+  # color <- palettes(category = "box", palette = palette, alpha = 1, show_col = FALSE)
+  if (is.null(cols)) {
+    color <- palettes(category = "box", palette = palette, alpha = 1, show_col = FALSE)
+  } else {
+    if (length(cols) < 2) stop("cols must have at least 2 colors")
+    color <- cols[1:2]
+  }
 
   p <- ggplot(dat, aes(x = reorder(terms, order(pvalue, decreasing = F)), y = pvalue, fill = group)) +
     geom_bar(stat = "identity") +

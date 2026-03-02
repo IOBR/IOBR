@@ -12,9 +12,9 @@
 #' @param only.pos Logical. Whether to retain only positive markers. Default is TRUE.
 #' @param min.pct Numeric. Minimum expression percentage threshold. Default is 0.25.
 #' @param npcs Integer. Number of principal components to use. Default is 30.
-#'
-#' @import Seurat
-#' @import dplyr
+#' 
+#' @importFrom methods as
+#' @importFrom tibble column_to_rownames
 #' @return List with components: `sce` (Seurat object), `markers` (all markers), `top_markers` (top markers per group).
 #' @export
 #'
@@ -28,16 +28,11 @@
 #'
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {
   # Check required packages
-  if (!requireNamespace("Seurat", quietly = TRUE)) {
-    stop("Package 'Seurat' is required but not installed.")
-  }
-  if (!requireNamespace("Matrix", quietly = TRUE)) {
-    stop("Package 'Matrix' is required but not installed.")
-  }
+  rlang::check_installed(c("Seurat","Matrix"))
 
   # 转换输入数据格式
   if (!inherits(eset, "dgCMatrix")) {
-    eset <- as(as.matrix(eset), "dgCMatrix")
+    eset <- methods::as(as.matrix(eset), "dgCMatrix")
   }
 
   # 处理元数据
@@ -48,7 +43,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
   pdata <- pdata[rownames(pdata) %in% colnames(eset), ]
 
   # 创建Seurat对象
-  sce <- CreateSeuratObject(
+  sce <- Seurat::CreateSeuratObject(
     counts = eset,
     meta.data = pdata,
     min.cells = 0,
@@ -64,20 +59,20 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
   if (seurat_version >= v5_threshold) {
     # Seurat v5+ 的处理逻辑
     message("Using Seurat v5+ workflow")
-    sce <- NormalizeData(sce)
-    sce <- NormalizeData(sce, assay = "RNA", normalization.method = "LogNormalize") # 兼容v5的Layer访问
-    sce <- ScaleData(sce, assay = "RNA")
+    sce <- Seurat::NormalizeData(sce)
+    sce <- Seurat::NormalizeData(sce, assay = "RNA", normalization.method = "LogNormalize") # 兼容v5的Layer访问
+    sce <- Seurat::ScaleData(sce, assay = "RNA")
   } else {
     # Seurat v4及以下版本的处理逻辑
     message("Using Seurat v4 workflow")
-    sce <- NormalizeData(sce)
-    sce <- ScaleData(sce)
+    sce <- Seurat::NormalizeData(sce)
+    sce <- Seurat::ScaleData(sce)
   }
 
   # 特征选择
   tryCatch(
     {
-      sce <- FindVariableFeatures(
+      sce <- Seurat::FindVariableFeatures(
         object = sce,
         selection.method = "vst",
         nfeatures = nfeatures,
@@ -87,19 +82,31 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     },
     error = function(e) {
       message("Error in FindVariableFeatures: ", e$message)
-      counts <- GetAssayData(sce, assay = "RNA", slot = "counts")
-      gene_var <- matrixStats::rowVars(counts)
+      counts <- Seurat::GetAssayData(sce, assay = "RNA", slot = "counts")
+      gene_var <- apply(counts, 1, var)
       top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
-      VariableFeatures(sce) <- top_genes # Assign variable features
+      Seurat::VariableFeatures(sce) <- top_genes # Assign variable features
     }
   )
 
   # 降维和标记物识别
-  sce <- RunPCA(object = sce, features = VariableFeatures(sce), npcs = npcs)
-  Idents(sce) <- as.character(sce[[group, drop = TRUE]])
+  if (ncol(sce) < npcs) {
+    warning(
+      "Number of samples (", ncol(sce), ") is less than requested PCs (", npcs, "). ",
+      "Setting npcs to ", max(1, ncol(sce) - 1), "."
+    )
+    npcs <- max(1, ncol(sce) - 1)  # 确保至少为1
+  }
+
+  sce <- Seurat::RunPCA(
+    object = sce,
+    features = Seurat::VariableFeatures(sce), 
+    npcs = npcs
+  )
+  Seurat::Idents(sce) <- as.character(sce[[group, drop = TRUE]])
 
   # 查找差异表达基因
-  sce.markers <- FindAllMarkers(
+  sce.markers <- Seurat::FindAllMarkers(
     object = sce,
     only.pos = only.pos,
     min.pct = min.pct,
@@ -109,7 +116,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
 
   # 提取top标记物
   topN <- sce.markers %>%
-    group_by(cluster) %>%
+    dplyr::group_by(cluster) %>%
     dplyr::slice_max(order_by = avg_log2FC, n = top_n)
 
   return(list(sce = sce, markers = sce.markers, top_markers = topN))

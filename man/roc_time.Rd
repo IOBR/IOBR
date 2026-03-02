@@ -34,11 +34,19 @@ roc_time(
 
 \item{time_point}{Integer or vector. Time point(s) for ROC analysis. Default is 12.}
 
-\item{time_type}{Character. Time unit (e.g., "month" or "day"). Default is "month".}
+\item{time_type}{Character. Time unit of the input survival time.
+The same unit will be used for ROC calculation and displayed in the plot
+(supported: "day" or "month"). Default is "month".}
 
-\item{palette}{Character. Color palette for the plot. Default is "jama".}
+\item{palette}{Character. Color palette for the plot(used when cols is "normal" or NULL). Default is "jama".}
 
-\item{cols}{Character. Color scheme for the plot. Default is "normal".}
+\item{cols}{Character vector or string. Color specification. Three options:
+\itemize{
+  \item \code{"normal"}: Use default palette colors (default)
+  \item \code{"random"}: Use randomized/shuffled palette colors
+  \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")} 
+        or \code{c("red", "blue", "green")}
+}}
 
 \item{seed}{Integer. Random seed for reproducibility. Default is 1234.}
 

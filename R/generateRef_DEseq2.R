@@ -25,6 +25,7 @@
 #' result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #' print(result$reference_matrix)
 generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
+  rlang::check_installed("DESeq2")
   if (!all(colnames(dds) == colnames(dat))) {
     stop("The sample order of dds and dat much be identical")
   }
@@ -56,7 +57,7 @@ generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
   median_value <- t(dat) %>%
     as.data.frame() %>%
     split(., pheno) %>%
-    purrr::map(function(x) matrixStats::colMedians(as.matrix(x)))
+    purrr::map(function(x) apply(as.matrix(x), 2, median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 

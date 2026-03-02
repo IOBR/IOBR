@@ -31,7 +31,9 @@
 #' utils::data("eset_stad", package = "IOBR",envir=environment())
 #' utils::data("stad_group", package = "IOBR",envir=environment())
 #' library(DESeq2)
-#' deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype", pdata_id = "ID", array = FALSE, method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
+#' deg <- iobr_deg(eset = eset_stad, pdata = stad_group,
+#'   group_id = "subtype", pdata_id = "ID", array = FALSE,
+#'   method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
 iobr_deg <- function(eset,
                      annotation = NULL,
                      id_anno = NULL,
@@ -76,6 +78,7 @@ iobr_deg <- function(eset,
   if (array) eset <- preprocessCore::normalize.quantiles(as.matrix(eset), keep.names = TRUE)
 
   if (method == "DESeq2") {
+    rlang::check_installed("DESeq2")
     message(">>>== DEGseq2 (method) was selected for differential gene analysis of RNAseq \n")
 
     message(">>>== Please ensure that `eset` is a count expression matrix \n")
@@ -88,12 +91,12 @@ iobr_deg <- function(eset,
     )
 
     # 过滤一些low count的数据,起码五分之一的样本有表达
-    dds <- dds[rowSums(counts(dds)) > ncol(eset) / 5, ]
-    dds <- DESeq(dds, parallel = parallel) # ,parallel = T
+    dds <- dds[rowSums(DESeq2::counts(dds)) > ncol(eset) / 5, ]
+    dds <- DESeq2::DESeq(dds, parallel = parallel) # ,parallel = T
 
 
     contrast <- c("deg_group", contrast)
-    res_tidy <- results(dds, tidy = T, contrast = contrast)
+    res_tidy <- DESeq2::results(dds, tidy = T, contrast = contrast)
     res_tidy <- as.data.frame(res_tidy)
     # print(summary(res_tidy))
     #####################################
@@ -181,10 +184,10 @@ iobr_deg <- function(eset,
 
   if (method == "limma") {
     message(">>>== limma was selected for differential gene analysis of Array data \n")
+    
+    contrast <- c("deg_group", contrast)
 
-    if (!requireNamespace("limma", quietly = TRUE)) {
-      stop("Package 'limma' is required but not installed.")
-    }
+    rlang::check_installed("limma")
     pdata$deg_group <- ifelse(pdata$deg_group == contrast[2], "group1", "group2")
     ################################
     message(paste0("group1 = ", contrast[2]))
@@ -194,11 +197,11 @@ iobr_deg <- function(eset,
     colnames(design) <- levels(factor(pdata$deg_group))
     rownames(design) <- colnames(eset)
     ################################
-    contrast.matrix <- makeContrasts(group1 - group2, levels = design)
-    fit <- lmFit(eset, design)
-    fit2 <- contrasts.fit(fit, contrast.matrix)
-    fit2 <- eBayes(fit2)
-    DEG <- topTable(fit2, coef = 1, n = Inf, adjust.method = "BH", sort.by = "P")
+    contrast.matrix <- limma::makeContrasts(group1 - group2, levels = design)
+    fit <- limma::lmFit(eset, design)
+    fit2 <- limma::contrasts.fit(fit, contrast.matrix)
+    fit2 <- limma::eBayes(fit2)
+    DEG <- limma::topTable(fit2, coef = 1, n = Inf, adjust.method = "BH", sort.by = "P")
 
     DEG <- rownames_to_column(DEG, var = "symbol")
     colnames(DEG)[which(colnames(DEG) == "logFC")] <- "log2FoldChange"
@@ -241,6 +244,10 @@ iobr_deg <- function(eset,
   }
 
   save(DEG, file = paste0(abspath, "1-DEGs.RData"))
-  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+  # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+  csv_file <- paste0(abspath, "2-DEGs.csv")
+  write.csv(DEG, file = csv_file, row.names = FALSE)
+  message(">>> DEG results written to ", csv_file,
+          "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
   return(DEG)
 }

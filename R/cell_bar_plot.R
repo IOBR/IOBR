@@ -63,9 +63,9 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction", features = 
     cols <- cols
   } else {
     if (is.null(palette)) {
-      cols <- IOBR::palettes(category = "random", palette = 4, show_col = show_col, show_message = T)
+      cols <- palettes(category = "random", palette = 4, show_col = show_col, show_message = T)
     } else {
-      cols <- IOBR::palettes(category = "random", palette = palette, show_col = show_col, show_message = T)
+      cols <- palettes(category = "random", palette = palette, show_col = show_col, show_message = T)
     }
   }
 

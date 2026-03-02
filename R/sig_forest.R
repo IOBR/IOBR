@@ -13,17 +13,19 @@
 #' @param max_character Maximum characters for labels before wrapping. Default is 25.
 #' @param discrete_width Width for discretizing long labels. Default is 35.
 #' @param color_option Color option for p-value gradient (1, 2, or 3). Default is 1.
+#' @param cols Character vector. Custom colors for p-value gradient (low to high).Default is \code{NULL}.
 #' @param text.size Text size for y-axis labels. Default is 13.
 #'
 #' @return A ggplot2 object of the forest plot.
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
+#' sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary,
+#'   variable = c(100:ncol(pdata_sig_tme_binary)))
 #' sig_forest(data = sig_surv_result, signature = "ID")
 sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
                        CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
-                       discrete_width = 35, color_option = 1,
+                       discrete_width = 35, color_option = 1,cols = NULL,
                        text.size = 13) {
   data <- as.data.frame(data)
   colnames(data)[which(colnames(data) == signature)] <- "signature"
@@ -64,7 +66,16 @@ sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "
 
   # Set the order of 'signature' as a factor based on 'HR'
   data$signature <- factor(data$signature, levels = data$signature)
-
+  
+  # ========== 新增：颜色处理==========
+  if (!is.null(cols)) {
+    if (length(cols) < 2) stop("cols must have at least 2 colors for gradient")
+    gradient_colors <- grDevices::colorRampPalette(cols)(256)
+  } else {
+    gradient_colors <- grDevices::colorRampPalette(c("#000004FF", "#51127CFF",
+                                     "#B63679FF", "#FCA50AFF", "#F7F419FF"))(256)
+  }
+  
   pp <- ggplot(data = data, aes(x = HR, y = signature, color = P)) +
     geom_errorbarh(aes(xmax = CI_up_0.95, xmin = CI_low_0.95), color = "black", height = 0, size = 1.2) +
     geom_point(aes(x = HR, y = signature), size = 4.5, shape = 16) +
@@ -74,7 +85,11 @@ sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "
     ylab("Features") +
     xlab("Hazard Ratios of Features") +
     labs(color = "P value") +
-    viridis::scale_color_viridis(option = color_option) +
+    # viridis::scale_color_viridis(option = color_option)
+    # scale_color_gradientn(colors = grDevices::colorRampPalette(c("#000004FF", "#51127CFF",
+    #                                                              "#B63679FF", "#FCA50AFF", "#F7F419FF"))(256),
+    #                       name = "P value") +
+    scale_color_gradientn(colors = gradient_colors, name = "P value") +
     theme_light() +
     theme(
       axis.text.x = element_text(size = 15, color = "black", vjust = 0.5, hjust = 0.5, angle = 0),

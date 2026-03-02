@@ -150,7 +150,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   # 'reference'.
   with_w <- TRUE
   if (is.null(reference)) {
-    reference <- IOBR::TRef
+    reference <- TRef
   } else if (is.character(reference)) {
     if (reference %in% c("TRef", "BRef")) {
       reference <- get(reference, pos = "package:IOBR")
@@ -275,7 +275,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   }
 
   if (is.null(mRNA_cell)) {
-    mRNA_cell <- IOBR::mRNA_cell_default
+    mRNA_cell <- mRNA_cell_default
   }
 
   if (!is.null(mRNA_cell_sub)) {

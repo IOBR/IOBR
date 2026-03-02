@@ -40,7 +40,9 @@ This function is designed to perform TME (Tumor Microenvironment) clustering ana
 }
 \examples{
 data("tcga_stad_sig", package = "IOBR")
-res <- tme_cluster(input = tcga_stad_sig, features = NULL, pattern = "xCell", id = "ID", method = "kmeans", min_nc = 2, max.nc = 6)
+res <- tme_cluster(input = tcga_stad_sig,
+  features = NULL, pattern = "xCell", id = "ID",
+  method = "kmeans", min_nc = 2, max.nc = 6)
 sig_heatmap(input = res, features = colnames(res)[3:ncol(res)], group = "cluster")
 }
 \author{

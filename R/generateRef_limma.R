@@ -23,12 +23,14 @@
 #' @export
 #'
 #' @examples
-#' # Assume 'dat' is a matrix of gene expression data and 'pheno' is the corresponding cell type information
+#' # Assume 'dat' is a matrix of gene expression data and 
+#' #'pheno' is the corresponding cell type information
 #' dat <- matrix(rnorm(2000), nrow = 100)
 #' pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
 #' results <- generateRef_limma(dat, pheno)
 #' print(results)
 generateRef_limma <- function(dat, pheno, FDR = 0.05) {
+  rlang::check_installed("limma")
   pheno <- factor(pheno)
   design <- model.matrix(~ 0 + pheno)
   colnames(design) <- stringr::str_sub(colnames(design), 6)
@@ -47,7 +49,7 @@ generateRef_limma <- function(dat, pheno, FDR = 0.05) {
   median_value <- t(dat) %>%
     as.data.frame() %>%
     split(., pheno) %>%
-    map(function(x) matrixStats::colMedians(as.matrix(x)))
+    map(function(x) apply(as.matrix(x), 2, median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 

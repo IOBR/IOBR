@@ -15,6 +15,7 @@ sig_forest(
   max_character = 25,
   discrete_width = 35,
   color_option = 1,
+  cols = NULL,
   text.size = 13
 )
 }
@@ -39,6 +40,8 @@ sig_forest(
 
 \item{color_option}{Color option for p-value gradient (1, 2, or 3). Default is 1.}
 
+\item{cols}{Character vector. Custom colors for p-value gradient (low to high).Default is \code{NULL}.}
+
 \item{text.size}{Text size for y-axis labels. Default is 13.}
 }
 \value{
@@ -49,7 +52,8 @@ Generates a forest plot to visualize hazard ratios, confidence intervals, and p-
 for gene signatures or features from survival analysis.
 }
 \examples{
-sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary, variable = c(100:ncol(pdata_sig_tme_binary)))
+sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary,
+  variable = c(100:ncol(pdata_sig_tme_binary)))
 sig_forest(data = sig_surv_result, signature = "ID")
 }
 \author{

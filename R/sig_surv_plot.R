@@ -10,7 +10,7 @@
 #' @param time_type Time unit. Default is "month".
 #' @param break_month Time axis breaks. Default is "auto".
 #' @param palette Color palette if cols not provided. Default is "jama".
-#' @param save_path Directory for saving plots. Default is "KM-plot".
+#' @param save_path Directory for saving plots. If NULL, plots are not saved. Default is NULL.
 #' @param mini_sig Label for low score group. Default is "score".
 #' @param show_col Logical indicating whether to show colors. Default is TRUE.
 #' @param index Index for multiple plots. Default is 1.
@@ -41,13 +41,19 @@ sig_surv_plot <- function(input_pdata,
                           show_col = TRUE,
                           mini_sig = "score",
                           fig.type = "png",
-                          save_path = "KM-plot",
+                          save_path = NULL,
                           index = 1) {
   if (!signature %in% colnames(input_pdata)) stop("Target signature must be in the column name of input_pdata")
   ###############################
 
-  if (!file.exists(save_path)) dir.create(save_path)
-  abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  # if (!file.exists(save_path)) dir.create(save_path)
+  # abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  if (!is.null(save_path)) {
+    if (!file.exists(save_path)) dir.create(save_path)
+    abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  } else {
+    abspath <- NULL
+  }
   ###########################################
 
   # if("time"%in%input_pdata & time!="time") stop(">>>- 'time' is already in column name of input_pdata... ")
@@ -116,7 +122,10 @@ sig_surv_plot <- function(input_pdata,
   message(paste(">>> High ", signature, " = ", summary(as.factor(input_pdata$bestcutoff)))[1], collapse = " ")
   message(paste(">>> Low ", signature, " = ", summary(as.factor(input_pdata$bestcutoff)))[2], collapse = " ")
 
-  save(input_pdata, file = paste0(abspath, index, "-0-", project, "-", signature, "-survival-analysis-input.RData"))
+  # save(input_pdata, file = paste0(abspath, index, "-0-", project, "-", signature, "-survival-analysis-input.RData"))
+  if (!is.null(save_path)) {
+    save(input_pdata,file = file.path(save_path,paste0(index, "-0-", project, "-", signature,"-survival-analysis-input.RData")))
+  }
   #######################################
 
   # Sur <-   Surv(time = input_pdata$time,event = input_pdata$status)
@@ -172,11 +181,18 @@ sig_surv_plot <- function(input_pdata,
   res1 <- arrange_ggsurvplots(list(pp1), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(
-    plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
-    width = 6, height = 6.5, path = save_path
-  )
-
+  # ggsave(
+  #   plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
+  #   width = 6, height = 6.5, path = save_path
+  # )
+  
+  if (!is.null(save_path)) {
+    ggsave(
+         plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
+         width = 6, height = 6.5, path = save_path
+      )
+  }
+  
   ################################################
 
   input_pdata$bestcutoff <- ifelse(input_pdata$bestcutoff == 1, "High", "Low")
@@ -253,16 +269,31 @@ sig_surv_plot <- function(input_pdata,
   # options(stringsAsFactors = TRUE)
 
   df <- tibble(x = 0, y = 0, tb = list(addTab))
-  pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
-
+  # pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
+  rlang::check_installed("gridExtra")
+  tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
+                                  gp = grid::gpar(fontsize = 6))   
+  
+  ##把 ggpp::geom_table 换成 geom_text + annotation_custom
+  pp2$plot <- pp2$plot +
+    ggplot2::geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +   
+    ggplot2::annotation_custom(tb_grob, xmin = df$x, xmax = df$x,
+                               ymin = df$y, ymax = df$y)
 
   res2 <- arrange_ggsurvplots(list(pp2), print = FALSE, ncol = 1, nrow = 1)
   ##############################
 
-  ggsave(
-    plot = res2, filename = paste0(index, "-2-KMplot-3group-", signature, "-", project, ".", fig.type),
-    width = 6, height = 6.5, path = save_path
-  )
+  # ggsave(
+  #   plot = res2, filename = paste0(index, "-2-KMplot-3group-", signature, "-", project, ".", fig.type),
+  #   width = 6, height = 6.5, path = save_path
+  # )
+  if (!is.null(save_path)) {
+    ggsave(
+      plot = res2, filename = paste0(index, "-2-KMplot-3group-", signature, "-", project, ".", fig.type),
+      width = 6, height = 6.5, path = save_path
+    )
+  }
+  
 
   ################################################
   # input_pdata$group3<-ifelse(input_pdata$group3==3,"High",ifelse(input_pdata$group3==2,"Middle","Low"))
@@ -305,10 +336,16 @@ sig_surv_plot <- function(input_pdata,
 
   res3 <- arrange_ggsurvplots(list(pp3), print = FALSE, ncol = 1, nrow = 1)
   ##############################
-  ggsave(
-    plot = res3, filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
-    width = 6, height = 6.5, path = save_path
-  )
+  # ggsave(
+  #   plot = res3, filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
+  #   width = 6, height = 6.5, path = save_path
+  # )
+  if (!is.null(save_path)) {
+    ggsave(
+         plot = res3, filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
+         width = 6, height = 6.5, path = save_path
+      )
+  }
   #############################################
   input_pdata$group2 <- ifelse(input_pdata$group2 == 1, "High", "Low")
 

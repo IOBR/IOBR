@@ -21,8 +21,10 @@
 #'   (in degrees). Default is 0.
 #' @param hjust Numeric value specifying the horizontal justification of x-axis labels.
 #'   Default is 0.5.
-#' @param show_pvalue Logical indicating whether to display statistical comparison
-#'   p-values on the plot. Default is \code{TRUE}.
+#' @param show_pairwise_p Logical indicating whether to display pairwise comparison
+#'   p-values between groups. Default is \code{TRUE}.
+#' @param show_overall_p Logical indicating whether to display the overall group
+#'   difference p-value. Default is \code{FALSE}.
 #' @param return_stat_res Logical indicating whether to return statistical test results
 #'   instead of the plot. Default is \code{FALSE}.
 #' @param size_of_pvalue Numeric value specifying the font size for p-values. Default
@@ -48,9 +50,11 @@
 #' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus",
 #'         variable = "subtype", jitter = TRUE, palette = "jco")
 sig_box <- function(data, signature, variable, angle_x_text = 0, hjust = 0.5, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
-                    size_of_pvalue = 6, show_pvalue = TRUE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE) {
+                    size_of_pvalue = 6, show_pairwise_p = TRUE,show_overall_p = FALSE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE) {
+  rlang::check_installed("ggpubr")
   if (class(data)[1] == "Seurat") {
-    cat(crayon::green(">>>-- Derive matrix data from Seurat object...\n"))
+    # cat(crayon::green(">>>-- Derive matrix data from Seurat object...\n"))
+    cat("\033[32m>>>-- Derive matrix data from Seurat object...\033[39m\n")
     input <- extract_sc_data(
       sce = data,
       vars = signature,
@@ -71,7 +75,7 @@ sig_box <- function(data, signature, variable, angle_x_text = 0, hjust = 0.5, pa
   data <- data[!is.na(data$variable), ]
   ####################################
   if (is.null(cols)) {
-    cols <- IOBR::palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
+    cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   } else {
     cols <- cols
   }
@@ -99,11 +103,22 @@ sig_box <- function(data, signature, variable, angle_x_text = 0, hjust = 0.5, pa
     ) +
     theme(legend.position = "none")
 
+  #修改为具体的显示情况
+  if (show_pairwise_p) {
+    p <- p + ggpubr::stat_compare_means(
+      comparisons = comparision, 
+      size = size_of_pvalue
+    )
+  }
+  
+  if (show_overall_p) {
+    p <- p + ggpubr::stat_compare_means(
+      size = size_of_pvalue
+    )
+  }
 
-  if (show_pvalue) p <- p + stat_compare_means(comparisons = comparision, size = size_of_pvalue) + stat_compare_means(size = size_of_pvalue)
 
-
-  res <- compare_means(signature ~ variable, data = data)
+  res <- ggpubr::compare_means(signature ~ variable, data = data)
   print(res)
 
   if (jitter) {

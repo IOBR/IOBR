@@ -23,7 +23,10 @@ patterns_to_na <- c("_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MC
 #' @export
 #' @examples
 #' data("imvigor210_sig", package = "IOBR")
-#' input <- remove_names(imvigor210_sig, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = NULL)
+#' input <- remove_names(imvigor210_sig,
+#'   variable = "colnames", 
+#'   patterns_to_na = patterns_to_na,
+#'   patterns_space = NULL)
 remove_names <- function(input_df, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = NULL) {
   if (variable == "colnames") {
     for (i in 1:length(patterns_to_na)) {

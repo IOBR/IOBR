@@ -9,7 +9,7 @@
 #' @param check_eset Logical, determining whether to check the eset or not. If TRUE, checks for errors in the expression set. Default is TRUE.
 #' @param palette Color palette to use for the plot. Default is 'jama'.
 #' @param log2  it performs log2 transformation of the data. Defaults to TRUE.
-#' @param path Directory where the results should be saved. If it is NULL, results will be saved in a folder "Combat_PCA".
+#' @param path Directory where the results should be saved. Default is NULL (display only, no saving).
 #' @param adjust_eset Logical, whether to adjust the expression set by manipulating the features. Default is TRUE.
 #' @param id_type Type of id present in the expression set (like Ensembl ID or Gene Symbol).
 #' @param data_type Type of data in the expression set ("array", "count", or "tpm"). Default is "array".
@@ -22,14 +22,17 @@
 #' @references Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078
 #' @references Leek, J. T., Johnson, W. E., Parker, H. S., Jaffe, A. E., & Storey, J. D. (2012). The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics, 28(6), 882-883.
 #' @examples
-#' data("eset_stad", package = "IOBR")
-#' data("eset_blca", package = "IOBR")
+#' \dontrun{
 #' # The returned matrix is the count matrix after removing the batches.
+#' # eset_blca is an internal dataset in IOBR
+#' # To use this example, you need to load TCGA-BLCA data separately
 #' eset <- remove_batcheffect(eset_stad, eset_blca, id_type = "ensembl", data_type = "count")
+#' }
 remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = c("array", "count", "tpm"), cols = "normal", palette = "jama",
-                               log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = "Result_PCA") {
-  if (is.null(path)) path <- "Combat_PCA"
-  path <- creat_folder(path)
+                               log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = NULL) {
+  if (!is.null(path)) {
+    path <- creat_folder(path)
+  }
   #######################################################
   if (!data_type == "count") {
     if (log2) {
@@ -93,11 +96,13 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
   if (!data_type == "count") {
     message(">>>=== Processing method: sva:: ComBat")
     modcombat <- model.matrix(~1, data = batch)
+    rlang::check_installed("sva")
     combined.expr.combat <- as.data.frame(sva::ComBat(dat = as.matrix(combined.expr), batch = batch$batch, mod = modcombat))
     combined.expr.combat <- preprocessCore::normalize.quantiles(as.matrix(combined.expr.combat), keep.names = TRUE)
     prefix <- data_type
   } else if (data_type == "count") {
     message(">>>=== Processing method: sva:: ComBat_seq")
+    rlang::check_installed("sva")
     combined.expr.combat <- sva::ComBat_seq(as.matrix(combined.expr), batch = batch$batch)
     # print(head(combined.expr.combat))
     eset2_tpm <- count2tpm(countMat = combined.expr.combat, idType = id_type, source = "local")
@@ -163,14 +168,17 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
 
   print(p)
   ########################################
-  if (!data_type == "count") {
-    num <- 2
-    width <- 2 * 5
-  } else {
-    num <- 3
-    width <- 3 * 5
+  if (!is.null(path)) {
+    if (!data_type == "count") {
+      num <- 2
+      width <- 2 * 5
+    } else {
+      num <- 3
+      width <- 3 * 5
+    }
+    ggsave(p, filename = paste0("0-PCA-of-", num, "-eset.pdf"), 
+           width = width, height = 5, path = path$folder_name)
   }
-  ggsave(p, filename = paste0("0-PCA-of-", num, "-eset.pdf"), width = width, height = 5, path = path$folder_name)
   ########################################
 
   return(combined.expr.combat)

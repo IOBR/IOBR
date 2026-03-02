@@ -44,7 +44,8 @@ design_mytheme <- function(theme = "light",
   } else if (theme == "classic") {
     mytheme <- ggplot2::theme_classic()
   } else if (theme == "classic2") {
-    mytheme <- ggpubr::theme_classic2()
+    mytheme <- ggplot2::theme_classic() +
+      theme(text = element_text(size = 14))
   }
   message(paste0(">>>>Options for `theme`: light, bw, classic and classic2"))
 
