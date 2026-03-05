@@ -192,13 +192,35 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
 
   if (show_plot) print(p)
 
-  if (is.null(path)) {
-    path <- paste0("1-Cor-of-", var1, "-and-", var2)
-  }
+  # if (is.null(path)) {
+  #   path <- paste0("1-Cor-of-", var1, "-and-", var2)
+  # }
 
-  ff <- creat_folder(path)
+  # ff <- creat_folder(path)
+
+  # if (save_plot) {
+  #   if (fig.format == "pdf") {
+  #     ggsave(p,
+  #       filename = paste0(index, "-", var2, "-", var1, "-correlation", ".pdf"),
+  #       width = fig.width, height = fig.height, path = path
+  #     )
+  #   } else if (fig.format == "png") {
+  #     ggsave(p,
+  #       filename = paste0(index, "-", var2, "-", var1, "-correlation", ".png"),
+  #       width = fig.width, height = fig.height, path = path
+  #     )
+  #   }
+
+  #   save(data, file = paste0(ff$abspath, "0-input-data-", var1, "-", var2, ".RData"))
+  # }
 
   if (save_plot) {
+    if (is.null(path)) {
+      path <- paste0("1-Cor-of-", var1, "-and-", var2)
+    }
+
+    ff <- creat_folder(path)
+
     if (fig.format == "pdf") {
       ggsave(p,
         filename = paste0(index, "-", var2, "-", var1, "-correlation", ".pdf"),
@@ -210,7 +232,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
         width = fig.width, height = fig.height, path = path
       )
     }
-
+  
     save(data, file = paste0(ff$abspath, "0-input-data-", var1, "-", var2, ".RData"))
   }
 

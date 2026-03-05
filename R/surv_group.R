@@ -50,7 +50,7 @@ surv_group <- function(input_pdata,
                        cols = NULL,
                        palette = "jama",
                        mini_sig = "score",
-                       save_path = paste0("KMplot"),
+                       save_path = NULL,
                        fig.type = "pdf",
                        index = 1,
                        width = 6,
@@ -59,8 +59,14 @@ surv_group <- function(input_pdata,
   if (!target_group %in% colnames(input_pdata)) stop("Target group must be in the column of input_pdata")
   ###############################
 
-  if (!file.exists(save_path)) dir.create(save_path)
-  abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  # if (!file.exists(save_path)) dir.create(save_path)
+  # abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  if (!is.null(save_path)) {
+    if (!file.exists(save_path)) dir.create(save_path)
+    abspath <- paste(getwd(), "/", save_path, "/", sep = "")
+  } else {
+    abspath <- NULL
+  }
   ###########################################
   input_pd <- input_pdata[, c(ID, target_group, time, status)]
 
@@ -102,7 +108,10 @@ surv_group <- function(input_pdata,
 
 
   ###################################
-  save(input_pd, file = paste0(abspath, "0-", project, "-", target_group, "-survival-analysis-input.RData"))
+  # save(input_pd, file = paste0(abspath, "0-", project, "-", target_group, "-survival-analysis-input.RData"))
+  if (!is.null(save_path)) {
+    save(input_pd, file = paste0(abspath, "0-", project, "-", target_group, "-survival-analysis-input.RData"))
+  }
   #######################################
 
   colnames(input_pd)[which(colnames(input_pd) == target_group)] <- "target_group"
@@ -192,7 +201,8 @@ surv_group <- function(input_pdata,
     # pp$plot <- pp$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE, size = font.size.table)
     rlang::check_installed("gridExtra")
     tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
-                                    gp = grid::gpar(fontsize = font.size.table))
+                                    # gp = grid::gpar(fontsize = font.size.table))
+                                    theme = gridExtra::ttheme_minimal(base_size = font.size.table))
     pp$plot <- pp$plot +
       geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +
       annotation_custom(tb_grob, xmin = df$x, xmax = df$x,
@@ -282,10 +292,16 @@ surv_group <- function(input_pdata,
   pp <- list(pp)
   res <- arrange_ggsurvplots(pp, print = FALSE, ncol = 1, nrow = 1)
 
-  ggsave(res,
-    filename = paste0(index, "-KMplot-", target_group, "-", project, ".", fig.type),
-    width = width, height = height, path = save_path
-  )
+  # ggsave(res,
+  #   filename = paste0(index, "-KMplot-", target_group, "-", project, ".", fig.type),
+  #   width = width, height = height, path = save_path
+  # )
+  if (!is.null(save_path)) {
+    ggsave(res,
+      filename = paste0(index, "-KMplot-", target_group, "-", project, ".", fig.type),
+      width = width, height = height, path = save_path
+    )
+  }
   return(res)
 }
 

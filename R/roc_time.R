@@ -51,6 +51,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     save_path <- folder_info$folder_name
     }
   ##############################################
+  if (is.null(cols)) cols <- "normal"
   cols <- get_cols(cols = cols, palette = palette, show_col = show_col, seed = seed)
   ##############################################
 
@@ -338,7 +339,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     ggsave(p,
            filename = paste0(index, "-", main, "-ROC-time", ".", fig.type),
            width = width, height = height,
-           path = path$folder_name)
+           path = save_path)
   }
   
   return(p)

@@ -266,6 +266,12 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' @param absolute logical: Runs CIBERSORT in absolute mode
 #' @param perm permutation to run CIBERSORT
 #' @param abs_method Character string specifying how to compute absolute abundance
+#' @param parallel Logical. Enable parallel execution? (default = FALSE)
+#' @param num_cores Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)
+#' @param seed Integer. Random seed for reproducible permutation testing. 
+#'   If \code{NULL} (default), uses current random state. Set to a specific 
+#'   value (e.g., 123) for reproducible results across runs. Applies to both 
+#'   parallel and serial permutation.
 #' @return cibersrot with immune cell fractions
 #' @author Dongqiang Zeng
 #' @export
@@ -277,7 +283,8 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' cibersort_result <- deconvo_cibersort(
 #'   eset = eset, project = "TCGA-STAD",
 #'   arrays = FALSE, absolute = FALSE, perm = 500)
-deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score") {
+deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score", 
+                              parallel = FALSE, num_cores = 2, seed=NULL) {
   if (absolute) {
     message(paste0("\n", ">>> Running ", "CIBERSORT in absolute mode"))
   } else {
@@ -297,7 +304,10 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
     perm = perm,
     QN = quantile_norm,
     absolute = absolute,
-    abs_method = abs_method
+    abs_method = abs_method,
+    parallel = parallel,
+    num_cores = num_cores,
+    seed= seed
   )
   ###############################
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
