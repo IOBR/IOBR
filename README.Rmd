@@ -9,121 +9,246 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures",
-  out.width = "100%"
+  out.width = "100%",
+  message = FALSE,
+  warning = FALSE
 )
 ```
 
 # IOBR: Immuno-Oncology Biological Research
 
-IOBR is an R package to perform comprehensive analysis of tumor microenvironment and signatures for immuno-oncology.
+[![GitHub release](https://img.shields.io/github/release/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/releases/)
+[![GitHub stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/stargazers/)
+[![GitHub issues](https://img.shields.io/github/issues/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/issues/)
+[![License](https://img.shields.io/badge/license-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 
+IOBR is a comprehensive R package designed for immuno-oncology research, providing a one-stop solution for tumor microenvironment (TME) deconvolution, signature analysis, and integrated visualization. It integrates multiple state-of-the-art algorithms and curated gene sets to facilitate in-depth analysis of tumor immunity.
 
-### 1.Introduction
+## 📊 Package Workflow
 
-- 1. IOBR collects 322 published signature gene sets, involving tumor microenvironment, tumor metabolism, m6A, exosomes, microsatellite instability, and tertiary lymphoid structure. Running the function `signature_collection_citation` to attain the source papers. The function `signature_collection` returns the detail signature genes of all given signatures.
-- 2. IOBR integrates 8 published methodologies decoding tumor microenvironment (TME) contexture: `CIBERSORT`, `TIMER`, `xCell`, `MCPcounter`, `ESITMATE`, `EPIC`, `IPS`, `quanTIseq`; 
-- 3. IOBR adopts three computational methods to calculate the signature score, comprising `PCA`,`z-score`, and `ssGSEA`;
-- 4. IOBR integrates multiple approaches for variable transition, visualization, batch survival analysis, feature selection, and statistical analysis.
-- 5. IOBR also integrates methods for batch visualization of subgroup characteristics.
+![IOBR Workflow](./man/figures/IOBR-Workflow.png)
 
-#### IOBR package workflow
-![IOBR workflow](./man/figures/IOBR-Workflow.png)
+![IOBR Package](./man/figures/IOBR-Package.png)
 
-### 2.Installation
-It is essential that you have R 3.6.3 or above already installed on your computer or server. IOBR utilizes many other R packages that are currently available from CRAN, Bioconductor and GitHub. Before installing IOBR, please install all dependencies by executing the following command in R console:
+## 🎯 Key Features
 
-The dependencies includs `tibble`, `survival`, `survminer`, `limma`, `limSolve`, `GSVA`, `e1071`, `preprocessCore`, `ggplot2` and `ggpubr`.
+### 1. Extensive Signature Collection
+
+- **322+ published signature gene sets** covering TME, metabolism, m6A, exosomes, microsatellite instability, tertiary lymphoid structure, and more
+- Easy access to signature genes and source citations
+- Flexible signature management and customization
+
+### 2. Multi-algorithm TME Deconvolution
+
+Integrates 8 cutting-edge TME decoding methodologies:
+
+- `CIBERSORT` - Cell-type identification by estimating relative subsets of RNA transcripts
+- `TIMER` - Tumor Immune Estimation Resource
+- `xCell` - Digital portrayal of tissue cellular heterogeneity
+- `MCPcounter` - Estimation of immune and stromal cell populations
+- `ESTIMATE` - Inference of tumor purity and stromal/immune cell admixture
+- `EPIC` - Enumeration of cancer and immune cell types
+- `IPS` - Immunophenoscore calculation
+- `quanTIseq` - Quantification of tumor-infiltrating immune cells
+
+### 3. Signature Score Calculation
+
+Three robust computational methods for signature scoring:
+
+- `PCA` - Principal Component Analysis
+- `z-score` - Standardized expression scoring
+- `ssGSEA` - Single-sample Gene Set Enrichment Analysis
+
+### 4. Integrated Analysis Pipeline
+
+- Data preprocessing and normalization
+- Batch effect correction
+- Feature selection and dimensionality reduction
+- Survival analysis and risk modeling
+- Statistical testing and visualization
+
+### 5. Rich Visualization Tools
+
+- Batch survival analysis plots
+- Subgroup characteristic visualization
+- Correlation heatmaps and scatter plots
+- Forest plots for biomarker validation
+- Customizable themes and color palettes
+
+## 📦 Installation
+
+### Prerequisites
+- R version 3.6.0 or higher
+- Bioconductor version 3.10 or higher
+
+### Install from GitHub
+
+#### Standard Installation
+```r
+# Install BiocManager if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+# Install IOBR from GitHub
+BiocManager::install("IOBR/IOBR")
+```
+
+#### For Chinese Users (Faster Download)
+```r
+# Install remotes if not already installed
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+# Install IOBR using a mirror for faster download
+remotes::install_git("https://ghfast.top/https://github.com/IOBR/IOBR")
+```
+
+### Load the Package
 
 ```{r}
-# options("repos"= c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
-# options(BioC_mirror="http://mirrors.tuna.tsinghua.edu.cn/bioconductor/")
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-
-depens <- c(
-  "tibble", "survival", "survminer", "limma", "DESeq2", "devtools", "limSolve", "GSVA", "e1071", "preprocessCore",
-  "devtools", "tidyHeatmap", "caret", "glmnet", "ppcor", "timeROC", "pracma", "factoextra",
-  "FactoMineR", "WGCNA", "patchwork", "ggplot2", "biomaRt", "ggpubr", "ComplexHeatmap"
-)
-for (i in 1:length(depens)) {
-  depen <- depens[i]
-  if (!requireNamespace(depen, quietly = TRUE)) BiocManager::install(depen, update = FALSE)
-}
-```
-
-The package is not yet on CRAN or Bioconductor. You can install it from Github:
-```{r, message = FALSE, warning=FALSE}
-if (!requireNamespace("IOBR", quietly = TRUE)) {
-  devtools::install_github("IOBR/IOBR")
-}
-```
-
-Library R packages
-
-```{r,message = FALSE, warning=FALSE}
 library(IOBR)
 ```
 
-### 3.Manual
-IOBR pipeline diagram below outlines the data processing flow of this package, and detailed guidance of how to use IOBR could be found in the [IOBR book](https://iobr.github.io/book/).
+## 🚀 Quick Start
 
-![IOBR logo](./man/figures/IOBR-Package.png)
+### TME Deconvolution
 
+```r
+# List available TME deconvolution methods
+tme_deconvolution_methods
 
-## 3.Availabie methods to decode TME contexture
+# Perform TME deconvolution using multiple methods
+# Assuming you have an expression set object 'eset'
+tme_result <- deconvo_tme(eset, 
+                          methods = c("cibersort", "timer", "xcell"),
+                          output_format = "data.frame")
+```
+
+### Signature Score Calculation
+
+```r
+# List available signature score calculation methods
+signature_score_calculation_methods
+
+# Calculate signature scores using ssGSEA
+# Assuming you have an expression set object 'eset' and signature list 'sig_list'
+sig_scores <- sigScore(eset, 
+                       signature = sig_list,
+                       method = "ssgsea")
+```
+
+## 📖 Documentation
+
+### IOBR Book
+
+For detailed tutorials and case studies, please refer to the [IOBR Book](https://iobr.github.io/book/), which provides comprehensive guidance on:
+
+- Installation and setup
+- Data preprocessing
+- TME deconvolution
+- Signature analysis
+- Survival analysis
+- Visualization techniques
+
+### Package Vignettes
+
+Vignettes are available within the package and can be accessed using:
+
+```r
+browseVignettes("IOBR")
+```
+
+## 🛠️ Available Methods
+
+### TME Deconvolution Methods
 
 ```{r}
 tme_deconvolution_methods
-# Return available parameter options of TME deconvolution.
 ```
 
-If you use this package in your work, please cite both our package and the method(s) you are using.
+### Signature Score Calculation Methods
 
-#### Licenses of the deconvolution methods
-| method | license | citation |
-|--------|---------|----------|
-| [CIBERSORT](https://cibersort.stanford.edu/) | free for non-commerical use only | Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., … Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453–457.  https://doi.org/10.1038/nmeth.3337 |
-| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | free ([GPL2.0](	https://bioinformatics.mdanderson.org/estimate/)) | Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612. http://doi.org/10.1038/ncomms3612 |
-| [quanTIseq](http://icbi.at/software/quantiseq/doc/index.html) | free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md)) | Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34. https://doi.org/10.1186/s13073-019-0638-6 |
-| [TIMER](http://cistrome.org/TIMER/) | free ([GPL 2.0](http://cistrome.org/TIMER/download.html)) | Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., … Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.  https://doi.org/10.1186/s13059-016-1028-7 |
-| [IPS](https://github.com/icbi-lab/Immunophenogram) | free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE)) | P. Charoentong et al., Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017). https://doi.org/10.1016/j.celrep.2016.12.019 |
-| [MCPCounter](https://github.com/ebecht/MCPcounter) | free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License)) | Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., … de Reyniès, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218. https://doi.org/10.1186/s13059-016-1070-5 |
-| [xCell](http://xcell.ucsf.edu/) | free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220. https://doi.org/10.1186/s13059-017-1349-1 |
-| [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/) | free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476. https://doi.org/10.7554/eLife.26476 |
-
-
-## 4.Availabie methods to estimate signatures
 ```{r}
 signature_score_calculation_methods
-# Return available parameter options of signature estimation.
 ```
 
-#### Licenses of the signature-esitmation method
-| method | license | citation |
-|--------|---------|----------|
-| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | free ([GPL (>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7, http://www.biomedcentral.com/1471-2105/14/7 |
+### Signature Collection
 
-## 5.Signature collection
 ```{r}
-# References of collected signatures
-signature_collection_citation[!duplicated(signature_collection_citation$Journal), ]
+data("signature_collection")
+# Number of available signatures
+length(signature_collection)
 
-# signature groups
+head(signature_collection)
+
+data("signature_collection_citation")
+head(signature_collection_citation)
+
+data("sig_group")
 sig_group[1:3]
 ```
 
+## 📊 Licenses and Citations
 
-References
----------
-Zeng DQ, Fang YR, …, Liao WJ. Enhancing Immuno-Oncology Investigations Through Multidimensional Decoding of Tumour Microenvironment with IOBR 2.0, **Cell Reports Methods**, 2024 [https://doi.org/10.1016/j.crmeth.2024.100910](https://doi.org/10.1016/j.crmeth.2024.100910)
+### TME Deconvolution Methods
+
+| Method | License | Citation |
+|--------|---------|----------|
+| [CIBERSORT](https://cibersort.stanford.edu/) | Free for non-commercial use only | Newman, A. M., et al. (2015). Nature Methods, 12(5), 453–457. [https://doi.org/10.1038/nmeth.3337](https://doi.org/10.1038/nmeth.3337) |
+| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | Free ([GPL2.0](https://bioinformatics.mdanderson.org/estimate/)) | Vegesna R, et al. (2013). Nature Communications, 4, 2612. [http://doi.org/10.1038/ncomms3612](http://doi.org/10.1038/ncomms3612) |
+| [quanTIseq](http://icbi.at/software/quantiseq/doc/index.html) | Free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md)) | Finotello, F., et al. (2019). Genome Medicine, 11(1), 34. [https://doi.org/10.1186/s13073-019-0638-6](https://doi.org/10.1186/s13073-019-0638-6) |
+| [TIMER](http://cistrome.org/TIMER/) | Free ([GPL 2.0](http://cistrome.org/TIMER/download.html)) | Li, B., et al. (2016). Genome Biology, 17(1), 174. [https://doi.org/10.1186/s13059-016-1028-7](https://doi.org/10.1186/s13059-016-1028-7) |
+| [IPS](https://github.com/icbi-lab/Immunophenogram) | Free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE)) | Charoentong P, et al. (2017). Cell Reports, 18, 248-262. [https://doi.org/10.1016/j.celrep.2016.12.019](https://doi.org/10.1016/j.celrep.2016.12.019) |
+| [MCPCounter](https://github.com/ebecht/MCPcounter) | Free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License)) | Becht, E., et al. (2016). Genome Biology, 17(1), 218. [https://doi.org/10.1186/s13059-016-1070-5](https://doi.org/10.1186/s13059-016-1070-5) |
+| [xCell](http://xcell.ucsf.edu/) | Free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., et al. (2017). Genome Biology, 18(1), 220. [https://doi.org/10.1186/s13059-017-1349-1](https://doi.org/10.1186/s13059-017-1349-1) |
+| [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/) | Free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., et al. (2017). eLife, 6, e26476. [https://doi.org/10.7554/eLife.26476](https://doi.org/10.7554/eLife.26476) |
+
+### Signature Estimation Methods
+
+| Method | License | Citation |
+|--------|---------|----------|
+| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | Free ([GPL (>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, et al. (2013). BMC Bioinformatics, 14, 7. [https://doi.org/10.1186/1471-2105-14-7](https://doi.org/10.1186/1471-2105-14-7) |
+
+## 📝 Citing IOBR
+
+If you use IOBR in your research, please cite both the IOBR package and the specific methods you employ.
+
+1. Zeng DQ, Fang YR, …, Liao WJ. Enhancing Immuno-Oncology Investigations Through Multidimensional Decoding of Tumour Microenvironment with IOBR 2.0, **Cell Reports Methods**, 2024 [https://doi.org/10.1016/j.crmeth.2024.100910](https://doi.org/10.1016/j.crmeth.2024.100910)
+
+2. Fang YR, ..., Liao WJ, Zeng DQ, Systematic Investigation of Tumor Microenvironment and Antitumor Immunity With IOBR, **Med Research**, 2025 [https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001)
+
+## 🤝 Contributing
+
+We welcome contributions to IOBR! If you're interested in contributing, please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+Please ensure your code follows the project's coding standards and includes appropriate documentation and tests.
+
+## 🐛 Reporting Bugs
+
+If you encounter any bugs or issues, please report them to the [GitHub issues page](https://github.com/IOBR/IOBR/issues). When reporting bugs, please include:
+
+- A clear and descriptive title
+- A detailed description of the issue
+- Minimal reproducible example (if possible)
+- Your R and IOBR versions
+- Any error messages or warnings
+
+## 📧 Contact
+
+For questions or inquiries, please contact:
+
+- Dr. Deqiang Zeng: interlaken@smu.edu.cn
+- Dr. Yunru Fang: fyr_nate@163.com
+
+## 📄 License
+
+IOBR is released under the [GNU General Public License v3.0](LICENSE).
 
 
-Fang YR, ..., Liao WJ, Zeng DQ, Systematic Investigation of Tumor Microenvironment and
-Antitumor Immunity With IOBR, **Med Research**, 2025
-[Link to paper](https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001)
-                    
-
-Reporting bugs
----------
-Please report bugs to the [Github issues page](https://github.com/IOBR/IOBR/issues)
-
-E-mail any questions to interlaken@smu.edu.cn or fyr_nate@163.com

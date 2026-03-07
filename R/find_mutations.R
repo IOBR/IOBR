@@ -43,6 +43,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
                            oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5) {
   rlang::check_installed("ggpubr")
   rlang::check_installed("PMCMRplus")
+  rlang::check_installed("ComplexHeatmap")
   if (!is.null(save_path)) {
     file_name <- save_path
     if (!file.exists(file_name)) dir.create(file_name)
@@ -174,7 +175,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6) 
 
         if (jitter) {
-          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
+          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
         ggsave(pl[[i]],
           filename = paste0(4 + i, "-1-", gene, "-continue.pdf"),
@@ -255,7 +256,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           mytheme +
           ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
         if (jitter) {
-          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
+          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
 
         ggsave(pl[[i]],
@@ -347,7 +348,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
 
         if (jitter) {
-          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point.alpha, color = "black")
+          pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
 
         ggsave(pl[[i]],
@@ -437,7 +438,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   group_col <- palettes(category = "box", palette = palette, show_col = show_col)
 
   h1 <- ComplexHeatmap::HeatmapAnnotation(
-    Signature_score = anno_barplot(as.numeric(pdata1[, signature]),
+    Signature_score = ComplexHeatmap::anno_barplot(as.numeric(pdata1[, signature]),
       border = FALSE,
       gp = gpar(fill = "#2D004B"),
       axis = TRUE,
@@ -458,7 +459,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   )
 
   h2 <- ComplexHeatmap::HeatmapAnnotation(
-    Signature_score = anno_barplot(as.numeric(pdata2[, signature]),
+    Signature_score = ComplexHeatmap::anno_barplot(as.numeric(pdata2[, signature]),
       border = FALSE,
       gp = gpar(fill = "#2D004B"),
       axis = TRUE,
@@ -533,7 +534,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   # save to pdf
   if (!is.null(save_path)) {
     pdf(file.path(abspath, paste0("0-OncoPrint-", signature, ".pdf")), width = width, height = height)
-    draw(p)
+    ComplexHeatmap::draw(p)
     invisible(dev.off())
   }
   # print to screen

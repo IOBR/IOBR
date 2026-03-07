@@ -51,13 +51,19 @@ iobr_deg <- function(eset,
                      heatmap = TRUE,
                      col_heatmap = 1,
                      parallel = FALSE) {
+  # if (is.null(path)) {
+  #   # set path to store enrichment analyses result
+  #   path <- creat_folder(paste0("Result-of-DEGs"))
+  # } else {
+  #   path <- creat_folder(path)
+  # }
+  # abspath <- path$abspath
   if (is.null(path)) {
-    # set path to store enrichment analyses result
-    path <- creat_folder(paste0("Result-of-DEGs"))
+    abspath <- NULL
   } else {
     path <- creat_folder(path)
+    abspath <- path$abspath
   }
-  abspath <- path$abspath
   ############################################
 
   colnames(pdata)[which(colnames(pdata) == pdata_id)] <- "ID"
@@ -188,6 +194,27 @@ iobr_deg <- function(eset,
     contrast <- c("deg_group", contrast)
 
     rlang::check_installed("limma")
+
+    ############## --- 只保留用户指定的两个分组，避免其他组被错误并入 group2 ---
+    keep_groups <- contrast[2:3]
+    pdata <- pdata[pdata$deg_group %in% keep_groups, , drop = FALSE]
+    pdata <- pdata[!is.na(pdata$deg_group), , drop = FALSE]
+    eset  <- eset[, colnames(eset) %in% pdata$ID, drop = FALSE]
+    pdata <- pdata[match(colnames(eset), pdata$ID), , drop = FALSE]
+
+    # --- 检查两组是否都存在 ---
+    if (!all(keep_groups %in% unique(as.character(pdata$deg_group)))) {
+      stop(
+        paste0(
+          "limma error: selected contrast groups not both found in pdata$",
+          group_id, ". Available groups: ",
+          paste(unique(as.character(pdata$deg_group)), collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
+    ##############
+
     pdata$deg_group <- ifelse(pdata$deg_group == contrast[2], "group1", "group2")
     ################################
     message(paste0("group1 = ", contrast[2]))
@@ -243,11 +270,20 @@ iobr_deg <- function(eset,
     print(head(DEG))
   }
 
-  save(DEG, file = paste0(abspath, "1-DEGs.RData"))
-  # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
-  csv_file <- paste0(abspath, "2-DEGs.csv")
-  write.csv(DEG, file = csv_file, row.names = FALSE)
-  message(">>> DEG results written to ", csv_file,
-          "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  # save(DEG, file = paste0(abspath, "1-DEGs.RData"))
+  # # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+  # csv_file <- paste0(abspath, "2-DEGs.csv")
+  # write.csv(DEG, file = csv_file, row.names = FALSE)
+  # message(">>> DEG results written to ", csv_file,
+  #         "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  # return(DEG)
+  if (!is.null(abspath)) {
+    save(DEG, file = paste0(abspath, "1-DEGs.RData"))
+    # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+    csv_file <- paste0(abspath, "2-DEGs.csv")
+    write.csv(DEG, file = csv_file, row.names = FALSE)
+    message(">>> DEG results written to ", csv_file,
+            "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  }
   return(DEG)
 }
