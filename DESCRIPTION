@@ -55,7 +55,8 @@ Imports:
     e1071,
     limSolve,
     xCell,
-    circlize
+    circlize,
+    sva
 Suggests: 
     easier,
     knitr,
@@ -102,3 +103,6 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: FALSE
 RoxygenNote: 7.3.3
+
+Remotes:
+    dviraran/xCell
