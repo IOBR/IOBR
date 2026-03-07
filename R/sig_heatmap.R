@@ -119,28 +119,72 @@ sig_heatmap <- function(input,
   
   # heatmap_col <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
   
-  # # # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
+  # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
   # if (length(heatmap_col) >= 3) {
   #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col[1:3])
   # } else {
   #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
   # }
   
+  
   # --- 修改开始：支持自定义热图颜色 ---
+  # 用户自定义颜色 - 智能映射
   if (!is.null(cols_heatmap)) {
-    # 如果用户传入了颜色向量，优先使用
-    heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), cols_heatmap[1:3])
-  } else {
-    # 否则执行原有的逻辑
-    heatmap_col_vec <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
+    # 用户自定义颜色 - 智能映射
+    n_colors <- length(cols_heatmap)
     
-    if (length(heatmap_col_vec) >= 3) {
-      heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col_vec[1:3])
+    if (n_colors >= 5) {
+      heatmap_col <- circlize::colorRamp2(c(-2, -1, 0, 1, 2), cols_heatmap[1:5])
+      message("Using 5-point color mapping")
+    } else if (n_colors >= 3) {
+      heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), cols_heatmap[1:3])
+    } else if (n_colors == 2) {
+      message("Only 2 colors provided, using white as midpoint")
+      heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c(cols_heatmap[1], "white", cols_heatmap[2]))
     } else {
+      warning("Invalid cols_heatmap, using default")
       heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+    }
+    
+  } else {
+    # 默认使用 palettes 函数
+    heatmap_col_raw <- palettes(
+      category = "tidyheatmap", 
+      palette = palette, 
+      show_col = show_col, 
+      show_message = show_palettes
+    )
+    
+    # 统一处理各种可能的返回值类型
+    if (is.function(heatmap_col_raw)) {
+      # 如果是函数（如原版的 colorRamp2 对象），直接使用
+      heatmap_col <- heatmap_col_raw
+    } else {
+      # 转换为颜色向量
+      if (is.matrix(heatmap_col_raw) && ncol(heatmap_col_raw) == 3) {
+        # 从 RGB 矩阵转换
+        color_vector <- rgb(heatmap_col_raw[,1], heatmap_col_raw[,2], heatmap_col_raw[,3], 
+                            maxColorValue = 1)
+      } else if (is.character(heatmap_col_raw)) {
+        # 已经是颜色向量
+        color_vector <- heatmap_col_raw
+      } else {
+        # 回退方案
+        color_vector <- c("blue", "white", "red")
+      }
+      
+      # 根据颜色数量创建 colorRamp2
+      if (length(color_vector) >= 5) {
+        heatmap_col <- circlize::colorRamp2(c(-2, -1, 0, 1, 2), color_vector[1:5])
+      } else if (length(color_vector) >= 3) {
+        heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), color_vector[1:3])
+      } else {
+        heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+      }
     }
   }
   # --- 修改结束 ---
+  
 
   if (!is.null(cols_group)) {
     color_box <- cols_group

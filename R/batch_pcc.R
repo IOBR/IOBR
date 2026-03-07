@@ -53,17 +53,15 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
     list(estimate = rho, p.value = pval)
   }
   
-  # aa <- dat[, features] %>%
-  #   tibble::as_tibble() %>%
-  #   map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
   aa <- dat[, features] %>%
-  tibble::as_tibble() %>%
-  purrr::map(
+    tibble::as_tibble() %>%
+    purrr::map(
     pcor_test,
     y = dat[[target]],
     z = dat[[interferenceid]],
     method = method
   )
+
   pvalue <- aa %>% purrr::map_dbl("p.value")
   statistic <- aa %>% purrr::map_dbl("estimate")
   cc <- data.frame(
