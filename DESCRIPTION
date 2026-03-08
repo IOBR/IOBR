@@ -2,13 +2,13 @@ Package: IOBR
 Title: Immune Oncology Biological Research
 Version: 0.99.99
 Authors@R: c(
-    person("Dongqiang", "Zeng",email ="xx@qq.com", role = "aut"),
-    person("Yiran", "Fang",email ="fyr_nate@163.com", role = c("aut", "cre"),
+    person("Dongqiang", "Zeng", , "xx@qq.com", role = "aut"),
+    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Shixiang", "Wang",email ="w_shixiang@163.com", role = c("aut"),
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = "aut",
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Qingcong", "Luo",email ="xx@qq.com", role = "aut"),
-    person("Hongqian", "Qian",email ="xx@qq.com", role = "aut")
+    person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
+    person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
   )
 Description: This package offers six modules for TME analysis based on
     multi-omics data. These modules cover data preprocessing, TME
@@ -31,71 +31,73 @@ Depends:
     R(>= 3.6.0)
 Imports: 
     biomaRt,
+    circlize,
     clusterProfiler,
     ComplexHeatmap,
     dplyr,
+    e1071,
     ggplot2,
     glmnet,
     GSVA,
+    limSolve,
+    methods,
+    plyr,
     preprocessCore,
     purrr,
+    RColorBrewer,
+    reshape2,
+    rlang,
+    scales,
     stringr,
     survival,
     survminer,
+    sva,
     tibble,
     tidyHeatmap,
     tidyr,
     timeROC,
-    methods,
-    rlang,
-    plyr,
-    reshape2,
-    scales,
-    RColorBrewer,
-    e1071,
-    limSolve,
-    xCell,
-    circlize,
-    sva
+    xCell
 Suggests: 
-    easier,
-    knitr,
-    prettydoc,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    org.Hs.eg.db,
-    org.Mm.eg.db,
-    WGCNA,
-    Matrix,
-    patchwork,
-    Seurat,
     BiocParallel,
+    corrplot,
+    DESeq2,
+    doParallel,
     DOSE,
-    FactoMineR,
-    Hmisc,
-    MASS,
-    NbClust,
-    SeuratObject,
+    easier,
     enrichplot,
     factoextra,
-    maftools,
-    msigdbr,
-    pROC,
-    sva,
-    webr,
-    psych,
-    DESeq2,
-    limma,
-    gridExtra,
-    PMCMRplus,
-    ggsci,
-    corrplot,
+    FactoMineR,
+    foreach,
     ggfortify,
     ggpubr,
-    doParallel,
-    foreach
+    ggsci,
+    gridExtra,
+    Hmisc,
+    knitr,
+    limma,
+    maftools,
+    MASS,
+    Matrix,
+    msigdbr,
+    NbClust,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    patchwork,
+    PMCMRplus,
+    prettydoc,
+    pROC,
+    psych,
+    rmarkdown,
+    Seurat,
+    SeuratObject,
+    sva,
+    testthat (>= 3.0.0),
+    webr,
+    WGCNA
 VignetteBuilder: 
     knitr
+Remotes:
+    dviraran/xCell
 BiocType: Software
 biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
@@ -103,6 +105,3 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 7.3.3
-
-Remotes:
-    dviraran/xCell
