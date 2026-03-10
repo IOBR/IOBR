@@ -51,13 +51,19 @@ iobr_deg <- function(eset,
                      heatmap = TRUE,
                      col_heatmap = 1,
                      parallel = FALSE) {
+  # if (is.null(path)) {
+  #   # set path to store enrichment analyses result
+  #   path <- creat_folder(paste0("Result-of-DEGs"))
+  # } else {
+  #   path <- creat_folder(path)
+  # }
+  # abspath <- path$abspath
   if (is.null(path)) {
-    # set path to store enrichment analyses result
-    path <- creat_folder(paste0("Result-of-DEGs"))
+    abspath <- NULL
   } else {
     path <- creat_folder(path)
+    abspath <- path$abspath
   }
-  abspath <- path$abspath
   ############################################
 
   colnames(pdata)[which(colnames(pdata) == pdata_id)] <- "ID"

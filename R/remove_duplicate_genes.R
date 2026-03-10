@@ -13,7 +13,10 @@
 #'         The gene symbols are set as row names in the returned data frame or matrix.
 #' @export
 #' @author Dongqiang Zeng
-#'
+#' @note 
+#' Important: This function performs selection, not aggregation. For duplicate genes, 
+#' it retains only the highest-expressing instance and discards others. 
+#' 
 #' @examples
 #'
 #' # loading eset

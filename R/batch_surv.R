@@ -30,26 +30,27 @@
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
   pdata <- as.data.frame(pdata)
 
-  colnames(pdata)[which(colnames(pdata) == time)] <- "time"
-  colnames(pdata)[which(colnames(pdata) == status)] <- "status"
+  colnames(pdata)[which(colnames(pdata) == time)] <- "time_iobr"
+  colnames(pdata)[which(colnames(pdata) == status)] <- "status_iobr"
 
-  pdata <- pdata[!is.na(pdata$time), ]
-  pdata <- pdata[!is.na(pdata$status), ]
+  pdata <- pdata[!is.na(pdata$time_iobr), ]
+  pdata <- pdata[!is.na(pdata$status_iobr), ]
 
-  pdata$time <- as.numeric(pdata$time)
-  pdata$status <- as.numeric(pdata$status)
+  pdata$time_iobr <- as.numeric(pdata$time_iobr)
+  pdata$status_iobr <- as.numeric(pdata$status_iobr)
   #################################################
   if (best_cutoff == TRUE) {
     for (i in 1:length(variable)) {
       var <- variable[i]
-      pdata <- best_cutoff(pdata = pdata, time = "time", status = "status", variable = var, PrintResult = FALSE)
+      print(paste0(">>>-- Variable: ", var))
+      pdata <- best_cutoff(pdata = pdata, time = "time_iobr", status = "status_iobr", variable = var, PrintResult = FALSE)
       pdata[, paste0(var, "_binary")] <- ifelse(pdata[, paste0(var, "_binary")] == "High", 1, 0)
     }
     # print(pdata)
     variable <- paste0(variable, "_binary")
   }
   #################################################
-  result_list <- lapply(pdata[, variable], function(x) coxph(Surv(pdata$time, pdata$status) ~ x, data = pdata[, variable]))
+  result_list <- lapply(pdata[, variable], function(x) coxph(Surv(pdata$time_iobr, pdata$status_iobr) ~ x, data = pdata[, variable]))
   result <- data.frame(NULL)
   for (i in 1:length(result_list)) {
     result1 <- getHRandCIfromCoxph(result_list[[i]])

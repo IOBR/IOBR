@@ -42,8 +42,8 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   }
   ###############################
   ###############################
-  normalized.adjacency <- (0.5 + 0.5 * bicor(eset))^2
-  network.summary <- fundamentalNetworkConcepts(normalized.adjacency)
+  normalized.adjacency <- (0.5 + 0.5 * WGCNA::bicor(eset))^2
+  network.summary <- WGCNA::fundamentalNetworkConcepts(normalized.adjacency)
   connectivity <- network.summary$Connectivity
   connectivity.zscore <- (connectivity - mean(connectivity)) / sqrt(var(connectivity))
   connectivity.plot <- data.frame(
