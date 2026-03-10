@@ -549,7 +549,6 @@ calculate_sig_score_integration <- function(pdata = NULL,
   #   )
   # }
   ssgsea_min <- max(mini_gene_count, 5)
-  gene_count <- vapply(signature, function(x) sum(x %in% rownames(eset)), integer(1))
   signature_ssgsea <- signature[gene_count >= ssgsea_min]
   
   res <- tryCatch({

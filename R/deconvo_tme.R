@@ -55,6 +55,7 @@ tme_deconvolution_methods <- c(
 #' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 #'
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
+  rlang::check_installed("xCell", reason = "to run xCell deconvolution")
   message(paste0("\n", ">>> Running ", "xCell"))
   # normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)

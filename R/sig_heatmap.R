@@ -118,8 +118,8 @@ sig_heatmap <- function(input,
   
   
   # heatmap_col <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
-  
-  # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
+  # 
+  # # # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
   # if (length(heatmap_col) >= 3) {
   #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col[1:3])
   # } else {

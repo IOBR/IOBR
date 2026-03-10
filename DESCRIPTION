@@ -28,26 +28,17 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
     https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
-    R(>= 3.6.0)
+    R (>= 3.6.0)
 Imports: 
     biomaRt,
-    circlize,
     clusterProfiler,
     ComplexHeatmap,
     dplyr,
-    e1071,
     ggplot2,
     glmnet,
     GSVA,
-    limSolve,
-    methods,
-    plyr,
     preprocessCore,
     purrr,
-    RColorBrewer,
-    reshape2,
-    rlang,
-    scales,
     stringr,
     survival,
     survminer,
@@ -56,7 +47,16 @@ Imports:
     tidyHeatmap,
     tidyr,
     timeROC,
-    xCell
+    methods,
+    rlang,
+    plyr,
+    reshape2,
+    scales,
+    RColorBrewer,
+    e1071,
+    limSolve,
+    circlize,
+    sva
 Suggests: 
     BiocParallel,
     corrplot,
@@ -92,8 +92,38 @@ Suggests:
     SeuratObject,
     sva,
     testthat (>= 3.0.0),
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    WGCNA,
+    Matrix,
+    patchwork,
+    Seurat,
+    BiocParallel,
+    DOSE,
+    FactoMineR,
+    Hmisc,
+    MASS,
+    NbClust,
+    SeuratObject,
+    enrichplot,
+    factoextra,
+    maftools,
+    msigdbr,
+    pROC,
+    sva,
     webr,
-    WGCNA
+    psych,
+    DESeq2,
+    limma,
+    gridExtra,
+    PMCMRplus,
+    ggsci,
+    corrplot,
+    ggfortify,
+    ggpubr,
+    doParallel,
+    foreach,
+    xCell
 VignetteBuilder: 
     knitr
 Remotes:
@@ -103,5 +133,5 @@ biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: TRUE
+LazyData: FALSE
 RoxygenNote: 7.3.3

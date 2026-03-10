@@ -43,7 +43,6 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
                            oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5) {
   rlang::check_installed("ggpubr")
   rlang::check_installed("PMCMRplus")
-  rlang::check_installed("ComplexHeatmap")
   if (!is.null(save_path)) {
     file_name <- save_path
     if (!file.exists(file_name)) dir.create(file_name)
@@ -534,7 +533,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   # save to pdf
   if (!is.null(save_path)) {
     pdf(file.path(abspath, paste0("0-OncoPrint-", signature, ".pdf")), width = width, height = height)
-    ComplexHeatmap::draw(p)
+    draw(p)
     invisible(dev.off())
   }
   # print to screen

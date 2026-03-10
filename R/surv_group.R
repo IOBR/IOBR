@@ -201,8 +201,7 @@ surv_group <- function(input_pdata,
     # pp$plot <- pp$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE, size = font.size.table)
     rlang::check_installed("gridExtra")
     tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
-                                    # gp = grid::gpar(fontsize = font.size.table))
-                                    theme = gridExtra::ttheme_minimal(base_size = font.size.table))
+                                    gp = grid::gpar(fontsize = font.size.table))
     pp$plot <- pp$plot +
       geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +
       annotation_custom(tb_grob, xmin = df$x, xmax = df$x,
