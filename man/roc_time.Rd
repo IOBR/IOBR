@@ -44,7 +44,7 @@ The same unit will be used for ROC calculation and displayed in the plot
 \itemize{
   \item \code{"normal"}: Use default palette colors (default)
   \item \code{"random"}: Use randomized/shuffled palette colors
-  \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")} 
+  \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")}
         or \code{c("red", "blue", "green")}
 }}
 

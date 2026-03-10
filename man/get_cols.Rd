@@ -7,8 +7,8 @@
 get_cols(cols = "normal", palette = 1, show_col = T, seed = 123)
 }
 \arguments{
-\item{cols}{Vector of colors, users can define the cols manually. This may 
-also be a single character, such as normal and random, to a palette as 
+\item{cols}{Vector of colors, users can define the cols manually. This may
+also be a single character, such as normal and random, to a palette as
 specified by \code{palettes} in the IOBR package.}
 
 \item{palette}{Numeric value corresponding with color palette. Default is 1, other options: 2, 3, 4}

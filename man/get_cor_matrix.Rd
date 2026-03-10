@@ -57,7 +57,7 @@ get_cor_matrix(
 
 \item{round.num}{The number of decimal places to round the correlation values. Default is 1.}
 
-\item{cols}{Character vector. Custom colors for correlation gradient 
+\item{cols}{Character vector. Custom colors for correlation gradient
 (low, mid, high). If NULL, uses default blue-white-red. Default is NULL.}
 }
 \value{

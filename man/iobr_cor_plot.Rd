@@ -119,11 +119,15 @@ box plots, heatmaps, and correlation plots.
 }
 \examples{
 # Create example phenotype and feature data
-pdata_group <- data.frame(ID = 1:100,
-                          phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
-feature_data <- data.frame(ID = 1:100,
-                           Feature1 = rnorm(100),
-                           Feature2 = rnorm(100))
+pdata_group <- data.frame(
+  ID = 1:100,
+  phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE)
+)
+feature_data <- data.frame(
+  ID = 1:100,
+  Feature1 = rnorm(100),
+  Feature2 = rnorm(100)
+)
 # Perform correlation analysis
 results <- iobr_cor_plot(
   pdata_group = pdata_group, feature_data = feature_data,

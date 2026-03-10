@@ -27,8 +27,8 @@ of these significant genes to create a reference signature matrix. The function 
 for constructing signature matrices in gene expression studies involving multiple cell types or conditions.
 }
 \examples{
-# Assume 'dat' is a matrix of gene expression data and 
-#'pheno' is the corresponding cell type information
+# Assume 'dat' is a matrix of gene expression data and
+#' pheno' is the corresponding cell type information
 dat <- matrix(rnorm(2000), nrow = 100)
 pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
 results <- generateRef_limma(dat, pheno)

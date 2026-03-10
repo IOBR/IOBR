@@ -68,11 +68,11 @@ bar plots. Default is \code{"jama"}.}
 \item{palette_gsea}{Integer specifying the color palette for GSEA plots. Default
 is 2.}
 
-\item{cols_gsea}{Character vector specifying custom colors for GSEA enrichment 
+\item{cols_gsea}{Character vector specifying custom colors for GSEA enrichment
 plots. If \code{NULL}, colors are automatically generated using \code{palette_gsea}.
 Default is \code{NULL}.}
 
-\item{cols_bar}{Character vector specifying custom colors for the enrichment 
+\item{cols_bar}{Character vector specifying custom colors for the enrichment
 bar plot. If \code{NULL}, colors are automatically generated using \code{palette_bar}.
 Default is \code{NULL}.}
 
@@ -134,9 +134,11 @@ signatures, and generates comprehensive visualizations and statistical results.
 data("eset_stad", package = "IOBR")
 data("stad_group", package = "IOBR")
 # Perform differential expression analysis
-deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype",
-                pdata_id = "ID", array = FALSE, method = "DESeq2",
-                contrast = c("EBV", "GS"), path = "STAD")
+deg <- iobr_deg(
+  eset = eset_stad, pdata = stad_group, group_id = "subtype",
+  pdata_id = "ID", array = FALSE, method = "DESeq2",
+  contrast = c("EBV", "GS"), path = "STAD"
+)
 # Run GSEA with custom gene sets
 res <- sig_gsea(deg = deg, genesets = signature_tme)
 }

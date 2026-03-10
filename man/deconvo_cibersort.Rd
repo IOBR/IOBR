@@ -10,7 +10,10 @@ deconvo_cibersort(
   arrays,
   perm = 1000,
   absolute = FALSE,
-  abs_method = "sig.score"
+  abs_method = "sig.score",
+  parallel = FALSE,
+  num_cores = 2,
+  seed = NULL
 )
 }
 \arguments{
@@ -25,6 +28,15 @@ deconvo_cibersort(
 \item{absolute}{logical: Runs CIBERSORT in absolute mode}
 
 \item{abs_method}{Character string specifying how to compute absolute abundance}
+
+\item{parallel}{Logical. Enable parallel execution? (default = FALSE)}
+
+\item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
+
+\item{seed}{Integer. Random seed for reproducible permutation testing.
+If \code{NULL} (default), uses current random state. Set to a specific
+value (e.g., 123) for reproducible results across runs. Applies to both
+parallel and serial permutation.}
 }
 \value{
 cibersrot with immune cell fractions
@@ -39,7 +51,8 @@ data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 cibersort_result <- deconvo_cibersort(
   eset = eset, project = "TCGA-STAD",
-  arrays = FALSE, absolute = FALSE, perm = 500)
+  arrays = FALSE, absolute = FALSE, perm = 500
+)
 }
 \author{
 Dongqiang Zeng

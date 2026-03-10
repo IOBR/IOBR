@@ -52,8 +52,10 @@ Generates a forest plot to visualize hazard ratios, confidence intervals, and p-
 for gene signatures or features from survival analysis.
 }
 \examples{
-sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary,
-  variable = c(100:ncol(pdata_sig_tme_binary)))
+sig_surv_result <- batch_surv(
+  pdata = pdata_sig_tme_binary,
+  variable = c(100:ncol(pdata_sig_tme_binary))
+)
 sig_forest(data = sig_surv_result, signature = "ID")
 }
 \author{

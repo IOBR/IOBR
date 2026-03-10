@@ -33,11 +33,15 @@ Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional h
 data(subgroup_data)
 input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
 # Binary variable example
-res_bin <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
-  variables = c("ProjectID", "AJCC_stage"), object = "score_binary")
+res_bin <- subgroup_survival(
+  pdata = input, time_name = "time", status_name = "status",
+  variables = c("ProjectID", "AJCC_stage"), object = "score_binary"
+)
 # Continuous variable example
-res_cont <- subgroup_survival(pdata = input, time_name = "time", status_name = "status",
-  variables = c("ProjectID", "AJCC_stage"), object = "score")
+res_cont <- subgroup_survival(
+  pdata = input, time_name = "time", status_name = "status",
+  variables = c("ProjectID", "AJCC_stage"), object = "score"
+)
 }
 \author{
 Dongqiang Zeng

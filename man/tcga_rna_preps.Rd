@@ -34,9 +34,11 @@ Preprocesses TCGA RNA-seq data by modifying sample types, transforming data,
 and annotating genes based on specified parameters.
 }
 \examples{
-data("eset_stad", package = "IOBR")
-eset <- tcga_rna_pres(eset = eset_stad, id_type = "ensembl", input_type = "count",
-                      output = "tumor", output_type = "tpm", annotation = TRUE)
+utils::data("eset_stad", package = "IOBR", envir = environment())
+eset <- tcga_rna_pres(
+  eset = eset_stad, id_type = "ensembl", input_type = "count",
+  output = "tumor", output_type = "tpm", annotation = TRUE
+)
 
 }
 \author{

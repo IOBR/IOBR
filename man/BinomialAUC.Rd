@@ -27,14 +27,17 @@ evaluated against actual outcomes to compute the AUC using the pROC package. Thi
 is typically used to assess model performance in classification tasks.
 }
 \examples{
-\dontrun{# Assuming 'model', 'newx', and 'actual.y' are predefined:
+\dontrun{
+# Assuming 'model', 'newx', and 'actual.y' are predefined:
 fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-test_data <- matrix(rnorm(100 * 10), ncol = 10)|
-test_outcomes <- rbinom(100, 1, 0.5)
-auc_value <- BinomialAUC(model = fitted_model, 
-  newx = test_data, 
+test_data <- matrix(rnorm(100 * 10), ncol = 10) |
+  test_outcomes <- rbinom(100, 1, 0.5)
+auc_value <- BinomialAUC(
+  model = fitted_model,
+  newx = test_data,
   s = "lambda.min",
-  acture.y = test_outcomes)
+  acture.y = test_outcomes
+)
 print(auc_value)
 }
 }

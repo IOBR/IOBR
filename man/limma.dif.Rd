@@ -22,9 +22,30 @@ Constructs a design matrix from phenotype data, fits a linear model, applies con
 statistics for differential expression.
 }
 \examples{
-data("expression_data", package = "ExamplePackage")
-data("phenotype_data", package = "ExamplePackage")
+# Toy example with 100 genes and 6 samples
+set.seed(123)
+exprdata <- matrix(
+  rnorm(100 * 6),
+  nrow = 100,
+  ncol = 6,
+  dimnames = list(
+    paste0("gene", 1:100),
+    paste0("sample", 1:6)
+  )
+)
 
-dif_results <- limma.dif(exprdata = expression_data, pdata = phenotype_data, contrastfml = "group1 - group2")
-print(dif_results)
+# Phenotype data: 3 vs 3
+pdata <- data.frame(
+  sample = colnames(exprdata),
+  group = rep(c("group1", "group2"), each = 3),
+  stringsAsFactors = FALSE
+)
+
+# Differential expression: group1 vs group2
+res <- limma.dif(
+  exprdata = exprdata,
+  pdata = pdata,
+  contrastfml = "group1 - group2"
+)
+head(res)
 }

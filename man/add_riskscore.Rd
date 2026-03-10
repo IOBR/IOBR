@@ -46,10 +46,14 @@ regression or binary logistic regression. The function fits the specified model
 and returns the dataset with an added risk score column.
 }
 \examples{
-# Example with survival data
-data(ovarian)
-ovarian$rscore <- add_riskscore(ovarian, time = "time", status = "status",
-                                 vars = c("resid.ds", "rx", "ecog.ps"))
+if (requireNamespace("survival", quietly = TRUE)) {
+  data("ovarian", package = "survival")
+  ovarian$rscore <- add_riskscore(
+    ovarian,
+    time = "time", status = "status",
+    vars = c("resid.ds", "rx", "ecog.ps")
+  )
+}
 }
 \author{
 Dongqiang Zeng
