@@ -73,6 +73,7 @@ batch_cor <- function(data, target, feature, method = "spearman") {
   cc <- cc[base::order(cc$p.value, decreasing = FALSE), ]
   cc <- tibble::as_tibble(cc)
   print(head(cc))
+  # return results
   return(cc)
 }
 
