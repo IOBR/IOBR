@@ -15,7 +15,7 @@
 get_cols <- function(cols = "normal", palette = 1, show_col = T, seed = 123) {
   ##############################################
   if (length(cols) == 1) {
-    if (nchar(palette) > 1) {
+    if (nchar(as.character(palette)) > 1) {
       cols <- palettes(category = "box", palette = palette, show_col = show_col, show_message = FALSE)
       mycols <- cols
     } else {
@@ -26,7 +26,7 @@ get_cols <- function(cols = "normal", palette = 1, show_col = T, seed = 123) {
         mycols <- mycols[sample(length(mycols), length(mycols))]
         if (show_col) scales::show_col(mycols)
       } else if (cols == "normal") {
-        mycols <- palettes(category = "random", palette = palette, show_col = show_col)
+        mycols <- palettes(category = "box", palette = palette, show_col = show_col)
       }
     }
   } else {

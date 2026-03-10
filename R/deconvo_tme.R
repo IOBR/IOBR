@@ -55,6 +55,7 @@ tme_deconvolution_methods <- c(
 #' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
 #'
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
+  rlang::check_installed("xCell", reason = "to run xCell deconvolution")
   message(paste0("\n", ">>> Running ", "xCell"))
   # normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)
@@ -139,7 +140,7 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   colnames(res) <- gsub(pattern = "\\ ", replacement = "\\_",colnames(res))
   colnames(res) <- gsub(pattern = "\\ ", replacement = "\\_",colnames(res))
   colnames(res) <- paste0(colnames(res), "_xCell")
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
@@ -181,23 +182,23 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
   message(paste0("\n", ">>> Running ", "MCP-counter"))
   # normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset)
-
+  
   res <- MCPcounter.estimate(eset,
-    featuresType = "HUGO_symbols",
-    probesets = mcp_probesets,
-    genes = mcp_genes
+                             featuresType = "HUGO_symbols",
+                             probesets = mcp_probesets,
+                             genes = mcp_genes
   )
   res <- as.data.frame(t(res))
   ####################################
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
   colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
   colnames(res) <- paste(colnames(res), "_MCPcounter", sep = "")
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
   }
-
+  
   res <- tibble::rownames_to_column(res, var = "ID")
   return(res)
   ###################################
@@ -227,11 +228,11 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #'
 deconvo_epic <- function(eset, project = NULL, tumor) {
   message(paste0("\n", ">>> Running ", "EPIC"))
-
+  
   # mRNA_cell = NULL
   # if(!scale_eset) mRNA_cell = c("default"=1.)
   ###################################
-
+  
   ref <- ifelse(tumor, "TRef", "BRef")
   ##############################
   out <- EPIC(bulk = eset, reference = ref, mRNA_cell = NULL, scaleExprs = TRUE)
@@ -241,7 +242,7 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
   colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
   colnames(res) <- paste(colnames(res), "_EPIC", sep = "")
   res <- as.data.frame(res)
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
@@ -266,6 +267,12 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' @param absolute logical: Runs CIBERSORT in absolute mode
 #' @param perm permutation to run CIBERSORT
 #' @param abs_method Character string specifying how to compute absolute abundance
+#' @param parallel Logical. Enable parallel execution? (default = FALSE)
+#' @param num_cores Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)
+#' @param seed Integer. Random seed for reproducible permutation testing. 
+#'   If \code{NULL} (default), uses current random state. Set to a specific 
+#'   value (e.g., 123) for reproducible results across runs. Applies to both 
+#'   parallel and serial permutation.
 #' @return cibersrot with immune cell fractions
 #' @author Dongqiang Zeng
 #' @export
@@ -277,16 +284,17 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' cibersort_result <- deconvo_cibersort(
 #'   eset = eset, project = "TCGA-STAD",
 #'   arrays = FALSE, absolute = FALSE, perm = 500)
-deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score") {
+deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score", 
+                              parallel = FALSE, num_cores = 2, seed=NULL) {
   if (absolute) {
     message(paste0("\n", ">>> Running ", "CIBERSORT in absolute mode"))
   } else {
     message(paste0("\n", ">>> Running ", "CIBERSORT"))
   }
-
+  
   eset <- as.data.frame(eset)
   ##############################
-
+  
   # the authors reccomend to disable quantile normalizeation for RNA seq.
   # (see CIBERSORT website).
   quantile_norm <- arrays
@@ -297,20 +305,23 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
     perm = perm,
     QN = quantile_norm,
     absolute = absolute,
-    abs_method = abs_method
+    abs_method = abs_method,
+    parallel = parallel,
+    num_cores = num_cores,
+    seed= seed
   )
   ###############################
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
   colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
   colnames(res) <- paste(colnames(res), "_CIBERSORT", sep = "")
   res <- as.data.frame(res)
-
-
+  
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
   }
-
+  
   res <- tibble::rownames_to_column(res, var = "ID")
   return(res)
   ###################################
@@ -349,12 +360,12 @@ deconvo_ips <- function(eset, project = NULL, plot) {
   colnames(res) <- paste(colnames(res), "_IPS", sep = "")
   colnames(res)
   res <- as.data.frame(res)
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
   }
-
+  
   res <- tibble::rownames_to_column(res, var = "ID")
   return(res)
 }
@@ -405,15 +416,15 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   rownames(scores) <- scores[, 1]
   scores <- t(scores[, 3:ncol(scores)])
   colnames(scores) <- paste0(colnames(scores), "_estimate")
-
+  
   if (!is.null(project)) {
     scores$ProjectID <- project
     scores <- scores[, c(ncol(scores), 1:ncol(scores) - 1)]
   }
-
+  
   scores <- tibble::rownames_to_column(as.data.frame(scores), var = "ID")
   scores$ID <- gsub(scores$ID, pattern = "\\.", replacement = "-")
-
+  
   return(scores)
 }
 
@@ -450,12 +461,12 @@ deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", per
   # recomend to disable quantile normalization for RNA seq.
   quantile_norm <- arrays
   ##############################
-
+  
   if (method == "svr") {
     message(paste0("\n", ">>> Running ", "cell estimation in SVR mode"))
-
+    
     if (absolute.mode) message(paste0("\n", ">>> Running ", "SVR in absolute mode"))
-
+    
     eset <- as.data.frame(eset)
     # the authors recomend to disable quantile normalization for RNA seq.
     # (see CIBERSORT website).
@@ -513,18 +524,18 @@ deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", per
     rownames(out.all) <- colnames(eset)
     res <- out.all
   }
-
+  
   ###############################
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
   colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
   colnames(res) <- paste0(colnames(res), "_CIBERSORT")
   res <- as.data.frame(res)
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
   }
-
+  
   res <- tibble::rownames_to_column(res, var = "ID")
   return(res)
 }
@@ -571,21 +582,21 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   })
   # reorder results to be consistent with input matrix
   results <- deconvolute_timer.default(args)[, make.names(colnames(eset))]
-
-
+  
+  
   colnames(results) <- colnames(eset)
   results <- as.data.frame(t(results))
   colnames(results) <- paste(colnames(results), "_TIMER", sep = "")
   colnames(results) <- gsub(colnames(results), pattern = "\\.", replacement = "\\_")
   colnames(results) <- gsub(colnames(results), pattern = "\\ ", replacement = "\\_")
-
+  
   if (!is.null(project)) {
     results$project <- project
     results <- results[, c(ncol(results), 1:ncol(results) - 1)]
   }
-
+  
   results <- tibble::rownames_to_column(results, var = "ID")
-
+  
   return(results)
 }
 
@@ -611,23 +622,23 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
 deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
   res <- deconvolute_quantiseq.default(mix.mat = eset, tumor = tumor, arrays = arrays, mRNAscale = scale_mrna)
-
+  
   res <- as.data.frame(res)
   rownames(res) <- NULL
   res <- tibble::column_to_rownames(res, var = "Sample")
-
+  
   colnames(res) <- paste(colnames(res), "_quantiseq", sep = "")
-
+  
   colnames(res) <- gsub(colnames(res), pattern = "\\.", replacement = "\\_")
   colnames(res) <- gsub(colnames(res), pattern = "\\ ", replacement = "\\_")
-
+  
   if (!is.null(project)) {
     res$ProjectID <- project
     res <- res[, c(ncol(res), 1:ncol(res) - 1)]
   }
-
+  
   res <- tibble::rownames_to_column(res, var = "ID")
-
+  
   return(res)
 }
 
@@ -708,19 +719,19 @@ deconvo_tme <- function(eset,
   }
   # run selected method
   res <- switch(method,
-    xcell = deconvo_xcell(eset, project, arrays = arrays, ...),
-    mcpcounter = deconvo_mcpcounter(eset, project, ...),
-    epic = deconvo_epic(eset, project, tumor = tumor, ...),
-    cibersort = deconvo_cibersort(eset, project, absolute = absolute.mode, arrays = arrays, perm = perm, ...),
-    cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method, arrays = arrays, perm = perm, ...),
-    ips = deconvo_ips(eset, project, plot = plot, ...),
-    quantiseq = deconvo_quantiseq(eset, project, tumor = tumor, arrays = arrays, scale_mrna = scale_mrna, ...),
-    estimate = deconvo_estimate(eset, project, platform, ...),
-    timer = deconvo_timer(eset, project, indications = group_list, ...),
-    svr = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svr", absolute.mode = absolute.mode, abs.method = abs.method, perm, ...),
-    lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei", scale_reference, perm, ...)
+                xcell = deconvo_xcell(eset, project, arrays = arrays, ...),
+                mcpcounter = deconvo_mcpcounter(eset, project, ...),
+                epic = deconvo_epic(eset, project, tumor = tumor, ...),
+                cibersort = deconvo_cibersort(eset, project, absolute = absolute.mode, arrays = arrays, perm = perm, ...),
+                cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE, abs_method = abs.method, arrays = arrays, perm = perm, ...),
+                ips = deconvo_ips(eset, project, plot = plot, ...),
+                quantiseq = deconvo_quantiseq(eset, project, tumor = tumor, arrays = arrays, scale_mrna = scale_mrna, ...),
+                estimate = deconvo_estimate(eset, project, platform, ...),
+                timer = deconvo_timer(eset, project, indications = group_list, ...),
+                svr = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "svr", absolute.mode = absolute.mode, abs.method = abs.method, perm, ...),
+                lsei = deconvo_ref(eset, project, reference = reference, arrays = arrays, method = "lsei", scale_reference, perm, ...)
   )
-
+  
   res <- tibble::as_tibble(res)
   return(res)
 }

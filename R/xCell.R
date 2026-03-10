@@ -19,6 +19,7 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
                           spill = NULL, rnaseq = TRUE, file.name = NULL, scale = TRUE,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
+  rlang::check_installed("xCell", reason = "to run xCell analysis")
   if (is.null(signatures)) {
     signatures <- xCell::xCell.data$signatures
   }
@@ -269,6 +270,7 @@ microenvironmentScores <- function(adjustedScores) {
 #'
 #' @return a p-values matrix for each score.
 xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = T, file.name = NULL) {
+  rlang::check_installed("xCell", reason = "to calculate xCell significance")
   if (is.null(beta_params)) {
     if (rnaseq == T) {
       beta_params <- xCell::xCell.data$spill$beta_params
@@ -315,6 +317,7 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = T, fil
 #'
 #' @return a list with the p-values, the xcell scores of the shuffled data and the shuffled expression matrix.
 xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5, nperm = 250, file.name = NULL) {
+  rlang::check_installed("xCell", reason = "to calculate xCell significance with random matrix")
   shuff_expr <- mapply(seq(1:nperm), FUN = function(x) sample(nrow(expr), nrow(expr)))
 
   rownames(shuff_expr) <- sample(rownames(expr))
