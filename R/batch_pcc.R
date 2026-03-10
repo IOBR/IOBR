@@ -44,7 +44,7 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
   ## 替代 ppcor::pcor.test ---------------------------------
   pcor_test <- function(x, y, z, method = c("pearson", "spearman", "kendall")) {
     method <- match.arg(method)
-    dat <- cbind(x, y, z) |> na.omit()
+    dat <- na.omit(cbind(x, y, z))
     if (nrow(dat) < 4) {
       return(list(estimate = NA_real_, p.value = NA_real_))
     }
