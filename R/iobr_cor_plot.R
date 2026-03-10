@@ -64,15 +64,19 @@
 #' @import tidyr
 #' @import purrr
 #' @importFrom ComplexHeatmap Heatmap rowAnnotation draw anno_text
-#' @importFrom grDevices colorRampPalette 
+#' @importFrom grDevices colorRampPalette
 #' @importFrom stats hclust cutree
 #' @examples
 #' # Create example phenotype and feature data
-#' pdata_group <- data.frame(ID = 1:100,
-#'                           phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE))
-#' feature_data <- data.frame(ID = 1:100,
-#'                            Feature1 = rnorm(100),
-#'                            Feature2 = rnorm(100))
+#' pdata_group <- data.frame(
+#'   ID = 1:100,
+#'   phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE)
+#' )
+#' feature_data <- data.frame(
+#'   ID = 1:100,
+#'   Feature1 = rnorm(100),
+#'   Feature2 = rnorm(100)
+#' )
 #' # Perform correlation analysis
 #' results <- iobr_cor_plot(
 #'   pdata_group = pdata_group, feature_data = feature_data,
@@ -457,9 +461,9 @@ iobr_cor_plot <- function(pdata_group,
           patterns_space = NULL
         )
       }
-      
+
       rlang::check_installed("Hmisc")
-      
+
       bbcor <- Hmisc::rcorr(as.matrix(pf_cor), type = "spearman")
       bbcor$P[is.na(bbcor$P)] <- 0
       ###################################
@@ -477,31 +481,31 @@ iobr_cor_plot <- function(pdata_group,
       )
       rlang::check_installed("corrplot")
       corrplot::corrplot(bbcor$r,
-                         type = "lower",
-                         order = "hclust",
-                         p.mat = bbcor$P,
-                         sig.level = 0.05,
-                         tl.srt = 45,
-                         tl.col = "black",
-                         tl.cex = 1.3,
-                         addrect = 2,
-                         rect.col = "black",
-                         rect.lwd = 3,
-                         col = colorRampPalette(col)(50)
+        type = "lower",
+        order = "hclust",
+        p.mat = bbcor$P,
+        sig.level = 0.05,
+        tl.srt = 45,
+        tl.col = "black",
+        tl.cex = 1.3,
+        addrect = 2,
+        rect.col = "black",
+        rect.lwd = 3,
+        col = colorRampPalette(col)(50)
       )
       dev.off()
       corrplot::corrplot(bbcor$r,
-                         type = "lower",
-                         order = "hclust",
-                         p.mat = bbcor$P,
-                         sig.level = 0.05,
-                         tl.srt = 45,
-                         tl.col = "black",
-                         tl.cex = 1,
-                         addrect = 2,
-                         rect.col = "black",
-                         rect.lwd = 3,
-                         col = colorRampPalette(col)(50)
+        type = "lower",
+        order = "hclust",
+        p.mat = bbcor$P,
+        sig.level = 0.05,
+        tl.srt = 45,
+        tl.col = "black",
+        tl.cex = 1,
+        addrect = 2,
+        rect.col = "black",
+        rect.lwd = 3,
+        col = colorRampPalette(col)(50)
       )
       ## =====================================================
       ########################################
@@ -517,15 +521,15 @@ iobr_cor_plot <- function(pdata_group,
       #   colors = col
       # ) +
       #   theme(plot.title = element_text(size = rel(2.5), hjust = 0.5))
-      
-      #替换ggcorrplot
+
+      # 替换ggcorrplot
       corr <- bbcor$r
       p.mat <- bbcor$P
       corr[upper.tri(corr)] <- NA
-      if (TRUE) {                       # hc.order = TRUE
+      if (TRUE) { # hc.order = TRUE
         hc <- hclust(dist(corr))
         corr <- corr[hc$order, hc$order]
-        p.mat  <- p.mat[hc$order, hc$order]
+        p.mat <- p.mat[hc$order, hc$order]
       }
       df <- as.data.frame.table(corr, stringsAsFactors = FALSE)
       colnames(df) <- c("row", "col", "corr")
@@ -533,16 +537,18 @@ iobr_cor_plot <- function(pdata_group,
       df$col <- factor(df$col, levels = unique(df$col))
       df$stars <- ifelse(p.mat < 0.05 & !is.na(p.mat), "*", "")
       col_fun <- grDevices::colorRampPalette(c("darkblue", "white", "darkred"))
-      
+
       p <- ggplot2::ggplot(df, ggplot2::aes(x = col, y = row, fill = corr, label = sprintf("%.2f", corr))) +
         ggplot2::geom_tile(color = "grey90") +
         ggplot2::geom_text(color = "black", size = lab_size) +
         ggplot2::geom_text(ggplot2::aes(label = stars), color = "red", size = lab_size * 1.2, fontface = "bold") +
         ggplot2::scale_fill_gradientn(colours = col_fun(50), limits = c(-1, 1)) +
         ggplot2::theme_bw() +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = tl_cex * 5),
-                       axis.text.y = ggplot2::element_text(size = tl_cex * 5),
-                       plot.title = ggplot2::element_text(hjust = 0.5)) +
+        ggplot2::theme(
+          axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = tl_cex * 5),
+          axis.text.y = ggplot2::element_text(size = tl_cex * 5),
+          plot.title = ggplot2::element_text(hjust = 0.5)
+        ) +
         ggplot2::ggtitle(title)
       ######################################
       ggsave(p,

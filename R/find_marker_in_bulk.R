@@ -12,7 +12,7 @@
 #' @param only.pos Logical. Whether to retain only positive markers. Default is TRUE.
 #' @param min.pct Numeric. Minimum expression percentage threshold. Default is 0.25.
 #' @param npcs Integer. Number of principal components to use. Default is 30.
-#' 
+#'
 #' @importFrom methods as
 #' @importFrom tibble column_to_rownames
 #' @return List with components: `sce` (Seurat object), `markers` (all markers), `top_markers` (top markers per group).
@@ -24,11 +24,13 @@
 #' data("pdata_sig_tme", package = "IOBR")
 #' res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
 #' # Extract top 15 markers per cluster
-#' top15 <- res$top_markers %>% dplyr::group_by(cluster) %>% dplyr::top_n(15, avg_log2FC)
+#' top15 <- res$top_markers %>%
+#'   dplyr::group_by(cluster) %>%
+#'   dplyr::top_n(15, avg_log2FC)
 #'
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {
   # Check required packages
-  rlang::check_installed(c("Seurat","Matrix"))
+  rlang::check_installed(c("Seurat", "Matrix"))
 
   # 转换输入数据格式
   if (!inherits(eset, "dgCMatrix")) {
@@ -95,12 +97,12 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
       "Number of samples (", ncol(sce), ") is less than requested PCs (", npcs, "). ",
       "Setting npcs to ", max(1, ncol(sce) - 1), "."
     )
-    npcs <- max(1, ncol(sce) - 1)  # 确保至少为1
+    npcs <- max(1, ncol(sce) - 1) # 确保至少为1
   }
 
   sce <- Seurat::RunPCA(
     object = sce,
-    features = Seurat::VariableFeatures(sce), 
+    features = Seurat::VariableFeatures(sce),
     npcs = npcs
   )
   Seurat::Idents(sce) <- as.character(sce[[group, drop = TRUE]])

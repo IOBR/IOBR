@@ -28,10 +28,10 @@
 #'   bar plots. Default is \code{"jama"}.
 #' @param palette_gsea Integer specifying the color palette for GSEA plots. Default
 #'   is 2.
-#' @param cols_gsea Character vector specifying custom colors for GSEA enrichment 
+#' @param cols_gsea Character vector specifying custom colors for GSEA enrichment
 #'   plots. If \code{NULL}, colors are automatically generated using \code{palette_gsea}.
 #'   Default is \code{NULL}.
-#' @param cols_bar Character vector specifying custom colors for the enrichment 
+#' @param cols_bar Character vector specifying custom colors for the enrichment
 #'   bar plot. If \code{NULL}, colors are automatically generated using \code{palette_bar}.
 #'   Default is \code{NULL}.
 #' @param show_bar Integer specifying the number of top enriched gene sets to display
@@ -76,9 +76,11 @@
 #' data("eset_stad", package = "IOBR")
 #' data("stad_group", package = "IOBR")
 #' # Perform differential expression analysis
-#' deg <- iobr_deg(eset = eset_stad, pdata = stad_group, group_id = "subtype",
-#'                 pdata_id = "ID", array = FALSE, method = "DESeq2",
-#'                 contrast = c("EBV", "GS"), path = "STAD")
+#' deg <- iobr_deg(
+#'   eset = eset_stad, pdata = stad_group, group_id = "subtype",
+#'   pdata_id = "ID", array = FALSE, method = "DESeq2",
+#'   contrast = c("EBV", "GS"), path = "STAD"
+#' )
 #' # Run GSEA with custom gene sets
 #' res <- sig_gsea(deg = deg, genesets = signature_tme)
 sig_gsea <- function(deg,
@@ -136,7 +138,8 @@ sig_gsea <- function(deg,
     database <- "org.Hs.eg.db"
     if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
       stop("Package 'org.Hs.eg.db' is required. Please install it via BiocManager::install('org.Hs.eg.db').",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
     entrizid <- clusterProfiler::bitr(deg$symbol,
       fromType = "SYMBOL",
@@ -147,7 +150,8 @@ sig_gsea <- function(deg,
     database <- "org.Mm.eg.db"
     if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) {
       stop("Package 'org.Mm.eg.db' is required. Please install it via BiocManager::install('org.Mm.eg.db').",
-           call. = FALSE)
+        call. = FALSE
+      )
     }
     entrizid <- clusterProfiler::bitr(deg$symbol,
       fromType = "SYMBOL",
@@ -180,9 +184,9 @@ sig_gsea <- function(deg,
     }
     ##################################################
     message(">>>---- Categories that can be choosed... ")
-    
+
     m_df <- msigdbr::msigdbr(species = species)
-    a <- m_df %>% 
+    a <- m_df %>%
       dplyr::distinct(gs_cat, gs_subcat) %>%
       dplyr::arrange(gs_cat, gs_subcat)
     print(as.data.frame(a))
@@ -213,7 +217,8 @@ sig_gsea <- function(deg,
       database <- "org.Hs.eg.db"
       if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
         stop("Package 'org.Hs.eg.db' is required. Please install it via BiocManager::install('org.Hs.eg.db').",
-             call. = FALSE)
+          call. = FALSE
+        )
       }
       entrizid <- clusterProfiler::bitr(term2genes$symbol,
         fromType = "SYMBOL",
@@ -224,7 +229,8 @@ sig_gsea <- function(deg,
       database <- "org.Mm.eg.db"
       if (!requireNamespace("org.Mm.eg.db", quietly = TRUE)) {
         stop("Package 'org.Mm.eg.db' is required. Please install it via BiocManager::install('org.Mm.eg.db').",
-             call. = FALSE)
+          call. = FALSE
+        )
       }
       entrizid <- clusterProfiler::bitr(term2genes$symbol,
         fromType = "SYMBOL",
@@ -262,15 +268,17 @@ sig_gsea <- function(deg,
     hall_gsea <- DOSE::setReadable(hall_gsea, OrgDb = "org.Mm.eg.db", keyType = "ENTREZID")
   }
 
-  #writexl::write_xlsx(as.data.frame(hall_gsea), paste0(abspath, "1-", category, "_GSEA_significant_results.xlsx"))
-  
+  # writexl::write_xlsx(as.data.frame(hall_gsea), paste0(abspath, "1-", category, "_GSEA_significant_results.xlsx"))
+
   if (save_results) {
-   csv_file <- paste0(abspath, "1-", category, "_GSEA_significant_results.csv")
-   write.csv(as.data.frame(hall_gsea), file = csv_file, row.names = FALSE)
-   message(">>> GSEA results written to ", csv_file,
-            "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+    csv_file <- paste0(abspath, "1-", category, "_GSEA_significant_results.csv")
+    write.csv(as.data.frame(hall_gsea), file = csv_file, row.names = FALSE)
+    message(
+      ">>> GSEA results written to ", csv_file,
+      "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)"
+    )
   }
-  
+
   # save(hall_gsea,file = paste(abspath,"2-",category,"_GSEA_result.RData",sep = ""))
 
   ###########################################
@@ -301,13 +309,13 @@ sig_gsea <- function(deg,
       color = gseacol[1:length(paths)],
       pvalue_table = TRUE
     )
-   
+
     if (save_results) {
-    ggplot2::ggsave(
-      filename = paste0("2-", category, "_Top_", show_gsea, "_GSEA_plot.", fig.type),
-      plot = GSEAPLOT, path = file_store,
-      width = 11, height = 7, dpi = 300
-    )
+      ggplot2::ggsave(
+        filename = paste0("2-", category, "_Top_", show_gsea, "_GSEA_plot.", fig.type),
+        plot = GSEAPLOT, path = file_store,
+        width = 11, height = 7, dpi = 300
+      )
     }
 
     if (show_plot) print(GSEAPLOT)
@@ -337,10 +345,10 @@ sig_gsea <- function(deg,
 
         if (show_plot) print(gseaplot)
         if (save_results) {
-        ggplot2::ggsave(
-          filename = paste0(i + 4, "-GSEA_plot-", single_path, ".", fig.type), plot = gseaplot,
-          path = file_store, width = 11, height = 7.5, dpi = 300
-        )
+          ggplot2::ggsave(
+            filename = paste0(i + 4, "-GSEA_plot-", single_path, ".", fig.type), plot = gseaplot,
+            path = file_store, width = 11, height = 7.5, dpi = 300
+          )
         }
       }
     }
@@ -372,10 +380,10 @@ sig_gsea <- function(deg,
       n_bar <- c(dim(up_gogo)[1] + dim(down_gogo)[1])
       height_bar <- 0.5 * n_bar + 3
       if (save_results) {
-      ggplot2::ggsave(
-        filename = paste0("3-", category, "_GSEA_barplot.", fig.type), plot = gsea_bar,
-        path = file_store, width = 6, height = height_bar
-      )
+        ggplot2::ggsave(
+          filename = paste0("3-", category, "_GSEA_barplot.", fig.type), plot = gsea_bar,
+          path = file_store, width = 6, height = height_bar
+        )
       }
 
       if (show_plot) print(gsea_bar)
@@ -390,7 +398,7 @@ sig_gsea <- function(deg,
       plot_top = GSEAPLOT
     )
     if (save_results) {
-    save(hall_gsea_result, file = paste(abspath, "0-", category, "_combined_GSEA_result.RData", sep = ""))
+      save(hall_gsea_result, file = paste(abspath, "0-", category, "_combined_GSEA_result.RData", sep = ""))
     }
     #######################################################
   } else {

@@ -25,13 +25,15 @@
 #' data("imvigor210_pdata", package = "IOBR")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
-#' BinomialModel(x = imvigor210_sig,
-#'  y = pdata_group,
-#'  seed = 123456,
-#'  scale = TRUE,
-#'  train_ratio = 0.7, 
-#'  nfold = 10,
-#'  plot = TRUE)
+#' BinomialModel(
+#'   x = imvigor210_sig,
+#'   y = pdata_group,
+#'   seed = 123456,
+#'   scale = TRUE,
+#'   train_ratio = 0.7,
+#'   nfold = 10,
+#'   plot = TRUE
+#' )
 #' @export
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   x <- as.data.frame(x)
@@ -129,7 +131,6 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, 
 #' result <- ProcessingData(x, y, scale = FALSE, type = "survival")
 #' @export
 ProcessingData <- function(x, y, scale, type = "binomial") {
-
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
   x$ID <- as.character(x$ID)
@@ -249,22 +250,25 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
 #' @export
 Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
   ## ✅ 1. 自建网格 + cv.glmnet 代替 caret -----------------
-  alpha.grid  <- seq(0, 1, by = 0.2)          # 0→Ridge, 1→Lasso
+  alpha.grid <- seq(0, 1, by = 0.2) # 0→Ridge, 1→Lasso
   lambda.grid <- seq(0, lambdamax, length.out = 10)
-  
+
   tune.res <- expand.grid(alpha = alpha.grid, lambda = lambda.grid)
-  
+
   cv.fit <- pmap(tune.res, function(alpha, lambda) {
     fit <- cv.glmnet(train.x, factor(train.y),
-                     family = "binomial", alpha = alpha, lambda = lambda,
-                     nfolds = nfold, type.measure = "class")
-    c(alpha = alpha, lambda = lambda,
-      Accuracy = max(fit$cvm))          # 取最大交叉验证 Accuracy
+      family = "binomial", alpha = alpha, lambda = lambda,
+      nfolds = nfold, type.measure = "class"
+    )
+    c(
+      alpha = alpha, lambda = lambda,
+      Accuracy = max(fit$cvm)
+    ) # 取最大交叉验证 Accuracy
   }) %>% bind_rows()
-  
-  best <- tune.res[which.max(cv.fit$Accuracy), ]   # 选最优组合
+
+  best <- tune.res[which.max(cv.fit$Accuracy), ] # 选最优组合
   ## ----------------------------------------------------
-  
+
   list(chose_alpha = best$alpha, chose_lambda = best$lambda)
 }
 
@@ -286,19 +290,22 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' @return A numeric value representing the AUC for the model's predictions against actual outcomes.
 #'
 #' @examples
-#' \dontrun{# Assuming 'model', 'newx', and 'actual.y' are predefined:
+#' \dontrun{
+#' # Assuming 'model', 'newx', and 'actual.y' are predefined:
 #' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10)|
-#' test_outcomes <- rbinom(100, 1, 0.5)
-#' auc_value <- BinomialAUC(model = fitted_model, 
-#'   newx = test_data, 
+#' test_data <- matrix(rnorm(100 * 10), ncol = 10) |
+#'   test_outcomes <- rbinom(100, 1, 0.5)
+#' auc_value <- BinomialAUC(
+#'   model = fitted_model,
+#'   newx = test_data,
 #'   s = "lambda.min",
-#'   acture.y = test_outcomes)
+#'   acture.y = test_outcomes
+#' )
 #' print(auc_value)
 #' }
 #' @export
 BinomialAUC <- function(model, newx, s, acture.y) {
-  rlang::check_installed("pROC")                 
+  rlang::check_installed("pROC")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   # 安全处理：针对不同情况
   if (is.matrix(prob) && ncol(prob) > 1) {
@@ -306,8 +313,8 @@ BinomialAUC <- function(model, newx, s, acture.y) {
     prob <- prob[, 2]
   }
   # 如果不是矩阵，或者只有一列，直接使用
-  
-  roc_obj <- pROC::roc(acture.y, as.numeric(prob))  # 添加as.numeric确保是向量
+
+  roc_obj <- pROC::roc(acture.y, as.numeric(prob)) # 添加as.numeric确保是向量
   auc_value <- pROC::auc(roc_obj)
   return(as.numeric(auc_value))
 }
@@ -403,9 +410,11 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'
 #' @examples
 #' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-#' perf_metrics <- CalculatePref(model = fitted_model,
+#' perf_metrics <- CalculatePref(
+#'   model = fitted_model,
 #'   newx = new_data, s = "lambda.min",
-#'   acture.y = actual_outcomes)
+#'   acture.y = actual_outcomes
+#' )
 #' print(perf_metrics)
 #' @export
 CalculatePref <- function(model, newx, s, acture.y) {
@@ -422,15 +431,18 @@ CalculatePref <- function(model, newx, s, acture.y) {
     }
   } else {
     # 不是矩阵，直接使用
-    prob_vector <-prob
+    prob_vector <- prob
   }
-  roc_obj <- pROC::roc(acture.y, prob_vector)  # <-- 修改在这里
+  roc_obj <- pROC::roc(acture.y, prob_vector) # <-- 修改在这里
   ## 构造与 ROCR 相同字段名的 list 对象，直接 drop-in
-  structure(list(x.values = list(1 - roc_obj$specificities),
-                 y.values = list(roc_obj$sensitivities)),
-            class = "performance")   # 保持原 class，下游代码零改动
+  structure(
+    list(
+      x.values = list(1 - roc_obj$specificities),
+      y.values = list(roc_obj$sensitivities)
+    ),
+    class = "performance"
+  ) # 保持原 class，下游代码零改动
 }
-
 
 
 #' Split Data into Training and Testing Sets
@@ -457,14 +469,16 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #' outcome_vector <- rbinom(100, 1, 0.5)
 #' split_data <- SplitTrainTest(
 #'   x = data_matrix, y = outcome_vector,
-#'   train_ratio = 0.7, type = "binomial", seed = 123)
+#'   train_ratio = 0.7, type = "binomial", seed = 123
+#' )
 #' print(split_data)
 #'
 #' # Example for survival data
 #' survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
 #' split_data_survival <- SplitTrainTest(
-#'   x = data_matrix, y = survival_outcomes, 
-#'   train_ratio = 0.7, type = "survival", seed = 123)
+#'   x = data_matrix, y = survival_outcomes,
+#'   train_ratio = 0.7, type = "survival", seed = 123
+#' )
 #' print(split_data_survival)
 #' @export
 SplitTrainTest <- function(x, y, train_ratio, type, seed) {

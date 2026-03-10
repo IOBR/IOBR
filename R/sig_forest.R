@@ -20,12 +20,14 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' sig_surv_result <- batch_surv(pdata = pdata_sig_tme_binary,
-#'   variable = c(100:ncol(pdata_sig_tme_binary)))
+#' sig_surv_result <- batch_surv(
+#'   pdata = pdata_sig_tme_binary,
+#'   variable = c(100:ncol(pdata_sig_tme_binary))
+#' )
 #' sig_forest(data = sig_surv_result, signature = "ID")
 sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "CI_low_0.95",
                        CI_up_0.95 = "CI_up_0.95", n = 10, max_character = 25,
-                       discrete_width = 35, color_option = 1,cols = NULL,
+                       discrete_width = 35, color_option = 1, cols = NULL,
                        text.size = 13) {
   data <- as.data.frame(data)
   colnames(data)[which(colnames(data) == signature)] <- "signature"
@@ -66,16 +68,18 @@ sig_forest <- function(data, signature, pvalue = "P", HR = "HR", CI_low_0.95 = "
 
   # Set the order of 'signature' as a factor based on 'HR'
   data$signature <- factor(data$signature, levels = data$signature)
-  
+
   # ========== 新增：颜色处理==========
   if (!is.null(cols)) {
     if (length(cols) < 2) stop("cols must have at least 2 colors for gradient")
     gradient_colors <- grDevices::colorRampPalette(cols)(256)
   } else {
-    gradient_colors <- grDevices::colorRampPalette(c("#000004FF", "#51127CFF",
-                                     "#B63679FF", "#FCA50AFF", "#F7F419FF"))(256)
+    gradient_colors <- grDevices::colorRampPalette(c(
+      "#000004FF", "#51127CFF",
+      "#B63679FF", "#FCA50AFF", "#F7F419FF"
+    ))(256)
   }
-  
+
   pp <- ggplot(data = data, aes(x = HR, y = signature, color = P)) +
     geom_errorbarh(aes(xmax = CI_up_0.95, xmin = CI_low_0.95), color = "black", height = 0, size = 1.2) +
     geom_point(aes(x = HR, y = signature), size = 4.5, shape = 16) +

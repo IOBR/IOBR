@@ -214,43 +214,46 @@ sig_pheatmap <- function(input, feas, group,
   # dev.off()
   # print(p)
   ## 1. 构造矩阵（沿用你已有的 eset）
-  mat <- as.matrix(eset)   # 若已是矩阵可省
-  
+  mat <- as.matrix(eset) # 若已是矩阵可省
+
   ## 2. 颜色向量（沿用你已有的 mapal）
   col_fun <- grDevices::colorRampPalette(mapal)
-  
+
   ## 3. 构造列注释（等效 annotation_col + annotation_colors）
   if (!is.null(anno)) {
     ha_top <- ComplexHeatmap::HeatmapAnnotation(
       df = anno,
-      col = cluster_colors,   # 你已有的颜色列表
+      col = cluster_colors, # 你已有的颜色列表
       annotation_name_gp = grid::gpar(fontsize = 6)
     )
-  } else ha_top <- NULL
-  
+  } else {
+    ha_top <- NULL
+  }
+
   ## 4. 绘制 Heatmap
   ht <- ComplexHeatmap::Heatmap(
     mat,
-    name           = "value",          # 图例标题
-    col            = col_fun(256),     # 颜色
-    scale          = "none",           # 同 scale = "none"
-    cluster_rows   = TRUE,
+    name = "value", # 图例标题
+    col = col_fun(256), # 颜色
+    scale = "none", # 同 scale = "none"
+    cluster_rows = TRUE,
     cluster_columns = cluster_cols,
     show_row_names = TRUE,
     show_column_names = show_colnames,
-    row_names_gp   = grid::gpar(fontsize = 6),
+    row_names_gp = grid::gpar(fontsize = 6),
     column_names_gp = grid::gpar(fontsize = 6, angle = 45),
     top_annotation = ha_top,
-    column_title   = NULL,
-    row_title      = NULL
+    column_title = NULL,
+    row_title = NULL
   )
-  
+
   ## 5. 保存文件（等效 filename）
   pdf(paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type),
-      width = width, height = height)
+    width = width, height = height
+  )
   ComplexHeatmap::draw(ht)
   invisible(dev.off())
-  
+
   # p
   # ggsave(p,
   #   filename = paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type),

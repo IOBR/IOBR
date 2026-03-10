@@ -21,7 +21,7 @@
 #' eset <- extract_sc_data(sce = pbmc_small, vars = vars, assay = "RNA")
 #'
 extract_sc_data <- function(sce, vars = NULL, assay, slot = "scale.data", combine_meta_data = TRUE) {
-  rlang::check_installed(c("Seurat","SeuratObject"))
+  rlang::check_installed(c("Seurat", "SeuratObject"))
   exist <- Seurat::Assays(sce)
   message(paste0(">>>--- Assays of seurat object: "))
   message(paste(">>>---", exist, collapse = " "))

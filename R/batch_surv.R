@@ -25,8 +25,10 @@
 #' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' # Perform batch survival analysis
-#' batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
-#'            time = "OS_time", status = "OS_status")
+#' batch_surv(
+#'   pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
+#'   time = "OS_time", status = "OS_status"
+#' )
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
   pdata <- as.data.frame(pdata)
 

@@ -17,9 +17,11 @@
 #'
 #' @examples
 #' data("tcga_stad_sig", package = "IOBR")
-#' res <- tme_cluster(input = tcga_stad_sig,
+#' res <- tme_cluster(
+#'   input = tcga_stad_sig,
 #'   features = NULL, pattern = "xCell", id = "ID",
-#'   method = "kmeans", min_nc = 2, max.nc = 6)
+#'   method = "kmeans", min_nc = 2, max.nc = 6
+#' )
 #' sig_heatmap(input = res, features = colnames(res)[3:ncol(res)], group = "cluster")
 tme_cluster <- function(input, features = NULL, pattern = NULL, id = NULL, scale = TRUE, method = "kmeans", min_nc = 2, max.nc = 6) {
   input <- as.data.frame(input)

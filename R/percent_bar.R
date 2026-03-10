@@ -113,10 +113,6 @@ percent_bar_plot <- function(input, x, y,
 }
 
 
-
-
-
-
 #' pie_chart
 #'
 #' @description
@@ -240,8 +236,9 @@ pie_chart <- function(input, var, var2 = NULL, type = 2, show_freq = FALSE, colo
   if (type == 3) {
     # https://rpubs.com/cardiomoon/398623
     if (is.null(var2)) stop("var2 must be defined!")
-    rlang::check_installed("webr", 
-                           reason = "to create PieDonut plots (type 3)")
+    rlang::check_installed("webr",
+      reason = "to create PieDonut plots (type 3)"
+    )
     pp <- webr::PieDonut(input2, aes(pies = !!sym(var), donuts = !!sym(var2)),
       explode = 1, pieLabelSize = 7,
       donutLabelSize = 5

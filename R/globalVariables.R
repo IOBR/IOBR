@@ -17,9 +17,9 @@ utils::globalVariables(c(
   "lm22", "anno_grch38", "anno_gc_vm32", "mcp_genes", "mcp_probesets",
   "quantiseq_data", "xCell.data", "null_models", "common_genes",
   "avg_log2FC", "mus_human_gene_symbol", "PurityDataAffy",
-  "my_palette", "my_palette2", "Group","ENTREZID", "logfc", "p",
-  "FPR","TPR","variable",
-  
+  "my_palette", "my_palette2", "Group", "ENTREZID", "logfc", "p",
+  "FPR", "TPR", "variable",
+
   # ---------- 跨包函数 / S3 方法 ----------
   # 以下名字在代码里通过 :: 或 get() 调用，但仍被 codetools 报 undefined
   "DefaultAssay<-", "check_installed", "geom_hdr_lines",
@@ -27,6 +27,5 @@ utils::globalVariables(c(
   "counts", "makeContrasts", "eBayes", "lmFit", "contrasts.fit",
   "topTable", "stat_compare_means", "compare_means",
   "listDatasets", "useMart", "getLDS", "random_strata_cells",
-  "bicor", "fundamentalNetworkConcepts", "anno_barplot","gene_count"
-
+  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count"
 ))

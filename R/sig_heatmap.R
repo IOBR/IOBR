@@ -49,7 +49,7 @@ sig_heatmap <- function(input,
                         cols_condiction = NULL,
                         scale = FALSE,
                         palette = 2,
-                        cols_heatmap = NULL, 
+                        cols_heatmap = NULL,
                         palette_group = "jama",
                         show_col = F,
                         show_palettes = F,
@@ -70,7 +70,7 @@ sig_heatmap <- function(input,
   # } else {
   #   file_store <- paste0("1-", group, "-relevant-varbiles-heatmap")
   # }
-  # 
+  #
   # if (!file.exists(file_store)) dir.create(file_store)
   # abspath <- paste(getwd(), "/", file_store, "/", sep = "")
   # 修改（有条件创建）
@@ -79,7 +79,7 @@ sig_heatmap <- function(input,
     if (!file.exists(file_store)) dir.create(file_store)
     abspath <- paste(getwd(), "/", file_store, "/", sep = "")
   } else {
-    abspath <- NULL  # 不创建目录
+    abspath <- NULL # 不创建目录
   }
 
 
@@ -115,24 +115,24 @@ sig_heatmap <- function(input,
   } else {
     height_heatmap <- height
   }
-  
-  
+
+
   # heatmap_col <- palettes(category = "tidyheatmap", palette = palette, show_col = show_col, show_message = show_palettes)
-  # 
+  #
   # # # 转换为 colorRamp2 函数（tidyHeatmap 1.7.0+ 要求）
   # if (length(heatmap_col) >= 3) {
   #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), heatmap_col[1:3])
   # } else {
   #   heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
   # }
-  
-  
+
+
   # --- 修改开始：支持自定义热图颜色 ---
   # 用户自定义颜色 - 智能映射
   if (!is.null(cols_heatmap)) {
     # 用户自定义颜色 - 智能映射
     n_colors <- length(cols_heatmap)
-    
+
     if (n_colors >= 5) {
       heatmap_col <- circlize::colorRamp2(c(-2, -1, 0, 1, 2), cols_heatmap[1:5])
       message("Using 5-point color mapping")
@@ -145,16 +145,15 @@ sig_heatmap <- function(input,
       warning("Invalid cols_heatmap, using default")
       heatmap_col <- circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
     }
-    
   } else {
     # 默认使用 palettes 函数
     heatmap_col_raw <- palettes(
-      category = "tidyheatmap", 
-      palette = palette, 
-      show_col = show_col, 
+      category = "tidyheatmap",
+      palette = palette,
+      show_col = show_col,
       show_message = show_palettes
     )
-    
+
     # 统一处理各种可能的返回值类型
     if (is.function(heatmap_col_raw)) {
       # 如果是函数（如原版的 colorRamp2 对象），直接使用
@@ -163,8 +162,9 @@ sig_heatmap <- function(input,
       # 转换为颜色向量
       if (is.matrix(heatmap_col_raw) && ncol(heatmap_col_raw) == 3) {
         # 从 RGB 矩阵转换
-        color_vector <- rgb(heatmap_col_raw[,1], heatmap_col_raw[,2], heatmap_col_raw[,3], 
-                            maxColorValue = 1)
+        color_vector <- rgb(heatmap_col_raw[, 1], heatmap_col_raw[, 2], heatmap_col_raw[, 3],
+          maxColorValue = 1
+        )
       } else if (is.character(heatmap_col_raw)) {
         # 已经是颜色向量
         color_vector <- heatmap_col_raw
@@ -172,7 +172,7 @@ sig_heatmap <- function(input,
         # 回退方案
         color_vector <- c("blue", "white", "red")
       }
-      
+
       # 根据颜色数量创建 colorRamp2
       if (length(color_vector) >= 5) {
         heatmap_col <- circlize::colorRamp2(c(-2, -1, 0, 1, 2), color_vector[1:5])
@@ -184,7 +184,7 @@ sig_heatmap <- function(input,
     }
   }
   # --- 修改结束 ---
-  
+
 
   if (!is.null(cols_group)) {
     color_box <- cols_group
@@ -225,11 +225,11 @@ sig_heatmap <- function(input,
   }
 
   ####################################################
-  
+
   # 在 heatmap 调用前，确保数据是标准 data.frame
   pf_long_group <- as.data.frame(pf_long_group)
-  
-  
+
+
   # if (is.null(condiction)) {
   #   pp <- pf_long_group %>%
   #     dplyr::group_by(target_group) %>%
@@ -267,9 +267,9 @@ sig_heatmap <- function(input,
   #       column_names_rot  = angle_col
   #     )
   # }
-  # 
-  
-  #修改heatmap调用
+  #
+
+  # 修改heatmap调用
   if (is.null(condiction)) {
     pp <- pf_long_group %>%
       dplyr::group_by(target_group) %>%
@@ -283,8 +283,8 @@ sig_heatmap <- function(input,
         row_title = row_title,
         palette_value = heatmap_col,
         show_column_names = show_heatmap_col_name,
-        column_names_gp = grid::gpar(fontsize = size_col),  
-        row_names_gp = grid::gpar(fontsize = size_row),      
+        column_names_gp = grid::gpar(fontsize = size_col),
+        row_names_gp = grid::gpar(fontsize = size_row),
         column_names_rot = angle_col
       )
   } else {
@@ -300,12 +300,12 @@ sig_heatmap <- function(input,
         row_title = row_title,
         palette_value = heatmap_col,
         show_column_names = show_heatmap_col_name,
-        column_names_gp = grid::gpar(fontsize = size_col),  
-        row_names_gp = grid::gpar(fontsize = size_row),      
+        column_names_gp = grid::gpar(fontsize = size_col),
+        row_names_gp = grid::gpar(fontsize = size_row),
         column_names_rot = angle_col
       )
   }
-  
+
   if (show_plot) print(pp)
 
   # if (is.null(index)) index <- 1
@@ -313,14 +313,14 @@ sig_heatmap <- function(input,
   #   width = width,
   #   height = height_heatmap
   # )
-  
+
   ## 可选保存：只有调用者显式给路径时才写文件
   if (!is.null(path)) {
     if (is.null(index)) index <- 1
     pp %>% tidyHeatmap::save_pdf(
       paste0(abspath, index, "-", group, "-tidyheatmap.pdf"),
       width = width,
-      height =height_heatmap
+      height = height_heatmap
     )
   }
 

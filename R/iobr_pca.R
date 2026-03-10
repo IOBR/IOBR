@@ -25,9 +25,11 @@
 #' @examples
 #' data("eset_stad", package = "IOBR")
 #' eset <- count2tpm(eset_stad)
-#' iobr_pca(eset, is.matrix = TRUE, scale = TRUE,
+#' iobr_pca(eset,
+#'   is.matrix = TRUE, scale = TRUE,
 #'   is.log = TRUE, pdata = stad_group,
-#'   id_pdata = "ID", group = "subtype")
+#'   id_pdata = "ID", group = "subtype"
+#' )
 #'
 iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata, id_pdata = "ID", group = NULL,
                      geom.ind = "point", cols = "normal", palette = "jama", repel = FALSE, ncp = 5, axes = c(1, 2), addEllipses = TRUE) {
@@ -37,9 +39,9 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   #######################################
   if (is.matrix) data <- t(data)
   if (scale) data <- scale(data)
-  
+
   rlang::check_installed("FactoMineR")
-  
+
   res.pca <- FactoMineR::PCA(data, ncp = ncp, graph = FALSE)
 
   pdata <- as.data.frame(pdata)
@@ -61,9 +63,9 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   print(paste0(">>== colors for group: "))
   message(paste0(">>== ", cols))
   #########################################
-  
+
   rlang::check_installed("factoextra")
-  
+
   p <- factoextra::fviz_pca_ind(res.pca,
     axes = axes,
     geom.ind = geom.ind, # show points only (nbut not "text")

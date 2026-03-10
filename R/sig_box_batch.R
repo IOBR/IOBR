@@ -24,8 +24,8 @@
 #' @param width Numeric. Width of plots. Default is 3.5.
 #' @param fig_type Character. File format for plots (e.g., "pdf"). Default is "pdf".
 #' @param pattern_vars Logical. Whether to treat 'vars' as patterns for matching column names. Default is FALSE.
-#' @param max_count_feas Integer. Maximum number of features to analyze when `pattern_vars = TRUE`. 
-#'   If the matched variable count exceeds this limit, only the first `max_count_feas` features are used. 
+#' @param max_count_feas Integer. Maximum number of features to analyze when `pattern_vars = TRUE`.
+#'   If the matched variable count exceeds this limit, only the first `max_count_feas` features are used.
 #'   Default is 30.
 #' @return If `return_stat_res` is TRUE, returns a data frame of statistical results; otherwise, saves plots to the specified directory.
 #' @export
@@ -33,9 +33,11 @@
 #'
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")
-#' sig_box_batch(input = tcga_stad_pdata,
-#'   vars = c("TMEscore_plus", "GZMB"), 
-#'   groups = "subtype", jitter = TRUE, palette = "jco")
+#' sig_box_batch(
+#'   input = tcga_stad_pdata,
+#'   vars = c("TMEscore_plus", "GZMB"),
+#'   groups = "subtype", jitter = TRUE, palette = "jco"
+#' )
 sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL, index = 0, angle_x_text = 0,
                           hjust = 0.5, palette = "jama", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 8,
                           size_of_pvalue = 4.5, show_pvalue = TRUE, return_stat_res = FALSE, assay = NULL, slot = "scale.data",
@@ -76,7 +78,7 @@ sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL
         point_size      = point_size,
         size_of_font    = size_of_font,
         size_of_pvalue  = size_of_pvalue,
-        show_pairwise_p = show_pvalue,   # <-- show_pvalue -> show_pairwise_p
+        show_pairwise_p = show_pvalue, # <-- show_pvalue -> show_pairwise_p
         show_overall_p  = FALSE,
         return_stat_res = return_stat_res,
         assay           = assay,
@@ -104,7 +106,7 @@ sig_box_batch <- function(input, vars, groups, pattern_vars = FALSE, path = NULL
         point_size      = point_size,
         size_of_font    = size_of_font,
         size_of_pvalue  = size_of_pvalue,
-        show_pairwise_p = show_pvalue,   # <--show_pvalue -> show_pairwise_p
+        show_pairwise_p = show_pvalue, # <--show_pvalue -> show_pairwise_p
         show_overall_p  = FALSE,
         return_stat_res = return_stat_res,
         assay           = assay,

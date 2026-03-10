@@ -58,7 +58,7 @@ anno_eset <- function(eset, annotation, symbol = "symbol", probe = "probe_id", m
   if (is.null(rownames(eset)) || nrow(eset) == 0) {
     stop("`eset` has 0 rows or missing rownames. Please ensure rownames(eset) are probe IDs (e.g., Affymetrix probe IDs) before annotation.")
   }
-  
+
   annotation <- annotation[annotation$probe_id %in% rownames(eset), ]
   eset <- eset[rownames(eset) %in% annotation$probe_id, ]
 

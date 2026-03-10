@@ -25,7 +25,6 @@ ipsmap <- function(x) {
 }
 
 
-
 #' Map Colors Based on Input Value
 #'
 #' This function maps a numeric input value to a color from a predefined palette.

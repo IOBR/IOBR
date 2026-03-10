@@ -95,7 +95,7 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
 
   # Check the formal argument of GSVA::gsva
   # FA <- formals(GSVA::gsva)
-  # 
+  #
   # # Run ssGSEA analysis for the ranked gene expression dataset
   # if (is.null(FA[["method"]])) {
   #   params <- GSVA::gsvaParam(as.matrix(expr),
@@ -118,39 +118,38 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   #     ssgsea.norm = FALSE
   #   )
   # }
-  scores <- tryCatch({
-    
-    # 新版 GSVA 推荐写法：gsvaParam + gsva(params)
-    params <- GSVA::gsvaParam(
-      as.matrix(expr),
-      signatures,
-      minSize = 1,
-      maxSize = Inf,
-      kcdf = "Gaussian",
-      tau = 1,
-      maxDiff = TRUE,
-      absRanking = FALSE
-    )
-    
-    rlang::check_installed("BiocParallel")
-    GSVA::gsva(
-      params,
-      verbose = TRUE,
-      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-    )
-    
-  }, error = function(e) {
-    
-    # 回退旧版 gsva 接口
-    GSVA::gsva(
-      expr,
-      signatures,
-      method = "ssgsea",
-      ssgsea.norm = FALSE
-    )
-    
-  })
-  
+  scores <- tryCatch(
+    {
+      # 新版 GSVA 推荐写法：gsvaParam + gsva(params)
+      params <- GSVA::gsvaParam(
+        as.matrix(expr),
+        signatures,
+        minSize = 1,
+        maxSize = Inf,
+        kcdf = "Gaussian",
+        tau = 1,
+        maxDiff = TRUE,
+        absRanking = FALSE
+      )
+
+      rlang::check_installed("BiocParallel")
+      GSVA::gsva(
+        params,
+        verbose = TRUE,
+        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+      )
+    },
+    error = function(e) {
+      # 回退旧版 gsva 接口
+      GSVA::gsva(
+        expr,
+        signatures,
+        method = "ssgsea",
+        ssgsea.norm = FALSE
+      )
+    }
+  )
+
   scores <- scores - apply(scores, 1, min)
 
   # Combine signatures for same cell types
@@ -224,12 +223,14 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
     # 非负约束：G = 单位矩阵, H = 0 向量
     G <- diag(nrow(K[rows, rows]))
     H <- rep(0, nrow(G))
-    res <- limSolve::lsei(A = K[rows, rows],
-                          B = x,
-                          G = G,
-                          H = H,
-                          verbose = FALSE)
-    pmax(res$X, 0)          # 再保险截断负值
+    res <- limSolve::lsei(
+      A = K[rows, rows],
+      B = x,
+      G = G,
+      H = H,
+      verbose = FALSE
+    )
+    pmax(res$X, 0) # 再保险截断负值
   })
 
   scores[scores < 0] <- 0

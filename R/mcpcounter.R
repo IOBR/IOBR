@@ -32,36 +32,35 @@ appendSignatures <- function(xp, markers) {
 #' # Example usage (requires appropriate expression data)
 #' # estimates <- MCPcounter.estimate(expression_matrix, featuresType = "HUGO_symbols")
 MCPcounter.estimate <- function(
-    expression,
-    featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID")[1],
-    # probesets = read.table(
-    #   curl::curl(
-    #   "https://raw.githubusercontent.com/ebecht/
-    #   MCPcounter/master/Signatures/probesets.txt"),
-    #   sep = "\t", stringsAsFactors = FALSE, colClasses = "character"),
-    # genes = read.table(
-    #   curl::curl(
-    #   "https://raw.githubusercontent.com/ebecht/
-    #    MCPcounter/master/Signatures/genes.txt"),
-    #    sep = "\t", stringsAsFactors = FALSE, header = TRUE,
-    #    colClasses = "character", check.names = FALSE)
-    probesets = read.table(
-      url(paste0(
-        "https://raw.githubusercontent.com/ebecht/",
-        "MCPcounter/master/Signatures/probesets.txt"
-      )),
-      sep = "\t", stringsAsFactors = FALSE, colClasses = "character"),
-    genes = read.table(
-      url(paste0(
-        "https://raw.githubusercontent.com/ebecht/",
-        "MCPcounter/master/Signatures/genes.txt"
-      )),
-      sep = "\t", stringsAsFactors = FALSE, header = TRUE,
-      colClasses = "character", check.names = FALSE)
-){
-  
-  
-  
+  expression,
+  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID")[1],
+  # probesets = read.table(
+  #   curl::curl(
+  #   "https://raw.githubusercontent.com/ebecht/
+  #   MCPcounter/master/Signatures/probesets.txt"),
+  #   sep = "\t", stringsAsFactors = FALSE, colClasses = "character"),
+  # genes = read.table(
+  #   curl::curl(
+  #   "https://raw.githubusercontent.com/ebecht/
+  #    MCPcounter/master/Signatures/genes.txt"),
+  #    sep = "\t", stringsAsFactors = FALSE, header = TRUE,
+  #    colClasses = "character", check.names = FALSE)
+  probesets = read.table(
+    url(paste0(
+      "https://raw.githubusercontent.com/ebecht/",
+      "MCPcounter/master/Signatures/probesets.txt"
+    )),
+    sep = "\t", stringsAsFactors = FALSE, colClasses = "character"
+  ),
+  genes = read.table(
+    url(paste0(
+      "https://raw.githubusercontent.com/ebecht/",
+      "MCPcounter/master/Signatures/genes.txt"
+    )),
+    sep = "\t", stringsAsFactors = FALSE, header = TRUE,
+    colClasses = "character", check.names = FALSE
+  )
+) {
   ## marker.names=c("T cells","CD8 T cells","Cytotoxic lymphocytes","NK cells","B lineage","Monocytic lineage","Myeloid dendritic cells","Neutrophils","Endothelial cells","Fibroblasts")
 
 

@@ -20,8 +20,10 @@
 #' @examples
 #' up_terms <- data.frame(Description = c("Pathway1", "Pathway2"), pvalue = c(0.001, 0.01))
 #' down_terms <- data.frame(Description = c("Pathway4", "Pathway5"), pvalue = c(0.005, 0.02))
-#' p <- enrichment_barplot(up_terms = up_terms, down_terms = down_terms,
-#'                         title = "Custom Enrichment Plot")
+#' p <- enrichment_barplot(
+#'   up_terms = up_terms, down_terms = down_terms,
+#'   title = "Custom Enrichment Plot"
+#' )
 enrichment_barplot <- function(up_terms, down_terms, terms = "Description", pvalue = "pvalue", group = "group", palette = "jama",
                                cols = NULL, title = "Gene Ontology Enrichment", width_wrap = 30, font_terms = 15) {
   up_terms <- as.data.frame(up_terms)

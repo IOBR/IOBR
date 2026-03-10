@@ -16,7 +16,7 @@
 #' @param fill_by_cor A logical value indicating whether to fill the tiles in the plot according to the correlation values. Default is FALSE.
 #' @param round.num The number of decimal places to round the correlation values. Default is 1.
 #' @param font.size.star The font size of the significance stars in the plot. Default is 8.
-#' @param cols Character vector. Custom colors for correlation gradient 
+#' @param cols Character vector. Custom colors for correlation gradient
 #'   (low, mid, high). If NULL, uses default blue-white-red. Default is NULL.
 #'
 #' @return A ggplot object displaying the correlation matrix.
@@ -39,8 +39,8 @@
 #' )
 #' print(cor_plot)
 get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, index = 1, fig.type = "pdf", width = NULL, height = NULL,
-                           project = NULL, is.matrix = FALSE, scale = T, font.size.star = 8, font.size = 15, 
-                           fill_by_cor = FALSE, round.num = 1,cols = NULL) {
+                           project = NULL, is.matrix = FALSE, scale = T, font.size.star = 8, font.size = 15,
+                           fill_by_cor = FALSE, round.num = 1, cols = NULL) {
   if (!is.null(path)) {
     path <- creat_folder(path)
   }
@@ -52,8 +52,9 @@ get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, 
 
   if (scale) data <- scale(data[, unique(c(feas1, feas2))])
   #############################
-  rlang::check_installed("psych", 
-                         reason = "to calculate correlation matrices")
+  rlang::check_installed("psych",
+    reason = "to calculate correlation matrices"
+  )
   result <- psych::corr.test(data[, feas1], data[, feas2], method = method)
   #############################
   heat <- cbind(reshape2::melt(result$r), reshape2::melt(result$p))[, c(1, 2, 3, 6)]
@@ -73,16 +74,16 @@ get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, 
   #######################################
   # 颜色处理（新增）
   if (is.null(cols)) {
-    low_col <- "#2C7BB6"   # 蓝
-    mid_col <- "white"     # 白
-    high_col <- "#D7191C"  # 红
+    low_col <- "#2C7BB6" # 蓝
+    mid_col <- "white" # 白
+    high_col <- "#D7191C" # 红
   } else {
     if (length(cols) < 2) stop("cols must have at least 2 colors (low, high) or 3 colors (low, mid, high)")
     low_col <- cols[1]
     high_col <- cols[length(cols)]
     mid_col <- if (length(cols) >= 3) cols[2] else "white"
   }
-  
+
   # Plot everything
   p <- ggplot(aes(x = ID1, y = ID2, fill = cor), data = heat)
   ########################################
@@ -111,11 +112,13 @@ get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, 
   #   filename = paste0(index, "-", project, "-cor_plot.", fig.type),
   #   width = width, height = height, path = path$folder_name
   # )
-  
+
   ## 可选保存：只有调用者显式给路径时才写文件
   if (!is.null(path)) {
-    ggsave(fig12,filename = paste0(index, "-", project, "-cor_plot.", fig.type),
-      width = width, height = height,path = path$folder_name)
+    ggsave(fig12,
+      filename = paste0(index, "-", project, "-cor_plot.", fig.type),
+      width = width, height = height, path = path$folder_name
+    )
   }
   print(fig12)
   #######################################################

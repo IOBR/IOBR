@@ -25,8 +25,10 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")
-#' sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
-#'               time = "time", status = "OS_status")
+#' sig_surv_plot(
+#'   input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
+#'   time = "time", status = "OS_status"
+#' )
 #'
 sig_surv_plot <- function(input_pdata,
                           signature,
@@ -124,7 +126,7 @@ sig_surv_plot <- function(input_pdata,
 
   # save(input_pdata, file = paste0(abspath, index, "-0-", project, "-", signature, "-survival-analysis-input.RData"))
   if (!is.null(save_path)) {
-    save(input_pdata,file = file.path(save_path,paste0(index, "-0-", project, "-", signature,"-survival-analysis-input.RData")))
+    save(input_pdata, file = file.path(save_path, paste0(index, "-0-", project, "-", signature, "-survival-analysis-input.RData")))
   }
   #######################################
 
@@ -185,14 +187,14 @@ sig_surv_plot <- function(input_pdata,
   #   plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
   #   width = 6, height = 6.5, path = save_path
   # )
-  
+
   if (!is.null(save_path)) {
     ggsave(
-         plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
-         width = 6, height = 6.5, path = save_path
-      )
+      plot = res1, filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
+      width = 6, height = 6.5, path = save_path
+    )
   }
-  
+
   ################################################
 
   input_pdata$bestcutoff <- ifelse(input_pdata$bestcutoff == 1, "High", "Low")
@@ -271,14 +273,18 @@ sig_surv_plot <- function(input_pdata,
   df <- tibble(x = 0, y = 0, tb = list(addTab))
   # pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
   rlang::check_installed("gridExtra")
-  tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
-                                  gp = grid::gpar(fontsize = 6))   
-  
-  ##把 ggpp::geom_table 换成 geom_text + annotation_custom
+  tb_grob <- gridExtra::tableGrob(df$tb,
+    rows = TRUE,
+    gp = grid::gpar(fontsize = 6)
+  )
+
+  ## 把 ggpp::geom_table 换成 geom_text + annotation_custom
   pp2$plot <- pp2$plot +
-    ggplot2::geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +   
-    ggplot2::annotation_custom(tb_grob, xmin = df$x, xmax = df$x,
-                               ymin = df$y, ymax = df$y)
+    ggplot2::geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +
+    ggplot2::annotation_custom(tb_grob,
+      xmin = df$x, xmax = df$x,
+      ymin = df$y, ymax = df$y
+    )
 
   res2 <- arrange_ggsurvplots(list(pp2), print = FALSE, ncol = 1, nrow = 1)
   ##############################
@@ -293,7 +299,7 @@ sig_surv_plot <- function(input_pdata,
       width = 6, height = 6.5, path = save_path
     )
   }
-  
+
 
   ################################################
   # input_pdata$group3<-ifelse(input_pdata$group3==3,"High",ifelse(input_pdata$group3==2,"Middle","Low"))
@@ -342,9 +348,9 @@ sig_surv_plot <- function(input_pdata,
   # )
   if (!is.null(save_path)) {
     ggsave(
-         plot = res3, filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
-         width = 6, height = 6.5, path = save_path
-      )
+      plot = res3, filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
+      width = 6, height = 6.5, path = save_path
+    )
   }
   #############################################
   input_pdata$group2 <- ifelse(input_pdata$group2 == 1, "High", "Low")

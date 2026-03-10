@@ -18,7 +18,7 @@
 #' data("eset_tme_stad", package = "IOBR")
 #' outs <- find_outlier_samples(eset = eset_tme_stad)
 #' print(outs)
-find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL,save = TRUE) {
+find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL, save = TRUE) {
   if (!requireNamespace("WGCNA", quietly = TRUE)) {
     stop("Package 'WGCNA' is required but not installed.")
   }
@@ -60,9 +60,9 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
   p <- p + design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
   if (show_plot) print(p)
-  
+
   if (save) {
-  ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
+    ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
   }
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]

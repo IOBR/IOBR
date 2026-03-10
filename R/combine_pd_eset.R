@@ -33,8 +33,10 @@
 #' # Load phenotype data
 #' data("sig_stad", package = "IOBR")
 #' # Combine phenotype and expression data
-#' input <- combine_pd_eset(eset = eset, pdata = sig_stad,
-#'                          feas = unique(unlist(signature_collection)))
+#' input <- combine_pd_eset(
+#'   eset = eset, pdata = sig_stad,
+#'   feas = unique(unlist(signature_collection))
+#' )
 combine_pd_eset <- function(eset, pdata, id_pdata = "ID", feas = NULL, feature_manipulation = TRUE, scale = TRUE, choose_who_when_duplicate = "eset") {
   if (!is.null(feas)) {
     eset <- eset[rownames(eset) %in% feas, ]

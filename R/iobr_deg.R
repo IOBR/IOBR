@@ -28,12 +28,14 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' utils::data("eset_stad", package = "IOBR",envir=environment())
-#' utils::data("stad_group", package = "IOBR",envir=environment())
+#' utils::data("eset_stad", package = "IOBR", envir = environment())
+#' utils::data("stad_group", package = "IOBR", envir = environment())
 #' library(DESeq2)
-#' deg <- iobr_deg(eset = eset_stad, pdata = stad_group,
+#' deg <- iobr_deg(
+#'   eset = eset_stad, pdata = stad_group,
 #'   group_id = "subtype", pdata_id = "ID", array = FALSE,
-#'   method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD")
+#'   method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD"
+#' )
 iobr_deg <- function(eset,
                      annotation = NULL,
                      id_anno = NULL,
@@ -190,7 +192,7 @@ iobr_deg <- function(eset,
 
   if (method == "limma") {
     message(">>>== limma was selected for differential gene analysis of Array data \n")
-    
+
     contrast <- c("deg_group", contrast)
 
     rlang::check_installed("limma")
@@ -253,7 +255,9 @@ iobr_deg <- function(eset,
   # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
   csv_file <- paste0(abspath, "2-DEGs.csv")
   write.csv(DEG, file = csv_file, row.names = FALSE)
-  message(">>> DEG results written to ", csv_file,
-          "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  message(
+    ">>> DEG results written to ", csv_file,
+    "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)"
+  )
   return(DEG)
 }

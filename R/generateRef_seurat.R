@@ -1,8 +1,3 @@
-
-
-
-
-
 #' generateRef_seurat
 #'
 #' @description
@@ -29,36 +24,40 @@
 #' @examples
 #' \donttest{
 #' # Load the PBMC dataset
-#' pbmc.data <- Read10X(data.dir = 
-#'   "E:/12-pkg-dev/IOBR-Project/8-IOBR2-Vignette/0-data/
-#'    pbmc/filtered_gene_bc_matrices/hg19")
+#' pbmc.data <- Read10X(
+#'   data.dir =
+#'     "E:/12-pkg-dev/IOBR-Project/8-IOBR2-Vignette/0-data/
+#'    pbmc/filtered_gene_bc_matrices/hg19"
+#' )
 #' # Initialize the Seurat object with the raw (non-normalized data).
-#' pbmc <- Seurat::CreateSeuratObject(counts = pbmc.data,
-#'   project = "pbmc3k", min.cells = 3, min.features = 200)
+#' pbmc <- Seurat::CreateSeuratObject(
+#'   counts = pbmc.data,
+#'   project = "pbmc3k", min.cells = 3, min.features = 200
+#' )
 #' pbmc <- Seurat::FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
 #' pbmc <- Seurat::NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-#' pbmc <- Seurat::ScaleData(pbmc, features =  rownames(pbmc))
+#' pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
 #' pbmc <- Seurat::RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 #' pbmc <- Seurat::FindNeighbors(pbmc, dims = 1:10)
 #' pbmc <- Seurat::FindClusters(pbmc, resolution = 0.5)
 #' pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
 #'
 #' # generate reference matrix
-#' sm<- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
+#' sm <- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
 #'
-#' #load the bulk-seq data
+#' # load the bulk-seq data
 #' data(eset_stad, package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#' svr<-deconvo_tme(eset = eset,
-#'   reference  = sm,  method = "svr", arrays  = FALSE,
-#'   absolute.mode = FALSE, perm = 100)
+#' svr <- deconvo_tme(
+#'   eset = eset,
+#'   reference = sm, method = "svr", arrays = FALSE,
+#'   absolute.mode = FALSE, perm = 100
+#' )
 #' }
 #'
-
 generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_deg = "RNA", slot_deg = "data", adjust_assay = FALSE,
                                assay_out = "RNA", slot_out = "data", verbose = FALSE, only.pos = TRUE, n_ref_genes = 50,
-                               logfc.threshold = 0.15, test.use = "wilcox"){
-
+                               logfc.threshold = 0.15, test.use = "wilcox") {
   rlang::check_installed("Seurat")
 
   # if(!is.null(path)){
@@ -74,23 +73,23 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
 
   # cat(crayon::green(">>>---Assay used to find markers: \n"))
   cat("\033[32m>>> ---Assay used to find markers: \033[39m\n")
-  
-  if(!is.null(assay_deg)){
-    print(paste0(">>>>> ",assay_deg))
-  }else{
+
+  if (!is.null(assay_deg)) {
+    print(paste0(">>>>> ", assay_deg))
+  } else {
     print(paste0(">>>>> ", Seurat::DefaultAssay(sce)))
-    Seurat::DefaultAssay(sce)<- assay_deg
+    Seurat::DefaultAssay(sce) <- assay_deg
   }
 
 
   # find marker genes of clusters------------------------------------------------------
-  if(!is.null(celltype)){
+  if (!is.null(celltype)) {
     message(paste0(">>> Idents of Seurat object is: ", celltype))
     Seurat::Idents(sce) <- celltype
     print(table(as.character(Seurat::Idents(sce))))
-    group2<-celltype
-  }else{
-    group2<-"default"
+    group2 <- celltype
+  } else {
+    group2 <- "default"
 
     cat("\033[32m>>> Idents of Seurat object is: Default... \033[39m\n")
     # message(paste0(">>> Idents of Seurat object is: Default... \n"))
@@ -105,69 +104,69 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
 
 
   ################################################
-  if(!is.null(proportion)){
+  if (!is.null(proportion)) {
+    input <- random_strata_cells(input = sce@meta.data, group = celltype, propotion = proportion)
+    cell_input <- rownames(input)
 
-
-    input<-random_strata_cells(input= sce@meta.data, group = celltype, propotion = proportion)
-    cell_input<-rownames(input)
-
-    message(paste0(">>> Subseting cells in each cluster randomly: ",proportion*100, "%... "))
+    message(paste0(">>> Subseting cells in each cluster randomly: ", proportion * 100, "%... "))
     message(paste0(">>> Final training data: "))
     print(table(as.factor(input[, celltype])))
 
     # print(cell_input[1:10])
     # subset cells
-    sce<-subset(sce, cells = as.character(cell_input))
-
+    sce <- subset(sce, cells = as.character(cell_input))
   }
   ################################################
-  #remove features with large name
+  # remove features with large name
   ##############################################
   # help("PrepSCTFindMarkers")
 
-  if(tolower(assay_deg)=="sct"&&adjust_assay) sce<- Seurat::PrepSCTFindMarkers(sce)
+  if (tolower(assay_deg) == "sct" && adjust_assay) sce <- Seurat::PrepSCTFindMarkers(sce)
 
 
   ################################################
   cat("\033[32m>>> Find markers of each celltype... \033[39m\n")
   # help("FindAllMarkers")
   ###################################
-  sce.markers <- Seurat::FindAllMarkers(object          = sce,
-                                slot            = slot_deg,
-                                assay           = assay_deg,
-                                features        = NULL,
-                                only.pos        = only.pos,
-                                min.pct         = 0.25,
-                                thresh.use      = 0.25,
-                                verbose         = verbose,
-                                logfc.threshold = logfc.threshold,
-                                test.use        = test.use,
-                                fc.name         = "avg_log2FC")
+  sce.markers <- Seurat::FindAllMarkers(
+    object = sce,
+    slot = slot_deg,
+    assay = assay_deg,
+    features = NULL,
+    only.pos = only.pos,
+    min.pct = 0.25,
+    thresh.use = 0.25,
+    verbose = verbose,
+    logfc.threshold = logfc.threshold,
+    test.use = test.use,
+    fc.name = "avg_log2FC"
+  )
 
   # DT::datatable(sce.markers)
   print(head(sce.markers))
   ####################################
-  refgene <- sce.markers %>% dplyr:: group_by(cluster) %>%  dplyr::top_n(n_ref_genes, avg_log2FC)
+  refgene <- sce.markers %>%
+    dplyr::group_by(cluster) %>%
+    dplyr::top_n(n_ref_genes, avg_log2FC)
 
   print(refgene)
   ####################################
 
 
   cat("\033[32m>>>-- Aggreating scRNAseq data...\033[39m\n")
-  if(is.null(slot_out)) slot<-"counts"
+  if (is.null(slot_out)) slot <- "counts"
 
   cat("\033[32m>>>-- orig.ident was set as group. User can define through parameter celltype ...\033[39m\n")
-  bulk <- Seurat::AggregateExpression(object   = sce,
-                                      assays   = assay_out,
-                                      slot     = slot_out,
-                                      group.by = celltype)
-  bulk<-bulk[[1]]
+  bulk <- Seurat::AggregateExpression(
+    object = sce,
+    assays = assay_out,
+    slot = slot_out,
+    group.by = celltype
+  )
+  bulk <- bulk[[1]]
 
   # print(bulk)
-  bulk <- bulk[rownames(bulk)%in%refgene$gene, ]
+  bulk <- bulk[rownames(bulk) %in% refgene$gene, ]
 
   return(bulk)
-
 }
-
-

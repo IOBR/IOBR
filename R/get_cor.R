@@ -140,7 +140,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
         title = title,
         subtitle = paste0(
           "r = ", round(unique(cor_result$estimate), 3),
-           ",  P = ", #sprintf("%1.1e", pvalue)
+          ",  P = ", # sprintf("%1.1e", pvalue)
           format(pvalue, digits = 1, scientific = TRUE)
         )
       )
@@ -161,7 +161,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
         title = title,
         subtitle = paste0(
           "r = ", round(unique(cor_result$estimate), 3),
-          ",  P = ", #sprintf("%1.1e", pvalue)
+          ",  P = ", # sprintf("%1.1e", pvalue)
           format(pvalue, digits = 1, scientific = TRUE)
         )
       )
@@ -184,7 +184,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
   )
 
   p <- p + theme + theme(plot.subtitle = element_text(size = 15, hjust = 0, face = "italic", color = "black"))
-  
+
   if (add.hdr.line) {
     rlang::check_installed("ggfortify")
     p <- p + ggfortify::geom_hdr_lines()
@@ -232,7 +232,7 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
         width = fig.width, height = fig.height, path = path
       )
     }
-  
+
     save(data, file = paste0(ff$abspath, "0-input-data-", var1, "-", var2, ".RData"))
   }
 

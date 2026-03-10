@@ -93,7 +93,6 @@ deconvolute_quantiseq.default <- function(mix.mat,
   }
 
 
-
   # Load normalization factors (set all to 1 if mRNAscale==FALSE)
   if (mRNAscale) {
     # mRNA<-read.table(mRNA.file,
@@ -171,7 +170,6 @@ deconvolute_quantiseq.default <- function(mix.mat,
   results <- results / apply(results, 1, sum)
 
   message("Deconvolution sucessful!")
-
 
 
   # Save results using user's output ID

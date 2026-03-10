@@ -117,8 +117,10 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
       mypal <- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Blues"))(counts))
     } else if (palette == 4) {
       # mypal <- viridis::inferno(counts)
-      mypal <- grDevices::colorRampPalette(c("#000004FF", "#51127CFF", "#B63679FF",
-                                             "#FCA50AFF", "#F7F419FF"))(counts)
+      mypal <- grDevices::colorRampPalette(c(
+        "#000004FF", "#51127CFF", "#B63679FF",
+        "#FCA50AFF", "#F7F419FF"
+      ))(counts)
     } else if (palette == 5) {
       mypal <- rev(colorRampPalette(RColorBrewer::brewer.pal(8, "Reds"))(counts))
     } else if (palette == 6) {
@@ -128,7 +130,8 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
     } else if (palette == 8) {
       # mypal <- colorRampPalette(viridis::magma(5))(counts)
       mypal <- grDevices::colorRampPalette(
-        c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF"))(counts)
+        c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF")
+      )(counts)
     }
 
 
@@ -164,8 +167,10 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
     if (show_message) message(paste0("There are six palettes you can choose: 1, 2, 3, 4, 5, 6"))
     if (palette == 1) {
       # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), viridis::magma(5))
-      mypal <- grDevices::colorRamp(c("#000004FF", "#6B0A7DFF", "#B63679FF",
-                                      "#FCA50AFF", "#F7F419FF"))(c(-3, -1.5, 0, 1.5, 3))
+      mypal <- grDevices::colorRamp(c(
+        "#000004FF", "#6B0A7DFF", "#B63679FF",
+        "#FCA50AFF", "#F7F419FF"
+      ))(c(-3, -1.5, 0, 1.5, 3))
     } else if (palette == 2) {
       # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), rev(RColorBrewer::brewer.pal(n = 5, name = "RdYlBu")))
       mypal <- grDevices::colorRamp(rev(RColorBrewer::brewer.pal(5, "RdYlBu")))(c(-3, -1.5, 0, 1.5, 3))

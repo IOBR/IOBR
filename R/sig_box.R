@@ -47,10 +47,12 @@
 #' # Load example data
 #' data("tcga_stad_pdata", package = "IOBR")
 #' # Create box plot with statistical comparisons
-#' sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus",
-#'         variable = "subtype", jitter = TRUE, palette = "jco")
+#' sig_box(
+#'   data = tcga_stad_pdata, signature = "TMEscore_plus",
+#'   variable = "subtype", jitter = TRUE, palette = "jco"
+#' )
 sig_box <- function(data, signature, variable, angle_x_text = 0, hjust = 0.5, palette = "nrc", cols = NULL, jitter = FALSE, point_size = 5, size_of_font = 10,
-                    size_of_pvalue = 6, show_pairwise_p = TRUE,show_overall_p = FALSE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE) {
+                    size_of_pvalue = 6, show_pairwise_p = TRUE, show_overall_p = FALSE, return_stat_res = FALSE, assay = NULL, slot = "scale.data", scale = FALSE) {
   rlang::check_installed("ggpubr")
   if (class(data)[1] == "Seurat") {
     # cat(crayon::green(">>>-- Derive matrix data from Seurat object...\n"))
@@ -103,14 +105,14 @@ sig_box <- function(data, signature, variable, angle_x_text = 0, hjust = 0.5, pa
     ) +
     theme(legend.position = "none")
 
-  #修改为具体的显示情况
+  # 修改为具体的显示情况
   if (show_pairwise_p) {
     p <- p + ggpubr::stat_compare_means(
-      comparisons = comparision, 
+      comparisons = comparision,
       size = size_of_pvalue
     )
   }
-  
+
   if (show_overall_p) {
     p <- p + ggpubr::stat_compare_means(
       size = size_of_pvalue

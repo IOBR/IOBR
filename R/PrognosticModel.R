@@ -24,9 +24,11 @@
 #' pdata_prog <- imvigor210_pdata %>%
 #'   dplyr::select(ID, OS_days, OS_status) %>%
 #'   mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
-#' prognostic_result <- PrognosticModel(x = imvigor210_sig, y = pdata_prog,
-#'                                      scale = TRUE, seed = 123456,
-#'                                      train_ratio = 0.7, nfold = 10, plot = TRUE)
+#' prognostic_result <- PrognosticModel(
+#'   x = imvigor210_sig, y = pdata_prog,
+#'   scale = TRUE, seed = 123456,
+#'   train_ratio = 0.7, nfold = 10, plot = TRUE
+#' )
 PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   x <- as.data.frame(x)
   y <- as.data.frame(y)
@@ -132,8 +134,6 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 }
 
 
-
-
 #' Calculate Prognostic Area Under the Curve (AUC)
 #'
 #' This function evaluates the prognostic ability of a survival model by calculating the Area Under the
@@ -161,7 +161,8 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #' new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
 #' actual_outcome <- data.frame(
 #'   time = rexp(100, rate = 0.1),
-#'   status = rbinom(100, size = 1, prob = 0.5))
+#'   status = rbinom(100, size = 1, prob = 0.5)
+#' )
 #' auc_results <- PrognosticAUC(fit, newx = new_data, s = "lambda.min", acture.y = actual_outcome)
 #' @export
 PrognosticAUC <- function(model, newx, s, acture.y) {
@@ -181,7 +182,6 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
   AUC <- data.frame(probs.3 = ROC$AUC[1], probs.9 = ROC$AUC[2])
   return(AUC)
 }
-
 
 
 #' Calculate Time-Dependent ROC
@@ -207,11 +207,15 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @examples
 #' # Assuming 'fit' is a Cox proportional hazards model fitted using `coxph` or `glmnet`
 #' new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-#' actual_outcome <- data.frame(time = rexp(100, rate = 0.1),
-#'   status = rbinom(100, size = 1, prob = 0.5))
-#' roc_info <- CalculateTimeROC(fit, newx = new_data,
+#' actual_outcome <- data.frame(
+#'   time = rexp(100, rate = 0.1),
+#'   status = rbinom(100, size = 1, prob = 0.5)
+#' )
+#' roc_info <- CalculateTimeROC(fit,
+#'   newx = new_data,
 #'   s = "lambda.min", acture.y = actual_outcome,
-#'   modelname = "Cox Model")
+#'   modelname = "Cox Model"
+#' )
 #' @export
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
   riskscore <- stats::predict(model, newx = newx, s = s)

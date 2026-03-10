@@ -33,9 +33,11 @@
 #'
 #' @examples
 #' data("tcga_stad_pdata", package = "IOBR")
-#' surv_group(input_pdata = tcga_stad_pdata, 
-#'   target_group = "TMEscore_plus_binary", 
-#'   time = "time", status = "OS_status")
+#' surv_group(
+#'   input_pdata = tcga_stad_pdata,
+#'   target_group = "TMEscore_plus_binary",
+#'   time = "time", status = "OS_status"
+#' )
 #' @export
 surv_group <- function(input_pdata,
                        target_group,
@@ -200,12 +202,16 @@ surv_group <- function(input_pdata,
     df <- tibble(x = 0, y = 0, tb = list(addTab))
     # pp$plot <- pp$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE, size = font.size.table)
     rlang::check_installed("gridExtra")
-    tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
-                                    gp = grid::gpar(fontsize = font.size.table))
+    tb_grob <- gridExtra::tableGrob(df$tb,
+      rows = TRUE,
+      gp = grid::gpar(fontsize = font.size.table)
+    )
     pp$plot <- pp$plot +
       geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +
-      annotation_custom(tb_grob, xmin = df$x, xmax = df$x,
-                        ymin = df$y, ymax = df$y)
+      annotation_custom(tb_grob,
+        xmin = df$x, xmax = df$x,
+        ymin = df$y, ymax = df$y
+      )
   } else {
     if (is.null(reference_group)) {
       levels <- unique(input_pd$target_group)
@@ -303,9 +309,6 @@ surv_group <- function(input_pdata,
   }
   return(res)
 }
-
-
-
 
 
 #' Break Time Into Blocks

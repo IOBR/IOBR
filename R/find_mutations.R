@@ -32,13 +32,15 @@
 #' # Load mutation and signature data
 #' mut_list <- make_mut_matrix(maf = "path_to_maf_file", isTCGA = TRUE, category = "multi")
 #' mut <- mut_list$snp
-#' results <- find_mutations(mutation_matrix = mut, signature_matrix = tcga_stad_sig,
-#'                           id_signature_matrix = "ID", signature = "CD_8_T_effector",
-#'                           min_mut_freq = 0.01, plot = TRUE, method = "multi",
-#'                           save_path = "path_to_save_results")
+#' results <- find_mutations(
+#'   mutation_matrix = mut, signature_matrix = tcga_stad_sig,
+#'   id_signature_matrix = "ID", signature = "CD_8_T_effector",
+#'   min_mut_freq = 0.01, plot = TRUE, method = "multi",
+#'   save_path = "path_to_save_results"
+#' )
 find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,
                            min_mut_freq = 0.05, plot = TRUE, method = "multi", point_alpha = 0.1,
-                           save_path = NULL, palette = "jco", cols = NULL,show_plot = TRUE,
+                           save_path = NULL, palette = "jco", cols = NULL, show_plot = TRUE,
                            show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean",
                            oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5) {
   rlang::check_installed("ggpubr")
@@ -57,7 +59,6 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     mutation_matrix[mutation_matrix >= 3 & mutation_matrix <= 5] <- 3
     mutation_matrix[mutation_matrix > 5] <- 4
   }
-
 
 
   mut2 <- mutation_matrix
@@ -113,7 +114,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   } else {
     cols
   }
-  
+
   if (method == "multi") {
     if (!is.null(genes)) {
       if (length(genes) < 10) {
@@ -171,7 +172,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           theme(legend.position = "none") +
           ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6) 
+          ggpubr::stat_compare_means(comparisons = combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
 
         if (jitter) {
           pl[[i]] <- pl[[i]] + geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
@@ -182,10 +183,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         )
       }
       rlang::check_installed("patchwork")
-      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
-                                        ncol = 5, nrow = 2,
-                                        labels = "AUTO",
-                                        label_size = 32)
+      com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
+        ncol = 5, nrow = 2,
+        labels = "AUTO",
+        label_size = 32
+      )
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "3-Relevant_mutations_Continue.pdf", width = 14, height = 10.5, path = file_name)
@@ -198,7 +200,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     part2 <- sig_mut2[, input_genes]
     part2[part2 >= 1] <- 1
     sig_mut2 <- cbind(patr1, part2)
-    sig_mut2 <- column_to_rownames(sig_mut2, var = "ID")  
+    sig_mut2 <- column_to_rownames(sig_mut2, var = "ID")
 
     input2 <- sig_mut2
 
@@ -263,10 +265,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           width = 4, height = 5.8, path = file_name
         )
       }
-      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
-                                        ncol = 5, nrow = 2,
-                                        labels = "AUTO",
-                                        label_size = 32)
+      com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
+        ncol = 5, nrow = 2,
+        labels = "AUTO",
+        label_size = 32
+      )
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "4-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
@@ -355,10 +358,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           width = 4, height = 5.8, path = file_name
         )
       }
-      com_plot <- patchwork::wrap_plots(pl[1:10],               #  等价拼图
-                                        ncol = 5, nrow = 2,
-                                        labels = "AUTO",
-                                        label_size = 32)
+      com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
+        ncol = 5, nrow = 2,
+        labels = "AUTO",
+        label_size = 32
+      )
       if (show_plot) print(com_plot)
       #####################################
       ggsave(com_plot, filename = "0-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
@@ -477,9 +481,6 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     # annotation_name_side="left",
     annotation_name_gp = gpar(fontsize = 12)
   )
-
-
-
 
 
   col <- c(mut = oncoprint_col)

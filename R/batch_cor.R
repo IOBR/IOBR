@@ -29,8 +29,10 @@
 #' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' # Perform batch correlation analysis
-#' results <- batch_cor(data = sig_stad, target = "CD_8_T_effector",
-#'                      feature = colnames(sig_stad)[69:ncol(sig_stad)])
+#' results <- batch_cor(
+#'   data = sig_stad, target = "CD_8_T_effector",
+#'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
+#' )
 batch_cor <- function(data, target, feature, method = "spearman") {
   if (!target %in% colnames(data)) stop(">>>== target was not in the colnames of data")
   data <- as.data.frame(data)
@@ -95,8 +97,10 @@ batch_cor <- function(data, target, feature, method = "spearman") {
 #' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' # Calculate exact p-value for correlation between two variables
-#' p_val <- exact_pvalue(x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
-#'                       method = "spearman")
+#' p_val <- exact_pvalue(
+#'   x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
+#'   method = "spearman"
+#' )
 #' print(p_val)
 exact_pvalue <- function(x, y, method) {
   l <- length(y)

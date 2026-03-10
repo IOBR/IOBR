@@ -24,8 +24,6 @@ signature_score_calculation_methods <- c(
 ##########################################
 
 
-
-
 #' Calculate Signature Score Using PCA Method
 #'
 #' @description
@@ -130,10 +128,6 @@ calculate_sig_score_pca <- function(pdata = NULL,
 ###################################################
 
 
-
-
-
-
 #' Calculate Signature Score Using Z-Score Method
 #'
 #' @description
@@ -234,8 +228,6 @@ calculate_sig_score_zscore <- function(pdata = NULL,
 ###################################################
 
 
-
-
 #' Calculating signature score using ssGSEA method
 #'
 #' @param pdata phenotype data of input sample;
@@ -306,7 +298,7 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   ##############################
   # Check the formal argument of GSVA::gsva
   # FA <- formals(GSVA::gsva)
-  # 
+  #
   # if (is.null(FA[["method"]])) {
   #   params <- GSVA::gsvaParam(as.matrix(eset),
   #     signature,
@@ -317,9 +309,9 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   #     maxDiff = TRUE,
   #     absRanking = FALSE
   #   )
-  #   
+  #
   #   rlang::check_installed("BiocParallel")
-  #   
+  #
   #   res <- GSVA::gsva(params,
   #     verbose = TRUE,
   #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
@@ -336,13 +328,13 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   # }
   ## ---- GSVA ssGSEA: support both old and new APIs ----
   rlang::check_installed("GSVA")
-  
+
   use_new_api <- exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
-  
+
   if (use_new_api) {
     # New API (Bioc >= 3.18; old API is defunct in 3.19)
     rlang::check_installed("BiocParallel")
-    
+
     bp <- BiocParallel::SerialParam(progressbar = TRUE)
     if (isTRUE(parallel.size > 1L)) {
       if (.Platform$OS.type == "windows") {
@@ -351,7 +343,7 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
         bp <- BiocParallel::MulticoreParam(workers = parallel.size, progressbar = TRUE)
       }
     }
-    
+
     # Build ssgseaParam() with only arguments that exist in the installed GSVA
     extra <- list(
       minSize = mini_gene_count,
@@ -364,17 +356,16 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       absRanking = FALSE,
       ssgsea.norm = TRUE
     )
-    
+
     fmls <- names(formals(GSVA::ssgseaParam))
     extra <- extra[names(extra) %in% fmls]
-    
+
     param <- do.call(
       GSVA::ssgseaParam,
       c(list(as.matrix(eset), signature), extra)
     )
-    
+
     res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = bp)
-    
   } else {
     # Old API (for older GSVA versions)
     res <- GSVA::gsva(
@@ -387,7 +378,7 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       parallel.sz = parallel.size
     )
   }
-  
+
   ##############################
   res <- as.data.frame(t(res))
   res <- rownames_to_column(res, var = "ID")
@@ -407,10 +398,6 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   return(pdata)
 }
 ###################################################
-
-
-
-
 
 
 #' Calculating signature score using Integration method
@@ -520,7 +507,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 
   # Check the formal argument of GSVA::gsva
   # FA <- formals(GSVA::gsva)
-  # 
+  #
   # if (is.null(FA[["method"]])) {
   #   params <- GSVA::gsvaParam(as.matrix(eset),
   #     signature,
@@ -531,9 +518,9 @@ calculate_sig_score_integration <- function(pdata = NULL,
   #     maxDiff = TRUE,
   #     absRanking = FALSE
   #   )
-  #   
+  #
   #   rlang::check_installed("BiocParallel")
-  #   
+  #
   #   res <- GSVA::gsva(params,
   #     verbose = TRUE,
   #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
@@ -550,37 +537,39 @@ calculate_sig_score_integration <- function(pdata = NULL,
   # }
   ssgsea_min <- max(mini_gene_count, 5)
   signature_ssgsea <- signature[gene_count >= ssgsea_min]
-  
-  res <- tryCatch({
-    params <- GSVA::gsvaParam(
-      as.matrix(eset),
-      signature_ssgsea,
-      minSize = ssgsea_min,
-      maxSize = Inf,
-      kcdf = "Gaussian",
-      tau = 1,
-      maxDiff = TRUE,
-      absRanking = FALSE
-    )
-    
-    rlang::check_installed("BiocParallel")
-    
-    GSVA::gsva(
-      params,
-      verbose = TRUE,
-      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-    )
-    
-  }, error = function(e) {
-    GSVA::gsva(
-      as.matrix(eset),
-      signature_ssgsea,
-      method = "ssgsea",
-      kcdf = "Gaussian",
-      min.sz = ssgsea_min,
-      ssgsea.norm = TRUE
-    )
-  })
+
+  res <- tryCatch(
+    {
+      params <- GSVA::gsvaParam(
+        as.matrix(eset),
+        signature_ssgsea,
+        minSize = ssgsea_min,
+        maxSize = Inf,
+        kcdf = "Gaussian",
+        tau = 1,
+        maxDiff = TRUE,
+        absRanking = FALSE
+      )
+
+      rlang::check_installed("BiocParallel")
+
+      GSVA::gsva(
+        params,
+        verbose = TRUE,
+        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+      )
+    },
+    error = function(e) {
+      GSVA::gsva(
+        as.matrix(eset),
+        signature_ssgsea,
+        method = "ssgsea",
+        kcdf = "Gaussian",
+        min.sz = ssgsea_min,
+        ssgsea.norm = TRUE
+      )
+    }
+  )
   #####################
   res <- as.data.frame(t(res))
   if ("TMEscoreA_CIR" %in% colnames(res) & "TMEscoreB_CIR" %in% colnames(res)) {
@@ -597,10 +586,6 @@ calculate_sig_score_integration <- function(pdata = NULL,
   pdata <- tibble::as_tibble(pdata)
   return(pdata)
 }
-
-
-
-
 
 
 #' Calculating signature score on a gene expression dataset
@@ -620,7 +605,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' @param ... Additional arguments passed to the specific scoring methods
 #'   (\code{\link{calculate_sig_score_pca}()}, \code{\link{calculate_sig_score_zscore}()},
 #'   \code{\link{calculate_sig_score_ssgsea}()}, or \code{\link{calculate_sig_score_integration}()}).
-#'   
+#'
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
 #' @author Dongqiang Zeng

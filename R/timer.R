@@ -23,8 +23,6 @@ TimerINFO <- function(string) {
 }
 
 
-
-
 #' TIMER signatures are cancer specific. This is the list of available cancer types.
 #'
 #' @export
@@ -93,7 +91,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   ## remove batch effects
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
-  rlang::check_installed(c("sva","BiocParallel"))
+  rlang::check_installed(c("sva", "BiocParallel"))
   tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
 
   ## separate cancer and immune expression data after batch effect removing
@@ -122,7 +120,6 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   colnames(immune.exp.agg.br) <- unique(names(immune.cellType))
   return(list(as.matrix(dd.br), immune.exp.br, immune.exp.agg.br))
 }
-
 
 
 #' Process Batch Table and Check Cancer Types
@@ -167,8 +164,6 @@ check_cancer_types <- function(args) {
   }
   return(cancers)
 }
-
-
 
 
 #' Constrained regression method implemented in Abbas et al., 2009
@@ -266,7 +261,6 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
   colnames(extracted) <- colnames(cancerGeneExpression)
   return(extracted)
 }
-
 
 
 #' Parse Input Gene Expression Data
@@ -381,7 +375,6 @@ GetOutlierGenes <- function(cancers) {
   }
   return(unique(outlier.total))
 }
-
 
 
 #' Deconvolute Tumor Microenvironment Using TIMER

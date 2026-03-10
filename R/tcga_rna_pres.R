@@ -14,9 +14,11 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' utils::data("eset_stad", package = "IOBR",envir=environment())
-#' eset <- tcga_rna_pres(eset = eset_stad, id_type = "ensembl", input_type = "count",
-#'                       output = "tumor", output_type = "tpm", annotation = TRUE)
+#' utils::data("eset_stad", package = "IOBR", envir = environment())
+#' eset <- tcga_rna_pres(
+#'   eset = eset_stad, id_type = "ensembl", input_type = "count",
+#'   output = "tumor", output_type = "tpm", annotation = TRUE
+#' )
 #'
 tcga_rna_preps <- function(eset, id_type = c("ensembl", "symbol"), input_type = c("log2count", "count"), output = c("tumor", "tumor_normal"),
                            output_type = c("tpm", "log2tpm", "count"), annotation = TRUE) {

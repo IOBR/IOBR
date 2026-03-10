@@ -34,13 +34,13 @@
 #' @export
 #' @examples
 #' # Load TCGA count data
-#' utils::data(eset_stad, package = "IOBR",envir = environment())
+#' utils::data(eset_stad, package = "IOBR", envir = environment())
 #' # Transform to TPM using local gene annotation
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' head(eset)
 #'
 #' # Alternative: TPM transformation using gene symbols (not recommended)
-#' utils::data("anno_grch38", package = "IOBR",envir = environment())
+#' utils::data("anno_grch38", package = "IOBR", envir = environment())
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
 #' head(eset)
@@ -71,8 +71,9 @@ count2tpm <- function(countMat, idType = "Ensembl", org = "hsa", source = "local
     ds <- datasets[grepl(org, datasets)]
     mart <- biomaRt::useMart(
       host = "https://www.ensembl.org",
-      biomart = "ENSEMBL_MART_ENSEMBL", 
-      dataset = ds)
+      biomart = "ENSEMBL_MART_ENSEMBL",
+      dataset = ds
+    )
     ensembl <- biomaRt::getBM(attributes = type, mart = mart)
     #######################################
 

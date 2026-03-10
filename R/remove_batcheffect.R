@@ -176,8 +176,10 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
       num <- 3
       width <- 3 * 5
     }
-    ggsave(p, filename = paste0("0-PCA-of-", num, "-eset.pdf"), 
-           width = width, height = 5, path = path$folder_name)
+    ggsave(p,
+      filename = paste0("0-PCA-of-", num, "-eset.pdf"),
+      width = width, height = 5, path = path$folder_name
+    )
   }
   ########################################
 
