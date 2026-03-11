@@ -37,10 +37,8 @@ features by significance.
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Test features associated with TCGA molecular subtype
-batch_kruskal(
-  data = sig_stad, group = "Subtype",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
-)
+batch_kruskal(data = sig_stad, group = "Subtype",
+              feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }
 \author{
 Dongqiang Zeng

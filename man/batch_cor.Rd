@@ -38,10 +38,8 @@ testing using the Benjamini-Hochberg method.
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Perform batch correlation analysis
-results <- batch_cor(
-  data = sig_stad, target = "CD_8_T_effector",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
-)
+results <- batch_cor(data = sig_stad, target = "CD_8_T_effector",
+                     feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }
 \author{
 Dongqiang Zeng

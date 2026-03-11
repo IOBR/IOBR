@@ -27,10 +27,8 @@ assess the discriminative ability of the model under various regularization stre
 }
 \examples{
 # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-perf_metrics <- CalculatePref(
-  model = fitted_model,
+perf_metrics <- CalculatePref(model = fitted_model,
   newx = new_data, s = "lambda.min",
-  acture.y = actual_outcomes
-)
+  acture.y = actual_outcomes)
 print(perf_metrics)
 }

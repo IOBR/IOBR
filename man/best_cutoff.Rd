@@ -36,10 +36,8 @@ on the identified cutoff and adds it to the input data frame.
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Find the best cutoff value of TMEscore for survival analysis
-sig_stad2 <- best_cutoff(
-  pdata = sig_stad, variable = "TMEscore_CIR",
-  time = "OS_time", status = "OS_status", PrintResult = TRUE
-)
+sig_stad2 <- best_cutoff(pdata = sig_stad, variable = "TMEscore_CIR",
+                         time = "OS_time", status = "OS_status", PrintResult = TRUE)
 table(sig_stad2$TMEscore_CIR_binary)
 }
 \author{

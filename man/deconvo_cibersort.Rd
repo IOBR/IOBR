@@ -33,9 +33,9 @@ deconvo_cibersort(
 
 \item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
 
-\item{seed}{Integer. Random seed for reproducible permutation testing.
-If \code{NULL} (default), uses current random state. Set to a specific
-value (e.g., 123) for reproducible results across runs. Applies to both
+\item{seed}{Integer. Random seed for reproducible permutation testing. 
+If \code{NULL} (default), uses current random state. Set to a specific 
+value (e.g., 123) for reproducible results across runs. Applies to both 
 parallel and serial permutation.}
 }
 \value{
@@ -51,8 +51,7 @@ data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 cibersort_result <- deconvo_cibersort(
   eset = eset, project = "TCGA-STAD",
-  arrays = FALSE, absolute = FALSE, perm = 500
-)
+  arrays = FALSE, absolute = FALSE, perm = 500)
 }
 \author{
 Dongqiang Zeng

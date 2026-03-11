@@ -40,14 +40,10 @@ pd1 <- as.numeric(imvigor210_eset["PDCD1", ])
 group <- ifelse(pd1 > mean(pd1), "high", "low")
 pd1_cor <- feature_select(
   x = imvigor210_eset, y = pd1, method = "cor",
-  family = "pearson", padjcut = 0.05, cutoff = 0.5
-)
+  family = "pearson", padjcut = 0.05, cutoff = 0.5)
 pd1_dif <- feature_select(
   x = imvigor210_eset, y = pd1, method = "dif",
-  padjcut = 0.05, cutoff = 2
-)
-pd1_dif_2 <- feature_select(
-  x = imvigor210_eset, y = group,
-  method = "dif", padjcut = 0.05, cutoff = 2
-)
+  padjcut = 0.05, cutoff = 2)
+pd1_dif_2 <- feature_select(x = imvigor210_eset, y = group,
+  method = "dif", padjcut = 0.05, cutoff = 2)
 }

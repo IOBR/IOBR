@@ -49,8 +49,7 @@ and returns the dataset with an added risk score column.
 if (requireNamespace("survival", quietly = TRUE)) {
   data("ovarian", package = "survival")
   ovarian$rscore <- add_riskscore(
-    ovarian,
-    time = "time", status = "status",
+    ovarian, time = "time", status = "status",
     vars = c("resid.ds", "rx", "ecog.ps")
   )
 }

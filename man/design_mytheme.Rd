@@ -55,8 +55,7 @@ This function creates a customized ggplot2 theme based on user-specified paramet
 }
 \examples{
 library(ggplot2)
-p <- ggplot(mtcars, aes(wt, mpg)) +
-  geom_point()
+p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
 mytheme <- design_mytheme(theme = "bw", plot_title_size = 1.5, axis_text_size = 14)
 p + mytheme + ggtitle("Example Plot")
 }

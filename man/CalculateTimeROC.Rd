@@ -34,13 +34,9 @@ This is particularly useful for evaluating the predictive accuracy of survival m
 \examples{
 # Assuming 'fit' is a Cox proportional hazards model fitted using `coxph` or `glmnet`
 new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-actual_outcome <- data.frame(
-  time = rexp(100, rate = 0.1),
-  status = rbinom(100, size = 1, prob = 0.5)
-)
-roc_info <- CalculateTimeROC(fit,
-  newx = new_data,
+actual_outcome <- data.frame(time = rexp(100, rate = 0.1),
+  status = rbinom(100, size = 1, prob = 0.5))
+roc_info <- CalculateTimeROC(fit, newx = new_data,
   s = "lambda.min", acture.y = actual_outcome,
-  modelname = "Cox Model"
-)
+  modelname = "Cox Model")
 }

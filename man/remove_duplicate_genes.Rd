@@ -23,10 +23,6 @@ This function addresses duplicate gene symbols in a gene expression dataset by a
 the expression data for duplicate entries. Users can choose between mean, standard deviation, or sum
 for aggregation. This is useful for preparing data where duplicates can lead to issues in downstream analyses.
 }
-\note{
-Important: This function performs selection, not aggregation. For duplicate genes,
-it retains only the highest-expressing instance and discards others.
-}
 \examples{
 
 # loading eset

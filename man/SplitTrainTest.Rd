@@ -35,15 +35,13 @@ data_matrix <- matrix(rnorm(200), ncol = 2)
 outcome_vector <- rbinom(100, 1, 0.5)
 split_data <- SplitTrainTest(
   x = data_matrix, y = outcome_vector,
-  train_ratio = 0.7, type = "binomial", seed = 123
-)
+  train_ratio = 0.7, type = "binomial", seed = 123)
 print(split_data)
 
 # Example for survival data
 survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
 split_data_survival <- SplitTrainTest(
-  x = data_matrix, y = survival_outcomes,
-  train_ratio = 0.7, type = "survival", seed = 123
-)
+  x = data_matrix, y = survival_outcomes, 
+  train_ratio = 0.7, type = "survival", seed = 123)
 print(split_data_survival)
 }

@@ -24,6 +24,8 @@ signature_score_calculation_methods <- c(
 ##########################################
 
 
+
+
 #' Calculate Signature Score Using PCA Method
 #'
 #' @description
@@ -65,18 +67,18 @@ calculate_sig_score_pca <- function(pdata = NULL,
                                     column_of_sample = "ID",
                                     adjust_eset = FALSE) {
   message(paste0("\n", ">>> Calculating signature score using PCA method"))
-
+  
   # creat pdata if NULL
   if (is.null(pdata)) {
     pdata <- data.frame("Index" = 1:length(colnames(eset)), "ID" = colnames(eset))
   } else {
     pdata <- as.data.frame(pdata)
-
+    
     if ("ID" %in% colnames(pdata) & !column_of_sample == "ID") {
       colnames(pdata)[which(colnames(pdata) == "ID")] <- "ID2"
       message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
     }
-
+    
     if (column_of_sample %in% colnames(pdata)) {
       colnames(pdata)[which(colnames(pdata) == column_of_sample)] <- "ID"
     }
@@ -87,7 +89,7 @@ calculate_sig_score_pca <- function(pdata = NULL,
   eset <- eset[, colnames(eset) %in% pdata$ID]
   eset <- eset[, match(pdata$ID, colnames(eset))]
   ###########################
-
+  
   # normalization
   if (dim(eset)[2] < 5000) eset <- log2eset(eset = eset)
   if (dim(eset)[2] < 5000) check_eset(eset)
@@ -95,15 +97,15 @@ calculate_sig_score_pca <- function(pdata = NULL,
     feas <- feature_manipulation(data = eset, is_matrix = T)
     eset <- eset[rownames(eset) %in% feas, ]
   }
-
+  
   # eset<-scale(eset,center = T,scale = T)
   ###########################
-
+  
   # filter signatures
   if (mini_gene_count <= 2) mini_gene_count <- 2
   signature <- signature[lapply(signature, function(x) sum(x %in% rownames(eset) == TRUE)) >= mini_gene_count]
   ###########################
-
+  
   # calculating signature score
   goi <- names(signature)
   ###########################
@@ -120,12 +122,16 @@ calculate_sig_score_pca <- function(pdata = NULL,
   if ("TMEscoreA_plus" %in% goi & "TMEscoreB_plus" %in% goi) {
     pdata[, "TMEscore_plus"] <- pdata[, "TMEscoreA_plus"] - pdata[, "TMEscoreB_plus"]
   }
-
+  
   if ("Index" %in% colnames(pdata)) pdata <- pdata[, -which(colnames(pdata) == "Index")]
   pdata <- tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
+
+
+
+
 
 
 #' Calculate Signature Score Using Z-Score Method
@@ -168,18 +174,18 @@ calculate_sig_score_zscore <- function(pdata = NULL,
                                        column_of_sample = "ID",
                                        adjust_eset = FALSE) {
   message(paste0("\n", ">>> Calculating signature score using z-score method"))
-
+  
   # creat pdata if NULL
   if (is.null(pdata)) {
     pdata <- data.frame("Index" = 1:length(colnames(eset)), "ID" = colnames(eset))
   } else {
     pdata <- as.data.frame(pdata)
-
+    
     if ("ID" %in% colnames(pdata) & !column_of_sample == "ID") {
       colnames(pdata)[which(colnames(pdata) == "ID")] <- "ID2"
       message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
     }
-
+    
     if (column_of_sample %in% colnames(pdata)) {
       colnames(pdata)[which(colnames(pdata) == column_of_sample)] <- "ID"
     }
@@ -193,12 +199,12 @@ calculate_sig_score_zscore <- function(pdata = NULL,
   # normalization
   if (ncol(eset) < 5000) eset <- log2eset(eset = eset)
   if (ncol(eset) < 5000) check_eset(eset)
-
+  
   if (adjust_eset) {
     feas <- feature_manipulation(data = eset, is_matrix = T)
     eset <- eset[rownames(eset) %in% feas, ]
   }
-
+  
   # eset<-scale(eset,center = T,scale = T)
   ###########################
   ###########################
@@ -220,12 +226,14 @@ calculate_sig_score_zscore <- function(pdata = NULL,
   if ("TMEscoreA_plus" %in% goi & "TMEscoreB_plus" %in% goi) {
     pdata[, "TMEscore_plus"] <- pdata[, "TMEscoreA_plus"] - pdata[, "TMEscoreB_plus"]
   }
-
+  
   if ("Index" %in% colnames(pdata)) pdata <- pdata[, -which(colnames(pdata) == "Index")]
   pdata <- tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
+
+
 
 
 #' Calculating signature score using ssGSEA method
@@ -260,23 +268,23 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
                                        adjust_eset = FALSE,
                                        parallel.size = 1L) {
   message(paste0("\n", ">>> Calculating signature score using ssGSEA method"))
-
+  
   signature <- signature[lapply(signature, function(x) sum(x %in% rownames(eset) == TRUE)) >= mini_gene_count]
-
+  
   if (mini_gene_count <= 5) mini_gene_count <- 5
   ############################
-
+  
   # creat pdata if NULL
   if (is.null(pdata)) {
     pdata <- data.frame("Index" = 1:length(colnames(eset)), "ID" = colnames(eset))
   } else {
     pdata <- as.data.frame(pdata)
-
+    
     if ("ID" %in% colnames(pdata) & !column_of_sample == "ID") {
       colnames(pdata)[which(colnames(pdata) == "ID")] <- "ID2"
       message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
     }
-
+    
     if (column_of_sample %in% colnames(pdata)) {
       colnames(pdata)[which(colnames(pdata) == column_of_sample)] <- "ID"
     }
@@ -285,20 +293,20 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   ###########################
   pdata <- pdata[pdata$ID %in% colnames(eset), ]
   eset <- eset[, colnames(eset) %in% pdata$ID]
-
+  
   ##############################
   if (ncol(eset) < 5000) eset <- log2eset(eset = eset)
   if (ncol(eset) < 5000) check_eset(eset)
-
+  
   if (adjust_eset) {
     feas <- feature_manipulation(data = eset, is_matrix = T)
     eset <- eset[rownames(eset) %in% feas, ]
   }
-
+  
   ##############################
   # Check the formal argument of GSVA::gsva
   # FA <- formals(GSVA::gsva)
-  #
+  # 
   # if (is.null(FA[["method"]])) {
   #   params <- GSVA::gsvaParam(as.matrix(eset),
   #     signature,
@@ -309,9 +317,9 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   #     maxDiff = TRUE,
   #     absRanking = FALSE
   #   )
-  #
+  #   
   #   rlang::check_installed("BiocParallel")
-  #
+  #   
   #   res <- GSVA::gsva(params,
   #     verbose = TRUE,
   #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
@@ -328,13 +336,13 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   # }
   ## ---- GSVA ssGSEA: support both old and new APIs ----
   rlang::check_installed("GSVA")
-
+  
   use_new_api <- exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
-
+  
   if (use_new_api) {
     # New API (Bioc >= 3.18; old API is defunct in 3.19)
     rlang::check_installed("BiocParallel")
-
+    
     bp <- BiocParallel::SerialParam(progressbar = TRUE)
     if (isTRUE(parallel.size > 1L)) {
       if (.Platform$OS.type == "windows") {
@@ -343,7 +351,7 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
         bp <- BiocParallel::MulticoreParam(workers = parallel.size, progressbar = TRUE)
       }
     }
-
+    
     # Build ssgseaParam() with only arguments that exist in the installed GSVA
     extra <- list(
       minSize = mini_gene_count,
@@ -356,16 +364,17 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       absRanking = FALSE,
       ssgsea.norm = TRUE
     )
-
+    
     fmls <- names(formals(GSVA::ssgseaParam))
     extra <- extra[names(extra) %in% fmls]
-
+    
     param <- do.call(
       GSVA::ssgseaParam,
       c(list(as.matrix(eset), signature), extra)
     )
-
+    
     res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = bp)
+    
   } else {
     # Old API (for older GSVA versions)
     res <- GSVA::gsva(
@@ -378,26 +387,30 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       parallel.sz = parallel.size
     )
   }
-
+  
   ##############################
   res <- as.data.frame(t(res))
   res <- rownames_to_column(res, var = "ID")
-
+  
   if ("TMEscoreA_CIR" %in% colnames(res) & "TMEscoreB_CIR" %in% colnames(res)) {
     res[, "TMEscore_CIR"] <- res[, "TMEscoreA_CIR"] - res[, "TMEscoreB_CIR"]
   }
-
+  
   if ("TMEscoreA_plus" %in% colnames(res) & "TMEscoreB_plus" %in% colnames(res)) {
     res[, "TMEscore_plus"] <- res[, "TMEscoreA_plus"] - res[, "TMEscoreB_plus"]
   }
-
+  
   pdata <- merge(pdata, res, by = "ID", all.x = F, all.y = F)
-
+  
   if ("Index" %in% colnames(pdata)) pdata <- pdata[, -which(colnames(pdata) == "Index")]
   pdata <- tibble::as_tibble(pdata)
   return(pdata)
 }
 ###################################################
+
+
+
+
 
 
 #' Calculating signature score using Integration method
@@ -431,7 +444,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
                                             adjust_eset = FALSE,
                                             parallel.size = 1L) {
   message(paste0("\n", ">>> Calculating signature score using PCA, z-score and ssGSEA methods"))
-
+  
   signature <- signature[lapply(signature, function(x) sum(x %in% rownames(eset) == TRUE)) >= mini_gene_count]
   ###########################
   # creat pdata if NULL
@@ -439,12 +452,12 @@ calculate_sig_score_integration <- function(pdata = NULL,
     pdata <- data.frame("Index" = 1:length(colnames(eset)), "ID" = colnames(eset))
   } else {
     pdata <- as.data.frame(pdata)
-
+    
     if ("ID" %in% colnames(pdata) & !column_of_sample == "ID") {
       colnames(pdata)[which(colnames(pdata) == "ID")] <- "ID2"
       message("In order to prevent duplicate names, the 'ID' column of original pdata was rename into 'ID2' ")
     }
-
+    
     if (column_of_sample %in% colnames(pdata)) {
       colnames(pdata)[which(colnames(pdata) == column_of_sample)] <- "ID"
     }
@@ -458,7 +471,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
   # normalization
   if (ncol(eset) < 5000) eset <- log2eset(eset = eset)
   if (ncol(eset) < 5000) check_eset(eset)
-
+  
   if (adjust_eset) {
     feas <- feature_manipulation(data = eset, is_matrix = T)
     eset <- eset[rownames(eset) %in% feas, ]
@@ -504,10 +517,10 @@ calculate_sig_score_integration <- function(pdata = NULL,
   }
   ############################
   message(paste0("\n", ">>>Step 3: Calculating signature score using ssGSEA method"))
-
+  
   # Check the formal argument of GSVA::gsva
   # FA <- formals(GSVA::gsva)
-  #
+  # 
   # if (is.null(FA[["method"]])) {
   #   params <- GSVA::gsvaParam(as.matrix(eset),
   #     signature,
@@ -518,9 +531,9 @@ calculate_sig_score_integration <- function(pdata = NULL,
   #     maxDiff = TRUE,
   #     absRanking = FALSE
   #   )
-  #
+  #   
   #   rlang::check_installed("BiocParallel")
-  #
+  #   
   #   res <- GSVA::gsva(params,
   #     verbose = TRUE,
   #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
@@ -536,40 +549,39 @@ calculate_sig_score_integration <- function(pdata = NULL,
   #   )
   # }
   ssgsea_min <- max(mini_gene_count, 5)
+  gene_count <- vapply(signature, function(x) sum(x %in% rownames(eset)), integer(1))
   signature_ssgsea <- signature[gene_count >= ssgsea_min]
-
-  res <- tryCatch(
-    {
-      params <- GSVA::gsvaParam(
-        as.matrix(eset),
-        signature_ssgsea,
-        minSize = ssgsea_min,
-        maxSize = Inf,
-        kcdf = "Gaussian",
-        tau = 1,
-        maxDiff = TRUE,
-        absRanking = FALSE
-      )
-
-      rlang::check_installed("BiocParallel")
-
-      GSVA::gsva(
-        params,
-        verbose = TRUE,
-        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-      )
-    },
-    error = function(e) {
-      GSVA::gsva(
-        as.matrix(eset),
-        signature_ssgsea,
-        method = "ssgsea",
-        kcdf = "Gaussian",
-        min.sz = ssgsea_min,
-        ssgsea.norm = TRUE
-      )
-    }
-  )
+  
+  res <- tryCatch({
+    params <- GSVA::gsvaParam(
+      as.matrix(eset),
+      signature_ssgsea,
+      minSize = ssgsea_min,
+      maxSize = Inf,
+      kcdf = "Gaussian",
+      tau = 1,
+      maxDiff = TRUE,
+      absRanking = FALSE
+    )
+    
+    rlang::check_installed("BiocParallel")
+    
+    GSVA::gsva(
+      params,
+      verbose = TRUE,
+      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    )
+    
+  }, error = function(e) {
+    GSVA::gsva(
+      as.matrix(eset),
+      signature_ssgsea,
+      method = "ssgsea",
+      kcdf = "Gaussian",
+      min.sz = ssgsea_min,
+      ssgsea.norm = TRUE
+    )
+  })
   #####################
   res <- as.data.frame(t(res))
   if ("TMEscoreA_CIR" %in% colnames(res) & "TMEscoreB_CIR" %in% colnames(res)) {
@@ -581,11 +593,15 @@ calculate_sig_score_integration <- function(pdata = NULL,
   #############################
   colnames(res) <- paste0(colnames(res), "_ssGSEA")
   res <- rownames_to_column(res, var = "ID")
-
+  
   pdata <- merge(pdata, res, by = "ID", all.x = F, all.y = F)
   pdata <- tibble::as_tibble(pdata)
   return(pdata)
 }
+
+
+
+
 
 
 #' Calculating signature score on a gene expression dataset
@@ -605,7 +621,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' @param ... Additional arguments passed to the specific scoring methods
 #'   (\code{\link{calculate_sig_score_pca}()}, \code{\link{calculate_sig_score_zscore}()},
 #'   \code{\link{calculate_sig_score_ssgsea}()}, or \code{\link{calculate_sig_score_integration}()}).
-#'
+#'   
 #' @return data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
 #' @export
 #' @author Dongqiang Zeng
@@ -636,7 +652,7 @@ calculate_sig_score <- function(pdata = NULL,
     signature <- lapply(signature, function(x) unique(x))
     signature <- lapply(signature, function(x) x[!x == ""])
   }
-
+  
   ########################################
   if (print_gene_propotion) {
     message(lapply(signature, function(x) summary(x %in% rownames(eset))))
@@ -659,38 +675,38 @@ calculate_sig_score <- function(pdata = NULL,
     }
   }
   ##########################################
-
+  
   method <- tolower(method)
-
+  
   if (!method %in% c("zscore", "pca", "ssgsea", "integration")) stop("At present, we only provide three methods to calculate the score: PCA, zscore, ssGSEA")
   # run selected method
   res <- switch(method,
-    pca = calculate_sig_score_pca(pdata, eset,
-      signature = signature,
-      mini_gene_count = mini_gene_count,
-      column_of_sample = column_of_sample,
-      adjust_eset = adjust_eset, ...
-    ),
-    ssgsea = calculate_sig_score_ssgsea(pdata, eset,
-      signature = signature,
-      mini_gene_count = mini_gene_count,
-      column_of_sample = column_of_sample,
-      adjust_eset = adjust_eset,
-      parallel.size = parallel.size, ...
-    ),
-    zscore = calculate_sig_score_zscore(pdata, eset,
-      signature = signature,
-      mini_gene_count = mini_gene_count,
-      column_of_sample = column_of_sample,
-      adjust_eset = adjust_eset, ...
-    ),
-    integration = calculate_sig_score_integration(pdata, eset,
-      signature = signature,
-      mini_gene_count = mini_gene_count,
-      column_of_sample = column_of_sample,
-      adjust_eset = adjust_eset,
-      parallel.size = parallel.size, ...
-    )
+                pca = calculate_sig_score_pca(pdata, eset,
+                                              signature = signature,
+                                              mini_gene_count = mini_gene_count,
+                                              column_of_sample = column_of_sample,
+                                              adjust_eset = adjust_eset, ...
+                ),
+                ssgsea = calculate_sig_score_ssgsea(pdata, eset,
+                                                    signature = signature,
+                                                    mini_gene_count = mini_gene_count,
+                                                    column_of_sample = column_of_sample,
+                                                    adjust_eset = adjust_eset,
+                                                    parallel.size = parallel.size, ...
+                ),
+                zscore = calculate_sig_score_zscore(pdata, eset,
+                                                    signature = signature,
+                                                    mini_gene_count = mini_gene_count,
+                                                    column_of_sample = column_of_sample,
+                                                    adjust_eset = adjust_eset, ...
+                ),
+                integration = calculate_sig_score_integration(pdata, eset,
+                                                              signature = signature,
+                                                              mini_gene_count = mini_gene_count,
+                                                              column_of_sample = column_of_sample,
+                                                              adjust_eset = adjust_eset,
+                                                              parallel.size = parallel.size, ...
+                )
   )
   return(res)
 }

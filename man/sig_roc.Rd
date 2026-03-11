@@ -59,10 +59,8 @@ and optionally performs statistical comparisons between them.
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
-sig_roc(
-  data = tcga_stad_pdata, response = "OS_status",
-  variables = c("TMEscore_plus", "GZMB", "GNLY")
-)
+sig_roc(data = tcga_stad_pdata, response = "OS_status",
+        variables = c("TMEscore_plus", "GZMB", "GNLY"))
 }
 \author{
 Dongqiang Zeng
