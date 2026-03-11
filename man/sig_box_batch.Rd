@@ -75,8 +75,8 @@ sig_box_batch(
 
 \item{fig_type}{Character. File format for plots (e.g., "pdf"). Default is "pdf".}
 
-\item{max_count_feas}{Integer. Maximum number of features to analyze when `pattern_vars = TRUE`. 
-If the matched variable count exceeds this limit, only the first `max_count_feas` features are used. 
+\item{max_count_feas}{Integer. Maximum number of features to analyze when `pattern_vars = TRUE`.
+If the matched variable count exceeds this limit, only the first `max_count_feas` features are used.
 Default is 30.}
 }
 \value{
@@ -87,9 +87,11 @@ Generates multiple box plots for specified features (signatures) across groups i
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
-sig_box_batch(input = tcga_stad_pdata,
-  vars = c("TMEscore_plus", "GZMB"), 
-  groups = "subtype", jitter = TRUE, palette = "jco")
+sig_box_batch(
+  input = tcga_stad_pdata,
+  vars = c("TMEscore_plus", "GZMB"),
+  groups = "subtype", jitter = TRUE, palette = "jco"
+)
 }
 \author{
 Dongqiang Zeng

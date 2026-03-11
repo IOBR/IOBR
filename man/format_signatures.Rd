@@ -25,6 +25,8 @@ into a list format suitable for IOBR functions, replacing NA values appropriatel
 data("sig_excel", package = "IOBR")
 # Transform into gene list for IOBR functions
 format_signatures(sig_excel)
+reading each column and transfer it to a list
+standerdized the name of list
 }
 \author{
 Dongqiang Zeng

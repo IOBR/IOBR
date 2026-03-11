@@ -39,8 +39,10 @@ modeling. Returns hazard ratios, confidence intervals, and p-values for each var
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Perform batch survival analysis
-batch_surv(pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
-           time = "OS_time", status = "OS_status")
+batch_surv(
+  pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
+  time = "OS_time", status = "OS_status"
+)
 }
 \author{
 Dongqiang Zeng

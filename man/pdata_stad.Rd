@@ -20,7 +20,7 @@ A data frame with one row per TCGA-STAD sample and 8 variables:
   \item{EBV}{Factor. EBV status of the tumour (\code{"Positive"} or
   \code{"Negative"}).}
   \item{time}{Numeric. Overall survival or follow-up time, typically measured in months.}
-  \item{OS_status}{Integer/binary. Overall survival status indicator. 
+  \item{OS_status}{Integer/binary. Overall survival status indicator.
   (\code{1} = death, \code{0} = censored)}
 }
 }

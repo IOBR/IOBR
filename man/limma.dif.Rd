@@ -37,14 +37,14 @@ exprdata <- matrix(
 # Phenotype data: 3 vs 3
 pdata <- data.frame(
   sample = colnames(exprdata),
-  group  = rep(c("group1", "group2"), each = 3),
+  group = rep(c("group1", "group2"), each = 3),
   stringsAsFactors = FALSE
 )
 
 # Differential expression: group1 vs group2
 res <- limma.dif(
-  exprdata   = exprdata,
-  pdata      = pdata,
+  exprdata = exprdata,
+  pdata = pdata,
   contrastfml = "group1 - group2"
 )
 head(res)

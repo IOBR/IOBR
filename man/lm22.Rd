@@ -8,13 +8,13 @@
 A list of length 2:
 \describe{
   \item{\code{refProfiles}}{
-    A numeric matrix where rows represent genes and columns represent different 
-    immune cell types. The matrix provides gene expression profiles used as references 
-    for deconvolution in the EPIC model. The number of columns may vary depending on the 
+    A numeric matrix where rows represent genes and columns represent different
+    immune cell types. The matrix provides gene expression profiles used as references
+    for deconvolution in the EPIC model. The number of columns may vary depending on the
     number of immune cell types included in the reference profiles.
   }
   \item{\code{cellTypes}}{
-    A character vector containing the names of the immune cell types included 
+    A character vector containing the names of the immune cell types included
     in the reference profiles.
   }
 }

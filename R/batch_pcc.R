@@ -32,27 +32,33 @@
 #' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' # Calculate partial correlations controlling for tumor purity
-#' res <- batch_pcc(input = sig_stad, interferenceid = "TumorPurity_estimate",
-#'                  target = "Pan_F_TBRs", method = "pearson",
-#'                  features = colnames(sig_stad)[70:ncol(sig_stad)])
+#' res <- batch_pcc(
+#'   input = sig_stad, interferenceid = "TumorPurity_estimate",
+#'   target = "Pan_F_TBRs", method = "pearson",
+#'   features = colnames(sig_stad)[70:ncol(sig_stad)]
+#' )
 batch_pcc <- function(input, interferenceid, target, features, method = "pearson") {
   dat <- input
   features <- setdiff(features, c(unique(interferenceid, target)))
-  
+
   ## 替代 ppcor::pcor.test ---------------------------------
   pcor_test <- function(x, y, z, method = c("pearson", "spearman", "kendall")) {
     method <- match.arg(method)
-    dat <- cbind(x, y, z) |> na.omit()
-    if (nrow(dat) < 4) return(list(estimate = NA_real_, p.value = NA_real_))
+    dat <- na.omit(cbind(x, y, z))
+    if (nrow(dat) < 4) {
+      return(list(estimate = NA_real_, p.value = NA_real_))
+    }
     R <- cor(dat, method = method)
-    rxy <- R["x", "y"]; rxz <- R["x", "z"]; ryz <- R["y", "z"]
+    rxy <- R["x", "y"]
+    rxz <- R["x", "z"]
+    ryz <- R["y", "z"]
     rho <- (rxy - rxz * ryz) / sqrt((1 - rxz^2) * (1 - ryz^2))
     n <- nrow(dat)
     tstat <- rho * sqrt((n - 3) / (1 - rho^2))
-    pval  <- 2 * pt(abs(tstat), df = n - 3, lower.tail = FALSE)
+    pval <- 2 * pt(abs(tstat), df = n - 3, lower.tail = FALSE)
     list(estimate = rho, p.value = pval)
   }
-  
+
   # aa <- dat[, features] %>%
   #   tibble::as_tibble() %>%
   #   map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
@@ -76,8 +82,8 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
   cc$log10pvalue <- -1 * log10(cc$p.value)
   rownames(cc) <- NULL
   cc$stars <- cut(cc$p.adj,
-                  breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-                  label = c("****", "***", "**", "*", "+", "")
+    breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
+    label = c("****", "***", "**", "*", "+", "")
   )
   cc <- tibble::as_tibble(cc)
   return(cc)

@@ -60,8 +60,10 @@ EPIC, and quanTIseq. Enables comparison of TME cell distributions across samples
 # Load TCGA-STAD microenvironment data
 data("sig_stad", package = "IOBR")
 # Visualize TME cell proportions from CIBERSORT deconvolution
-cell_bar_plot(input = sig_stad[1:20, ], id = "ID",
-              features = colnames(sig_stad)[25:46])
+cell_bar_plot(
+  input = sig_stad[1:20, ], id = "ID",
+  features = colnames(sig_stad)[25:46]
+)
 }
 \author{
 Dongqiang Zeng

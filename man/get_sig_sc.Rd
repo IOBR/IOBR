@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_sig_sc.R
 \name{get_sig_sc}
 \alias{get_sig_sc}
-\title{Extract Top N Marker Genes per Cluster}
+\title{Extract Top Marker Genes from Single-Cell Differential Results}
 \usage{
 get_sig_sc(
   deg,
@@ -13,26 +13,21 @@ get_sig_sc(
 )
 }
 \arguments{
-\item{deg}{Data frame or matrix containing differential expression statistics.
-Typically from tools like Seurat's `FindAllMarkers()`.}
+\item{deg}{Data frame or matrix. Ranked marker statistics (e.g., p-value, log2FC, etc.).}
 
 \item{cluster}{Character. Column name containing cluster identifiers. Default "cluster".}
 
 \item{gene}{Character. Column name containing gene identifiers. Default "gene".}
 
-\item{avg_log2FC}{Character. Column name for average log2 fold change values.
-Genes are ranked within each cluster based on this column.
-Default "avg_log2FC".}
+\item{avg_log2FC}{Character. Column name for average log2 fold change. Default "avg_log2FC".}
 
-\item{n}{Integer. Number of top markers to select per cluster. Default 100.}
+\item{n}{Integer. Number of top markers per cluster. Default 100.}
 }
 \value{
-A named list where each element corresponds to a cluster and contains
-        a character vector of the top N gene markers for that cluster.
+List of character vectors; each element contains the top N genes for a cluster.
 }
 \description{
-Selects the top N marker genes for each cluster from single-cell differential
-expression results, ranked by average log2 fold change.
+Selects the top N marker genes per cluster from a ranked differential expression result table.
 }
 \examples{
 data("deg", package = "IOBR")

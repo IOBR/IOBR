@@ -87,8 +87,10 @@ single-cell data visualization.
 # Load example data
 data("tcga_stad_pdata", package = "IOBR")
 # Create box plot with statistical comparisons
-sig_box(data = tcga_stad_pdata, signature = "TMEscore_plus",
-        variable = "subtype", jitter = TRUE, palette = "jco")
+sig_box(
+  data = tcga_stad_pdata, signature = "TMEscore_plus",
+  variable = "subtype", jitter = TRUE, palette = "jco"
+)
 }
 \author{
 Dongqiang Zeng

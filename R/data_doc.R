@@ -34,15 +34,13 @@
 #'   \item{EBV}{Factor. EBV status of the tumour (\code{"Positive"} or
 #'   \code{"Negative"}).}
 #'   \item{time}{Numeric. Overall survival or follow-up time, typically measured in months.}
-#'   \item{OS_status}{Integer/binary. Overall survival status indicator. 
+#'   \item{OS_status}{Integer/binary. Overall survival status indicator.
 #'   (\code{1} = death, \code{0} = censored)}
 #' }
-#' 
+#'
 #' @usage data(pdata_stad)
 #' @keywords datasets
 "pdata_stad"
-
-
 
 
 #' Gene signature collection for pathway and immune analysis
@@ -69,9 +67,6 @@
 #' @usage data(signature_collection)
 #' @keywords datasets
 "signature_collection"
-
-
-
 
 
 #' Grouped gene signatures for IOBR analysis
@@ -107,8 +102,6 @@
 "sig_group"
 
 
-
-
 #' Reference profiles from tumor-infiltrating non-malignant cells
 #'
 #' A dataset providing reference gene expression profiles of main non-malignant
@@ -134,7 +127,7 @@
 #'   although \code{refProfiles} usually stores all available genes.}
 #' }
 #'
-#' @source Single-cell RNA-seq data of tumour-infiltrating non-malignant cells from melanoma (GEO accession \code{GSE72056}, 9 donors).  
+#' @source Single-cell RNA-seq data of tumour-infiltrating non-malignant cells from melanoma (GEO accession \code{GSE72056}, 9 donors).
 #' @references
 #' Tirosh et al. (2016) Science 352:189-196. doi:10.1126/science.aad0501
 #' Racle et al. (2017) eLife 6:e26476. doi:10.7554/eLife.26476
@@ -142,10 +135,6 @@
 #' @usage data(TRef)
 #' @keywords datasets
 "TRef"
-
-
-
-
 
 
 #' Reference profiles for B cell–related deconvolution (EPIC/IOBR)
@@ -196,11 +185,6 @@
 "BRef"
 
 
-
-
-
-
-
 #' Reference profiles for immune cell types using lm22 (EPIC/IOBR)
 #'
 #' \code{lm22} is a gene expression signature matrix used in the EPIC and IOBR
@@ -213,13 +197,13 @@
 #' A list of length 2:
 #' \describe{
 #'   \item{\code{refProfiles}}{
-#'     A numeric matrix where rows represent genes and columns represent different 
-#'     immune cell types. The matrix provides gene expression profiles used as references 
-#'     for deconvolution in the EPIC model. The number of columns may vary depending on the 
+#'     A numeric matrix where rows represent genes and columns represent different
+#'     immune cell types. The matrix provides gene expression profiles used as references
+#'     for deconvolution in the EPIC model. The number of columns may vary depending on the
 #'     number of immune cell types included in the reference profiles.
 #'   }
 #'   \item{\code{cellTypes}}{
-#'     A character vector containing the names of the immune cell types included 
+#'     A character vector containing the names of the immune cell types included
 #'     in the reference profiles.
 #'   }
 #' }
@@ -227,7 +211,6 @@
 #' @usage data(lm22)
 #' @keywords datasets
 "lm22"
-
 
 
 #' GSE62254 Gastric Cancer Expression Data
@@ -311,7 +294,7 @@
 #' (STAD) samples. Includes patient demographics, tumor characteristics,
 #' molecular subtypes, and pre-computed signature scores.
 #'
-#'@format A data frame with samples as rows and variables as columns:
+#' @format A data frame with samples as rows and variables as columns:
 #' \itemize{
 #'   \item ID – TCGA sample barcode
 #'   \item stage – tumor stage (Stage_I, Stage_II, etc.)
@@ -396,7 +379,7 @@
 #'   \item 308 omics columns – gene-level RNA-seq counts / TPM / signatures
 #' }
 #'
-#' 
+#'
 #' @usage data(sig_stad)
 #'
 #' @source The Cancer Genome Atlas (TCGA) Research Network
@@ -421,14 +404,14 @@
 #' from CIBERSORT analysis of TCGA Stomach Adenocarcinoma (STAD) RNA-seq data.
 #' Includes detailed immune cell subtype proportions for each gastric cancer sample.
 #'
-#'@format A data frame with 375 rows (samples) and 464 variables:
+#' @format A data frame with 375 rows (samples) and 464 variables:
 #' \itemize{
 #'   \item ID – TCGA barcode
 #'   \item 22 CIBERSORT immune-cell proportions (0–1 scale)
 #'   \item Immune-checkpoint and signature scores
 #'   \item Remaining columns – other deconvolution / signature outputs
 #' }
-#' 
+#'
 #' @usage data(tcga_stad_sig)
 #'
 #' @source The Cancer Genome Atlas (TCGA) Research Network, processed with CIBERSORT
@@ -468,7 +451,7 @@
 #'   \item immune signature scores (GEP, cytolytic activity, etc.)
 #'   \item clinical / molecular features extracted from the original publication
 #' }
-#' 
+#'
 #' @usage data(imvigor210_sig)
 #'
 #' @source IMvigor210 clinical trial (NCT02108652)
@@ -564,8 +547,6 @@
 #' @keywords datasets
 #' @docType data
 "stad_group"
-
-
 
 
 #' GRCh38 Human Genome Annotation
@@ -678,6 +659,3 @@
 #'
 #' @keywords datasets
 "anno_illumina"
-
-
-

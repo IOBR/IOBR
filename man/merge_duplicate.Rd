@@ -32,7 +32,5 @@ Merges two data frames, resolving duplicated column names according to user pref
 \examples{
 df1 <- data.frame(ID = 1:3, Name = c("A", "B", "C"), Value = 1:3)
 df2 <- data.frame(ID = 1:3, Name = c("X", "Y", "Z"), Score = 4:6)
-merged_df <- merge_duplicate(df1, df2,
-  by.x = "ID", by.y = "ID",
-  all.x = TRUE, all.y = FALSE, choose = "x")
+merged_df <- merge_duplicate(df1, df2, by.x = "ID", by.y = "ID", all.x = TRUE, all.y = FALSE, choose = "x")
 }
