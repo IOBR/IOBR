@@ -17,7 +17,7 @@ doPerm(perm, X, Y, absolute, abs_method, seed = NULL)
 
 \item{abs_method}{String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.}
 
-\item{seed}{Integer. Random seed for reproducibility. If NULL (default),
+\item{seed}{Integer. Random seed for reproducibility. If NULL (default), 
 uses current random state. Set to a specific value for reproducible results.}
 }
 \value{

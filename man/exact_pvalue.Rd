@@ -26,10 +26,8 @@ support for correlation analyses.
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 # Calculate exact p-value for correlation between two variables
-p_val <- exact_pvalue(
-  x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
-  method = "spearman"
-)
+p_val <- exact_pvalue(x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
+                      method = "spearman")
 print(p_val)
 }
 \author{

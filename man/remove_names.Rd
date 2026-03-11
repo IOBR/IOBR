@@ -30,8 +30,7 @@ specified patterns with NA or spaces.
 \examples{
 data("imvigor210_sig", package = "IOBR")
 input <- remove_names(imvigor210_sig,
-  variable = "colnames",
+  variable = "colnames", 
   patterns_to_na = patterns_to_na,
-  patterns_space = NULL
-)
+  patterns_space = NULL)
 }

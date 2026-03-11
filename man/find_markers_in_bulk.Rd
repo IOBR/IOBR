@@ -50,8 +50,6 @@ colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
 data("pdata_sig_tme", package = "IOBR")
 res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
 # Extract top 15 markers per cluster
-top15 <- res$top_markers \%>\%
-  dplyr::group_by(cluster) \%>\%
-  dplyr::top_n(15, avg_log2FC)
+top15 <- res$top_markers \%>\% dplyr::group_by(cluster) \%>\% dplyr::top_n(15, avg_log2FC)
 
 }

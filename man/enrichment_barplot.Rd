@@ -48,10 +48,8 @@ using -log10(p-values) to indicate significance.
 \examples{
 up_terms <- data.frame(Description = c("Pathway1", "Pathway2"), pvalue = c(0.001, 0.01))
 down_terms <- data.frame(Description = c("Pathway4", "Pathway5"), pvalue = c(0.005, 0.02))
-p <- enrichment_barplot(
-  up_terms = up_terms, down_terms = down_terms,
-  title = "Custom Enrichment Plot"
-)
+p <- enrichment_barplot(up_terms = up_terms, down_terms = down_terms,
+                        title = "Custom Enrichment Plot")
 }
 \author{
 Dongqiang Zeng

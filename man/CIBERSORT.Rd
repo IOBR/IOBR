@@ -41,9 +41,9 @@ level of all genes in the mixture. Multiple cell subset fractions by S.
 
 \item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
 
-\item{seed}{Integer. Random seed for reproducible permutation testing.
-If \code{NULL} (default), uses current random state. Set to a specific
-value (e.g., 123) for reproducible results across runs. Applies to both
+\item{seed}{Integer. Random seed for reproducible permutation testing. 
+If \code{NULL} (default), uses current random state. Set to a specific 
+value (e.g., 123) for reproducible results across runs. Applies to both 
 parallel and serial permutation.}
 }
 \value{
@@ -54,11 +54,9 @@ CIBERSORT is an analytical tool developed by Newman et al. to provide an estimat
 }
 \examples{
 data("eset_gse62254", package = "IOBR")
-cibersort <- CIBERSORT(
-  sig_matrix = lm22,
-  mixture_file = eset_gse62254, perm = 100,
-  QN = TRUE, absolute = FALSE
-)
+cibersort <- CIBERSORT(sig_matrix = lm22,
+  mixture_file = eset_gse62254, perm = 100, 
+  QN = TRUE, absolute = FALSE)
 head(cibersort)
 }
 \author{

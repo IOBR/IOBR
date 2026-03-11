@@ -27,42 +27,42 @@ parallel_doperm(
 
 \item{num_cores1}{Integer. Number of CPU cores for parallel computation (default: 2).}
 
-\item{seed}{Integer. Random seed for reproducibility. If NULL (default),
-uses current random state. Set to a specific value (e.g., 123) for
+\item{seed}{Integer. Random seed for reproducibility. If NULL (default), 
+uses current random state. Set to a specific value (e.g., 123) for 
 reproducible results across runs.}
 }
 \value{
 A list containing:
-\item{dist}{Numeric vector of correlation coefficients from permutations,
+\item{dist}{Numeric vector of correlation coefficients from permutations, 
   representing the empirical null distribution.}
 }
 \description{
-Parallel version of doPerm. Performs permutation-based sampling and runs
-the CoreAlg function iteratively using multiple CPU cores to accelerate
-computation. This function generates an empirical null distribution of
+Parallel version of doPerm. Performs permutation-based sampling and runs 
+the CoreAlg function iteratively using multiple CPU cores to accelerate 
+computation. This function generates an empirical null distribution of 
 correlation coefficients for p-value calculation in CIBERSORT analysis.
 }
 \details{
-This function utilizes the \code{foreach} and \code{doParallel} packages
-to distribute permutation iterations across multiple cores. It automatically
+This function utilizes the \code{foreach} and \code{doParallel} packages 
+to distribute permutation iterations across multiple cores. It automatically 
 handles cluster setup/teardown via \code{on.exit()} to prevent resource leaks.
 
-Note: Windows users may experience slower performance due to socket-based
+Note: Windows users may experience slower performance due to socket-based 
 parallelization (PSOCK) versus forking on Unix systems.
 }
 \examples{
 \dontrun{
 # Prepare data (using example data structure from CIBERSORT)
-X <- matrix(rnorm(1000), nrow = 100) # Signature matrix
-Y <- matrix(rnorm(500), nrow = 100) # Mixture matrix
+X <- matrix(rnorm(1000), nrow = 100)  # Signature matrix
+Y <- matrix(rnorm(500), nrow = 100)   # Mixture matrix
 rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
 
 # Run parallel permutation (using 2 cores)
 result <- parallel_doperm(
-  perm1 = 100,
-  X1 = X,
-  Y1 = Y,
-  absolute1 = FALSE,
+  perm1 = 100, 
+  X1 = X, 
+  Y1 = Y, 
+  absolute1 = FALSE, 
   abs_method1 = "sig.score",
   num_cores1 = 2
 )

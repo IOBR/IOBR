@@ -61,10 +61,8 @@ Creates Kaplan-Meier survival plots for a given signature or gene, with automati
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
-sig_surv_plot(
-  input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
-  time = "time", status = "OS_status"
-)
+sig_surv_plot(input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
+              time = "time", status = "OS_status")
 
 }
 \author{
