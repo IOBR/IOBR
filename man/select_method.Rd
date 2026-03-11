@@ -21,6 +21,8 @@ Filters an integrated signature score matrix to retain results from a specified 
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 eset <- scale_matrix(eset, manipulate = TRUE)
-res <- calculate_sig_score(eset = eset, signature = signature_collection[1:4], method = "integration")
+res <- calculate_sig_score(eset = eset,
+  signature = signature_collection[1:4],
+  method = "integration")
 select_method(res, method = "PCA")
 }

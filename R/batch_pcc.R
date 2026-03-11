@@ -38,7 +38,7 @@
 batch_pcc <- function(input, interferenceid, target, features, method = "pearson") {
   dat <- input
   features <- setdiff(features, c(unique(interferenceid, target)))
-
+  
   ## 替代 ppcor::pcor.test ---------------------------------
   pcor_test <- function(x, y, z, method = c("pearson", "spearman", "kendall")) {
     method <- match.arg(method)
@@ -53,9 +53,17 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
     list(estimate = rho, p.value = pval)
   }
   
+  # aa <- dat[, features] %>%
+  #   tibble::as_tibble() %>%
+  #   map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
   aa <- dat[, features] %>%
     tibble::as_tibble() %>%
-    map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
+    purrr::map(
+      pcor_test,
+      y = dat[[target]],
+      z = dat[[interferenceid]],
+      method = method
+    )
   pvalue <- aa %>% purrr::map_dbl("p.value")
   statistic <- aa %>% purrr::map_dbl("estimate")
   cc <- data.frame(
@@ -68,8 +76,8 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
   cc$log10pvalue <- -1 * log10(cc$p.value)
   rownames(cc) <- NULL
   cc$stars <- cut(cc$p.adj,
-    breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-    label = c("****", "***", "**", "*", "+", "")
+                  breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
+                  label = c("****", "***", "**", "*", "+", "")
   )
   cc <- tibble::as_tibble(cc)
   return(cc)

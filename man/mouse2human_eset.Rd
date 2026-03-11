@@ -20,6 +20,8 @@ mouse2human_eset(
 \item{is_matrix}{Boolean indicating if 'eset' is a matrix; defaults to TRUE. If FALSE, 'column_of_symbol' must be specified.}
 
 \item{column_of_symbol}{default is null.Name of the column in 'eset' that contains gene symbols, if 'eset' is not a matrix. This parameter must be specified if 'is_matrix' is FALSE.}
+
+\item{verbose}{Logical; if `TRUE`, prints information about available Ensembl datasets. Defaults to `FALSE`.}
 }
 \value{
 Returns the expression set with human gene symbols for further analysis.

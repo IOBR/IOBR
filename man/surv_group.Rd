@@ -18,7 +18,7 @@ surv_group(
   cols = NULL,
   palette = "jama",
   mini_sig = "score",
-  save_path = paste0("KMplot"),
+  save_path = NULL,
   fig.type = "pdf",
   index = 1,
   width = 6,
@@ -75,7 +75,9 @@ customizable plot aesthetics and output formats.
 }
 \examples{
 data("tcga_stad_pdata", package = "IOBR")
-surv_group(input_pdata = tcga_stad_pdata, target_group = "TMEscore_plus_binary", time = "time", status = "OS_status")
+surv_group(input_pdata = tcga_stad_pdata, 
+  target_group = "TMEscore_plus_binary", 
+  time = "time", status = "OS_status")
 }
 \author{
 Dongqiang Zeng

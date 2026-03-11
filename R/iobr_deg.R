@@ -51,18 +51,24 @@ iobr_deg <- function(eset,
                      heatmap = TRUE,
                      col_heatmap = 1,
                      parallel = FALSE) {
+  # if (is.null(path)) {
+  #   # set path to store enrichment analyses result
+  #   path <- creat_folder(paste0("Result-of-DEGs"))
+  # } else {
+  #   path <- creat_folder(path)
+  # }
+  # abspath <- path$abspath
   if (is.null(path)) {
-    # set path to store enrichment analyses result
-    path <- creat_folder(paste0("Result-of-DEGs"))
+    abspath <- NULL
   } else {
     path <- creat_folder(path)
+    abspath <- path$abspath
   }
-  abspath <- path$abspath
   ############################################
-
+  
   colnames(pdata)[which(colnames(pdata) == pdata_id)] <- "ID"
   colnames(pdata)[which(colnames(pdata) == group_id)] <- "deg_group"
-
+  
   message(">>>== Matching grouping information and expression matrix \n")
   if (group_id == "group3") {
     pdata <- pdata[!pdata$deg_group == "Middle", ]
@@ -74,13 +80,13 @@ iobr_deg <- function(eset,
   eset <- eset[, colnames(eset) %in% pdata$ID]
   pdata <- pdata[match(colnames(eset), pdata$ID), ]
   ########################################
-
+  
   if (array) eset <- preprocessCore::normalize.quantiles(as.matrix(eset), keep.names = TRUE)
-
+  
   if (method == "DESeq2") {
     rlang::check_installed("DESeq2")
     message(">>>== DEGseq2 (method) was selected for differential gene analysis of RNAseq \n")
-
+    
     message(">>>== Please ensure that `eset` is a count expression matrix \n")
     #########################################
     eset <- round(eset, 0)
@@ -89,12 +95,12 @@ iobr_deg <- function(eset,
       colData = pdata,
       design = ~deg_group
     )
-
+    
     # 过滤一些low count的数据,起码五分之一的样本有表达
     dds <- dds[rowSums(DESeq2::counts(dds)) > ncol(eset) / 5, ]
     dds <- DESeq2::DESeq(dds, parallel = parallel) # ,parallel = T
-
-
+    
+    
     contrast <- c("deg_group", contrast)
     res_tidy <- DESeq2::results(dds, tidy = T, contrast = contrast)
     res_tidy <- as.data.frame(res_tidy)
@@ -105,10 +111,10 @@ iobr_deg <- function(eset,
     message(paste0("Counts of gene: Adj.pvalue < 0.05:  ", sum(res_tidy$padj < 0.05, na.rm = TRUE)))
     message(paste0("Counts of gene: Adj.pvalue < 0.1:  ", sum(res_tidy$padj < 0.1, na.rm = TRUE)))
     message(paste0("Counts of gene: Adj.pvalue < 0.25:  ", sum(res_tidy$padj < 0.25, na.rm = TRUE)))
-
+    
     DEG <- res_tidy[order(res_tidy$padj, decreasing = F), ]
-
-
+    
+    
     if (!is.null(annotation)) {
       # DEG$row<-substring(DEG$row,1,15)
       colnames(annotation)[which(colnames(annotation) == id_anno)] <- "id"
@@ -116,20 +122,20 @@ iobr_deg <- function(eset,
     } else {
       # print(head(DEG))
       # DEG <- rownames_to_column(DEG, var = "row")
-
+      
       message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg` \n")
       anno_grch38 <- .load_data("anno_grch38")
       DEG <- merge(DEG, anno_grch38, by.x = "row", by.y = "id", all = FALSE)
     }
-
+    
     # print(head(DEG))
     DEG$sigORnot <- ifelse(DEG$log2FoldChange > logfc_cutoff & DEG$padj < padj_cutoff, "Up_regulated",
-      ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT")
+                           ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT")
     )
     DEG$label <- ifelse(abs(DEG$log2FoldChange) > logfc_cutoff & DEG$padj < padj_cutoff, "Both",
-      ifelse(DEG$padj < padj_cutoff, "Significant",
-        ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT")
-      )
+                        ifelse(DEG$padj < padj_cutoff, "Significant",
+                               ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT")
+                        )
     )
     #######################################################
     # print(head(DEG))
@@ -163,31 +169,52 @@ iobr_deg <- function(eset,
     #   dplyr:: select(ID,mean_h, mean_l)
     message(paste0("group1 = ", contrast[1]))
     message(paste0("group2 = ", contrast[2]))
-
+    
     meancounts <- eset2 %>%
       mutate(mean_group1 = (rowSums(.[, aa])) / length(aa)) %>%
       mutate(mean_group2 = (rowSums(.[, bb])) / length(bb)) %>%
       dplyr::select(ID, mean_group1, mean_group2)
-
+    
     # if(!is.null(annotation)) meancounts$ID <-substring(meancounts$ID,1,15)
     ##################################################
     # print(meancounts)
-
+    
     DEG <- merge(DEG, meancounts, by.x = "row", by.y = "ID", all = FALSE)
     colnames(DEG)[which(colnames(DEG) == "mean_group1")] <- contrast[1]
     colnames(DEG)[which(colnames(DEG) == "mean_group2")] <- contrast[2]
-
+    
     DEG <- tibble::as_tibble(DEG)
     DEG <- DEG[order(DEG$padj, decreasing = F), ]
     print(head(DEG))
   }
-
+  
   if (method == "limma") {
     message(">>>== limma was selected for differential gene analysis of Array data \n")
     
     contrast <- c("deg_group", contrast)
-
+    
     rlang::check_installed("limma")
+    
+    ############## --- 只保留用户指定的两个分组，避免其他组被错误并入 group2 ---
+    keep_groups <- contrast[2:3]
+    pdata <- pdata[pdata$deg_group %in% keep_groups, , drop = FALSE]
+    pdata <- pdata[!is.na(pdata$deg_group), , drop = FALSE]
+    eset  <- eset[, colnames(eset) %in% pdata$ID, drop = FALSE]
+    pdata <- pdata[match(colnames(eset), pdata$ID), , drop = FALSE]
+    
+    # --- 检查两组是否都存在 ---
+    if (!all(keep_groups %in% unique(as.character(pdata$deg_group)))) {
+      stop(
+        paste0(
+          "limma error: selected contrast groups not both found in pdata$",
+          group_id, ". Available groups: ",
+          paste(unique(as.character(pdata$deg_group)), collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
+    ##############
+    
     pdata$deg_group <- ifelse(pdata$deg_group == contrast[2], "group1", "group2")
     ################################
     message(paste0("group1 = ", contrast[2]))
@@ -202,7 +229,7 @@ iobr_deg <- function(eset,
     fit2 <- limma::contrasts.fit(fit, contrast.matrix)
     fit2 <- limma::eBayes(fit2)
     DEG <- limma::topTable(fit2, coef = 1, n = Inf, adjust.method = "BH", sort.by = "P")
-
+    
     DEG <- rownames_to_column(DEG, var = "symbol")
     colnames(DEG)[which(colnames(DEG) == "logFC")] <- "log2FoldChange"
     colnames(DEG)[which(colnames(DEG) == "adj.P.Val")] <- "padj"
@@ -210,16 +237,16 @@ iobr_deg <- function(eset,
     #################################
     DEG <- tibble::as_tibble(DEG)
     DEG$sigORnot <- ifelse(DEG$log2FoldChange > logfc_cutoff & DEG$padj < padj_cutoff, "Up_regulated",
-      ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT")
+                           ifelse(DEG$log2FoldChange < -logfc_cutoff & DEG$padj < padj_cutoff, "Down_regulated", "NOT")
     )
     DEG$label <- ifelse(abs(DEG$log2FoldChange) > logfc_cutoff & DEG$padj < padj_cutoff, "Both",
-      ifelse(DEG$padj < padj_cutoff, "Significant",
-        ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT")
-      )
+                        ifelse(DEG$padj < padj_cutoff, "Significant",
+                               ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT")
+                        )
     )
-
+    
     #######################################################
-
+    
     aa <- as.character(pdata[pdata$deg_group == "group1", "ID"])
     aa <- aa[aa %in% colnames(eset)]
     #######################################################
@@ -237,17 +264,26 @@ iobr_deg <- function(eset,
     # DEG<-tbl_df(DEG)
     DEG <- DEG[order(DEG$padj, decreasing = F), ]
     DEG <- tibble::as_tibble(DEG)
-
+    
     colnames(DEG)[which(colnames(DEG) == "mean_group1")] <- contrast[2]
     colnames(DEG)[which(colnames(DEG) == "mean_group2")] <- contrast[3]
     print(head(DEG))
   }
-
-  save(DEG, file = paste0(abspath, "1-DEGs.RData"))
-  # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
-  csv_file <- paste0(abspath, "2-DEGs.csv")
-  write.csv(DEG, file = csv_file, row.names = FALSE)
-  message(">>> DEG results written to ", csv_file,
-          "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  
+  # save(DEG, file = paste0(abspath, "1-DEGs.RData"))
+  # # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+  # csv_file <- paste0(abspath, "2-DEGs.csv")
+  # write.csv(DEG, file = csv_file, row.names = FALSE)
+  # message(">>> DEG results written to ", csv_file,
+  #         "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  # return(DEG)
+  if (!is.null(abspath)) {
+    save(DEG, file = paste0(abspath, "1-DEGs.RData"))
+    # 原  writexl::write_xlsx(DEG, paste0(abspath, "2-DEGs.xlsx"))
+    csv_file <- paste0(abspath, "2-DEGs.csv")
+    write.csv(DEG, file = csv_file, row.names = FALSE)
+    message(">>> DEG results written to ", csv_file,
+            "\n    (If you need xlsx, please open the csv in Excel and 'Save As' *.xlsx)")
+  }
   return(DEG)
 }

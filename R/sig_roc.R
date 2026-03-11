@@ -130,9 +130,10 @@ sig_roc <- function(data,
   colnames(auc.out) <- c("Name", "AUC", "AUC CI")
   
   legend.name <- paste(colnames(input)[2:length(input)], " AUC = ", auc.out$AUC, sep = " ")
+  par(xpd = TRUE)
   legend("bottomright",
          legend = legend.name,
-         col = cols[2:length(input)],
+         col = cols[2:(length(variables)+1)],
          lwd = 2,
          bty = "n")
   
