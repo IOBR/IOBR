@@ -4,7 +4,13 @@
 \alias{best_cutoff}
 \title{Extract Best Cutoff and Add Binary Variable to Data Frame}
 \usage{
-best_cutoff(pdata, variable, time = "time", status = "status", PrintResult = T)
+best_cutoff(
+  pdata,
+  variable,
+  time = "time",
+  status = "status",
+  PrintResult = TRUE
+)
 }
 \arguments{
 \item{pdata}{Data frame containing survival information and the continuous variable.}
