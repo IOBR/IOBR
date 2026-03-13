@@ -6,6 +6,7 @@
 #' @param eset ExpressionSet object containing gene expression data.
 #' @param data_type Type of input data, possible values are "count" or "tpm".
 #' @param id_type Type of gene identifier, default is "ensembl".
+#' @param cancer_type Character string specifying the cancer type used by easier.
 #'
 #' @references Lapuente-Santana, van Genderen, M., Hilbers, P., Finotello, F., & Eduati, F. (2021). 'Interpretable systems biomarkers predict response to immune-checkpoint inhibitors.' Patterns (New York, N.Y.), 2(8), 100293. https://doi.org/10.1016/j.patter.2021.100293
 #' @return A data frame containing ligand-receptor interaction scores

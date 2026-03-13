@@ -67,7 +67,6 @@ Suggests:
     factoextra,
     FactoMineR,
     foreach,
-    ggfortify,
     ggpubr,
     ggsci,
     gridExtra,
@@ -92,7 +91,8 @@ Suggests:
     testthat (>= 3.0.0),
     webr,
     WGCNA,
-    xCell
+    xCell,
+    ggdensity
 VignetteBuilder: 
     knitr
 Remotes:
