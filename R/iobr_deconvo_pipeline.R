@@ -15,9 +15,11 @@
 #' @examples
 #' utils::data("eset_stad", package = "IOBR", envir = environment())
 #' eset <- count2tpm(eset_stad)
-#' res <- iobr_deconvo_pipeline(eset = eset, project = "STAD",
-#'                             array = FALSE, tumor_type = "stad", 
-#'                             path = "1-TME", permutation = 1000)
+#' res <- iobr_deconvo_pipeline(
+#'   eset = eset, project = "STAD",
+#'   array = FALSE, tumor_type = "stad",
+#'   path = "1-TME", permutation = 1000
+#' )
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000) {
   #######################################
   path <- creat_folder(paste0(path))

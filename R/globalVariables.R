@@ -18,7 +18,7 @@ utils::globalVariables(c(
   "quantiseq_data", "xCell.data", "null_models", "common_genes",
   "avg_log2FC", "mus_human_gene_symbol", "PurityDataAffy",
   "my_palette", "my_palette2", "Group", "ENTREZID", "logfc", "p",
-  "FPR", "TPR", "variable","itor",
+  "FPR", "TPR", "variable", "itor",
 
   # ---------- 跨包函数 / S3 方法 ----------
   # 以下名字在代码里通过 :: 或 get() 调用，但仍被 codetools 报 undefined

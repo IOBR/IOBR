@@ -35,9 +35,11 @@ Executes an integrated TME analysis on a gene expression matrix: performs immune
 \examples{
 utils::data("eset_stad", package = "IOBR", envir = environment())
 eset <- count2tpm(eset_stad)
-res <- iobr_deconvo_pipeline(eset = eset, project = "STAD",
-                            array = FALSE, tumor_type = "stad", 
-                            path = "1-TME", permutation = 1000)
+res <- iobr_deconvo_pipeline(
+  eset = eset, project = "STAD",
+  array = FALSE, tumor_type = "stad",
+  path = "1-TME", permutation = 1000
+)
 }
 \author{
 Dongqiang Zeng
