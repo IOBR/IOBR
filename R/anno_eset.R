@@ -34,10 +34,12 @@
 #' @examples
 #' # Annotate Affymetrix microarray data
 #' data(eset_gse62254, package = "IOBR")
+#' data("anno_hug133plus2", package = "IOBR")
 #' eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
 #'
 #' # Annotate RNA-seq data with Ensembl IDs
 #' data(eset_stad, package = "IOBR")
+#' data("anno_grch38", package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 anno_eset <- function(eset, annotation, symbol = "symbol", probe = "probe_id", method = "mean") {
   annotation <- as.data.frame(annotation)

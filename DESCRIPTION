@@ -92,7 +92,8 @@ Suggests:
     webr,
     WGCNA,
     xCell,
-    ggdensity
+    ggdensity,
+    ROCR
 VignetteBuilder: 
     knitr
 Remotes:

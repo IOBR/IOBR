@@ -13,8 +13,9 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' utils::data("eset_stad", package = "IOBR", envir = environment())
+#' data("eset_stad", package = "IOBR")
 #' eset <- count2tpm(eset_stad)
+#' data("lm22", package = "IOBR")
 #' res <- iobr_deconvo_pipeline(
 #'   eset = eset, project = "STAD",
 #'   array = FALSE, tumor_type = "stad",

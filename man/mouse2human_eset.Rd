@@ -41,7 +41,7 @@ mouse_genes <- paste0("MouseGene", 1:num_rows)
 # Create random data for the data frame
 data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
 df <- data
-
+data("anno_gc_vm32", package = "IOBR")
 rownames(df) <- anno_gc_vm32$symbol[1:200]
 human_data <- mouse2human_eset(df, source = "local", is_matrix = TRUE)
 }

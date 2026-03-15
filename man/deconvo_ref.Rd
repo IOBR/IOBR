@@ -45,6 +45,7 @@ Estimate the fraction of cell types using defined reference genes
 # Loading TCGA-STAD expresion data(raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+data("lm22", package = "IOBR")
 deconvo_ref(eset = eset, reference = lm22)
 }
 \author{

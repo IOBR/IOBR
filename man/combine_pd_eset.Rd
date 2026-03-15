@@ -53,6 +53,7 @@ colnames(eset) <- substring(colnames(eset), 1, 12)
 # Load phenotype data
 data("sig_stad", package = "IOBR")
 # Combine phenotype and expression data
+data("signature_collection", package = "IOBR")
 input <- combine_pd_eset(
   eset = eset, pdata = sig_stad,
   feas = unique(unlist(signature_collection))

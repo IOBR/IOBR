@@ -24,7 +24,7 @@
 #' data("imvigor210_sig", package = "IOBR")
 #' data("imvigor210_pdata", package = "IOBR")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
-#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
 #' BinomialModel(
 #'   x = imvigor210_sig,
 #'   y = pdata_group,
@@ -32,7 +32,7 @@
 #'   scale = TRUE,
 #'   train_ratio = 0.7,
 #'   nfold = 10,
-#'   plot = TRUE
+#'   plot = FALSE
 #' )
 #' @export
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
@@ -277,7 +277,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #'
 #' This function computes the AUC for a binomial model's predictions on a given dataset.
 #' It uses the specified regularization strengths to generate predictions, which are then
-#' evaluated against actual outcomes to compute the AUC using the pROC package. This function
+#' evaluated against actual outcomes to compute the AUC using the ROCR package. This function
 #' is typically used to assess model performance in classification tasks.
 #'
 #' @param model A model object fitted using a binomial distribution, from which predictions will be generated.
@@ -293,7 +293,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' \dontrun{
 #' # Assuming 'model', 'newx', and 'actual.y' are predefined:
 #' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10) |
+#' test_data <- matrix(rnorm(100 * 10), ncol = 10)
 #'   test_outcomes <- rbinom(100, 1, 0.5)
 #' auc_value <- BinomialAUC(
 #'   model = fitted_model,
@@ -304,19 +304,12 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' print(auc_value)
 #' }
 #' @export
-BinomialAUC <- function(model, newx, s, acture.y) {
-  rlang::check_installed("pROC")
+BinomialAUC <- function(model, newx, s, acture.y){
+  rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  # 安全处理：针对不同情况
-  if (is.matrix(prob) && ncol(prob) > 1) {
-    # 如果是多列矩阵，取第二列（通常是正类概率）
-    prob <- prob[, 2]
-  }
-  # 如果不是矩阵，或者只有一列，直接使用
-
-  roc_obj <- pROC::roc(acture.y, as.numeric(prob)) # 添加as.numeric确保是向量
-  auc_value <- pROC::auc(roc_obj)
-  return(as.numeric(auc_value))
+  pred <- ROCR::prediction(prob, acture.y)
+  auc <- as.numeric(ROCR::performance(pred, "auc")@y.values)
+  return(auc)
 }
 
 #' Plot AUC ROC Curves
@@ -396,7 +389,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' Calculate Performance Metrics
 #'
 #' Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-#' This function uses the pROC package to evaluate model effectiveness at different thresholds, helping to
+#' This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
 #' assess the discriminative ability of the model under various regularization strengths specified by 's'.
 #'
 #' @param model A model object used to generate predictions.
@@ -406,7 +399,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'          methods such as glmnet.
 #' @param acture.y A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.
 #'
-#' @return A performance object from the pROC package, which includes true positive and false positive rates.
+#' @return A performance object from the ROCR package, which includes true positive and false positive rates.
 #'
 #' @examples
 #' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
@@ -417,31 +410,12 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' )
 #' print(perf_metrics)
 #' @export
-CalculatePref <- function(model, newx, s, acture.y) {
-  rlang::check_installed("pROC")
+CalculatePref <- function(model, newx, s, acture.y){
+  rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  # 安全的最小改动：处理矩阵情况
-  if (is.matrix(prob)) {
-    if (ncol(prob) > 1) {
-      # 多列矩阵，取第二列（正类概率）
-      prob_vector <- prob[, 2]
-    } else {
-      # 单列矩阵，直接取第一列
-      prob_vector <- prob[, 1]
-    }
-  } else {
-    # 不是矩阵，直接使用
-    prob_vector <- prob
-  }
-  roc_obj <- pROC::roc(acture.y, prob_vector) # <-- 修改在这里
-  ## 构造与 ROCR 相同字段名的 list 对象，直接 drop-in
-  structure(
-    list(
-      x.values = list(1 - roc_obj$specificities),
-      y.values = list(roc_obj$sensitivities)
-    ),
-    class = "performance"
-  ) # 保持原 class，下游代码零改动
+  pred <- ROCR::prediction(prob, acture.y)
+  perf <- ROCR::performance(pred, "tpr", "fpr")
+  return(perf)
 }
 
 
