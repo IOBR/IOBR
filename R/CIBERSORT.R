@@ -309,6 +309,8 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 #' @import purrr
 #' @import stringr
 #' @examples
+#' \dontrun{
+#' data("lm22", package = "IOBR")
 #' data("eset_gse62254", package = "IOBR")
 #' cibersort <- CIBERSORT(
 #'   sig_matrix = lm22,
@@ -316,6 +318,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 #'   QN = TRUE, absolute = FALSE
 #' )
 #' head(cibersort)
+#' }
 CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute,
                       abs_method = "sig.score", parallel = FALSE, num_cores = 2,
                       seed = NULL) {

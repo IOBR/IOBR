@@ -31,7 +31,8 @@
 #'   time = "OS_time", status = "OS_status", PrintResult = TRUE
 #' )
 #' table(sig_stad2$TMEscore_CIR_binary)
-best_cutoff <- function(pdata, variable, time = "time", status = "status", PrintResult = T) {
+best_cutoff <- function(pdata, variable, time = "time",
+                        status = "status", PrintResult = TRUE) {
   pdata <- as.data.frame(pdata)
   colnames(pdata)[which(colnames(pdata) == time)] <- "time_iobr"
   colnames(pdata)[which(colnames(pdata) == status)] <- "status_iobr"

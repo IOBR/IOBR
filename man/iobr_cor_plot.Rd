@@ -129,6 +129,7 @@ feature_data <- data.frame(
   Feature2 = rnorm(100)
 )
 # Perform correlation analysis
+data("sig_group", package = "IOBR")
 results <- iobr_cor_plot(
   pdata_group = pdata_group, feature_data = feature_data,
   id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,

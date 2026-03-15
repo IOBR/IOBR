@@ -19,9 +19,11 @@
 #' data("eset_tme_stad", package = "IOBR")
 #' # Filter variable genes
 #' eset <- find_variable_genes(
-#'   eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25
+#'   eset = eset_tme_stad,
+#'   data_type = "normalized", methods = "mad", quantile = 0.25
 #' )
-find_variable_genes <- function(eset, data_type = c("count", "normalized"), methods = c("low", "mad"), prop = 0.7,
+find_variable_genes <- function(eset, data_type = c("count", "normalized"),
+                                methods = c("low", "mad"), prop = 0.7,
                                 quantile = c(0.75, 0.5, 0.25), min.mad = 0.1, feas = NULL) {
   eset <- as.matrix(eset)
   feas0 <- feature_manipulation(data = eset, is_matrix = TRUE)

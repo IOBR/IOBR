@@ -23,6 +23,8 @@ primarily designed for RNA-seq data.
 \examples{
 # Load TCGA-STAD expression data (raw count matrix)
 data("eset_stad", package = "IOBR")
+data("TRef", package = "IOBR")
+data("BRef", package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 

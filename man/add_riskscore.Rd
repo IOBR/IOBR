@@ -47,11 +47,11 @@ and returns the dataset with an added risk score column.
 }
 \examples{
 if (requireNamespace("survival", quietly = TRUE)) {
-  data("ovarian", package = "survival")
-  ovarian$rscore <- add_riskscore(
-    ovarian,
+  lung <- survival::lung
+  lung$rscore <- add_riskscore(
+    lung,
     time = "time", status = "status",
-    vars = c("resid.ds", "rx", "ecog.ps")
+    vars = c("age", "sex")
   )
 }
 }

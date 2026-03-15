@@ -46,13 +46,18 @@ CIBERSORT is only freely available to academic users.
 A license an the binary can be obtained from https://cibersort.stanford.edu.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+\donttest{
+data("eset_tme_stad", package = "IOBR")
+data("lm22", package = "IOBR")
 cibersort_result <- deconvo_cibersort(
-  eset = eset, project = "TCGA-STAD",
-  arrays = FALSE, absolute = FALSE, perm = 500
+  eset = eset_tme_stad,
+  project = "TCGA-STAD",
+  arrays = FALSE,
+  absolute = FALSE,
+  perm = 100
 )
+head(cibersort_result)
+}
 }
 \author{
 Dongqiang Zeng

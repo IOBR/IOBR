@@ -30,13 +30,31 @@ Character vector of selected feature names with non-zero coefficients in the opt
 Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or prognostic models. Supports both binary and survival response variables, utilizing cross-validation for optimal model selection.
 }
 \examples{
-data("gene_expression", package = "examplePackage")
-survival_data <- survival::Surv(time = c(2, 4, 3), event = c(1, 0, 1))
+set.seed(123)
+gene_expression <- matrix(rnorm(100 * 20), nrow = 100, ncol = 20)
+rownames(gene_expression) <- paste0("Gene", 1:100)
+colnames(gene_expression) <- paste0("Sample", 1:20)
+
 # Binary response example
-binary_outcome <- c(0, 1, 1)
-lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
+binary_outcome <- sample(c(0, 1), 20, replace = TRUE)
+lasso_select(
+  x = gene_expression,
+  y = binary_outcome,
+  type = "binary",
+  nfold = 5
+)
+
 # Survival response example
-lasso_select(x = gene_expression, y = survival_data, type = "survival")
+survival_data <- survival::Surv(
+  time = sample(1:100, 20, replace = TRUE),
+  event = sample(c(0, 1), 20, replace = TRUE)
+)
+lasso_select(
+  x = gene_expression,
+  y = survival_data,
+  type = "survival",
+  nfold = 5
+)
 }
 \author{
 Dongqiang Zeng

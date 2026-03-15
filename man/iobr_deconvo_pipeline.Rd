@@ -33,9 +33,14 @@ Data frame integrating cell fractions and signature scores (also writes intermed
 Executes an integrated TME analysis on a gene expression matrix: performs immune/stromal cell deconvolution using multiple algorithms, computes signature scores, and aggregates results. Designed for exploratory immunogenomic profiling.
 }
 \examples{
-utils::data("eset_stad", package = "IOBR", envir = environment())
+data("eset_stad", package = "IOBR")
 eset <- count2tpm(eset_stad)
-res <- iobr_deconvo_pipeline(eset = eset, project = "STAD", array = FALSE, tumor_type = "stad", path = "1-TME", permutation = 1000)
+data("lm22", package = "IOBR")
+res <- iobr_deconvo_pipeline(
+  eset = eset, project = "STAD",
+  array = FALSE, tumor_type = "stad",
+  path = "1-TME", permutation = 1000
+)
 }
 \author{
 Dongqiang Zeng

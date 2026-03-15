@@ -24,7 +24,7 @@
 #' # Create random data for the data frame
 #' data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
 #' df <- data
-#'
+#' data("anno_gc_vm32", package = "IOBR")
 #' rownames(df) <- anno_gc_vm32$symbol[1:200]
 #' human_data <- mouse2human_eset(df, source = "local", is_matrix = TRUE)
 mouse2human_eset <- function(eset, source = "ensembl", is_matrix = TRUE, column_of_symbol = NULL, verbose = FALSE) {

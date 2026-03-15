@@ -11,6 +11,7 @@
 #'
 #' @examples
 #' data("eset_stad", package = "IOBR")
+#' data("anno_rnaseq", package = "IOBR")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #' eset_distribution(eset)
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {

@@ -20,7 +20,7 @@ format_signatures <- function(sig_data, save_signature = FALSE, output_name = "s
 
   sig_data <- as.data.frame(sig_data)
   sig_data[sig_data == "NA"] <- NA
-  #' reading each column and transfer it to a list
+  # reading each column and transfer it to a list
   bb <- as.list(NULL)
   for (i in 1:ncol(sig_data)) {
     aa <- as.character(sig_data[, i])
@@ -32,7 +32,7 @@ format_signatures <- function(sig_data, save_signature = FALSE, output_name = "s
   bb <- lapply(bb, function(x) as.character(x))
   bb <- lapply(bb, function(x) unique(x))
   bb <- lapply(bb, function(x) x[!x == ""])
-  #' standerdized the name of list
+  # standerdized the name of list
   # names(bb)<-gsub(names(bb),pattern = "\\.",replacement = "_")
   names(bb) <- gsub(names(bb), pattern = "\\ ", replacement = "_")
   # names(bb)<-gsub(names(bb),pattern = "\\-",replacement = "_")

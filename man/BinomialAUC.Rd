@@ -23,14 +23,14 @@ A numeric value representing the AUC for the model's predictions against actual 
 \description{
 This function computes the AUC for a binomial model's predictions on a given dataset.
 It uses the specified regularization strengths to generate predictions, which are then
-evaluated against actual outcomes to compute the AUC using the pROC package. This function
+evaluated against actual outcomes to compute the AUC using the ROCR package. This function
 is typically used to assess model performance in classification tasks.
 }
 \examples{
 \dontrun{
 # Assuming 'model', 'newx', and 'actual.y' are predefined:
 fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-test_data <- matrix(rnorm(100 * 10), ncol = 10) |
+test_data <- matrix(rnorm(100 * 10), ncol = 10)
   test_outcomes <- rbinom(100, 1, 0.5)
 auc_value <- BinomialAUC(
   model = fitted_model,

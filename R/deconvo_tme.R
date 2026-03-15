@@ -221,6 +221,8 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @examples
 #' # Load TCGA-STAD expression data (raw count matrix)
 #' data("eset_stad", package = "IOBR")
+#' data("TRef", package = "IOBR")
+#' data("BRef", package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 #'
@@ -273,13 +275,18 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #' @export
 #'
 #' @examples
-#' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
-#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' \donttest{
+#' data("eset_tme_stad", package = "IOBR")
+#' data("lm22", package = "IOBR")
 #' cibersort_result <- deconvo_cibersort(
-#'   eset = eset, project = "TCGA-STAD",
-#'   arrays = FALSE, absolute = FALSE, perm = 500
+#'   eset = eset_tme_stad,
+#'   project = "TCGA-STAD",
+#'   arrays = FALSE,
+#'   absolute = FALSE,
+#'   perm = 100
 #' )
+#' head(cibersort_result)
+#' }
 deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolute = FALSE, abs_method = "sig.score",
                               parallel = FALSE, num_cores = 2, seed = NULL) {
   if (absolute) {
@@ -295,8 +302,9 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
   # (see CIBERSORT website).
   quantile_norm <- arrays
   ##############################
+  sig_matrix <- get("lm22", envir = asNamespace("IOBR"))
   res <- CIBERSORT(
-    sig_matrix = lm22,
+    sig_matrix = sig_matrix,
     mixture_file = eset,
     perm = perm,
     QN = quantile_norm,
@@ -444,6 +452,7 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
 #' # Loading TCGA-STAD expresion data(raw count matrix)
 #' data(eset_stad, package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+#' data("lm22", package = "IOBR")
 #' deconvo_ref(eset = eset, reference = lm22)
 deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", perm = 100,
                         reference, scale_reference = TRUE, absolute.mode = FALSE, abs.method = "sig.score") {
@@ -677,6 +686,7 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @examples
 #' # Loading TCGA-STAD expression data(raw count matrix)
 #' data(eset_stad, package = "IOBR")
+#' data("lm22", package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
 #' # Absolute mode
