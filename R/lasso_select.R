@@ -42,18 +42,29 @@ lasso_select <- function(x, y, type = c("binary", "survival"), nfold = 10,
   type <- match.arg(type)
   lambda <- match.arg(lambda)
   x <- t(x)
+
   if (type == "binary") {
-    cvfit <- cv.glmnet(x, y,
-      nfold,
+    cvfit <- glmnet::cv.glmnet(
+      x = x,
+      y = y,
+      nfolds = nfold,
       alpha = 1,
+      family = "binomial",
       type.measure = "class"
     )
   } else {
-    cvfit <- cv.glmnet(x, y, nfold, alpha = 1, family = "cox")
+    cvfit <- glmnet::cv.glmnet(
+      x = x,
+      y = y,
+      nfolds = nfold,
+      alpha = 1,
+      family = "cox"
+    )
   }
+
   myCoefs <- coef(cvfit, s = lambda)
-  lasso_fea <- myCoefs@Dimnames[[1]][which(myCoefs != 0)]
-  lasso_fea <- lasso_fea[-1]
-  feature <- lasso_fea
-  return(feature)
+  lasso_fea <- rownames(myCoefs)[which(myCoefs != 0)]
+  lasso_fea <- setdiff(lasso_fea, "(Intercept)")
+
+  return(lasso_fea)
 }

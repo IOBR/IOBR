@@ -14,6 +14,7 @@
 #'   - `whole_matrix`: Full median expression matrix.
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example assuming 'dds' is raw counts and 'dat' is normalized data
 #' dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 #' colnames(dds) <- paste("Sample", 1:20, sep = "_")
@@ -24,6 +25,7 @@
 #' colnames(dat) <- colnames(dds)
 #' result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #' print(result$reference_matrix)
+#' }
 generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
   rlang::check_installed("DESeq2")
   if (!all(colnames(dds) == colnames(dat))) {

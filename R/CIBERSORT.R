@@ -138,7 +138,7 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #'
 #' @examples
 #' X <- matrix(rnorm(100), nrow = 10)
-#' y <- rnorm(10)
+#' Y <- rnorm(10)
 #' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
 #'
 doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {

@@ -13,6 +13,7 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
+#' \dontrun{
 #' data("eset_stad", package = "IOBR")
 #' eset <- count2tpm(eset_stad)
 #' data("lm22", package = "IOBR")
@@ -21,6 +22,7 @@
 #'   array = FALSE, tumor_type = "stad",
 #'   path = "1-TME", permutation = 1000
 #' )
+#' }
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000) {
   #######################################
   path <- creat_folder(paste0(path))

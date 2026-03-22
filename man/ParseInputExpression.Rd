@@ -7,24 +7,30 @@
 ParseInputExpression(path)
 }
 \arguments{
-\item{path}{The file path of the gene expression data in TSV format.
-The data should have gene identifiers as row names and sample identifiers
-as column headers. The first row and column are expected to be headers.}
+\item{path}{Character string. Path to a tab-delimited gene expression file.
+The first column should contain gene identifiers, and the remaining columns
+should contain expression values for samples.}
 }
 \value{
-A numeric matrix of the gene expression data, with genes as rows and
-        samples as columns.
+A numeric matrix of gene expression values, with genes as rows and
+  samples as columns.
 }
 \description{
-This function reads gene expression data from a specified file path, expecting
-a tab-separated values (TSV) format with the first column as row names. It converts
-the loaded data into a numeric matrix, which is suitable for downstream analysis.
-Optionally, it can also modify the row names using `ConvertRownameToLoci` if uncommented.
+This function reads gene expression data from a tab-delimited text file,
+using the first column as row names. The data are converted into a numeric
+matrix for downstream analysis.
 }
 \examples{
-# Path to gene expression data file
-example_path <- "path/to/gene_expression_data.csv"
+# Create a temporary tab-delimited expression file
+tf <- tempfile(fileext = ".tsv")
+expr <- data.frame(
+  gene = c("GeneA", "GeneB", "GeneC"),
+  Sample1 = c(10, 20, 30),
+  Sample2 = c(15, 25, 35)
+)
+write.table(expr, tf, sep = "\t", row.names = FALSE, quote = FALSE)
+
 # Parse the gene expression data
-gene_expression_data <- ParseInputExpression(example_path)
+gene_expression_data <- ParseInputExpression(tf)
 print(gene_expression_data)
 }

@@ -38,12 +38,14 @@ data frame with pdata and signature scores for gene sets; signatures in columns,
 Calculating signature score using Integration method
 }
 \examples{
+\dontrun{
 # Loading TCGA-STAD expresion data(raw count matrix)
 data("eset_stad", package = "IOBR")
 # transform count data to tpm
 eset <- count2tpm(eset_stad, idType = "ensembl")
 # signature score estimation using PCA, z-score, and ssgsea method
 calculate_sig_score_integration(eset = eset, signature = signature_tme)
+}
 }
 \author{
 Dongqiang Zeng

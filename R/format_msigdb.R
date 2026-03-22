@@ -1,29 +1,41 @@
-#' Format input signatures from MsgiDB
+#' Format input signatures from MSigDB
 #'
-#' @param gmt `signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`
-#' @param ont column name of signatures
-#' @param gene column name of gene
+#' Read a GMT file from MSigDB and convert it into a named list of gene sets.
 #'
-#' @return signature list
+#' @param gmt Character string. Path to a GMT file.
+#' @param ont Character string. Name of the signature/set column in the parsed GMT table.
+#'   Default is \code{"term"}.
+#' @param gene Character string. Name of the gene column in the parsed GMT table.
+#'   Default is \code{"gene"}.
+#'
+#' @return A named list of character vectors, where each element contains the genes
+#'   belonging to one signature.
 #' @export
 #'
 #' @examples
-#' # Download GMT file from MSigDB:
-#' # https://www.gsea-msigdb.org/gsea/msigdb/
-#' format_msigdb(
-#'   "E:/0-0-0-My Pipeline/00-Signature-collection/h.all.v2023.2.Hs.symbols.gmt",
-#'   ont = "term"
+#' # Create a minimal GMT file for the example
+#' tf <- tempfile(fileext = ".gmt")
+#' writeLines(
+#'   c(
+#'     "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
+#'     "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
+#'   ),
+#'   con = tf
 #' )
 #'
+#' sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+#' names(sig_list)
+#' sig_list[[1]]
 format_msigdb <- function(gmt, ont = "term", gene = "gene") {
-  sig <- clusterProfiler::read.gmt(paste0(gmt))
-  ######################################
+  sig <- clusterProfiler::read.gmt(gmt)
   sig <- as.data.frame(sig)
-  colnames(sig)[which(colnames(sig) == ont)] <- "ont"
-  colnames(sig)[which(colnames(sig) == gene)] <- "gene"
-  sig_list <- select(sig, ont, gene) %>%
-    as.data.frame() %>%
-    split(., .$ont) %>%
-    lapply(., function(x) (x$gene))
+
+  colnames(sig)[colnames(sig) == ont] <- "ont"
+  colnames(sig)[colnames(sig) == gene] <- "gene"
+
+  sig_list <- sig[, c("ont", "gene")] %>%
+    split(.$ont) %>%
+    lapply(function(x) x$gene)
+
   return(sig_list)
 }

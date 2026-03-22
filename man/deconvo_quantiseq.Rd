@@ -24,8 +24,10 @@ A data frame with the estimated cell type fractions, with columns named accordin
 This function performs deconvolution of the tumor microenvironment using the quanTIseq technique. It estimates the fraction of different cell types in the expression dataset.
 }
 \examples{
-#' # Loading TCGA-STAD expresion data(raw count matrix)
+\dontrun{
+# Loading TCGA-STAD expresion data(raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
+}
 }

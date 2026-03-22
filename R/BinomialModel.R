@@ -227,49 +227,81 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
 
 #' Elastic Net Model Fitting
 #'
-#' Fits an elastic net model using the `caret` package, allowing for both L1 (Lasso) and L2 (Ridge) regularization.
-#' The function uses cross-validation to identify the optimal alpha and lambda values that maximize accuracy.
-#' Alpha ranges from 0 (Ridge) to 1 (Lasso), with lambda controlling the strength of the regularization.
+#' Fits an elastic net model for binary classification using
+#' `glmnet::cv.glmnet`, allowing for both L1 (Lasso) and L2 (Ridge)
+#' regularization. The function uses cross-validation to identify the
+#' optimal alpha and lambda values. Alpha ranges from 0 (Ridge) to 1
+#' (Lasso), with lambda controlling the strength of the regularization.
 #'
 #' @param train.x A matrix or data frame containing training predictors.
-#' @param train.y A numeric vector or factor representing the binary outcome for each sample in the training set.
-#' @param lambdamax The maximum value of lambda to consider in the regularization path.
-#' @param nfold The number of folds to use for cross-validation, which also determines the number of repeats for repeated CV.
+#' @param train.y A numeric vector containing the binary outcome (0/1)
+#'   for each sample in the training set.
+#' @param lambdamax The maximum value of lambda to consider in the
+#'   regularization path.
+#' @param nfold The number of folds to use for cross-validation.
 #'
-#' @return A list containing the optimal values of alpha and lambda chosen based on cross-validation.
+#' @return A list with components `chose_alpha` and `chose_lambda`,
+#'   giving the selected elastic net mixing parameter and regularization
+#'   parameter, respectively.
 #'
 #' @examples
-#' # Assuming 'train_data' and 'train_outcome' are already defined:
-#' train_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' train_outcome <- rbinom(100, 1, 0.5)
-#' optimal_parameters <- Enet(
-#'   train.x = train_data, train.y = train_outcome,
-#'   lambdamax = 1, nfold = 10
-#' )
-#' print(optimal_parameters)
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(50 * 5), ncol = 5)
+#'   train_outcome <- rbinom(50, 1, 0.5)
+#'
+#'   optimal_parameters <- Enet(
+#'     train.x = train_data,
+#'     train.y = train_outcome,
+#'     lambdamax = 1,
+#'     nfold = 5
+#'   )
+#'
+#'   print(optimal_parameters)
+#' }
 #' @export
-Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
-  ## ✅ 1. 自建网格 + cv.glmnet 代替 caret -----------------
-  alpha.grid <- seq(0, 1, by = 0.2) # 0→Ridge, 1→Lasso
-  lambda.grid <- seq(0, lambdamax, length.out = 10)
+Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
+  train.x <- as.matrix(train.x)
+  train.y <- as.numeric(train.y)
 
-  tune.res <- expand.grid(alpha = alpha.grid, lambda = lambda.grid)
+  if (nrow(train.x) != length(train.y)) {
+    stop("The number of rows in train.x must equal the length of train.y.")
+  }
+  if (lambdamax <= 0) {
+    stop("lambdamax must be greater than 0.")
+  }
+  if (nfold < 2) {
+    stop("nfold must be at least 2.")
+  }
 
-  cv.fit <- pmap(tune.res, function(alpha, lambda) {
-    fit <- cv.glmnet(train.x, factor(train.y),
-      family = "binomial", alpha = alpha, lambda = lambda,
-      nfolds = nfold, type.measure = "class"
+  alpha.grid <- seq(0, 1, by = 0.2)
+  lambda.grid <- seq(1e-4, lambdamax, length.out = 10)
+
+  res <- lapply(alpha.grid, function(a) {
+    fit <- glmnet::cv.glmnet(
+      x = train.x,
+      y = train.y,
+      family = "binomial",
+      alpha = a,
+      lambda = lambda.grid,
+      nfolds = nfold,
+      type.measure = "class"
     )
-    c(
-      alpha = alpha, lambda = lambda,
-      Accuracy = max(fit$cvm)
-    ) # 取最大交叉验证 Accuracy
-  }) %>% bind_rows()
 
-  best <- tune.res[which.max(cv.fit$Accuracy), ] # 选最优组合
-  ## ----------------------------------------------------
+    data.frame(
+      alpha = a,
+      lambda = fit$lambda.min,
+      cv_error = min(fit$cvm)
+    )
+  })
 
-  list(chose_alpha = best$alpha, chose_lambda = best$lambda)
+  res <- do.call(rbind, res)
+  best <- res[which.min(res$cv_error), ]
+
+  list(
+    chose_alpha = best$alpha,
+    chose_lambda = best$lambda
+  )
 }
 
 
@@ -402,13 +434,41 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' @return A performance object from the ROCR package, which includes true positive and false positive rates.
 #'
 #' @examples
-#' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-#' perf_metrics <- CalculatePref(
-#'   model = fitted_model,
-#'   newx = new_data, s = "lambda.min",
-#'   acture.y = actual_outcomes
-#' )
-#' print(perf_metrics)
+#' # 小型模拟数据示例
+#' set.seed(123)
+#'
+#' # 创建小规模数据
+#' n_train <- 50
+#' n_test <- 10
+#' p <- 3
+#'
+#' # 训练数据
+#' x_train <- matrix(rnorm(n_train * p), n_train, p)
+#' y_train <- sample(0:1, n_train, replace = TRUE)
+#'
+#' # 训练简单模型
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   library(glmnet)
+#'   # 快速训练（使用较小的交叉验证折数）
+#'   fitted_model <- cv.glmnet(x_train, y_train, 
+#'                            family = "binomial",
+#'                            nfolds = 3)  # 减少折数以加快速度
+#'   
+#'   # 测试数据
+#'   new_data <- matrix(rnorm(n_test * p), n_test, p)
+#'   actual_outcomes <- sample(0:1, n_test, replace = TRUE)
+#'   
+#'   # 计算性能
+#'   perf_metrics <- CalculatePref(
+#'     model = fitted_model,
+#'     newx = new_data,
+#'     s = "lambda.min",
+#'     acture.y = actual_outcomes
+#'   )
+#'   
+#'   # 简要输出
+#'   print("Performance metrics calculated successfully")
+#' }
 #' @export
 CalculatePref <- function(model, newx, s, acture.y){
   rlang::check_installed("ROCR")

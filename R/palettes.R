@@ -164,30 +164,27 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
   }
 
   if (category == "tidyheatmap") {
-    if (show_message) message(paste0("There are six palettes you can choose: 1, 2, 3, 4, 5, 6"))
-    if (palette == 1) {
-      # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), viridis::magma(5))
-      mypal <- grDevices::colorRamp(c(
-        "#000004FF", "#6B0A7DFF", "#B63679FF",
-        "#FCA50AFF", "#F7F419FF"
-      ))(c(-3, -1.5, 0, 1.5, 3))
-    } else if (palette == 2) {
-      # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), rev(RColorBrewer::brewer.pal(n = 5, name = "RdYlBu")))
-      mypal <- grDevices::colorRamp(rev(RColorBrewer::brewer.pal(5, "RdYlBu")))(c(-3, -1.5, 0, 1.5, 3))
-    } else if (palette == 3) {
-      # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), rev(RColorBrewer::brewer.pal(n = 5, name = "RdYlGn")))
-      mypal <- grDevices::colorRamp(rev(RColorBrewer::brewer.pal(5, "RdYlGn")))(c(-3, -1.5, 0, 1.5, 3))
-    } else if (palette == 4) {
-      # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), rev(RColorBrewer::brewer.pal(n = 5, name = "Spectral")))
-      mypal <- grDevices::colorRamp(rev(RColorBrewer::brewer.pal(5, "Spectral")))(c(-3, -1.5, 0, 1.5, 3))
-    } else if (palette == 5) {
-      # mypal <- circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), rev(RColorBrewer::brewer.pal(n = 5, name = "PiYG")))
-      mypal <- grDevices::colorRamp(rev(RColorBrewer::brewer.pal(5, "PiYG")))(c(-3, -1.5, 0, 1.5, 3))
-    } else if (palette == 6) {
-      # mypal <- circlize::colorRamp2(c(-3, 0, 3), c("navy", "white", "firebrick"))
-      mypal <- grDevices::colorRamp(c("navy", "white", "firebrick"))(c(-3, 0, 3))
-    }
+  if (show_message) message("There are six palettes you can choose: 1, 2, 3, 4, 5, 6")
+
+  if (palette == 1) {
+    mypal <- c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF")
+  } else if (palette == 2) {
+    mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlBu"))
+  } else if (palette == 3) {
+    mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlGn"))
+  } else if (palette == 4) {
+    mypal <- rev(RColorBrewer::brewer.pal(5, "Spectral"))
+  } else if (palette == 5) {
+    mypal <- rev(RColorBrewer::brewer.pal(5, "PiYG"))
+  } else if (palette == 6) {
+    mypal <- c("navy", "white", "firebrick")
   }
+
+  if (show_col) {
+    print(paste0("'", mypal, "'", collapse = ", "))
+    scales::show_col(mypal)
+  }
+}
 
   return(mypal)
 }

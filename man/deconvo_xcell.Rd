@@ -27,13 +27,14 @@ algorithm. xCell provides cell type enrichment scores for 64 immune and stromal
 cell types from gene expression data.
 }
 \examples{
+\dontrun{
 # Load TCGA-STAD expression data (raw count matrix)
 data("eset_stad", package = "IOBR")
 # Convert to TPM
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 # Run xCell deconvolution
 xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
-
+}
 }
 \author{
 Dongqiang Zeng

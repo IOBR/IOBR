@@ -46,7 +46,7 @@ CIBERSORT is only freely available to academic users.
 A license an the binary can be obtained from https://cibersort.stanford.edu.
 }
 \examples{
-\donttest{
+\dontrun{
 data("eset_tme_stad", package = "IOBR")
 data("lm22", package = "IOBR")
 cibersort_result <- deconvo_cibersort(

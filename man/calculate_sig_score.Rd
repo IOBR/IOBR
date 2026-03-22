@@ -7,7 +7,7 @@
 calculate_sig_score(
   pdata = NULL,
   eset,
-  signature = signature_collection,
+  signature = NULL,
   method = "pca",
   mini_gene_count = 3,
   column_of_sample = "ID",

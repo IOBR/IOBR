@@ -12,7 +12,7 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' # Load signature data frame
-#' data("sig_excel", package = "IOBR")
+#' # sig_excel 是内部数据，直接使用
 #' # Transform into gene list for IOBR functions
 #' format_signatures(sig_excel)
 format_signatures <- function(sig_data, save_signature = FALSE, output_name = "signatures") {
