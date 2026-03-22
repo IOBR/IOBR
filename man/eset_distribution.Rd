@@ -23,6 +23,7 @@ eset_distribution generates boxplots and density plots to analyze the distributi
 }
 \examples{
 data("eset_stad", package = "IOBR")
+data("anno_rnaseq", package = "IOBR")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 eset_distribution(eset)
 }

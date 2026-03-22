@@ -27,11 +27,11 @@
 #' @export
 #' @examples
 #' if (requireNamespace("survival", quietly = TRUE)) {
-#'   data("ovarian", package = "survival")
-#'   ovarian$rscore <- add_riskscore(
-#'     ovarian,
+#'   lung <- survival::lung
+#'   lung$rscore <- add_riskscore(
+#'     lung,
 #'     time = "time", status = "status",
-#'     vars = c("resid.ds", "rx", "ecog.ps")
+#'     vars = c("age", "sex")
 #'   )
 #' }
 add_riskscore <- function(input, family = "cox", target = NULL, time = NULL, status = NULL, vars, new_var_name = "riskscore") {

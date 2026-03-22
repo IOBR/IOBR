@@ -53,6 +53,8 @@ A matrix object containing the estimated cibersort-cell fractions, p-values, cor
 CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.
 }
 \examples{
+\dontrun{
+data("lm22", package = "IOBR")
 data("eset_gse62254", package = "IOBR")
 cibersort <- CIBERSORT(
   sig_matrix = lm22,
@@ -60,6 +62,7 @@ cibersort <- CIBERSORT(
   QN = TRUE, absolute = FALSE
 )
 head(cibersort)
+}
 }
 \author{
 Aaron M. Newman, Stanford University (amnewman@stanford.edu)

@@ -12,30 +12,59 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("gene_expression", package = "examplePackage")
-#' survival_data <- survival::Surv(time = c(2, 4, 3), event = c(1, 0, 1))
+#' set.seed(123)
+#' gene_expression <- matrix(rnorm(100 * 20), nrow = 100, ncol = 20)
+#' rownames(gene_expression) <- paste0("Gene", 1:100)
+#' colnames(gene_expression) <- paste0("Sample", 1:20)
+#'
 #' # Binary response example
-#' binary_outcome <- c(0, 1, 1)
-#' lasso_select(x = gene_expression, y = binary_outcome, type = "binary")
+#' binary_outcome <- sample(c(0, 1), 20, replace = TRUE)
+#' lasso_select(
+#'   x = gene_expression,
+#'   y = binary_outcome,
+#'   type = "binary",
+#'   nfold = 5
+#' )
+#'
 #' # Survival response example
-#' lasso_select(x = gene_expression, y = survival_data, type = "survival")
+#' survival_data <- survival::Surv(
+#'   time = sample(1:100, 20, replace = TRUE),
+#'   event = sample(c(0, 1), 20, replace = TRUE)
+#' )
+#' lasso_select(
+#'   x = gene_expression,
+#'   y = survival_data,
+#'   type = "survival",
+#'   nfold = 5
+#' )
 lasso_select <- function(x, y, type = c("binary", "survival"), nfold = 10,
                          lambda = c("lambda.min", "lambda.1se")) {
   type <- match.arg(type)
   lambda <- match.arg(lambda)
   x <- t(x)
+
   if (type == "binary") {
-    cvfit <- cv.glmnet(x, y,
-      nfold,
+    cvfit <- glmnet::cv.glmnet(
+      x = x,
+      y = y,
+      nfolds = nfold,
       alpha = 1,
+      family = "binomial",
       type.measure = "class"
     )
   } else {
-    cvfit <- cv.glmnet(x, y, nfold, alpha = 1, family = "cox")
+    cvfit <- glmnet::cv.glmnet(
+      x = x,
+      y = y,
+      nfolds = nfold,
+      alpha = 1,
+      family = "cox"
+    )
   }
+
   myCoefs <- coef(cvfit, s = lambda)
-  lasso_fea <- myCoefs@Dimnames[[1]][which(myCoefs != 0)]
-  lasso_fea <- lasso_fea[-1]
-  feature <- lasso_fea
-  return(feature)
+  lasso_fea <- rownames(myCoefs)[which(myCoefs != 0)]
+  lasso_fea <- setdiff(lasso_fea, "(Intercept)")
+
+  return(lasso_fea)
 }

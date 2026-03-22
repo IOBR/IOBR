@@ -99,7 +99,7 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
     # if TRUE, plot will be saved
 
     if (plot) {
-      #' file to deposit reslut
+      # file to deposit reslut
       file_name <- paste0("IPS-Results")
       if (!file.exists(file_name)) dir.create(file_name)
       abspath <- paste(getwd(), "/", file_name, "/", sep = "")

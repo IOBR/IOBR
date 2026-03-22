@@ -20,8 +20,10 @@ A data frame with the estimated cell type fractions, with columns named accordin
 This function performs deconvolution of immune cell fractions using the TIMER (Tumor Immune Estimation Resource) technique. Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
 }
 \examples{
-#' # Loading TCGA-STAD expresion data(raw count matrix)
+\dontrun{
+# Loading TCGA-STAD expression data (raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-deconvo_timer(eset = eset, project = "stad")
+res <- deconvo_timer(eset = eset, project = "stad")
+}
 }

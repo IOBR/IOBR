@@ -2,25 +2,38 @@
 % Please edit documentation in R/format_msigdb.R
 \name{format_msigdb}
 \alias{format_msigdb}
-\title{Format input signatures from MsgiDB}
+\title{Format input signatures from MSigDB}
 \usage{
 format_msigdb(gmt, ont = "term", gene = "gene")
 }
 \arguments{
-\item{gmt}{`signature` data frame downloaded from `https://www.gsea-msigdb.org/gsea/msigdb/collections.jsp#H`}
+\item{gmt}{Character string. Path to a GMT file.}
 
-\item{ont}{column name of signatures}
+\item{ont}{Character string. Name of the signature/set column in the parsed GMT table.
+Default is \code{"term"}.}
 
-\item{gene}{column name of gene}
+\item{gene}{Character string. Name of the gene column in the parsed GMT table.
+Default is \code{"gene"}.}
 }
 \value{
-signature list
+A named list of character vectors, where each element contains the genes
+  belonging to one signature.
 }
 \description{
-Format input signatures from MsgiDB
+Read a GMT file from MSigDB and convert it into a named list of gene sets.
 }
 \examples{
-# download gmt through: https://www.gsea-msigdb.org/gsea/msigdb/download_file.jsp?filePath=/msigdb/release/2023.2.Hs/h.all.v2023.2.Hs.symbols.gmt
-format_msigdb("E:/0-0-0-My Pipeline/00-Signature-collection/h.all.v2023.2.Hs.symbols.gmt", ont = "term")
+# Create a minimal GMT file for the example
+tf <- tempfile(fileext = ".gmt")
+writeLines(
+  c(
+    "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
+    "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
+  ),
+  con = tf
+)
 
+sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+names(sig_list)
+sig_list[[1]]
 }

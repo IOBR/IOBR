@@ -25,6 +25,7 @@
 #' @examples
 #' data("eset_stad", package = "IOBR")
 #' eset <- count2tpm(eset_stad)
+#' data("stad_group", package = "IOBR")
 #' iobr_pca(eset,
 #'   is.matrix = TRUE, scale = TRUE,
 #'   is.log = TRUE, pdata = stad_group,

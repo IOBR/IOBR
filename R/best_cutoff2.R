@@ -15,7 +15,13 @@
 #' # Loading TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' # Finding the best cutoff value of TMEscore for survival
-#' sig_stad2 <- best_cutoff2(pdata = sig_stad, variable = "TMEscore_CIR", time = "OS_time", status = "OS_status", PrintResult = T)
+#' sig_stad2 <- best_cutoff2(
+#'   pdata = sig_stad,
+#'   variable = "TMEscore_CIR",
+#'   time = "OS_time",
+#'   status = "OS_status",
+#'   PrintResult = TRUE
+#' )
 #' sig_stad2$best_cutoff
 #'
 best_cutoff2 <- function(pdata, variable, time = "time", status = "status", PrintResult = T) {

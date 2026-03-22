@@ -2,34 +2,67 @@
 % Please edit documentation in R/timer.R
 \name{check_cancer_types}
 \alias{check_cancer_types}
-\title{Process Batch Table and Check Cancer Types}
+\title{Process Batch Table and Validate Cancer Types}
 \usage{
 check_cancer_types(args)
 }
 \arguments{
-\item{args}{A list containing either a path to a batch file ('batch') or
-direct expressions and category inputs ('expression' and 'category').
-If 'batch' is provided, it should be a path to a comma-separated file where the
-second column contains cancer categories. If 'batch' is not provided, 'expression'
-and 'category' should be used to manually specify data.}
+\item{args}{A list containing input parameters:
+\describe{
+  \item{batch}{Character string. Path to a CSV file (optional).}
+  \item{expression}{Character vector of expression identifiers (used if \code{batch} is NULL).}
+  \item{category}{Character vector of cancer types (used if \code{batch} is NULL).}
+}}
 }
 \value{
-Returns a matrix with two columns: one for expression data (if provided)
-and one for cancer categories. Each row corresponds to a record from the input batch.
+A character matrix with two columns:
+\itemize{
+  \item Column 1: expression identifiers
+  \item Column 2: cancer categories
+}
+Each row corresponds to one record.
 }
 \description{
-This function processes a batch table containing cancer types and checks each
-cancer category against a predefined list of available cancer types. The batch table
-can either be specified through a file or directly passed via function arguments.
-If the cancer type from the batch is not recognized, the function will halt and
-report an error.
+This function processes input data containing cancer types and validates
+each category against a predefined list of supported cancer types
+(`timer_available_cancers`).
+}
+\details{
+The input can be provided in two ways:
+\itemize{
+  \item \strong{Batch mode}: A CSV file path specified in \code{args$batch}.
+'         The file is expected to have at least two columns, where the
+        second column contains cancer categories.
+  \item \strong{Direct mode}: Vectors provided via \code{args$expression}
+        and \code{args$category}.
+}
+
+If any cancer category is not recognized, the function stops with an error.
 }
 \examples{
-# Using a batch file:
-args <- list(batch = "path/to/batch_file.csv")
+# ---- Batch mode example ----
+tf <- tempfile(fileext = ".csv")
+write.table(
+  data.frame("exp1", "lung",
+             "exp2", "breast"),
+  file = tf,
+  sep = ",",
+  row.names = FALSE,
+  col.names = FALSE,
+  quote = FALSE
+)
+
+args <- list(batch = tf)
+# timer_available_cancers <- c("lung", "breast")  # define for testing
 result <- check_cancer_types(args)
 
-# Using direct inputs:
-args <- list(expression = c("exp1", "exp2"), category = c("lung", "breast"))
+# ---- Direct input example ----
+args <- list(
+  expression = c("exp1", "exp2"),
+  category   = c("lung", "breast"),
+  batch = NULL
+)
+
+# timer_available_cancers <- c("lung", "breast")  # define for testing
 result <- check_cancer_types(args)
 }

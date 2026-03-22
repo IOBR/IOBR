@@ -16,7 +16,11 @@
 #' @export
 #'
 #' @examples
-#' result_data <- data.frame(gene = c("Gene1", "Gene2", "Gene3"), padj = c(0.01, 0.2, 0.05), logfc = c(-2, 1.5, -3))
+#' result_data <- data.frame(
+#'   gene = c("Gene1", "Gene2", "Gene3"),
+#'   padj = c(0.01, 0.2, 0.05),
+#'   logfc = c(-2, 1.5, -3)
+#' )
 #' high_var_fea(
 #'   result = result_data, target = "gene", name_padj = "padj", name_logfc = "logfc", n = 2,
 #'   padj_cutoff = 0.05, logfc_cutoff = 1.5

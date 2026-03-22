@@ -24,7 +24,7 @@
 #' data("imvigor210_sig", package = "IOBR")
 #' data("imvigor210_pdata", package = "IOBR")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
-#' pdata_group$BOR_binary <- ifelse(pdata_group$BOR_binary == "R", 1, 0)
+#' pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
 #' BinomialModel(
 #'   x = imvigor210_sig,
 #'   y = pdata_group,
@@ -32,7 +32,7 @@
 #'   scale = TRUE,
 #'   train_ratio = 0.7,
 #'   nfold = 10,
-#'   plot = TRUE
+#'   plot = FALSE
 #' )
 #' @export
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
@@ -227,49 +227,81 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
 
 #' Elastic Net Model Fitting
 #'
-#' Fits an elastic net model using the `caret` package, allowing for both L1 (Lasso) and L2 (Ridge) regularization.
-#' The function uses cross-validation to identify the optimal alpha and lambda values that maximize accuracy.
-#' Alpha ranges from 0 (Ridge) to 1 (Lasso), with lambda controlling the strength of the regularization.
+#' Fits an elastic net model for binary classification using
+#' `glmnet::cv.glmnet`, allowing for both L1 (Lasso) and L2 (Ridge)
+#' regularization. The function uses cross-validation to identify the
+#' optimal alpha and lambda values. Alpha ranges from 0 (Ridge) to 1
+#' (Lasso), with lambda controlling the strength of the regularization.
 #'
 #' @param train.x A matrix or data frame containing training predictors.
-#' @param train.y A numeric vector or factor representing the binary outcome for each sample in the training set.
-#' @param lambdamax The maximum value of lambda to consider in the regularization path.
-#' @param nfold The number of folds to use for cross-validation, which also determines the number of repeats for repeated CV.
+#' @param train.y A numeric vector containing the binary outcome (0/1)
+#'   for each sample in the training set.
+#' @param lambdamax The maximum value of lambda to consider in the
+#'   regularization path.
+#' @param nfold The number of folds to use for cross-validation.
 #'
-#' @return A list containing the optimal values of alpha and lambda chosen based on cross-validation.
+#' @return A list with components `chose_alpha` and `chose_lambda`,
+#'   giving the selected elastic net mixing parameter and regularization
+#'   parameter, respectively.
 #'
 #' @examples
-#' # Assuming 'train_data' and 'train_outcome' are already defined:
-#' train_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' train_outcome <- rbinom(100, 1, 0.5)
-#' optimal_parameters <- Enet(
-#'   train.x = train_data, train.y = train_outcome,
-#'   lambdamax = 1, nfold = 10
-#' )
-#' print(optimal_parameters)
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(50 * 5), ncol = 5)
+#'   train_outcome <- rbinom(50, 1, 0.5)
+#'
+#'   optimal_parameters <- Enet(
+#'     train.x = train_data,
+#'     train.y = train_outcome,
+#'     lambdamax = 1,
+#'     nfold = 5
+#'   )
+#'
+#'   print(optimal_parameters)
+#' }
 #' @export
-Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
-  ## ✅ 1. 自建网格 + cv.glmnet 代替 caret -----------------
-  alpha.grid <- seq(0, 1, by = 0.2) # 0→Ridge, 1→Lasso
-  lambda.grid <- seq(0, lambdamax, length.out = 10)
+Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
+  train.x <- as.matrix(train.x)
+  train.y <- as.numeric(train.y)
 
-  tune.res <- expand.grid(alpha = alpha.grid, lambda = lambda.grid)
+  if (nrow(train.x) != length(train.y)) {
+    stop("The number of rows in train.x must equal the length of train.y.")
+  }
+  if (lambdamax <= 0) {
+    stop("lambdamax must be greater than 0.")
+  }
+  if (nfold < 2) {
+    stop("nfold must be at least 2.")
+  }
 
-  cv.fit <- pmap(tune.res, function(alpha, lambda) {
-    fit <- cv.glmnet(train.x, factor(train.y),
-      family = "binomial", alpha = alpha, lambda = lambda,
-      nfolds = nfold, type.measure = "class"
+  alpha.grid <- seq(0, 1, by = 0.2)
+  lambda.grid <- seq(1e-4, lambdamax, length.out = 10)
+
+  res <- lapply(alpha.grid, function(a) {
+    fit <- glmnet::cv.glmnet(
+      x = train.x,
+      y = train.y,
+      family = "binomial",
+      alpha = a,
+      lambda = lambda.grid,
+      nfolds = nfold,
+      type.measure = "class"
     )
-    c(
-      alpha = alpha, lambda = lambda,
-      Accuracy = max(fit$cvm)
-    ) # 取最大交叉验证 Accuracy
-  }) %>% bind_rows()
 
-  best <- tune.res[which.max(cv.fit$Accuracy), ] # 选最优组合
-  ## ----------------------------------------------------
+    data.frame(
+      alpha = a,
+      lambda = fit$lambda.min,
+      cv_error = min(fit$cvm)
+    )
+  })
 
-  list(chose_alpha = best$alpha, chose_lambda = best$lambda)
+  res <- do.call(rbind, res)
+  best <- res[which.min(res$cv_error), ]
+
+  list(
+    chose_alpha = best$alpha,
+    chose_lambda = best$lambda
+  )
 }
 
 
@@ -277,7 +309,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #'
 #' This function computes the AUC for a binomial model's predictions on a given dataset.
 #' It uses the specified regularization strengths to generate predictions, which are then
-#' evaluated against actual outcomes to compute the AUC using the pROC package. This function
+#' evaluated against actual outcomes to compute the AUC using the ROCR package. This function
 #' is typically used to assess model performance in classification tasks.
 #'
 #' @param model A model object fitted using a binomial distribution, from which predictions will be generated.
@@ -293,7 +325,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' \dontrun{
 #' # Assuming 'model', 'newx', and 'actual.y' are predefined:
 #' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10) |
+#' test_data <- matrix(rnorm(100 * 10), ncol = 10)
 #'   test_outcomes <- rbinom(100, 1, 0.5)
 #' auc_value <- BinomialAUC(
 #'   model = fitted_model,
@@ -304,19 +336,12 @@ Enet <- function(train.x, train.y, lambdamax, nfold = nfold) {
 #' print(auc_value)
 #' }
 #' @export
-BinomialAUC <- function(model, newx, s, acture.y) {
-  rlang::check_installed("pROC")
+BinomialAUC <- function(model, newx, s, acture.y){
+  rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  # 安全处理：针对不同情况
-  if (is.matrix(prob) && ncol(prob) > 1) {
-    # 如果是多列矩阵，取第二列（通常是正类概率）
-    prob <- prob[, 2]
-  }
-  # 如果不是矩阵，或者只有一列，直接使用
-
-  roc_obj <- pROC::roc(acture.y, as.numeric(prob)) # 添加as.numeric确保是向量
-  auc_value <- pROC::auc(roc_obj)
-  return(as.numeric(auc_value))
+  pred <- ROCR::prediction(prob, acture.y)
+  auc <- as.numeric(ROCR::performance(pred, "auc")@y.values)
+  return(auc)
 }
 
 #' Plot AUC ROC Curves
@@ -396,7 +421,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' Calculate Performance Metrics
 #'
 #' Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-#' This function uses the pROC package to evaluate model effectiveness at different thresholds, helping to
+#' This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
 #' assess the discriminative ability of the model under various regularization strengths specified by 's'.
 #'
 #' @param model A model object used to generate predictions.
@@ -406,42 +431,51 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'          methods such as glmnet.
 #' @param acture.y A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.
 #'
-#' @return A performance object from the pROC package, which includes true positive and false positive rates.
+#' @return A performance object from the ROCR package, which includes true positive and false positive rates.
 #'
 #' @examples
-#' # Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-#' perf_metrics <- CalculatePref(
-#'   model = fitted_model,
-#'   newx = new_data, s = "lambda.min",
-#'   acture.y = actual_outcomes
-#' )
-#' print(perf_metrics)
+#' # 小型模拟数据示例
+#' set.seed(123)
+#'
+#' # 创建小规模数据
+#' n_train <- 50
+#' n_test <- 10
+#' p <- 3
+#'
+#' # 训练数据
+#' x_train <- matrix(rnorm(n_train * p), n_train, p)
+#' y_train <- sample(0:1, n_train, replace = TRUE)
+#'
+#' # 训练简单模型
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   library(glmnet)
+#'   # 快速训练（使用较小的交叉验证折数）
+#'   fitted_model <- cv.glmnet(x_train, y_train, 
+#'                            family = "binomial",
+#'                            nfolds = 3)  # 减少折数以加快速度
+#'   
+#'   # 测试数据
+#'   new_data <- matrix(rnorm(n_test * p), n_test, p)
+#'   actual_outcomes <- sample(0:1, n_test, replace = TRUE)
+#'   
+#'   # 计算性能
+#'   perf_metrics <- CalculatePref(
+#'     model = fitted_model,
+#'     newx = new_data,
+#'     s = "lambda.min",
+#'     acture.y = actual_outcomes
+#'   )
+#'   
+#'   # 简要输出
+#'   print("Performance metrics calculated successfully")
+#' }
 #' @export
-CalculatePref <- function(model, newx, s, acture.y) {
-  rlang::check_installed("pROC")
+CalculatePref <- function(model, newx, s, acture.y){
+  rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
-  # 安全的最小改动：处理矩阵情况
-  if (is.matrix(prob)) {
-    if (ncol(prob) > 1) {
-      # 多列矩阵，取第二列（正类概率）
-      prob_vector <- prob[, 2]
-    } else {
-      # 单列矩阵，直接取第一列
-      prob_vector <- prob[, 1]
-    }
-  } else {
-    # 不是矩阵，直接使用
-    prob_vector <- prob
-  }
-  roc_obj <- pROC::roc(acture.y, prob_vector) # <-- 修改在这里
-  ## 构造与 ROCR 相同字段名的 list 对象，直接 drop-in
-  structure(
-    list(
-      x.values = list(1 - roc_obj$specificities),
-      y.values = list(roc_obj$sensitivities)
-    ),
-    class = "performance"
-  ) # 保持原 class，下游代码零改动
+  pred <- ROCR::prediction(prob, acture.y)
+  perf <- ROCR::performance(pred, "tpr", "fpr")
+  return(perf)
 }
 
 

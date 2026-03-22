@@ -32,15 +32,35 @@ It uses the `timeROC` package to compute ROC statistics based on predicted risk 
 This is particularly useful for evaluating the predictive accuracy of survival models at a specified time probability.
 }
 \examples{
-# Assuming 'fit' is a Cox proportional hazards model fitted using `coxph` or `glmnet`
-new_data <- data.frame(x1 = rnorm(100), x2 = rnorm(100))
-actual_outcome <- data.frame(
-  time = rexp(100, rate = 0.1),
-  status = rbinom(100, size = 1, prob = 0.5)
-)
-roc_info <- CalculateTimeROC(fit,
-  newx = new_data,
-  s = "lambda.min", acture.y = actual_outcome,
-  modelname = "Cox Model"
-)
+if (requireNamespace("glmnet", quietly = TRUE) &&
+    requireNamespace("survival", quietly = TRUE)) {
+  data(lung, package = "survival")
+
+  # 使用真实内置数据，并去掉缺失值
+  dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
+
+  # glmnet 的 Cox 模型要求状态变量通常为 0/1
+  dat$status <- dat$status - 1
+
+  x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
+  y <- survival::Surv(dat$time, dat$status)
+
+  fit <- glmnet::glmnet(x, y, family = "cox")
+
+  actual_outcome <- data.frame(
+    time = dat$time,
+    status = dat$status
+  )
+
+  roc_info <- CalculateTimeROC(
+    model = fit,
+    newx = x,
+    s = 0.01,
+    acture.y = actual_outcome,
+    modelname = "glmnet Cox Model",
+    time_prob = 0.5
+  )
+
+  roc_info$AUC
+}
 }

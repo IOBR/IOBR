@@ -18,19 +18,47 @@ methods such as glmnet.}
 \item{acture.y}{A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.}
 }
 \value{
-A performance object from the pROC package, which includes true positive and false positive rates.
+A performance object from the ROCR package, which includes true positive and false positive rates.
 }
 \description{
 Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-This function uses the pROC package to evaluate model effectiveness at different thresholds, helping to
+This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
 assess the discriminative ability of the model under various regularization strengths specified by 's'.
 }
 \examples{
-# Assuming 'model', 'new_data', and 'actual_outcomes' are predefined:
-perf_metrics <- CalculatePref(
-  model = fitted_model,
-  newx = new_data, s = "lambda.min",
-  acture.y = actual_outcomes
-)
-print(perf_metrics)
+# 小型模拟数据示例
+set.seed(123)
+
+# 创建小规模数据
+n_train <- 50
+n_test <- 10
+p <- 3
+
+# 训练数据
+x_train <- matrix(rnorm(n_train * p), n_train, p)
+y_train <- sample(0:1, n_train, replace = TRUE)
+
+# 训练简单模型
+if (requireNamespace("glmnet", quietly = TRUE)) {
+  library(glmnet)
+  # 快速训练（使用较小的交叉验证折数）
+  fitted_model <- cv.glmnet(x_train, y_train, 
+                           family = "binomial",
+                           nfolds = 3)  # 减少折数以加快速度
+  
+  # 测试数据
+  new_data <- matrix(rnorm(n_test * p), n_test, p)
+  actual_outcomes <- sample(0:1, n_test, replace = TRUE)
+  
+  # 计算性能
+  perf_metrics <- CalculatePref(
+    model = fitted_model,
+    newx = new_data,
+    s = "lambda.min",
+    acture.y = actual_outcomes
+  )
+  
+  # 简要输出
+  print("Performance metrics calculated successfully")
+}
 }

@@ -22,11 +22,9 @@ into a list format suitable for IOBR functions, replacing NA values appropriatel
 }
 \examples{
 # Load signature data frame
-data("sig_excel", package = "IOBR")
+# sig_excel 是内部数据，直接使用
 # Transform into gene list for IOBR functions
 format_signatures(sig_excel)
-reading each column and transfer it to a list
-standerdized the name of list
 }
 \author{
 Dongqiang Zeng

@@ -75,6 +75,7 @@ signature scores. Automatically determines optimal cutpoints for signature
 stratification and creates publication-ready survival curves.
 }
 \examples{
+\dontrun{
 # Load TCGA-STAD microenvironment signature data
 data("sig_stad", package = "IOBR")
 sig_stad <- as.data.frame(sig_stad)
@@ -86,6 +87,7 @@ result <- batch_sig_surv_plot(
   palette = "jama", cols = NULL, mini_sig = "score",
   save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"
 )
+}
 }
 \author{
 Dongqiang Zeng

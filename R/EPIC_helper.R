@@ -150,10 +150,14 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   # 'reference'.
   with_w <- TRUE
   if (is.null(reference)) {
+    if (!exists("TRef")) {
+      data("TRef", package = "IOBR", envir = environment())
+    }
     reference <- TRef
   } else if (is.character(reference)) {
     if (reference %in% c("TRef", "BRef")) {
-      reference <- get(reference, pos = "package:IOBR")
+      data(list = reference, package = "IOBR", envir = environment())
+      reference <- get(reference, envir = environment())
       # Replace the char defining the reference name by the corresponding
       # pre-built reference values.
     } else {

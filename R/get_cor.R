@@ -186,8 +186,8 @@ get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pd
   p <- p + theme + theme(plot.subtitle = element_text(size = 15, hjust = 0, face = "italic", color = "black"))
 
   if (add.hdr.line) {
-    rlang::check_installed("ggfortify")
-    p <- p + ggfortify::geom_hdr_lines()
+    rlang::check_installed("ggdensity")
+    p <- p + ggdensity::geom_hdr_lines()
   }
 
   if (show_plot) print(p)

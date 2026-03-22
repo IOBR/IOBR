@@ -41,6 +41,7 @@
 #' @importFrom survminer surv_cutpoint
 #' @import survival
 #' @examples
+#' \dontrun{
 #' # Load TCGA-STAD microenvironment signature data
 #' data("sig_stad", package = "IOBR")
 #' sig_stad <- as.data.frame(sig_stad)
@@ -52,6 +53,7 @@
 #'   palette = "jama", cols = NULL, mini_sig = "score",
 #'   save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf"
 #' )
+#' }
 batch_sig_surv_plot <- function(input_pdata, signature, ID = "ID", column_of_Project = "ProjectID", project = NULL, time = "time", status = "status", time_type = "day", break_month = "auto",
                                 palette = "jama", cols = NULL, mini_sig = "score", save_path = "Multiple-KM-plot", show_col = TRUE, fig.type = "pdf") {
   input_pdata <- as.data.frame(input_pdata)

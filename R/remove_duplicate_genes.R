@@ -22,6 +22,7 @@
 #' # loading eset
 #' data("eset_stad", package = "IOBR")
 #' # annotation
+#' data("anno_rnaseq", package = "IOBR")
 #' eset_stad <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #' eset_stad <- rownames_to_column(eset_stad, var = "id")
 #'

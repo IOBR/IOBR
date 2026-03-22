@@ -17,10 +17,10 @@ sig_heatmap(
   palette = 2,
   cols_heatmap = NULL,
   palette_group = "jama",
-  show_col = F,
-  show_palettes = F,
+  show_col = FALSE,
+  show_palettes = FALSE,
   cols_group = NULL,
-  show_plot = T,
+  show_plot = TRUE,
   width = 8,
   height = NULL,
   size_col = 10,
@@ -28,7 +28,7 @@ sig_heatmap(
   angle_col = 90,
   column_title = NULL,
   row_title = NULL,
-  show_heatmap_col_name = F,
+  show_heatmap_col_name = FALSE,
   path = NULL,
   index = NULL
 )
@@ -50,11 +50,11 @@ sig_heatmap(
 
 \item{cols_condiction}{Character vector. Colors for conditions.}
 
-\item{scale}{Logical. Scale features by column. Default FALSE.}
+\item{scale}{Logical. Whether to scale values by row. Default FALSE.}
 
 \item{palette}{Integer or character. Palette index/name for heatmap colors. Default 2.}
 
-\item{cols_heatmap}{Character vector. Custom colors for heatmap (e.g., c("blue", "white", "red")). Default NULL.}
+\item{cols_heatmap}{Character vector. Custom colors for heatmap.}
 
 \item{palette_group}{Character. Palette group for group colors. Default "jama".}
 
@@ -87,10 +87,12 @@ sig_heatmap(
 \item{index}{Integer or NULL. Index appended to filename.}
 }
 \value{
-Invisibly returns path to saved plot; prints heatmap if show_plot = TRUE.
+A tidyHeatmap object. Saves PDF only when `path` is provided.
 }
 \description{
-Generates a heatmap of selected features grouped by a categorical variable, with optional conditional (annotation) bars. Supports palette customization, scaling, size controls, and output saving.
+Generates a heatmap of selected features grouped by a categorical variable,
+with optional conditional (annotation) bars. Supports palette customization,
+scaling, size controls, and output saving.
 }
 \examples{
 data("tcga_stad_sig", package = "IOBR")
@@ -98,7 +100,6 @@ data("tcga_stad_pdata", package = "IOBR")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 feas <- grep("MCPcounter", colnames(input), value = TRUE)
 sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
-
 }
 \author{
 Dongqiang Zeng

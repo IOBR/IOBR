@@ -42,10 +42,13 @@ A data frame with the estimated cell type fractions. The columns are named with 
 Estimate the fraction of cell types using defined reference genes
 }
 \examples{
+\dontrun{
 # Loading TCGA-STAD expresion data(raw count matrix)
 data(eset_stad, package = "IOBR")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+data("lm22", package = "IOBR")
 deconvo_ref(eset = eset, reference = lm22)
+}
 }
 \author{
 Dongqiang Zeng

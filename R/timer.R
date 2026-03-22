@@ -122,46 +122,82 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 }
 
 
-#' Process Batch Table and Check Cancer Types
+#' Process Batch Table and Validate Cancer Types
 #'
-#' This function processes a batch table containing cancer types and checks each
-#' cancer category against a predefined list of available cancer types. The batch table
-#' can either be specified through a file or directly passed via function arguments.
-#' If the cancer type from the batch is not recognized, the function will halt and
-#' report an error.
+#' This function processes input data containing cancer types and validates
+#' each category against a predefined list of supported cancer types
+#' (`timer_available_cancers`).
 #'
-#' @param args A list containing either a path to a batch file ('batch') or
-#' direct expressions and category inputs ('expression' and 'category').
-#' If 'batch' is provided, it should be a path to a comma-separated file where the
-#' second column contains cancer categories. If 'batch' is not provided, 'expression'
-#' and 'category' should be used to manually specify data.
+#' The input can be provided in two ways:
+#' \itemize{
+#'   \item \strong{Batch mode}: A CSV file path specified in \code{args$batch}.
+#''         The file is expected to have at least two columns, where the
+#'         second column contains cancer categories.
+#'   \item \strong{Direct mode}: Vectors provided via \code{args$expression}
+#'         and \code{args$category}.
+#' }
 #'
-#' @return Returns a matrix with two columns: one for expression data (if provided)
-#' and one for cancer categories. Each row corresponds to a record from the input batch.
+#' If any cancer category is not recognized, the function stops with an error.
+#'
+#' @param args A list containing input parameters:
+#' \describe{
+#'   \item{batch}{Character string. Path to a CSV file (optional).}
+#'   \item{expression}{Character vector of expression identifiers (used if \code{batch} is NULL).}
+#'   \item{category}{Character vector of cancer types (used if \code{batch} is NULL).}
+#' }
+#'
+#' @return A character matrix with two columns:
+#' \itemize{
+#'   \item Column 1: expression identifiers
+#'   \item Column 2: cancer categories
+#' }
+#' Each row corresponds to one record.
 #'
 #' @examples
-#' # Using a batch file:
-#' args <- list(batch = "path/to/batch_file.csv")
+#' # ---- Batch mode example ----
+#' tf <- tempfile(fileext = ".csv")
+#' write.table(
+#'   data.frame("exp1", "lung",
+#'              "exp2", "breast"),
+#'   file = tf,
+#'   sep = ",",
+#'   row.names = FALSE,
+#'   col.names = FALSE,
+#'   quote = FALSE
+#' )
+#'
+#' args <- list(batch = tf)
+#' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
 #'
-#' # Using direct inputs:
-#' args <- list(expression = c("exp1", "exp2"), category = c("lung", "breast"))
+#' # ---- Direct input example ----
+#' args <- list(
+#'   expression = c("exp1", "exp2"),
+#'   category   = c("lung", "breast"),
+#'   batch = NULL
+#' )
+#'
+#' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
 check_cancer_types <- function(args) {
-  if (length(args$batch) != 0) {
+
+  if (!is.null(args$batch)) {
     TimerINFO("Enter batch mode\n")
-    cancers <- as.matrix(read.table(args$batch, sep = ","))
+    cancers <- as.matrix(read.table(args$batch, sep = ",", stringsAsFactors = FALSE))
   } else {
-    cancers <- c(args$expression, args$category)
-    dim(cancers) <- c(1, 2)
+    if (length(args$expression) != length(args$category)) {
+      stop("expression and category must have the same length")
+    }
+    cancers <- cbind(args$expression, args$category)
   }
-  # print(cancers)
-  for (i in seq(nrow(cancers))) {
+
+  for (i in seq_len(nrow(cancers))) {
     cancer.category <- cancers[i, 2]
     if (!(cancer.category %in% timer_available_cancers)) {
       stop(paste("unknown cancers:", cancer.category))
     }
   }
+
   return(cancers)
 }
 
@@ -265,28 +301,34 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
 
 #' Parse Input Gene Expression Data
 #'
-#' This function reads gene expression data from a specified file path, expecting
-#' a tab-separated values (TSV) format with the first column as row names. It converts
-#' the loaded data into a numeric matrix, which is suitable for downstream analysis.
-#' Optionally, it can also modify the row names using `ConvertRownameToLoci` if uncommented.
+#' This function reads gene expression data from a tab-delimited text file,
+#' using the first column as row names. The data are converted into a numeric
+#' matrix for downstream analysis.
 #'
-#' @param path The file path of the gene expression data in TSV format.
-#'        The data should have gene identifiers as row names and sample identifiers
-#'        as column headers. The first row and column are expected to be headers.
+#' @param path Character string. Path to a tab-delimited gene expression file.
+#'   The first column should contain gene identifiers, and the remaining columns
+#'   should contain expression values for samples.
 #'
-#' @return A numeric matrix of the gene expression data, with genes as rows and
-#'         samples as columns.
+#' @return A numeric matrix of gene expression values, with genes as rows and
+#'   samples as columns.
 #'
 #' @export
 #'
 #' @examples
-#' # Path to gene expression data file
-#' example_path <- "path/to/gene_expression_data.csv"
+#' # Create a temporary tab-delimited expression file
+#' tf <- tempfile(fileext = ".tsv")
+#' expr <- data.frame(
+#'   gene = c("GeneA", "GeneB", "GeneC"),
+#'   Sample1 = c(10, 20, 30),
+#'   Sample2 = c(15, 25, 35)
+#' )
+#' write.table(expr, tf, sep = "\t", row.names = FALSE, quote = FALSE)
+#'
 #' # Parse the gene expression data
-#' gene_expression_data <- ParseInputExpression(example_path)
+#' gene_expression_data <- ParseInputExpression(tf)
 #' print(gene_expression_data)
 ParseInputExpression <- function(path) {
-  ret <- read.csv(path, sep = "\t", row.names = 1)
+  ret <- read.delim(path, row.names = 1, check.names = FALSE)
   ret <- as.matrix(ret)
   mode(ret) <- "numeric"
   # ret <- ConvertRownameToLoci(ret)
@@ -354,21 +396,34 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' @export
 #'
 #' @examples
-#' cancers <- data.frame(ExpressionFiles = c(
-#'   "path/to/expression1.csv",
-#'   "path/to/expression2.csv"
-#' ))
+#' tf1 <- tempfile(fileext = ".tsv")
+#' tf2 <- tempfile(fileext = ".tsv")
 #'
-#' # Get outlier genes
+#' expr1 <- data.frame(
+#'   gene = c("GeneA", "GeneB", "GeneC", "GeneD", "GeneE", "GeneF"),
+#'   Sample1 = c(10, 50, 30, 80, 60, 20),
+#'   Sample2 = c(15, 40, 25, 90, 55, 10)
+#' )
+#'
+#' expr2 <- data.frame(
+#'   gene = c("GeneA", "GeneB", "GeneC", "GeneD", "GeneE", "GeneF"),
+#'   Sample3 = c(100, 20, 10, 60, 30, 80),
+#'   Sample4 = c(95, 25, 15, 70, 35, 85)
+#' )
+#'
+#' write.table(expr1, tf1, sep = "\t", row.names = FALSE, quote = FALSE)
+#' write.table(expr2, tf2, sep = "\t", row.names = FALSE, quote = FALSE)
+#'
+#' cancers <- data.frame(ExpressionFiles = c(tf1, tf2))
 #' outlier_genes <- GetOutlierGenes(cancers)
 GetOutlierGenes <- function(cancers) {
-  ## Return a union of  outlier genes.
+  ## Return a union of outlier genes.
   ## The top 5 expressed genes in each sample is treated as outlier here.
   outlier.total <- c()
-  for (i in seq(nrow(cancers))) {
-    cancer.expFile <- cancers[i, 1]
+  for (i in seq_len(nrow(cancers))) {
+    cancer.expFile <- as.character(cancers[i, 1])
     cancer.expression <- ParseInputExpression(cancer.expFile)
-    for (j in 1:ncol(cancer.expression)) {
+    for (j in seq_len(ncol(cancer.expression))) {
       outlier <- rownames(cancer.expression)[tail(order(cancer.expression[, j]), 5)]
       outlier.total <- c(outlier.total, outlier)
     }

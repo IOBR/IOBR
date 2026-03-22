@@ -245,13 +245,14 @@ calculate_sig_score_zscore <- function(pdata = NULL,
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
+#' \dontrun{
 #' # Loading TCGA-STAD expresion data(raw count matrix)
 #' data("eset_stad", package = "IOBR")
 #' # transform count data to tpm
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' # signature score estimation using ssgsea method
 #' calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
-#'
+#'}
 calculate_sig_score_ssgsea <- function(pdata = NULL,
                                        eset,
                                        signature,
@@ -417,12 +418,14 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #' @import tibble
 #' @author Dongqiang Zeng
 #' @examples
+#' \dontrun{
 #' # Loading TCGA-STAD expresion data(raw count matrix)
 #' data("eset_stad", package = "IOBR")
 #' # transform count data to tpm
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' # signature score estimation using PCA, z-score, and ssgsea method
 #' calculate_sig_score_integration(eset = eset, signature = signature_tme)
+#' }
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
                                             signature,
@@ -623,7 +626,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #'
 calculate_sig_score <- function(pdata = NULL,
                                 eset,
-                                signature = signature_collection,
+                                signature = NULL,
                                 method = "pca",
                                 mini_gene_count = 3,
                                 column_of_sample = "ID",
@@ -631,6 +634,27 @@ calculate_sig_score <- function(pdata = NULL,
                                 adjust_eset = FALSE,
                                 parallel.size = 1L,
                                 print_filtered_signatures = FALSE, ...) {
+  # 如果 signature 为 NULL，给出提示
+  if(is.null(signature)) {
+    stop("Please provide a signature list. Available options include:\n",
+         "  - signature_tme (from sysdata)\n",
+         "  - signature_collection (from data/ - load with data('signature_collection'))\n",
+         "  - go_bp, kegg, hallmark (from sysdata)")
+  }
+  
+  # 如果 signature 是字符型且等于数据对象名，尝试加载
+  if(is.character(signature) && length(signature) == 1 && 
+     signature %in% c("signature_collection", "signature_tme", "go_bp", "kegg", "hallmark")) {
+    
+    if(signature == "signature_collection") {
+      data("signature_collection", package = "IOBR", envir = environment())
+      signature <- signature_collection
+    } else {
+      # 其他对象在 sysdata 中，直接使用
+      signature <- get(signature)
+    }
+  }
+  
   if (inherits(signature, "list")) {
     signature <- lapply(signature, function(x) na.omit(x))
     signature <- lapply(signature, function(x) as.character(x))

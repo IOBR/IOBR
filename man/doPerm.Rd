@@ -28,7 +28,7 @@ doPerm performs permutation-based sampling and runs the CoreAlg function iterati
 }
 \examples{
 X <- matrix(rnorm(100), nrow = 10)
-y <- rnorm(10)
+Y <- rnorm(10)
 result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
 
 }
