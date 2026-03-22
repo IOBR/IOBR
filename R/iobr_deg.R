@@ -126,7 +126,7 @@ iobr_deg <- function(eset,
       # DEG <- rownames_to_column(DEG, var = "row")
 
       message(">>>== IOBR provides annotation files (`anno_grch38`) to help you annotate the results of `iobr_deg` \n")
-      anno_grch38 <- .load_data("anno_grch38")
+      anno_grch38 <- load_data("anno_grch38")
       DEG <- merge(DEG, anno_grch38, by.x = "row", by.y = "id", all = FALSE)
     }
 

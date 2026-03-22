@@ -58,7 +58,7 @@ tcga_rna_preps <- function(eset, id_type = c("ensembl", "symbol"), input_type = 
     eset_tpm <- eset
     if (id_type == "ensembl" & annotation) {
       message(">>== Annotation... ")
-      anno_grch38 <- .load_data("anno_grch38")
+      anno_grch38 <- load_data("anno_grch38")
       eset_tpm <- anno_eset(eset = eset_tpm, annotation = anno_grch38, probe = "id", symbol = "symbol")
     }
   }

@@ -81,7 +81,7 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
     message(">>>>=== Palette option for random: 1: palette1; 2: palette2; 3: palette3;  4: palette4")
 
     ###########################################################
-    mypal <- .load_data(paste0("palette", ifelse(palette %in% 1:4, palette, 4)))
+    mypal <- load_data(paste0("palette", ifelse(palette %in% 1:4, palette, 4)))
 
     if (show_col) {
       print(paste0("'", mypal, "'", collapse = ", "))
