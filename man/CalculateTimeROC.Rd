@@ -34,7 +34,6 @@ This is particularly useful for evaluating the predictive accuracy of survival m
 \examples{
 if (requireNamespace("glmnet", quietly = TRUE) &&
     requireNamespace("survival", quietly = TRUE)) {
-  data(lung, package = "survival")
 
   # 使用真实内置数据，并去掉缺失值
   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])

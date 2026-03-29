@@ -4,7 +4,7 @@
 \alias{deconvo_ips}
 \title{Calculating immune phenotype score using IPS}
 \usage{
-deconvo_ips(eset, project = NULL, plot)
+deconvo_ips(eset, project = NULL, plot = FALSE)
 }
 \arguments{
 \item{eset}{expression set with genes at row, sample ID at column}

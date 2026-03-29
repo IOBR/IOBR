@@ -27,21 +27,31 @@ No return value. The function generates and saves scatterplots in the specified 
 This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
 }
 \examples{
-# Create a sample scores file
+# Create a sample ESTIMATE score matrix
 scores_data <- data.frame(
-  SampleID = c("Sample1", "Sample2", "Sample3"),
-  ESTIMATEScore = c(500, 450, 600),
-  TumorPurity = c(0.8, 0.7, 0.9),
-  Pred1 = c(0.75, 0.65, 0.85),
-  Pred2 = c(0.8, 0.7, 0.9),
-  Pred3 = c(0.85, 0.75, 0.95),
-  stringsAsFactors = FALSE
+  Sample1 = c(100, 200, 500, 0.80),
+  Sample2 = c(120, 220, 450, 0.70),
+  Sample3 = c(140, 240, 600, 0.90),
+  row.names = c("StromalScore", "ImmuneScore", "ESTIMATEScore", "TumorPurity"),
+  check.names = FALSE
 )
-write.table(scores_data, file = "scores.txt", sep = "\t", row.names = FALSE, quote = FALSE)
+
+# Write to a temporary GCT file
+scores_file <- tempfile(fileext = ".gct")
+outputGCT(scores_data, scores_file)
 
 # Plot purity for all samples
-plotPurity("scores.txt", platform = "affymetrix")
+\dontrun{
+plotPurity(scores_file, platform = "affymetrix", output.dir = tempdir())
+}
 
 # Plot purity for specific samples
-plotPurity("scores.txt", samples = c("Sample1", "Sample3"), platform = "affymetrix")
+\dontrun{
+plotPurity(
+  scores_file,
+  samples = c("Sample1", "Sample3"),
+  platform = "affymetrix",
+  output.dir = tempdir()
+)
+}
 }

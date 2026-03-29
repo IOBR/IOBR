@@ -319,9 +319,12 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 #' )
 #' head(cibersort)
 #' }
-CIBERSORT <- function(sig_matrix = lm22, mixture_file, perm, QN = TRUE, absolute,
+CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute =FALSE,
                       abs_method = "sig.score", parallel = FALSE, num_cores = 2,
                       seed = NULL) {
+  if (is.null(sig_matrix)) {
+  sig_matrix <- .load_data("lm22")
+}
   # Input validation
   if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0) {
     stop("None identical gene between eset and reference had been found.

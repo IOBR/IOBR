@@ -43,7 +43,7 @@ best_cutoff <- function(pdata, variable, time = "time",
   pdata$time <- as.numeric(pdata$time_iobr)
   pdata$status <- as.numeric(pdata$status_iobr)
 
-  y <- Surv(pdata$time_iobr, pdata$status_iobr)
+  y <- survival::Surv(pdata$time_iobr, pdata$status_iobr)
   iscutoff <- surv_cutpoint(pdata, time = "time_iobr", event = "status_iobr", variables = variable)
 
   aa <- paste(">>>-- The best cutoff is = ", iscutoff$cutpoint$cutpoint)

@@ -60,7 +60,26 @@ get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, 
   heat <- cbind(reshape2::melt(result$r), reshape2::melt(result$p))[, c(1, 2, 3, 6)]
   colnames(heat) <- c("ID1", "ID2", "cor", "pvalue")
   #############################
+  
 
+  #############################
+  # ===== 关键修改从这里开始 =====
+  
+  # Step 1: 先把原始feas名称中的下划线替换为空格（用于设置levels）
+  feas1_clean <- gsub(feas1, pattern = "\\_", replacement = " ")
+  feas2_clean <- gsub(feas2, pattern = "\\_", replacement = " ")
+  
+  # Step 2: 同样处理heat中的名称
+  heat$ID1 <- gsub(as.character(heat$ID1), pattern = "\\_", replacement = " ")
+  heat$ID2 <- gsub(as.character(heat$ID2), pattern = "\\_", replacement = " ")
+  
+  # Step 3: 转换为factor，并指定levels为原始顺序
+  # rev()让Y轴从下往上对应你的输入顺序
+  heat$ID1 <- factor(heat$ID1, levels = feas1_clean)           # X轴：左→右 = feas1顺序
+  heat$ID2 <- factor(heat$ID2, levels = rev(feas2_clean))       # Y轴：下→上 = feas2顺序
+  
+  # ===== 修改结束 =====
+  #############################
   if (fill_by_cor) {
     heat$stars <- round(heat$cor, round.num)
   } else {
@@ -69,8 +88,7 @@ get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, 
       label = c("***", "**", "*", "+", "")
     )
   }
-
-  heat$ID2 <- gsub(heat$ID2, pattern = "\\_", replacement = " ")
+  
   #######################################
   # 颜色处理（新增）
   if (is.null(cols)) {

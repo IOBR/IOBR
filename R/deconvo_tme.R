@@ -304,7 +304,7 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
   # (see CIBERSORT website).
   quantile_norm <- arrays
   ##############################
-  sig_matrix <- get("lm22", envir = asNamespace("IOBR"))
+  sig_matrix <- .load_data("lm22")
   res <- CIBERSORT(
     sig_matrix = sig_matrix,
     mixture_file = eset,
@@ -353,7 +353,7 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
 #'
-deconvo_ips <- function(eset, project = NULL, plot) {
+deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
   message(paste0("\n", ">>> Running ", "Immunophenoscore"))
   # normalize gene expression matrix
   # if(max(eset)>100) eset<-log2(eset+1)

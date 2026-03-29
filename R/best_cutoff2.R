@@ -35,7 +35,7 @@ best_cutoff2 <- function(pdata, variable, time = "time", status = "status", Prin
   pdata$time <- as.numeric(pdata$time)
   pdata$status <- as.numeric(pdata$status)
 
-  y <- Surv(pdata$time, pdata$status)
+  y <- survival::Surv(pdata$time, pdata$status)
   iscutoff <- surv_cutpoint(pdata, time = "time", event = "status", variables = variable)
   aa <- paste("best cutoff = ", iscutoff$cutpoint$cutpoint)
   plot(iscutoff, variable, palette = "npg")

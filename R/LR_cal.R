@@ -18,7 +18,7 @@
 #'   lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
 #' }
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
-  rlang::check_installed(easier)
+  rlang::check_installed("easier")
   # if (!requireNamespace("easier", quietly = TRUE))  BiocManager::install("easier", dependencies = FALSE)
 
   if (data_type == "count") {

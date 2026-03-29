@@ -86,7 +86,7 @@ sig_pheatmap <- function(input, feas, group,
 
   if (is.null(group3) & is.null(group2)) {
     anno <- input[, c("idd", group)]
-  } else if (!is.null(group2) & is.null(goup3)) {
+  } else if (!is.null(group2) & is.null(group3)) {
     anno <- input[, c("idd", group, group2)]
   } else {
     anno <- input[, c("idd", group, group2, group3)]
@@ -94,6 +94,7 @@ sig_pheatmap <- function(input, feas, group,
 
   rownames(anno) <- anno$idd
   anno$idd <- NULL
+  anno[] <- lapply(anno, as.character)
   ###################################
 
 
@@ -159,32 +160,38 @@ sig_pheatmap <- function(input, feas, group,
     }
   }
 
-  cluster_colors1 <- mycols1[1:length(base::unique(input[, group]))]
-  names(cluster_colors1) <- unique(input[, group])
-  cluster_colors1 <- list(group = cluster_colors1)
-  names(cluster_colors1) <- group
+  lev1 <- unique(as.character(input[[group]]))
+  lev1 <- lev1[!is.na(lev1)]
+  cluster_vec1 <- mycols1[seq_along(lev1)]
+  names(cluster_vec1) <- lev1
+  cluster_colors1 <- list()
+  cluster_colors1[[group]] <- cluster_vec1
   ######################################################
   if (!is.null(group2)) {
-    cluster_colors2 <- mycols2[1:length(base::unique(input[, group2]))]
-    names(cluster_colors2) <- unique(input[, group2])
-    cluster_colors2 <- list(group2 = cluster_colors2)
-    names(cluster_colors2) <- group2
+  lev2 <- unique(as.character(input[[group2]]))
+  lev2 <- lev2[!is.na(lev2)]
+  cluster_vec2 <- mycols2[seq_along(lev2)]
+  names(cluster_vec2) <- lev2
+  cluster_colors2 <- list()
+  cluster_colors2[[group2]] <- cluster_vec2
   }
   ######################################################
   if (!is.null(group3)) {
-    cluster_colors3 <- mycols3[1:length(base::unique(input[, group3]))]
-    names(cluster_colors3) <- unique(input[, group3])
-    cluster_colors3 <- list(group3 = cluster_colors3)
-    names(cluster_colors3) <- group3
-  }
+  lev3 <- unique(as.character(input[[group3]]))
+  lev3 <- lev3[!is.na(lev3)]
+  cluster_vec3 <- mycols3[seq_along(lev3)]
+  names(cluster_vec3) <- lev3
+  cluster_colors3 <- list()
+  cluster_colors3[[group3]] <- cluster_vec3
+ }
   ######################################################
 
   if (is.null(group3) & is.null(group2)) {
     cluster_colors <- cluster_colors1
-  } else if (!is.null(group2) & is.null(goup3)) {
-    cluster_colors <- append(cluster_colors1, cluster_colors2)
+  } else if (!is.null(group2) & is.null(group3)) {
+    cluster_colors <- c(cluster_colors1, cluster_colors2)
   } else {
-    cluster_colors <- append(cluster_colors1, cluster_colors2, cluster_colors3)
+    cluster_colors <- c(cluster_colors1, cluster_colors2, cluster_colors3)
   }
 
   print(cluster_colors)
@@ -235,7 +242,6 @@ sig_pheatmap <- function(input, feas, group,
     mat,
     name = "value", # 图例标题
     col = col_fun(256), # 颜色
-    scale = "none", # 同 scale = "none"
     cluster_rows = TRUE,
     cluster_columns = cluster_cols,
     show_row_names = TRUE,
@@ -248,9 +254,8 @@ sig_pheatmap <- function(input, feas, group,
   )
 
   ## 5. 保存文件（等效 filename）
-  pdf(paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type),
-    width = width, height = height
-  )
+  outfile <- file.path(path$folder_name, paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type))
+  pdf(outfile, width = width, height = height)
   ComplexHeatmap::draw(ht)
   invisible(dev.off())
 
@@ -262,6 +267,6 @@ sig_pheatmap <- function(input, feas, group,
   #   path = path$folder_name
   # )
 
-  res <- list("p_anno" = anno, "p_cols" = cluster_colors, "plot" = p, "eset" = eset)
+  res <- list("p_anno" = anno, "p_cols" = cluster_colors, "plot" = ht, "eset" = eset)
   return(res)
 }

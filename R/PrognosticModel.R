@@ -78,8 +78,12 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
     )
   }
   message(paste0(">>> Done !"))
+  if (plot) {
   p <- p1 + p2
   print(p)
+  } else {
+  p <- NULL
+  }
   return(list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x))
 }
 
@@ -105,32 +109,51 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #' @importFrom purrr pmap
 #' @examples
 #' # Assuming 'fit' is a Cox model fitted using `glmnet`
-#' train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
-#' test_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
+#' train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10),
+#'   y = survival::Surv(rexp(100), rbinom(100, 1, 0.5)))
+#' test_data <- list(x = matrix(rnorm(100 * 10), ncol = 10),
+#'   y = survival::Surv(rexp(100), rbinom(100, 1, 0.5)))
 #' results <- PrognosticResult(
 #'   model = fit, train.x = train_data$x, train.y = train_data$y,
 #'   test.x = test_data$x, test.y = test_data$y
 #' )
 #' @export
 PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
-  # Extract coefficients at specified lambda values
-  coefs <- cbind(stats::coef(model, s = "lambda.min"), stats::coef(model, s = "lambda.1se"))
-  coefs <- data.frame(feature = rownames(coefs), lambda.min = coefs[, 1], lambda.1se = coefs[, 2])
+  # 提取系数
+  coefs <- cbind(
+    stats::coef(model, s = "lambda.min"),
+    stats::coef(model, s = "lambda.1se")
+  )
+  coefs <- data.frame(
+    feature = rownames(coefs),
+    lambda.min = coefs[, 1],
+    lambda.1se = coefs[, 2],
+    row.names = NULL
+  )
 
-  # Prepare data for AUC calculation
-  newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y <- list(train.y, train.y, test.y, test.y)
-  args <- list(newx, s, acture.y)
+  # 准备 AUC 参数
+  args <- list(
+    newx = list(train.x, train.x, test.x, test.x),
+    s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se"),
+    acture.y = list(train.y, train.y, test.y, test.y)
+  )
 
-  # Calculate AUC using the PrognosticAUC function
-  auc <- args %>%
-    purrr::pmap(PrognosticAUC, model = model) %>%
-    do.call(rbind, .)
-  rownames(auc) <- c("Train_lambda.min", "Train_lambda.1se", "Test_lambda.min", "Test_lambda.1se")
+  # 显式传参，避免 pmap 参数错位
+  auc_list <- purrr::pmap(
+    args,
+    function(newx, s, acture.y) {
+      PrognosticAUC(model = model, newx = newx, s = s, acture.y = acture.y)
+    }
+  )
 
-  # Return results as a list
+  auc <- do.call(rbind, auc_list)
+  rownames(auc) <- c(
+    "Train_lambda.min", "Train_lambda.1se",
+    "Test_lambda.min", "Test_lambda.1se"
+  )
+
   resultreturn <- list(model = model, coefs = coefs, AUC = auc)
+  return(resultreturn)
 }
 
 
@@ -204,10 +227,10 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @return An object of class `timeROC` that contains the time-dependent ROC curve information.
 #' @importFrom stats predict
 #' @importFrom timeROC timeROC
+#' @import survival
 #' @examples
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'     requireNamespace("survival", quietly = TRUE)) {
-#'   data(lung, package = "survival")
 #'
 #'   # 使用真实内置数据，并去掉缺失值
 #'   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
@@ -240,6 +263,10 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
+  # 显式确保 survival 可用
+  if (!exists("Surv", mode = "function")) {
+    stop("Surv function not available. Please ensure survival package is loaded.")
+  }
   ROC <- with(
     timerocDat,
     timeROC::timeROC(
@@ -298,15 +325,37 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols
     cols <- cols
   }
 
-  newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y <- list(train.y, train.y, test.y, test.y)
-  args <- list(newx, s, acture.y)
-  auc <- args %>%
-    purrr::pmap(PrognosticAUC, model = model) %>%
-    do.call(rbind, .)
-  rownames(auc) <- c("Train_lambda.min", "Train_lambda.1se", "Test_lambda.min", "Test_lambda.1se")
-  roclist <- args %>% purrr::pmap(CalculateTimeROC, model = model)
+  args <- list(
+    newx = list(train.x, train.x, test.x, test.x),
+    s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se"),
+    acture.y = list(train.y, train.y, test.y, test.y)
+  )
+
+  auc_list <- purrr::pmap(
+    args,
+    function(newx, s, acture.y) {
+      PrognosticAUC(model = model, newx = newx, s = s, acture.y = acture.y)
+    }
+  )
+  auc <- do.call(rbind, auc_list)
+  rownames(auc) <- c(
+    "Train_lambda.min", "Train_lambda.1se",
+    "Test_lambda.min", "Test_lambda.1se"
+  )
+
+  roclist <- purrr::pmap(
+    args,
+    function(newx, s, acture.y) {
+      CalculateTimeROC(
+        model = model,
+        newx = newx,
+        s = s,
+        acture.y = acture.y,
+        modelname = modelname
+      )
+    }
+  )
+
   aucs <- round(auc$probs.9, 2)
   legend.name <- paste(c(
     "train_lambda.min", "train_lambda.1se",
@@ -332,7 +381,7 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols
       values = cols,
       labels = legend.name
     ) +
-    ggtitle(paste0(str_replace(modelname, "_", " "), "\nROC at time quantile 0.9")) +
+    ggtitle(paste0(stringr::str_replace(modelname, "_", " "), "\nROC at time quantile 0.9")) +
     theme(legend.title = element_blank()) +
     theme(
       plot.title = element_text(size = rel(1.5), hjust = 0.5),

@@ -207,7 +207,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     var2 <- vars[2]
     var3 <- paste0(var1, " + ", var2)
     # cox regression
-    marker3 <- coxph(Surv(time, status) ~ input[, var1] + input[, var2], data = input)
+    marker3 <- survival::coxph(Surv(time, status) ~ input[, var1] + input[, var2], data = input)
     input$var3 <- predict(marker3, type = "lp", newdata = input)
 
     roc1 <- timeROC::timeROC(
@@ -274,7 +274,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     var3 <- vars[3]
     var4 <- paste0(var1, "+", var2, "+", var3)
     # cox regression
-    marker4 <- coxph(Surv(time, status) ~ input[, var1] + input[, var2] + input[, var3], data = input)
+    marker4 <- survival::coxph(Surv(time, status) ~ input[, var1] + input[, var2] + input[, var3], data = input)
     input$var4 <- predict(marker4, type = "lp", newdata = input)
 
     message(">>=== Predicting combined score...")

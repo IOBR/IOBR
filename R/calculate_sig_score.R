@@ -425,7 +425,7 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' # signature score estimation using PCA, z-score, and ssgsea method
 #' calculate_sig_score_integration(eset = eset, signature = signature_tme)
-#' }
+#' }                                                                                                       
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
                                             signature,

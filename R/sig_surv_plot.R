@@ -135,13 +135,13 @@ sig_surv_plot <- function(input_pdata,
   #####################################
   input_pdata$bestcutoff <- ifelse(input_pdata$bestcutoff == "High", 1, 0)
 
-  pvalue <- getHRandCIfromCoxph(coxph(Surv(time = input_pdata$time, event = input_pdata$status) ~ input_pdata$bestcutoff, data = input_pdata))
+  pvalue <- getHRandCIfromCoxph(survival::coxph(survival::Surv(time = input_pdata$time, event = input_pdata$status) ~ input_pdata$bestcutoff, data = input_pdata))
 
   HR <- paste("Hazard Ratio = ", round(pvalue[, 2], 2), sep = "")
   CI <- paste("95% CI: ", paste(round(pvalue[, 3], 2), round(pvalue[, 4], 2), sep = " - "), sep = "")
   cut_off <- paste("cutoff = ", round(res.cut, 3), sep = "")
   ###########################################
-  sfit <- surv_fit(Surv(time = input_pdata$time, event = input_pdata$status) ~ input_pdata$bestcutoff,
+  sfit <- surv_fit(survival::Surv(time = input_pdata$time, event = input_pdata$status) ~ input_pdata$bestcutoff,
     data = input_pdata
   )
   # input_pdata[,index]<-ifelse(input_pdata[,index]==1,"High","LOW")
@@ -212,7 +212,7 @@ sig_surv_plot <- function(input_pdata,
   # HR <- paste("Hazard Ratio = ", round(pvalue[,2],2), sep = "")
   # CI <- paste("95% CI: ", paste(round(pvalue[,3],2), round(pvalue[,4],2), sep = " - "), sep = "")
   ##########################################
-  sfit <- surv_fit(Surv(input_pdata$time, input_pdata$status) ~ input_pdata$group3, data = input_pdata)
+  sfit <- surv_fit(survival::Surv(input_pdata$time, input_pdata$status) ~ input_pdata$group3, data = input_pdata)
 
   # hack strata for better survival curve
   names(sfit$strata) <- gsub("group3=", "", names(sfit$strata))
@@ -234,7 +234,7 @@ sig_surv_plot <- function(input_pdata,
   )
 
 
-  fitd <- survdiff(Surv(time, status) ~ group3,
+  fitd <- survival::survdiff(survival::Surv(time, status) ~ group3,
     data = input_pdata,
     na.action = na.exclude
   )
@@ -257,7 +257,7 @@ sig_surv_plot <- function(input_pdata,
   )
 
   # calculate pair-wise survival comparison
-  ps <- pairwise_survdiff(Surv(time, status) ~ group3,
+  ps <- survminer::pairwise_survdiff(survival::Surv(time, status) ~ group3,
     data = input_pdata,
     p.adjust.method = "none"
   )
@@ -273,11 +273,10 @@ sig_surv_plot <- function(input_pdata,
   df <- tibble(x = 0, y = 0, tb = list(addTab))
   # pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
   rlang::check_installed("gridExtra")
-  tb_grob <- gridExtra::tableGrob(df$tb,
-    rows = TRUE,
-    gp = grid::gpar(fontsize = 6)
-  )
+  tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
+  theme = gridExtra::ttheme_minimal(base_size = 6))
 
+  
   ## 把 ggpp::geom_table 换成 geom_text + annotation_custom
   pp2$plot <- pp2$plot +
     ggplot2::geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +
@@ -313,11 +312,11 @@ sig_surv_plot <- function(input_pdata,
   # ###########################################
   # # turn high to 1 to calculate HR
 
-  pvalue <- getHRandCIfromCoxph(coxph(Surv(input_pdata$time, input_pdata$status) ~ input_pdata[, "group2"], data = input_pdata))
+  pvalue <- getHRandCIfromCoxph(survival::coxph(survival::Surv(input_pdata$time, input_pdata$status) ~ input_pdata[, "group2"], data = input_pdata))
   HR <- paste("Hazard Ratio = ", round(pvalue[, 2], 2), sep = "")
   CI <- paste("95% CI: ", paste(round(pvalue[, 3], 2), round(pvalue[, 4], 2), sep = " - "), sep = "")
 
-  sfit <- surv_fit(Surv(input_pdata$time, input_pdata$status) ~ input_pdata$group2, data = input_pdata)
+  sfit <- survminer::surv_fit(survival::Surv(input_pdata$time, input_pdata$status) ~ input_pdata$group2, data = input_pdata)
   pp3 <- ggsurvplot(sfit,
     data = input_pdata, censor = TRUE,
     ncensor.plot = F, conf.int = F,

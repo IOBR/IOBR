@@ -25,7 +25,7 @@ df <- data.frame(
   group = sample(c("Treatment", "Control"), 200, replace = TRUE)
 )
 # Fit Cox model
-coxphData <- coxph(Surv(TTE, Cens) ~ group, data = df)
+coxphData <- survival::coxph(survival::Surv(TTE, Cens) ~ group, data = df)
 # Extract HR and CI
 results <- getHRandCIfromCoxph(coxphData)
 print(results)

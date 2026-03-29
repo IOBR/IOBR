@@ -162,7 +162,7 @@ surv_group <- function(input_pdata,
       pval.size = 8
     )
 
-    fitd <- survdiff(Surv(time, status) ~ target_group,
+    fitd <- survival::survdiff(Surv(time, status) ~ target_group,
       data = input_pd,
       na.action = na.exclude
     )
@@ -186,7 +186,7 @@ surv_group <- function(input_pdata,
     )
 
     # calculate pair-wise survival comparison
-    ps <- pairwise_survdiff(Surv(time, status) ~ target_group,
+    ps <- survminer::pairwise_survdiff(Surv(time, status) ~ target_group,
       data = input_pd,
       p.adjust.method = "none"
     )
@@ -220,13 +220,13 @@ surv_group <- function(input_pdata,
       #####################################
       message(paste0(">>>--- Reference_group was not defined..."))
 
-      pvalue <- getHRandCIfromCoxph(coxph(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group, data = input_pd))
+      pvalue <- getHRandCIfromCoxph(survival::coxph(survival::Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group, data = input_pd))
 
       HR <- paste("Hazard Ratio = ", round(pvalue[, 2], 2), sep = "")
       CI <- paste("95% CI: ", paste(round(pvalue[, 3], 2), round(pvalue[, 4], 2), sep = " - "), sep = "")
       # cut_off<-paste("cutoff = ",round(res.cut,3),sep = "")
       ###########################################
-      sfit <- surv_fit(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group, data = input_pd)
+      sfit <- survminer::surv_fit(Surv(time = input_pd$time, event = input_pd$status) ~ input_pd$target_group, data = input_pd)
       # input_pd[,index]<-ifelse(input_pd[,index]==1,"High","LOW")
       ###########################################
       pp <- survminer::ggsurvplot(sfit,

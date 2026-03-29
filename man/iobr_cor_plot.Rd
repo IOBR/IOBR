@@ -119,22 +119,39 @@ box plots, heatmaps, and correlation plots.
 }
 \examples{
 # Create example phenotype and feature data
+set.seed(123)
+
 pdata_group <- data.frame(
   ID = 1:100,
-  phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE)
+  phenotype_score = rnorm(100)
 )
+
 feature_data <- data.frame(
   ID = 1:100,
   Feature1 = rnorm(100),
-  Feature2 = rnorm(100)
+  Feature2 = rnorm(100),
+  Feature3 = rnorm(100)
 )
+
+# Example signature grouping
+sig_group_example <- list(
+  signature = c("Feature1", "Feature2", "Feature3")
+)
+
 # Perform correlation analysis
-data("sig_group", package = "IOBR")
 results <- iobr_cor_plot(
-  pdata_group = pdata_group, feature_data = feature_data,
-  id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
-  show_plot = TRUE, path = "path/to/save/results"
+  pdata_group = pdata_group,
+  feature_data = feature_data,
+  id1 = "ID",
+  id2 = "ID",
+  target = "phenotype_score",
+  is_target_continuous = TRUE,
+  category = "signature",
+  signature_group = sig_group_example,
+  show_plot = FALSE,
+  path = tempdir()
 )
+
 print(results)
 }
 \author{

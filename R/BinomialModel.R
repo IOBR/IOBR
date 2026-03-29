@@ -207,10 +207,10 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #' )
 #' @export
 RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
-  coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
+  coefs <- cbind(coef(model, s = model$lambda.min), coef(model, s = model$lambda.1se))
   coefs <- data.frame(feature = rownames(coefs), lambda.min = coefs[, 1], lambda.1se = coefs[, 2])
   newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
+  s <- list(model$lambda.min, model$lambda.1se, model$lambda.min, model$lambda.1se)
   acture.y <- list(train.y, train.y, test.y, test.y)
   args <- list(newx, s, acture.y)
   AUC <- args %>%
@@ -223,6 +223,7 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
     model = model, coefs = coefs,
     AUC = AUC
   )
+  return(resultreturn)
 }
 
 #' Elastic Net Model Fitting
@@ -377,7 +378,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
   }
 
   newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
+  s <- list(model$lambda.min, model$lambda.1se, model$lambda.min, model$lambda.1se)
   acture.y <- list(train.y, train.y, test.y, test.y)
   args <- list(newx, s, acture.y)
   pref <- args %>% purrr::pmap(CalculatePref, model = model)
@@ -406,7 +407,7 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
       values = cols,
       labels = legend.name
     ) +
-    ggtitle(str_replace(modelname, "_", " ")) +
+    ggtitle(stringr::str_replace(modelname, "_", " ")) +
     theme(legend.title = element_blank()) +
     theme(
       plot.title = element_text(size = rel(2), hjust = 0.5),

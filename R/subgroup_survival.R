@@ -48,7 +48,7 @@ subgroup_survival <- function(pdata, time_name = "time", status_name = "status",
       if (dim(tmp1)[1] == 0) {
         next
       }
-      fit <- coxph(Surv(tmp1[, time_name], tmp1[, status_name]) ~ tmp1[, object], data = tmp1)
+      fit <- survival::coxph(Surv(tmp1[, time_name], tmp1[, status_name]) ~ tmp1[, object], data = tmp1)
       result1 <- getHRandCIfromCoxph(fit)
       rownames(result1) <- paste(sig, levels(tmp[, ind])[i], sep = "_")
       result2 <- rbind(result2, result1)
