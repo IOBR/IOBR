@@ -87,11 +87,11 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   # Route to appropriate handler
   n_vars <- length(vars)
   if (n_vars == 1) {
-    p <- .roc_single_var(input, vars, time_vec, status_vec, time_point, unit_label, cols)
+    p <- .roc_single_var(input, vars, time_vec, status_vec, time_point, unit_label, cols, main)
   } else if (n_vars == 2) {
-    p <- .roc_two_vars(input, vars, time_vec, status_vec, time_point, unit_label, cols)
+    p <- .roc_two_vars(input, vars, time_vec, status_vec, time_point, unit_label, cols, main)
   } else if (n_vars == 3) {
-    p <- .roc_three_vars(input, vars, time_vec, status_vec, time_point, unit_label, cols)
+    p <- .roc_three_vars(input, vars, time_vec, status_vec, time_point, unit_label, cols, main)
   } else {
     cli::cli_abort("Only 1-3 variables are supported")
   }
@@ -111,7 +111,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 #' ROC for single variable with 3 time points
 #' @keywords internal
 #' @noRd
-.roc_single_var <- function(input, vars, time, status, time_point, unit_label, cols) {
+.roc_single_var <- function(input, vars, time, status, time_point, unit_label, cols, main) {
   event_time <- time[status == 1]
 
   if (length(time_point) == 1) {
@@ -170,7 +170,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 #' ROC for two variables
 #' @keywords internal
 #' @noRd
-.roc_two_vars <- function(input, vars, time, status, time_point, unit_label, cols) {
+.roc_two_vars <- function(input, vars, time, status, time_point, unit_label, cols, main) {
   if (length(time_point) != 1) {
     cli::cli_abort("For 2+ variables, time_point must be a single value")
   }
@@ -222,7 +222,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 #' ROC for three variables
 #' @keywords internal
 #' @noRd
-.roc_three_vars <- function(input, vars, time, status, time_point, unit_label, cols) {
+.roc_three_vars <- function(input, vars, time, status, time_point, unit_label, cols, main) {
   if (length(time_point) != 1) {
     cli::cli_abort("For 2+ variables, time_point must be a single value")
   }

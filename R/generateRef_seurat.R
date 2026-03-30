@@ -26,48 +26,17 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Load the PBMC dataset
-#' pbmc.data <- Read10X(
-#'   data.dir =
-#'     "E:/12-pkg-dev/IOBR-Project/8-IOBR2-Vignette/0-data/
-#'    pbmc/filtered_gene_bc_matrices/hg19"
-#' )
-#' # Initialize the Seurat object with the raw (non-normalized data).
-#' pbmc <- Seurat::CreateSeuratObject(
-#'   counts = pbmc.data,
-#'   project = "pbmc3k", min.cells = 3, min.features = 200
-#' )
-#' pbmc <- Seurat::FindVariableFeatures(pbmc,
-#'   selection.method = "vst",
-#'   nfeatures = 2000
-#' )
-#' pbmc <- Seurat::NormalizeData(pbmc,
-#'   normalization.method = "LogNormalize",
-#'   scale.factor = 10000
-#' )
-#' pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
-#' pbmc <- Seurat::RunPCA(pbmc, features = VariableFeatures(object = pbmc))
-#' pbmc <- Seurat::FindNeighbors(pbmc, dims = 1:10)
-#' pbmc <- Seurat::FindClusters(pbmc, resolution = 0.5)
-#' pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
-#'
-#' # generate reference matrix
-#' sm <- generateRef_seurat(
-#'   sce = pbmc, celltype = "celltype", slot_out =
-#'     "data"
-#' )
-#'
-#' # load the bulk-seq data
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#' svr <- deconvo_tme(
-#'   eset = eset,
-#'   reference = sm, method = "svr", arrays = FALSE,
-#'   absolute.mode = FALSE, perm = 100
-#' )
+#' \dontrun{
+#' # This example requires Seurat and a local 10X dataset
+#' if (requireNamespace("Seurat", quietly = TRUE)) {
+#'   # For demonstration, using pbmc_small dataset
+#'   pbmc <- load_data("pbmc_small")
+#'   # generate reference matrix
+#'   sm <- generateRef_seurat(
+#'     sce = pbmc, celltype = "groups", slot_out = "data"
+#'   )
 #' }
-#'
+#' }
 generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_deg = "RNA", slot_deg = "data", adjust_assay = FALSE,
                                assay_out = "RNA", slot_out = "data", verbose = FALSE, only.pos = TRUE, n_ref_genes = 50,
                                logfc.threshold = 0.15, test.use = "wilcox") {

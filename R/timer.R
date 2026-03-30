@@ -189,6 +189,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' Each row corresponds to one record.
 #'
 #' @examples
+#' \dontrun{
 #' # ---- Batch mode example ----
 #' tf <- tempfile(fileext = ".csv")
 #' write.table(
@@ -216,6 +217,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #'
 #' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
+#' }
 check_cancer_types <- function(args) {
   if (!is.null(args$batch)) {
     TimerINFO("Enter batch mode\n")
@@ -254,9 +256,11 @@ check_cancer_types <- function(args) {
 #'   cell types as columns.
 #' @param YY Vector representing cancer expression data with gene expression
 #'   levels.
-#' @param w Optional vector of weights for the regression, default is NA which means no weights are applied.
+#' @param w Optional vector of weights for the regression, default is NA which
+#'   means no weights are applied.
 #'
-#' @return A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
+#' @return A vector with non-negative coefficients representing the proportions
+#'   of each cell type in the input expression data.
 #' @export
 #'
 #' @examples
@@ -286,8 +290,16 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
         return(rep(0, ncol(XX)))
       }
     }
-    if (is.na(w[1])) tmp <- lsfit(tmp.XX, YY, intercept = F) else tmp <- lsfit(tmp.XX, YY, w, intercept = F)
-    if (is.null(ncol(tmp.XX))) tmp.beta <- tmp$coefficients[1] else tmp.beta <- tmp$coefficients[1:(ncol(tmp.XX) + 0)]
+    if (is.na(w[1])) {
+      tmp <- lsfit(tmp.XX, YY, intercept = FALSE)
+    } else {
+      tmp <- lsfit(tmp.XX, YY, w, intercept = FALSE)
+    }
+    if (is.null(ncol(tmp.XX))) {
+      tmp.beta <- tmp$coefficients[1]
+    } else {
+      tmp.beta <- tmp$coefficients[1:(ncol(tmp.XX) + 0)]
+    }
     if (min(tmp.beta > 0)) break
     ss.remove <- which.min(tmp.beta)
   }
@@ -308,10 +320,9 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
 #' row names formatted as 'LOC389332|389332', and it will simplify these to
 #' 'LOC389332'.
 #'
-#' @param cancerGeneExpression A matrix or data frame of cancer gene expression data
-#'        with row names in the format 'GENE|ID'. The function will modify
-#'        these row names
-#'        to keep only the gene part before the '|'.
+#' @param cancerGeneExpression A matrix or data frame of cancer gene
+#'   expression data with row names in the format 'GENE|ID'. The function will
+#'   modify these row names to keep only the gene part before the '|'.
 #'
 #' @return A matrix containing the modified gene expression data with updated row names.
 #'         Rows without a valid identifier (i.e., names not containing '|')
@@ -424,7 +435,8 @@ ParseInputExpression <- function(path) {
 #' )
 DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
   ## q-q plot by sample should look like a straight line.
-  ## Extreme values may saturate for Affy array data, but most of the data should align well.
+  ## Extreme values may saturate for Affy array data, but most of the data
+  ## should align well.
   qq <- qqplot(cancer.exp, immune.exp,
     xlab = "Tumor Expression", ylab = "Ref Expression",
     main = "Sample-Sample Q-Q plot"
@@ -445,7 +457,8 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' It treats the top 5 expressed genes in each sample as outliers and returns
 #' a list of unique outlier genes across all samples.
 #'
-#' @param cancers A dataframe with one column containing paths to gene expression files.
+#' @param cancers A dataframe with one column containing paths to gene
+#'   expression files.
 #'
 #' @return A vector of unique gene names identified as outliers across all given samples.
 #' @export
@@ -479,7 +492,9 @@ GetOutlierGenes <- function(cancers) {
     cancer.expFile <- as.character(cancers[i, 1])
     cancer.expression <- ParseInputExpression(cancer.expFile)
     for (j in seq_len(ncol(cancer.expression))) {
-      outlier <- rownames(cancer.expression)[tail(order(cancer.expression[, j]), 5)]
+      outlier <- rownames(cancer.expression)[
+    tail(order(cancer.expression[, j]), 5)
+  ]
       outlier.total <- c(outlier.total, outlier)
     }
   }
@@ -495,17 +510,22 @@ GetOutlierGenes <- function(cancers) {
 #' specific data and helper functions to manage the expression data and
 #' analyze the tumor microenvironment.
 #'
-#' @param args An environment or list containing parameters and file paths necessary for the function to execute. This should include `outdir` for output directory, `batch` for a file containing paths to expression data and cancer types.
+#' @param args An environment or list containing parameters and file paths
+#'   necessary for the function to execute. This should include `outdir` for
+#'   output directory, `batch` for a file containing paths to expression data
+#'   and cancer types.
 #'
 #' @return Returns a matrix of abundance scores for different immune cell types across multiple cancer samples.
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' args <- list(
 #'   outdir = "path/to/output",
 #'   batch = "path/to/batch.csv"
 #' )
 #' results <- deconvolute_timer.default(args)
+#' }
 deconvolute_timer.default <- function(args) {
   # data("cancer_type_genes")
   # data("immuneCuratedData")

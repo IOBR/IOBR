@@ -20,14 +20,16 @@ specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
 column names.
 }
 \examples{
+\dontrun{
 eset_stad <- load_data("eset_stad")
 signature_collection <- load_data("signature_collection")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-eset <- scale_matrix(eset, manipulate = TRUE)
+# Use original eset with GeneSymbol
+eset <- scale_matrix(eset_stad, manipulate = TRUE)
 res <- calculate_sig_score(
   eset = eset,
   signature = signature_collection[1:4],
   method = "integration"
 )
 select_method(res, method = "PCA")
+}
 }

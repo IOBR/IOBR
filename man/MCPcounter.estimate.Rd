@@ -36,11 +36,11 @@ using the MCP-counter method. Works with various gene identifiers including
 Affymetrix probesets, HUGO gene symbols, Entrez IDs, and Ensembl IDs.
 }
 \examples{
-\donttest{
+\dontrun{
 # Create example expression data
 expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 rownames(expr) <- paste0("Gene", 1:100)
-# Estimate with HUGO symbols
+# Estimate with HUGO symbols (requires internet connection)
 estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
 }
 }

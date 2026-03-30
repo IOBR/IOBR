@@ -7,14 +7,18 @@
 GetFractions.Abbas(XX, YY, w = NA)
 }
 \arguments{
-\item{XX}{Matrix representing immune expression data with genes as rows and cell types as columns.}
+\item{XX}{Matrix representing immune expression data with genes as rows and
+cell types as columns.}
 
-\item{YY}{Vector representing cancer expression data with gene expression levels.}
+\item{YY}{Vector representing cancer expression data with gene expression
+levels.}
 
-\item{w}{Optional vector of weights for the regression, default is NA which means no weights are applied.}
+\item{w}{Optional vector of weights for the regression, default is NA which
+means no weights are applied.}
 }
 \value{
-A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
+A vector with non-negative coefficients representing the proportions
+  of each cell type in the input expression data.
 }
 \description{
 This function implements a constrained regression approach described by

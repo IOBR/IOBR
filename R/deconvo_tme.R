@@ -73,10 +73,10 @@ tme_deconvolution_methods <- c(
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD")
+#' # xCell requires GeneSymbol input
+#' xcell_result <- deconvo_xcell(eset = eset_stad, project = "TCGA-STAD")
 #' head(xcell_result)
 #' }
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
@@ -142,10 +142,10 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
+#' # Use original eset with GeneSymbol (MCPcounter requires HUGO symbols)
+#' mcp_result <- deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
 #' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
   cli::cli_alert_info("Running MCP-counter deconvolution")
@@ -311,10 +311,10 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+#' # Use raw counts or GeneSymbol data (not Ensembl ID)
+#' estimate_result <- deconvo_estimate(eset_stad, project = "TCGA-STAD")
 #' }
 deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   cli::cli_alert_info("Running ESTIMATE")

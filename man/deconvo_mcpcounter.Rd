@@ -19,10 +19,10 @@ Data frame with MCP-counter scores. Columns suffixed with
 Estimates immune cell abundances using MCP-counter.
 }
 \examples{
-\donttest{
+\dontrun{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
+# Use original eset with GeneSymbol (MCPcounter requires HUGO symbols)
+mcp_result <- deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
 }
 }
 \author{

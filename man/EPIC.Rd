@@ -67,11 +67,11 @@ the cell fractions).
 To note: if data is in tpm, this mRNA per cell would ideally correspond
 to some number of transcripts per cell.}
 
-\item{mRNA_cell_sub}{(optional): This can be given instead of \code{mRNA_cell} (or
-in addition to it). It is also a named numeric vector, used to replace
-only the mRNA/cell values from some cell types (or to add values for new
-cell types). The values given in mRNA_cell_sub will overwrite the default
-values as well as those that might have been given by mRNA_cell.}
+\item{mRNA_cell_sub}{(optional): This can be given instead of
+\code{mRNA_cell} (or in addition to it). It is also a named numeric vector,
+used to replace only the mRNA/cell values from some cell types (or to add
+values for new cell types). The values given in mRNA_cell_sub will overwrite
+the default values as well as those that might have been given by mRNA_cell.}
 
 \item{sigGenes}{(optional): a character vector of the gene names to use as
 signature for the deconvolution. In principle this is given with the

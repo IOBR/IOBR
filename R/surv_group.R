@@ -105,10 +105,11 @@ surv_group <- function(input_pdata,
   print(summary(as.factor(input_pd$target_group)))
 
   # Define break time and colors
-  if (break_month == "auto") {
-    break_month <- .break_month(input = input_pd$time, block = 6)
+  break_month_val <- break_month
+  if (break_month_val == "auto") {
+    break_month_val <- break_month(input = input_pd$time, block = 6)
   }
-  max_month <- break_month * 6
+  max_month <- break_month_val * 6
 
   if (is.null(cols)) {
     cols <- palettes(category = "box", palette = palette, show_col = FALSE)
@@ -119,12 +120,12 @@ surv_group <- function(input_pdata,
 
   if (n_groups > 2) {
     pp <- .surv_plot_multi(
-      input_pd, max_month, break_month, cols,
+      input_pd, max_month, break_month_val, cols,
       target_group, project, font.size.table
     )
   } else {
     pp <- .surv_plot_binary(
-      input_pd, max_month, break_month, cols,
+      input_pd, max_month, break_month_val, cols,
       target_group, project, reference_group, levels
     )
   }

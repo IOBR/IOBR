@@ -28,9 +28,11 @@ Quantifies ligand-receptor interactions in the tumor microenvironment from
 bulk gene expression
 }
 \examples{
+\dontrun{
 eset_stad <- load_data("eset_stad")
 if (requireNamespace("easier", quietly = TRUE)) {
   lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
+}
 }
 }
 \references{

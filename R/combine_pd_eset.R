@@ -27,18 +27,25 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' colnames(eset) <- substring(colnames(eset), 1, 12)
 #'
 #' sig_stad <- load_data("sig_stad")
-#' signature_collection <- load_data("signature_collection")
 #'
+#' # Example 1: Combine all features (no filtering)
 #' input <- combine_pd_eset(
 #'   eset = eset,
+#'   pdata = sig_stad
+#' )
+#'
+#' # Example 2: Combine with specific features
+#' # Note: features must match rownames of eset after ID conversion
+#' input2 <- combine_pd_eset(
+#'   eset = eset,
 #'   pdata = sig_stad,
-#'   feas = unique(unlist(signature_collection))
+#'   feas = rownames(eset)[1:100]  # Use first 100 genes as example
 #' )
 #' }
 combine_pd_eset <- function(eset,

@@ -35,6 +35,7 @@ It supports multiple
 platform types and performs platform-specific calculations if necessary.
 }
 \examples{
+\dontrun{
 # Path to input and output files
 input_file <- "path/to/input.gct"
 output_file <- "path/to/output.gct"
@@ -44,4 +45,5 @@ estimateScore(
   input.ds = input_file, output.ds = output_file, platform =
     "affymetrix"
 )
+}
 }

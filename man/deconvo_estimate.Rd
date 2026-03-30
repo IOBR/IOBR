@@ -21,10 +21,10 @@ Data frame with ESTIMATE scores. Columns suffixed with `_estimate`.
 Calculates stromal, immune, and ESTIMATE scores from gene expression.
 }
 \examples{
-\donttest{
+\dontrun{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+# Use raw counts or GeneSymbol data (not Ensembl ID)
+estimate_result <- deconvo_estimate(eset_stad, project = "TCGA-STAD")
 }
 }
 \author{

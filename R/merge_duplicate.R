@@ -70,7 +70,7 @@ merge_duplicate <- function(x, y, by.x, by.y,
   # Remove duplicates from the non-chosen data frame
   if (length(duplicate_names) > 0) {
     cli::cli_alert_info(
-      "Removing duplicate column{?s} from {.arg {ifelse(choose == 'x', 'y', 'x')}}: {.val {duplicate_names}}"
+      "Removing {length(duplicate_names)} duplicate column{?s} from {.arg {ifelse(choose == 'x', 'y', 'x')}}"
     )
 
     if (choose == "x") {

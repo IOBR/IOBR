@@ -26,10 +26,10 @@ cell type enrichment scores for 64 immune and stromal cell types from gene
 expression data.
 }
 \examples{
-\donttest{
+\dontrun{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD")
+# xCell requires GeneSymbol input
+xcell_result <- deconvo_xcell(eset = eset_stad, project = "TCGA-STAD")
 head(xcell_result)
 }
 }

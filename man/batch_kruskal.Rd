@@ -41,12 +41,15 @@ features by significance.
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
-# Test features by molecular subtype
-res <- batch_kruskal(
-  data = sig_stad,
-  group = "subtype",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
-)
+# Test features by gender (if available in your dataset)
+if ("Gender" \%in\% colnames(sig_stad)) {
+  res <- batch_kruskal(
+    data = sig_stad,
+    group = "Gender",
+    feature = colnames(sig_stad)[69:ncol(sig_stad)]
+  )
+  head(res)
+}
 head(res)
 }
 }

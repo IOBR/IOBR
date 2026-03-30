@@ -53,24 +53,26 @@ check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
       "*" = paste(
         "Set adjust_eset = TRUE to handle missing values",
         "automatically."
-      ),
+      )
     ))
   }
 
   # Check for infinite values (vectorized)
-  eset_range <- range(eset, na.rm = TRUE)
+  # Convert to matrix for consistent handling
+  eset_mat <- as.matrix(eset)
+  eset_range <- range(eset_mat, na.rm = TRUE)
   has_neg_inf <- !is.finite(eset_range[1]) && eset_range[1] < 0
   has_pos_inf <- !is.finite(eset_range[2]) && eset_range[2] > 0
 
   if (print_result) {
     cli::cli_alert_info(paste(
       "Checking for -Inf values:",
-      sum(is.infinite(eset) & eset < 0, na.rm = TRUE),
+      sum(is.infinite(eset_mat) & eset_mat < 0, na.rm = TRUE),
       "found"
     ))
     cli::cli_alert_info(paste(
       "Checking for +Inf values:",
-      sum(is.infinite(eset) & eset > 0, na.rm = TRUE),
+      sum(is.infinite(eset_mat) & eset_mat > 0, na.rm = TRUE),
       "found"
     ))
   }
@@ -88,7 +90,7 @@ check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
 
   # Check for zero variance features
   if (estimate_sd) {
-    row_sds <- apply(eset, 1, stats::sd, na.rm = TRUE)
+    row_sds <- apply(eset_mat, 1, stats::sd, na.rm = TRUE)
     zero_sd_count <- sum(row_sds == 0, na.rm = TRUE)
 
     if (print_result) {

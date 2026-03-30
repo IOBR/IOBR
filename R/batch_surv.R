@@ -68,7 +68,7 @@ batch_surv <- function(pdata, variable, time = "time", status = "status", best_c
         time = "time_iobr",
         status = "status_iobr",
         variable = var,
-        PrintResult = FALSE
+        print_result = FALSE
       )
 
       binary_col <- paste0(var, "_binary")

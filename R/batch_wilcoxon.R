@@ -131,7 +131,7 @@ batch_wilcoxon <- function(data,
   })
   names(test_results) <- valid_features
 
-  # Calculate group means
+  # Calculate group means - vectorized approach
   result_mean <- data |>
     dplyr::group_by(.data$group) |>
     dplyr::summarise(
@@ -141,24 +141,28 @@ batch_wilcoxon <- function(data,
       .groups = "drop"
     )
 
+  # Convert to wide format with groups as columns
   result_mean <- tidyr::pivot_wider(
     result_mean,
     names_from = "group",
-    values_from = -"group"
-  )
+    values_from = dplyr::all_of(valid_features),
+    names_glue = "{group}_{.value}"
+  ) |>
+    as.data.frame()
 
-  result_mean <- as.data.frame(t(result_mean))
-  colnames(result_mean) <- valid_features
-  result_mean <- as.data.frame(t(result_mean))
+  # The result should have 1 row per feature after proper pivot
+  # Transpose to get features as rows
+  result_mean <- t(result_mean) |>
+    as.data.frame()
+  colnames(result_mean) <- group_names[1:ncol(result_mean)]
+  result_mean$sig_names <- rownames(result_mean)
 
-  group_cols <- intersect(group_names, colnames(result_mean))
-  if (length(group_cols) == 2) {
-    result_mean$statistic <- result_mean[[group_cols[1]]] -
-      result_mean[[group_cols[2]]]
+  # Calculate statistic (difference between groups)
+  if (ncol(result_mean) >= 3) {  # 2 groups + sig_names column
+    result_mean$statistic <- result_mean[[1]] - result_mean[[2]]
   } else {
     result_mean$statistic <- NA_real_
   }
-  result_mean$sig_names <- valid_features
 
   # Build results
   cc <- data.frame(

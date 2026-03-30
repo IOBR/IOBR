@@ -39,5 +39,5 @@ getHRandCIfromCoxph <- function(coxphData) {
   )
   colnames(tmp) <- c("P", "HR", "CI_low_0.95", "CI_up_0.95")
   tmp[, 2:4] <- round(tmp[, 2:4], digits = 4)
-  return(tmp)
+  as.data.frame(tmp)
 }

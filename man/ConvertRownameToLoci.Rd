@@ -7,10 +7,9 @@
 ConvertRownameToLoci(cancerGeneExpression)
 }
 \arguments{
-\item{cancerGeneExpression}{A matrix or data frame of cancer gene expression data
-with row names in the format 'GENE|ID'. The function will modify
-these row names
-to keep only the gene part before the '|'.}
+\item{cancerGeneExpression}{A matrix or data frame of cancer gene
+expression data with row names in the format 'GENE|ID'. The function will
+modify these row names to keep only the gene part before the '|'.}
 }
 \value{
 A matrix containing the modified gene expression data with updated row names.

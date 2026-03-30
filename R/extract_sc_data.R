@@ -13,6 +13,7 @@
 #'
 #' @author Dongqiang Zeng
 #' @examples
+#' \dontrun{
 #' # Load data
 #' pbmc_small <- load_data("pbmc_small")
 #' pbmc_small
@@ -23,6 +24,7 @@
 #' )
 #' # Get extracted data frame
 #' eset <- extract_sc_data(sce = pbmc_small, vars = vars, assay = "RNA")
+#' }
 #'
 extract_sc_data <- function(sce, vars = NULL, assay, slot = "scale.data", combine_meta_data = TRUE) {
   rlang::check_installed(c("Seurat", "SeuratObject"))

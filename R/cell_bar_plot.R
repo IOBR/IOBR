@@ -18,7 +18,7 @@
 #'   Default is NULL.
 #' @param legend.position Character string specifying legend position
 #'   ("bottom", "top", "left", "right"). Default is "bottom".
-#' @param coord_filp Logical indicating whether to flip plot coordinates using
+#' @param coord_flip Logical indicating whether to flip plot coordinates using
 #'   `coord_flip()`. Default is TRUE.
 #' @param palette Integer specifying the color palette to use. Default is 3.
 #' @param show_col Logical indicating whether to display color information.

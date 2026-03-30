@@ -31,6 +31,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
+#' \dontrun{
 #' # Load mutation and signature data
 #' mut_list <- make_mut_matrix(
 #'   maf = "path_to_maf_file", isTCGA = TRUE,
@@ -43,6 +44,7 @@
 #'   min_mut_freq = 0.01, plot = TRUE, method = "multi",
 #'   save_path = "path_to_save_results"
 #' )
+#' }
 find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,
                            min_mut_freq = 0.05, plot = TRUE, method = "multi", point_alpha = 0.1,
                            save_path = NULL, palette = "jco", cols = NULL, show_plot = TRUE,
@@ -539,7 +541,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   # save to pdf
   if (!is.null(save_path)) {
     pdf(file.path(abspath, paste0("0-OncoPrint-", signature, ".pdf")), width = width, height = height)
-    draw(p)
+    ComplexHeatmap::draw(p)
     invisible(dev.off())
   }
   # print to screen

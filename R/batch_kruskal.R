@@ -33,12 +33,15 @@
 #' # Load TCGA-STAD signature data
 #' sig_stad <- load_data("sig_stad")
 #'
-#' # Test features by molecular subtype
-#' res <- batch_kruskal(
-#'   data = sig_stad,
-#'   group = "subtype",
-#'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
-#' )
+#' # Test features by gender (if available in your dataset)
+#' if ("Gender" %in% colnames(sig_stad)) {
+#'   res <- batch_kruskal(
+#'     data = sig_stad,
+#'     group = "Gender",
+#'     feature = colnames(sig_stad)[69:ncol(sig_stad)]
+#'   )
+#'   head(res)
+#' }
 #' head(res)
 #' }
 batch_kruskal <- function(data,
@@ -137,7 +140,7 @@ batch_kruskal <- function(data,
     dplyr::group_by(.data$group) |>
     dplyr::summarise(
       dplyr::across(
-        dplyr::where(is.numeric),
+        dplyr::all_of(valid_features),
         \(.x) mean(.x, na.rm = TRUE)
       ),
       .groups = "drop"
@@ -146,22 +149,33 @@ batch_kruskal <- function(data,
   result_mean <- tidyr::pivot_wider(
     result_mean,
     names_from = "group",
-    values_from = -dplyr::all_of(c("group"))
-  )
+    values_from = dplyr::all_of(valid_features)
+  ) |>
+    as.data.frame()
+
+  # Pivot results in feature x group format, need to transpose
+  result_mean <- t(result_mean) |>
+    as.data.frame()
+  # After transpose, columns are 1:n_groups, rows are features
+  colnames(result_mean) <- group_names[1:ncol(result_mean)]
+  result_mean$sig_names <- rownames(result_mean)
+
+  # Filter to valid features only and ensure correct order
+  result_mean <- result_mean[rownames(result_mean) %in% valid_features, , drop = FALSE]
 
   # Calculate mean-centered values
   group_cols <- intersect(group_names, colnames(result_mean))
-  result_mean$overall_mean <- rowMeans(
-    as.matrix(result_mean[, group_cols, drop = FALSE]),
-    na.rm = TRUE
-  )
+  if (length(group_cols) > 0) {
+    result_mean$overall_mean <- rowMeans(
+      as.matrix(result_mean[, group_cols, drop = FALSE]),
+      na.rm = TRUE
+    )
 
-  for (gn in group_cols) {
-    result_mean[[gn]] <- result_mean[[gn]] - result_mean$overall_mean
+    for (gn in group_cols) {
+      result_mean[[gn]] <- result_mean[[gn]] - result_mean$overall_mean
+    }
+    result_mean$overall_mean <- NULL
   }
-
-  result_mean$sig_names <- valid_features
-  result_mean$overall_mean <- NULL
 
   # Merge results
   cc <- merge(cc, result_mean, by = "sig_names", all.x = TRUE)

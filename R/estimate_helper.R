@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Path to input and output files
 #' input_file <- "path/to/input.gct"
 #' output_file <- "path/to/output.gct"
@@ -34,6 +35,7 @@
 #'   input.ds = input_file, output.ds = output_file, platform =
 #'     "affymetrix"
 #' )
+#' }
 estimateScore <- function(input.ds,
                           output.ds,
                           platform = c("affymetrix", "agilent", "illumina")) {

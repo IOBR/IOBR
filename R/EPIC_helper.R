@@ -71,11 +71,11 @@
 #'    the cell fractions).
 #'    To note: if data is in tpm, this mRNA per cell would ideally correspond
 #'    to some number of transcripts per cell.
-#' @param mRNA_cell_sub (optional): This can be given instead of \code{mRNA_cell} (or
-#'    in addition to it). It is also a named numeric vector, used to replace
-#'    only the mRNA/cell values from some cell types (or to add values for new
-#'    cell types). The values given in mRNA_cell_sub will overwrite the default
-#'    values as well as those that might have been given by mRNA_cell.
+#' @param mRNA_cell_sub (optional): This can be given instead of
+#'   \code{mRNA_cell} (or in addition to it). It is also a named numeric vector,
+#'   used to replace only the mRNA/cell values from some cell types (or to add
+#'   values for new cell types). The values given in mRNA_cell_sub will overwrite
+#'   the default values as well as those that might have been given by mRNA_cell.
 #' @param sigGenes (optional): a character vector of the gene names to use as
 #'    signature for the deconvolution. In principle this is given with the
 #'    reference as the "reference$sigGenes" but if we give a value for this
@@ -172,8 +172,11 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
         "given as input to EPIC instead)"
       )
     }
-    if (!is.matrix(reference$refProfiles) && !is.data.frame(reference$refProfiles)) {
-      stop("'reference$refProfiles' needs to be given as a matrix or data.frame")
+    if (!is.matrix(reference$refProfiles) &&
+      !is.data.frame(reference$refProfiles)) {
+      stop(
+        "'reference$refProfiles' needs to be given as a matrix or data.frame"
+      )
     }
     if (!("refProfiles.var" %in% refListNames)) {
       warning(
@@ -187,11 +190,10 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
         "'reference$refProfiles.var' needs to be given as a matrix or ",
         "data.frame when present."
       )
-    } else if (!identical(dim(reference$refProfiles.var), dim(reference$refProfiles)) ||
-      !identical(
-        dimnames(reference$refProfiles.var),
-        dimnames(reference$refProfiles)
-      )) {
+    } else if (!identical(dim(reference$refProfiles.var),
+                          dim(reference$refProfiles)) ||
+               !identical(dimnames(reference$refProfiles.var),
+                          dimnames(reference$refProfiles))) {
       stop(
         "The dimensions and dimnames of 'reference$refProfiles' and ",
         "'reference$refProfiles.var' need to be the same"
@@ -312,11 +314,13 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   if (with_w && !rangeBasedOptim) {
     # Computing the weight to give to each gene
     w <- rowSums(refProfiles / (refProfiles.var + 1e-12), na.rm = TRUE)
-    # 1e-12 to avoid divisions by 0: like this if refProfiles and refProfiles.var
-    # both are 0 for a given element, it will result in a weight of 0.
+    # 1e-12 to avoid divisions by 0: like this if refProfiles and
+    # refProfiles.var both are 0 for a given element, it will result in a weight
+    # of 0.
     med_w <- stats::median(w[w > 0], na.rm = TRUE)
     w[w > 100 * med_w] <- 100 * med_w
-    # Set a limit for the big w to still not give too much weights to these genes
+    # Set a limit for the big w to still not give too much weights to these
+    # genes
   } else {
     w <- 1
   }
@@ -357,7 +361,8 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
     } else {
       fit <- stats::constrOptim(
         theta = rep(cInitProp, nRefCells), f = minFun.range,
-        grad = NULL, ui = ui, ci = ci, A = refProfiles, b = b, A.var = refProfiles.var
+        grad = NULL, ui = ui, ci = ci, A = refProfiles,
+        b = b, A.var = refProfiles.var
       )
     }
     fit$x <- fit$par
@@ -371,7 +376,9 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
     b_estimated <- refProfiles %*% fit$x
 
     if (nSigGenes > 2) {
-      suppressWarnings(corSp.test <- stats::cor.test(b, b_estimated, method = "spearman"))
+      suppressWarnings(
+        corSp.test <- stats::cor.test(b, b_estimated, method = "spearman")
+      )
       # Use suppressWarnings to avoid the warnings that p-value isn't exact when
       # ties are present in the data.
       corPear.test <- stats::cor.test(b, b_estimated, method = "pearson")
@@ -384,8 +391,12 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
     regLine <- stats::lm(b_estimated ~ b)
     regLine_through0 <- stats::lm(b_estimated ~ b + 0)
     if (!rangeBasedOptim) {
-      rmse_pred <- sqrt(minFun(x = fit$x, A = refProfiles, b = b, w = w) / nSigGenes)
-      rmse_0 <- sqrt(minFun(x = rep(0, nRefCells), A = refProfiles, b = b, w = w) / nSigGenes)
+      rmse_pred <- sqrt(
+        minFun(x = fit$x, A = refProfiles, b = b, w = w) / nSigGenes
+      )
+            rmse_0 <- sqrt(
+        minFun(x = rep(0, nRefCells), A = refProfiles, b = b, w = w) / nSigGenes
+      )
     } else {
       rmse_pred <- sqrt(minFun.range(
         x = fit$x, A = refProfiles, b = b,
@@ -396,7 +407,9 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
         A.var = refProfiles.var
       ) / nSigGenes)
     }
-    gof <- data.frame(fit$convergence, ifelse(is.null(fit$message), "", fit$message),
+    gof <- data.frame(
+      fit$convergence,
+      ifelse(is.null(fit$message), "", fit$message),
       rmse_pred, rmse_0,
       # to only have sum((w*b)^2) or corresponding value based
       # on the minFun, in the worst case possible.
@@ -433,7 +446,10 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   }
 
   if (withOtherCells) {
-    mRNAProportions <- cbind(mRNAProportions, otherCells = 1 - rowSums(mRNAProportions))
+    mRNAProportions <- cbind(
+      mRNAProportions,
+      otherCells = 1 - rowSums(mRNAProportions)
+    )
   }
   # Adding a row to the proportion matrix corresponding to the other /
   # uncharacterized / cancer cells.
@@ -491,7 +507,8 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
 #'  than the refProfiles).
 #'
 #' @keywords internal
-scaleCounts <- function(counts, sigGenes = NULL, renormGenes = NULL, normFact = NULL) {
+scaleCounts <- function(counts, sigGenes = NULL, renormGenes = NULL,
+                         normFact = NULL) {
   if (is.null(sigGenes)) {
     sigGenes <- 1:nrow(counts)
   }
@@ -533,13 +550,14 @@ merge_duplicates <- function(mat, warn = TRUE, in_type = NULL) {
         ". We'll use the median value for each of these cases."
       )
     }
-    mat_dupl <- mat[rownames(mat) %in% dupl_genes, , drop = F]
+    mat_dupl <- mat[rownames(mat) %in% dupl_genes, , drop = FALSE]
     mat_dupl_names <- rownames(mat_dupl)
-    mat <- mat[!dupl, , drop = F]
+    mat <- mat[!dupl, , drop = FALSE]
     # First put the dupl cases in a separate matrix and keep only the unique
     # gene names in the mat matrix.
     mat[dupl_genes, ] <- t(sapply(dupl_genes, FUN = function(cgene) {
-      apply(mat_dupl[mat_dupl_names == cgene, , drop = F], MARGIN = 2, FUN = median)
+      apply(mat_dupl[mat_dupl_names == cgene, , drop = FALSE],
+            MARGIN = 2, FUN = median)
     }))
   }
   return(mat)

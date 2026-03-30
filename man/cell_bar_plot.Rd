@@ -37,6 +37,9 @@ Default is NULL.}
 \item{legend.position}{Character string specifying legend position
 ("bottom", "top", "left", "right"). Default is "bottom".}
 
+\item{coord_flip}{Logical indicating whether to flip plot coordinates using
+`coord_flip()`. Default is TRUE.}
+
 \item{palette}{Integer specifying the color palette to use. Default is 3.}
 
 \item{show_col}{Logical indicating whether to display color information.
@@ -44,9 +47,6 @@ Default is FALSE.}
 
 \item{cols}{Character vector of custom colors. If NULL, palette is used.
 Default is NULL.}
-
-\item{coord_filp}{Logical indicating whether to flip plot coordinates using
-`coord_flip()`. Default is TRUE.}
 }
 \value{
 A ggplot2 object representing the stacked bar chart.

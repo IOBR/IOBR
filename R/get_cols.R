@@ -33,6 +33,30 @@ get_cols <- function(cols = "normal",
                      palette = 1,
                      show_col = TRUE,
                      seed = 123) {
+  # Map numeric palette to name
+  palette_map <- c(
+    "1" = "nrc",
+    "2" = "jama",
+    "3" = "aaas",
+    "4" = "jco",
+    "5" = "paired1",
+    "6" = "paired2",
+    "7" = "paired3",
+    "8" = "paired4",
+    "9" = "accent",
+    "10" = "set2"
+  )
+
+  # Convert numeric palette to name
+  if (is.numeric(palette) || grepl("^[0-9]+$", as.character(palette))) {
+    palette_key <- as.character(as.numeric(palette))
+    if (palette_key %in% names(palette_map)) {
+      palette <- palette_map[palette_key]
+    } else {
+      palette <- "nrc"  # default fallback
+    }
+  }
+
   # Handle custom color vector
   if (length(cols) > 1) {
     mycols <- cols
@@ -74,7 +98,7 @@ get_cols <- function(cols = "normal",
     # Treat as palette name
     mycols <- palettes(
       category = "box",
-      palette = palette,
+      palette = cols,
       show_col = show_col,
       show_message = FALSE
     )

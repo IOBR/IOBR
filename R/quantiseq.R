@@ -10,25 +10,23 @@
 #' contexture of human tumors".
 #' bioRxiv 223180. https://doi.org/10.1101/223180.
 #'
-#' @param mix.mat table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-#'     (Gene symbols on the first column and sample IDs on the first row).
-#'     Expression data must be on non-log scale
-#' @param arrays specifies whether expression data are from microarrays (instead of RNA-seq).
+#' @param mix.mat table with the gene TPM (or microarray expression values) for
+#'     all samples to be deconvoluted (Gene symbols on the first column and
+#'     sample IDs on the first row). Expression data must be on non-log scale
+#' @param arrays specifies whether expression data are from microarrays
+#'     (instead of RNA-seq).
 #'     If TRUE, the "--rmgenes" parameter is set to "none".
 #' @param signame name of the signature matrix. Currently only `TIL10` is available.
-#' @param tumor 	specifies whether expression data are from tumor samples. If TRUE, signature genes
-#'     with high expression in tumor samples are removed.
+#' @param tumor specifies whether expression data are from tumor samples. If
+#'     TRUE, signature genes with high expression in tumor samples are removed.
 #'     Default: FALSE.
-#' @param mRNAscale specifies whether cell fractions must be scaled to account for cell-type-specific
-#'     mRNA content.
-#'     Default: TRUE.
-#' @param method deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-#'     with Huber, Hampel, or Tukey bisquare estimators, respectively, or
-#'     "lsei" for constrained
-#'     least squares regression. The fraction of uncharacterized cells
-#'     ("other") is computed only
-#'     by the "lsei" method.
-#'     Default: "lsei".
+#' @param mRNAscale specifies whether cell fractions must be scaled to account
+#'     for cell-type-specific mRNA content. Default: TRUE.
+#' @param method deconvolution method to be used: "hampel", "huber", or
+#'     "bisquare" for robust regression with Huber, Hampel, or Tukey bisquare
+#'     estimators, respectively, or "lsei" for constrained least squares
+#'     regression. The fraction of uncharacterized cells ("other") is
+#'     computed only by the "lsei" method. Default: "lsei".
 #' @param rmgenes Default: "default" for RNAseq, "none" for microArray data
 #'
 #' @import preprocessCore
@@ -94,7 +92,10 @@ deconvolute_quantiseq.default <- function(mix.mat,
   }
 
   if (is.numeric(mix.mat[[1, 1]]) != TRUE) {
-    stop("Wrong input format for the mixture matrix! Please follow the instructions of the documentation.")
+    stop(
+      "Wrong input format for the mixture matrix! ",
+      "Please follow the instructions of the documentation."
+    )
   }
 
 
@@ -105,7 +106,9 @@ deconvolute_quantiseq.default <- function(mix.mat,
     #                  header=FALSE,
     #                  stringsAsFactors=FALSE)
     colnames(mRNA) <- c("celltype", "scaling")
-    mRNA <- as.vector(as.matrix(mRNA$scaling[match(colnames(sig.mat), mRNA$celltype)]))
+    mRNA <- as.vector(as.matrix(
+      mRNA$scaling[match(colnames(sig.mat), mRNA$celltype)]
+    ))
   } else {
     mRNA <- rep(1, ncol(sig.mat))
   }
@@ -136,7 +139,9 @@ deconvolute_quantiseq.default <- function(mix.mat,
       n1 <- nrow(sig.mat)
       sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
       n2 <- nrow(sig.mat)
-      message(paste0("Removing ", n1 - n2, " genes with high expression in tumors\n"))
+      message(paste0(
+      "Removing ", n1 - n2, " genes with high expression in tumors\n"
+    ))
     }
   }
 
@@ -156,7 +161,8 @@ deconvolute_quantiseq.default <- function(mix.mat,
     scaling = mRNA,
     method = method
   )
-  if ("Tregs" %in% colnames(sig.mat) && "T.cells.CD4" %in% colnames(sig.mat) && method %in% c("lsei")) {
+  if ("Tregs" %in% colnames(sig.mat) && "T.cells.CD4" %in% colnames(sig.mat) &&
+      method %in% c("lsei")) {
     minTregs <- 0.02
     i <- which(colnames(sig.mat) == "T.cells.CD4")
     results2 <- quanTIseq(sig.mat[, -i],
@@ -168,7 +174,9 @@ deconvolute_quantiseq.default <- function(mix.mat,
     ind <- which(results1[, "Tregs"] < minTregs)
     if (length(ind) > 0) {
       results1[ind, "Tregs"] <- (results2[ind, "Tregs"] + results1[ind, "Tregs"]) / 2
-      results1[ind, "T.cells.CD4"] <- pmax(0, results1[ind, "T.cells.CD4"] - (results2[ind, "Tregs"] + results1[ind, "Tregs"]) / 2)
+      results1[ind, "T.cells.CD4"] <- pmax(
+        0, results1[ind, "T.cells.CD4"] - (results2[ind, "Tregs"] + results1[ind, "Tregs"]) / 2
+      )
     }
   }
   results <- results1

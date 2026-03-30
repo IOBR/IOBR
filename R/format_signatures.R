@@ -13,10 +13,13 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' # Load signature data frame
-#' # sig_excel 是内部数据，直接使用
+#' # Create example signature data frame
+#' sig_data <- data.frame(
+#'   Signature1 = c("Gene1", "Gene2", "Gene3", NA),
+#'   Signature2 = c("Gene4", "Gene5", NA, NA)
+#' )
 #' # Transform into gene list for IOBR functions
-#' format_signatures(sig_excel)
+#' format_signatures(sig_data)
 format_signatures <- function(sig_data, save_signature = FALSE, output_name = "signatures") {
   message(paste0(">>> There are ", dim(sig_data)[2], "  signatures >>>"))
 

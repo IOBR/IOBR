@@ -47,7 +47,7 @@ A matrix of adjusted xCell scores.
 }
 \description{
 Returns the xCell cell types enrichment scores for tumor microenvironment
-deconvolution. Uses ssGSEA-based enrichment analysis with spillover compensation
-to estimate cell type proportions from gene expression data.
+deconvolution. Uses ssGSEA-based enrichment analysis with spillover
+compensation to estimate cell type proportions from gene expression data.
 }
 \keyword{internal}

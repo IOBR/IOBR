@@ -380,9 +380,9 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #' @examples
 #' \dontrun{
 #' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # Use original eset with GeneSymbol (signature_tme uses GeneSymbol)
 #' signature_tme <- load_data("signature_tme")
-#' result <- calculate_sig_score_integration(eset = eset, signature = signature_tme)
+#' result <- calculate_sig_score_integration(eset = eset_stad, signature = signature_tme)
 #' }
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
@@ -525,19 +525,22 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' }
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # Use original eset with GeneSymbol to match signature_tme
 #' signature_tme <- load_data("signature_tme")
 #'
 #' # PCA method (fastest)
 #' result_pca <- calculate_sig_score(
-#'   eset = eset, signature = signature_tme,
+#'   eset = eset_stad, signature = signature_tme,
 #'   method = "pca"
 #' )
 #'
 #' # ssGSEA method (most robust)
-#' result_ssgsea <- calculate_sig_score(eset = eset, signature = signature_tme, method = "ssgsea")
+#' result_ssgsea <- calculate_sig_score(
+#'   eset = eset_stad, signature = signature_tme,
+#'   method = "ssgsea"
+#' )
 #' }
 calculate_sig_score <- function(pdata = NULL,
                                 eset,

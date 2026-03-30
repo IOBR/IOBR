@@ -124,7 +124,7 @@ sig_surv_plot <- function(input_pdata,
   # Apply best cutoff
   input_pdata <- best_cutoff(
     pdata = input_pdata, variable = signature,
-    time = "time", status = "status", PrintResult = FALSE
+    time = "time", status = "status", print_result = FALSE
   )
 
   colnames(input_pdata)[colnames(input_pdata) == paste0(signature, "_binary")] <- "bestcutoff"

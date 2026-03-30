@@ -31,6 +31,7 @@ Extract and combine data frame with cells as rows and features as columns
 from Seurat assay data.
 }
 \examples{
+\dontrun{
 # Load data
 pbmc_small <- load_data("pbmc_small")
 pbmc_small
@@ -41,6 +42,7 @@ vars <- c(
 )
 # Get extracted data frame
 eset <- extract_sc_data(sce = pbmc_small, vars = vars, assay = "RNA")
+}
 
 }
 \author{

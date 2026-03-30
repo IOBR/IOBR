@@ -44,5 +44,8 @@ utils::globalVariables(c(
   "counts", "makeContrasts", "eBayes", "lmFit", "contrasts.fit",
   "topTable", "stat_compare_means", "compare_means",
   "listDatasets", "useMart", "getLDS", "random_strata_cells",
-  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count"
+  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count",
+
+  # ---------- Variables added during code quality improvements ----------
+  "main", "p.format", ".break_month", "draw", "coef", "Mode"
 ))

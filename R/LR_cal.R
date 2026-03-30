@@ -14,9 +14,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' if (requireNamespace("easier", quietly = TRUE)) {
 #'   lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
+#' }
 #' }
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
   rlang::check_installed("easier")
@@ -33,5 +35,5 @@ LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", can
   eset <- eset[rownames(eset) %in% feas, ]
   res <- easier::compute_LR_pairs(RNA_tpm = eset, cancer_type = cancer_type, verbose = TRUE)
 
-  res <- rownames_to_column(res, var = "ID")
+  tibble::rownames_to_column(res, var = "ID")
 }

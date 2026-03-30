@@ -9,33 +9,35 @@ best_cutoff(
   variable,
   time = "time",
   status = "status",
-  PrintResult = TRUE
+  print_result = TRUE
 )
 }
 \arguments{
-\item{pdata}{Data frame containing survival information and the continuous variable.}
+\item{pdata}{Data frame containing survival information and the continuous
+variable.}
 
-\item{variable}{Character string specifying the name of the continuous variable
-for which the optimal cutoff should be determined.}
+\item{variable}{Character string specifying the name of the continuous
+variable for which the optimal cutoff should be determined.}
 
-\item{time}{Character string specifying the column name containing time-to-event data.
-Default is `"time"`.}
+\item{time}{Character string specifying the column name containing
+time-to-event data. Default is `"time"`.}
 
-\item{status}{Character string specifying the column name containing event status
-(censoring information). Default is `"status"`.}
+\item{status}{Character string specifying the column name containing event
+status (censoring information). Default is `"status"`.}
 
-\item{PrintResult}{Logical indicating whether to print detailed results including
-cutoff value and Cox model summaries. Default is `TRUE`.}
+\item{print_result}{Logical indicating whether to print detailed results
+including cutoff value and Cox model summaries. Default is `TRUE`.}
 }
 \value{
-Data frame identical to `pdata` with an additional binary column named
-  `<variable>_binary` containing "High" and "Low" categories based on the
-  optimal cutoff.
+Data frame identical to `pdata` with an additional binary column
+  named `<variable>_binary` containing "High" and "Low" categories based on
+  the optimal cutoff.
 }
 \description{
-Determines the optimal cutoff point for a continuous variable in survival analysis
-using the maximally selected rank statistics method. Creates a binary variable
-based on the identified cutoff and adds it to the input data frame.
+Determines the optimal cutoff point for a continuous variable in survival
+analysis using the maximally selected rank statistics method. Creates a
+binary variable based on the identified cutoff and adds it to the input data
+frame.
 }
 \examples{
 \donttest{
@@ -45,7 +47,7 @@ sig_stad2 <- best_cutoff(
   variable = "TMEscore_CIR",
   time = "OS_time",
   status = "OS_status",
-  PrintResult = TRUE
+  print_result = TRUE
 )
 table(sig_stad2$TMEscore_CIR_binary)
 }

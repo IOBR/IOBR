@@ -106,13 +106,13 @@ batch_cor <- function(data,
       method = method, use = "complete.obs"
     )
     p_val <- exact_pvalue(data[[feat]], data[[target]], method)
-    c(p.value = p_val, estimate = test$estimate)
+    c(p_value = p_val, estimate = as.numeric(test$estimate))
   }, numeric(2))
 
   # Build results data frame
   cc <- data.frame(
     sig_names = valid_features,
-    p.value = results["p.value", ],
+    p.value = results["p_value", ],
     statistic = results["estimate", ],
     stringsAsFactors = FALSE,
     row.names = NULL

@@ -15,30 +15,28 @@ deconvolute_quantiseq.default(
 )
 }
 \arguments{
-\item{mix.mat}{table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-(Gene symbols on the first column and sample IDs on the first row).
-Expression data must be on non-log scale}
+\item{mix.mat}{table with the gene TPM (or microarray expression values) for
+all samples to be deconvoluted (Gene symbols on the first column and
+sample IDs on the first row). Expression data must be on non-log scale}
 
-\item{arrays}{specifies whether expression data are from microarrays (instead of RNA-seq).
+\item{arrays}{specifies whether expression data are from microarrays
+(instead of RNA-seq).
 If TRUE, the "--rmgenes" parameter is set to "none".}
 
 \item{signame}{name of the signature matrix. Currently only `TIL10` is available.}
 
-\item{tumor}{specifies whether expression data are from tumor samples. If TRUE, signature genes
-with high expression in tumor samples are removed.
+\item{tumor}{specifies whether expression data are from tumor samples. If
+TRUE, signature genes with high expression in tumor samples are removed.
 Default: FALSE.}
 
-\item{mRNAscale}{specifies whether cell fractions must be scaled to account for cell-type-specific
-mRNA content.
-Default: TRUE.}
+\item{mRNAscale}{specifies whether cell fractions must be scaled to account
+for cell-type-specific mRNA content. Default: TRUE.}
 
-\item{method}{deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-with Huber, Hampel, or Tukey bisquare estimators, respectively, or
-"lsei" for constrained
-least squares regression. The fraction of uncharacterized cells
-("other") is computed only
-by the "lsei" method.
-Default: "lsei".}
+\item{method}{deconvolution method to be used: "hampel", "huber", or
+"bisquare" for robust regression with Huber, Hampel, or Tukey bisquare
+estimators, respectively, or "lsei" for constrained least squares
+regression. The fraction of uncharacterized cells ("other") is
+computed only by the "lsei" method. Default: "lsei".}
 
 \item{rmgenes}{Default: "default" for RNAseq, "none" for microArray data}
 }

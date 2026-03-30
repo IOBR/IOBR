@@ -65,7 +65,7 @@ lasso_select <- function(x, y, type = c("binary", "survival"), nfold = 10,
     )
   }
 
-  myCoefs <- coef(cvfit, s = lambda)
+  myCoefs <- stats::coef(cvfit, s = lambda)
   myCoefs <- as.matrix(myCoefs)
   lasso_fea <- rownames(myCoefs)[which(myCoefs != 0)]
   lasso_fea <- setdiff(lasso_fea, "(Intercept)")

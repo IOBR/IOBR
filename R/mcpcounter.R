@@ -19,16 +19,17 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Create example expression data
 #' expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 #' rownames(expr) <- paste0("Gene", 1:100)
-#' # Estimate with HUGO symbols
+#' # Estimate with HUGO symbols (requires internet connection)
 #' estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
 #' }
 MCPcounter.estimate <- function(
   expression,
-  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID"),
+  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID",
+                   "ENSEMBL_ID"),
   probesets = read.table(
     url(paste0(
       "https://raw.githubusercontent.com/ebecht/",

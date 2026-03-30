@@ -7,7 +7,8 @@
 GetOutlierGenes(cancers)
 }
 \arguments{
-\item{cancers}{A dataframe with one column containing paths to gene expression files.}
+\item{cancers}{A dataframe with one column containing paths to gene
+expression files.}
 }
 \value{
 A vector of unique gene names identified as outliers across all given samples.

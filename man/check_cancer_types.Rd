@@ -35,6 +35,7 @@ cancer categories.
 If any cancer category is not recognized, the function stops with an error.
 }
 \examples{
+\dontrun{
 # ---- Batch mode example ----
 tf <- tempfile(fileext = ".csv")
 write.table(
@@ -62,4 +63,5 @@ args <- list(
 
 # timer_available_cancers <- c("lung", "breast")  # define for testing
 result <- check_cancer_types(args)
+}
 }

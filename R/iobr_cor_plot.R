@@ -291,11 +291,13 @@ iobr_cor_plot <- function(pdata_group,
       pf_long <- tidyr::pivot_longer(pf_inter, (target_idx + 1):ncol(pf_inter),
         names_to = "variables", values_to = "value"
       )
+      pf_long$value <- as.numeric(pf_long$value)
     } else {
       pf_inter <- tibble::as_tibble(pf[, c("ID", group, features)])
       pf_long <- tidyr::pivot_longer(pf_inter, 3:ncol(pf_inter),
         names_to = "variables", values_to = "value"
       )
+      pf_long$value <- as.numeric(pf_long$value)
     }
 
     pf_long$variables <- substring(pf_long$variables, 1, character_limit)

@@ -14,7 +14,7 @@
 #'   time-to-event data. Default is `"time"`.
 #' @param status Character string specifying the column name containing event
 #'   status (censoring information). Default is `"status"`.
-#' @param PrintResult Logical indicating whether to print detailed results
+#' @param print_result Logical indicating whether to print detailed results
 #'   including cutoff value and Cox model summaries. Default is `TRUE`.
 #'
 #' @return Data frame identical to `pdata` with an additional binary column
@@ -32,7 +32,7 @@
 #'   variable = "TMEscore_CIR",
 #'   time = "OS_time",
 #'   status = "OS_status",
-#'   PrintResult = TRUE
+#'   print_result = TRUE
 #' )
 #' table(sig_stad2$TMEscore_CIR_binary)
 #' }
@@ -51,9 +51,6 @@ best_cutoff <- function(pdata, variable, time = "time",
   if (!status %in% colnames(pdata)) {
     cli::cli_abort("Status column {.val {status}} not found in pdata")
   }
-
-  # Suppress NOTES about unused variable
-  surv_obj <- NULL
 
   pdata <- as.data.frame(pdata)
 

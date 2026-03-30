@@ -2,8 +2,8 @@
 #'
 #' @description
 #' Returns the xCell cell types enrichment scores for tumor microenvironment
-#' deconvolution. Uses ssGSEA-based enrichment analysis with spillover compensation
-#' to estimate cell type proportions from gene expression data.
+#' deconvolution. Uses ssGSEA-based enrichment analysis with spillover
+#' compensation to estimate cell type proportions from gene expression data.
 #'
 #' @param expr Gene expression data matrix with row names as gene symbols and
 #'   columns as samples.
@@ -52,7 +52,11 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
   # Load default data if not provided
   signatures <- signatures %||% xCell::xCell.data$signatures
   genes <- genes %||% xCell::xCell.data$genes
-  spill <- spill %||% if (rnaseq) xCell::xCell.data$spill else xCell::xCell.data$spill.array
+  spill <- spill %||% if (rnaseq) {
+    xCell::xCell.data$spill
+  } else {
+    xCell::xCell.data$spill.array
+  }
 
   # Validate cell types if specified
   if (!is.null(cell.types.use)) {
@@ -67,7 +71,11 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
     }
   }
 
-  fn <- if (is.null(file.name) || !save.raw) NULL else paste0(file.name, "_RAW.txt")
+  fn <- if (is.null(file.name) || !save.raw) {
+    NULL
+  } else {
+    paste0(file.name, "_RAW.txt")
+  }
 
   scores <- rawEnrichmentAnalysis(expr, signatures, genes, fn)
   scores.transformed <- transformScores(scores, spill$fv, scale)
@@ -76,7 +84,8 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
     scores.adjusted <- spillOver(scores.transformed, spill$K, alpha, file.name)
     scores.adjusted <- microenvironmentScores(scores.adjusted)
   } else {
-    scores.adjusted <- spillOver(scores.transformed[cell.types.use, ], spill$K, alpha, file.name)
+    scores.adjusted <- spillOver(scores.transformed[cell.types.use, ],
+                                  spill$K, alpha, file.name)
   }
 
   scores.adjusted
@@ -346,7 +355,8 @@ xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
                                          nperm = 250, file.name = NULL) {
   rlang::check_installed("xCell")
 
-  shuff_expr <- mapply(seq_len(nperm), FUN = function(x) sample(nrow(expr), nrow(expr)))
+  shuff_expr <- mapply(seq_len(nperm),
+                       FUN = function(x) sample(nrow(expr), nrow(expr)))
   rownames(shuff_expr) <- sample(rownames(expr))
   shuff_xcell <- xCellAnalysis(shuff_expr, spill = spill, alpha = alpha)
   shuff_xcell <- shuff_xcell[rownames(scores), ]

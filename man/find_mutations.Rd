@@ -81,6 +81,7 @@ for significance, and generates oncoprints and box plots to visualize
 relationships.
 }
 \examples{
+\dontrun{
 # Load mutation and signature data
 mut_list <- make_mut_matrix(
   maf = "path_to_maf_file", isTCGA = TRUE,
@@ -93,6 +94,7 @@ results <- find_mutations(
   min_mut_freq = 0.01, plot = TRUE, method = "multi",
   save_path = "path_to_save_results"
 )
+}
 }
 \author{
 Dongqiang Zeng
