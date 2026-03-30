@@ -58,7 +58,6 @@ sig_surv_plot <- function(input_pdata,
                           fig.type = "png",
                           save_path = NULL,
                           index = 1) {
-
   rlang::check_installed("survminer")
 
   # Input validation
@@ -98,8 +97,8 @@ sig_surv_plot <- function(input_pdata,
   }
 
   # Create tertile-based groups
-  q1 <- stats::quantile(input_pdata[[signature]], probs = 1/3, na.rm = TRUE)
-  q2 <- stats::quantile(input_pdata[[signature]], probs = 2/3, na.rm = TRUE)
+  q1 <- stats::quantile(input_pdata[[signature]], probs = 1 / 3, na.rm = TRUE)
+  q2 <- stats::quantile(input_pdata[[signature]], probs = 2 / 3, na.rm = TRUE)
 
   input_pdata$group3 <- ifelse(
     input_pdata[[signature]] <= q1, "Low",
@@ -116,7 +115,8 @@ sig_surv_plot <- function(input_pdata,
 
   # Calculate best cutoff
   res.cut <- survminer::surv_cutpoint(
-    input_pdata, time = "time", event = "status", variables = signature
+    input_pdata,
+    time = "time", event = "status", variables = signature
   )
   res.cut <- res.cut$cutpoint[[1]]
   cli::cli_alert_info("Best cutoff for {.val {signature}}: {round(res.cut, 2)}")
@@ -173,15 +173,19 @@ sig_surv_plot <- function(input_pdata,
 
   # Plot 1: Best cutoff
   pp1 <- survminer::ggsurvplot(
-    sfit, data = input_pdata, censor = TRUE, ncensor.plot = FALSE, conf.int = FALSE,
+    sfit,
+    data = input_pdata, censor = TRUE, ncensor.plot = FALSE, conf.int = FALSE,
     xlim = c(0, max_month), break.time.by = break_month,
     xlab = "Months after diagnosis", surv.median.line = "h",
     legend.labs = c(paste0("Low ", mini_sig), paste0("High ", mini_sig)),
     submain = paste0(signature, "-in-", project),
     risk.table = TRUE, tables.height = 0.20, palette = cols, pval.size = 8,
     pval = paste(
-      ifelse(pvalue[, 1] < 0.0001, "P < 0.0001", paste0("P = ", round(pvalue[, 1], 4))),
-      HR, CI, cut_off, sep = "\n"
+      ifelse(pvalue[, 1] < 0.0001, "P < 0.0001",
+        paste0("P = ", round(pvalue[, 1], 4))
+      ),
+      HR, CI, cut_off,
+      sep = "\n"
     ),
     size = 0.4
   )
@@ -191,7 +195,10 @@ sig_surv_plot <- function(input_pdata,
   if (!is.null(save_path)) {
     ggplot2::ggsave(
       plot = res1,
-      filename = paste0(index, "-1-KMplot-best-cutoff-", signature, "-", project, ".", fig.type),
+      filename = paste0(
+        index, "-1-KMplot-best-cutoff-", signature, "-",
+        project, ".", fig.type
+      ),
       width = 6, height = 6.5, path = save_path
     )
   }
@@ -208,48 +215,71 @@ sig_surv_plot <- function(input_pdata,
   names(sfit$strata) <- gsub("group3=", "", names(sfit$strata))
 
   pp2 <- survminer::ggsurvplot(
-    sfit, data = input_pdata, censor = TRUE, ncensor.plot = FALSE, conf.int = FALSE,
-    xlim = c(0, max_month), break.time.by = break_month,
-    xlab = "Months after diagnosis", submain = paste0(signature, "-in-", project),
+    sfit,
+    data = input_pdata, censor = TRUE, ncensor.plot = FALSE,
+    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month,
+    xlab = "Months after diagnosis",
+    submain = paste0(signature, "-in-", project),
     surv.median.line = "h", risk.table = TRUE, tables.height = 0.25,
     palette = cols, pval.size = 8, size = 0.4
   )
 
   # Log-rank test
   fitd <- survival::survdiff(
-    survival::Surv(time, status) ~ group3, data = input_pdata, na.action = stats::na.exclude
+    survival::Surv(time, status) ~ group3,
+    data = input_pdata,
+    na.action = stats::na.exclude
   )
   p.val <- 1 - stats::pchisq(fitd$chisq, length(fitd$n) - 1)
 
-  p.lab <- paste0("Overall P", ifelse(p.val < 0.001, " < 0.001", paste0(" = ", round(p.val, 3))))
+  p.lab <- paste0(
+    "Overall P",
+    ifelse(p.val < 0.001, " < 0.001", paste0(" = ", round(p.val, 3)))
+  )
 
   pp2$plot <- pp2$plot + ggplot2::annotate(
-    "text", x = 0, y = 0.55, hjust = 0, fontface = 3, label = p.lab
+    "text",
+    x = 0, y = 0.55, hjust = 0, fontface = 3, label = p.lab
   )
 
   # Pairwise comparisons
   ps <- survminer::pairwise_survdiff(
-    survival::Surv(time, status) ~ group3, data = input_pdata, p.adjust.method = "none"
+    survival::Surv(time, status) ~ group3,
+    data = input_pdata,
+    p.adjust.method = "none"
   )
 
-  addTab <- as.data.frame(as.matrix(ifelse(round(ps$p.value, 3) < 0.001, "<0.001", round(ps$p.value, 3))))
+  addTab <- as.data.frame(as.matrix(ifelse(round(ps$p.value, 3) < 0.001,
+    "<0.001", round(ps$p.value, 3)
+  )))
   addTab[is.na(addTab)] <- "-"
 
   df <- tibble::tibble(x = 0, y = 0, tb = list(addTab))
 
   rlang::check_installed("gridExtra")
-  tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE, theme = gridExtra::ttheme_minimal(base_size = 6))
+  tb_grob <- gridExtra::tableGrob(df$tb,
+    rows = TRUE,
+    theme = gridExtra::ttheme_minimal(base_size = 6)
+  )
 
   pp2$plot <- pp2$plot +
-    ggplot2::geom_text(ggplot2::aes(x = .data$x, y = .data$y, label = ""), data = df, size = 0) +
-    ggplot2::annotation_custom(tb_grob, xmin = df$x, xmax = df$x, ymin = df$y, ymax = df$y)
+    ggplot2::geom_text(ggplot2::aes(x = .data$x, y = .data$y, label = ""),
+      data = df, size = 0
+    ) +
+    ggplot2::annotation_custom(tb_grob,
+      xmin = df$x, xmax = df$x,
+      ymin = df$y, ymax = df$y
+    )
 
   res2 <- survminer::arrange_ggsurvplots(list(pp2), print = FALSE, ncol = 1, nrow = 1)
 
   if (!is.null(save_path)) {
     ggplot2::ggsave(
       plot = res2,
-      filename = paste0(index, "-2-KMplot-3group-", signature, "-", project, ".", fig.type),
+      filename = paste0(
+        index, "-2-KMplot-3group-", signature, "-",
+        project, ".", fig.type
+      ),
       width = 6, height = 6.5, path = save_path
     )
   }
@@ -259,26 +289,33 @@ sig_surv_plot <- function(input_pdata,
   input_pdata$group2 <- ifelse(input_pdata$group2 == "High", 1, 0)
 
   cox_fit <- survival::coxph(
-    survival::Surv(input_pdata$time, input_pdata$status) ~ group2, data = input_pdata
+    survival::Surv(input_pdata$time, input_pdata$status) ~ group2,
+    data = input_pdata
   )
   pvalue <- getHRandCIfromCoxph(cox_fit)
   HR <- paste0("Hazard Ratio = ", round(pvalue[, 2], 2))
   CI <- paste0("95% CI: ", round(pvalue[, 3], 2), " - ", round(pvalue[, 4], 2))
 
   sfit <- survminer::surv_fit(
-    survival::Surv(input_pdata$time, input_pdata$status) ~ group2, data = input_pdata
+    survival::Surv(input_pdata$time, input_pdata$status) ~ group2,
+    data = input_pdata
   )
 
   pp3 <- survminer::ggsurvplot(
-    sfit, data = input_pdata, censor = TRUE, ncensor.plot = FALSE, conf.int = FALSE,
-    xlim = c(0, max_month), break.time.by = break_month,
+    sfit,
+    data = input_pdata, censor = TRUE, ncensor.plot = FALSE,
+    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month,
     xlab = "Months after diagnosis",
     legend.labs = c(paste0("Low ", mini_sig), paste0("High ", mini_sig)),
-    submain = paste0(signature, "-in-", project), surv.median.line = "h",
-    risk.table = TRUE, tables.height = 0.20, palette = cols, pval.size = 8,
+    submain = paste0(signature, "-in-", project),
+    surv.median.line = "h", risk.table = TRUE, tables.height = 0.20,
+    palette = cols, pval.size = 8,
     pval = paste(
-      ifelse(pvalue[, 1] < 0.0001, "P < 0.0001", paste0("P = ", round(pvalue[, 1], 4))),
-      HR, CI, sep = "\n"
+      ifelse(pvalue[, 1] < 0.0001, "P < 0.0001",
+        paste0("P = ", round(pvalue[, 1], 4))
+      ),
+      HR, CI,
+      sep = "\n"
     ),
     size = 0.4
   )
@@ -288,7 +325,10 @@ sig_surv_plot <- function(input_pdata,
   if (!is.null(save_path)) {
     ggplot2::ggsave(
       plot = res3,
-      filename = paste0(index, "-3-KMplot-2group-", signature, "-", project, ".", fig.type),
+      filename = paste0(
+        index, "-3-KMplot-2group-", signature, "-",
+        project, ".", fig.type
+      ),
       width = 6, height = 6.5, path = save_path
     )
   }

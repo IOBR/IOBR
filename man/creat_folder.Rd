@@ -9,18 +9,27 @@ creat_folder(f1, f2 = NULL, f3 = NULL, return = NULL)
 \arguments{
 \item{f1}{Character. First-level folder name.}
 
-\item{f2}{Character or NULL. Second-level folder name.}
+\item{f2}{Character or `NULL`. Second-level folder name. Default is `NULL`.}
 
-\item{f3}{Character or NULL. Third-level folder name.}
+\item{f3}{Character or `NULL`. Third-level folder name. Default is `NULL`.}
 
 \item{return}{Deprecated (not used). Kept for backward compatibility.}
 }
 \value{
-List with elements: `folder_name` (relative) and `abspath` (absolute path ending with '/').
+List with elements:
+\describe{
+  \item{folder_name}{Relative path to the created folder}
+  \item{abspath}{Absolute path ending with '/'}
+}
 }
 \description{
-Creates one to three nested folders (if not existing) under the current working directory and returns their names and absolute path.
+Creates one to three nested folders (if not existing) under the current
+working directory and returns their names and absolute paths.
 }
 \examples{
+# Create single folder
 creat_folder("1-result")
+
+# Create nested folders
+creat_folder("1-result", "figures", "correlation")
 }

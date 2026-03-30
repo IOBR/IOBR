@@ -43,7 +43,6 @@ batch_cor <- function(data,
                       target,
                       feature,
                       method = c("spearman", "pearson", "kendall")) {
-
   # Input validation
   if (is.null(data) || !is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a non-null data frame.")
@@ -65,9 +64,10 @@ batch_cor <- function(data,
   invalid_features <- setdiff(feature, colnames(data))
 
   if (length(invalid_features) > 0) {
-    cli::cli_alert_warning(
-      "Ignoring {length(invalid_features)} invalid feature{?s}: {.val {invalid_features}}"
-    )
+    cli::cli_alert_warning(paste(
+      "Ignoring {length(invalid_features)} invalid feature{?s}:",
+      "{.val {invalid_features}}"
+    ))
   }
 
   if (length(valid_features) == 0) {
@@ -85,9 +85,11 @@ batch_cor <- function(data,
 
   # Filter features with zero variance
   valid_features <- valid_features[
-    vapply(data[, valid_features, drop = FALSE],
-           function(x) stats::sd(x, na.rm = TRUE) > 0,
-           logical(1))
+    vapply(
+      data[, valid_features, drop = FALSE],
+      function(x) stats::sd(x, na.rm = TRUE) > 0,
+      logical(1)
+    )
   ]
 
   if (length(valid_features) == 0) {
@@ -101,7 +103,8 @@ batch_cor <- function(data,
   # Vectorized correlation analysis
   results <- vapply(valid_features, function(feat) {
     test <- stats::cor.test(data[[feat]], data[[target]],
-                            method = method, use = "complete.obs")
+      method = method, use = "complete.obs"
+    )
     p_val <- exact_pvalue(data[[feat]], data[[target]], method)
     c(p.value = p_val, estimate = test$estimate)
   }, numeric(2))

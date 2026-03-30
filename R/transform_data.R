@@ -29,8 +29,10 @@
 #' transform_data(data_matrix, feature = c("A", "B"), data_type = "NA")
 #'
 #' # Replace Inf values with the mean of the column
-#' transform_data(data_matrix, feature = c("A", "B"),
-#'                data_type = "Inf", into = "mean")
+#' transform_data(data_matrix,
+#'   feature = c("A", "B"),
+#'   data_type = "Inf", into = "mean"
+#' )
 #'
 #' # Replace zeros with -1 in column C
 #' transform_data(data_matrix, feature = "C", data_type = "zero", into = -1)
@@ -38,7 +40,6 @@ transform_data <- function(data,
                            feature,
                            data_type = c("NA", "Inf", "zero"),
                            into = 0) {
-
   # Input validation
   if (!is.data.frame(data)) {
     cli::cli_abort(c(

@@ -1,7 +1,9 @@
 #' Transform Signature Data into List Format
 #'
-#' This function converts signature data from a data frame (with signatures as columns and genes as rows)
-#' into a list format suitable for IOBR functions, replacing NA values appropriately.
+#' This function converts signature data from a data frame (with signatures as
+#' columns and genes as rows)
+#' into a list format suitable for IOBR functions, replacing NA values
+#' appropriately.
 #'
 #' @param sig_data Data frame with signature names as columns and genes in rows; use NA for missing values.
 #' @param save_signature Logical indicating whether to save the signature list as RData. Default is FALSE.

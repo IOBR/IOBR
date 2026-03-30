@@ -36,11 +36,15 @@ make_mut_matrix(
 List of mutation matrices (if category = "multi") or a single matrix for the specified category.
 }
 \description{
-Builds mutation presence/absence matrices from MAF input (file path or MAF object). Supports multiple categories: all mutations, SNPs, indels, and frameshift mutations. When category = "multi", returns a list of matrices for each category. Compatible with TCGA-formatted data.
+Builds mutation presence/absence matrices from MAF input (file path or MAF
+object). Supports multiple categories: all mutations, SNPs, indels, and
+frameshift mutations. When category = "multi", returns a list of matrices
+for each category. Compatible with TCGA-formatted data.
 }
 \note{
 Some users may encounter errors from upstream data import (e.g.
-"Can't combine ..$Tumor_Seq_Allele2" when using TCGAbiolinks or TCGAmutations).
+"Can't combine ..$Tumor_Seq_Allele2" when using TCGAbiolinks or
+TCGAmutations).
 This is due to inconsistent column types in the source MAF tables,
 not an issue of this function.
 Please ensure your MAF or merged data frame uses consistent column types

@@ -2,7 +2,7 @@
 % Please edit documentation in R/xCell.R
 \name{xCellSignifcanceRandomMatrix}
 \alias{xCellSignifcanceRandomMatrix}
-\title{Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.}
+\title{Calculate Significance Using Random Matrix}
 \usage{
 xCellSignifcanceRandomMatrix(
   scores,
@@ -14,21 +14,23 @@ xCellSignifcanceRandomMatrix(
 )
 }
 \arguments{
-\item{scores}{the xCell scores.}
+\item{scores}{xCell scores matrix.}
 
-\item{expr}{the input expression matrix.}
+\item{expr}{Input expression matrix.}
 
-\item{spill}{the Spillover object for adjusting the scores.}
+\item{spill}{Spillover object.}
 
-\item{alpha}{a value to override the spillover alpha parameter. Deafult = 0.5}
+\item{alpha}{Spillover alpha parameter. Default is `0.5`.}
 
-\item{nperm}{number of samples in the shuffled matrix, default = 250}
+\item{nperm}{Number of permutations. Default is `250`.}
 
-\item{file.name}{file name to write the p-values table.}
+\item{file.name}{Character string for saving p-values. Default is `NULL`.}
 }
 \value{
-a list with the p-values, the xcell scores of the shuffled data and the shuffled expression matrix.
+List containing p-values, shuffled xCell scores, shuffled expression,
+  and beta distributions.
 }
 \description{
-xCellSignifcanceRandomMatrix Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+Calculates FDR-adjusted p-values using a random shuffled matrix.
 }
+\keyword{internal}

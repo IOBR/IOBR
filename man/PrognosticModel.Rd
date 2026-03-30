@@ -21,30 +21,34 @@ PrognosticModel(
 
 \item{y}{A data frame of survival outcomes with two columns: survival time and event status.}
 
-\item{scale}{Logical indicating whether to scale predictor variables. Default is \code{FALSE}.}
+\item{scale}{Logical indicating whether to scale predictor variables. Default is `FALSE`.}
 
-\item{seed}{Integer seed for random number generation to ensure reproducibility. Default is \code{123456}.}
+\item{seed}{Integer seed for random number generation to ensure reproducibility.
+Default is `123456`.}
 
-\item{train_ratio}{Numeric proportion of data for training (e.g., 0.7). Default is \code{0.7}.}
+\item{train_ratio}{Numeric proportion of data for training (e.g., 0.7). Default is `0.7`.}
 
-\item{nfold}{Integer number of folds for cross-validation. Default is \code{10}.}
+\item{nfold}{Integer number of folds for cross-validation. Default is `10`.}
 
-\item{plot}{Logical indicating whether to plot ROC curves. Default is \code{TRUE}.}
+\item{plot}{Logical indicating whether to plot ROC curves. Default is `TRUE`.}
 
-\item{palette}{String specifying color palette. Default is \code{"jama"}.}
+\item{palette}{String specifying color palette. Default is `"jama"`.}
 
-\item{cols}{Optional vector of colors for ROC curves. If \code{NULL}, uses default palette.}
+\item{cols}{Optional vector of colors for ROC curves. If `NULL`, uses default palette.}
 }
 \value{
 A list containing:
-- `lasso_result`: Results from LASSO model including coefficients and AUC
-- `ridge_result`: Results from Ridge model including coefficients and AUC
-- `train.x`: Training data with sample IDs
+\describe{
+  \item{lasso_result}{Results from LASSO model including coefficients and AUC}
+  \item{ridge_result}{Results from Ridge model including coefficients and AUC}
+  \item{train.x}{Training data with sample IDs}
+}
 }
 \description{
-Prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models
-for survival analysis. Evaluates model performance using cross-validation and optionally generates
-time-dependent ROC curves for visual assessment of predictive accuracy.
+Prepares data, splits it into training and testing sets, and fits LASSO and Ridge
+regression models for survival analysis. Evaluates model performance using
+cross-validation and optionally generates time-dependent ROC curves for visual
+assessment of predictive accuracy.
 }
 \examples{
 \dontrun{

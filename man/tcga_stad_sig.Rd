@@ -24,10 +24,12 @@ data(tcga_stad_sig)
 \description{
 A comprehensive dataset containing immune cell infiltration scores derived
 from CIBERSORT analysis of TCGA Stomach Adenocarcinoma (STAD) RNA-seq data.
-Includes detailed immune cell subtype proportions for each gastric cancer sample.
+Includes detailed immune cell subtype proportions for each gastric cancer
+sample.
 }
 \references{
-Newman AM et al. Robust enumeration of cell subsets from tissue expression profiles.
+Newman AM et al. Robust enumeration of cell subsets from tissue expression
+profiles.
 Nature Methods 12, 453-457 (2015).
 doi:10.1038/nmeth.3337
 
@@ -35,7 +37,8 @@ Thorsson V et al. The Immune Landscape of Cancer.
 Immunity 48, 812-830 (2018).
 doi:10.1016/j.immuni.2018.03.023
 
-Cancer Genome Atlas Research Network. Comprehensive molecular characterization
+Cancer Genome Atlas Research Network. Comprehensive molecular
+characterization
 of gastric adenocarcinoma. Nature 513, 202-209 (2014).
 doi:10.1038/nature13480
 }

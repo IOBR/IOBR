@@ -45,7 +45,6 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
                      time_type = "month", palette = "jama", cols = "normal",
                      seed = 1234, show_col = FALSE, path = NULL, main = "PFS",
                      index = 1, fig.type = "pdf", width = 5, height = 5.2) {
-
   rlang::check_installed("timeROC")
 
   save_plot <- !is.null(path)
@@ -100,8 +99,10 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   p <- p + design_mytheme(axis_angle = 0, hjust = 0.5, axis_title_size = 1.7)
 
   if (save_plot) {
-    ggplot2::ggsave(p, filename = paste0(index, "-", main, "-ROC-time.", fig.type),
-                    width = width, height = height, path = save_path)
+    ggplot2::ggsave(p,
+      filename = paste0(index, "-", main, "-ROC-time.", fig.type),
+      width = width, height = height, path = save_path
+    )
   }
 
   p
@@ -149,12 +150,18 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     ggplot2::geom_line(ggplot2::aes(x = rocs[[3]]$FP[, 2], y = rocs[[3]]$TP[, 2]), color = cols[3]) +
     ggplot2::geom_line(ggplot2::aes(x = c(0, 1), y = c(0, 1)), color = "grey", linetype = "dashed") +
     ggplot2::theme_light() +
-    ggplot2::annotate("text", x = 0.7, y = 0.35,
-                      label = paste("AUC of", time_point[1], unit_label, "=", aucs[1]), color = cols[1]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.25,
-                      label = paste("AUC of", time_point[2], unit_label, "=", aucs[2]), color = cols[2]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.15,
-                      label = paste("AUC of", time_point[3], unit_label, "=", aucs[3]), color = cols[3]) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.35,
+      label = paste("AUC of", time_point[1], unit_label, "=", aucs[1]), color = cols[1]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.25,
+      label = paste("AUC of", time_point[2], unit_label, "=", aucs[2]), color = cols[2]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.15,
+      label = paste("AUC of", time_point[3], unit_label, "=", aucs[3]), color = cols[3]
+    ) +
     ggplot2::scale_x_continuous(name = "False Positive Rate") +
     ggplot2::scale_y_continuous(name = "True Positive Rate") +
     ggplot2::ggtitle(paste0(vars, ", ", main, " = ", paste0(time_point, collapse = ", "), " ", unit_label))
@@ -181,8 +188,10 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 
   markers <- list(input[[var1]], input[[var2]], combined_score)
   rocs <- lapply(markers, function(m) {
-    timeROC::timeROC(T = time, delta = status, marker = m, cause = 1,
-                     weighting = "marginal", times = time_point, iid = TRUE)
+    timeROC::timeROC(
+      T = time, delta = status, marker = m, cause = 1,
+      weighting = "marginal", times = time_point, iid = TRUE
+    )
   })
 
   aucs <- vapply(rocs, function(r) round(as.numeric(r$AUC)[length(r$AUC)], 2), numeric(1))
@@ -193,12 +202,18 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     ggplot2::geom_line(ggplot2::aes(x = rocs[[3]]$FP[, 2], y = rocs[[3]]$TP[, 2]), color = cols[3]) +
     ggplot2::geom_line(ggplot2::aes(x = c(0, 1), y = c(0, 1)), color = "grey", linetype = "dashed") +
     ggplot2::theme_light() +
-    ggplot2::annotate("text", x = 0.7, y = 0.35,
-                      label = paste("AUC of", var1, "=", aucs[1]), color = cols[1]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.25,
-                      label = paste("AUC of", var2, "=", aucs[2]), color = cols[2]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.15,
-                      label = paste("AUC of combined =", aucs[3]), color = cols[3]) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.35,
+      label = paste("AUC of", var1, "=", aucs[1]), color = cols[1]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.25,
+      label = paste("AUC of", var2, "=", aucs[2]), color = cols[2]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.15,
+      label = paste("AUC of combined =", aucs[3]), color = cols[3]
+    ) +
     ggplot2::scale_x_continuous(name = "False Positive Rate") +
     ggplot2::scale_y_continuous(name = "True Positive Rate") +
     ggplot2::ggtitle(paste0(main, " = ", time_point, " ", unit_label))
@@ -226,8 +241,10 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
 
   markers <- list(input[[var1]], input[[var2]], input[[var3]], combined_score)
   rocs <- lapply(markers, function(m) {
-    timeROC::timeROC(T = time, delta = status, marker = m, cause = 1,
-                     weighting = "marginal", times = time_point, iid = TRUE)
+    timeROC::timeROC(
+      T = time, delta = status, marker = m, cause = 1,
+      weighting = "marginal", times = time_point, iid = TRUE
+    )
   })
 
   aucs <- vapply(rocs, function(r) round(as.numeric(r$AUC)[length(r$AUC)], 2), numeric(1))
@@ -239,14 +256,22 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     ggplot2::geom_line(ggplot2::aes(x = rocs[[4]]$FP[, 2], y = rocs[[4]]$TP[, 2]), color = cols[4]) +
     ggplot2::geom_line(ggplot2::aes(x = c(0, 1), y = c(0, 1)), color = "grey", linetype = "dashed") +
     ggplot2::theme_light() +
-    ggplot2::annotate("text", x = 0.7, y = 0.35,
-                      label = paste("AUC of", var1, "=", aucs[1]), color = cols[1]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.25,
-                      label = paste("AUC of", var2, "=", aucs[2]), color = cols[2]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.15,
-                      label = paste("AUC of", var3, "=", aucs[3]), color = cols[3]) +
-    ggplot2::annotate("text", x = 0.7, y = 0.05,
-                      label = paste("AUC of combined =", aucs[4]), color = cols[4]) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.35,
+      label = paste("AUC of", var1, "=", aucs[1]), color = cols[1]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.25,
+      label = paste("AUC of", var2, "=", aucs[2]), color = cols[2]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.15,
+      label = paste("AUC of", var3, "=", aucs[3]), color = cols[3]
+    ) +
+    ggplot2::annotate("text",
+      x = 0.7, y = 0.05,
+      label = paste("AUC of combined =", aucs[4]), color = cols[4]
+    ) +
     ggplot2::scale_x_continuous(name = "False Positive Rate") +
     ggplot2::scale_y_continuous(name = "True Positive Rate") +
     ggplot2::ggtitle(paste0(main, " = ", time_point, " ", unit_label))

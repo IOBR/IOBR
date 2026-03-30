@@ -13,26 +13,24 @@ CalculateTimeROC(model, newx, s, acture.y, modelname, time_prob = 0.9)
 
 \item{s}{Lambda value for prediction.}
 
-\item{acture.y}{Data frame with \code{time} and \code{status} columns.}
+\item{acture.y}{Data frame with `time` and `status` columns.}
 
 \item{modelname}{Character string for model identification.}
 
-\item{time_prob}{Numeric quantile for ROC calculation (default: \code{0.9}).}
+\item{time_prob}{Numeric quantile for ROC calculation. Default is `0.9`.}
 }
 \value{
-An object of class \code{timeROC} containing ROC curve information.
+An object of class `timeROC` containing ROC curve information.
 }
 \description{
-Computes time-dependent ROC curve for survival models using the \code{timeROC} package.
+Computes time-dependent ROC curve for survival models using the `timeROC` package.
 Evaluates predictive accuracy at a specified time quantile.
 }
 \examples{
 \dontrun{
 if (requireNamespace("glmnet", quietly = TRUE) &&
-    requireNamespace("survival", quietly = TRUE)) {
-  # Use lung dataset and remove missing values
+  requireNamespace("survival", quietly = TRUE)) {
   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
-  # Convert status to 0/1 for glmnet Cox model
   dat$status <- dat$status - 1
   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
   y <- survival::Surv(dat$time, dat$status)

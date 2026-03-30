@@ -19,8 +19,8 @@ percent_bar_plot(
   size_freq = 8,
   legend.size = 0.5,
   legend.size.text = 10,
-  add_sum = T,
-  print_result = T,
+  add_sum = TRUE,
+  print_result = TRUE,
   round.num = 2
 )
 }
@@ -29,47 +29,51 @@ percent_bar_plot(
 
 \item{x}{Name of the x-axis variable.}
 
-\item{y}{Name of the y-axis variable.}
+\item{y}{Name of the y-axis (grouping) variable.}
 
 \item{subset.x}{Optional subset of x-axis values.}
 
-\item{color}{Optional color palette for the bars.}
+\item{color}{Optional color palette.}
 
-\item{palette}{Optional palette type for color selection.}
+\item{palette}{Optional palette type.}
 
-\item{title}{Optional title for the plot.}
+\item{title}{Optional plot title.}
 
-\item{axis_angle}{Optional angle for the axis labels. range from [0,90]}
+\item{axis_angle}{Angle for axis labels (0-90). Default is 0.}
 
-\item{coord_flip}{Boolean indicating whether to flip the x and y axes.}
+\item{coord_flip}{Logical to flip coordinates. Default is FALSE.}
 
-\item{add_Freq}{default is true for data frame}
+\item{add_Freq}{Logical to add frequency count. Default is TRUE.}
 
-\item{Freq}{Optional name for the frequency column.}
+\item{Freq}{Name of frequency column.}
 
-\item{size_freq}{Size of the frequency labels.}
+\item{size_freq}{Size of frequency labels. Default is 8.}
 
-\item{legend.size}{Size of the legend.}
+\item{legend.size}{Size of legend. Default is 0.5.}
 
-\item{legend.size.text}{Size of the legend text.}
+\item{legend.size.text}{Size of legend text. Default is 10.}
 
-\item{add_sum}{Boolean indicating whether to add the sum to the x-axis labels.}
+\item{add_sum}{Logical to add sum to x-axis labels. Default is TRUE.}
 
-\item{print_result}{Boolean indicating whether to print the result data frame.}
+\item{print_result}{Logical to print result data frame. Default is TRUE.}
 
-\item{round.num}{Number of decimal places to round the proportion column.}
+\item{round.num}{Decimal places for proportion. Default is 2.}
 }
 \value{
-A ggplot object representing the percentage bar plot.
+A ggplot object.
 }
 \description{
-This function generates a bar plot that visualizes the percentage distribution of a variable grouped by another variable.
-It offers options to customize the plot's colors, title, axis labels, and more.
+Generates a bar plot visualizing the percentage distribution of a variable
+grouped by another variable.
 }
 \examples{
+\donttest{
 sig_stad <- load_data("sig_stad")
-table(sig_stad$Subtype, sig_stad$Lauren)
-percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
+percent_bar_plot(
+  input = sig_stad, x = "Subtype", y = "Lauren",
+  axis_angle = 60
+)
+}
 }
 \author{
 Dongqiang Zeng

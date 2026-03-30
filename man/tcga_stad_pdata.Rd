@@ -19,7 +19,8 @@ A data frame with samples as rows and variables as columns:
   \item OS_status – 0 = alive, 1 = dead
   \item ARID1A, PIK3CA – driver-gene mutation status
   \item MALAT1 – lncRNA expression
-  \item remaining columns – gene-expression values and additional clinical/molecular annotations
+  \item remaining columns – gene-expression values and additional
+  clinical/molecular annotations
 }
 }
 \source{

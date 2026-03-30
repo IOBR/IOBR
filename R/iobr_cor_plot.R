@@ -122,7 +122,6 @@ iobr_cor_plot <- function(pdata_group,
                           discrete_width = 20,
                           show_palettes = FALSE,
                           fig.type = "pdf") {
-
   rlang::check_installed("ggpubr")
   rlang::check_installed("tidyHeatmap")
 
@@ -162,8 +161,8 @@ iobr_cor_plot <- function(pdata_group,
   }
 
   if (is_target_continuous && !"group3" %in% colnames(pdata_group)) {
-    q1 <- stats::quantile(pdata_group[[target]], probs = 1/3, na.rm = TRUE)
-    q2 <- stats::quantile(pdata_group[[target]], probs = 2/3, na.rm = TRUE)
+    q1 <- stats::quantile(pdata_group[[target]], probs = 1 / 3, na.rm = TRUE)
+    q2 <- stats::quantile(pdata_group[[target]], probs = 2 / 3, na.rm = TRUE)
     pdata_group$group3 <- ifelse(
       pdata_group[[target]] <= q1, "Low",
       ifelse(pdata_group[[target]] >= q2, "High", "Middle")
@@ -181,7 +180,8 @@ iobr_cor_plot <- function(pdata_group,
   if (category == "gene") {
     feature_data <- log2eset(feature_data)
     check_eset(feature_data)
-    feature_data <- tibble::rownames_to_column(as.data.frame(t(feature_data)), var = "ID")
+    feature_data <- as.data.frame(t(feature_data))
+    feature_data <- tibble::rownames_to_column(feature_data, var = "ID")
   }
 
   feature_data <- as.data.frame(feature_data)
@@ -263,7 +263,11 @@ iobr_cor_plot <- function(pdata_group,
         )
       } else {
         eset <- pf[, colnames(pf) %in% c(target, features)]
-        res <- batch_cor(data = eset, target = target, feature = setdiff(colnames(eset), target), method = "spearman")
+        res <- batch_cor(
+          data = eset, target = target,
+          feature = setdiff(colnames(eset), target),
+          method = "spearman"
+        )
         good_features <- high_var_fea(
           result = res, target = "sig_names", name_padj = "p.adj",
           padj_cutoff = padj_cutoff, name_logfc = "statistic",
@@ -282,13 +286,16 @@ iobr_cor_plot <- function(pdata_group,
     # Prepare long format data
     if (!is.null(target)) {
       target_idx <- which(colnames(pf) == target)
-      pf_inter <- tibble::as_tibble(pf[, c(setdiff(colnames(pdata_group), target), target, features)])
+      cols_to_select <- c(setdiff(colnames(pdata_group), target), target, features)
+      pf_inter <- tibble::as_tibble(pf[, cols_to_select])
       pf_long <- tidyr::pivot_longer(pf_inter, (target_idx + 1):ncol(pf_inter),
-                                     names_to = "variables", values_to = "value")
+        names_to = "variables", values_to = "value"
+      )
     } else {
       pf_inter <- tibble::as_tibble(pf[, c("ID", group, features)])
       pf_long <- tidyr::pivot_longer(pf_inter, 3:ncol(pf_inter),
-                                     names_to = "variables", values_to = "value")
+        names_to = "variables", values_to = "value"
+      )
     }
 
     pf_long$variables <- substring(pf_long$variables, 1, character_limit)
@@ -312,14 +319,18 @@ iobr_cor_plot <- function(pdata_group,
     }
 
     # Get colors
-    color_box <- cols_box %||% palettes(category = "box", palette = palette_box,
-                                        show_col = show_col, show_message = show_palettes)
+    color_box <- cols_box %||% palettes(
+      category = "box", palette = palette_box,
+      show_col = show_col, show_message = show_palettes
+    )
 
     # Create box plot
     axis_text_size <- max(8, 18 - max(nchar(as.character(pf_long$variables))) / 7)
 
-    p <- ggpubr::ggboxplot(pf_long_group_box, x = "variables", y = "value",
-                           fill = target_binary) +
+    p <- ggpubr::ggboxplot(pf_long_group_box,
+      x = "variables", y = "value",
+      fill = target_binary
+    ) +
       ggplot2::scale_fill_manual(values = color_box) +
       ggplot2::ylab(title.y) +
       ggplot2::ggtitle(group_name) +
@@ -328,10 +339,14 @@ iobr_cor_plot <- function(pdata_group,
         plot.title = ggplot2::element_text(size = ggplot2::rel(2), hjust = 0.5),
         axis.title.y = ggplot2::element_text(size = ggplot2::rel(1.5)),
         axis.title.x = ggplot2::element_blank(),
-        axis.text.x = ggplot2::element_text(face = "plain", size = axis_text_size,
-                                            angle = 60, hjust = 1, color = "black"),
-        axis.text.y = ggplot2::element_text(face = "plain", size = 15, angle = 0,
-                                            hjust = 1, color = "black"),
+        axis.text.x = ggplot2::element_text(
+          face = "plain", size = axis_text_size,
+          angle = 60, hjust = 1, color = "black"
+        ),
+        axis.text.y = ggplot2::element_text(
+          face = "plain", size = 15, angle = 0,
+          hjust = 1, color = "black"
+        ),
         axis.line = ggplot2::element_line(color = "black", linewidth = 0.5),
         legend.key.size = ggplot2::unit(0.3, "inches"),
         legend.title = ggplot2::element_blank(),
@@ -352,7 +367,8 @@ iobr_cor_plot <- function(pdata_group,
       size = 2.6, label.y = max_variables - 0.3
     )
     pp2 <- p + ggpubr::compare_means(
-      ggplot2::aes(group = !!group_box), label = "p.signif",
+      ggplot2::aes(group = !!group_box),
+      label = "p.signif",
       size = 6, label.y = max_variables - 0.6
     )
 
@@ -368,18 +384,30 @@ iobr_cor_plot <- function(pdata_group,
     fig_ext <- if (fig.type == "pdf") "pdf" else "png"
 
     prefix <- if (!is.null(target)) target else group
-    ggplot2::ggsave(pp1, filename = paste0(index, "-", x, "-1-", ProjectID, "-", prefix, "-", group_name, "-pvalue-box.", fig_ext),
-                    width = plot_width, height = plot_height, path = file_store)
-    ggplot2::ggsave(pp2, filename = paste0(index, "-", x, "-2-", ProjectID, "-", prefix, "-", group_name, "-box.", fig_ext),
-                    width = plot_width, height = plot_height, path = file_store)
+    ggplot2::ggsave(pp1,
+      filename = paste0(
+        index, "-", x, "-1-", ProjectID, "-", prefix,
+        "-", group_name, "-pvalue-box.", fig_ext
+      ),
+      width = plot_width, height = plot_height, path = file_store
+    )
+    ggplot2::ggsave(pp2,
+      filename = paste0(
+        index, "-", x, "-2-", ProjectID, "-", prefix,
+        "-", group_name, "-box.", fig_ext
+      ),
+      width = plot_width, height = plot_height, path = file_store
+    )
 
     # Create heatmap
     colnames(pf_long_group)[colnames(pf_long_group) == group] <- "target_group"
     pf_long_group$value <- pmin(pmax(pf_long_group$value, -2.5), 2.5)
 
     height_heatmap <- length(features) * 0.2 + 3
-    heatmap_col <- palettes(category = "tidyheatmap", palette = palette_heatmap,
-                            show_col = show_col, show_message = show_palettes)
+    heatmap_col <- palettes(
+      category = "tidyheatmap", palette = palette_heatmap,
+      show_col = show_col, show_message = show_palettes
+    )
 
     pp <- pf_long_group %>%
       dplyr::group_by(.data$target_group) %>%
@@ -393,7 +421,10 @@ iobr_cor_plot <- function(pdata_group,
     if (show_plot) print(pp)
 
     pp %>% tidyHeatmap::save_pdf(
-      paste0(abspath, index, "-", x, "-3-", ProjectID, "-", group, "-", group_name, "-tidyheatmap.pdf"),
+      paste0(
+        abspath, index, "-", x, "-3-", ProjectID, "-", group, "-", group_name,
+        "-tidyheatmap.pdf"
+      ),
       width = 8, height = height_heatmap
     )
 
@@ -405,28 +436,37 @@ iobr_cor_plot <- function(pdata_group,
       bbcor <- Hmisc::rcorr(as.matrix(pf_cor), type = "spearman")
       bbcor$P[is.na(bbcor$P)] <- 0
 
-      col <- palettes(category = "heatmap3", palette = palette_corplot,
-                      show_col = show_col, show_message = show_palettes)
+      col <- palettes(
+        category = "heatmap3", palette = palette_corplot,
+        show_col = show_col, show_message = show_palettes
+      )
 
       width_heatmap <- length(group_list[[x]]) * 0.75 + 5
       height_heatmap <- length(group_list[[x]]) * 0.75 + 4
 
       grDevices::pdf(
-        file = paste0(abspath, index, "-", x, "-4-", ProjectID, "-", group_name,
-                      "-associated-", category, "-corplot.pdf"),
-        width = width_heatmap, height = height_heatmap
+        file = paste0(
+          abspath, index, "-", x, "-4-", ProjectID, "-", group_name,
+          "-associated-", category, "-corplot.pdf"
+        ),
+        width = width_heatmap,
+        height = height_heatmap
       )
       rlang::check_installed("corrplot")
-      corrplot::corrplot(bbcor$r, type = "lower", order = "hclust", p.mat = bbcor$P,
-                         sig.level = 0.05, tl.srt = 45, tl.col = "black", tl.cex = 1.3,
-                         addrect = 2, rect.col = "black", rect.lwd = 3,
-                         col = grDevices::colorRampPalette(col)(50))
+      corrplot::corrplot(bbcor$r,
+        type = "lower", order = "hclust", p.mat = bbcor$P,
+        sig.level = 0.05, tl.srt = 45, tl.col = "black",
+        tl.cex = 1.3, addrect = 2, rect.col = "black",
+        rect.lwd = 3, col = grDevices::colorRampPalette(col)(50)
+      )
       grDevices::dev.off()
 
-      corrplot::corrplot(bbcor$r, type = "lower", order = "hclust", p.mat = bbcor$P,
-                         sig.level = 0.05, tl.srt = 45, tl.col = "black", tl.cex = 1,
-                         addrect = 2, rect.col = "black", rect.lwd = 3,
-                         col = grDevices::colorRampPalette(col)(50))
+      corrplot::corrplot(bbcor$r,
+        type = "lower", order = "hclust", p.mat = bbcor$P,
+        sig.level = 0.05, tl.srt = 45, tl.col = "black",
+        tl.cex = 1, addrect = 2, rect.col = "black",
+        rect.lwd = 3, col = grDevices::colorRampPalette(col)(50)
+      )
 
       # Create alternative correlation plot with ggplot2
       lab_size <- max(2, 13 - max(nchar(as.character(pf_long_group$variables))) / 4)
@@ -447,12 +487,17 @@ iobr_cor_plot <- function(pdata_group,
       df$stars <- ifelse(p.mat < 0.05 & !is.na(p.mat), "*", "")
       col_fun <- grDevices::colorRampPalette(c("darkblue", "white", "darkred"))
 
-      p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$col, y = .data$row,
-                                            fill = .data$corr, label = sprintf("%.2f", .data$corr))) +
+      p <- ggplot2::ggplot(df, ggplot2::aes(
+        x = .data$col, y = .data$row,
+        fill = .data$corr,
+        label = sprintf("%.2f", .data$corr)
+      )) +
         ggplot2::geom_tile(color = "grey90") +
         ggplot2::geom_text(color = "black", size = lab_size) +
-        ggplot2::geom_text(ggplot2::aes(label = .data$stars), color = "red",
-                           size = lab_size * 1.2, fontface = "bold") +
+        ggplot2::geom_text(ggplot2::aes(label = .data$stars),
+          color = "red",
+          size = lab_size * 1.2, fontface = "bold"
+        ) +
         ggplot2::scale_fill_gradientn(colours = col_fun(50), limits = c(-1, 1)) +
         ggplot2::theme_bw() +
         ggplot2::theme(
@@ -462,9 +507,13 @@ iobr_cor_plot <- function(pdata_group,
         ) +
         ggplot2::ggtitle(group_name)
 
-      ggplot2::ggsave(p, filename = paste0(index, "-", x, "-5-", ProjectID, "-", group_name,
-                                           "-associated-", category, "-corplot.", fig_ext),
-                      width = 12, height = 12.8, path = file_store)
+      ggplot2::ggsave(p,
+        filename = paste0(
+          index, "-", x, "-5-", ProjectID, "-", group_name,
+          "-associated-", category, "-corplot.", fig_ext
+        ),
+        width = 12, height = 12.8, path = file_store
+      )
     }
   }
 

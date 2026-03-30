@@ -75,7 +75,6 @@ sig_box <- function(data,
                     assay = NULL,
                     slot = "scale.data",
                     scale = FALSE) {
-
   rlang::check_installed("ggpubr")
 
   # Handle Seurat object

@@ -30,10 +30,9 @@
 #' # Use custom colors
 #' mycols <- get_cols(cols = c("red", "blue", "green"))
 get_cols <- function(cols = "normal",
-                    palette = 1,
-                    show_col = TRUE,
-                    seed = 123) {
-
+                     palette = 1,
+                     show_col = TRUE,
+                     seed = 123) {
   # Handle custom color vector
   if (length(cols) > 1) {
     mycols <- cols
@@ -64,7 +63,6 @@ get_cols <- function(cols = "normal",
       rlang::check_installed("scales")
       scales::show_col(mycols)
     }
-
   } else if (cols == "normal") {
     mycols <- palettes(
       category = "box",
@@ -72,7 +70,6 @@ get_cols <- function(cols = "normal",
       show_col = show_col,
       show_message = FALSE
     )
-
   } else {
     # Treat as palette name
     mycols <- palettes(

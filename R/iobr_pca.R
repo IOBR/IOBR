@@ -1,7 +1,9 @@
 #' Principal Component Analysis (PCA) Visualization
 #'
-#' This function performs Principal Component Analysis (PCA) on gene expression data,
-#' reduces dimensionality while preserving variance, and generates a scatter plot visualization.
+#' This function performs Principal Component Analysis (PCA) on gene
+#' expression data,
+#' reduces dimensionality while preserving variance, and generates a scatter
+#' plot visualization.
 #'
 #' @param data Input data for PCA: matrix or data frame.
 #' @param is.matrix Logical indicating if input is a matrix. Default is TRUE.

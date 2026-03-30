@@ -11,20 +11,25 @@ batch_kruskal(data, group, feature = NULL, feature_manipulation = FALSE)
 
 \item{group}{Character string specifying the name of the grouping variable.}
 
-\item{feature}{Character vector specifying the names of feature variables to test.
-If \code{NULL}, the user is prompted to select all continuous features or specify
-features manually. Default is \code{NULL}.}
+\item{feature}{Character vector specifying the names of feature variables to
+test. If `NULL`, the user is prompted to select features (interactive mode
+only). Default is `NULL`.}
 
-\item{feature_manipulation}{Logical indicating whether to apply feature manipulation
-to filter valid features. Default is \code{FALSE}.}
+\item{feature_manipulation}{Logical indicating whether to apply feature
+manipulation to filter valid features. Default is `FALSE`.}
 }
 \value{
-Tibble containing the following columns for each feature:
-- `sig_names`: Feature name
-- `p.value`: Raw p-value from Kruskal-Wallis test
-- `p.adj`: Adjusted p-value (Benjamini-Hochberg method)
-- `log10pvalue`: Negative log10-transformed p-value
-- `stars`: Significance stars based on p-value thresholds
+Tibble containing:
+\describe{
+  \item{sig_names}{Feature name}
+  \item{p.value}{Raw p-value from Kruskal-Wallis test}
+  \item{statistic}{Test statistic (chi-squared)}
+  \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+  \item{log10pvalue}{Negative log10-transformed p-value}
+  \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+    ** p<0.01, * p<0.05, + p<0.5}
+  \item{group columns}{Mean-centered values for each group}
+}
 }
 \description{
 Performs Kruskal-Wallis rank sum tests on multiple continuous features across
@@ -32,13 +37,18 @@ different groups. Computes p-values, adjusts for multiple testing, and ranks
 features by significance.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
+\donttest{
+# Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
-# Test features associated with TCGA molecular subtype
-batch_kruskal(
-  data = sig_stad, group = "Subtype",
+
+# Test features by molecular subtype
+res <- batch_kruskal(
+  data = sig_stad,
+  group = "subtype",
   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 )
+head(res)
+}
 }
 \author{
 Dongqiang Zeng

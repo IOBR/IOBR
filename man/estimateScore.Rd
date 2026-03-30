@@ -12,13 +12,15 @@ estimateScore(
 }
 \arguments{
 \item{input.ds}{A character string specifying the path to the input dataset file in GCT format.
-The file should have gene expression data with appropriate headers.}
+The file should have gene expression data with appropriate
+headers.}
 
 \item{output.ds}{A character string specifying the path to the output dataset file, where
 the calculated scores will be written.}
 
 \item{platform}{A character vector indicating the platform type. Must be one of "affymetrix",
-"agilent", or "illumina". Platform-specific calculations are performed
+"agilent", or "illumina". Platform-specific calculations
+are performed
 based on this parameter.}
 }
 \value{
@@ -26,8 +28,10 @@ This function does not return a value but writes the computed scores to the spec
         output file in GCT format.
 }
 \description{
-This function reads a gene expression dataset in GCT format, calculates enrichment scores
-for specific gene sets, and writes the computed scores to an output file. It supports multiple
+This function reads a gene expression dataset in GCT format, calculates
+enrichment scores
+for specific gene sets, and writes the computed scores to an output file.
+It supports multiple
 platform types and performs platform-specific calculations if necessary.
 }
 \examples{
@@ -36,5 +40,8 @@ input_file <- "path/to/input.gct"
 output_file <- "path/to/output.gct"
 
 # Perform score estimation for Affymetrix platform
-estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+estimateScore(
+  input.ds = input_file, output.ds = output_file, platform =
+    "affymetrix"
+)
 }

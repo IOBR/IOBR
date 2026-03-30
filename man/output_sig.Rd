@@ -17,10 +17,15 @@ output_sig(signatures, format = "csv", file.name)
 A data frame containing the processed signature data, also saved to the specified file.
 }
 \description{
-This function saves signature data to a specified file format, supporting CSV or RData.
-It handles single signatures or lists of signatures, converting them to a data frame for storage.
+This function saves signature data to a specified file format, supporting
+CSV or RData.
+It handles single signatures or lists of signatures, converting them to a
+data frame for storage.
 }
 \examples{
 signature_collection <- load_data("signature_collection")
-output_sig(signatures = signature_collection, format = "csv", file.name = "my_signatures")
+output_sig(
+  signatures = signature_collection, format = "csv", file.name =
+    "my_signatures"
+)
 }

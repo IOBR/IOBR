@@ -96,14 +96,17 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   }
 
   # Check identifier format
-  ensg_frac  <- mean(grepl("^ENSG", rn))
+  ensg_frac <- mean(grepl("^ENSG", rn))
   ensver_frac <- mean(grepl("\\.\\d+$", rn))
-  probe_frac <- mean(grepl("(_at$|_s_at$|_x_at$|^AFFX)", rn, ignore.case = TRUE))
+  probe_frac <- mean(grepl("(_at$|_s_at$|_x_at$|^AFFX)", rn,
+    ignore.case = TRUE
+  ))
 
   if (ensg_frac > 0.5 || probe_frac > 0.5) {
     cli::cli_abort(c(
       "Gene identifier format appears incompatible with xCell.",
-      "i" = "Detected: {ensg_frac*100:.1f}% Ensembl-like, {probe_frac*100:.1f}% probe-like",
+      "i" = "Detected: {ensg_frac*100:.1f}% Ensembl-like, \
+              {probe_frac*100:.1f}% probe-like",
       "*" = "xCell requires HGNC gene symbols for RNA-seq mode",
       "*" = "Use anno_eset() to convert identifiers to gene symbols"
     ))
@@ -132,7 +135,8 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @param eset Gene expression matrix with HGNC symbols as row names.
 #' @param project Optional project name. Default is `NULL`.
 #'
-#' @return Data frame with MCP-counter scores. Columns suffixed with `_MCPcounter`.
+#' @return Data frame with MCP-counter scores. Columns suffixed with
+#'   `_MCPcounter`.
 #'
 #' @author Dongqiang Zeng
 #' @export
@@ -169,7 +173,8 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @param project Optional project name. Default is `NULL`.
 #' @param tumor Logical indicating tumor (`TRUE`) or normal (`FALSE`) samples.
 #'
-#' @return Data frame with EPIC cell fraction estimates. Columns suffixed with `_EPIC`.
+#' @return Data frame with EPIC cell fraction estimates. Columns suffixed with
+#'   `_EPIC`.
 #'
 #' @author Dongqiang Zeng
 #' @export
@@ -242,7 +247,7 @@ deconvo_cibersort <- function(eset,
   cli::cli_alert_info("Running {mode_label}")
 
   eset <- as.data.frame(eset)
-  quantile_norm <- arrays  # Disable for RNA-seq
+  quantile_norm <- arrays # Disable for RNA-seq
 
   sig_matrix <- load_data("lm22")
 
@@ -320,7 +325,10 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   sampleData <- tempfile(pattern = "estimate_", fileext = ".txt")
   on.exit(unlink(sampleData), add = TRUE)
 
-  utils::write.table(eset, sampleData, sep = "\t", row.names = FALSE, quote = FALSE)
+  utils::write.table(eset, sampleData,
+    sep = "\t",
+    row.names = FALSE, quote = FALSE
+  )
 
   gct_file <- tempfile(pattern = "estimate_", fileext = ".gct")
   score_file <- tempfile(pattern = "estimate_", fileext = ".gct")
@@ -338,7 +346,10 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
     platform = platform
   )
 
-  scores <- utils::read.table(score_file, skip = 2, header = TRUE, stringsAsFactors = FALSE)
+  scores <- utils::read.table(score_file,
+    skip = 2, header = TRUE,
+    stringsAsFactors = FALSE
+  )
   rownames(scores) <- scores[, 1]
   scores <- t(scores[, 3:ncol(scores), drop = FALSE])
   colnames(scores) <- paste0(colnames(scores), "_estimate")
@@ -382,7 +393,6 @@ deconvo_ref <- function(eset,
                         scale_reference = TRUE,
                         absolute.mode = FALSE,
                         abs.method = "sig.score") {
-
   method <- rlang::arg_match(method)
 
   # Check gene overlap
@@ -407,7 +417,6 @@ deconvo_ref <- function(eset,
       abs_method = abs.method
     )
     res <- as.data.frame(res)
-
   } else if (method == "lsei") {
     cli::cli_alert_info("Running lsei deconvolution")
 
@@ -499,12 +508,17 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
     tmp_file <- tempfile()
     tmp_mat <- eset[, indications == ind, drop = FALSE]
     tmp_mat <- tibble::as_tibble(tmp_mat, rownames = "gene_symbol")
-    utils::write.table(tmp_mat, tmp_file, sep = "\t", quote = FALSE, row.names = FALSE)
+    utils::write.table(tmp_mat, tmp_file,
+      sep = "\t",
+      quote = FALSE, row.names = FALSE
+    )
     cat(paste0(tmp_file, ",", ind, "\n"), file = args$batch, append = TRUE)
   }
 
   # Run TIMER
-  results <- deconvolute_timer.default(args)[, make.names(colnames(eset)), drop = FALSE]
+  results <- deconvolute_timer.default(args)[, make.names(colnames(eset)),
+    drop = FALSE
+  ]
   colnames(results) <- colnames(eset)
   results <- as.data.frame(t(results))
 
@@ -522,7 +536,8 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' @param arrays Logical: microarray data. Must be specified.
 #' @param scale_mrna Logical: correct for mRNA content. Must be specified.
 #'
-#' @return Data frame with quanTIseq cell fractions. Columns suffixed with `_quantiseq`.
+#' @return Data frame with quanTIseq cell fractions. Columns suffixed with
+#'   `_quantiseq`.
 #'
 #' @author Dongqiang Zeng
 #' @export
@@ -531,8 +546,10 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' res <- deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE,
-#'                          arrays = FALSE, scale_mrna = FALSE)
+#' res <- deconvo_quantiseq(
+#'   eset = eset, project = "stad", tumor = TRUE,
+#'   arrays = FALSE, scale_mrna = FALSE
+#' )
 #' }
 deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
   cli::cli_alert_info("Running quanTIseq deconvolution")
@@ -622,7 +639,6 @@ deconvo_tme <- function(eset,
                         absolute.mode = FALSE,
                         abs.method = "sig.score",
                         ...) {
-
   method <- rlang::arg_match(method, tme_deconvolution_methods)
 
   # Validate input
@@ -643,25 +659,35 @@ deconvo_tme <- function(eset,
 
   # Dispatch to method
   res <- switch(method,
-    xcell       = deconvo_xcell(eset, project, arrays = arrays, ...),
-    mcpcounter  = deconvo_mcpcounter(eset, project, ...),
-    epic        = deconvo_epic(eset, project, tumor = tumor, ...),
-    cibersort   = deconvo_cibersort(eset, project, absolute = absolute.mode,
-                                     arrays = arrays, perm = perm, ...),
-    cibersort_abs = deconvo_cibersort(eset, project, absolute = TRUE,
-                                       abs_method = abs.method, arrays = arrays,
-                                       perm = perm, ...),
-    ips         = deconvo_ips(eset, project, plot = plot, ...),
-    quantiseq   = deconvo_quantiseq(eset, project, tumor = tumor,
-                                     arrays = arrays, scale_mrna = scale_mrna, ...),
-    estimate    = deconvo_estimate(eset, project, platform, ...),
-    timer       = deconvo_timer(eset, project, indications = group_list, ...),
-    svr         = deconvo_ref(eset, project, reference = reference,
-                               arrays = arrays, method = "svr",
-                               absolute.mode = absolute.mode, ...),
-    lsei        = deconvo_ref(eset, project, reference = reference,
-                               arrays = arrays, method = "lsei",
-                               scale_reference = scale_reference, ...)
+    xcell = deconvo_xcell(eset, project, arrays = arrays, ...),
+    mcpcounter = deconvo_mcpcounter(eset, project, ...),
+    epic = deconvo_epic(eset, project, tumor = tumor, ...),
+    cibersort = deconvo_cibersort(eset, project,
+      absolute = absolute.mode,
+      arrays = arrays, perm = perm, ...
+    ),
+    cibersort_abs = deconvo_cibersort(eset, project,
+      absolute = TRUE,
+      abs_method = abs.method,
+      arrays = arrays, perm = perm, ...
+    ),
+    ips = deconvo_ips(eset, project, plot = plot, ...),
+    quantiseq = deconvo_quantiseq(eset, project,
+      tumor = tumor,
+      arrays = arrays, scale_mrna = scale_mrna, ...
+    ),
+    estimate = deconvo_estimate(eset, project, platform, ...),
+    timer = deconvo_timer(eset, project, indications = group_list, ...),
+    svr = deconvo_ref(eset, project,
+      reference = reference,
+      arrays = arrays, method = "svr",
+      absolute.mode = absolute.mode, ...
+    ),
+    lsei = deconvo_ref(eset, project,
+      reference = reference,
+      arrays = arrays, method = "lsei",
+      scale_reference = scale_reference, ...
+    )
   )
 
   tibble::as_tibble(res)

@@ -1,14 +1,17 @@
 #' Generate Reference Signature Matrix Using DESeq2
 #'
-#' This function uses DESeq2 to perform differential expression analysis across cell types,
-#' identifies significantly expressed genes, and creates a reference signature matrix from median expression levels.
+#' This function uses DESeq2 to perform differential expression analysis
+#' across cell types,
+#' identifies significantly expressed genes, and creates a reference signature
+#' matrix from median expression levels.
 #'
 #' @param dds Raw count data from RNA-seq (matrix).
 #' @param pheno Character vector of cell type classes for samples.
 #' @param FDR Numeric threshold for adjusted p-values to consider genes significant. Default is 0.05.
 #' @param dat Normalized expression data (e.g., FPKM, TPM) for calculating median expression.
 #' @return A list containing:
-#'   - `reference_matrix`: Data frame of median expression for significant genes across cell types.
+#'   - `reference_matrix`: Data frame of median expression for significant
+#'   genes across cell types.
 #'   - `G`: Optimal number of probes minimizing condition number.
 #'   - `condition_number`: Minimum condition number.
 #'   - `whole_matrix`: Full median expression matrix.
@@ -92,8 +95,10 @@ generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
 
 #' Top Probe Selector
 #'
-#' This function extracts the top `i` probes based on their ordering in the provided data frame.
-#' If the number of rows in the data frame is less than or equal to `i`, it returns all probes.
+#' This function extracts the top `i` probes based on their ordering in the
+#' provided data frame.
+#' If the number of rows in the data frame is less than or equal to `i`, it
+#' returns all probes.
 #'
 #' @param dat A data frame containing a column named "probe" among other data.
 #' @param i An integer indicating the number of top probes to return from the dataset.

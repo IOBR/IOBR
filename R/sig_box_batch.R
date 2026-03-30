@@ -79,7 +79,6 @@ sig_box_batch <- function(input,
                           width = 3.5,
                           fig_type = "pdf",
                           max_count_feas = 30) {
-
   # Input validation
   if (!is.data.frame(input) && !inherits(input, "Seurat")) {
     cli::cli_abort("{.arg input} must be a data frame or Seurat object")

@@ -62,8 +62,10 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1,
 
 #' @keywords internal
 .palette_box <- function(palette, alpha, show_message) {
-  valid_palettes <- c("nrc", "jama", "aaas", "jco", "paired1", "paired2",
-                      "paired3", "paired4", "accent", "set2")
+  valid_palettes <- c(
+    "nrc", "jama", "aaas", "jco", "paired1", "paired2",
+    "paired3", "paired4", "accent", "set2"
+  )
 
   if (show_message) {
     cli::cli_alert_info(

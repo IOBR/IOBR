@@ -19,12 +19,16 @@ generateRef(dds, pheno, FDR = 0.05, dat, method = "limma")
 }
 \value{
 A list containing the reference signature matrix and possibly other elements depending on the analysis method used.
-        The cells of the matrix represent the median expression level of identified significant genes across samples grouped by cell type.
+        The cells of the matrix represent the median expression level of
+        identified significant genes across samples grouped by cell type.
 }
 \description{
-This function generates a reference signature matrix for cell types based on differential expression analysis.
-It can use either 'limma' for normalized data or 'DESeq2' for raw count data. The function identifies genes
-with significant expression changes at a specified false discovery rate (FDR) threshold.
+This function generates a reference signature matrix for cell types based
+on differential expression analysis.
+It can use either 'limma' for normalized data or 'DESeq2' for raw count
+data. The function identifies genes
+with significant expression changes at a specified false discovery rate
+(FDR) threshold.
 }
 \examples{
 # Simulate expression data for 1000 genes across 4 samples

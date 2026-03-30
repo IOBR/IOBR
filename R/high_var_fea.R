@@ -1,6 +1,7 @@
 #' Identify High-Variance Features from Statistical Results
 #'
-#' Selects top variable (up- and down-regulated) features based on adjusted p-value and log fold-change thresholds.
+#' Selects top variable (up- and down-regulated) features based on adjusted
+#' p-value and log fold-change thresholds.
 #'
 #' @param result Data frame or tibble. Statistical results containing feature, adjusted p-value, and logFC columns.
 #' @param target Character. Column name of feature identifiers.
@@ -22,7 +23,8 @@
 #'   logfc = c(-2, 1.5, -3)
 #' )
 #' high_var_fea(
-#'   result = result_data, target = "gene", name_padj = "padj", name_logfc = "logfc", n = 2,
+#'   result = result_data, target = "gene", name_padj = "padj", name_logfc =
+#'     "logfc", n = 2,
 #'   padj_cutoff = 0.05, logfc_cutoff = 1.5
 #' )
 high_var_fea <- function(result, target, name_padj = "padj", padj_cutoff = 1, name_logfc, logfc_cutoff = 0, n = 10, data_type = NULL) {

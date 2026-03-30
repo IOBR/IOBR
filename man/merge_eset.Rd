@@ -29,10 +29,14 @@ eset_stad <- load_data("eset_stad")
 
 # Create mock expression sets with common genes
 common_genes <- c("TP53", "BRCA1", "EGFR", "MYC")
-eset1 <- matrix(rnorm(12), nrow = 4,
-                dimnames = list(common_genes, paste0("S", 1:3)))
-eset2 <- matrix(rnorm(16), nrow = 4,
-                dimnames = list(common_genes, paste0("S", 4:7)))
+eset1 <- matrix(rnorm(12),
+  nrow = 4,
+  dimnames = list(common_genes, paste0("S", 1:3))
+)
+eset2 <- matrix(rnorm(16),
+  nrow = 4,
+  dimnames = list(common_genes, paste0("S", 4:7))
+)
 
 # Merge two expression sets
 merged_eset <- merge_eset(eset1, eset2)

@@ -39,8 +39,7 @@
 #' )
 #' }
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
-                         nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
-
+                          nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   rlang::check_installed("glmnet")
 
   x <- as.data.frame(x)
@@ -136,7 +135,6 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
 #' result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
 #' }
 ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
-
   type <- rlang::arg_match(type)
 
   colnames(x)[1] <- "ID"
@@ -231,8 +229,10 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
   )
 
   aucs <- purrr::pmap_dbl(args, BinomialAUC, model = model)
-  AUC <- matrix(aucs, ncol = 2, byrow = TRUE,
-                dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se")))
+  AUC <- matrix(aucs,
+    ncol = 2, byrow = TRUE,
+    dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se"))
+  )
 
   list(model = model, coefs = coefs, AUC = AUC)
 }
@@ -339,10 +339,11 @@ BinomialAUC <- function(model, newx, s, acture.y) {
 #' PlotAUC(train.x, train.y, test.x, test.y, fitted_model, "MyModel")
 #' }
 PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
-                   cols = NULL, palette = "jama") {
-
-  cols <- cols %||% palettes(category = "box", palette = palette,
-                            show_message = FALSE, show_col = FALSE)
+                    cols = NULL, palette = "jama") {
+  cols <- cols %||% palettes(
+    category = "box", palette = palette,
+    show_message = FALSE, show_col = FALSE
+  )
 
   args <- list(
     newx = list(train.x, train.x, test.x, test.x),
@@ -355,7 +356,8 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
 
   legend.name <- paste(
     c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se"),
-    "AUC", aucs, sep = " "
+    "AUC", aucs,
+    sep = " "
   )
   names(pref) <- c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se")
 
@@ -429,7 +431,6 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #' split_data <- SplitTrainTest(data_matrix, outcome_vector, train_ratio = 0.7, type = "binomial", seed = 123)
 #' }
 SplitTrainTest <- function(x, y, train_ratio, type = c("binomial", "survival"), seed) {
-
   type <- rlang::arg_match(type)
 
   sizes <- round(nrow(x) * train_ratio)
@@ -448,6 +449,8 @@ SplitTrainTest <- function(x, y, train_ratio, type = c("binomial", "survival"), 
     test.y <- y[test_sample, , drop = FALSE]
   }
 
-  list(train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
-       train_sample = train_sample)
+  list(
+    train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
+    train_sample = train_sample
+  )
 }

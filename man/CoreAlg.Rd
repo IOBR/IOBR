@@ -16,11 +16,13 @@ CoreAlg(X, y, absolute, abs_method)
 \item{abs_method}{String specifying the method for absolute space weights: "sig.score" or "no.sumto1".}
 }
 \value{
-A list containing the weights (`w`), root mean squared error (`mix_rmse`), and correlation coefficient (`mix_r`).
+A list containing the weights (`w`), root mean squared error
+  (`mix_rmse`), and correlation coefficient (`mix_r`).
 }
 \description{
-This function performs nu-regression using support vector machines (SVM) and calculates weights,
-root mean squared error (RMSE), and correlation coefficient (R).
+This function performs nu-regression using support vector machines (SVM) and
+calculates weights,
+#' root mean squared error (RMSE), and correlation coefficient (R).
 }
 \examples{
 \dontrun{

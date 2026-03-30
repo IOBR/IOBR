@@ -48,9 +48,12 @@ check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
 
   if (na_count > 0) {
     cli::cli_warn(c(
-      "There {cli::qty(na_count)} {?is/are} {na_count} missing value{?s} in the matrix.",
+      paste("There are", na_count, "missing values in the matrix."),
       "i" = "This may affect score calculation.",
-      "*" = "Set {.code adjust_eset = TRUE} to handle missing values automatically."
+      "*" = paste(
+        "Set adjust_eset = TRUE to handle missing values",
+        "automatically."
+      ),
     ))
   }
 
@@ -60,15 +63,26 @@ check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
   has_pos_inf <- !is.finite(eset_range[2]) && eset_range[2] > 0
 
   if (print_result) {
-    cli::cli_alert_info("Checking for -Inf values: {sum(is.infinite(eset) & eset < 0, na.rm = TRUE)} found")
-    cli::cli_alert_info("Checking for +Inf values: {sum(is.infinite(eset) & eset > 0, na.rm = TRUE)} found")
+    cli::cli_alert_info(paste(
+      "Checking for -Inf values:",
+      sum(is.infinite(eset) & eset < 0, na.rm = TRUE),
+      "found"
+    ))
+    cli::cli_alert_info(paste(
+      "Checking for +Inf values:",
+      sum(is.infinite(eset) & eset > 0, na.rm = TRUE),
+      "found"
+    ))
   }
 
   if (has_neg_inf || has_pos_inf) {
     cli::cli_warn(c(
       "Infinite values detected in the matrix.",
       "i" = "This may affect score calculation.",
-      "*" = "Set {.code adjust_eset = TRUE} to handle infinite values automatically."
+      "*" = paste(
+        "Set adjust_eset = TRUE to handle infinite values",
+        "automatically."
+      )
     ))
   }
 

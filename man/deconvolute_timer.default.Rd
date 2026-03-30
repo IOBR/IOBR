@@ -13,7 +13,11 @@ deconvolute_timer.default(args)
 Returns a matrix of abundance scores for different immune cell types across multiple cancer samples.
 }
 \description{
-This function performs deconvolution of the tumor microenvironment using the TIMER algorithm. It processes multiple cancer datasets, removes batch effects, and estimates immune cell type abundances. The function relies on specific data and helper functions to manage the expression data and analyze the tumor microenvironment.
+This function performs deconvolution of the tumor microenvironment using
+the TIMER algorithm. It processes multiple cancer datasets, removes batch
+effects, and estimates immune cell type abundances. The function relies on
+specific data and helper functions to manage the expression data and
+analyze the tumor microenvironment.
 }
 \examples{
 args <- list(

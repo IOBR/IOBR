@@ -7,41 +7,27 @@
 Enet(train.x, train.y, lambdamax, nfold = 10)
 }
 \arguments{
-\item{train.x}{A matrix or data frame containing training predictors.}
+\item{train.x}{Training predictors matrix.}
 
-\item{train.y}{A numeric vector containing the binary outcome (0/1)
-for each sample in the training set.}
+\item{train.y}{Training binary outcomes.}
 
-\item{lambdamax}{The maximum value of lambda to consider in the
-regularization path.}
+\item{lambdamax}{Maximum lambda value.}
 
-\item{nfold}{The number of folds to use for cross-validation.}
+\item{nfold}{Number of CV folds. Default is `10`.}
 }
 \value{
-A list with components `chose_alpha` and `chose_lambda`,
-  giving the selected elastic net mixing parameter and regularization
-  parameter, respectively.
+List with `chose_alpha` and `chose_lambda`.
 }
 \description{
-Fits an elastic net model for binary classification using
-`glmnet::cv.glmnet`, allowing for both L1 (Lasso) and L2 (Ridge)
-regularization. The function uses cross-validation to identify the
-optimal alpha and lambda values. Alpha ranges from 0 (Ridge) to 1
-(Lasso), with lambda controlling the strength of the regularization.
+Fits elastic net model with cross-validation to find optimal alpha and lambda.
 }
 \examples{
+\dontrun{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(50 * 5), ncol = 5)
   train_outcome <- rbinom(50, 1, 0.5)
-
-  optimal_parameters <- Enet(
-    train.x = train_data,
-    train.y = train_outcome,
-    lambdamax = 1,
-    nfold = 5
-  )
-
-  print(optimal_parameters)
+  result <- Enet(train.x = train_data, train.y = train_outcome, lambdamax = 1, nfold = 5)
+}
 }
 }

@@ -4,12 +4,37 @@
 #' again is an adapted version of the original TIMER source code
 #' from http://cistrome.org/TIMER/download.html.
 #'
-#' The method is described in Li et al. Genome Biology 2016;17(1):174., PMID 27549193.
+#' The method is described in Li et al. Genome Biology 2016;17(1):174., PMID
+#' 27549193.
 
 
 #' Display Timed Information Messages
 #'
-#' This function formats and displays informational messages, primarily for timing or logging purposes. It is useful for tracking the progress or stages of execution within scripts, especially in long-running operations. The function outputs messages to the R console with a prefixed '##' to highlight them.
+#' This function formats and displays informational messages, primarily for
+#' timing or logging purposes. It is useful for tracking the progress or
+#' stages of execution within scripts, especially in long-running operations.
+#' The function outputs messages to the R console with a prefixed '##' to
+#' highlight them.
+#'
+#' @param string A character string representing the message to be displayed.
+#'
+#' @return None; the function is used for its side effect of printing a message.
+#' @export
+#' @author Bo Li
+#' @examples
+#' TimerINFO("Data processing started.")
+timer_info <- function(string) {
+  message(sprintf("## %s\n", string))
+}
+
+
+#' Display Timed Information Messages
+#'
+#' This function formats and displays informational messages, primarily for
+#' timing or logging purposes. It is useful for tracking the progress or
+#' stages of execution within scripts, especially in long-running operations.
+#' The function outputs messages to the R console with a prefixed '##' to
+#' highlight them.
 #'
 #' @param string A character string representing the message to be displayed.
 #'
@@ -19,11 +44,13 @@
 #' @examples
 #' TimerINFO("Data processing started.")
 TimerINFO <- function(string) {
-  message(sprintf("## %s\n", string))
+  .Deprecated("timer_info")
+  timer_info(string)
 }
 
 
-#' TIMER signatures are cancer specific. This is the list of available cancer types.
+#' TIMER signatures are cancer specific. This is the list of available cancer
+#' types.
 #'
 #' @export
 timer_available_cancers <- c(
@@ -36,18 +63,28 @@ timer_available_cancers <- c(
 
 #' Remove batch effect of expression set
 #'
-#' This function removes batch effects between two gene expression data sets, typically representing different sample types such as cancer cells and immune cells. The function aligns the gene names, combines the datasets, applies batch correction using ComBat from the sva package, and then separates the adjusted data sets. Additionally, it aggregates expression data for immune cell types by taking the median expression level across samples.
+#' This function removes batch effects between two gene expression data sets,
+#' typically representing different sample types such as cancer cells and
+#' immune cells. The function aligns the gene names, combines the datasets,
+#' applies batch correction using ComBat from the sva package, and then
+#' separates the adjusted data sets. Additionally, it aggregates expression
+#' data for immune cell types by taking the median expression level across
+#' samples.
 #'
-#' @param cancer.exp A matrix or data frame of cancer cell expression data with genes as rows and samples as columns.
-#' @param immune.exp A matrix or data frame of immune cell expression data with genes as rows and samples as columns.
-#' @param immune.cellType A vector indicating the cell type for each column in `immune.exp`.
+#' @param cancer.exp A matrix or data frame of cancer cell expression data
+#'   with genes as rows and samples as columns.
+#' @param immune.exp A matrix or data frame of immune cell expression data
+#'   with genes as rows and samples as columns.
+#' @param immune.cellType A vector indicating the cell type for each column in
+#'   `immune.exp`.
 #'
 #' @author Bo Li
 #'
 #' @return A list containing three elements:
 #'   - The first element is the batch effect corrected cancer expression data.
 #'   - The second element is the batch effect corrected immune expression data.
-#'   - The third element is the aggregated immune expression data, with median values calculated for each cell type.
+#'   - The third element is the aggregated immune expression data, with median
+#'   values calculated for each cell type.
 #'
 #' @export
 #'
@@ -92,19 +129,22 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
   rlang::check_installed(c("sva", "BiocParallel"))
-  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
+  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
+                         BPPARAM = BiocParallel::bpparam("SerialParam"))
 
   ## separate cancer and immune expression data after batch effect removing
   dd.br <- tmp.dd0[, 1:N1]
   immune.exp.br <- tmp.dd0[, (N1 + 1):(N1 + N2)]
 
-  ## a immune category has multiple samples, use the median expression level for a gene
+  ## a immune category has multiple samples, use the median expression level
+  ## for a gene
   tmp0 <- c()
   for (kk in unique(names(immune.cellType))) {
     tmp.vv <- which(names(immune.cellType) == kk)
 
     if (length(tmp.vv) == 1) {
-      median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE], 1, median, na.rm = TRUE)
+      median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE],
+                                 1, median, na.rm = TRUE)
     } else {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
@@ -129,14 +169,18 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' (`timer_available_cancers`).
 #'
 #' The input can be provided in two ways:
-#' - **Batch mode**: A CSV file path specified in `args$batch`. The file is expected to have at least two columns, where the second column contains cancer categories.
-#' - **Direct mode**: Vectors provided via `args$expression` and `args$category`.
+#' - **Batch mode**: A CSV file path specified in `args$batch`. The file is
+#' expected to have at least two columns, where the second column contains
+#' cancer categories.
+#' - **Direct mode**: Vectors provided via `args$expression` and
+#' `args$category`.
 #'
 #' If any cancer category is not recognized, the function stops with an error.
 #'
 #' @param args A list containing input parameters:
 #' - `batch`: Character string. Path to a CSV file (optional).
-#' - `expression`: Character vector of expression identifiers (used if `batch` is NULL).
+#' - `expression`: Character vector of expression identifiers (used if `batch`
+#' is NULL).
 #' - `category`: Character vector of cancer types (used if `batch` is NULL).
 #'
 #' @return A character matrix with two columns:
@@ -175,7 +219,8 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 check_cancer_types <- function(args) {
   if (!is.null(args$batch)) {
     TimerINFO("Enter batch mode\n")
-    cancers <- as.matrix(read.table(args$batch, sep = ",", stringsAsFactors = FALSE))
+    cancers <- as.matrix(read.table(args$batch, sep = ",",
+                                    stringsAsFactors = FALSE))
   } else {
     if (length(args$expression) != length(args$category)) {
       stop("expression and category must have the same length")
@@ -196,13 +241,19 @@ check_cancer_types <- function(args) {
 
 #' Constrained regression method implemented in Abbas et al., 2009
 #'
-#' This function implements a constrained regression approach described by Abbas et al. in their 2009 paper.
-#' It is designed to estimate the proportions of immune cell types within a mixed cancer tissue sample
-#' based on gene expression data. The method iteratively adjusts the regression coefficients to ensure
-#' they are non-negative, which corresponds to realistic proportions of cell types.
+#' This function implements a constrained regression approach described by
+#' Abbas et al. in their 2009 paper.
+#' It is designed to estimate the proportions of immune cell types within a
+#' mixed cancer tissue sample
+#' based on gene expression data. The method iteratively adjusts the
+#' regression coefficients to ensure
+#' they are non-negative, which corresponds to realistic proportions of cell
+#' types.
 #'
-#' @param XX Matrix representing immune expression data with genes as rows and cell types as columns.
-#' @param YY Vector representing cancer expression data with gene expression levels.
+#' @param XX Matrix representing immune expression data with genes as rows and
+#'   cell types as columns.
+#' @param YY Vector representing cancer expression data with gene expression
+#'   levels.
 #' @param w Optional vector of weights for the regression, default is NA which means no weights are applied.
 #'
 #' @return A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
@@ -248,22 +299,29 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
 
 #' Convert Rowname To Loci
 #'
-#' This function processes a gene expression data matrix by modifying its row names.
-#' It extracts the gene identifier from the row names assuming they contain additional
-#' information separated by a '|'. The function is specifically designed to handle
-#' row names formatted as 'LOC389332|389332', and it will simplify these to 'LOC389332'.
+#' This function processes a gene expression data matrix by modifying its row
+#' names.
+#' It extracts the gene identifier from the row names assuming they contain
+#' additional
+#' information separated by a '|'. The function is specifically designed to
+#' handle
+#' row names formatted as 'LOC389332|389332', and it will simplify these to
+#' 'LOC389332'.
 #'
 #' @param cancerGeneExpression A matrix or data frame of cancer gene expression data
-#'        with row names in the format 'GENE|ID'. The function will modify these row names
+#'        with row names in the format 'GENE|ID'. The function will modify
+#'        these row names
 #'        to keep only the gene part before the '|'.
 #'
 #' @return A matrix containing the modified gene expression data with updated row names.
-#'         Rows without a valid identifier (i.e., names not containing '|') are removed.
+#'         Rows without a valid identifier (i.e., names not containing '|')
+#'         are removed.
 #'
 #' @export
 #'
 #' @examples
-#' # Assume `data` is your original gene expression matrix with compound row names
+#' # Assume `data` is your original gene expression matrix with compound row
+#' names
 #' example_data <- matrix(runif(20), ncol = 5)
 #' rownames(example_data) <- c("LOC101", "LOC102", "LOC103", "LOC104")
 #' # Process the data to convert row names
@@ -330,11 +388,15 @@ ParseInputExpression <- function(path) {
 
 #' Draw QQ Plot Comparing Cancer and Immune Expression
 #'
-#' This function creates a quantile-quantile (QQ) plot to compare the gene expression
-#' distributions between cancer and immune samples. The QQ plot helps assess if the
-#' two distributions are similarly shaped by plotting their quantiles against each other.
+#' This function creates a quantile-quantile (QQ) plot to compare the gene
+#' expression
+#' distributions between cancer and immune samples. The QQ plot helps assess
+#' if the
+#' two distributions are similarly shaped by plotting their quantiles against
+#' each other.
 #' Points lining up along the diagonal line indicate similar distributions.
-#' The function also fits a linear model to the central portion of the data (excluding
+#' The function also fits a linear model to the central portion of the data
+#' (excluding
 #' the lowest 40% and the highest 10% of data points) to highlight the trend.
 #'
 #' @param cancer.exp A vector of gene expression data for cancer samples.
@@ -380,7 +442,8 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' Get Outlier Genes
 #'
 #' This function identifies outlier genes from multiple cancer datasets.
-#' It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
+#' It treats the top 5 expressed genes in each sample as outliers and returns
+#' a list of unique outlier genes across all samples.
 #'
 #' @param cancers A dataframe with one column containing paths to gene expression files.
 #'
@@ -426,7 +489,11 @@ GetOutlierGenes <- function(cancers) {
 
 #' Deconvolute Tumor Microenvironment Using TIMER
 #'
-#' This function performs deconvolution of the tumor microenvironment using the TIMER algorithm. It processes multiple cancer datasets, removes batch effects, and estimates immune cell type abundances. The function relies on specific data and helper functions to manage the expression data and analyze the tumor microenvironment.
+#' This function performs deconvolution of the tumor microenvironment using
+#' the TIMER algorithm. It processes multiple cancer datasets, removes batch
+#' effects, and estimates immune cell type abundances. The function relies on
+#' specific data and helper functions to manage the expression data and
+#' analyze the tumor microenvironment.
 #'
 #' @param args An environment or list containing parameters and file paths necessary for the function to execute. This should include `outdir` for output directory, `batch` for a file containing paths to expression data and cancer types.
 #'

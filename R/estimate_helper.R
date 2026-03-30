@@ -4,16 +4,20 @@
 ## -----------------------------------------------------------------------------
 #' estimateScore
 #'
-#' This function reads a gene expression dataset in GCT format, calculates enrichment scores
-#' for specific gene sets, and writes the computed scores to an output file. It supports multiple
+#' This function reads a gene expression dataset in GCT format, calculates
+#' enrichment scores
+#' for specific gene sets, and writes the computed scores to an output file.
+#' It supports multiple
 #' platform types and performs platform-specific calculations if necessary.
 #'
 #' @param input.ds A character string specifying the path to the input dataset file in GCT format.
-#'                 The file should have gene expression data with appropriate headers.
+#'                 The file should have gene expression data with appropriate
+#'                 headers.
 #' @param output.ds A character string specifying the path to the output dataset file, where
 #'                  the calculated scores will be written.
 #' @param platform A character vector indicating the platform type. Must be one of "affymetrix",
-#'                 "agilent", or "illumina". Platform-specific calculations are performed
+#'                 "agilent", or "illumina". Platform-specific calculations
+#'                 are performed
 #'                 based on this parameter.
 #'
 #' @return This function does not return a value but writes the computed scores to the specified
@@ -26,7 +30,10 @@
 #' output_file <- "path/to/output.gct"
 #'
 #' # Perform score estimation for Affymetrix platform
-#' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+#' estimateScore(
+#'   input.ds = input_file, output.ds = output_file, platform =
+#'     "affymetrix"
+#' )
 estimateScore <- function(input.ds,
                           output.ds,
                           platform = c("affymetrix", "agilent", "illumina")) {
@@ -200,7 +207,10 @@ estimateScore <- function(input.ds,
 #' )
 #'
 #' # Write the input data to input.txt file, including row names
-#' write.table(input_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+#' write.table(input_data,
+#'   file = "input.txt", sep = "\t", row.names = TRUE,
+#'   quote = FALSE
+#' )
 #'
 #' # Call the filterCommonGenes function using the sample input.txt file
 #' filterCommonGenes("input.txt", "output.txt", id = "GeneSymbol")
@@ -256,7 +266,10 @@ filterCommonGenes <- function(input.f,
 #' sample_data <- sample_data[, -1]
 #'
 #' # Write the sample data to input.txt file
-#' write.table(sample_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+#' write.table(sample_data,
+#'   file = "input.txt", sep = "\t", row.names = TRUE,
+#'   quote = FALSE
+#' )
 #'
 #' # Convert the input data frame to GCT format and save it to output.gct
 #' outputGCT(sample_data, "output.gct")
@@ -301,7 +314,8 @@ outputGCT <- function(input.f,
 
 #' plotPurity
 #'
-#' This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
+#' This function generates scatterplots of tumor purity based on ESTIMATE
+#' scores for given samples.
 #'
 #' @param scores A character string specifying the path to the input file containing ESTIMATE scores. The file should be a tab-separated table with appropriate headers.
 #' @param samples A character vector specifying the sample names to plot. The default is "all_samples", which plots all samples in the input file.
@@ -317,7 +331,10 @@ outputGCT <- function(input.f,
 #'   Sample1 = c(100, 200, 500, 0.80),
 #'   Sample2 = c(120, 220, 450, 0.70),
 #'   Sample3 = c(140, 240, 600, 0.90),
-#'   row.names = c("StromalScore", "ImmuneScore", "ESTIMATEScore", "TumorPurity"),
+#'   row.names = c(
+#'     "StromalScore", "ImmuneScore", "ESTIMATEScore",
+#'     "TumorPurity"
+#'   ),
 #'   check.names = FALSE
 #' )
 #'

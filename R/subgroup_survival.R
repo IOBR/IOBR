@@ -1,6 +1,7 @@
 #' Subgroup Survival Analysis Using Cox Proportional Hazards Models
 #'
-#' Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional hazards models across specified subgroups.
+#' Extracts hazard ratios (HR) and 95% confidence intervals from Cox
+#' proportional hazards models across specified subgroups.
 #'
 #' @param pdata Data frame containing variables, follow-up time, and outcome.
 #' @param variables Character vector. Subgrouping variables (each processed independently).
@@ -14,7 +15,8 @@
 #' @import survival
 #' @examples
 #' subgroup_data <- load_data("subgroup_data")
-#' input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
+#' input <- subset(subgroup_data, time > 0 & !is.na(status) &
+#'   !is.na(AJCC_stage))
 #' # Binary variable example
 #' res_bin <- subgroup_survival(
 #'   pdata = input, time_name = "time", status_name = "status",

@@ -13,9 +13,11 @@ doPerm(perm, X, Y, absolute, abs_method, seed = NULL)
 
 \item{Y}{Numeric vector containing the response variable.}
 
-\item{absolute}{Logical value indicating whether to use absolute space or relative space for the weights.}
+\item{absolute}{Logical value indicating whether to use absolute space or
+relative space for the weights.}
 
-\item{abs_method}{String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.}
+\item{abs_method}{String indicating the method to calculate the weights in
+absolute space. Can be either 'sig.score' or 'no.sumto1'.}
 
 \item{seed}{Integer. Random seed for reproducibility. If NULL (default),
 uses current random state. Set to a specific value for reproducible results.}
@@ -24,7 +26,8 @@ uses current random state. Set to a specific value for reproducible results.}
 A list containing the distribution of correlation coefficients from the permutations.
 }
 \description{
-doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
+doPerm performs permutation-based sampling and runs the CoreAlg
+function iteratively.
 }
 \examples{
 \dontrun{

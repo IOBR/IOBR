@@ -31,7 +31,6 @@
 #' score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
 #' }
 sigScore <- function(eset, methods = c("PCA", "mean")) {
-
   methods <- rlang::arg_match(methods)
 
   # Ensure numeric matrix
@@ -40,7 +39,8 @@ sigScore <- function(eset, methods = c("PCA", "mean")) {
   if (methods == "PCA") {
     # PCA-based score: PC1 weighted by correlation with mean expression
     pc <- stats::prcomp(t(eset), na.action = na.omit, scale. = TRUE)
-    sigs <- pc$x[, 1] * sign(stats::cor(pc$x[, 1], colMeans(eset, na.rm = TRUE)))
+    sigs <- pc$x[, 1] *
+      sign(stats::cor(pc$x[, 1], colMeans(eset, na.rm = TRUE)))
   } else {
     # Mean-based score
     sigs <- colMeans(eset, na.rm = TRUE)

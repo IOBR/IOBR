@@ -79,7 +79,6 @@ sig_pheatmap <- function(input,
                          width = 6,
                          height = NULL,
                          file_name_prefix = 1) {
-
   rlang::check_installed("ComplexHeatmap")
   rlang::check_installed("grid")
 

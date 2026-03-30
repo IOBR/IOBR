@@ -11,12 +11,12 @@ PrognosticAUC(model, newx, s, acture.y)
 
 \item{newx}{A matrix or data frame of new data for prediction.}
 
-\item{s}{Lambda value for prediction. Can be numeric or \code{"lambda.min"}/\code{"lambda.1se"}.}
+\item{s}{Lambda value for prediction. Can be numeric or `"lambda.min"`/`"lambda.1se"`.}
 
-\item{acture.y}{Data frame with \code{time} and \code{status} columns.}
+\item{acture.y}{Data frame with `time` and `status` columns.}
 }
 \value{
-A data frame with AUC values at 30th (\code{probs.3}) and 90th (\code{probs.9}) percentiles.
+A data frame with AUC values at 30th (`probs.3`) and 90th (`probs.9`) percentiles.
 }
 \description{
 Evaluates prognostic ability of a survival model by calculating time-dependent AUC

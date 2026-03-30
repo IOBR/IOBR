@@ -13,13 +13,17 @@ Construct_con(pheno, mode)
 }
 \value{
 A square matrix with dimensions equal to the number of levels in `pheno`.
-        Each row represents a contrast where the corresponding level is compared against the average of others.
-        The matrix elements are set to -1 for non-diagonal cells (indicating comparison groups)
+        Each row represents a contrast where the corresponding level is
+        compared against the average of others.
+        The matrix elements are set to -1 for non-diagonal cells
+        (indicating comparison groups)
         and 1 for diagonal cells (indicating the group of interest).
 }
 \description{
-This function creates a contrast matrix for differential analysis, where each phenotype level is contrasted
-against all other levels combined. This is particularly useful in linear models for comparing multiple groups.
+This function creates a contrast matrix for differential analysis, where
+each phenotype level is contrasted
+against all other levels combined. This is particularly useful in linear
+models for comparing multiple groups.
 }
 \examples{
 # Example usage:

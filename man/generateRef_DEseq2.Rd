@@ -17,14 +17,17 @@ generateRef_DEseq2(dds, pheno, FDR = 0.05, dat)
 }
 \value{
 A list containing:
-  - `reference_matrix`: Data frame of median expression for significant genes across cell types.
+  - `reference_matrix`: Data frame of median expression for significant
+  genes across cell types.
   - `G`: Optimal number of probes minimizing condition number.
   - `condition_number`: Minimum condition number.
   - `whole_matrix`: Full median expression matrix.
 }
 \description{
-This function uses DESeq2 to perform differential expression analysis across cell types,
-identifies significantly expressed genes, and creates a reference signature matrix from median expression levels.
+This function uses DESeq2 to perform differential expression analysis
+across cell types,
+identifies significantly expressed genes, and creates a reference signature
+matrix from median expression levels.
 }
 \examples{
 \dontrun{

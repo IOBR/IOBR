@@ -10,7 +10,8 @@ A named list of length 43. Each element is a character vector of
   \describe{
     \item{tumor_signature}{Signatures related to intrinsic tumour biology
       such as cell cycle, DNA damage repair and histone regulation.}
-    \item{EMT}{Epithelial–mesenchymal transition (EMT)–associated signatures.}
+    \item{EMT}{Epithelial–mesenchymal transition (EMT)–associated
+    signatures.}
     \item{io_biomarkers}{Immuno-oncology biomarker–related signatures.}
     \item{immu_microenvironment}{Immune microenvironment–related signatures.}
     \item{immu_suppression}{Immune suppression–related signatures.}

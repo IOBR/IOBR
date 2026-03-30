@@ -1,6 +1,10 @@
 #' Identify Outlier Samples in Gene Expression Data
 #'
-#' Analyzes gene expression data to identify potential outlier samples using connectivity analysis via the WGCNA package. Calculates normalized adjacency and connectivity z-scores for each sample, generates connectivity plots, and optionally performs hierarchical clustering. Outlier samples are those with connectivity z-scores exceeding the specified threshold.
+#' Analyzes gene expression data to identify potential outlier samples using
+#' connectivity analysis via the WGCNA package. Calculates normalized
+#' adjacency and connectivity z-scores for each sample, generates connectivity
+#' plots, and optionally performs hierarchical clustering. Outlier samples are
+#' those with connectivity z-scores exceeding the specified threshold.
 #'
 #' @param eset Numeric matrix. Gene expression data with genes as rows and samples as columns.
 #' @param yinter Numeric. Y-intercept threshold for identifying outliers in the connectivity plot. Default is -3.

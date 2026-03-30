@@ -8,21 +8,28 @@ ConvertRownameToLoci(cancerGeneExpression)
 }
 \arguments{
 \item{cancerGeneExpression}{A matrix or data frame of cancer gene expression data
-with row names in the format 'GENE|ID'. The function will modify these row names
+with row names in the format 'GENE|ID'. The function will modify
+these row names
 to keep only the gene part before the '|'.}
 }
 \value{
 A matrix containing the modified gene expression data with updated row names.
-        Rows without a valid identifier (i.e., names not containing '|') are removed.
+        Rows without a valid identifier (i.e., names not containing '|')
+        are removed.
 }
 \description{
-This function processes a gene expression data matrix by modifying its row names.
-It extracts the gene identifier from the row names assuming they contain additional
-information separated by a '|'. The function is specifically designed to handle
-row names formatted as 'LOC389332|389332', and it will simplify these to 'LOC389332'.
+This function processes a gene expression data matrix by modifying its row
+names.
+It extracts the gene identifier from the row names assuming they contain
+additional
+information separated by a '|'. The function is specifically designed to
+handle
+row names formatted as 'LOC389332|389332', and it will simplify these to
+'LOC389332'.
 }
 \examples{
-# Assume `data` is your original gene expression matrix with compound row names
+# Assume `data` is your original gene expression matrix with compound row
+names
 example_data <- matrix(runif(20), ncol = 5)
 rownames(example_data) <- c("LOC101", "LOC102", "LOC103", "LOC104")
 # Process the data to convert row names

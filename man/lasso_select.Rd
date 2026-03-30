@@ -27,7 +27,10 @@ lasso_select(
 Character vector of selected feature names with non-zero coefficients in the optimal LASSO model.
 }
 \description{
-Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or prognostic models. Supports both binary and survival response variables, utilizing cross-validation for optimal model selection.
+Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression
+to construct predictive or prognostic models. Supports both binary and
+survival response variables, utilizing cross-validation for optimal model
+selection.
 }
 \examples{
 set.seed(123)

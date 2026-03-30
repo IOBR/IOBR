@@ -2,22 +2,23 @@
 % Please edit documentation in R/xCell.R
 \name{transformScores}
 \alias{transformScores}
-\title{Transform scores from raw scores to fractions}
+\title{Transform Raw Scores to Fractions}
 \usage{
 transformScores(scores, fit.vals, scale = TRUE, fn = NULL)
 }
 \arguments{
-\item{scores}{raw scores of cell types calculated by rawEnrichmentAnalysis}
+\item{scores}{Raw scores from rawEnrichmentAnalysis.}
 
-\item{fit.vals}{the calibration values in the spill object (spill$fv).}
+\item{fit.vals}{Calibration values from spill object.}
 
-\item{scale}{if TRUE, uses scaling to trnasform scores using fit.vals}
+\item{scale}{Logical indicating whether to use scaling. Default is `TRUE`.}
 
-\item{fn}{string for the file name for saving the scores. Default is NULL.}
+\item{fn}{Character string for saving scores. Default is `NULL`.}
 }
 \value{
-the trasnformed xCell scores
+Transformed xCell scores matrix.
 }
 \description{
-transformScores Returns the trasnformed xCell scores (not adjusted).
+Transforms raw xCell scores to estimated cell fractions.
 }
+\keyword{internal}

@@ -29,7 +29,10 @@ rownames(sample_data) <- sample_data$Gene
 sample_data <- sample_data[, -1]
 
 # Write the sample data to input.txt file
-write.table(sample_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(sample_data,
+  file = "input.txt", sep = "\t", row.names = TRUE,
+  quote = FALSE
+)
 
 # Convert the input data frame to GCT format and save it to output.gct
 outputGCT(sample_data, "output.gct")

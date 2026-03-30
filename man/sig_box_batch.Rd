@@ -31,67 +31,82 @@ sig_box_batch(
 )
 }
 \arguments{
-\item{input}{Data frame. Input data for analysis.}
+\item{input}{Data frame or Seurat object containing the data for analysis.}
 
-\item{vars}{Character vector. Features or variables to analyze.}
+\item{vars}{Character vector. Features or variables to analyze. When
+`pattern_vars = TRUE`, these are treated as regular expression patterns.}
 
 \item{groups}{Character vector. Grouping variable(s) for comparison.}
 
-\item{pattern_vars}{Logical. Whether to treat 'vars' as patterns for matching column names. Default is FALSE.}
+\item{pattern_vars}{Logical indicating whether to treat `vars` as regular
+expression patterns for matching column names. Default is `FALSE`.}
 
-\item{path}{Character or NULL. Directory to save plots. If NULL, uses default "1-sig-box-batch".}
+\item{path}{Character string or `NULL`. Directory to save plots. If `NULL`,
+uses default `"1-sig-box-batch"`.}
 
-\item{index}{Integer. Starting index for plot filenames. Default is 0.}
+\item{index}{Integer. Starting index for plot filenames. Default is `0`.}
 
-\item{angle_x_text}{Numeric. Angle of x-axis labels. Default is 0.}
+\item{angle_x_text}{Numeric. Angle of x-axis labels in degrees. Default is `0`.}
 
-\item{hjust}{Numeric. Horizontal justification of x-axis labels. Default is 0.5.}
+\item{hjust}{Numeric. Horizontal justification of x-axis labels. Default is `0.5`.}
 
-\item{palette}{Character. Color palette for plots. Default is "jama".}
+\item{palette}{Character. Color palette for plots. Default is `"jama"`.}
 
-\item{cols}{Character vector or NULL. Colors for plot elements.}
+\item{cols}{Character vector or `NULL`. Custom colors for plot elements.}
 
-\item{jitter}{Logical. Whether to add jitter to points. Default is FALSE.}
+\item{jitter}{Logical indicating whether to add jittered points. Default is `FALSE`.}
 
-\item{point_size}{Numeric. Size of points. Default is 5.}
+\item{point_size}{Numeric. Size of points. Default is `5`.}
 
-\item{size_of_font}{Numeric. Font size. Default is 8.}
+\item{size_of_font}{Numeric. Base font size. Default is `8`.}
 
-\item{size_of_pvalue}{Numeric. Size of p-value text. Default is 4.5.}
+\item{size_of_pvalue}{Numeric. Size of p-value text. Default is `4.5`.}
 
-\item{show_pvalue}{Logical. Whether to display p-values. Default is TRUE.}
+\item{show_pvalue}{Logical indicating whether to display p-values.
+Default is `TRUE`.}
 
-\item{return_stat_res}{Logical. Whether to return statistical results instead of saving plots. Default is FALSE.}
+\item{return_stat_res}{Logical indicating whether to return statistical
+results instead of saving plots. Default is `FALSE`.}
 
-\item{assay}{Character or NULL. Assay type for Seurat objects.}
+\item{assay}{Character string or `NULL`. Assay type for Seurat objects.}
 
-\item{slot}{Character. Data slot for Seurat objects. Default is "scale.data".}
+\item{slot}{Character. Data slot for Seurat objects. Default is `"scale.data"`.}
 
-\item{scale}{Logical. Whether to scale data before analysis. Default is FALSE.}
+\item{scale}{Logical indicating whether to scale data before analysis.
+Default is `FALSE`.}
 
-\item{height}{Numeric. Height of plots. Default is 5.}
+\item{height}{Numeric. Height of plots in inches. Default is `5`.}
 
-\item{width}{Numeric. Width of plots. Default is 3.5.}
+\item{width}{Numeric. Width of plots in inches. Default is `3.5`.}
 
-\item{fig_type}{Character. File format for plots (e.g., "pdf"). Default is "pdf".}
+\item{fig_type}{Character. File format for plots (e.g., `"pdf"`, `"png"`).
+Default is `"pdf"`.}
 
-\item{max_count_feas}{Integer. Maximum number of features to analyze when `pattern_vars = TRUE`.
-If the matched variable count exceeds this limit, only the first `max_count_feas` features are used.
-Default is 30.}
+\item{max_count_feas}{Integer. Maximum number of features to analyze when
+`pattern_vars = TRUE`. If matched variables exceed this limit, only the
+first `max_count_feas` features are used. Default is `30`.}
 }
 \value{
-If `return_stat_res` is TRUE, returns a data frame of statistical results; otherwise, saves plots to the specified directory.
+If `return_stat_res = TRUE`, returns a data frame of statistical
+  results; otherwise, invisibly returns the path to saved plots.
 }
 \description{
-Generates multiple box plots for specified features (signatures) across groups in the input data. Supports customization of plot appearance, output path, statistical annotation, and compatibility with Seurat objects. Plots are saved to the specified directory or a default folder.
+Generates multiple box plots for specified features (signatures) across groups
+in the input data. Supports customization of plot appearance, output path,
+statistical annotation, and compatibility with Seurat objects. Plots are saved
+to the specified directory or a default folder.
 }
 \examples{
+\donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box_batch(
   input = tcga_stad_pdata,
   vars = c("TMEscore_plus", "GZMB"),
-  groups = "subtype", jitter = TRUE, palette = "jco"
+  groups = "subtype",
+  jitter = TRUE,
+  palette = "jco"
 )
+}
 }
 \author{
 Dongqiang Zeng

@@ -32,7 +32,7 @@
 #' )
 #' }
 tme_cluster <- function(input, features = NULL, pattern = NULL, id = NULL,
-                       scale = TRUE, method = "kmeans", min_nc = 2, max.nc = 6) {
+                        scale = TRUE, method = "kmeans", min_nc = 2, max.nc = 6) {
   input <- as.data.frame(input)
 
   # Extract IDs

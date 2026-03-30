@@ -2,37 +2,36 @@
 % Please edit documentation in R/BinomialModel.R
 \name{ProcessingData}
 \alias{ProcessingData}
-\title{Processing Data for Model construction}
+\title{Process Data for Model Construction}
 \usage{
-ProcessingData(x, y, scale, type = "binomial")
+ProcessingData(x, y, scale, type = c("binomial", "survival"))
 }
 \arguments{
-\item{x}{A data frame containing predictors with the first column being IDs.}
+\item{x}{Data frame of predictors with first column as IDs.}
 
-\item{y}{A data frame containing the outcome variable with the first column being IDs. For survival analysis, it expects two additional columns for time and status.}
+\item{y}{Data frame of outcomes with first column as IDs. For survival,
+expects two additional columns for time and status.}
 
-\item{scale}{Logical, indicating whether the predictor variables should be scaled. When TRUE, predictors are centered and scaled.}
+\item{scale}{Logical indicating whether to scale predictors.}
 
-\item{type}{Character string specifying the type of analysis. Possible values are "binomial" for binomial outcomes where y is a factor indicating group membership, or "survival" where y includes survival time and event status.}
+\item{type}{Character string: `"binomial"` or `"survival"`.}
 }
 \value{
-A list containing three elements:
-  - `x_scale`: The processed predictor matrix with optional scaling applied.
-  - `y`: The outcome variable, processed according to the specified analysis type.
-  - `x_ID`: The IDs of the samples included in the analysis.
+List containing:
+\describe{
+  \item{x_scale}{Processed predictor matrix}
+  \item{y}{Processed outcome variable}
+  \item{x_ID}{Sample IDs}
+}
 }
 \description{
-This function preprocesses the data for binomial or survival analysis. It aligns and filters the data based on sample IDs,
-optionally scales the data, and makes sure the data types are appropriate for further modeling. It also handles survival data by filtering out
-entries where the time is non-positive and adjusts the data structure based on the type of analysis.
+Preprocesses data for binomial or survival analysis. Aligns and filters data
+based on sample IDs, optionally scales data, and ensures appropriate data types.
 }
 \examples{
-# For binomial analysis
+\donttest{
 x <- data.frame(ID = 1:10, predictor1 = rnorm(10), predictor2 = rnorm(10))
 y <- data.frame(ID = 1:10, outcome = sample(c(0, 1), 10, replace = TRUE))
 result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
-
-# For survival analysis
-y <- data.frame(ID = 1:10, time = runif(10, 0, 100), status = sample(c(0, 1), 10, replace = TRUE))
-result <- ProcessingData(x, y, scale = FALSE, type = "survival")
+}
 }

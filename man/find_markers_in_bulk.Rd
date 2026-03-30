@@ -42,13 +42,18 @@ find_markers_in_bulk(
 List with components: `sce` (Seurat object), `markers` (all markers), `top_markers` (top markers per group).
 }
 \description{
-Identifies informative marker features across groups from bulk gene expression or signature score matrices using Seurat workflows. Performs feature selection, scaling, PCA, clustering, and marker discovery.
+Identifies informative marker features across groups from bulk gene
+expression or signature score matrices using Seurat workflows. Performs
+feature selection, scaling, PCA, clustering, and marker discovery.
 }
 \examples{
 eset_tme_stad <- load_data("eset_tme_stad")
 colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
 pdata_sig_tme <- load_data("pdata_sig_tme")
-res <- find_markers_in_bulk(pdata = pdata_sig_tme, eset = eset_tme_stad, group = "TMEcluster")
+res <- find_markers_in_bulk(
+  pdata = pdata_sig_tme, eset = eset_tme_stad,
+  group = "TMEcluster"
+)
 # Extract top 15 markers per cluster
 top15 <- res$top_markers \%>\%
   dplyr::group_by(cluster) \%>\%

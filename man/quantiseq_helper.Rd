@@ -4,6 +4,6 @@
 \alias{quantiseq_helper}
 \title{Helper Functions for quanTIseq}
 \description{
-This package provides helper functions for quanTIseq deconvolution method.
+Helper functions for quanTIseq deconvolution method.
 Source code adapted from https://github.com/FFinotello/quanTIseq.
 }

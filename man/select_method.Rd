@@ -15,7 +15,9 @@ select_method(data, method = "ssGSEA")
 Matrix/data frame containing only the selected method's scores.
 }
 \description{
-Filters an integrated signature score matrix to retain results from a specified method (PCA, ssGSEA, or zscore) and strips method suffixes from column names.
+Filters an integrated signature score matrix to retain results from a
+specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
+column names.
 }
 \examples{
 eset_stad <- load_data("eset_stad")

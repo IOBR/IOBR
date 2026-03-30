@@ -24,7 +24,8 @@ LR_cal(
 A data frame containing ligand-receptor interaction scores
 }
 \description{
-Quantifies ligand-receptor interactions in the tumor microenvironment from bulk gene expression
+Quantifies ligand-receptor interactions in the tumor microenvironment from
+bulk gene expression
 }
 \examples{
 eset_stad <- load_data("eset_stad")

@@ -16,7 +16,8 @@ deconvolute_quantiseq.default(
 }
 \arguments{
 \item{mix.mat}{table with the gene TPM (or microarray expression values) for all samples to be deconvoluted
-(Gene symbols on the first column and sample IDs on the first row). Expression data must be on non-log scale}
+(Gene symbols on the first column and sample IDs on the first row).
+Expression data must be on non-log scale}
 
 \item{arrays}{specifies whether expression data are from microarrays (instead of RNA-seq).
 If TRUE, the "--rmgenes" parameter is set to "none".}
@@ -32,8 +33,10 @@ mRNA content.
 Default: TRUE.}
 
 \item{method}{deconvolution method to be used: "hampel", "huber", or "bisquare" for robust regression
-with Huber, Hampel, or Tukey bisquare estimators, respectively, or "lsei" for constrained
-least squares regression. The fraction of uncharacterized cells ("other") is computed only
+with Huber, Hampel, or Tukey bisquare estimators, respectively, or
+"lsei" for constrained
+least squares regression. The fraction of uncharacterized cells
+("other") is computed only
 by the "lsei" method.
 Default: "lsei".}
 
@@ -45,7 +48,9 @@ Source code from https://github.com/FFinotello/quanTIseq
 \details{
 F. Finotello, C. Mayer, C. Plattner, G. Laschober, D. Rieder,
 H. Hackl, A. Krogsdam, W. Posch, D. Wilflingseder, S. Sopper, M. Jsselsteijn,
-D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P. Ericsson-Gonzalez,
-J. Balko, N. F. de Miranda, Z. Trajanoski. "quanTIseq: quantifying immune contexture of human tumors".
+D. Johnsons, Y. Xu, Y. Wang, M. E. Sanders, M. V. Estrada, P.
+Ericsson-Gonzalez,
+J. Balko, N. F. de Miranda, Z. Trajanoski. "quanTIseq: quantifying immune
+contexture of human tumors".
 bioRxiv 223180. https://doi.org/10.1101/223180.
 }

@@ -50,23 +50,22 @@
 #' )
 #' }
 get_cor_matrix <- function(data,
-                          feas1,
-                          feas2,
-                          method = c("pearson", "spearman", "kendall"),
-                          path = NULL,
-                          index = 1,
-                          fig.type = "pdf",
-                          width = NULL,
-                          height = NULL,
-                          project = NULL,
-                          is.matrix = FALSE,
-                          scale = TRUE,
-                          font.size = 15,
-                          fill_by_cor = FALSE,
-                          round.num = 1,
-                          font.size.star = 8,
-                          cols = NULL) {
-
+                           feas1,
+                           feas2,
+                           method = c("pearson", "spearman", "kendall"),
+                           path = NULL,
+                           index = 1,
+                           fig.type = "pdf",
+                           width = NULL,
+                           height = NULL,
+                           project = NULL,
+                           is.matrix = FALSE,
+                           scale = TRUE,
+                           font.size = 15,
+                           fill_by_cor = FALSE,
+                           round.num = 1,
+                           font.size.star = 8,
+                           cols = NULL) {
   # Validate method
   method <- rlang::arg_match(method)
 
@@ -146,9 +145,9 @@ get_cor_matrix <- function(data,
 
   # Define colors
   if (is.null(cols)) {
-    low_col <- "#2C7BB6"  # Blue
+    low_col <- "#2C7BB6" # Blue
     mid_col <- "white"
-    high_col <- "#D7191C"  # Red
+    high_col <- "#D7191C" # Red
   } else {
     if (length(cols) < 2) {
       cli::cli_abort("{.arg cols} must have at least 2 colors (low, high)")

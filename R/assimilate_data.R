@@ -26,7 +26,7 @@
 #'
 #' # Harmonize pdata_b to match pdata_a structure
 #' pdata_b_harmonized <- assimilate_data(data_a = pdata_a, data_b = pdata_b)
-#' print(names(pdata_b_harmonized))  # Now has A, B, C, D, E
+#' print(names(pdata_b_harmonized)) # Now has A, B, C, D, E
 assimilate_data <- function(data_a, data_b) {
   # Input validation
   if (is.null(data_a) || !is.data.frame(data_a)) {

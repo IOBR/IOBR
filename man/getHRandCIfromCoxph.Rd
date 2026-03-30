@@ -13,7 +13,8 @@ getHRandCIfromCoxph(coxphData)
 A data frame with p-values, HR, and confidence intervals.
 }
 \description{
-This function extracts hazard ratio (HR) and 95% confidence intervals from a fitted Cox proportional hazards model.
+This function extracts hazard ratio (HR) and 95% confidence intervals from
+a fitted Cox proportional hazards model.
 }
 \examples{
 library(survival)

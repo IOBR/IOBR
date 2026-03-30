@@ -14,7 +14,8 @@ deconvo_epic(eset, project = NULL, tumor = TRUE)
 \item{tumor}{Logical indicating tumor (`TRUE`) or normal (`FALSE`) samples.}
 }
 \value{
-Data frame with EPIC cell fraction estimates. Columns suffixed with `_EPIC`.
+Data frame with EPIC cell fraction estimates. Columns suffixed with
+  `_EPIC`.
 }
 \description{
 Estimates immune cell fractions using EPIC algorithm.

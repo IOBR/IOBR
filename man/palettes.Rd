@@ -14,27 +14,35 @@ palettes(
 )
 }
 \arguments{
-\item{category}{Character. Plot/palette category: one of `box`, `continue2`, `continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`.}
+\item{category}{Character. Plot/palette category: one of `box`, `continue2`,
+`continue`, `random`, `heatmap`, `heatmap3`, `tidyheatmap`.}
 
 \item{palette}{Character or numeric. Palette name or index (varies by category).}
 
 \item{alpha}{Numeric. Alpha (transparency) scaling factor. Default is 1.}
 
-\item{counts}{Integer. Number of colors (for continuous palettes). Default is 50.}
+\item{counts}{Integer. Number of colors (for continuous palettes).
+Default is 50.}
 
 \item{show_col}{Logical. If TRUE, prints the palette. Default is TRUE.}
 
-\item{show_message}{Logical. If TRUE, prints available options. Default is FALSE.}
+\item{show_message}{Logical. If TRUE, prints available options.
+Default is FALSE.}
 }
 \value{
 Character vector of hex color codes.
 }
 \description{
-Provides curated qualitative, sequential, and diverging palettes for multiple plot types. Supports intensity adjustment and preview.
+Provides curated qualitative, sequential, and diverging palettes for multiple
+plot types. Supports intensity adjustment and preview.
 }
 \examples{
+\donttest{
 colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
-heatmap_colors <- palettes(category = "heatmap", palette = 1, counts = 100, show_col = TRUE)
+heatmap_colors <- palettes(
+  category = "heatmap", palette = 1, counts = 100, show_col = TRUE
+)
+}
 }
 \author{
 Dongqiang Zeng

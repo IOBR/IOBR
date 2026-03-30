@@ -1,7 +1,11 @@
 #' generateRef_seurat
 #'
 #' @description
-#' The "generateRef_seurat" function takes a Seurat object "sce" and additional parameters to perform various operations for generating reference gene expression data. The function allows for specifying cell types, proportions, assays, preprocessing options, and statistical testing parameters.
+#' The "generateRef_seurat" function takes a Seurat object "sce" and
+#' additional parameters to perform various operations for generating
+#' reference gene expression data. The function allows for specifying cell
+#' types, proportions, assays, preprocessing options, and statistical testing
+#' parameters.
 #'
 #' @param sce  Seurat object containing single-cell RNA-seq data.
 #' @param proportion  (Optional) A numeric value specifying the proportion of cells to be randomly selected for analysis.
@@ -34,8 +38,14 @@
 #'   counts = pbmc.data,
 #'   project = "pbmc3k", min.cells = 3, min.features = 200
 #' )
-#' pbmc <- Seurat::FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-#' pbmc <- Seurat::NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+#' pbmc <- Seurat::FindVariableFeatures(pbmc,
+#'   selection.method = "vst",
+#'   nfeatures = 2000
+#' )
+#' pbmc <- Seurat::NormalizeData(pbmc,
+#'   normalization.method = "LogNormalize",
+#'   scale.factor = 10000
+#' )
 #' pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
 #' pbmc <- Seurat::RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 #' pbmc <- Seurat::FindNeighbors(pbmc, dims = 1:10)
@@ -43,7 +53,10 @@
 #' pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
 #'
 #' # generate reference matrix
-#' sm <- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
+#' sm <- generateRef_seurat(
+#'   sce = pbmc, celltype = "celltype", slot_out =
+#'     "data"
+#' )
 #'
 #' # load the bulk-seq data
 #' eset_stad <- load_data("eset_stad")

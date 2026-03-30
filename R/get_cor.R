@@ -58,38 +58,37 @@
 #' )
 #' }
 get_cor <- function(eset,
-                   pdata = NULL,
-                   var1,
-                   var2,
-                   is.matrix = FALSE,
-                   id_eset = "ID",
-                   id_pdata = "ID",
-                   scale = TRUE,
-                   subtype = NULL,
-                   na.subtype.rm = FALSE,
-                   color_subtype = NULL,
-                   palette = "jama",
-                   index = NULL,
-                   method = c("spearman", "pearson", "kendall"),
-                   show_cor_result = TRUE,
-                   col_line = NULL,
-                   id = NULL,
-                   show_label = FALSE,
-                   point_size = 4,
-                   title = NULL,
-                   alpha = 0.5,
-                   title_size = 1.5,
-                   text_size = 10,
-                   axis_angle = 0,
-                   hjust = 0,
-                   show_plot = TRUE,
-                   save_plot = FALSE,
-                   path = NULL,
-                   fig.format = "png",
-                   fig.width = 7,
-                   fig.height = 7.3,
-                   add.hdr.line = FALSE) {
-
+                    pdata = NULL,
+                    var1,
+                    var2,
+                    is.matrix = FALSE,
+                    id_eset = "ID",
+                    id_pdata = "ID",
+                    scale = TRUE,
+                    subtype = NULL,
+                    na.subtype.rm = FALSE,
+                    color_subtype = NULL,
+                    palette = "jama",
+                    index = NULL,
+                    method = c("spearman", "pearson", "kendall"),
+                    show_cor_result = TRUE,
+                    col_line = NULL,
+                    id = NULL,
+                    show_label = FALSE,
+                    point_size = 4,
+                    title = NULL,
+                    alpha = 0.5,
+                    title_size = 1.5,
+                    text_size = 10,
+                    axis_angle = 0,
+                    hjust = 0,
+                    show_plot = TRUE,
+                    save_plot = FALSE,
+                    path = NULL,
+                    fig.format = "png",
+                    fig.width = 7,
+                    fig.height = 7.3,
+                    add.hdr.line = FALSE) {
   # Validate arguments
   method <- rlang::arg_match(method)
   if (is.null(index)) index <- 1
@@ -268,9 +267,8 @@ get_cor <- function(eset,
 
 # Helper: Build correlation plot
 .build_cor_plot <- function(data, var1, var2, subtype, na.subtype.rm,
-                           color_subtype, col_line, point_size, alpha,
-                           title, cor_result, pvalue, id, show_label) {
-
+                            color_subtype, col_line, point_size, alpha,
+                            title, cor_result, pvalue, id, show_label) {
   # Base aesthetics
   if (!is.null(subtype)) {
     if (!subtype %in% colnames(data)) {
@@ -350,7 +348,7 @@ get_cor <- function(eset,
 
 # Helper: Save correlation plot
 .save_cor_plot <- function(p, path, var1, var2, index, fig.format,
-                          fig.width, fig.height, data) {
+                           fig.width, fig.height, data) {
   if (is.null(path)) {
     path <- paste0("1-Cor-of-", var1, "-and-", var2)
   }

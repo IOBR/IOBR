@@ -262,7 +262,8 @@ surv_group <- function(input_pdata,
     pval.size = 8,
     pval = paste(
       ifelse(pvalue[, 1] < 0.0001, "P < 0.0001", paste("P =", round(pvalue[, 1], 4))),
-      HR, CI, sep = "\n"
+      HR, CI,
+      sep = "\n"
     )
   )
 }

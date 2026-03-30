@@ -67,7 +67,6 @@ iobr_deg <- function(eset,
                      heatmap = TRUE,
                      col_heatmap = 1,
                      parallel = FALSE) {
-
   method <- rlang::arg_match(method)
 
   # Input validation
@@ -126,8 +125,10 @@ iobr_deg <- function(eset,
   }
 
   if (method == "DESeq2") {
-    DEG <- .run_deseq2(eset, pdata, contrast, annotation, id_anno,
-                       padj_cutoff, logfc_cutoff, parallel)
+    DEG <- .run_deseq2(
+      eset, pdata, contrast, annotation, id_anno,
+      padj_cutoff, logfc_cutoff, parallel
+    )
   } else {
     DEG <- .run_limma(eset, pdata, contrast, padj_cutoff, logfc_cutoff)
   }
@@ -294,7 +295,8 @@ iobr_deg <- function(eset,
   DEG$label <- ifelse(
     abs(DEG$log2FoldChange) > logfc_cutoff & DEG$padj < padj_cutoff, "Both",
     ifelse(DEG$padj < padj_cutoff, "Significant",
-           ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT"))
+      ifelse(abs(DEG$log2FoldChange) >= logfc_cutoff, paste0("log2FC >= ", logfc_cutoff), "NOT")
+    )
   )
   DEG
 }

@@ -20,43 +20,55 @@ sig_forest(
 )
 }
 \arguments{
-\item{data}{Data frame with survival analysis results including p-values, HRs, and CIs.}
+\item{data}{Data frame with survival analysis results including p-values,
+hazard ratios, and confidence intervals.}
 
-\item{signature}{Column name for signatures or feature names.}
+\item{signature}{Character string. Column name for signatures or feature names.}
 
-\item{pvalue}{Column name for p-values. Default is "P".}
+\item{pvalue}{Character string. Column name for p-values. Default is `"P"`.}
 
-\item{HR}{Column name for hazard ratios. Default is "HR".}
+\item{HR}{Character string. Column name for hazard ratios. Default is `"HR"`.}
 
-\item{CI_low_0.95}{Column name for lower CI bound. Default is "CI_low_0.95".}
+\item{CI_low_0.95}{Character string. Column name for lower CI bound.
+Default is `"CI_low_0.95"`.}
 
-\item{CI_up_0.95}{Column name for upper CI bound. Default is "CI_up_0.95".}
+\item{CI_up_0.95}{Character string. Column name for upper CI bound.
+Default is `"CI_up_0.95"`.}
 
-\item{n}{Maximum number of signatures to display. Default is 10.}
+\item{n}{Integer. Maximum number of signatures to display. Default is `10`.}
 
-\item{max_character}{Maximum characters for labels before wrapping. Default is 25.}
+\item{max_character}{Integer. Maximum characters for labels before wrapping.
+Default is `25`.}
 
-\item{discrete_width}{Width for discretizing long labels. Default is 35.}
+\item{discrete_width}{Integer. Width for discretizing long labels. Default is `35`.}
 
-\item{color_option}{Color option for p-value gradient (1, 2, or 3). Default is 1.}
+\item{color_option}{Integer. Color option for p-value gradient (1, 2, or 3).
+Default is `1`.}
 
-\item{cols}{Character vector. Custom colors for p-value gradient (low to high).Default is \code{NULL}.}
+\item{cols}{Character vector. Custom colors for p-value gradient (low to high).
+Default is `NULL`.}
 
-\item{text.size}{Text size for y-axis labels. Default is 13.}
+\item{text.size}{Numeric. Text size for y-axis labels. Default is `13`.}
 }
 \value{
 A ggplot2 object of the forest plot.
 }
 \description{
-Generates a forest plot to visualize hazard ratios, confidence intervals, and p-values
-for gene signatures or features from survival analysis.
+Generates a forest plot to visualize hazard ratios, confidence intervals,
+and p-values for gene signatures or features from survival analysis.
 }
 \examples{
-sig_surv_result <- batch_surv(
-  pdata = pdata_sig_tme_binary,
-  variable = c(100:ncol(pdata_sig_tme_binary))
+\donttest{
+# Example with sample survival results
+sample_results <- data.frame(
+  ID = c("Sig1", "Sig2", "Sig3"),
+  HR = c(1.5, 0.8, 2.0),
+  P = c(0.01, 0.05, 0.001),
+  CI_low_0.95 = c(1.1, 0.6, 1.5),
+  CI_up_0.95 = c(2.0, 1.0, 2.8)
 )
-sig_forest(data = sig_surv_result, signature = "ID")
+sig_forest(data = sample_results, signature = "ID")
+}
 }
 \author{
 Dongqiang Zeng

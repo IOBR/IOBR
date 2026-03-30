@@ -52,7 +52,6 @@ sig_forest <- function(data,
                        color_option = 1,
                        cols = NULL,
                        text.size = 13) {
-
   rlang::check_installed("stringr")
 
   data <- as.data.frame(data)

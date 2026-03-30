@@ -27,59 +27,64 @@ surv_group(
 )
 }
 \arguments{
-\item{input_pdata}{A data frame containing survival data and grouping variables.}
+\item{input_pdata}{Data frame containing survival data and grouping variables.}
 
-\item{target_group}{The name of the column in input_pdata that contains the grouping variable.}
+\item{target_group}{Name of column containing the grouping variable.}
 
-\item{ID}{The name of the column in input_pdata that serves as a unique identifier for each row.}
+\item{ID}{Name of column with unique identifiers. Default is "ID".}
 
-\item{levels}{A vector of names for the levels of the target_group; used for labeling in the plot.}
+\item{levels}{Names for levels of target_group (for binary groups).
+Default is c("High", "Low").}
 
-\item{reference_group}{The reference level for comparison in survival analysis; used only for binary groups.}
+\item{reference_group}{Reference level for binary comparison. Default is NULL.}
 
-\item{project}{An optional title for the plot; used in file naming and plot subtitles.}
+\item{project}{Optional title for plot. Default is NULL.}
 
-\item{time}{The name of the column containing follow-up times.}
+\item{time}{Name of column with follow-up times. Default is "time".}
 
-\item{status}{The name of the column containing event indicators (1=event occurred, 0=censored).}
+\item{status}{Name of column with event indicators. Default is "status".}
 
-\item{time_type}{Units of follow-up time ('month' or 'day'). Converts days to months if 'day' is selected.}
+\item{time_type}{Units: "month" or "day". Default is "month".}
 
-\item{break_month}{The interval for breaking time on the X-axis of the plot. If 'auto', it is calculated automatically.}
+\item{break_month}{X-axis break interval. If "auto", calculated automatically.
+Default is "auto".}
 
-\item{cols}{A vector of colors for the plot lines; if NULL, uses a default palette based on 'palette' parameter.}
+\item{cols}{Color vector for plot lines. Default is NULL.}
 
-\item{palette}{The name of the color palette to use if 'cols' is NULL. Common choices include 'jama' and other palette names from the `ggsci` package.}
+\item{palette}{Color palette name. Default is "jama".}
 
-\item{mini_sig}{A prefix label for variables in the plot, typically indicating a scoring metric.}
+\item{mini_sig}{Prefix label for variables. Default is "score".}
 
-\item{save_path}{The directory path where the plot should be saved.}
+\item{save_path}{Directory for saving plot. Default is NULL.}
 
-\item{fig.type}{The file format for the saved plot ('pdf' or 'png').}
+\item{fig.type}{File format: "pdf" or "png". Default is "pdf".}
 
-\item{index}{A unique identifier for the plot file, typically used in file naming.}
+\item{index}{Identifier for file naming. Default is 1.}
 
-\item{width}{The width of the output plot.}
+\item{width}{Plot width. Default is 6.}
 
-\item{height}{The height of the output plot.}
+\item{height}{Plot height. Default is 6.5.}
 
-\item{font.size.table}{The font size used in the plot's risk table.}
+\item{font.size.table}{Font size for risk table. Default is 3.}
 }
 \value{
-Saves the Kaplan-Meier plot to the specified path and returns the plot object.
+Kaplan-Meier plot object.
 }
 \description{
-This function creates Kaplan-Meier survival plots for data grouped by a categorical variable.
-It handles both binary and multi-level categorical groups, adjusts follow-up times, and allows for
-customizable plot aesthetics and output formats.
+Creates Kaplan-Meier survival plots for data grouped by a categorical variable.
+Handles both binary and multi-level categorical groups with customizable plot
+aesthetics.
 }
 \examples{
+\donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 surv_group(
   input_pdata = tcga_stad_pdata,
   target_group = "TMEscore_plus_binary",
-  time = "time", status = "OS_status"
+  time = "time",
+  status = "OS_status"
 )
+}
 }
 \author{
 Dongqiang Zeng

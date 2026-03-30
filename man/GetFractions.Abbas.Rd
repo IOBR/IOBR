@@ -17,10 +17,14 @@ GetFractions.Abbas(XX, YY, w = NA)
 A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
 }
 \description{
-This function implements a constrained regression approach described by Abbas et al. in their 2009 paper.
-It is designed to estimate the proportions of immune cell types within a mixed cancer tissue sample
-based on gene expression data. The method iteratively adjusts the regression coefficients to ensure
-they are non-negative, which corresponds to realistic proportions of cell types.
+This function implements a constrained regression approach described by
+Abbas et al. in their 2009 paper.
+It is designed to estimate the proportions of immune cell types within a
+mixed cancer tissue sample
+based on gene expression data. The method iteratively adjusts the
+regression coefficients to ensure
+they are non-negative, which corresponds to realistic proportions of cell
+types.
 }
 \examples{
 # Generate some example data

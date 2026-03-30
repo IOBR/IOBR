@@ -27,11 +27,13 @@ subgroup_survival(
 Data frame summarizing subgroup Cox results (HR, CI, p-value).
 }
 \description{
-Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional hazards models across specified subgroups.
+Extracts hazard ratios (HR) and 95% confidence intervals from Cox
+proportional hazards models across specified subgroups.
 }
 \examples{
 subgroup_data <- load_data("subgroup_data")
-input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
+input <- subset(subgroup_data, time > 0 & !is.na(status) &
+  !is.na(AJCC_stage))
 # Binary variable example
 res_bin <- subgroup_survival(
   pdata = input, time_name = "time", status_name = "status",

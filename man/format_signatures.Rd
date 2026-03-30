@@ -17,8 +17,10 @@ format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
 A list of signatures.
 }
 \description{
-This function converts signature data from a data frame (with signatures as columns and genes as rows)
-into a list format suitable for IOBR functions, replacing NA values appropriately.
+This function converts signature data from a data frame (with signatures as
+columns and genes as rows)
+into a list format suitable for IOBR functions, replacing NA values
+appropriately.
 }
 \examples{
 # Load signature data frame

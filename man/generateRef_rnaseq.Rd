@@ -21,14 +21,18 @@ generateRef_rnaseq(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat)
 A list containing reference matrix, optimal G, condition number, and whole matrix.
 }
 \description{
-Uses DESeq2 to identify differentially expressed genes and create a reference matrix
+Uses DESeq2 to identify differentially expressed genes and create a
+reference matrix
 from median expression levels across cell types.
 }
 \examples{
 dds <- matrix(rpois(200 * 10, lambda = 10), ncol = 10)
 pheno <- sample(c("Type1", "Type2", "Type3"), 10, replace = TRUE)
 dat <- matrix(rnorm(200 * 10), ncol = 10)
-results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
+results <- generateRef_rnaseq(
+  dds = dds, pheno = pheno, FDR = 0.05, dat =
+    dat
+)
 }
 \author{
 Rongfang Shen

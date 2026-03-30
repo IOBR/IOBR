@@ -2,42 +2,30 @@
 % Please edit documentation in R/BinomialModel.R
 \name{BinomialAUC}
 \alias{BinomialAUC}
-\title{Calculate Area Under the Curve (AUC) for Binomial Model}
+\title{Calculate AUC for Binomial Model}
 \usage{
 BinomialAUC(model, newx, s, acture.y)
 }
 \arguments{
-\item{model}{A model object fitted using a binomial distribution, from which predictions will be generated.}
+\item{model}{Fitted model object.}
 
-\item{newx}{A matrix or data frame of new data on which to make predictions. This should correspond
-to the predictors used in fitting the model.}
+\item{newx}{New data for prediction.}
 
-\item{s}{A character vector indicating the specific regularization strengths ('lambda.min' or 'lambda.1se')
-at which predictions should be evaluated.}
+\item{s}{Lambda value for prediction.}
 
-\item{acture.y}{A vector containing the actual binary outcomes associated with `newx`.}
+\item{acture.y}{Actual binary outcomes.}
 }
 \value{
-A numeric value representing the AUC for the model's predictions against actual outcomes.
+Numeric AUC value.
 }
 \description{
-This function computes the AUC for a binomial model's predictions on a given dataset.
-It uses the specified regularization strengths to generate predictions, which are then
-evaluated against actual outcomes to compute the AUC using the ROCR package. This function
-is typically used to assess model performance in classification tasks.
+Computes AUC for model predictions.
 }
 \examples{
 \dontrun{
-# Assuming 'model', 'newx', and 'actual.y' are predefined:
-fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-test_data <- matrix(rnorm(100 * 10), ncol = 10)
-test_outcomes <- rbinom(100, 1, 0.5)
-auc_value <- BinomialAUC(
-  model = fitted_model,
-  newx = test_data,
-  s = "lambda.min",
-  acture.y = test_outcomes
-)
-print(auc_value)
+if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+  fitted_model <- glmnet::glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), family = "binomial")
+  auc_value <- BinomialAUC(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
+}
 }
 }

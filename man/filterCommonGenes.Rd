@@ -34,7 +34,10 @@ input_data <- data.frame(
 )
 
 # Write the input data to input.txt file, including row names
-write.table(input_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(input_data,
+  file = "input.txt", sep = "\t", row.names = TRUE,
+  quote = FALSE
+)
 
 # Call the filterCommonGenes function using the sample input.txt file
 filterCommonGenes("input.txt", "output.txt", id = "GeneSymbol")

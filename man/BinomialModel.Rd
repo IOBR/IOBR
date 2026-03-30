@@ -17,48 +17,51 @@ BinomialModel(
 )
 }
 \arguments{
-\item{x}{A data.frame containing the sample ID and features, the first column must be the sample ID.}
+\item{x}{A data frame containing sample ID and features. First column must be sample ID.}
 
-\item{y}{A data.frame where the first column is the sample ID and the second column is the outcome
-of each sample, which can be either numeric or a factor vector.}
+\item{y}{A data frame where first column is sample ID and second column is outcome
+(numeric or factor).}
 
-\item{seed}{An integer used to set the seed for random operations, default is 123456.}
+\item{seed}{Integer for random seed. Default is `123456`.}
 
-\item{scale}{A logical indicating whether the feature data `x` should be scaled, default is TRUE.}
+\item{scale}{Logical indicating whether to scale features. Default is `TRUE`.}
 
-\item{train_ratio}{A numeric value between 0 and 1 specifying the proportion of the dataset to be
-used for training, e.g., 0.7 means 70 percent of the data is used for training.}
+\item{train_ratio}{Numeric between 0 and 1 for training proportion. Default is `0.7`.}
 
-\item{nfold}{The number of folds to use for cross-validation in model fitting, default is 10.}
+\item{nfold}{Integer for cross-validation folds. Default is `10`.}
 
-\item{plot}{A logical indicating whether to generate and display AUC plots, default is TRUE.}
+\item{plot}{Logical indicating whether to generate AUC plots. Default is `TRUE`.}
 
-\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+\item{palette}{Character string for color palette. Default is `"jama"`.}
 
-\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
+\item{cols}{Optional color vector for ROC curves. Default is `NULL`.}
 }
 \value{
-A list containing the results of the Lasso and Ridge models, and the input training data.
-        The list includes elements 'lasso_result', 'ridge_result', and 'train.x'.
+List containing:
+\describe{
+  \item{lasso_result}{Lasso model results}
+  \item{ridge_result}{Ridge model results}
+  \item{train.x}{Training data with IDs}
+}
 }
 \description{
-Constructs and evaluates binomial logistic regression models using Lasso and Ridge regularization.
-This function processes the input data, scales features if specified, splits the data into training
-and testing sets based on a provided ratio, and then fits both Lasso and Ridge models. It optionally
-generates AUC plots for model evaluation. The results, along with the training dataset, are returned.
+Constructs and evaluates binomial logistic regression models using Lasso and Ridge
+regularization. Processes input data, scales features if specified, splits data into
+training/testing sets, and fits both Lasso and Ridge models. Optionally generates
+AUC plots for model evaluation.
 }
 \examples{
+\donttest{
 imvigor210_sig <- load_data("imvigor210_sig")
 imvigor210_pdata <- load_data("imvigor210_pdata")
 pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
-BinomialModel(
-  x = imvigor210_sig,
-  y = pdata_group,
-  seed = 123456,
-  scale = TRUE,
-  train_ratio = 0.7,
-  nfold = 10,
-  plot = FALSE
+result <- BinomialModel(
+  x = imvigor210_sig, y = pdata_group,
+  seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
 )
+}
+}
+\author{
+Dongqiang Zeng
 }

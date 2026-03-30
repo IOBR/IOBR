@@ -15,19 +15,27 @@ mouse2human_eset(
 \arguments{
 \item{eset}{expression matrix or data frame}
 
-\item{source}{default is ensembl, if an error is reported, set parameter to `local` and mus_human_gene_symbol will be use to convert gene symbols}
+\item{source}{default is ensembl, if an error is reported, set parameter to
+`local` and mus_human_gene_symbol will be use to convert gene symbols}
 
-\item{is_matrix}{Boolean indicating if 'eset' is a matrix; defaults to TRUE. If FALSE, 'column_of_symbol' must be specified.}
+\item{is_matrix}{Boolean indicating if 'eset' is a matrix; defaults to TRUE.
+If FALSE, 'column_of_symbol' must be specified.}
 
-\item{column_of_symbol}{default is null.Name of the column in 'eset' that contains gene symbols, if 'eset' is not a matrix. This parameter must be specified if 'is_matrix' is FALSE.}
+\item{column_of_symbol}{default is null.Name of the column in 'eset' that
+contains gene symbols, if 'eset' is not a matrix. This parameter must be
+specified if 'is_matrix' is FALSE.}
 
-\item{verbose}{Logical; if `TRUE`, prints information about available Ensembl datasets. Defaults to `FALSE`.}
+\item{verbose}{Logical; if `TRUE`, prints information about available Ensembl
+datasets. Defaults to `FALSE`.}
 }
 \value{
-Returns the expression set with human gene symbols for further analysis.
+Returns the expression set with human gene symbols for further
+  analysis.
 }
 \description{
-This function converts mouse gene symbols to human gene symbols in an expression dataset. It supports using either an online resource (Ensembl) or a local dataset for conversion.
+This function converts mouse gene symbols to human gene symbols in an
+expression dataset. It supports using either an online resource (Ensembl)
+or a local dataset for conversion.
 }
 \examples{
 # Set the number of rows and columns

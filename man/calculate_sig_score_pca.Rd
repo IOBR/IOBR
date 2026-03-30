@@ -14,42 +14,33 @@ calculate_sig_score_pca(
 )
 }
 \arguments{
-\item{pdata}{Data frame containing phenotype data. If \code{NULL}, a data frame with
-\code{Index} and \code{ID} columns is created from \code{eset} column names.
-Default is \code{NULL}.}
+\item{pdata}{Data frame with phenotype data. If `NULL`, created from
+`eset` column names.}
 
-\item{eset}{Matrix of normalized gene expression data (CPM, TPM, RPKM, FPKM, etc.)
-with genes in rows and samples in columns.}
+\item{eset}{Expression matrix (genes as rows, samples as columns).}
 
-\item{signature}{List of gene signatures, where each element is a character vector
-of gene names.}
+\item{signature}{List of gene signatures.}
 
-\item{mini_gene_count}{Integer specifying the minimum number of genes required in
-the expression set for a signature to be included. Default is 3.}
+\item{mini_gene_count}{Minimum genes required per signature. Default is 3.}
 
-\item{column_of_sample}{Character string specifying the column in \code{pdata}
-containing sample identifiers. Default is \code{"ID"}.}
+\item{column_of_sample}{Column in `pdata` with sample IDs. Default is `"ID"`.}
 
-\item{adjust_eset}{Logical indicating whether to remove features with missing values,
-zero standard deviation, or infinite values. Default is \code{FALSE}.}
+\item{adjust_eset}{Logical: remove problematic features. Default is `FALSE`.}
 }
 \value{
-Tibble containing sample identifiers and signature scores (signatures in
-  columns, samples in rows). Special combined scores (e.g., TMEscore_CIR) are
-  calculated if corresponding signature pairs are present.
+Tibble with signature scores.
 }
 \description{
-Computes signature scores for gene sets using Principal Component Analysis (PCA).
-The first principal component is extracted from gene expression data for each
-signature and used as the signature score.
+Computes signature scores using Principal Component Analysis.
+The first principal component is used as the signature score.
 }
 \examples{
-# Load TCGA-STAD expression data (raw count matrix)
+\donttest{
 eset_stad <- load_data("eset_stad")
-# Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
-# Calculate signature scores using PCA method
-calculate_sig_score_pca(eset = eset, signature = signature_tme)
+signature_tme <- load_data("signature_tme")
+result <- calculate_sig_score_pca(eset = eset, signature = signature_tme)
+}
 }
 \author{
 Dongqiang Zeng

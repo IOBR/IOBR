@@ -18,7 +18,10 @@
 #' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' ips_result <- IPS_calculation(eset = eset, project = "TCGA-STAD", plot = FALSE)
+#' ips_result <- IPS_calculation(
+#'   eset = eset, project = "TCGA-STAD", plot =
+#'     FALSE
+#' )
 #' }
 IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
   # normalize gene expression matrix

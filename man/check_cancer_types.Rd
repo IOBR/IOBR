@@ -9,7 +9,8 @@ check_cancer_types(args)
 \arguments{
 \item{args}{A list containing input parameters:
 - `batch`: Character string. Path to a CSV file (optional).
-- `expression`: Character vector of expression identifiers (used if `batch` is NULL).
+- `expression`: Character vector of expression identifiers (used if `batch`
+is NULL).
 - `category`: Character vector of cancer types (used if `batch` is NULL).}
 }
 \value{
@@ -25,8 +26,11 @@ each category against a predefined list of supported cancer types
 }
 \details{
 The input can be provided in two ways:
-- **Batch mode**: A CSV file path specified in `args$batch`. The file is expected to have at least two columns, where the second column contains cancer categories.
-- **Direct mode**: Vectors provided via `args$expression` and `args$category`.
+- **Batch mode**: A CSV file path specified in `args$batch`. The file is
+expected to have at least two columns, where the second column contains
+cancer categories.
+- **Direct mode**: Vectors provided via `args$expression` and
+`args$category`.
 
 If any cancer category is not recognized, the function stops with an error.
 }

@@ -1,8 +1,11 @@
 #' Generate Reference Signature Matrix
 #'
-#' This function generates a reference signature matrix for cell types based on differential expression analysis.
-#' It can use either 'limma' for normalized data or 'DESeq2' for raw count data. The function identifies genes
-#' with significant expression changes at a specified false discovery rate (FDR) threshold.
+#' This function generates a reference signature matrix for cell types based
+#' on differential expression analysis.
+#' It can use either 'limma' for normalized data or 'DESeq2' for raw count
+#' data. The function identifies genes
+#' with significant expression changes at a specified false discovery rate
+#' (FDR) threshold.
 #'
 #' @param dds raw count data from RNA-seq; Necessary if used the method DESeq2
 #' @param pheno character vector; cell type class of the samples
@@ -11,7 +14,8 @@
 #' @param method limma or DESeq2
 #'
 #' @return A list containing the reference signature matrix and possibly other elements depending on the analysis method used.
-#'         The cells of the matrix represent the median expression level of identified significant genes across samples grouped by cell type.
+#'         The cells of the matrix represent the median expression level of
+#'         identified significant genes across samples grouped by cell type.
 #' @export
 #'
 #' @examples

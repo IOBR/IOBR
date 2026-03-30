@@ -7,22 +7,22 @@
 get_cor(
   eset,
   pdata = NULL,
+  var1,
+  var2,
   is.matrix = FALSE,
   id_eset = "ID",
   id_pdata = "ID",
-  var1,
-  var2,
   scale = TRUE,
   subtype = NULL,
   na.subtype.rm = FALSE,
   color_subtype = NULL,
   palette = "jama",
   index = NULL,
-  method = "spearman",
-  show_cor_result = T,
+  method = c("spearman", "pearson", "kendall"),
+  show_cor_result = TRUE,
   col_line = NULL,
-  id = "NULL",
-  show_lebel = FALSE,
+  id = NULL,
+  show_label = FALSE,
   point_size = 4,
   title = NULL,
   alpha = 0.5,
@@ -31,89 +31,101 @@ get_cor(
   axis_angle = 0,
   hjust = 0,
   show_plot = TRUE,
+  save_plot = FALSE,
+  path = NULL,
   fig.format = "png",
   fig.width = 7,
   fig.height = 7.3,
-  path = NULL,
-  save_plot = FALSE,
   add.hdr.line = FALSE
 )
 }
 \arguments{
-\item{eset}{Dataset containing the variables.}
+\item{eset}{Dataset containing the variables (data frame or matrix).}
 
-\item{pdata}{Optional data frame with additional information. Default is NULL.}
-
-\item{is.matrix}{Logical indicating if eset is a matrix with features as rows.}
-
-\item{id_eset}{ID column in eset. Default is "ID".}
-
-\item{id_pdata}{ID column in pdata. Default is "ID".}
+\item{pdata}{Optional phenotype data frame. Default is `NULL`.}
 
 \item{var1}{Name of the first variable.}
 
 \item{var2}{Name of the second variable.}
 
-\item{scale}{Logical indicating whether to scale data. Default is TRUE.}
+\item{is.matrix}{Logical indicating if `eset` is a matrix with features as rows.
+Default is `FALSE`.}
 
-\item{subtype}{Optional grouping variable for coloring points.}
+\item{id_eset}{ID column in `eset`. Default is `"ID"`.}
 
-\item{na.subtype.rm}{Logical indicating whether to remove NA in subtype. Default is FALSE.}
+\item{id_pdata}{ID column in `pdata`. Default is `"ID"`.}
 
-\item{color_subtype}{Colors for subtypes. Default is NULL.}
+\item{scale}{Logical indicating whether to scale data. Default is `TRUE`.}
 
-\item{palette}{Color palette. Default is "jama".}
+\item{subtype}{Optional grouping variable for coloring points. Default is `NULL`.}
 
-\item{index}{Plot index. Default is NULL.}
+\item{na.subtype.rm}{Logical indicating whether to remove NA in subtype.
+Default is `FALSE`.}
 
-\item{method}{Correlation method. Default is "spearman".}
+\item{color_subtype}{Colors for subtypes. Default is `NULL`.}
 
-\item{show_cor_result}{Logical indicating whether to print correlation result. Default is TRUE.}
+\item{palette}{Color palette name. Default is `"jama"`.}
 
-\item{col_line}{Color of regression line. Default is NULL.}
+\item{index}{Plot index for filename. Default is `NULL` (uses 1).}
 
-\item{id}{Column for point labels. Default is "NULL".}
+\item{method}{Correlation method: `"spearman"`, `"pearson"`, or `"kendall"`.
+Default is `"spearman"`.}
 
-\item{show_lebel}{Logical indicating whether to show labels. Default is FALSE.}
+\item{show_cor_result}{Logical indicating whether to print correlation result.
+Default is `TRUE`.}
+
+\item{col_line}{Color of regression line. Default is `NULL` (auto-determine).}
+
+\item{id}{Column for point labels. Default is `NULL`.}
+
+\item{show_label}{Logical indicating whether to show labels. Default is `FALSE`.}
 
 \item{point_size}{Size of points. Default is 4.}
 
-\item{title}{Plot title. Default is NULL.}
+\item{title}{Plot title. Default is `NULL`.}
 
 \item{alpha}{Transparency of points. Default is 0.5.}
 
-\item{title_size}{Title size. Default is 1.5.}
+\item{title_size}{Title font size. Default is 1.5.}
 
-\item{text_size}{Text size. Default is 10.}
+\item{text_size}{Text font size. Default is 10.}
 
 \item{axis_angle}{Axis label angle. Default is 0.}
 
 \item{hjust}{Horizontal justification. Default is 0.}
 
-\item{show_plot}{Logical indicating whether to display plot. Default is TRUE.}
+\item{show_plot}{Logical indicating whether to display plot. Default is `TRUE`.}
 
-\item{fig.format}{Figure format. Default is "png".}
+\item{save_plot}{Logical indicating whether to save plot. Default is `FALSE`.}
 
-\item{fig.width}{Figure width. Default is 7.}
+\item{path}{Save path. Default is `NULL`.}
 
-\item{fig.height}{Figure height. Default is 7.3.}
+\item{fig.format}{Figure format: `"png"` or `"pdf"`. Default is `"png"`.}
 
-\item{path}{Save path. Default is NULL.}
+\item{fig.width}{Figure width in inches. Default is 7.}
 
-\item{save_plot}{Logical indicating whether to save plot. Default is FALSE.}
+\item{fig.height}{Figure height in inches. Default is 7.3.}
 
-\item{add.hdr.line}{Logical for adding header line. Default is FALSE.}
+\item{add.hdr.line}{Logical for adding HDR (high density region) lines.
+Default is `FALSE`.}
 }
 \value{
 A ggplot object of the correlation plot.
 }
 \description{
-This function calculates and visualizes the correlation between two variables,
-with options for scaling, handling missing values, and incorporating grouping data.
+Calculates and visualizes the correlation between two variables with options
+for scaling, handling missing values, and incorporating grouping data.
 }
 \examples{
+\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
-get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
+get_cor(
+  eset = eset_tme_stad,
+  is.matrix = TRUE,
+  var1 = "GZMB",
+  var2 = "CD274"
+)
+}
 }
 \author{
 Dongqiang Zeng

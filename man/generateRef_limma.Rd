@@ -15,16 +15,24 @@ generateRef_limma(dat, pheno, FDR = 0.05)
 }
 \value{
 A list containing:
-        - `reference_matrix`: A dataframe of median expression values for significantly expressed genes, with genes as rows.
-        - `G`: The number of probes used in the reference matrix that resulted in the lowest condition number.
-        - `condition_number`: The minimum condition number obtained from the analysis.
-        - `whole_matrix`: A matrix of median values across all samples and conditions for further analysis.
+        - `reference_matrix`: A dataframe of median expression values for
+        significantly expressed genes, with genes as rows.
+        - `G`: The number of probes used in the reference matrix that
+        resulted in the lowest condition number.
+        - `condition_number`: The minimum condition number obtained from
+        the analysis.
+        - `whole_matrix`: A matrix of median values across all samples and
+        conditions for further analysis.
 }
 \description{
-This function performs differential expression analysis using the limma package to identify significantly
-expressed genes across different cell types specified in `pheno`. It computes median expression levels
-of these significant genes to create a reference signature matrix. The function is particularly useful
-for constructing signature matrices in gene expression studies involving multiple cell types or conditions.
+This function performs differential expression analysis using the limma
+package to identify significantly
+expressed genes across different cell types specified in `pheno`. It
+computes median expression levels
+of these significant genes to create a reference signature matrix. The
+function is particularly useful
+for constructing signature matrices in gene expression studies involving
+multiple cell types or conditions.
 }
 \examples{
 # Assume 'dat' is a matrix of gene expression data and

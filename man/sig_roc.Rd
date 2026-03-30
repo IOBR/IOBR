@@ -49,12 +49,15 @@ sig_roc(
 }
 \value{
 A list containing:
-  - `auc.out`: Data frame with AUC values and confidence intervals for each variable.
+  - `auc.out`: Data frame with AUC values and confidence intervals for each
+  variable.
   - `legend.name`: Vector of legend entries for the plot.
-  - `p.out`: If `compare` is TRUE, data frame with p-values from pairwise comparisons.
+  - `p.out`: If `compare` is TRUE, data frame with p-values from pairwise
+  comparisons.
 }
 \description{
-This function generates Receiver Operating Characteristic (ROC) curves for multiple predictors
+This function generates Receiver Operating Characteristic (ROC) curves for
+multiple predictors
 and optionally performs statistical comparisons between them.
 }
 \examples{

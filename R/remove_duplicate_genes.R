@@ -52,9 +52,8 @@
 #' sum(duplicated(rownames(eset_stad)))
 #' }
 remove_duplicate_genes <- function(eset,
-                                    column_of_symbol,
-                                    method = c("mean", "sd", "sum")) {
-
+                                   column_of_symbol,
+                                   method = c("mean", "sd", "sum")) {
   # Input validation
   if (!is.data.frame(eset) && !is.matrix(eset)) {
     cli::cli_abort(c(
@@ -89,14 +88,20 @@ remove_duplicate_genes <- function(eset,
 
   # Calculate ranking index based on method
   order_index <- switch(method,
-    "mean" = vapply(eset[, expr_cols, drop = FALSE], mean, numeric(1), na.rm = TRUE),
-    "sd"   = vapply(eset[, expr_cols, drop = FALSE], stats::sd, numeric(1), na.rm = TRUE),
-    "sum"  = rowSums(eset[, expr_cols, drop = FALSE], na.rm = TRUE)
+    "mean" = vapply(eset[, expr_cols, drop = FALSE], mean, numeric(1),
+      na.rm = TRUE
+    ),
+    "sd" = vapply(eset[, expr_cols, drop = FALSE], stats::sd, numeric(1),
+      na.rm = TRUE
+    ),
+    "sum" = rowSums(eset[, expr_cols, drop = FALSE], na.rm = TRUE)
   )
 
   # Sort by ranking (descending) and keep first occurrence
   eset <- eset[order(order_index, decreasing = TRUE), , drop = FALSE]
-  eset <- dplyr::distinct(eset, !!rlang::sym(column_of_symbol), .keep_all = TRUE)
+  eset <- dplyr::distinct(eset, !!rlang::sym(column_of_symbol),
+    .keep_all = TRUE
+  )
 
   cli::cli_alert_success(
     "Reduced to {nrow(eset)} unique gene{?s}"

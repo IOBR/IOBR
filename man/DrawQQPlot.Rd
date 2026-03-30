@@ -17,11 +17,15 @@ DrawQQPlot(cancer.exp, immune.exp, name = "")
 Generates a QQ plot.
 }
 \description{
-This function creates a quantile-quantile (QQ) plot to compare the gene expression
-distributions between cancer and immune samples. The QQ plot helps assess if the
-two distributions are similarly shaped by plotting their quantiles against each other.
+This function creates a quantile-quantile (QQ) plot to compare the gene
+expression
+distributions between cancer and immune samples. The QQ plot helps assess
+if the
+two distributions are similarly shaped by plotting their quantiles against
+each other.
 Points lining up along the diagonal line indicate similar distributions.
-The function also fits a linear model to the central portion of the data (excluding
+The function also fits a linear model to the central portion of the data
+(excluding
 the lowest 40% and the highest 10% of data points) to highlight the trend.
 }
 \examples{

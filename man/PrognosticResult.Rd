@@ -7,7 +7,7 @@
 PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \arguments{
-\item{model}{A fitted survival model object (e.g., from \code{glmnet::cv.glmnet}).}
+\item{model}{A fitted survival model object (e.g., from `glmnet::cv.glmnet`).}
 
 \item{train.x}{Matrix or data frame of training predictors.}
 
@@ -19,18 +19,19 @@ PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \value{
 A list containing:
-- `model`: The fitted model object
-- `coefs`: Data frame of coefficients at `lambda.min` and `lambda.1se`
-- `AUC`: Data frame with AUC values for train/test at both lambda values
+\describe{
+  \item{model}{The fitted model object}
+  \item{coefs}{Data frame of coefficients at `lambda.min` and `lambda.1se`}
+  \item{AUC}{Data frame with AUC values for train/test at both lambda values}
+}
 }
 \description{
-Computes and compiles prognostic results from a survival model fitted with \code{glmnet}.
-Extracts model coefficients at optimal lambda values (\code{lambda.min} and \code{lambda.1se})
+Computes and compiles prognostic results from a survival model fitted with `glmnet`.
+Extracts model coefficients at optimal lambda values (`lambda.min` and `lambda.1se`)
 and calculates time-dependent AUC metrics for both training and testing datasets.
 }
 \examples{
 \dontrun{
-# Example with a fitted glmnet Cox model
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- list(

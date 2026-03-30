@@ -27,23 +27,23 @@
 #' estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
 #' }
 MCPcounter.estimate <- function(
-    expression,
-    featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID"),
-    probesets = read.table(
-      url(paste0(
-        "https://raw.githubusercontent.com/ebecht/",
-        "MCPcounter/master/Signatures/probesets.txt"
-      )),
-      sep = "\t", stringsAsFactors = FALSE, colClasses = "character"
-    ),
-    genes = read.table(
-      url(paste0(
-        "https://raw.githubusercontent.com/ebecht/",
-        "MCPcounter/master/Signatures/genes.txt"
-      )),
-      sep = "\t", stringsAsFactors = FALSE, header = TRUE,
-      colClasses = "character", check.names = FALSE
-    )
+  expression,
+  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID"),
+  probesets = read.table(
+    url(paste0(
+      "https://raw.githubusercontent.com/ebecht/",
+      "MCPcounter/master/Signatures/probesets.txt"
+    )),
+    sep = "\t", stringsAsFactors = FALSE, colClasses = "character"
+  ),
+  genes = read.table(
+    url(paste0(
+      "https://raw.githubusercontent.com/ebecht/",
+      "MCPcounter/master/Signatures/genes.txt"
+    )),
+    sep = "\t", stringsAsFactors = FALSE, header = TRUE,
+    colClasses = "character", check.names = FALSE
+  )
 ) {
   featuresType <- rlang::arg_match(featuresType)
 

@@ -16,13 +16,16 @@ tcga_rna_preps(
 \arguments{
 \item{eset}{RNA-seq gene expression matrix from TCGA.}
 
-\item{id_type}{Gene identifier type: "ensembl" or "symbol". Default is "ensembl".}
+\item{id_type}{Gene identifier type: "ensembl" or "symbol". Default is
+"ensembl".}
 
-\item{input_type}{Input data type: "log2count" or "count". Default is "log2count".}
+\item{input_type}{Input data type: "log2count" or "count". Default is
+"log2count".}
 
 \item{output}{Sample type: "tumor" or "tumor_normal". Default is "tumor".}
 
-\item{output_type}{Output data type: "tpm", "log2tpm", or "count". Default is "tpm".}
+\item{output_type}{Output data type: "tpm", "log2tpm", or "count". Default is
+"tpm".}
 
 \item{annotation}{Logical for gene annotation. Default is TRUE.}
 }

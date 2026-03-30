@@ -7,20 +7,30 @@
 RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 }
 \arguments{
-\item{cancer.exp}{A matrix or data frame of cancer cell expression data with genes as rows and samples as columns.}
+\item{cancer.exp}{A matrix or data frame of cancer cell expression data
+with genes as rows and samples as columns.}
 
-\item{immune.exp}{A matrix or data frame of immune cell expression data with genes as rows and samples as columns.}
+\item{immune.exp}{A matrix or data frame of immune cell expression data
+with genes as rows and samples as columns.}
 
-\item{immune.cellType}{A vector indicating the cell type for each column in `immune.exp`.}
+\item{immune.cellType}{A vector indicating the cell type for each column in
+`immune.exp`.}
 }
 \value{
 A list containing three elements:
   - The first element is the batch effect corrected cancer expression data.
   - The second element is the batch effect corrected immune expression data.
-  - The third element is the aggregated immune expression data, with median values calculated for each cell type.
+  - The third element is the aggregated immune expression data, with median
+  values calculated for each cell type.
 }
 \description{
-This function removes batch effects between two gene expression data sets, typically representing different sample types such as cancer cells and immune cells. The function aligns the gene names, combines the datasets, applies batch correction using ComBat from the sva package, and then separates the adjusted data sets. Additionally, it aggregates expression data for immune cell types by taking the median expression level across samples.
+This function removes batch effects between two gene expression data sets,
+typically representing different sample types such as cancer cells and
+immune cells. The function aligns the gene names, combines the datasets,
+applies batch correction using ComBat from the sva package, and then
+separates the adjusted data sets. Additionally, it aggregates expression
+data for immune cell types by taking the median expression level across
+samples.
 }
 \examples{
 set.seed(123) # For reproducibility

@@ -10,7 +10,8 @@ patterns_to_na <- c("_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MC
 
 #' Remove Patterns from Column Names or Variables
 #'
-#' This function modifies column names or specified variables in a data frame by replacing
+#' This function modifies column names or specified variables in a data frame
+#' by replacing
 #' specified patterns with NA or spaces.
 #'
 #' @param input_df Input data frame.

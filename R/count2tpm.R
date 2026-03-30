@@ -50,7 +50,6 @@ count2tpm <- function(countMat,
                       gene_symbol = "symbol",
                       length = "eff_length",
                       check_data = FALSE) {
-
   # Validate arguments
   org <- rlang::arg_match(org)
   source <- rlang::arg_match(source)
@@ -139,7 +138,10 @@ count2tpm <- function(countMat,
     effLength$gene_symbol <- effLength$id
   }
 
-  rownames(countMat) <- effLength[match(rownames(countMat), effLength$id), "gene_symbol"]
+  rownames(countMat) <- effLength[
+    match(rownames(countMat), effLength$id),
+    "gene_symbol"
+  ]
 
   effLength[match(rownames(countMat), effLength$gene_symbol), "eff_length"]
 }
@@ -157,8 +159,10 @@ count2tpm <- function(countMat,
     "ptroglodytes", "rnorvegicus", "sscrofa"
   ), "_gene_ensembl")
 
-  type <- c("ensembl_gene_id", "entrezgene_id", "hgnc_symbol",
-           "start_position", "end_position")
+  type <- c(
+    "ensembl_gene_id", "entrezgene_id", "hgnc_symbol",
+    "start_position", "end_position"
+  )
   if (org == "mmus") type[3] <- "mgi_symbol"
 
   ds <- datasets[grepl(org, datasets)]
@@ -267,7 +271,9 @@ count2tpm <- function(countMat,
   common_genes <- intersect(rownames(countMat), length_df$id)
 
   if (length(common_genes) == 0) {
-    cli::cli_abort("No matching identifiers found between count matrix and annotation")
+    cli::cli_abort(
+      paste("No matching identifiers found between count matrix and annotation")
+    )
   }
 
   countMat <- countMat[rownames(countMat) %in% common_genes, , drop = FALSE]

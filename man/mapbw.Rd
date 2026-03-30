@@ -2,23 +2,27 @@
 % Please edit documentation in R/IPS_helper.R
 \name{mapbw}
 \alias{mapbw}
-\title{Map Black and White Colors Based on Input Value}
+\title{Map Score to Black and White Color}
 \usage{
-mapbw(x)
+mapbw(x, my_palette2 = NULL)
 }
 \arguments{
 \item{x}{A numeric value to be mapped to a color.}
+
+\item{my_palette2}{Color palette vector (should have 1001 colors).
+Default uses black-white gradient.}
 }
 \value{
-A color from the predefined black and white palette corresponding to the input value.
+A color from the black and white palette.
 }
 \description{
-This function maps a numeric input value to a color from a predefined black and white palette.
+Maps a numeric input value to a color from a black and white palette.
 }
 \examples{
-# Define a black and white palette with 1001 colors
-my_palette2 <- colorRampPalette(c("black", "white"))(1001)
-# Map a value to a color
-color <- mapbw(1.5)
-print(color)
+\donttest{
+# Create palette with 1001 colors
+my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)
+color <- mapbw(1.5, my_palette2)
+color <- mapbw(-1, my_palette2)
+}
 }

@@ -2,27 +2,29 @@
 % Please edit documentation in R/xCell.R
 \name{xCellSignifcanceBetaDist}
 \alias{xCellSignifcanceBetaDist}
-\title{Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.}
+\title{Calculate Significance P-values Using Beta Distribution}
 \usage{
 xCellSignifcanceBetaDist(
   scores,
   beta_params = NULL,
-  rnaseq = T,
+  rnaseq = TRUE,
   file.name = NULL
 )
 }
 \arguments{
-\item{scores}{the xCell scores.}
+\item{scores}{xCell scores matrix.}
 
-\item{beta_params}{the pre-calculated beta distribution parameters from random mixtures.}
+\item{beta_params}{Pre-calculated beta distribution parameters.}
 
-\item{rnaseq}{if beta_params is null, than uses xCell.data beta_params. If TRUE uses sequencing-based params, else array-based params.}
+\item{rnaseq}{Logical for RNA-seq vs array parameters. Default is `TRUE`.}
 
-\item{file.name}{file name to write the p-values table.}
+\item{file.name}{Character string for saving p-values. Default is `NULL`.}
 }
 \value{
-a p-values matrix for each score.
+Matrix of p-values.
 }
 \description{
-xCellSignifcanceBetaDist Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+Calculates FDR-adjusted p-values for the null hypothesis that a cell type
+is not present in the mixture.
 }
+\keyword{internal}

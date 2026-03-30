@@ -2,68 +2,81 @@
 % Please edit documentation in R/calculate_sig_score.R
 \name{calculate_sig_score}
 \alias{calculate_sig_score}
-\title{Calculating signature score on a gene expression dataset}
+\title{Calculate Signature Score}
 \usage{
 calculate_sig_score(
   pdata = NULL,
   eset,
   signature = NULL,
-  method = "pca",
+  method = c("pca", "ssgsea", "zscore", "integration"),
   mini_gene_count = 3,
   column_of_sample = "ID",
-  print_gene_propotion = FALSE,
+  print_gene_proportion = FALSE,
+  print_filtered_signatures = FALSE,
   adjust_eset = FALSE,
   parallel.size = 1L,
-  print_filtered_signatures = FALSE,
   ...
 )
 }
 \arguments{
-\item{pdata}{phenotype data of input sample}
+\item{pdata}{Phenotype data. If `NULL`, created from `eset` column names.}
 
-\item{eset}{normalized  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
+\item{eset}{Expression matrix (CPM, TPM, RPKM, FPKM, etc.).}
 
-\item{signature}{List of gene signatures;
-such as `signature_tme`, `signature_metabolism`,`signature_collection`, `go_bp`,`kegg`,`hallmark`}
+\item{signature}{List of gene signatures. Can also be a character string
+naming a built-in signature collection (e.g., `"signature_collection"`,
+`"signature_tme"`, `"go_bp"`, `"kegg"`, `"hallmark"`).}
 
-\item{method}{he methods currently supported are `pca`, `ssgsea`, `zscore`,`integration`}
+\item{method}{Scoring method: `"pca"`, `"ssgsea"`, `"zscore"`,
+or `"integration"`. Default is `"pca"`.}
 
-\item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set;
-default is 2 for PCA and z score function}
+\item{mini_gene_count}{Minimum genes required per signature. Default is 3
+(or 5 for ssGSEA).}
 
-\item{column_of_sample}{Defines in which column of the `pdata` the identifier of the sample can be found.}
+\item{column_of_sample}{Column with sample IDs in `pdata`. Default is `"ID"`.}
 
-\item{print_gene_propotion}{logical, print the proportion of signature genes in gene matrix}
+\item{print_gene_proportion}{Logical: print gene coverage. Default is
+`FALSE`.}
 
-\item{adjust_eset}{default is FALSE}
+\item{print_filtered_signatures}{Logical: print filtered signatures.
+Default is `FALSE`.}
 
-\item{parallel.size}{default is 1}
+\item{adjust_eset}{Logical: clean problematic features. Default is `FALSE`.}
 
-\item{print_filtered_signatures}{logical, print filtered signatures has gene count less than minimal gene count}
+\item{parallel.size}{Parallel workers for ssGSEA. Default is 1.}
 
-\item{...}{Additional arguments passed to the specific scoring methods
-(\code{\link{calculate_sig_score_pca}()}, \code{\link{calculate_sig_score_zscore}()},
-\code{\link{calculate_sig_score_ssgsea}()}, or \code{\link{calculate_sig_score_integration}()}).}
+\item{...}{Additional arguments passed to specific methods.}
 }
 \value{
-data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
+Tibble with phenotype data and signature scores.
 }
 \description{
-Calculating signature score on a gene expression dataset
+Main interface for calculating signature scores from gene expression data.
+Supports PCA, z-score, ssGSEA, and integration methods.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+\donttest{
 eset_stad <- load_data("eset_stad")
-# transform count data to tpm
 eset <- count2tpm(eset_stad, idType = "ensembl")
-# signature score estimation using PCA, z-score, or ssgsea method
-calculate_sig_score(eset = eset, signature = signature_tme, method = "pca")
+signature_tme <- load_data("signature_tme")
 
+# PCA method (fastest)
+result_pca <- calculate_sig_score(
+  eset = eset, signature = signature_tme,
+  method = "pca"
+)
+
+# ssGSEA method (most robust)
+result_ssgsea <- calculate_sig_score(eset = eset, signature = signature_tme, method = "ssgsea")
+}
 }
 \references{
-1. Hänzelmann S, Castelo R, Guinney J (2013). “GSVA: gene set variation analysis for microarray and RNA-Seq data.” BMC Bioinformatics, 14, 7. doi: 10.1186/1471-2105-14-7
-
-2. Mariathasan, S., Turley, S., Nickles, D. et al. TGFβ attenuates tumour response to PD-L1 blockade by contributing to exclusion of T cells. Nature 554, 544–548 (2018).
+\enumerate{
+  \item Hänzelmann S, Castelo R, Guinney J. GSVA: gene set variation
+    analysis. BMC Bioinformatics. 2013;14:7.
+  \item Mariathasan S, et al. TGFβ attenuates tumour response to PD-L1 blockade.
+    Nature. 2018;554:544-548.
+}
 }
 \author{
 Dongqiang Zeng

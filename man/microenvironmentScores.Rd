@@ -2,16 +2,17 @@
 % Please edit documentation in R/xCell.R
 \name{microenvironmentScores}
 \alias{microenvironmentScores}
-\title{Calculate microenvironment scores}
+\title{Calculate Microenvironment Scores}
 \usage{
 microenvironmentScores(adjustedScores)
 }
 \arguments{
-\item{adjustedScores}{the combined microenvironment scores}
+\item{adjustedScores}{Adjusted xCell scores matrix.}
 }
 \value{
-the microenvironment scores
+Matrix with additional microenvironment score rows.
 }
 \description{
-microenvironmentScores Returns the adjusted xCell scores.
+Calculates combined immune and stroma scores from adjusted xCell scores.
 }
+\keyword{internal}

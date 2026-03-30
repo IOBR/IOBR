@@ -1,6 +1,7 @@
 #' Row Bind Multiple Data Sets
 #'
-#' Combines two or three data frames or matrices vertically using the `rbind` operation. Ensures compatibility of input data before binding.
+#' Combines two or three data frames or matrices vertically using the `rbind`
+#' operation. Ensures compatibility of input data before binding.
 #'
 #' @param data1 Data frame or matrix. First dataset to combine.
 #' @param data2 Data frame or matrix. Second dataset to combine.

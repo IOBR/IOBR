@@ -6,16 +6,16 @@
 #' scaling, size controls, and output saving.
 #'
 #' @param input Data frame containing ID, grouping variable, and feature columns.
-#' @param ID Character string. Column name for sample identifier. Default is `"ID"`.
+#' @param id Character string. Column name for sample identifier. Default is `"ID"`.
 #' @param features Character vector. Feature (column) names to include in the heatmap.
 #' @param group Character string. Grouping variable column name.
-#' @param condiction Data frame or `NULL`. Optional annotation table with
+#' @param condition Data frame or `NULL`. Optional annotation table with
 #'   variable-condition mapping. Default is `NULL`.
-#' @param id_condiction Character string. Column name in `condiction` for feature IDs.
+#' @param id_condition Character string. Column name in `condition` for feature IDs.
 #'   Default is `"vars"`.
-#' @param col_condiction Character string. Column name in `condiction` for condition
-#'   labels. Default is `"condiction"`.
-#' @param cols_condiction Character vector. Colors for conditions.
+#' @param col_condition Character string. Column name in `condition` for condition
+#'   labels. Default is `"condition"`.
+#' @param cols_condition Character vector. Colors for conditions.
 #' @param scale Logical indicating whether to scale values by row. Default is `FALSE`.
 #' @param palette Integer or character. Palette index/name for heatmap colors.
 #'   Default is `2`.
@@ -55,13 +55,13 @@
 #' sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
 #' }
 sig_heatmap <- function(input,
-                        ID = "ID",
+                        id = "ID",
                         features,
                         group,
-                        condiction = NULL,
-                        id_condiction = "vars",
-                        col_condiction = "condiction",
-                        cols_condiction = NULL,
+                        condition = NULL,
+                        id_condition = "vars",
+                        col_condition = "condition",
+                        cols_condition = NULL,
                         scale = FALSE,
                         palette = 2,
                         cols_heatmap = NULL,
@@ -80,15 +80,14 @@ sig_heatmap <- function(input,
                         show_heatmap_col_name = FALSE,
                         path = NULL,
                         index = NULL) {
-
   rlang::check_installed("tidyHeatmap")
   rlang::check_installed("circlize")
 
   input <- as.data.frame(input)
 
   # Input validation
-  if (!ID %in% colnames(input)) {
-    cli::cli_abort("ID column {.val {ID}} not found in input")
+  if (!id %in% colnames(input)) {
+    cli::cli_abort("ID column {.val {id}} not found in input")
   }
 
   if (!group %in% colnames(input)) {
@@ -113,7 +112,7 @@ sig_heatmap <- function(input,
 
   # Standardize column names temporarily
   input_copy <- input
-  colnames(input_copy)[colnames(input_copy) == ID] <- "idd"
+  colnames(input_copy)[colnames(input_copy) == id] <- "idd"
   colnames(input_copy)[colnames(input_copy) == group] <- "target_group"
 
   input_copy <- input_copy[, c("idd", "target_group", features), drop = FALSE]
@@ -128,28 +127,28 @@ sig_heatmap <- function(input,
   )
 
   # Optional row annotation
-  if (!is.null(condiction)) {
-    condiction <- as.data.frame(condiction)
+  if (!is.null(condition)) {
+    condition <- as.data.frame(condition)
 
-    if (!all(c(id_condiction, col_condiction) %in% colnames(condiction))) {
+    if (!all(c(id_condition, col_condition) %in% colnames(condition))) {
       cli::cli_abort(
-        "Columns {.val {id_condiction}} or {.val {col_condiction}} not found in condiction"
+        "Columns {.val {id_condition}} or {.val {col_condition}} not found in condition"
       )
     }
 
-    condiction <- condiction[, c(id_condiction, col_condiction), drop = FALSE]
-    colnames(condiction) <- c("vars", "condiction")
+    condition <- condition[, c(id_condition, col_condition), drop = FALSE]
+    colnames(condition) <- c("vars", "condition")
 
     pf_long_group <- merge(
       pf_long_group,
-      condiction,
+      condition,
       by.x = "variables",
       by.y = "vars",
       all.x = TRUE,
       all.y = FALSE
     )
 
-    pf_long_group$condiction[is.na(pf_long_group$condiction)] <- "NE"
+    pf_long_group$condition[is.na(pf_long_group$condition)] <- "NE"
   }
 
   # Calculate plot height
@@ -171,13 +170,13 @@ sig_heatmap <- function(input,
     show_message = show_palettes
   )
 
-  # Annotation colors for condiction
+  # Annotation colors for condition
   color_box1 <- NULL
-  if (!is.null(condiction)) {
-    target_level1 <- unique(as.character(pf_long_group$condiction))
+  if (!is.null(condition)) {
+    target_level1 <- unique(as.character(pf_long_group$condition))
     target_level1 <- target_level1[!is.na(target_level1)]
     n1 <- length(target_level1)
-    color_box1 <- rep(cols_condiction %||% color_box, length.out = n1)
+    color_box1 <- rep(cols_condition %||% color_box, length.out = n1)
   }
 
   # Group colors for target_group
@@ -197,7 +196,7 @@ sig_heatmap <- function(input,
   pf_long_group <- as.data.frame(pf_long_group)
 
   # Build heatmap
-  if (is.null(condiction)) {
+  if (is.null(condition)) {
     pp <- pf_long_group %>%
       dplyr::group_by(.data$target_group) %>%
       tidyHeatmap::heatmap(
@@ -216,7 +215,7 @@ sig_heatmap <- function(input,
       )
   } else {
     pp <- pf_long_group %>%
-      dplyr::group_by(.data$condiction, .data$target_group) %>%
+      dplyr::group_by(.data$condition, .data$target_group) %>%
       tidyHeatmap::heatmap(
         .column = idd,
         .row = variables,
@@ -259,7 +258,6 @@ sig_heatmap <- function(input,
 #' @keywords internal
 #' @noRd
 .build_heatmap_colors <- function(cols_heatmap, palette, show_col, show_palettes) {
-
   if (!is.null(cols_heatmap)) {
     n_colors <- length(cols_heatmap)
 

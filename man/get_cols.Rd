@@ -2,27 +2,40 @@
 % Please edit documentation in R/get_cols.R
 \name{get_cols}
 \alias{get_cols}
-\title{Set and view the color palettes}
+\title{Set and View Color Palettes}
 \usage{
-get_cols(cols = "normal", palette = 1, show_col = T, seed = 123)
+get_cols(cols = "normal", palette = 1, show_col = TRUE, seed = 123)
 }
 \arguments{
-\item{cols}{Vector of colors, users can define the cols manually. This may
-also be a single character, such as normal and random, to a palette as
-specified by \code{palettes} in the IOBR package.}
+\item{cols}{Character vector of colors, or one of:
+- `"normal"`: Use standard palette
+- `"random"`: Randomly shuffle the palette
+Default is `"normal"`.}
 
-\item{palette}{Numeric value corresponding with color palette. Default is 1, other options: 2, 3, 4}
+\item{palette}{Numeric or character specifying the palette. Options are
+1, 2, 3, 4, or palette name. Default is 1.}
 
-\item{show_col}{Whether to show color palettes}
+\item{show_col}{Logical indicating whether to display the color palette.
+Default is `TRUE`.}
 
-\item{seed}{Seed of the random number generator, default is 123. The parameter works when cols ="random"}
+\item{seed}{Integer seed for random number generator when `cols = "random"`.
+Default is 123.}
 }
 \value{
-Vector of colors
+Character vector of colors.
 }
 \description{
-Set and view the color palettes
+Retrieves color palettes from the IOBR package with options for randomization
+and visualization. Users can specify predefined palettes or provide custom
+colors.
 }
 \examples{
+# Get default palette
 mycols <- get_cols()
+
+# Get random palette
+mycols <- get_cols(cols = "random", seed = 456)
+
+# Use custom colors
+mycols <- get_cols(cols = c("red", "blue", "green"))
 }

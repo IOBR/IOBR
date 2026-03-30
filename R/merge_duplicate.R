@@ -41,7 +41,6 @@ merge_duplicate <- function(x, y, by.x, by.y,
                             all.x = FALSE, all.y = FALSE,
                             all = NULL,
                             choose = c("x", "y")) {
-
   # Input validation
   if (!is.data.frame(x)) {
     cli::cli_abort("{.arg x} must be a data frame.")

@@ -54,8 +54,10 @@ iobr_pca(
 A ggplot object of the PCA plot.
 }
 \description{
-This function performs Principal Component Analysis (PCA) on gene expression data,
-reduces dimensionality while preserving variance, and generates a scatter plot visualization.
+This function performs Principal Component Analysis (PCA) on gene
+expression data,
+reduces dimensionality while preserving variance, and generates a scatter
+plot visualization.
 }
 \examples{
 eset_stad <- load_data("eset_stad")

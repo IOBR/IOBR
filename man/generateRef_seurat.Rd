@@ -51,7 +51,11 @@ generateRef_seurat(
 A matrix containing aggregated expression data for the reference genes.
 }
 \description{
-The "generateRef_seurat" function takes a Seurat object "sce" and additional parameters to perform various operations for generating reference gene expression data. The function allows for specifying cell types, proportions, assays, preprocessing options, and statistical testing parameters.
+The "generateRef_seurat" function takes a Seurat object "sce" and
+additional parameters to perform various operations for generating
+reference gene expression data. The function allows for specifying cell
+types, proportions, assays, preprocessing options, and statistical testing
+parameters.
 }
 \examples{
 \donttest{
@@ -66,8 +70,14 @@ pbmc <- Seurat::CreateSeuratObject(
   counts = pbmc.data,
   project = "pbmc3k", min.cells = 3, min.features = 200
 )
-pbmc <- Seurat::FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-pbmc <- Seurat::NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
+pbmc <- Seurat::FindVariableFeatures(pbmc,
+  selection.method = "vst",
+  nfeatures = 2000
+)
+pbmc <- Seurat::NormalizeData(pbmc,
+  normalization.method = "LogNormalize",
+  scale.factor = 10000
+)
 pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
 pbmc <- Seurat::RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 pbmc <- Seurat::FindNeighbors(pbmc, dims = 1:10)
@@ -75,7 +85,10 @@ pbmc <- Seurat::FindClusters(pbmc, resolution = 0.5)
 pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
 
 # generate reference matrix
-sm <- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
+sm <- generateRef_seurat(
+  sce = pbmc, celltype = "celltype", slot_out =
+    "data"
+)
 
 # load the bulk-seq data
 eset_stad <- load_data("eset_stad")

@@ -45,7 +45,8 @@ This reference dataset includes the following components:
   \item{\code{sigGenes}}{
     A character vector listing the signature genes used by EPIC for
     B-cell deconvolution. Only these genes are included in the fitting
-    procedure to improve the robustness and biological specificity of the model.
+    procedure to improve the robustness and biological specificity of the
+    model.
   }
 }
 }

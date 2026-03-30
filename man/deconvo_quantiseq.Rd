@@ -18,7 +18,8 @@ deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 \item{scale_mrna}{Logical: correct for mRNA content. Must be specified.}
 }
 \value{
-Data frame with quanTIseq cell fractions. Columns suffixed with `_quantiseq`.
+Data frame with quanTIseq cell fractions. Columns suffixed with
+  `_quantiseq`.
 }
 \description{
 quanTIseq deconvolution for RNA-seq immune cell fractions.
@@ -27,8 +28,10 @@ quanTIseq deconvolution for RNA-seq immune cell fractions.
 \dontrun{
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
-res <- deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE,
-                         arrays = FALSE, scale_mrna = FALSE)
+res <- deconvo_quantiseq(
+  eset = eset, project = "stad", tumor = TRUE,
+  arrays = FALSE, scale_mrna = FALSE
+)
 }
 }
 \author{

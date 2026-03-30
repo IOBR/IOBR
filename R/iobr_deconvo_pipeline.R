@@ -1,6 +1,9 @@
 #' Tumor Microenvironment (TME) Deconvolution Pipeline
 #'
-#' Executes an integrated TME analysis on a gene expression matrix: performs immune/stromal cell deconvolution using multiple algorithms, computes signature scores, and aggregates results. Designed for exploratory immunogenomic profiling.
+#' Executes an integrated TME analysis on a gene expression matrix: performs
+#' immune/stromal cell deconvolution using multiple algorithms, computes
+#' signature scores, and aggregates results. Designed for exploratory
+#' immunogenomic profiling.
 #'
 #' @param eset Numeric matrix. Gene expression (TPM/log scale) with genes in rows.
 #' @param project Character. Project name (used in output naming).

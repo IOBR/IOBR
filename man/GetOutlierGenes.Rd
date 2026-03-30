@@ -14,7 +14,8 @@ A vector of unique gene names identified as outliers across all given samples.
 }
 \description{
 This function identifies outlier genes from multiple cancer datasets.
-It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
+It treats the top 5 expressed genes in each sample as outliers and returns
+a list of unique outlier genes across all samples.
 }
 \examples{
 tf1 <- tempfile(fileext = ".tsv")

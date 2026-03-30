@@ -1,23 +1,25 @@
-'#' Extract Best Cutoff and Add Binary Variable to Data Frame
+#' Extract Best Cutoff and Add Binary Variable to Data Frame
 #'
 #' @description
-#' Determines the optimal cutoff point for a continuous variable in survival analysis
-#' using the maximally selected rank statistics method. Creates a binary variable
-#' based on the identified cutoff and adds it to the input data frame.
+#' Determines the optimal cutoff point for a continuous variable in survival
+#' analysis using the maximally selected rank statistics method. Creates a
+#' binary variable based on the identified cutoff and adds it to the input data
+#' frame.
 #'
-#' @param pdata Data frame containing survival information and the continuous variable.
-#' @param variable Character string specifying the name of the continuous variable
-#'   for which the optimal cutoff should be determined.
-#' @param time Character string specifying the column name containing time-to-event data.
-#'   Default is `"time"`.
-#' @param status Character string specifying the column name containing event status
-#'   (censoring information). Default is `"status"`.
-#' @param PrintResult Logical indicating whether to print detailed results including
-#'   cutoff value and Cox model summaries. Default is `TRUE`.
+#' @param pdata Data frame containing survival information and the continuous
+#'   variable.
+#' @param variable Character string specifying the name of the continuous
+#'   variable for which the optimal cutoff should be determined.
+#' @param time Character string specifying the column name containing
+#'   time-to-event data. Default is `"time"`.
+#' @param status Character string specifying the column name containing event
+#'   status (censoring information). Default is `"status"`.
+#' @param PrintResult Logical indicating whether to print detailed results
+#'   including cutoff value and Cox model summaries. Default is `TRUE`.
 #'
-#' @return Data frame identical to `pdata` with an additional binary column named
-#'   `<variable>_binary` containing "High" and "Low" categories based on the
-#'   optimal cutoff.
+#' @return Data frame identical to `pdata` with an additional binary column
+#'   named `<variable>_binary` containing "High" and "Low" categories based on
+#'   the optimal cutoff.
 #'
 #' @export
 #' @author Dongqiang Zeng
@@ -35,8 +37,7 @@
 #' table(sig_stad2$TMEscore_CIR_binary)
 #' }
 best_cutoff <- function(pdata, variable, time = "time",
-                        status = "status", PrintResult = TRUE) {
-
+                        status = "status", print_result = TRUE) {
   # Input validation
   if (!is.data.frame(pdata)) {
     cli::cli_abort("{.arg pdata} must be a data frame")
@@ -50,6 +51,9 @@ best_cutoff <- function(pdata, variable, time = "time",
   if (!status %in% colnames(pdata)) {
     cli::cli_abort("Status column {.val {status}} not found in pdata")
   }
+
+  # Suppress NOTES about unused variable
+  surv_obj <- NULL
 
   pdata <- as.data.frame(pdata)
 
@@ -69,7 +73,7 @@ best_cutoff <- function(pdata, variable, time = "time",
   pdata$status_iobr <- as.numeric(pdata$status_iobr)
 
   # Find best cutoff
-  y <- survival::Surv(pdata$time_iobr, pdata$status_iobr)
+  surv_obj <- survival::Surv(pdata$time_iobr, pdata$status_iobr)
 
   iscutoff <- survminer::surv_cutpoint(
     pdata,
@@ -79,11 +83,14 @@ best_cutoff <- function(pdata, variable, time = "time",
   )
 
   cutoff_value <- iscutoff$cutpoint$cutpoint
-  cli::cli_alert_success("Best cutoff for {.val {variable}}: {round(cutoff_value, 3)}")
+  cli::cli_alert_success(paste(
+    "Best cutoff for {.val {variable}}:",
+    "{round(cutoff_value, 3)}"
+  ))
 
   # Cox model for continuous variable
   cox_cont <- summary(survival::coxph(
-    y ~ pdata[[variable]],
+    surv_obj ~ pdata[[variable]],
     data = pdata
   ))
 
@@ -101,11 +108,11 @@ best_cutoff <- function(pdata, variable, time = "time",
 
   # Cox model for binary variable
   cox_binary <- summary(survival::coxph(
-    y ~ pdata[[variable2]],
+    surv_obj ~ pdata[[variable2]],
     data = pdata
   ))
 
-  if (PrintResult) {
+  if (print_result) {
     print(list(
       best_cutoff = paste0("The best cutoff is = ", round(cutoff_value, 3)),
       cox_continuous_object = cox_cont,

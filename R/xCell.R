@@ -27,7 +27,6 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
                           spill = NULL, rnaseq = TRUE, file.name = NULL, scale = TRUE,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
-
   # Input validation
   if (is.null(expr)) {
     cli::cli_abort("{.arg expr} cannot be NULL")
@@ -149,8 +148,10 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   scores <- agg[, -1]
 
   if (!is.null(file.name)) {
-    utils::write.table(scores, file = file.name, sep = "\t",
-                       col.names = NA, quote = FALSE)
+    utils::write.table(scores,
+      file = file.name, sep = "\t",
+      col.names = NA, quote = FALSE
+    )
   }
 
   scores
@@ -184,8 +185,10 @@ transformScores <- function(scores, fit.vals, scale = TRUE, fn = NULL) {
   tscores <- (tscores^fit.vals[A, 2]) / (fit.vals[A, 3] * 2)
 
   if (!is.null(fn)) {
-    utils::write.table(format(tscores, digits = 4), file = fn, sep = "\t",
-                       col.names = NA, quote = FALSE)
+    utils::write.table(format(tscores, digits = 4),
+      file = fn, sep = "\t",
+      col.names = NA, quote = FALSE
+    )
   }
 
   tscores
@@ -229,8 +232,10 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
 
   if (!is.null(file.name)) {
     scores <- round(scores * 10000) / 10000
-    utils::write.table(scores, file = file.name, sep = "\t",
-                       col.names = NA, quote = FALSE)
+    utils::write.table(scores,
+      file = file.name, sep = "\t",
+      col.names = NA, quote = FALSE
+    )
   }
 
   scores
@@ -247,17 +252,21 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
 #'
 #' @keywords internal
 microenvironmentScores <- function(adjustedScores) {
-  immune_cells <- c("B-cells", "CD4+ T-cells", "CD8+ T-cells", "DC",
-                    "Eosinophils", "Macrophages", "Monocytes", "Mast cells",
-                    "Neutrophils", "NK cells")
+  immune_cells <- c(
+    "B-cells", "CD4+ T-cells", "CD8+ T-cells", "DC",
+    "Eosinophils", "Macrophages", "Monocytes", "Mast cells",
+    "Neutrophils", "NK cells"
+  )
   stroma_cells <- c("Adipocytes", "Endothelial cells", "Fibroblasts")
 
   ImmuneScore <- apply(adjustedScores[immune_cells, ], 2, sum) / 1.5
   StromaScore <- apply(adjustedScores[stroma_cells, ], 2, sum) / 2
   MicroenvironmentScore <- ImmuneScore + StromaScore
 
-  rbind(adjustedScores, ImmuneScore = ImmuneScore,
-        StromaScore = StromaScore, MicroenvironmentScore = MicroenvironmentScore)
+  rbind(adjustedScores,
+    ImmuneScore = ImmuneScore,
+    StromaScore = StromaScore, MicroenvironmentScore = MicroenvironmentScore
+  )
 }
 
 #' Calculate Significance P-values Using Beta Distribution
@@ -285,7 +294,7 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
   }
 
   scores <- scores[rownames(scores) %in%
-                     colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
+    colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
   pvals <- matrix(0, nrow(scores), ncol(scores))
   rownames(pvals) <- rownames(scores)
   eps <- 1e-3
@@ -308,8 +317,10 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
   }
 
   if (!is.null(file.name)) {
-    utils::write.table(pvals, file = file.name, quote = FALSE,
-                       row.names = TRUE, sep = "\t", col.names = NA)
+    utils::write.table(pvals,
+      file = file.name, quote = FALSE,
+      row.names = TRUE, sep = "\t", col.names = NA
+    )
   }
 
   pvals
@@ -332,7 +343,7 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
 #'
 #' @keywords internal
 xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
-                                        nperm = 250, file.name = NULL) {
+                                         nperm = 250, file.name = NULL) {
   rlang::check_installed("xCell")
 
   shuff_expr <- mapply(seq_len(nperm), FUN = function(x) sample(nrow(expr), nrow(expr)))
@@ -352,15 +363,19 @@ xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
       x <- x + eps
       rlang::check_installed("MASS")
       beta_params <- MASS::fitdistr(x / ((1 + 2 * eps) * (max(x))) + eps,
-                                    "beta", list(shape1 = 1, shape2 = 1),
-                                    lower = eps)
-      beta_dist[i, ] <- stats::rbeta(100000, beta_params$estimate[1],
-                                     beta_params$estimate[2])
+        "beta", list(shape1 = 1, shape2 = 1),
+        lower = eps
+      )
+      beta_dist[i, ] <- stats::rbeta(
+        100000, beta_params$estimate[1],
+        beta_params$estimate[2]
+      )
       beta_dist[i, ] <- ((1 + 2 * eps) * (max(x))) * beta_dist[i, ]
     }
 
     pvals[i, ] <- 1 - unlist(lapply(scores[i, ],
-                                    FUN = function(x) mean(x > beta_dist[i, ])))
+      FUN = function(x) mean(x > beta_dist[i, ])
+    ))
   }
 
   rownames(pvals) <- rownames(scores)
@@ -369,10 +384,14 @@ xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
   rownames(beta_dist) <- rownames(scores)
 
   if (!is.null(file.name)) {
-    utils::write.table(pvals, file = file.name, quote = FALSE,
-                       row.names = TRUE, sep = "\t", col.names = NA)
+    utils::write.table(pvals,
+      file = file.name, quote = FALSE,
+      row.names = TRUE, sep = "\t", col.names = NA
+    )
   }
 
-  list(pvals = pvals, shuff_xcell = shuff_xcell,
-       shuff_expr = shuff_expr, beta_dist = beta_dist)
+  list(
+    pvals = pvals, shuff_xcell = shuff_xcell,
+    shuff_expr = shuff_expr, beta_dist = beta_dist
+  )
 }

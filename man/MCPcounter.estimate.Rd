@@ -6,7 +6,7 @@
 \usage{
 MCPcounter.estimate(
   expression,
-  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID")[1],
+  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID"),
   probesets = read.table(url(paste0("https://raw.githubusercontent.com/ebecht/",
     "MCPcounter/master/Signatures/probesets.txt")), sep = "\\t", stringsAsFactors =
     FALSE, colClasses = "character"),
@@ -16,23 +16,33 @@ MCPcounter.estimate(
 )
 }
 \arguments{
-\item{expression}{Matrix or data.frame with features in rows and samples in columns.}
+\item{expression}{Matrix or data.frame with features in rows and samples
+in columns.}
 
-\item{featuresType}{Type of identifiers for expression features. Defaults to "affy133P2_probesets" for Affymetrix Human Genome 133 Plus 2.0 probesets. Other options are "HUGO_symbols" (Official gene symbols), "ENTREZ_ID" (Entrez Gene ID) or "ENSEMBL_ID" (ENSEMBL Gene ID).}
+\item{featuresType}{Type of identifiers for expression features.
+Options: "affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID", "ENSEMBL_ID".
+Default is "affy133P2_probesets".}
 
-\item{probesets}{Probesets data table (default loads from GitHub).}
+\item{probesets}{Probesets data table. Default loads from GitHub.}
 
-\item{genes}{Genes data table (default loads from GitHub).}
+\item{genes}{Genes data table. Default loads from GitHub.}
 }
 \value{
 Matrix with cell populations in rows and samples in columns.
 }
 \description{
-Produces a matrix with abundance estimates from an expression matrix using MCP-counter method.
+Estimates the abundance of different immune and stromal cell populations
+using the MCP-counter method. Works with various gene identifiers including
+Affymetrix probesets, HUGO gene symbols, Entrez IDs, and Ensembl IDs.
 }
 \examples{
-# Example usage (requires appropriate expression data)
-# estimates <- MCPcounter.estimate(expression_matrix, featuresType = "HUGO_symbols")
+\donttest{
+# Create example expression data
+expr <- matrix(runif(1000), nrow = 100, ncol = 10)
+rownames(expr) <- paste0("Gene", 1:100)
+# Estimate with HUGO symbols
+estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
+}
 }
 \author{
 Etienne Becht

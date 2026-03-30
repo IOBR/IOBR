@@ -40,23 +40,27 @@ find_variable_genes(
 \item{feas}{Character vector or NULL. Additional features to include. Default is NULL.}
 }
 \value{
-Matrix subset of `eset` containing only variable genes identified by the specified criteria.
+Matrix subset of `eset` containing variable genes.
 
 Matrix subset of `eset` containing only variable genes identified by the specified criteria.
 }
 \description{
-Identifies variable genes from a gene expression dataset using specified selection criteria. Supports multiple methods, including expression thresholding and variability estimation via median absolute deviation (MAD). Handles both count and normalized data.
+Identifies variable genes from a gene expression dataset using specified
+selection criteria. Supports multiple methods, including expression
+thresholding and variability estimation via median absolute deviation (MAD).
 
 Identifies variable genes from a gene expression dataset using specified selection criteria. Supports multiple methods, including expression thresholding and variability estimation via median absolute deviation (MAD). Handles both count and normalized data.
 }
 \examples{
-# Load expression data
+\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
-# Filter variable genes
 eset <- find_variable_genes(
   eset = eset_tme_stad,
-  data_type = "normalized", methods = "mad", quantile = 0.25
+  data_type = "normalized",
+  methods = "mad",
+  quantile = 0.25
 )
+}
 # Load expression data
 eset_tme_stad <- load_data("eset_tme_stad")
 # Filter variable genes

@@ -74,7 +74,8 @@ NAR Genomics and Bioinformatics. 2020;2(3):lqaa078.
 doi:10.1093/nargab/lqaa078
 
 Leek JT, et al. The sva package for removing batch effects and other
-unwanted variation in high-throughput experiments. Bioinformatics. 2012;28(6):882-883.
+unwanted variation in high-throughput experiments. Bioinformatics.
+2012;28(6):882-883.
 }
 \author{
 Dongqiang Zeng

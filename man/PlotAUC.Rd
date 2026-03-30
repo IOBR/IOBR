@@ -16,36 +16,30 @@ PlotAUC(
 )
 }
 \arguments{
-\item{train.x}{A matrix or data frame containing the training predictors.}
+\item{train.x}{Training predictors.}
 
-\item{train.y}{A numeric or binary vector indicating the outcomes for the training set.}
+\item{train.y}{Training outcomes.}
 
-\item{test.x}{A matrix or data frame containing the testing predictors.}
+\item{test.x}{Testing predictors.}
 
-\item{test.y}{A numeric or binary vector indicating the outcomes for the testing set.}
+\item{test.y}{Testing outcomes.}
 
-\item{model}{A model object used to generate prediction probabilities for the ROC analysis.}
+\item{model}{Fitted model.}
 
-\item{modelname}{A string representing the name of the model, used in the plot title and file name.}
+\item{modelname}{Model name for title.}
 
-\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
+\item{cols}{Optional color vector.}
 
-\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+\item{palette}{Color palette name.}
 }
 \value{
-A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
+ggplot object of ROC curve.
 }
 \description{
-This function generates ROC (Receiver Operating Characteristic) curves to evaluate the performance of a binary classification model.
-It creates plots for both training and testing data sets, using specified lambda values for model evaluation. The function
-automatically handles the selection of color palettes and saves the resulting plots in a specified directory.
+Generates ROC curves for model evaluation.
 }
 \examples{
 \dontrun{
-# Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
-PlotAUC(
-  train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
-  model = fitted_model, modelname = "MyModel"
-)
+PlotAUC(train.x, train.y, test.x, test.y, fitted_model, "MyModel")
 }
 }

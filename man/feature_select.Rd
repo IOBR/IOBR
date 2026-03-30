@@ -30,7 +30,9 @@ feature_select(
 Character vector of selected feature names.
 }
 \description{
-Selects informative features using either correlation with a quantitative response or differential expression (limma) for binary/continuous responses.
+Selects informative features using either correlation with a quantitative
+response or differential expression (limma) for binary/continuous
+responses.
 }
 \examples{
 imvigor210_eset <- load_data("imvigor210_eset")

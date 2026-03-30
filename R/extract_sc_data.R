@@ -1,6 +1,7 @@
 #' Extract data frame
 #'
-#' Extract and combine data frame with cells as rows and features as columns from Seurat assay data.
+#' Extract and combine data frame with cells as rows and features as columns
+#' from Seurat assay data.
 #' @param sce Seurat object
 #' @param vars Vector of variables as features
 #' @param assay Assay to pull data from
@@ -16,7 +17,10 @@
 #' pbmc_small <- load_data("pbmc_small")
 #' pbmc_small
 #' # Choose features
-#' vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3", "PF4", "MYL9", "GNLY", "TREML1", "CA2")
+#' vars <- c(
+#'   "PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3", "PF4", "MYL9",
+#'   "GNLY", "TREML1", "CA2"
+#' )
 #' # Get extracted data frame
 #' eset <- extract_sc_data(sce = pbmc_small, vars = vars, assay = "RNA")
 #'

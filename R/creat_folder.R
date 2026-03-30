@@ -1,4 +1,4 @@
-'#' Create Nested Output Folders
+#' Create Nested Output Folders
 #'
 #' @description
 #' Creates one to three nested folders (if not existing) under the current
@@ -24,7 +24,6 @@
 #' # Create nested folders
 #' creat_folder("1-result", "figures", "correlation")
 creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {
-
   # Validate inputs
   if (!is.character(f1) || length(f1) != 1 || nchar(f1) == 0) {
     cli::cli_abort("{.arg f1} must be a non-empty character string")

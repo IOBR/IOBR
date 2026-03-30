@@ -35,9 +35,11 @@ Annotated and cleaned gene expression matrix with gene symbols as
   row names.
 }
 \description{
-Annotates an expression matrix with gene symbols using provided annotation data,
+Annotates an expression matrix with gene symbols using provided annotation
+data,
 filters out missing or invalid symbols, handles duplicate gene entries, and
-removes uninformative rows. The function supports multiple aggregation methods
+removes uninformative rows. The function supports multiple aggregation
+methods
 for resolving duplicate gene symbols.
 }
 \details{
@@ -47,7 +49,8 @@ The function performs the following operations:
   \item Matches probes between expression set and annotation data
   \item Merges annotation with expression data
   \item Handles duplicate gene symbols using specified aggregation method
-  \item Removes rows with all zeros, all NAs, or missing values in the first column
+  \item Removes rows with all zeros, all NAs, or missing values in the first
+    column
 }
 }
 \examples{

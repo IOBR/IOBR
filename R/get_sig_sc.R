@@ -1,6 +1,7 @@
 #' Extract Top Marker Genes from Single-Cell Differential Results
 #'
-#' Selects the top N marker genes per cluster from a ranked differential expression result table.
+#' Selects the top N marker genes per cluster from a ranked differential
+#' expression result table.
 #'
 #' @param deg Data frame or matrix. Ranked marker statistics (e.g., p-value, log2FC, etc.).
 #' @param cluster Character. Column name containing cluster identifiers. Default "cluster".
@@ -13,7 +14,10 @@
 #'
 #' @examples
 #' deg <- load_data("deg")
-#' get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
+#' get_sig_sc(deg,
+#'   cluster = "cluster", gene = "gene", avg_log2FC =
+#'     "avg_log2FC", n = 100
+#' )
 get_sig_sc <- function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100) {
   # cluster <- !!sym(cluster)
   # avg_log2FC <- !!sym(avg_log2FC)

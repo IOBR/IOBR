@@ -33,7 +33,11 @@ find_outlier_samples(
 Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).
 }
 \description{
-Analyzes gene expression data to identify potential outlier samples using connectivity analysis via the WGCNA package. Calculates normalized adjacency and connectivity z-scores for each sample, generates connectivity plots, and optionally performs hierarchical clustering. Outlier samples are those with connectivity z-scores exceeding the specified threshold.
+Analyzes gene expression data to identify potential outlier samples using
+connectivity analysis via the WGCNA package. Calculates normalized
+adjacency and connectivity z-scores for each sample, generates connectivity
+plots, and optionally performs hierarchical clustering. Outlier samples are
+those with connectivity z-scores exceeding the specified threshold.
 }
 \examples{
 # Load expression data

@@ -33,7 +33,6 @@
 #' )
 #' }
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
-
   pdata <- as.data.frame(pdata)
 
   # Validate columns

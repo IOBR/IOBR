@@ -35,7 +35,8 @@
 #' doi:10.1093/nargab/lqaa078
 #'
 #' Leek JT, et al. The sva package for removing batch effects and other
-#' unwanted variation in high-throughput experiments. Bioinformatics. 2012;28(6):882-883.
+#' unwanted variation in high-throughput experiments. Bioinformatics.
+#' 2012;28(6):882-883.
 #'
 #' @examples
 #' \dontrun{
@@ -58,7 +59,6 @@ remove_batcheffect <- function(eset1,
                                adjust_eset = TRUE,
                                repel = FALSE,
                                path = NULL) {
-
   # Validate data_type
   data_type <- rlang::arg_match(data_type)
 
@@ -85,10 +85,13 @@ remove_batcheffect <- function(eset1,
 
   # Adjust expression sets
   if (adjust_eset) {
-    eset1 <- eset1[rownames(eset1) %in% feature_manipulation(eset1, is_matrix = TRUE), ]
-    eset2 <- eset2[rownames(eset2) %in% feature_manipulation(eset2, is_matrix = TRUE), ]
+    eset1 <- eset1[rownames(eset1) %in%
+      feature_manipulation(eset1, is_matrix = TRUE), ]
+    eset2 <- eset2[rownames(eset2) %in%
+      feature_manipulation(eset2, is_matrix = TRUE), ]
     if (!is.null(eset3)) {
-      eset3 <- eset3[rownames(eset3) %in% feature_manipulation(eset3, is_matrix = TRUE), ]
+      eset3 <- eset3[rownames(eset3) %in%
+        feature_manipulation(eset3, is_matrix = TRUE), ]
     }
   }
 
@@ -110,7 +113,10 @@ remove_batcheffect <- function(eset1,
       batch = rep(c("eset1", "eset2"), times = c(ncol(eset1), ncol(eset2)))
     )
   } else {
-    comgene <- intersect(intersect(rownames(eset1), rownames(eset2)), rownames(eset3))
+    comgene <- intersect(
+      intersect(rownames(eset1), rownames(eset2)),
+      rownames(eset3)
+    )
     comgene <- comgene[nzchar(comgene) & !is.na(comgene)]
 
     cli::cli_alert_info(
@@ -125,7 +131,8 @@ remove_batcheffect <- function(eset1,
     batch <- data.frame(
       ID = colnames(combined.expr),
       batch = rep(c("eset1", "eset2", "eset3"),
-                  times = c(ncol(eset1), ncol(eset2), ncol(eset3)))
+        times = c(ncol(eset1), ncol(eset2), ncol(eset3))
+      )
     )
   }
 

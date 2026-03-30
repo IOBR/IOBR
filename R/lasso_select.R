@@ -1,6 +1,9 @@
 #' Feature Selection for Predictive or Prognostic Models Using LASSO Regression
 #'
-#' Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression to construct predictive or prognostic models. Supports both binary and survival response variables, utilizing cross-validation for optimal model selection.
+#' Applies LASSO (Least Absolute Shrinkage and Selection Operator) regression
+#' to construct predictive or prognostic models. Supports both binary and
+#' survival response variables, utilizing cross-validation for optimal model
+#' selection.
 #'
 #' @param x A numeric matrix. Features (e.g., gene symbols or CGI) as row names and samples as column names.
 #' @param y A response variable vector. Can be binary (0/1) or survival data (e.g., survival time and event status).

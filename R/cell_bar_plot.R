@@ -42,7 +42,7 @@
 #' }
 cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
                           features = NULL, pattern = NULL,
-                          legend.position = "bottom", coord_filp = TRUE,
+                          legend.position = "bottom", coord_flip = TRUE,
                           palette = 3, show_col = FALSE, cols = NULL) {
   input <- as.data.frame(input)
   colnames(input)[which(colnames(input) == id)] <- "ID"
@@ -104,7 +104,7 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
       legend.box.just = "top"
     )
 
-  if (coord_filp) {
+  if (coord_flip) {
     p <- p + ggplot2::coord_flip()
   }
 

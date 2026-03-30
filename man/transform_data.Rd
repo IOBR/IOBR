@@ -37,8 +37,10 @@ data_matrix <- data.frame(
 transform_data(data_matrix, feature = c("A", "B"), data_type = "NA")
 
 # Replace Inf values with the mean of the column
-transform_data(data_matrix, feature = c("A", "B"),
-               data_type = "Inf", into = "mean")
+transform_data(data_matrix,
+  feature = c("A", "B"),
+  data_type = "Inf", into = "mean"
+)
 
 # Replace zeros with -1 in column C
 transform_data(data_matrix, feature = "C", data_type = "zero", into = -1)

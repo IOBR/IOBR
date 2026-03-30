@@ -30,7 +30,10 @@ iobr_deconvo_pipeline(
 Data frame integrating cell fractions and signature scores (also writes intermediate outputs to disk).
 }
 \description{
-Executes an integrated TME analysis on a gene expression matrix: performs immune/stromal cell deconvolution using multiple algorithms, computes signature scores, and aggregates results. Designed for exploratory immunogenomic profiling.
+Executes an integrated TME analysis on a gene expression matrix: performs
+immune/stromal cell deconvolution using multiple algorithms, computes
+signature scores, and aggregates results. Designed for exploratory
+immunogenomic profiling.
 }
 \examples{
 \dontrun{

@@ -37,6 +37,6 @@ colors <- load_data("palette1")
 
 # Error handling with suggestions for similar names
 \dontrun{
-try(load_data("sign_tme"))  # Will suggest "signature_tme"
+try(load_data("sign_tme")) # Will suggest "signature_tme"
 }
 }

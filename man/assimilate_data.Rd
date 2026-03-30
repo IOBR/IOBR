@@ -33,5 +33,5 @@ pdata_b <- data.frame(A = 1:3, C = 4:6, E = 7:9)
 
 # Harmonize pdata_b to match pdata_a structure
 pdata_b_harmonized <- assimilate_data(data_a = pdata_a, data_b = pdata_b)
-print(names(pdata_b_harmonized))  # Now has A, B, C, D, E
+print(names(pdata_b_harmonized)) # Now has A, B, C, D, E
 }

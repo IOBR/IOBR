@@ -24,7 +24,8 @@ remove_names(
 Modified data frame with patterns replaced.
 }
 \description{
-This function modifies column names or specified variables in a data frame by replacing
+This function modifies column names or specified variables in a data frame
+by replacing
 specified patterns with NA or spaces.
 }
 \examples{

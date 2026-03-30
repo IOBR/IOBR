@@ -12,7 +12,8 @@ deconvo_mcpcounter(eset, project = NULL)
 \item{project}{Optional project name. Default is `NULL`.}
 }
 \value{
-Data frame with MCP-counter scores. Columns suffixed with `_MCPcounter`.
+Data frame with MCP-counter scores. Columns suffixed with
+  `_MCPcounter`.
 }
 \description{
 Estimates immune cell abundances using MCP-counter.

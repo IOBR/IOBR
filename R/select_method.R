@@ -1,6 +1,8 @@
 #' Select a Signature Scoring Method Subset
 #'
-#' Filters an integrated signature score matrix to retain results from a specified method (PCA, ssGSEA, or zscore) and strips method suffixes from column names.
+#' Filters an integrated signature score matrix to retain results from a
+#' specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
+#' column names.
 #'
 #' @param data Data frame or matrix. Integrated signature score matrix.
 #' @param method Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive). Default "ssGSEA".

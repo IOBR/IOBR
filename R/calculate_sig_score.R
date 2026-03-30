@@ -65,14 +65,22 @@ signature_score_calculation_methods <- c(
 .add_tme_scores <- function(pdata, suffix = "") {
   pca_suffix <- ifelse(nzchar(suffix), paste0("_", suffix), "")
 
-  if (all(c(paste0("TMEscoreA_CIR", pca_suffix), paste0("TMEscoreB_CIR", pca_suffix)) %in% colnames(pdata))) {
+  if (all(c(
+    paste0("TMEscoreA_CIR", pca_suffix),
+    paste0("TMEscoreB_CIR", pca_suffix)
+  ) %in% colnames(pdata))) {
     pdata[[paste0("TMEscore_CIR", pca_suffix)]] <-
-      pdata[[paste0("TMEscoreA_CIR", pca_suffix)]] - pdata[[paste0("TMEscoreB_CIR", pca_suffix)]]
+      pdata[[paste0("TMEscoreA_CIR", pca_suffix)]] -
+      pdata[[paste0("TMEscoreB_CIR", pca_suffix)]]
   }
 
-  if (all(c(paste0("TMEscoreA_plus", pca_suffix), paste0("TMEscoreB_plus", pca_suffix)) %in% colnames(pdata))) {
+  if (all(c(
+    paste0("TMEscoreA_plus", pca_suffix),
+    paste0("TMEscoreB_plus", pca_suffix)
+  ) %in% colnames(pdata))) {
     pdata[[paste0("TMEscore_plus", pca_suffix)]] <-
-      pdata[[paste0("TMEscoreA_plus", pca_suffix)]] - pdata[[paste0("TMEscoreB_plus", pca_suffix)]]
+      pdata[[paste0("TMEscoreA_plus", pca_suffix)]] -
+      pdata[[paste0("TMEscoreB_plus", pca_suffix)]]
   }
 
   pdata
@@ -110,7 +118,6 @@ calculate_sig_score_pca <- function(pdata = NULL,
                                     mini_gene_count = 3,
                                     column_of_sample = "ID",
                                     adjust_eset = FALSE) {
-
   cli::cli_alert_info("Calculating signature scores using PCA method")
 
   # Prepare data
@@ -147,7 +154,9 @@ calculate_sig_score_pca <- function(pdata = NULL,
   sig_scores <- vapply(names(signature), function(sig) {
     genes <- signature[[sig]]
     genes <- genes[genes %in% rownames(eset)]
-    if (length(genes) == 0) return(rep(NA_real_, ncol(eset)))
+    if (length(genes) == 0) {
+      return(rep(NA_real_, ncol(eset)))
+    }
     sigScore(eset[genes, , drop = FALSE], methods = "PCA")
   }, numeric(ncol(eset)))
 
@@ -187,7 +196,6 @@ calculate_sig_score_zscore <- function(pdata = NULL,
                                        mini_gene_count = 3,
                                        column_of_sample = "ID",
                                        adjust_eset = FALSE) {
-
   cli::cli_alert_info("Calculating signature scores using z-score method")
 
   # Prepare data
@@ -219,7 +227,9 @@ calculate_sig_score_zscore <- function(pdata = NULL,
   sig_scores <- vapply(names(signature), function(sig) {
     genes <- signature[[sig]]
     genes <- genes[genes %in% rownames(eset)]
-    if (length(genes) == 0) return(rep(NA_real_, ncol(eset)))
+    if (length(genes) == 0) {
+      return(rep(NA_real_, ncol(eset)))
+    }
     sigScore(eset[genes, , drop = FALSE], methods = "zscore")
   }, numeric(ncol(eset)))
 
@@ -260,7 +270,6 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
                                        column_of_sample = "ID",
                                        adjust_eset = FALSE,
                                        parallel.size = 1L) {
-
   cli::cli_alert_info("Calculating signature scores using ssGSEA method")
 
   # ssGSEA needs more genes for robustness
@@ -270,7 +279,10 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   signature <- .filter_signatures(signature, eset, min_genes)
 
   if (length(signature) == 0) {
-    cli::cli_warn("No signatures have enough genes (min: {min_genes}). Returning pdata unchanged.")
+    cli::cli_warn(paste0(
+      "No signatures have enough genes (min: ",
+      min_genes, "). Returning pdata unchanged."
+    ))
     return(tibble::as_tibble(pdata))
   }
 
@@ -302,7 +314,10 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       if (.Platform$OS.type == "windows") {
         BiocParallel::SnowParam(workers = parallel.size, progressbar = TRUE)
       } else {
-        BiocParallel::MulticoreParam(workers = parallel.size, progressbar = TRUE)
+        BiocParallel::MulticoreParam(
+          workers = parallel.size,
+          progressbar = TRUE
+        )
       }
     } else {
       BiocParallel::SerialParam(progressbar = TRUE)
@@ -376,7 +391,6 @@ calculate_sig_score_integration <- function(pdata = NULL,
                                             column_of_sample = "ID",
                                             adjust_eset = FALSE,
                                             parallel.size = 1L) {
-
   cli::cli_alert_info("Calculating signature scores using PCA, z-score, and ssGSEA methods")
 
   # Filter signatures
@@ -417,14 +431,20 @@ calculate_sig_score_integration <- function(pdata = NULL,
   for (sig in goi) {
     genes <- signature[[sig]]
     genes <- genes[genes %in% rownames(eset)]
-    pdata[[paste0(sig, "_zscore")]] <- sigScore(eset[genes, , drop = FALSE], methods = "zscore")
+    pdata[[paste0(sig, "_zscore")]] <- sigScore(eset[genes, , drop = FALSE],
+      methods = "zscore"
+    )
   }
   pdata <- .add_tme_scores(pdata, "zscore")
 
   # Step 3: ssGSEA
   cli::cli_alert_info("Step 3/3: ssGSEA method")
   ssgsea_min <- max(mini_gene_count, 5)
-  sig_ssgsea <- signature[vapply(signature, function(x) sum(x %in% rownames(eset)), integer(1)) >= ssgsea_min]
+  sig_ssgsea <- signature[vapply(
+    signature,
+    function(x) sum(x %in% rownames(eset)),
+    integer(1)
+  ) >= ssgsea_min]
 
   if (length(sig_ssgsea) > 0) {
     rlang::check_installed("GSVA")
@@ -442,7 +462,10 @@ calculate_sig_score_integration <- function(pdata = NULL,
         maxDiff = TRUE,
         absRanking = FALSE
       )
-      res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = BiocParallel::SerialParam(progressbar = TRUE))
+      res <- GSVA::gsva(param,
+        verbose = TRUE,
+        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+      )
     } else {
       res <- GSVA::gsva(
         as.matrix(eset),
@@ -480,7 +503,8 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' @param mini_gene_count Minimum genes required per signature. Default is 3
 #'   (or 5 for ssGSEA).
 #' @param column_of_sample Column with sample IDs in `pdata`. Default is `"ID"`.
-#' @param print_gene_proportion Logical: print gene coverage. Default is `FALSE`.
+#' @param print_gene_proportion Logical: print gene coverage. Default is
+#'   `FALSE`.
 #' @param print_filtered_signatures Logical: print filtered signatures.
 #'   Default is `FALSE`.
 #' @param adjust_eset Logical: clean problematic features. Default is `FALSE`.
@@ -494,8 +518,8 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #'
 #' @references
 #' \enumerate{
-#'   \item Hänzelmann S, Castelo R, Guinney J. GSVA: gene set variation analysis.
-#'     BMC Bioinformatics. 2013;14:7.
+#'   \item Hänzelmann S, Castelo R, Guinney J. GSVA: gene set variation
+#'     analysis. BMC Bioinformatics. 2013;14:7.
 #'   \item Mariathasan S, et al. TGFβ attenuates tumour response to PD-L1 blockade.
 #'     Nature. 2018;554:544-548.
 #' }
@@ -507,7 +531,10 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' signature_tme <- load_data("signature_tme")
 #'
 #' # PCA method (fastest)
-#' result_pca <- calculate_sig_score(eset = eset, signature = signature_tme, method = "pca")
+#' result_pca <- calculate_sig_score(
+#'   eset = eset, signature = signature_tme,
+#'   method = "pca"
+#' )
 #'
 #' # ssGSEA method (most robust)
 #' result_ssgsea <- calculate_sig_score(eset = eset, signature = signature_tme, method = "ssgsea")
@@ -515,7 +542,10 @@ calculate_sig_score_integration <- function(pdata = NULL,
 calculate_sig_score <- function(pdata = NULL,
                                 eset,
                                 signature = NULL,
-                                method = c("pca", "ssgsea", "zscore", "integration"),
+                                method = c(
+                                  "pca", "ssgsea", "zscore",
+                                  "integration"
+                                ),
                                 mini_gene_count = 3,
                                 column_of_sample = "ID",
                                 print_gene_proportion = FALSE,
@@ -523,18 +553,21 @@ calculate_sig_score <- function(pdata = NULL,
                                 adjust_eset = FALSE,
                                 parallel.size = 1L,
                                 ...) {
-
   # Validate signature
   if (is.null(signature)) {
     cli::cli_abort(c(
       "Please provide a signature list.",
-      "i" = "Available: signature_tme, signature_collection, go_bp, kegg, hallmark"
+      "i" = "Available: signature_tme, signature_collection, go_bp, \
+              kegg, hallmark"
     ))
   }
 
   # Load signature if character
   if (is.character(signature) && length(signature) == 1) {
-    builtin_sigs <- c("signature_collection", "signature_tme", "go_bp", "kegg", "hallmark")
+    builtin_sigs <- c(
+      "signature_collection", "signature_tme", "go_bp",
+      "kegg", "hallmark"
+    )
     if (signature %in% builtin_sigs) {
       signature <- load_data(signature)
     }
@@ -574,26 +607,30 @@ calculate_sig_score <- function(pdata = NULL,
 
   switch(method,
     pca = calculate_sig_score_pca(
-      pdata, eset, signature = signature,
+      pdata, eset,
+      signature = signature,
       mini_gene_count = mini_gene_count,
       column_of_sample = column_of_sample,
       adjust_eset = adjust_eset, ...
     ),
     ssgsea = calculate_sig_score_ssgsea(
-      pdata, eset, signature = signature,
+      pdata, eset,
+      signature = signature,
       mini_gene_count = mini_gene_count,
       column_of_sample = column_of_sample,
       adjust_eset = adjust_eset,
       parallel.size = parallel.size, ...
     ),
     zscore = calculate_sig_score_zscore(
-      pdata, eset, signature = signature,
+      pdata, eset,
+      signature = signature,
       mini_gene_count = mini_gene_count,
       column_of_sample = column_of_sample,
       adjust_eset = adjust_eset, ...
     ),
     integration = calculate_sig_score_integration(
-      pdata, eset, signature = signature,
+      pdata, eset,
+      signature = signature,
       mini_gene_count = mini_gene_count,
       column_of_sample = column_of_sample,
       adjust_eset = adjust_eset,

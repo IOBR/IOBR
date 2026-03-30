@@ -45,7 +45,6 @@ batch_kruskal <- function(data,
                           group,
                           feature = NULL,
                           feature_manipulation = FALSE) {
-
   # Input validation
   if (is.null(data) || !is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a non-null data frame.")
@@ -70,7 +69,9 @@ batch_kruskal <- function(data,
   # Feature selection
   if (is.null(feature)) {
     if (!interactive()) {
-      cli::cli_abort("{.arg feature} must be specified in non-interactive mode.")
+      cli::cli_abort(
+        "{.arg feature} must be specified in non-interactive mode."
+      )
     }
     cli::cli_alert_info("Select features for analysis")
     index <- utils::menu(
@@ -94,7 +95,8 @@ batch_kruskal <- function(data,
 
   if (length(invalid_features) > 0) {
     cli::cli_alert_warning(
-      "Ignoring {length(invalid_features)} invalid feature{?s}: {.val {invalid_features}}"
+      "Ignoring {length(invalid_features)} invalid feature{?s}:",
+      " {.val {invalid_features}}"
     )
   }
 
@@ -133,7 +135,13 @@ batch_kruskal <- function(data,
   # Calculate group means (mean-centered)
   result_mean <- data |>
     dplyr::group_by(.data$group) |>
-    dplyr::summarise(dplyr::across(dplyr::where(is.numeric), \(.x) mean(.x, na.rm = TRUE)), .groups = "drop")
+    dplyr::summarise(
+      dplyr::across(
+        dplyr::where(is.numeric),
+        \(.x) mean(.x, na.rm = TRUE)
+      ),
+      .groups = "drop"
+    )
 
   result_mean <- tidyr::pivot_wider(
     result_mean,
@@ -143,7 +151,10 @@ batch_kruskal <- function(data,
 
   # Calculate mean-centered values
   group_cols <- intersect(group_names, colnames(result_mean))
-  result_mean$overall_mean <- rowMeans(as.matrix(result_mean[, group_cols, drop = FALSE]), na.rm = TRUE)
+  result_mean$overall_mean <- rowMeans(
+    as.matrix(result_mean[, group_cols, drop = FALSE]),
+    na.rm = TRUE
+  )
 
   for (gn in group_cols) {
     result_mean[[gn]] <- result_mean[[gn]] - result_mean$overall_mean

@@ -1,4 +1,4 @@
-'#' Batch Wilcoxon Rank-Sum Test Between Two Groups
+#' Batch Wilcoxon Rank-Sum Test Between Two Groups
 #'
 #' @description
 #' Performs Wilcoxon rank-sum tests (Mann-Whitney U tests) to compare the
@@ -42,9 +42,9 @@
 #' head(res)
 #' }
 batch_wilcoxon <- function(data,
-                          target = "group",
-                          feature = NULL,
-                          feature_manipulation = FALSE) {
+                           target = "group",
+                           feature = NULL,
+                           feature_manipulation = FALSE) {
 
   # Input validation
   if (is.null(data) || !is.data.frame(data)) {
@@ -74,7 +74,10 @@ batch_wilcoxon <- function(data,
   # Feature selection
   if (is.null(feature)) {
     if (!interactive()) {
-      cli::cli_abort("{.arg feature} must be specified in non-interactive mode.")
+      cli::cli_abort(paste(
+        "{.arg feature} must be specified in",
+        "non-interactive mode."
+      ))
     }
     cli::cli_alert_info("Select features for analysis")
     index <- utils::menu(
@@ -97,9 +100,10 @@ batch_wilcoxon <- function(data,
   invalid_features <- setdiff(feature, colnames(data))
 
   if (length(invalid_features) > 0) {
-    cli::cli_alert_warning(
-      "Ignoring {length(invalid_features)} invalid feature{?s}: {.val {invalid_features}}"
-    )
+    cli::cli_alert_warning(paste(
+      "Ignoring {length(invalid_features)} invalid feature{?s}:",
+      "{.val {invalid_features}}"
+    ))
   }
 
   if (length(valid_features) == 0) {
@@ -130,7 +134,12 @@ batch_wilcoxon <- function(data,
   # Calculate group means
   result_mean <- data |>
     dplyr::group_by(.data$group) |>
-    dplyr::summarise(dplyr::across(dplyr::all_of(valid_features), \(.x) mean(.x, na.rm = TRUE)), .groups = "drop")
+    dplyr::summarise(
+      dplyr::across(
+        dplyr::all_of(valid_features), \(.x) mean(.x, na.rm = TRUE)
+      ),
+      .groups = "drop"
+    )
 
   result_mean <- tidyr::pivot_wider(
     result_mean,
@@ -144,7 +153,8 @@ batch_wilcoxon <- function(data,
 
   group_cols <- intersect(group_names, colnames(result_mean))
   if (length(group_cols) == 2) {
-    result_mean$statistic <- result_mean[[group_cols[1]]] - result_mean[[group_cols[2]]]
+    result_mean$statistic <- result_mean[[group_cols[1]]] -
+      result_mean[[group_cols[2]]]
   } else {
     result_mean$statistic <- NA_real_
   }

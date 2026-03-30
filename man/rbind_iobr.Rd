@@ -17,7 +17,8 @@ rbind_iobr(data1, data2, data3 = NULL)
 Combined data frame or matrix resulting from row binding the input datasets.
 }
 \description{
-Combines two or three data frames or matrices vertically using the `rbind` operation. Ensures compatibility of input data before binding.
+Combines two or three data frames or matrices vertically using the `rbind`
+operation. Ensures compatibility of input data before binding.
 }
 \examples{
 data1 <- data.frame(A = 1:5, B = letters[1:5])

@@ -36,7 +36,8 @@ high_var_fea(
 Character vector of selected feature names (combined up and down sets).
 }
 \description{
-Selects top variable (up- and down-regulated) features based on adjusted p-value and log fold-change thresholds.
+Selects top variable (up- and down-regulated) features based on adjusted
+p-value and log fold-change thresholds.
 }
 \examples{
 result_data <- data.frame(
@@ -45,7 +46,8 @@ result_data <- data.frame(
   logfc = c(-2, 1.5, -3)
 )
 high_var_fea(
-  result = result_data, target = "gene", name_padj = "padj", name_logfc = "logfc", n = 2,
+  result = result_data, target = "gene", name_padj = "padj", name_logfc =
+    "logfc", n = 2,
   padj_cutoff = 0.05, logfc_cutoff = 1.5
 )
 }

@@ -50,7 +50,6 @@ batch_pcc <- function(input,
                       target,
                       features,
                       method = c("pearson", "spearman", "kendall")) {
-
   # Input validation
   if (is.null(input) || !is.data.frame(input)) {
     cli::cli_abort("{.arg input} must be a non-null data frame.")
@@ -59,7 +58,9 @@ batch_pcc <- function(input,
     cli::cli_abort("{.arg input} has no rows.")
   }
   if (!interferenceid %in% colnames(input)) {
-    cli::cli_abort("Interference variable {.val {interferenceid}} not found in data.")
+    cli::cli_abort(
+      "Interference variable {.val {interferenceid}} not found in data."
+    )
   }
   if (!target %in% colnames(input)) {
     cli::cli_abort("Target variable {.val {target}} not found in data.")
@@ -77,7 +78,8 @@ batch_pcc <- function(input,
 
   if (length(invalid_features) > 0) {
     cli::cli_alert_warning(
-      "Ignoring {length(invalid_features)} invalid feature{?s}: {.val {invalid_features}}"
+      "Ignoring {length(invalid_features)} invalid feature{?s}:",
+      " {.val {invalid_features}}}"
     )
   }
 
@@ -86,7 +88,8 @@ batch_pcc <- function(input,
   }
 
   cli::cli_alert_info(
-    "Computing {method} partial correlation for {length(valid_features)} feature{?s}"
+    "Computing {method} partial correlation for",
+    " {length(valid_features)} feature{?s}"
   )
 
   # Partial correlation test function
@@ -96,10 +99,10 @@ batch_pcc <- function(input,
       return(c(estimate = NA_real_, p.value = NA_real_))
     }
 
-    R <- stats::cor(dat, method = method)
-    rxy <- R[1, 2]
-    rxz <- R[1, 3]
-    ryz <- R[2, 3]
+    r_mat <- stats::cor(dat, method = method)
+    rxy <- r_mat[1, 2]
+    rxz <- r_mat[1, 3]
+    ryz <- r_mat[2, 3]
 
     # Partial correlation formula
     rho <- (rxy - rxz * ryz) / sqrt((1 - rxz^2) * (1 - ryz^2))

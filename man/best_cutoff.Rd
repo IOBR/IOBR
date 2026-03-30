@@ -15,38 +15,40 @@ best_cutoff(
 \arguments{
 \item{pdata}{Data frame containing survival information and the continuous variable.}
 
-\item{variable}{Character string specifying the name of the continuous variable for
-which the optimal cutoff should be determined.}
+\item{variable}{Character string specifying the name of the continuous variable
+for which the optimal cutoff should be determined.}
 
 \item{time}{Character string specifying the column name containing time-to-event data.
-Default is \code{"time"}.}
+Default is `"time"`.}
 
 \item{status}{Character string specifying the column name containing event status
-(censoring information). Default is \code{"status"}.}
+(censoring information). Default is `"status"`.}
 
 \item{PrintResult}{Logical indicating whether to print detailed results including
-cutoff value, Cox model summaries for continuous and binary variables. Default is
-\code{TRUE}.}
+cutoff value and Cox model summaries. Default is `TRUE`.}
 }
 \value{
-Data frame identical to \code{pdata} with an additional binary column named
-  \code{<variable>_binary} containing "High" and "Low" categories based on the
+Data frame identical to `pdata` with an additional binary column named
+  `<variable>_binary` containing "High" and "Low" categories based on the
   optimal cutoff.
 }
 \description{
 Determines the optimal cutoff point for a continuous variable in survival analysis
-using the maximally selected rank statistics method. Creates a binary variable based
-on the identified cutoff and adds it to the input data frame.
+using the maximally selected rank statistics method. Creates a binary variable
+based on the identified cutoff and adds it to the input data frame.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
+\donttest{
 sig_stad <- load_data("sig_stad")
-# Find the best cutoff value of TMEscore for survival analysis
 sig_stad2 <- best_cutoff(
-  pdata = sig_stad, variable = "TMEscore_CIR",
-  time = "OS_time", status = "OS_status", PrintResult = TRUE
+  pdata = sig_stad,
+  variable = "TMEscore_CIR",
+  time = "OS_time",
+  status = "OS_status",
+  PrintResult = TRUE
 )
 table(sig_stad2$TMEscore_CIR_binary)
+}
 }
 \author{
 Dongqiang Zeng

@@ -108,7 +108,6 @@ sig_gsea <- function(deg,
                      seed = FALSE,
                      fig.type = "pdf",
                      print_bar = TRUE) {
-
   org <- rlang::arg_match(org)
 
   # Input validation
@@ -147,15 +146,15 @@ sig_gsea <- function(deg,
   # Map gene symbols to Entrez IDs
   cli::cli_alert_info("Mapping gene symbols to Entrez IDs for {.val {org}}")
   database <- switch(org,
-                     hsa = "org.Hs.eg.db",
-                     mus = "org.Mm.eg.db"
+    hsa = "org.Hs.eg.db",
+    mus = "org.Mm.eg.db"
   )
   rlang::check_installed(database)
 
   entrizid <- clusterProfiler::bitr(deg$symbol,
-                                    fromType = "SYMBOL",
-                                    toType = c("GENENAME", "ENTREZID"),
-                                    OrgDb = database
+    fromType = "SYMBOL",
+    toType = c("GENENAME", "ENTREZID"),
+    OrgDb = database
   )
 
   # Merge and prepare genelist
@@ -221,7 +220,10 @@ sig_gsea <- function(deg,
 .get_gene_sets <- function(genesets, org, category, subcategory, project) {
   if (is.null(genesets)) {
     rlang::check_installed("msigdbr")
-    species <- switch(org, hsa = "Homo sapiens", mus = "Mus musculus")
+    species <- switch(org,
+      hsa = "Homo sapiens",
+      mus = "Mus musculus"
+    )
 
     m_df <- msigdbr::msigdbr(species = species)
     a <- m_df %>%
@@ -243,13 +245,16 @@ sig_gsea <- function(deg,
     term2genes <- term2genes[, -1]
     colnames(term2genes) <- c("gs_name", "symbol")
 
-    database <- switch(org, hsa = "org.Hs.eg.db", mus = "org.Mm.eg.db")
+    database <- switch(org,
+      hsa = "org.Hs.eg.db",
+      mus = "org.Mm.eg.db"
+    )
     rlang::check_installed(database)
 
     entrizid <- clusterProfiler::bitr(term2genes$symbol,
-                                      fromType = "SYMBOL",
-                                      toType = c("GENENAME", "ENTREZID"),
-                                      OrgDb = database
+      fromType = "SYMBOL",
+      toType = c("GENENAME", "ENTREZID"),
+      OrgDb = database
     )
 
     term2genes <- merge(term2genes, entrizid, by.x = "symbol", by.y = "SYMBOL", all.x = TRUE, all.y = FALSE)
@@ -266,7 +271,6 @@ sig_gsea <- function(deg,
                                   plot_single_sig, palette_gsea, cols_gsea,
                                   palette_bar, cols_bar, show_plot, print_bar,
                                   save_results, file_store, fig.type) {
-
   if (nrow(hall_gsea) == 0) {
     cli::cli_alert_warning("No terms enriched under pvalue cutoff = 0.05")
     return(hall_gsea)

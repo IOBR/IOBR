@@ -1,6 +1,7 @@
 #' Extract Hazard Ratio and Confidence Intervals from Cox Model
 #'
-#' This function extracts hazard ratio (HR) and 95% confidence intervals from a fitted Cox proportional hazards model.
+#' This function extracts hazard ratio (HR) and 95% confidence intervals from
+#' a fitted Cox proportional hazards model.
 #'
 #' @param coxphData A fitted Cox model object from `coxph()`.
 #'

@@ -27,11 +27,13 @@ data(sig_stad)
 \description{
 A comprehensive dataset containing clinical, pathological, and molecular data
 from The Cancer Genome Atlas (TCGA) Stomach Adenocarcinoma (STAD) project.
-Includes RNA-seq expression data, survival outcomes, and pathological features
+Includes RNA-seq expression data, survival outcomes, and pathological
+features
 for gastric cancer patients.
 }
 \references{
-Cancer Genome Atlas Research Network. Comprehensive molecular characterization
+Cancer Genome Atlas Research Network. Comprehensive molecular
+characterization
 of gastric adenocarcinoma. Nature 513, 202-209 (2014).
 doi:10.1038/nature13480
 

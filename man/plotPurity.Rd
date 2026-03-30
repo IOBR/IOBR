@@ -24,7 +24,8 @@ plotPurity(
 No return value. The function generates and saves scatterplots in the specified output directory.
 }
 \description{
-This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
+This function generates scatterplots of tumor purity based on ESTIMATE
+scores for given samples.
 }
 \examples{
 # Create a sample ESTIMATE score matrix
@@ -32,7 +33,10 @@ scores_data <- data.frame(
   Sample1 = c(100, 200, 500, 0.80),
   Sample2 = c(120, 220, 450, 0.70),
   Sample3 = c(140, 240, 600, 0.90),
-  row.names = c("StromalScore", "ImmuneScore", "ESTIMATEScore", "TumorPurity"),
+  row.names = c(
+    "StromalScore", "ImmuneScore", "ESTIMATEScore",
+    "TumorPurity"
+  ),
   check.names = FALSE
 )
 

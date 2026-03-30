@@ -42,7 +42,6 @@
 #' }
 PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7,
                             nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
-
   rlang::check_installed("glmnet")
 
   x <- as.data.frame(x)
@@ -254,7 +253,7 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @examples
 #' \dontrun{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
-#'     requireNamespace("survival", quietly = TRUE)) {
+#'   requireNamespace("survival", quietly = TRUE)) {
 #'   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
 #'   dat$status <- dat$status - 1
 #'   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
@@ -313,7 +312,6 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #' }
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
                         cols = NULL, palette = "jama") {
-
   if (is.null(cols)) {
     cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   }
@@ -350,7 +348,8 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
   aucs <- round(auc$probs.9, 2)
   legend.name <- paste(
     c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se"),
-    "AUC", aucs, sep = " "
+    "AUC", aucs,
+    sep = " "
   )
   names(roclist) <- c(
     "train_lambda.min", "train_lambda.1se",

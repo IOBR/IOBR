@@ -48,7 +48,6 @@ combine_pd_eset <- function(eset,
                             feature_manipulation = TRUE,
                             scale = TRUE,
                             choose_who_when_duplicate = c("eset", "pdata")) {
-
   # Validate arguments
   choose_who_when_duplicate <- rlang::arg_match(choose_who_when_duplicate)
 

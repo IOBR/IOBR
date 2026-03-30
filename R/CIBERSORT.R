@@ -1,62 +1,25 @@
 # CIBERSORT R script v1.04 (last updated 10-24-2016)
-# Note: Signature matrix construction is not currently available; use java version for full functionality.
+# Note: Signature matrix construction is not currently available;
+#   use java version for full functionality.
 # Author: Aaron M. Newman, Stanford University (amnewman@stanford.edu)
 # Requirements:
-#       R v3.0 or later. (dependencies below might not work properly with earlier versions)
-#       install.packages('e1071')
-#       install.packges('parallel')
-#       install.packages('preprocessCore')
-#       if preprocessCore is not available in the repositories you have selected, run the following:
-#           source("http://bioconductor.org/biocLite.R")
-#           biocLite("preprocessCore")
-# Windows users using the R GUI may need to Run as Administrator to install or update packages.
-# This script uses 3 parallel processes.  Since Windows does not support forking, this script will run
-# single-threaded in Windows.
-#
-# Usage:
-#       Navigate to directory containing R script
-#
-#   In R:
-#       source('CIBERSORT.R')
-#       results <- CIBERSORT('sig_matrix_file.txt','mixture_file.txt', perm, QN, absolute, abs_method)
-#
-#       Options:
-#       i)   perm = No. permutations; set to >=100 to calculate p-values (default = 0)
-#       ii)  QN = Quantile normalization of input mixture (default = TRUE)
-#       iii) absolute = Run CIBERSORT in absolute mode (default = FALSE)
-#               - note that cell subsets will be scaled by their absolute levels and will not be
-#                 represented as fractions (to derive the default output, normalize absolute
-#                 levels such that they sum to 1 for each mixture sample)
-#               - the sum of all cell subsets in each mixture sample will be added to the ouput
-#                 ('Absolute score'). If LM22 is used, this score will capture total immune content.
-#       iv)  abs_method = if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'
-#               - sig.score = for each mixture sample, define S as the median expression
-#                 level of all genes in the signature matrix divided by the median expression
-#                 level of all genes in the mixture. Multiple cell subset fractions by S.
-#               - no.sumto1 = remove sum to 1 constraint
-#
-# Input: signature matrix and mixture file, formatted as specified at http://cibersort.stanford.edu/tutorial.php
-# Output: matrix object containing all results and tabular data written to disk 'CIBERSORT-Results.txt'
+#   R v3.0 or later.
 # License: http://cibersort.stanford.edu/CIBERSORT_License.txt
-
-
-# dependencies
-# library(e1071)
-# library(parallel)
-# library(preprocessCore)
 
 # Core algorithm
 #' Perform Nu-Regression Using Support Vector Machines
 #'
-#' This function performs nu-regression using support vector machines (SVM) and calculates weights,
-#' root mean squared error (RMSE), and correlation coefficient (R).
+#' This function performs nu-regression using support vector machines (SVM) and
+#' calculates weights,
+#' #' root mean squared error (RMSE), and correlation coefficient (R).
 #'
 #' @param X A matrix or data frame containing the predictor variables.
 #' @param y A numeric vector containing the response variable.
 #' @param absolute Logical indicating whether to use absolute space for weights. Default is FALSE.
 #' @param abs_method String specifying the method for absolute space weights: "sig.score" or "no.sumto1".
 #'
-#' @return A list containing the weights (`w`), root mean squared error (`mix_rmse`), and correlation coefficient (`mix_r`).
+#' @return A list containing the weights (`w`), root mean squared error
+#'   (`mix_rmse`), and correlation coefficient (`mix_r`).
 #' @export
 #'
 #' @examples
@@ -81,7 +44,10 @@ CoreAlg <- function(X, y, absolute, abs_method) {
     if (i == 3) {
       nus <- 0.75
     }
-    model <- e1071::svm(X, y, type = "nu-regression", kernel = "linear", nu = nus, scale = F)
+    model <- e1071::svm(X, y,
+      type = "nu-regression", kernel = "linear",
+      nu = nus, scale = FALSE
+    )
     model
   }
 
@@ -115,23 +81,28 @@ CoreAlg <- function(X, y, absolute, abs_method) {
   # get and normalize coefficients
   q <- t(model$coefs) %*% model$SV
   q[which(q < 0)] <- 0
-  if (!absolute || abs_method == "sig.score") w <- (q / sum(q)) # relative space (returns fractions)
-  if (absolute && abs_method == "no.sumto1") w <- q # absolute space (returns scores)
+  # relative space (returns fractions)
+  if (!absolute || abs_method == "sig.score") w <- (q / sum(q))
+  # absolute space (returns scores)
+  if (absolute && abs_method == "no.sumto1") w <- q
 
   mix_rmse <- rmses[mn]
   mix_r <- corrv[mn]
 
-  newList <- list("w" = w, "mix_rmse" = mix_rmse, "mix_r" = mix_r)
+  list(w = w, mix_rmse = mix_rmse, mix_r = mix_r)
 }
 
 # do permutations
 #' Title
-#' @description doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
+#' @description doPerm performs permutation-based sampling and runs the CoreAlg
+#' function iteratively.
 #' @param perm Number of permutations to perform.
 #' @param X Input matrix or data frame containing the predictor variables.
 #' @param Y Numeric vector containing the response variable.
-#' @param absolute Logical value indicating whether to use absolute space or relative space for the weights.
-#' @param abs_method String indicating the method to calculate the weights in absolute space. Can be either 'sig.score' or 'no.sumto1'.
+#' @param absolute Logical value indicating whether to use absolute space or
+#'   relative space for the weights.
+#' @param abs_method String indicating the method to calculate the weights in
+#'   absolute space. Can be either 'sig.score' or 'no.sumto1'.
 #' @param seed Integer. Random seed for reproducibility. If NULL (default),
 #'   uses current random state. Set to a specific value for reproducible results.
 #'
@@ -152,8 +123,6 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
   dist <- matrix()
 
   while (itor <= perm) {
-    # print(itor)
-
     # random mixture
     yr <- as.numeric(Ylist[sample(length(Ylist), dim(X)[1])])
 
@@ -174,7 +143,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 
     itor <- itor + 1
   }
-  newList <- list("dist" = dist)
+  list(dist = dist)
 }
 
 
@@ -232,8 +201,8 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #' )
 #' str(result$dist)
 #' }
-parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 2,
-                            seed = NULL) {
+parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
+                            num_cores1 = 2, seed = NULL) {
   # 检查依赖包
   rlang::check_installed("foreach", reason = "for parallel permutation")
   rlang::check_installed("doParallel", reason = "for parallel backend")
@@ -252,7 +221,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
   on.exit(
     {
       parallel::stopCluster(cl)
-      foreach::registerDoSEQ() # 重置为顺序模式，避免影响后续代码
+      foreach::registerDoSEQ() # reset to sequential mode
     },
     add = TRUE
   )
@@ -263,7 +232,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
   dist <- foreach::foreach(
     itor = 1:perm1,
     .combine = rbind,
-    .export = c("perm_indices", "Y1", "X1", "absolute1", "abs_method1"), # 必须导出 perm_indices
+    .export = c("perm_indices", "Y1", "X1", "absolute1", "abs_method1"),
     .packages = "e1071"
   ) %dopar% {
     # 使用预计算的确定性索引
@@ -279,30 +248,43 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 }
 
 
-#' CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.
+#' CIBERSORT Deconvolution Algorithm
+#'
+#' An analytical tool to estimate cell type abundances in mixed cell populations
+#' using gene expression data.
 
-#' @param sig_matrix  Cell type GEP barcode matrix: row 1 = sample labels; column 1 = gene symbols; no missing values; default =LM22.txt download from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)
-#' @param mixture_file  GEP matrix: row 1 = sample labels; column 1 = gene symbols; no missing values
-#' @param perm Set permutations for statistical analysis (≥100 permutations recommended).
+#' @param sig_matrix Cell type GEP barcode matrix: row 1 = sample labels;
+#'   column 1 = gene symbols; no missing values; default = LM22.txt download
+#'   from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)
+#' @param mixture_file GEP matrix: row 1 = sample labels; column 1 = gene
+#'   symbols; no missing values
+#' @param perm Set permutations for statistical analysis
+#'   (>=100 permutations recommended).
 #' @param QN Quantile normalization of input mixture (default = TRUE)
-#' @param absolute  Run CIBERSORT in absolute mode (default = FALSE)
-#' - note that cell subsets will be scaled by their absolute levels and will not be represented as fractions
-#' (to derive the default output, normalize absolute levels such that they sum to 1 for each mixture sample)
-#' - the sum of all cell subsets in each mixture sample will be added to the ouput ('Absolute score').
-#' If LM22 is used, this score will capture total immune content.
-#' @param abs_method  if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'
-#' - sig.score = for each mixture sample, define S as the median expression
-#' level of all genes in the signature matrix divided by the median expression
-#' level of all genes in the mixture. Multiple cell subset fractions by S.
-#' - no.sumto1 = remove sum to 1 constraint
+#' @param absolute Run CIBERSORT in absolute mode (default = FALSE)
+#'   - note that cell subsets will be scaled by their absolute levels and
+#'     will not be represented as fractions (to derive the default output,
+#'     normalize absolute levels such that they sum to 1 for each mixture sample)
+#'   - the sum of all cell subsets in each mixture sample will be added to the
+#'     output ('Absolute score'). If LM22 is used, this score will capture
+#'     total immune content.
+#' @param abs_method If absolute is set to TRUE, choose method:
+#'   'no.sumto1' or 'sig.score'
+#'   - sig.score = for each mixture sample, define S as the median expression
+#'     level of all genes in the signature matrix divided by the median
+#'     expression level of all genes in the mixture. Multiple cell subset
+#'     fractions by S.
+#'   - no.sumto1 = remove sum to 1 constraint
 #' @param parallel Logical. Enable parallel execution? (default = FALSE)
-#' @param num_cores Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)
+#' @param num_cores Integer. Number of cores to use when \code{parallel = TRUE}
+#'   (default = 2)
 #' @param seed Integer. Random seed for reproducible permutation testing.
 #'   If \code{NULL} (default), uses current random state. Set to a specific
 #'   value (e.g., 123) for reproducible results across runs. Applies to both
 #'   parallel and serial permutation.
 #' @author Aaron M. Newman, Stanford University (amnewman@stanford.edu)
-#' @return A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
+#' @return A matrix object containing the estimated cibersort-cell fractions,
+#'   p-values, correlation coefficients, and RMSE values.
 #' @export
 #' @import parallel
 #' @import preprocessCore
@@ -322,9 +304,9 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 #' )
 #' head(cibersort)
 #' }
-CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute = FALSE,
-                      abs_method = "sig.score", parallel = FALSE, num_cores = 2,
-                      seed = NULL) {
+CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE,
+                      absolute = FALSE, abs_method = "sig.score",
+                      parallel = FALSE, num_cores = 2, seed = NULL) {
   if (is.null(sig_matrix)) {
     sig_matrix <- load_data("lm22")
   }
@@ -345,7 +327,7 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute
   # Handle duplicated gene symbols
   dups <- dim(Y)[1] - length(unique(Y[, 1]))
   if (dups > 0) {
-    warning(paste(dups, " duplicated gene symbol(s) found in mixture file!", sep = ""))
+    warning(paste(dups, "duplicated gene symbol(s) found in mixture file!"))
     rownames(Y) <- make.names(Y[, 1], unique = TRUE)
   } else {
     rownames(Y) <- Y[, 1]
@@ -393,7 +375,8 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute
   if (length(dim(Y)) != 2) {
     stop(
       "`mixture_file` became non-2D after preprocessing. ",
-      "This usually occurs when it has only one column and subsetting dropped dimensions. ",
+      "This usually occurs when it has only one column and subsetting ",
+      "dropped dimensions. ",
       "Please update package or ensure `mixture_file` is a matrix with drop = FALSE."
     )
   }
@@ -444,7 +427,9 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute
   }
 
   header <- c("Mixture", colnames(X), "P-value", "Correlation", "RMSE")
-  if (absolute) header <- c(header, paste("Absolute score (", abs_method, ")", sep = ""))
+  if (absolute) {
+    header <- c(header, paste0("Absolute score (", abs_method, ")"))
+  }
 
   # Core job function with explicit parameters (Windows-safe)
   coreJob <- function(itor, Y, X, absolute, abs_method, Ymedian, P, nulldist) {
@@ -509,7 +494,10 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute
   if (!absolute) {
     colnames(obj) <- c(colnames(X), "P-value", "Correlation", "RMSE")
   } else {
-    colnames(obj) <- c(colnames(X), "P-value", "Correlation", "RMSE", paste("Absolute score (", abs_method, ")", sep = ""))
+    colnames(obj) <- c(
+      colnames(X), "P-value", "Correlation", "RMSE",
+      paste0("Absolute score (", abs_method, ")")
+    )
   }
   obj
 }

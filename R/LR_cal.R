@@ -1,7 +1,8 @@
 #' LR_cal
 #'
 #' @description
-#' Quantifies ligand-receptor interactions in the tumor microenvironment from bulk gene expression
+#' Quantifies ligand-receptor interactions in the tumor microenvironment from
+#' bulk gene expression
 #'
 #' @param eset ExpressionSet object containing gene expression data.
 #' @param data_type Type of input data, possible values are "count" or "tpm".

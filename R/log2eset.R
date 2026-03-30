@@ -26,7 +26,6 @@
 #' eset <- log2eset(eset)
 #' }
 log2eset <- function(eset) {
-
   # Input validation
   if (is.null(eset)) {
     cli::cli_abort("{.arg eset} cannot be NULL.")
@@ -69,7 +68,12 @@ log2eset <- function(eset) {
     eset <- log2(eset + 1)
     cli::cli_alert_success("Applied log2 transformation")
   } else {
-    cli::cli_alert_info("Log2 transformation not necessary (data appears to already be log-scaled)")
+    cli::cli_alert_info(
+      paste(
+        "Log2 transformation not necessary",
+        "(data appears to already be log-scaled)"
+      )
+    )
   }
 
   eset

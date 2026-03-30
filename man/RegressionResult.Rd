@@ -7,38 +7,36 @@
 RegressionResult(train.x, train.y, test.x, test.y, model)
 }
 \arguments{
-\item{train.x}{A matrix or data frame of training predictors used to fit the model.}
+\item{train.x}{Training predictors matrix.}
 
-\item{train.y}{Training dataset outcomes, expected to be a binary vector indicating the presence or absence of an event.}
+\item{train.y}{Training outcomes.}
 
-\item{test.x}{A matrix or data frame of testing predictors used for evaluating the model.}
+\item{test.x}{Testing predictors matrix.}
 
-\item{test.y}{Testing dataset outcomes, expected to be similar in format to train.y.}
+\item{test.y}{Testing outcomes.}
 
-\item{model}{A model object from which coefficients will be extracted and used for evaluation.}
+\item{model}{Fitted model object.}
 }
 \value{
-A list containing the model object, a data frame of coefficients for different lambda values,
-        and a matrix of AUC values for both the training and testing sets, calculated at both lambda.min and lambda.1se.
+List containing model, coefficients, and AUC values.
 }
 \description{
-Computes the regression results for given training and testing datasets using a specified model.
-It calculates the coefficients at specified regularization strengths (lambda.min and lambda.1se) and
-evaluates the model's performance using Area Under the Curve (AUC) for binomial outcomes.
+Computes regression results with coefficients at lambda.min and lambda.1se,
+and evaluates AUC for binomial outcomes.
 }
 \examples{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 10), ncol = 10)
   train_outcome <- rbinom(100, 1, 0.5)
-  test_data <- matrix(rnorm(100 * 10), ncol = 10)
-  test_outcome <- rbinom(100, 1, 0.5)
-  # Use cv.glmnet for cross-validated model (required for lambda.min/lambda.1se)
+  test_data <- matrix(rnorm(50 * 10), ncol = 10)
+  test_outcome <- rbinom(50, 1, 0.5)
   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
   results <- RegressionResult(
     train.x = train_data, train.y = train_outcome,
-    test.x = test_data, test.y = test_outcome,
-    model = fitted_model
+    test.x = test_data, test.y = test_outcome, model = fitted_model
   )
+}
 }
 }

@@ -6,13 +6,13 @@
 \usage{
 sig_heatmap(
   input,
-  ID = "ID",
+  id = "ID",
   features,
   group,
-  condiction = NULL,
-  id_condiction = "vars",
-  col_condiction = "condiction",
-  cols_condiction = NULL,
+  condition = NULL,
+  id_condition = "vars",
+  col_condition = "condition",
+  cols_condition = NULL,
   scale = FALSE,
   palette = 2,
   cols_heatmap = NULL,
@@ -36,55 +36,64 @@ sig_heatmap(
 \arguments{
 \item{input}{Data frame containing ID, grouping variable, and feature columns.}
 
-\item{ID}{Character. Column name for sample identifier. Default "ID".}
+\item{id}{Character string. Column name for sample identifier. Default is `"ID"`.}
 
-\item{features}{Character vector. Feature (column) names to include.}
+\item{features}{Character vector. Feature (column) names to include in the heatmap.}
 
-\item{group}{Character. Grouping variable column name.}
+\item{group}{Character string. Grouping variable column name.}
 
-\item{condiction}{Data frame or NULL. Optional annotation table with variable-condition mapping.}
+\item{condition}{Data frame or `NULL`. Optional annotation table with
+variable-condition mapping. Default is `NULL`.}
 
-\item{id_condiction}{Character. Column name in condiction for feature IDs. Default "vars".}
+\item{id_condition}{Character string. Column name in `condition` for feature IDs.
+Default is `"vars"`.}
 
-\item{col_condiction}{Character. Column name in condiction for condition labels. Default "condiction".}
+\item{col_condition}{Character string. Column name in `condition` for condition
+labels. Default is `"condition"`.}
 
-\item{cols_condiction}{Character vector. Colors for conditions.}
+\item{cols_condition}{Character vector. Colors for conditions.}
 
-\item{scale}{Logical. Whether to scale values by row. Default FALSE.}
+\item{scale}{Logical indicating whether to scale values by row. Default is `FALSE`.}
 
-\item{palette}{Integer or character. Palette index/name for heatmap colors. Default 2.}
+\item{palette}{Integer or character. Palette index/name for heatmap colors.
+Default is `2`.}
 
-\item{cols_heatmap}{Character vector. Custom colors for heatmap.}
+\item{cols_heatmap}{Character vector. Custom colors for heatmap gradient.}
 
-\item{palette_group}{Character. Palette group for group colors. Default "jama".}
+\item{palette_group}{Character string. Palette name for group colors.
+Default is `"jama"`.}
 
-\item{show_col}{Logical. Whether to display color vector. Default FALSE.}
+\item{show_col}{Logical indicating whether to display the color vector.
+Default is `FALSE`.}
 
-\item{show_palettes}{Logical. Whether to print palette options. Default FALSE.}
+\item{show_palettes}{Logical indicating whether to print palette options.
+Default is `FALSE`.}
 
 \item{cols_group}{Character vector. Custom colors for groups.}
 
-\item{show_plot}{Logical. Whether to print the heatmap. Default TRUE.}
+\item{show_plot}{Logical indicating whether to print the heatmap. Default is `TRUE`.}
 
-\item{width}{Numeric. Plot width in inches. Default 8.}
+\item{width}{Numeric. Plot width in inches. Default is `8`.}
 
-\item{height}{Numeric or NULL. Plot height (auto-calculated if NULL).}
+\item{height}{Numeric or `NULL`. Plot height in inches. Auto-calculated if `NULL`.}
 
-\item{size_col}{Numeric. Font size for column labels. Default 10.}
+\item{size_col}{Numeric. Font size for column labels. Default is `10`.}
 
-\item{size_row}{Numeric. Font size for row labels. Default 8.}
+\item{size_row}{Numeric. Font size for row labels. Default is `8`.}
 
-\item{angle_col}{Numeric. Rotation angle for column labels. Default 90.}
+\item{angle_col}{Numeric. Rotation angle for column labels in degrees.
+Default is `90`.}
 
-\item{column_title}{Character or NULL. Column title.}
+\item{column_title}{Character string or `NULL`. Title for column annotation.}
 
-\item{row_title}{Character or NULL. Row title.}
+\item{row_title}{Character string or `NULL`. Title for row annotation.}
 
-\item{show_heatmap_col_name}{Logical. Show column names. Default FALSE.}
+\item{show_heatmap_col_name}{Logical indicating whether to show column names.
+Default is `FALSE`.}
 
-\item{path}{Character or NULL. Output directory.}
+\item{path}{Character string or `NULL`. Output directory for saving the heatmap.}
 
-\item{index}{Integer or NULL. Index appended to filename.}
+\item{index}{Integer or `NULL`. Index appended to filename. Default is `NULL`.}
 }
 \value{
 A tidyHeatmap object. Saves PDF only when `path` is provided.
@@ -95,11 +104,13 @@ with optional conditional (annotation) bars. Supports palette customization,
 scaling, size controls, and output saving.
 }
 \examples{
+\donttest{
 tcga_stad_sig <- load_data("tcga_stad_sig")
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 feas <- grep("MCPcounter", colnames(input), value = TRUE)
 sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
+}
 }
 \author{
 Dongqiang Zeng

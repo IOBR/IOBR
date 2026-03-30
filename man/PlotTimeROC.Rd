@@ -30,10 +30,10 @@ PlotTimeROC(
 
 \item{cols}{Optional vector of colors for plotting.}
 
-\item{palette}{Character string specifying color palette (default: \code{"jama"}).}
+\item{palette}{Character string specifying color palette. Default is `"jama"`.}
 }
 \value{
-A \code{ggplot} object representing the ROC curve plot.
+A `ggplot` object representing the ROC curve plot.
 }
 \description{
 Generates time-dependent ROC curves for evaluating prognostic accuracy of survival models.
@@ -41,7 +41,6 @@ Plots training and testing ROC curves at the 90th percentile survival time.
 }
 \examples{
 \dontrun{
-# Example usage with fitted model
 PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
 }
 }

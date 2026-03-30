@@ -1,9 +1,11 @@
 #' Annotate Gene Expression Matrix and Remove Duplicated Genes
 #'
 #' @description
-#' Annotates an expression matrix with gene symbols using provided annotation data,
+#' Annotates an expression matrix with gene symbols using provided annotation
+#' data,
 #' filters out missing or invalid symbols, handles duplicate gene entries, and
-#' removes uninformative rows. The function supports multiple aggregation methods
+#' removes uninformative rows. The function supports multiple aggregation
+#' methods
 #' for resolving duplicate gene symbols.
 #'
 #' @details
@@ -13,7 +15,8 @@
 #'   \item Matches probes between expression set and annotation data
 #'   \item Merges annotation with expression data
 #'   \item Handles duplicate gene symbols using specified aggregation method
-#'   \item Removes rows with all zeros, all NAs, or missing values in the first column
+#'   \item Removes rows with all zeros, all NAs, or missing values in the first
+#'     column
 #' }
 #'
 #' @param eset Expression matrix or ExpressionSet object containing gene
@@ -56,7 +59,6 @@ anno_eset <- function(eset,
                       symbol = "symbol",
                       probe = "probe_id",
                       method = "mean") {
-
   # Input validation
   if (is.null(eset)) {
     cli::cli_abort("{.arg eset} cannot be NULL.")
@@ -99,14 +101,18 @@ anno_eset <- function(eset,
   # Match probes
   matched_probes <- rownames(eset) %in% annotation$probe_id
   anno_count <- sum(matched_probes) / length(matched_probes)
-  cli::cli_alert_success(
-    "{format(100 * anno_count, digits = 2)}% of probes in expression set were annotated"
-  )
+  cli::cli_alert_success(paste0(
+    format(100 * anno_count, digits = 2),
+    "% of probes in expression set were annotated"
+  ))
 
   if (sum(matched_probes) == 0) {
     cli::cli_abort(c(
       "No probes matched between eset and annotation.",
-      "i" = "Check that probe ID formats match between eset rownames and annotation.",
+      "i" = paste(
+        "Check that probe ID formats match between eset rownames and",
+        "annotation."
+      ),
       "*" = "Example eset rowname: {.val {rownames(eset)[1]}}",
       "*" = "Example annotation probe: {.val {annotation$probe_id[1]}}"
     ))
@@ -114,7 +120,9 @@ anno_eset <- function(eset,
 
   # Filter eset to matched probes
   eset <- eset[matched_probes, , drop = FALSE]
-  annotation <- annotation[annotation$probe_id %in% rownames(eset), , drop = FALSE]
+  annotation <- annotation[annotation$probe_id %in% rownames(eset), ,
+    drop = FALSE
+  ]
 
   # Merge
   eset <- as.data.frame(eset)

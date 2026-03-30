@@ -29,7 +29,7 @@ gsva_use_new_api <- function() {
 
   # Check for new API functions (introduced in GSVA 1.50.0)
   use_new_api <- exists("gsvaParam", where = asNamespace("GSVA"), inherits = FALSE) &&
-                 exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
+    exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
 
   list(use_new_api = use_new_api, gsva_version = gsva_version)
 }
@@ -67,7 +67,7 @@ gsva_use_new_api <- function() {
 #'
 #' # Error handling with suggestions for similar names
 #' \dontrun{
-#' try(load_data("sign_tme"))  # Will suggest "signature_tme"
+#' try(load_data("sign_tme")) # Will suggest "signature_tme"
 #' }
 load_data <- function(name) {
   # Input validation
@@ -116,9 +116,11 @@ load_data <- function(name) {
 
   error_msg <- c(
     "Dataset {.val {name}} not found in IOBR package.",
-    "i" = paste("Available datasets:",
-                paste(utils::head(available, 50), collapse = ", "),
-                ifelse(length(available) > 50, "...", ""))
+    "i" = paste(
+      "Available datasets:",
+      paste(utils::head(available, 50), collapse = ", "),
+      ifelse(length(available) > 50, "...", "")
+    )
   )
 
   if (length(suggestions) > 0) {
