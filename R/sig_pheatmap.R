@@ -1,45 +1,62 @@
 #' Generate Heatmap for Signature Data
 #'
-#' This function creates a heatmap from signature data with grouping variables,
-#' offering flexible options for colors, clustering, and output formats.
+#' @description
+#' Creates a heatmap from signature data with grouping variables, offering
+#' flexible options for colors, clustering, and output formats using
+#' ComplexHeatmap.
 #'
 #' @param input Data frame with variables in columns.
-#' @param feas Vector of feature names (columns) to include in heatmap.
-#' @param group Column name for primary grouping variable.
-#' @param group2 Optional secondary grouping variable.
-#' @param group3 Optional tertiary grouping variable.
-#' @param ID Column name for sample identifiers. Default is "ID".
-#' @param path Directory to save output files. Default creates "Marker-heatmap-average".
-#' @param cols1 Colors for primary group. Default is "random".
-#' @param seed Random seed for color generation. Default is 54321.
-#' @param show_col Logical indicating whether to display colors. Default is FALSE.
-#' @param cluster_cols Logical indicating whether to cluster columns. Default is TRUE.
-#' @param palette_for_heatmape Palette number for heatmap. Default is 6.
-#' @param scale.matrix Logical indicating whether to scale the matrix. Default is TRUE.
-#' @param cellwidth Width of each cell in points. Default is 1.
-#' @param cellheight Height of each cell in points. Default is 9.
-#' @param fig.type File format for saving. Default is "pdf".
-#' @param width Width of saved figure in inches. Default is 6.
-#' @param height Height of saved figure in inches. Calculated if NULL.
-#' @param file_name_prefix Prefix for saved file name. Default is 1.
-#' @param cols2 Colors for secondary group. Default is "random".
-#' @param cols3 Colors for tertiary group. Default is "random".
-#' @param palette1 Palette for primary group. Default is 1.
-#' @param palette2 Palette for secondary group. Default is 2.
-#' @param palette3 Palette for tertiary group. Default is 3.
-#' @param show_colnames Logical indicating whether to show column names. Default is FALSE.
+#' @param feas Character vector. Feature names (columns) to include in heatmap.
+#' @param group Character string. Column name for primary grouping variable.
+#' @param group2 Character string or `NULL`. Optional secondary grouping variable.
+#' @param group3 Character string or `NULL`. Optional tertiary grouping variable.
+#' @param ID Character string. Column name for sample identifiers. Default is `"ID"`.
+#' @param path Character string or `NULL`. Directory to save output files.
+#'   Default creates `"Marker-heatmap-average"`.
+#' @param cols1 Character vector or `"random"` or `"normal"`. Colors for primary group.
+#'   Default is `"random"`.
+#' @param seed Integer. Random seed for color generation. Default is `54321`.
+#' @param show_col Logical indicating whether to display colors. Default is `FALSE`.
+#' @param cluster_cols Logical indicating whether to cluster columns. Default is `TRUE`.
+#' @param palette_for_heatmape Integer. Palette number for heatmap. Default is `6`.
+#' @param scale.matrix Logical indicating whether to scale the matrix. Default is `TRUE`.
+#' @param cellwidth Numeric. Width of each cell in points. Default is `1`.
+#' @param cellheight Numeric. Height of each cell in points. Default is `9`.
+#' @param fig.type Character string. File format for saving. Default is `"pdf"`.
+#' @param width Numeric. Width of saved figure in inches. Default is `6`.
+#' @param height Numeric or `NULL`. Height of saved figure in inches. Calculated if `NULL`.
+#' @param file_name_prefix Character or numeric. Prefix for saved file name. Default is `1`.
+#' @param cols2 Character vector or `"random"` or `"normal"`. Colors for secondary group.
+#'   Default is `"random"`.
+#' @param cols3 Character vector or `"random"` or `"normal"`. Colors for tertiary group.
+#'   Default is `"random"`.
+#' @param palette1 Integer. Palette for primary group. Default is `1`.
+#' @param palette2 Integer. Palette for secondary group. Default is `2`.
+#' @param palette3 Integer. Palette for tertiary group. Default is `3`.
+#' @param show_colnames Logical indicating whether to show column names. Default is `FALSE`.
 #'
-#' @return A list with annotation data, cluster colors, plot object, and transformed matrix.
+#' @return A list containing:
+#' \describe{
+#'   \item{p_anno}{Annotation data frame}
+#'   \item{p_cols}{List of cluster colors}
+#'   \item{plot}{ComplexHeatmap object}
+#'   \item{eset}{Transformed expression matrix}
+#' }
+#'
 #' @export
 #' @author Dongqiang Zeng
+#'
 #' @examples
+#' \donttest{
 #' tcga_stad_sig <- load_data("tcga_stad_sig")
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-#' feas <- colnames(input)[grep("MCPcounter", colnames(input))]
+#' feas <- grep("MCPcounter", colnames(input), value = TRUE)
 #' sig_pheatmap(input = input, feas = feas, group = "subtype", scale.matrix = TRUE)
-#'
-sig_pheatmap <- function(input, feas, group,
+#' }
+sig_pheatmap <- function(input,
+                         feas,
+                         group,
                          group2 = NULL,
                          group3 = NULL,
                          ID = "ID",
@@ -62,186 +79,115 @@ sig_pheatmap <- function(input, feas, group,
                          width = 6,
                          height = NULL,
                          file_name_prefix = 1) {
-  if (!is.null(path)) {
-    file_store <- path
-  } else {
-    file_store <- paste0("Marker-heatmap-average")
-  }
 
-  path <- creat_folder(file_store)
-  ###################################
+  rlang::check_installed("ComplexHeatmap")
+  rlang::check_installed("grid")
 
+  # Create output directory
+  file_store <- path %||% "Marker-heatmap-average"
+  path_obj <- creat_folder(file_store)
+
+  # Prepare input data
   input <- as.data.frame(input)
   feas <- feas[feas %in% colnames(input)]
 
-  colnames(input)[which(colnames(input) == ID)] <- "idd"
-  ###################################
-
-  eset <- input[, c("idd", feas)]
-  rownames(eset) <- NULL
-  eset <- column_to_rownames(eset, var = "idd")
-  if (scale.matrix == TRUE) eset <- scale(eset, scale = T, center = T)
-  eset <- t(eset)
-  ##################################
-
-  if (is.null(group3) & is.null(group2)) {
-    anno <- input[, c("idd", group)]
-  } else if (!is.null(group2) & is.null(group3)) {
-    anno <- input[, c("idd", group, group2)]
-  } else {
-    anno <- input[, c("idd", group, group2, group3)]
+  if (length(feas) == 0) {
+    cli::cli_abort("No valid features found in input")
   }
 
-  rownames(anno) <- anno$idd
-  anno$idd <- NULL
+  if (!ID %in% colnames(input)) {
+    cli::cli_abort("ID column {.val {ID}} not found in input")
+  }
+
+  if (!group %in% colnames(input)) {
+    cli::cli_abort("Group column {.val {group}} not found in input")
+  }
+
+  # Create expression matrix
+  eset <- input[, c(ID, feas), drop = FALSE]
+  rownames(eset) <- NULL
+  eset <- tibble::column_to_rownames(eset, var = ID)
+
+  if (scale.matrix) {
+    eset <- scale(eset, scale = TRUE, center = TRUE)
+  }
+  eset <- t(eset)
+
+  # Create annotation data frame
+  anno_cols <- c(ID, group)
+  if (!is.null(group2)) anno_cols <- c(anno_cols, group2)
+  if (!is.null(group3)) anno_cols <- c(anno_cols, group3)
+
+  anno <- input[, anno_cols, drop = FALSE]
+  rownames(anno) <- anno[[ID]]
+  anno[[ID]] <- NULL
   anno[] <- lapply(anno, as.character)
-  ###################################
 
+  # Get heatmap palette
+  mapal <- palettes(
+    category = "heatmap",
+    palette = palette_for_heatmape,
+    counts = 200,
+    show_col = show_col
+  )
 
-  mapal <- palettes(category = "heatmap", palette = palette_for_heatmape, counts = 200, show_col = show_col)
-
+  # Calculate height
   if (is.null(height)) {
-    # if(is.null(group)) stop("group must be define")
     height <- 2 + length(feas) * 0.25
   }
-  ####################################################
 
+  # Generate group colors
+  cluster_colors <- list()
 
-  ##############################################
-  if (length(cols1) == 1) {
-    if (cols1 == "random") {
-      mycols1 <- palettes(category = "random", palette = palette1, show_col = show_col, show_message = FALSE)
-      message(">>>> Default seed is 123, you can change it by `seed`(parameter).")
-      set.seed(seed)
-      mycols1 <- mycols1[sample(length(mycols1), length(mycols1))]
-      if (show_col) scales::show_col(mycols1)
-    } else if (cols1 == "normal") {
-      mycols1 <- palettes(category = "random", palette = palette1, show_col = show_col, show_message = FALSE)
-    }
-  } else {
-    mycols1 <- cols1
-    if (show_col) scales::show_col(mycols1)
-  }
-  ####################################################
-
-  ##############################################
-  if (!is.null(group2)) {
-    if (length(cols2) == 1) {
-      if (cols2 == "random") {
-        mycols2 <- palettes(category = "random", palette = palette2, show_col = show_col, show_message = FALSE)
-        message(">>>> Default seed is 123, you can change it by `seed`(parameter).")
-        set.seed(seed)
-        mycols2 <- mycols2[sample(length(mycols2), length(mycols2))]
-        if (show_col) scales::show_col(mycols2)
-      } else if (cols2 == "normal") {
-        mycols2 <- palettes(category = "random", palette = palette2, show_col = show_col, show_message = FALSE)
-      }
-    } else {
-      mycols2 <- cols2
-      if (show_col) scales::show_col(mycols2)
-    }
-  }
-
-  ##############################################
-  if (!is.null(group3)) {
-    if (length(cols3) == 1) {
-      if (cols3 == "random") {
-        mycols3 <- palettes(category = "random", palette = palette3, show_col = show_col, show_message = FALSE)
-        message(">>>> Default seed is 123, you can change it by `seed`(parameter).")
-        set.seed(seed)
-        mycols3 <- mycols3[sample(length(mycols3), length(mycols3))]
-        if (show_col) scales::show_col(mycols3)
-      } else if (cols3 == "normal") {
-        mycols3 <- palettes(category = "random", palette = palette3, show_col = show_col, show_message = FALSE)
-      }
-    } else {
-      mycols3 <- cols3
-      if (show_col) scales::show_col(mycols3)
-    }
-  }
-
+  # Primary group colors
+  mycols1 <- .get_group_colors(cols1, palette1, seed, show_col)
   lev1 <- unique(as.character(input[[group]]))
   lev1 <- lev1[!is.na(lev1)]
-  cluster_vec1 <- mycols1[seq_along(lev1)]
-  names(cluster_vec1) <- lev1
-  cluster_colors1 <- list()
-  cluster_colors1[[group]] <- cluster_vec1
-  ######################################################
+  cluster_colors[[group]] <- stats::setNames(mycols1[seq_along(lev1)], lev1)
+
+  # Secondary group colors
   if (!is.null(group2)) {
+    if (!group2 %in% colnames(input)) {
+      cli::cli_abort("Group2 column {.val {group2}} not found in input")
+    }
+    mycols2 <- .get_group_colors(cols2, palette2, seed, show_col)
     lev2 <- unique(as.character(input[[group2]]))
     lev2 <- lev2[!is.na(lev2)]
-    cluster_vec2 <- mycols2[seq_along(lev2)]
-    names(cluster_vec2) <- lev2
-    cluster_colors2 <- list()
-    cluster_colors2[[group2]] <- cluster_vec2
+    cluster_colors[[group2]] <- stats::setNames(mycols2[seq_along(lev2)], lev2)
   }
-  ######################################################
+
+  # Tertiary group colors
   if (!is.null(group3)) {
+    if (!group3 %in% colnames(input)) {
+      cli::cli_abort("Group3 column {.val {group3}} not found in input")
+    }
+    mycols3 <- .get_group_colors(cols3, palette3, seed, show_col)
     lev3 <- unique(as.character(input[[group3]]))
     lev3 <- lev3[!is.na(lev3)]
-    cluster_vec3 <- mycols3[seq_along(lev3)]
-    names(cluster_vec3) <- lev3
-    cluster_colors3 <- list()
-    cluster_colors3[[group3]] <- cluster_vec3
-  }
-  ######################################################
-
-  if (is.null(group3) & is.null(group2)) {
-    cluster_colors <- cluster_colors1
-  } else if (!is.null(group2) & is.null(group3)) {
-    cluster_colors <- c(cluster_colors1, cluster_colors2)
-  } else {
-    cluster_colors <- c(cluster_colors1, cluster_colors2, cluster_colors3)
+    cluster_colors[[group3]] <- stats::setNames(mycols3[seq_along(lev3)], lev3)
   }
 
   print(cluster_colors)
-  #######################################################
 
-  # pdf(paste0(path$abspath, "2-markers-heatmap-of-average-", group, ".", fig.type), width = width, height = height)
-  # p <- pheatmap::pheatmap(
-  #   eset,
-  #   color             = mapal, # colorRampPalette(c("darkblue", "white", "red3"))(99), #heatmap color
-  #   scale             = "none",
-  #   cluster_rows      = T,
-  #   cluster_cols      = cluster_cols, # clustered by columns
-  #   cellwidth         = cellwidth,
-  #   cellheight        = cellheight,
-  #   treeheight_col    = 6,
-  #   treeheight_row    = 6,
-  #   clustering_method = "complete",
-  #   show_rownames     = T, # show cluster names
-  #   show_colnames     = show_colnames,
-  #   angle_col         = "45",
-  #   # annotation_row    = annotation_row,
-  #   annotation_col    = anno,
-  #   annotation_colors = cluster_colors,
-  #   fontsize          = 6,
-  #   silent            =  T
-  # ) # The color for clusters are sames as previous setting
-  # dev.off()
-  # print(p)
-  ## 1. 构造矩阵（沿用你已有的 eset）
-  mat <- as.matrix(eset) # 若已是矩阵可省
-
-  ## 2. 颜色向量（沿用你已有的 mapal）
+  # Create heatmap
+  mat <- as.matrix(eset)
   col_fun <- grDevices::colorRampPalette(mapal)
 
-  ## 3. 构造列注释（等效 annotation_col + annotation_colors）
-  if (!is.null(anno)) {
+  # Column annotation
+  ha_top <- NULL
+  if (!is.null(anno) && ncol(anno) > 0) {
     ha_top <- ComplexHeatmap::HeatmapAnnotation(
       df = anno,
-      col = cluster_colors, # 你已有的颜色列表
+      col = cluster_colors,
       annotation_name_gp = grid::gpar(fontsize = 6)
     )
-  } else {
-    ha_top <- NULL
   }
 
-  ## 4. 绘制 Heatmap
+  # Draw heatmap
   ht <- ComplexHeatmap::Heatmap(
     mat,
-    name = "value", # 图例标题
-    col = col_fun(256), # 颜色
+    name = "value",
+    col = col_fun(256),
     cluster_rows = TRUE,
     cluster_columns = cluster_cols,
     show_row_names = TRUE,
@@ -253,20 +199,60 @@ sig_pheatmap <- function(input, feas, group,
     row_title = NULL
   )
 
-  ## 5. 保存文件（等效 filename）
-  outfile <- file.path(path$folder_name, paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type))
-  pdf(outfile, width = width, height = height)
+  # Save output
+  outfile <- file.path(
+    path_obj$folder_name,
+    paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type)
+  )
+
+  if (fig.type == "pdf") {
+    grDevices::pdf(outfile, width = width, height = height)
+  } else if (fig.type %in% c("png", "jpg", "jpeg", "tiff")) {
+    # Handle other formats if needed
+    cli::cli_alert_warning("Only PDF format is fully supported; saving as PDF")
+    grDevices::pdf(outfile, width = width, height = height)
+  }
+
   ComplexHeatmap::draw(ht)
-  invisible(dev.off())
+  grDevices::dev.off()
 
-  # p
-  # ggsave(p,
-  #   filename = paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type),
-  #   width = width,
-  #   height = height,
-  #   path = path$folder_name
-  # )
+  cli::cli_alert_success("Heatmap saved to: {.path {outfile}}")
 
-  res <- list("p_anno" = anno, "p_cols" = cluster_colors, "plot" = ht, "eset" = eset)
-  return(res)
+  list(
+    p_anno = anno,
+    p_cols = cluster_colors,
+    plot = ht,
+    eset = eset
+  )
+}
+
+#' Get Group Colors
+#' @keywords internal
+#' @noRd
+.get_group_colors <- function(cols, palette, seed, show_col) {
+  if (length(cols) == 1 && cols %in% c("random", "normal")) {
+    mycols <- palettes(
+      category = "random",
+      palette = palette,
+      show_col = FALSE,
+      show_message = FALSE
+    )
+
+    if (cols == "random") {
+      cli::cli_alert_info("Using random seed: {seed}")
+      set.seed(seed)
+      mycols <- sample(mycols)
+      if (show_col) {
+        rlang::check_installed("scales")
+        scales::show_col(mycols)
+      }
+    }
+    mycols
+  } else {
+    if (show_col) {
+      rlang::check_installed("scales")
+      scales::show_col(cols)
+    }
+    cols
+  }
 }

@@ -8,73 +8,98 @@
 #' @param pdata Data frame containing survival time, event status, and predictor variables.
 #' @param variable Character vector specifying the names of predictor variables to analyze.
 #' @param time Character string specifying the column name containing follow-up time.
-#'   Default is \code{"time"}.
+#'   Default is `"time"`.
 #' @param status Character string specifying the column name containing event status
-#'   (1 = event occurred, 0 = censored). Default is \code{"status"}.
+#'   (1 = event occurred, 0 = censored). Default is `"status"`.
 #' @param best_cutoff Logical indicating whether to compute optimal cutoffs for
-#'   continuous variables and analyze dichotomized versions. Default is \code{FALSE}.
+#'   continuous variables and analyze dichotomized versions. Default is `FALSE`.
 #'
 #' @return Data frame containing hazard ratios (HR), 95% confidence intervals (CI),
 #'   and p-values for each variable, sorted by p-value.
 #'
 #' @author Dongqiang Zeng
 #' @export
-#' @importFrom survival coxph
-#' @importFrom survival Surv
+#'
 #' @examples
+#' \donttest{
 #' # Load TCGA-STAD microenvironment signature data
 #' sig_stad <- load_data("sig_stad")
 #' # Perform batch survival analysis
 #' batch_surv(
-#'   pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
-#'   time = "OS_time", status = "OS_status"
+#'   pdata = sig_stad,
+#'   variable = colnames(sig_stad)[69:ncol(sig_stad)],
+#'   time = "OS_time",
+#'   status = "OS_status"
 #' )
+#' }
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
+
   pdata <- as.data.frame(pdata)
 
-  colnames(pdata)[which(colnames(pdata) == time)] <- "time_iobr"
-  colnames(pdata)[which(colnames(pdata) == status)] <- "status_iobr"
+  # Validate columns
+  if (!time %in% colnames(pdata)) {
+    cli::cli_abort("Time column {.val {time}} not found in pdata")
+  }
+  if (!status %in% colnames(pdata)) {
+    cli::cli_abort("Status column {.val {status}} not found in pdata")
+  }
 
-  pdata <- pdata[!is.na(pdata$time_iobr), ]
-  pdata <- pdata[!is.na(pdata$status_iobr), ]
+  # Standardize column names
+  colnames(pdata)[colnames(pdata) == time] <- "time_iobr"
+  colnames(pdata)[colnames(pdata) == status] <- "status_iobr"
+
+  # Remove NA values
+  pdata <- pdata[!is.na(pdata$time_iobr) & !is.na(pdata$status_iobr), ]
+
+  if (nrow(pdata) == 0) {
+    cli::cli_abort("No valid data after removing NA values")
+  }
 
   pdata$time_iobr <- as.numeric(pdata$time_iobr)
   pdata$status_iobr <- as.numeric(pdata$status_iobr)
-  #################################################
-  if (best_cutoff == TRUE) {
-    for (i in 1:length(variable)) {
+
+  # Apply best cutoff if requested
+  if (best_cutoff) {
+    for (i in seq_along(variable)) {
       var <- variable[i]
-      print(paste0(">>>-- Variable: ", var))
-      pdata <- best_cutoff(pdata = pdata, time = "time_iobr", status = "status_iobr", variable = var, PrintResult = FALSE)
-      pdata[, paste0(var, "_binary")] <- ifelse(pdata[, paste0(var, "_binary")] == "High", 1, 0)
+      cli::cli_alert_info("Processing variable: {.val {var}}")
+
+      pdata <- best_cutoff(
+        pdata = pdata,
+        time = "time_iobr",
+        status = "status_iobr",
+        variable = var,
+        PrintResult = FALSE
+      )
+
+      binary_col <- paste0(var, "_binary")
+      pdata[[binary_col]] <- ifelse(pdata[[binary_col]] == "High", 1, 0)
     }
-    # print(pdata)
     variable <- paste0(variable, "_binary")
   }
-  #################################################
+
+  # Run Cox models
   result_list <- lapply(
-    pdata[, variable],
-    function(x) {
-      survival::coxph(
-        survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ x,
-        data = pdata[, variable]
+    variable,
+    function(var) {
+      fit <- survival::coxph(
+        survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ pdata[[var]],
+        data = pdata
       )
+      getHRandCIfromCoxph(fit)
     }
   )
-  result <- data.frame(NULL)
-  for (i in 1:length(result_list)) {
-    result1 <- getHRandCIfromCoxph(result_list[[i]])
-    rownames(result1) <- variable[i]
-    result <- rbind(result, result1)
-  }
-  # result[result>1000]<-Inf
 
-  result <- result[order(result$P, decreasing = F), ]
-  result <- tibble::rownames_to_column(result, var = "ID")
+  # Combine results
+  result <- dplyr::bind_rows(result_list)
+  result$ID <- variable
 
-  if (best_cutoff == TRUE) {
-    result$ID <- gsub(result$ID, pattern = "_binary", replacement = "")
+  if (best_cutoff) {
+    result$ID <- gsub("_binary$", "", result$ID)
   }
-  result <- tibble::as_tibble(result)
-  return(result)
+
+  result <- result[order(result$P, decreasing = FALSE), ]
+  rownames(result) <- NULL
+
+  tibble::as_tibble(result)
 }

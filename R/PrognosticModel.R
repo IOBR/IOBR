@@ -1,29 +1,32 @@
 #' Build Prognostic Models Using LASSO and Ridge Regression
 #'
 #' @description
-#' Prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models
-#' for survival analysis. Evaluates model performance using cross-validation and optionally generates
-#' time-dependent ROC curves for visual assessment of predictive accuracy.
+#' Prepares data, splits it into training and testing sets, and fits LASSO and Ridge
+#' regression models for survival analysis. Evaluates model performance using
+#' cross-validation and optionally generates time-dependent ROC curves for visual
+#' assessment of predictive accuracy.
 #'
 #' @param x A matrix or data frame of predictor variables (features).
 #' @param y A data frame of survival outcomes with two columns: survival time and event status.
-#' @param scale Logical indicating whether to scale predictor variables. Default is \code{FALSE}.
-#' @param seed Integer seed for random number generation to ensure reproducibility. Default is \code{123456}.
-#' @param train_ratio Numeric proportion of data for training (e.g., 0.7). Default is \code{0.7}.
-#' @param nfold Integer number of folds for cross-validation. Default is \code{10}.
-#' @param plot Logical indicating whether to plot ROC curves. Default is \code{TRUE}.
-#' @param cols Optional vector of colors for ROC curves. If \code{NULL}, uses default palette.
-#' @param palette String specifying color palette. Default is \code{"jama"}.
+#' @param scale Logical indicating whether to scale predictor variables. Default is `FALSE`.
+#' @param seed Integer seed for random number generation to ensure reproducibility.
+#'   Default is `123456`.
+#' @param train_ratio Numeric proportion of data for training (e.g., 0.7). Default is `0.7`.
+#' @param nfold Integer number of folds for cross-validation. Default is `10`.
+#' @param plot Logical indicating whether to plot ROC curves. Default is `TRUE`.
+#' @param cols Optional vector of colors for ROC curves. If `NULL`, uses default palette.
+#' @param palette String specifying color palette. Default is `"jama"`.
 #'
 #' @return A list containing:
-#' - `lasso_result`: Results from LASSO model including coefficients and AUC
-#' - `ridge_result`: Results from Ridge model including coefficients and AUC
-#' - `train.x`: Training data with sample IDs
+#' \describe{
+#'   \item{lasso_result}{Results from LASSO model including coefficients and AUC}
+#'   \item{ridge_result}{Results from Ridge model including coefficients and AUC}
+#'   \item{train.x}{Training data with sample IDs}
+#' }
+#'
 #' @author Dongqiang Zeng
 #' @export
-#' @importFrom glmnet cv.glmnet
-#' @import dplyr
-#' @import ggplot2
+#'
 #' @examples
 #' \dontrun{
 #' imvigor210_sig <- load_data("imvigor210_sig")
@@ -37,17 +40,21 @@
 #'   train_ratio = 0.7, nfold = 10, plot = TRUE
 #' )
 #' }
-PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
+PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7,
+                            nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
+
+  rlang::check_installed("glmnet")
+
   x <- as.data.frame(x)
   y <- as.data.frame(y)
 
-  message(paste0(">>> Processing data"))
+  cli::cli_alert_info("Processing data")
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "survival")
   x_scale <- processdat$x_scale
   y <- processdat$y
   x_ID <- processdat$x_ID
 
-  message(paste0(">>> Spliting data into training and validation data"))
+  cli::cli_alert_info("Splitting data into training and validation sets")
   train_test <- SplitTrainTest(
     x = x_scale, y = y, train_ratio = train_ratio,
     type = "survival", seed = seed
@@ -59,13 +66,14 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 
-  message(paste0(">>> Running ", "LASSO"))
+  cli::cli_alert_info("Running LASSO")
   set.seed(seed)
   lasso_model <- glmnet::cv.glmnet(
     x = train.x, y = as.matrix(train.y),
     family = "cox", alpha = 1, nfolds = nfold
   )
   lasso_result <- PrognosticResult(model = lasso_model, train.x, train.y, test.x, test.y)
+
   if (plot) {
     p1 <- PlotTimeROC(
       train.x = train.x, train.y = train.y,
@@ -73,10 +81,12 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
     )
   }
 
-  message(paste0(">>> Running ", "RIDGE REGRESSION"))
-
+  cli::cli_alert_info("Running RIDGE REGRESSION")
   set.seed(seed)
-  ridge_model <- glmnet::cv.glmnet(x = train.x, y = as.matrix(train.y), family = "cox", alpha = 0, nfolds = nfold)
+  ridge_model <- glmnet::cv.glmnet(
+    x = train.x, y = as.matrix(train.y),
+    family = "cox", alpha = 0, nfolds = nfold
+  )
   ridge_result <- PrognosticResult(model = ridge_model, train.x, train.y, test.x, test.y)
 
   if (plot) {
@@ -85,41 +95,44 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
       test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE"
     )
   }
-  message(paste0(">>> Done !"))
+
+  cli::cli_alert_success("Model fitting complete")
+
   if (plot) {
     p <- p1 + p2
     print(p)
   } else {
     p <- NULL
   }
-  return(list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x))
+
+  list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x)
 }
 
 #' Compute Prognostic Results for Survival Models
 #'
 #' @description
-#' Computes and compiles prognostic results from a survival model fitted with \code{glmnet}.
-#' Extracts model coefficients at optimal lambda values (\code{lambda.min} and \code{lambda.1se})
+#' Computes and compiles prognostic results from a survival model fitted with `glmnet`.
+#' Extracts model coefficients at optimal lambda values (`lambda.min` and `lambda.1se`)
 #' and calculates time-dependent AUC metrics for both training and testing datasets.
 #'
-#' @param model A fitted survival model object (e.g., from \code{glmnet::cv.glmnet}).
+#' @param model A fitted survival model object (e.g., from `glmnet::cv.glmnet`).
 #' @param train.x Matrix or data frame of training predictors.
 #' @param train.y Training dataset survival outcomes (time and status).
 #' @param test.x Matrix or data frame of testing predictors.
 #' @param test.y Testing dataset survival outcomes (time and status).
 #'
 #' @return A list containing:
-#' - `model`: The fitted model object
-#' - `coefs`: Data frame of coefficients at `lambda.min` and `lambda.1se`
-#' - `AUC`: Data frame with AUC values for train/test at both lambda values
+#' \describe{
+#'   \item{model}{The fitted model object}
+#'   \item{coefs}{Data frame of coefficients at `lambda.min` and `lambda.1se`}
+#'   \item{AUC}{Data frame with AUC values for train/test at both lambda values}
+#' }
 #'
 #' @author Dongqiang Zeng
 #' @export
-#' @importFrom stats coef
-#' @importFrom purrr pmap
+#'
 #' @examples
 #' \dontrun{
-#' # Example with a fitted glmnet Cox model
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- list(
@@ -137,7 +150,6 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #'   )
 #' }
 #' }
-#' @export
 PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
   # Extract coefficients
   coefs <- cbind(
@@ -158,7 +170,6 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
     acture.y = list(train.y, train.y, test.y, test.y)
   )
 
-  # Explicitly pass parameters to avoid pmap misalignment
   auc_list <- purrr::pmap(
     args,
     function(newx, s, acture.y) {
@@ -166,16 +177,14 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
     }
   )
 
-  auc <- do.call(rbind, auc_list)
+  auc <- dplyr::bind_rows(auc_list)
   rownames(auc) <- c(
     "Train_lambda.min", "Train_lambda.1se",
     "Test_lambda.min", "Test_lambda.1se"
   )
 
-  resultreturn <- list(model = model, coefs = coefs, AUC = auc)
-  return(resultreturn)
+  list(model = model, coefs = coefs, AUC = auc)
 }
-
 
 #' Calculate Time-Dependent AUC for Survival Models
 #'
@@ -186,14 +195,14 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #'
 #' @param model A fitted survival model object capable of generating risk scores.
 #' @param newx A matrix or data frame of new data for prediction.
-#' @param s Lambda value for prediction. Can be numeric or \code{"lambda.min"}/\code{"lambda.1se"}.
-#' @param acture.y Data frame with \code{time} and \code{status} columns.
+#' @param s Lambda value for prediction. Can be numeric or `"lambda.min"`/`"lambda.1se"`.
+#' @param acture.y Data frame with `time` and `status` columns.
 #'
-#' @return A data frame with AUC values at 30th (\code{probs.3}) and 90th (\code{probs.9}) percentiles.
+#' @return A data frame with AUC values at 30th (`probs.3`) and 90th (`probs.9`) percentiles.
+#'
 #' @author Dongqiang Zeng
 #' @export
-#' @importFrom stats predict
-#' @importFrom timeROC timeROC
+#'
 #' @examples
 #' \dontrun{
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
@@ -205,10 +214,10 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
 #' }
 #' }
-#' @export
 PrognosticAUC <- function(model, newx, s, acture.y) {
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
+
   ROC <- with(
     timerocDat,
     timeROC::timeROC(
@@ -220,36 +229,33 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
       iid = TRUE
     )
   )
-  AUC <- data.frame(probs.3 = ROC$AUC[1], probs.9 = ROC$AUC[2])
-  return(AUC)
-}
 
+  data.frame(probs.3 = ROC$AUC[1], probs.9 = ROC$AUC[2])
+}
 
 #' Calculate Time-Dependent ROC Curve
 #'
 #' @description
-#' Computes time-dependent ROC curve for survival models using the \code{timeROC} package.
+#' Computes time-dependent ROC curve for survival models using the `timeROC` package.
 #' Evaluates predictive accuracy at a specified time quantile.
 #'
 #' @param model A fitted survival model object.
 #' @param newx A matrix or data frame of new data for prediction.
 #' @param s Lambda value for prediction.
-#' @param acture.y Data frame with \code{time} and \code{status} columns.
+#' @param acture.y Data frame with `time` and `status` columns.
 #' @param modelname Character string for model identification.
-#' @param time_prob Numeric quantile for ROC calculation (default: \code{0.9}).
+#' @param time_prob Numeric quantile for ROC calculation. Default is `0.9`.
 #'
-#' @return An object of class \code{timeROC} containing ROC curve information.
+#' @return An object of class `timeROC` containing ROC curve information.
+#'
 #' @author Dongqiang Zeng
 #' @export
-#' @importFrom stats predict
-#' @importFrom timeROC timeROC
+#'
 #' @examples
 #' \dontrun{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'     requireNamespace("survival", quietly = TRUE)) {
-#'   # Use lung dataset and remove missing values
 #'   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
-#'   # Convert status to 0/1 for glmnet Cox model
 #'   dat$status <- dat$status - 1
 #'   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
 #'   y <- survival::Surv(dat$time, dat$status)
@@ -262,14 +268,10 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #'   print(roc_info$AUC)
 #' }
 #' }
-#' @export
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
-  # Ensure survival package is available
-  if (!exists("Surv", mode = "function")) {
-    stop("Surv function not available. Please ensure survival package is loaded.")
-  }
+
   ROC <- with(
     timerocDat,
     timeROC::timeROC(
@@ -281,7 +283,8 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
       iid = TRUE
     )
   )
-  return(ROC)
+
+  ROC
 }
 
 #' Plot Time-Dependent ROC Curves
@@ -297,22 +300,22 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #' @param model Fitted survival model object.
 #' @param modelname Character string for model identification.
 #' @param cols Optional vector of colors for plotting.
-#' @param palette Character string specifying color palette (default: \code{"jama"}).
+#' @param palette Character string specifying color palette. Default is `"jama"`.
 #'
-#' @return A \code{ggplot} object representing the ROC curve plot.
+#' @return A `ggplot` object representing the ROC curve plot.
+#'
 #' @author Dongqiang Zeng
 #' @export
+#'
 #' @examples
 #' \dontrun{
-#' # Example usage with fitted model
 #' PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
 #' }
-#' @export
-PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama") {
+PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
+                        cols = NULL, palette = "jama") {
+
   if (is.null(cols)) {
     cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
-  } else {
-    cols <- cols
   }
 
   args <- list(
@@ -327,7 +330,8 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols
       PrognosticAUC(model = model, newx = newx, s = s, acture.y = acture.y)
     }
   )
-  auc <- do.call(rbind, auc_list)
+
+  auc <- dplyr::bind_rows(auc_list)
   rownames(auc) <- c(
     "Train_lambda.min", "Train_lambda.1se",
     "Test_lambda.min", "Test_lambda.1se"
@@ -337,48 +341,40 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname, cols
     args,
     function(newx, s, acture.y) {
       CalculateTimeROC(
-        model = model,
-        newx = newx,
-        s = s,
-        acture.y = acture.y,
-        modelname = modelname
+        model = model, newx = newx, s = s,
+        acture.y = acture.y, modelname = modelname
       )
     }
   )
 
   aucs <- round(auc$probs.9, 2)
-  legend.name <- paste(c(
-    "train_lambda.min", "train_lambda.1se",
-    "test_lambda.min", "test_lambda.1se"
-  ), "AUC", aucs, sep = " ")
+  legend.name <- paste(
+    c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se"),
+    "AUC", aucs, sep = " "
+  )
   names(roclist) <- c(
     "train_lambda.min", "train_lambda.1se",
     "test_lambda.min", "test_lambda.1se"
   )
 
-  plotdat <- lapply(roclist, function(z) {
+  plotdat <- purrr::map_dfr(roclist, function(z) {
     data.frame(x = z$FP[, 2], y = z$TP[, 2])
-  }) %>% plyr::ldply(., .fun = "rbind", .id = "s")
+  }, .id = "s")
+
   plotdat$s <- factor(plotdat$s, levels = names(roclist))
 
-  p <- ggplot2::ggplot(plotdat, aes(x = x, y = y)) +
-    geom_path(aes(color = s)) +
-    geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
-    xlab("False positive rate") +
-    ylab("True positive rate") +
-    theme_bw() +
-    scale_color_manual(
-      values = cols,
-      labels = legend.name
-    ) +
-    ggtitle(paste0(stringr::str_replace(modelname, "_", " "), "\nROC at time quantile 0.9")) +
-    theme(legend.title = element_blank()) +
-    theme(
-      plot.title = element_text(size = rel(1.5), hjust = 0.5),
-      axis.text.x = element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
-      axis.text.y = element_text(face = "plain", angle = 0, hjust = 1, color = "black")
+  ggplot2::ggplot(plotdat, ggplot2::aes(x = .data$x, y = .data$y, color = .data$s)) +
+    ggplot2::geom_path(linewidth = 1) +
+    ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+    ggplot2::xlab("False positive rate") +
+    ggplot2::ylab("True positive rate") +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_manual(values = cols, labels = legend.name) +
+    ggplot2::ggtitle(paste0(stringr::str_replace(modelname, "_", " "), "\nROC at time quantile 0.9")) +
+    ggplot2::theme(
+      legend.title = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(size = ggplot2::rel(1.5), hjust = 0.5),
+      axis.text.x = ggplot2::element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
+      axis.text.y = ggplot2::element_text(face = "plain", angle = 0, hjust = 1, color = "black")
     )
-
-  # ggplot2::ggsave(paste0(foldername, "/", modelname, "_ROC.pdf"), plot = p, width = 6, height = 4)
-  return(p)
 }

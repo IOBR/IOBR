@@ -1,144 +1,219 @@
-#' Calculate and Visualize Correlation Matrix between Two Variable Sets
-#' @description The "get_cor_matrix" function calculates and visualizes the correlation matrix between two sets of variables in a dataset. It provides flexibility in defining correlation methods, handling missing values, and incorporating additional data. The function supports various correlation methods, such as Pearson correlation, and displays the correlation result in a customizable plot. The plot includes color-coded tiles representing the correlation value between each pair of variables. Additionally, the function offers options to save the plot and data for further analysis.
-#' @param data The input dataset for correlation analysis. Genes or signatures in columns. If data is a matrix, please set `is.matrix` = TRUE, and data will be t()
-#' @param feas1  A vector of variable names representing the first set of variables for correlation analysis.
-#' @param feas2 A vector of variable names representing the second set of variables for correlation analysis.
-#' @param method The method used to calculate correlation. Default is "pearson".
-#' @param path The path to save the correlation plot. If not specified, the plot will be saved in a folder named "index-cor_matrix_plot".
-#' @param index A numeric value used for naming the output plot file. Default is 1.
-#' @param fig.type The file format of the output plot. Default is "pdf".
-#' @param width The width of the output plot.
-#' @param height The height of the output plot.
-#' @param project The name of the project or analysis. This will be used as the plot title. Default is NULL.
-#' @param is.matrix A logical value indicating whether the input data is a matrix. Default is FALSE.
-#' @param scale A logical value indicating whether to scale the data before correlation analysis. Default is TRUE.
-#' @param font.size The font size of the axis labels and tick marks in the plot. Default is 15.
-#' @param fill_by_cor A logical value indicating whether to fill the tiles in the plot according to the correlation values. Default is FALSE.
-#' @param round.num The number of decimal places to round the correlation values. Default is 1.
-#' @param font.size.star The font size of the significance stars in the plot. Default is 8.
-#' @param cols Character vector. Custom colors for correlation gradient
-#'   (low, mid, high). If NULL, uses default blue-white-red. Default is NULL.
+#' Calculate and Visualize Correlation Matrix Between Two Variable Sets
 #'
-#' @return A ggplot object displaying the correlation matrix.
+#' @description
+#' Calculates and visualizes the correlation matrix between two sets of variables.
+#' Supports Pearson, Spearman, and Kendall correlation methods. The function
+#' generates a customizable heatmap with significance stars.
+#'
+#' @param data Input data frame or matrix. Variables should be in columns.
+#' @param feas1 Character vector of variable names for the first set.
+#' @param feas2 Character vector of variable names for the second set.
+#' @param method Correlation method: `"pearson"`, `"spearman"`, or `"kendall"`.
+#'   Default is `"pearson"`.
+#' @param path Directory to save the plot. If `NULL`, plot is not saved.
+#'   Default is `NULL`.
+#' @param index Numeric prefix for output filename. Default is 1.
+#' @param fig.type File format: `"pdf"`, `"png"`, etc. Default is `"pdf"`.
+#' @param width Plot width in inches. Auto-calculated if `NULL`.
+#' @param height Plot height in inches. Auto-calculated if `NULL`.
+#' @param project Project name for plot title. Default is `NULL`.
+#' @param is.matrix Logical: if `TRUE`, data is transposed. Default is `FALSE`.
+#' @param scale Logical: scale variables before correlation. Default is `TRUE`.
+#' @param font.size Font size for axis labels. Default is 15.
+#' @param fill_by_cor Logical: show correlation values instead of stars.
+#'   Default is `FALSE`.
+#' @param round.num Decimal places for correlation values. Default is 1.
+#' @param font.size.star Font size for significance stars. Default is 8.
+#' @param cols Custom colors for gradient (low, mid, high). If `NULL`, uses
+#'   blue-white-red. Default is `NULL`.
+#'
+#' @return ggplot object displaying the correlation matrix heatmap.
+#'
 #' @export
 #' @author Dongqiang Zeng
+#'
 #' @examples
-#' # Assuming 'data' is a data frame or matrix with genes or signatures as columns
+#' \donttest{
 #' set.seed(123)
 #' data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
-#' colnames(data) <- paste("Gene", 1:10, sep = "_")
+#' colnames(data) <- paste0("Gene_", 1:10)
 #'
-#' # Define two sets of variables for correlation analysis
 #' feas1 <- c("Gene_1", "Gene_2", "Gene_3")
 #' feas2 <- c("Gene_4", "Gene_5", "Gene_6")
 #'
-#' # Generate and visualize the correlation matrix
 #' cor_plot <- get_cor_matrix(
-#'   data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
-#'   method = "spearman", project = "Example Correlation Matrix"
+#'   data = data,
+#'   feas1 = feas1,
+#'   feas2 = feas2,
+#'   method = "spearman",
+#'   project = "Example Correlation"
 #' )
-#' print(cor_plot)
-get_cor_matrix <- function(data, feas1, feas2, method = "pearson", path = NULL, index = 1, fig.type = "pdf", width = NULL, height = NULL,
-                           project = NULL, is.matrix = FALSE, scale = T, font.size.star = 8, font.size = 15,
-                           fill_by_cor = FALSE, round.num = 1, cols = NULL) {
+#' }
+get_cor_matrix <- function(data,
+                          feas1,
+                          feas2,
+                          method = c("pearson", "spearman", "kendall"),
+                          path = NULL,
+                          index = 1,
+                          fig.type = "pdf",
+                          width = NULL,
+                          height = NULL,
+                          project = NULL,
+                          is.matrix = FALSE,
+                          scale = TRUE,
+                          font.size = 15,
+                          fill_by_cor = FALSE,
+                          round.num = 1,
+                          font.size.star = 8,
+                          cols = NULL) {
+
+  # Validate method
+  method <- rlang::arg_match(method)
+
+  # Create output folder if requested
   if (!is.null(path)) {
     path <- creat_folder(path)
   }
 
+  # Handle matrix input
   if (is.matrix) data <- as.data.frame(t(data))
 
+  # Validate features
+  if (!is.character(feas1) || length(feas1) == 0) {
+    cli::cli_abort("{.arg feas1} must be a non-empty character vector.")
+  }
+  if (!is.character(feas2) || length(feas2) == 0) {
+    cli::cli_abort("{.arg feas2} must be a non-empty character vector.")
+  }
+
+  # Filter to existing features
   feas1 <- feas1[feas1 %in% colnames(data)]
   feas2 <- feas2[feas2 %in% colnames(data)]
 
-  if (scale) data <- scale(data[, unique(c(feas1, feas2))])
-  #############################
-  rlang::check_installed("psych",
-    reason = "to calculate correlation matrices"
+  if (length(feas1) == 0) {
+    cli::cli_abort("No features from {.arg feas1} found in data.")
+  }
+  if (length(feas2) == 0) {
+    cli::cli_abort("No features from {.arg feas2} found in data.")
+  }
+
+  cli::cli_alert_info(
+    "Calculating {method} correlation: {length(feas1)} x {length(feas2)}"
   )
-  result <- psych::corr.test(data[, feas1], data[, feas2], method = method)
-  #############################
-  heat <- cbind(reshape2::melt(result$r), reshape2::melt(result$p))[, c(1, 2, 3, 6)]
+
+  # Scale data if requested
+  data_vars <- data[, unique(c(feas1, feas2)), drop = FALSE]
+  if (scale) {
+    data_vars <- scale(data_vars)
+  }
+
+  # Calculate correlation
+  rlang::check_installed("psych", reason = "to calculate correlation matrices")
+  result <- psych::corr.test(
+    data_vars[, feas1, drop = FALSE],
+    data_vars[, feas2, drop = FALSE],
+    method = method
+  )
+
+  # Reshape for plotting
+  heat <- cbind(
+    reshape2::melt(result$r),
+    reshape2::melt(result$p)
+  )[, c(1, 2, 3, 6)]
   colnames(heat) <- c("ID1", "ID2", "cor", "pvalue")
-  #############################
 
+  # Clean labels for display (replace underscores with spaces)
+  feas1_clean <- gsub("_", " ", feas1)
+  feas2_clean <- gsub("_", " ", feas2)
 
-  #############################
-  # ===== 关键修改从这里开始 =====
+  heat$ID1 <- gsub("_", " ", as.character(heat$ID1))
+  heat$ID2 <- gsub("_", " ", as.character(heat$ID2))
 
-  # Step 1: 先把原始feas名称中的下划线替换为空格（用于设置levels）
-  feas1_clean <- gsub(feas1, pattern = "\\_", replacement = " ")
-  feas2_clean <- gsub(feas2, pattern = "\\_", replacement = " ")
+  # Set factor levels to preserve order
+  heat$ID1 <- factor(heat$ID1, levels = feas1_clean)
+  heat$ID2 <- factor(heat$ID2, levels = rev(feas2_clean))
 
-  # Step 2: 同样处理heat中的名称
-  heat$ID1 <- gsub(as.character(heat$ID1), pattern = "\\_", replacement = " ")
-  heat$ID2 <- gsub(as.character(heat$ID2), pattern = "\\_", replacement = " ")
-
-  # Step 3: 转换为factor，并指定levels为原始顺序
-  # rev()让Y轴从下往上对应你的输入顺序
-  heat$ID1 <- factor(heat$ID1, levels = feas1_clean) # X轴：左→右 = feas1顺序
-  heat$ID2 <- factor(heat$ID2, levels = rev(feas2_clean)) # Y轴：下→上 = feas2顺序
-
-  # ===== 修改结束 =====
-  #############################
+  # Create labels
   if (fill_by_cor) {
     heat$stars <- round(heat$cor, round.num)
   } else {
-    heat$stars <- cut(heat$pvalue,
+    heat$stars <- cut(
+      heat$pvalue,
       breaks = c(-Inf, 0.001, 0.01, 0.05, 0.5, Inf),
-      label = c("***", "**", "*", "+", "")
+      labels = c("***", "**", "*", "+", "")
     )
   }
 
-  #######################################
-  # 颜色处理（新增）
+  # Define colors
   if (is.null(cols)) {
-    low_col <- "#2C7BB6" # 蓝
-    mid_col <- "white" # 白
-    high_col <- "#D7191C" # 红
+    low_col <- "#2C7BB6"  # Blue
+    mid_col <- "white"
+    high_col <- "#D7191C"  # Red
   } else {
-    if (length(cols) < 2) stop("cols must have at least 2 colors (low, high) or 3 colors (low, mid, high)")
+    if (length(cols) < 2) {
+      cli::cli_abort("{.arg cols} must have at least 2 colors (low, high)")
+    }
     low_col <- cols[1]
     high_col <- cols[length(cols)]
     mid_col <- if (length(cols) >= 3) cols[2] else "white"
   }
 
-  # Plot everything
-  p <- ggplot(aes(x = ID1, y = ID2, fill = cor), data = heat)
-  ########################################
-  fig12 <- p + geom_tile() + scale_fill_gradient2(low = low_col, mid = mid_col, high = high_col) +
-    # geom_text(aes(label=stars, color=value), size=8) +
-    # scale_colour_gradient(low="grey30", high="white", guide="none") +
-    geom_text(aes(label = stars), color = "black", size = font.size.star) +
-    scale_y_discrete(name = "signature", labels = function(y) str_wrap(y, width = 40)) +
-    labs(y = NULL, x = NULL, fill = "Coefficient") +
-    # geom_vline(xintercept=1.5, size=1.5, color="grey50") +
-    theme_bw() + theme(axis.text.x = element_text(angle = -45, hjust = 0, size = font.size)) +
-    theme(axis.text.y = element_text(angle = 0, hjust = 1, size = font.size)) +
-    theme(axis.title = element_text(angle = 0, hjust = 0.5, size = font.size + 4))
+  # Create plot
+  p <- ggplot2::ggplot(heat, ggplot2::aes(x = .data$ID1, y = .data$ID2, fill = .data$cor))
 
-  if (is.null(project)) {
-    project <- "-"
-  } else {
-    fig12 <- fig12 + ggtitle(label = project)
+  cor_plot <- p +
+    ggplot2::geom_tile() +
+    ggplot2::scale_fill_gradient2(
+      low = low_col,
+      mid = mid_col,
+      high = high_col,
+      name = "Coefficient"
+    ) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = .data$stars),
+      color = "black",
+      size = font.size.star
+    ) +
+    ggplot2::scale_y_discrete(
+      labels = function(y) stringr::str_wrap(y, width = 40)
+    ) +
+    ggplot2::labs(x = NULL, y = NULL) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
+        angle = -45,
+        hjust = 0,
+        size = font.size
+      ),
+      axis.text.y = ggplot2::element_text(
+        angle = 0,
+        hjust = 1,
+        size = font.size
+      ),
+      axis.title = ggplot2::element_text(
+        size = font.size + 4
+      )
+    )
+
+  if (!is.null(project)) {
+    cor_plot <- cor_plot + ggplot2::ggtitle(label = project)
   }
 
-  #########################################
+  # Auto-calculate dimensions
   if (is.null(width)) width <- length(feas1) * 0.55 + 6.5
   if (is.null(height)) height <- length(feas2) * 0.35 + 4.5
 
-  # ggsave(fig12,
-  #   filename = paste0(index, "-", project, "-cor_plot.", fig.type),
-  #   width = width, height = height, path = path$folder_name
-  # )
-
-  ## 可选保存：只有调用者显式给路径时才写文件
+  # Save if path provided
   if (!is.null(path)) {
-    ggsave(fig12,
-      filename = paste0(index, "-", project, "-cor_plot.", fig.type),
-      width = width, height = height, path = path$folder_name
+    ggplot2::ggsave(
+      cor_plot,
+      filename = paste0(index, "-", project %||% "cor", "-cor_plot.", fig.type),
+      width = width,
+      height = height,
+      path = path$folder_name
     )
   }
-  print(fig12)
-  #######################################################
-  return(fig12)
+
+  print(cor_plot)
+  invisible(cor_plot)
 }

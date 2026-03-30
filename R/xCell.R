@@ -1,146 +1,114 @@
-#' The xCell analysis pipeline
-# ‘ Returns the xCell cell types enrichment scores.
+#' The xCell Analysis Pipeline
 #'
-#' @param expr the gene expression data set. A matrix with row names as symbols and columns as samples.
-#' @param signatures a GMT object of signatures.
-#' @param genes list of genes to use in the analysis.
-#' @param spill the Spillover object for adjusting the scores.
-#' @param rnaseq if true than use RNAseq spillover and calibration paramters, else use array parameters.
-#' @param file.name string for the file name for saving the scores. Default is NULL.
-#' @param scale if TRUE, uses scaling to trnasform scores using fit.vals
-#' @param alpha a value to override the spillover alpha parameter. Deafult = 0.5
-#' @param save.raw TRUE to save a raw
-#' @param cell.types.use a character list of the cell types to use in the analysis. If NULL runs xCell with all cell types.
-#' The spillover compensation step may over compensate, thus it is always better to run xCell with a list of cell types that are expected
-#' to be in the mixture. The names of cell types in this list must be a subset of the cell types that are inferred by xCell.
+#' @description
+#' Returns the xCell cell types enrichment scores for tumor microenvironment
+#' deconvolution. Uses ssGSEA-based enrichment analysis with spillover compensation
+#' to estimate cell type proportions from gene expression data.
 #'
-#' @return the adjusted xCell scores
+#' @param expr Gene expression data matrix with row names as gene symbols and
+#'   columns as samples.
+#' @param signatures GMT object of signatures. If `NULL`, uses xCell defaults.
+#' @param genes Character vector of genes to use in the analysis. If `NULL`,
+#'   uses xCell defaults.
+#' @param spill Spillover object for adjusting scores. If `NULL`, uses xCell defaults.
+#' @param rnaseq Logical indicating whether to use RNA-seq (TRUE) or array
+#'   (FALSE) spillover parameters. Default is `TRUE`.
+#' @param file.name Character string for saving scores. Default is `NULL`.
+#' @param scale Logical indicating whether to use scaling. Default is `TRUE`.
+#' @param alpha Numeric value to override spillover alpha parameter. Default is `0.5`.
+#' @param save.raw Logical indicating whether to save raw scores. Default is `FALSE`.
+#' @param cell.types.use Character vector of cell types to use. If `NULL`, uses
+#'   all available cell types. Default is `NULL`.
+#'
+#' @return A matrix of adjusted xCell scores.
+#'
+#' @keywords internal
 xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
                           spill = NULL, rnaseq = TRUE, file.name = NULL, scale = TRUE,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
+
   # Input validation
   if (is.null(expr)) {
-    stop("'expr' cannot be NULL. Please provide a gene expression matrix.")
+    cli::cli_abort("{.arg expr} cannot be NULL")
   }
   if (!is.matrix(expr) && !is.data.frame(expr)) {
-    stop("'expr' must be a matrix or data frame with genes as rows and samples as columns.")
+    cli::cli_abort("{.arg expr} must be a matrix or data frame")
   }
   if (nrow(expr) == 0 || ncol(expr) == 0) {
-    stop("'expr' is empty. Please provide a non-empty expression matrix.")
+    cli::cli_abort("{.arg expr} is empty")
   }
   if (is.null(rownames(expr))) {
-    stop("'expr' must have row names (gene symbols).")
+    cli::cli_abort("{.arg expr} must have row names (gene symbols)")
   }
   if (!is.logical(rnaseq) || length(rnaseq) != 1) {
-    stop("'rnaseq' must be a single logical value (TRUE or FALSE).")
+    cli::cli_abort("{.arg rnaseq} must be a single logical value")
   }
   if (!is.numeric(alpha) || length(alpha) != 1 || alpha < 0 || alpha > 1) {
-    stop("'alpha' must be a single numeric value between 0 and 1.")
+    cli::cli_abort("{.arg alpha} must be a numeric value between 0 and 1")
   }
 
-  rlang::check_installed("xCell", reason = "to run xCell analysis")
+  rlang::check_installed("xCell")
 
   # Load default data if not provided
-  if (is.null(signatures)) {
-    signatures <- xCell::xCell.data$signatures
-  }
-  if (is.null(genes)) {
-    genes <- xCell::xCell.data$genes
-  }
-  if (is.null(spill)) {
-    spill <- if (rnaseq) xCell::xCell.data$spill else xCell::xCell.data$spill.array
-  }
-
-  # Calculate average ssGSEA scores for cell types
-  fn <- if (is.null(file.name) || !save.raw) NULL else paste0(file.name, "_RAW.txt")
+  signatures <- signatures %||% xCell::xCell.data$signatures
+  genes <- genes %||% xCell::xCell.data$genes
+  spill <- spill %||% if (rnaseq) xCell::xCell.data$spill else xCell::xCell.data$spill.array
 
   # Validate cell types if specified
   if (!is.null(cell.types.use)) {
     if (!is.character(cell.types.use)) {
-      stop("'cell.types.use' must be a character vector of cell type names.")
+      cli::cli_abort("{.arg cell.types.use} must be a character vector")
     }
     available_types <- rownames(spill$K)
     invalid_types <- setdiff(cell.types.use, available_types)
     if (length(invalid_types) > 0) {
-      stop(sprintf(
-        "Invalid cell types: %s. Available types: %s",
-        paste(head(invalid_types, 5), collapse = ", "),
-        paste(head(available_types, 10), collapse = ", ")
-      ))
+      cli::cli_abort("Invalid cell types: {.val {head(invalid_types, 5)}}.
+                     Available: {.val {head(available_types, 10)}}")
     }
   }
 
-  scores <- rawEnrichmentAnalysis(expr, signatures, genes, fn)
+  fn <- if (is.null(file.name) || !save.raw) NULL else paste0(file.name, "_RAW.txt")
 
-  # Transform scores from raw to percentages
+  scores <- rawEnrichmentAnalysis(expr, signatures, genes, fn)
   scores.transformed <- transformScores(scores, spill$fv, scale)
 
-  # Adjust scores using the spill over compensation matrix
-  if (is.null(file.name)) {
-    fn <- NULL
-  } else {
-    fn <- file.name
-  }
-
   if (is.null(cell.types.use)) {
-    scores.adjusted <- spillOver(scores.transformed, spill$K, alpha, fn)
+    scores.adjusted <- spillOver(scores.transformed, spill$K, alpha, file.name)
     scores.adjusted <- microenvironmentScores(scores.adjusted)
   } else {
-    scores.adjusted <- spillOver(scores.transformed[cell.types.use, ], spill$K, alpha, fn)
+    scores.adjusted <- spillOver(scores.transformed[cell.types.use, ], spill$K, alpha, file.name)
   }
-  return(scores.adjusted)
+
+  scores.adjusted
 }
 
-#' Calculated raw xCell enrichment scores
+#' Calculate Raw xCell Enrichment Scores
 #'
-#' rawEnrichmentAnalysis Returns the raw xCell cell types enrichment scores.
+#' @description
+#' Returns the raw xCell cell types enrichment scores using ssGSEA.
 #'
-#' @param expr the gene expression data set. A matrix with row names as symbols and columns as samples.
-#' @param signatures a GMT object of signatures.
-#' @param genes list of genes to use in the analysis.
-#' @param file.name string for the file name for saving the scores. Default is NULL.
-
-
-#' @return the raw xCell scores
+#' @param expr Gene expression data matrix with row names as gene symbols.
+#' @param signatures GMT object of signatures.
+#' @param genes Character vector of genes to use.
+#' @param file.name Character string for saving scores. Default is `NULL`.
+#'
+#' @return Matrix of raw xCell scores.
+#'
+#' @keywords internal
 rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
-  # Reduce the expression dataset to contain only the required genes
+  # Reduce expression dataset to required genes
   shared.genes <- intersect(rownames(expr), genes)
-  print(paste("Num. of genes:", length(shared.genes)))
-  expr <- expr[shared.genes, ]
-  if (dim(expr)[1] < 5000) {
-    print(paste("ERROR: not enough genes"))
-    return(-1)
+  cli::cli_alert_info("Number of genes: {length(shared.genes)}")
+
+  if (length(shared.genes) < 5000) {
+    cli::cli_abort("Not enough genes. Need at least 5000, found {length(shared.genes)}")
   }
 
-  # Transform the expression to rank
+  expr <- expr[shared.genes, ]
   expr <- apply(expr, 2, rank)
 
-  # Check the formal argument of GSVA::gsva
-  # FA <- formals(GSVA::gsva)
-  #
-  # # Run ssGSEA analysis for the ranked gene expression dataset
-  # if (is.null(FA[["method"]])) {
-  #   params <- GSVA::gsvaParam(as.matrix(expr),
-  #     signatures,
-  #     minSize = 1,
-  #     maxSize = Inf,
-  #     kcdf = "Gaussian",
-  #     tau = 1,
-  #     maxDiff = TRUE,
-  #     absRanking = FALSE
-  #   )
-  #   rlang::check_installed("BiocParallel")
-  #   scores <- GSVA::gsva(params,
-  #     verbose = TRUE,
-  #     BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-  #   )
-  # } else {
-  #   scores <- GSVA::gsva(expr, signatures,
-  #     method = "ssgsea",
-  #     ssgsea.norm = FALSE
-  #   )
-  # }
+  # Run ssGSEA analysis
   gsva_info <- gsva_use_new_api()
   use_new_api <- gsva_info$use_new_api
 
@@ -176,72 +144,74 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   # Combine signatures for same cell types
   cell_types <- unlist(strsplit(rownames(scores), "%"))
   cell_types <- cell_types[seq(1, length(cell_types), 3)]
-  agg <- aggregate(scores ~ cell_types, FUN = mean)
+  agg <- stats::aggregate(scores ~ cell_types, FUN = mean)
   rownames(agg) <- agg[, 1]
   scores <- agg[, -1]
 
-  # Save raw scores
   if (!is.null(file.name)) {
-    write.table(scores,
-      file = file.name, sep = "\t",
-      col.names = NA, quote = FALSE
-    )
+    utils::write.table(scores, file = file.name, sep = "\t",
+                       col.names = NA, quote = FALSE)
   }
+
   scores
 }
 
-#' Transform scores from raw scores to fractions
+#' Transform Raw Scores to Fractions
 #'
-#' transformScores Returns the trasnformed xCell scores (not adjusted).
+#' @description
+#' Transforms raw xCell scores to estimated cell fractions.
 #'
-#' @param scores raw scores of cell types calculated by rawEnrichmentAnalysis
-#' @param fit.vals the calibration values in the spill object (spill$fv).
-#' @param scale if TRUE, uses scaling to trnasform scores using fit.vals
-#' @param fn string for the file name for saving the scores. Default is NULL.
+#' @param scores Raw scores from rawEnrichmentAnalysis.
+#' @param fit.vals Calibration values from spill object.
+#' @param scale Logical indicating whether to use scaling. Default is `TRUE`.
+#' @param fn Character string for saving scores. Default is `NULL`.
 #'
-#' @return the trasnformed xCell scores
-transformScores <- function(scores, fit.vals, scale = TRUE,
-                            fn = NULL) {
+#' @return Transformed xCell scores matrix.
+#'
+#' @keywords internal
+transformScores <- function(scores, fit.vals, scale = TRUE, fn = NULL) {
   rows <- rownames(scores)[rownames(scores) %in% rownames(fit.vals)]
   tscores <- scores[rows, ]
   minX <- apply(tscores, 1, min)
   A <- rownames(tscores)
   tscores <- (as.matrix(tscores) - minX) / 5000
   tscores[tscores < 0] <- 0
-  if (scale == FALSE) {
+
+  if (!scale) {
     fit.vals[A, 3] <- 1
   }
 
   tscores <- (tscores^fit.vals[A, 2]) / (fit.vals[A, 3] * 2)
 
   if (!is.null(fn)) {
-    write.table(format(tscores, digits = 4),
-      file = fn, sep = "\t",
-      col.names = NA, quote = FALSE
-    )
+    utils::write.table(format(tscores, digits = 4), file = fn, sep = "\t",
+                       col.names = NA, quote = FALSE)
   }
-  return(tscores)
+
+  tscores
 }
 
-#' Adjust scores using the spillover compensation method
+#' Adjust Scores Using Spillover Compensation
 #'
-#' spillOver Returns the adjusted xCell scores.
+#' @description
+#' Adjusts xCell scores using spillover compensation matrix.
 #'
-#' @param transformedScores the trasnformed scores of cell types calculated by transformScores
-#' @param K the Spillover matrix (spill$K).
-#' @param alpha a value to override the spillover alpha parameter. Deafult = 0.5
-#' @param file.name string for the file name for saving the scores. Default is NULL.
+#' @param transformedScores Transformed scores from transformScores.
+#' @param K Spillover matrix.
+#' @param alpha Spillover alpha parameter. Default is `0.5`.
+#' @param file.name Character string for saving scores. Default is `NULL`.
 #'
-#' @return the adjusted xCell scores
+#' @return Adjusted xCell scores matrix.
+#'
+#' @keywords internal
 spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
   K <- K * alpha
   diag(K) <- 1
-  rows <- rownames(transformedScores)[rownames(transformedScores) %in%
-    rownames(K)]
-  ## 用 limSolve::lsei 代替 pracma::lsqlincon -----------------
+  rows <- rownames(transformedScores)[rownames(transformedScores) %in% rownames(K)]
+
   rlang::check_installed("limSolve")
+
   scores <- apply(transformedScores[rows, , drop = FALSE], 2, function(x) {
-    # 非负约束：G = 单位矩阵, H = 0 向量
     G <- diag(nrow(K[rows, rows]))
     H <- rep(0, nrow(G))
     res <- limSolve::lsei(
@@ -251,63 +221,79 @@ spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
       H = H,
       verbose = FALSE
     )
-    pmax(res$X, 0) # 再保险截断负值
+    pmax(res$X, 0)
   })
 
   scores[scores < 0] <- 0
   rownames(scores) <- rows
+
   if (!is.null(file.name)) {
-    scores <- round(scores * 10000)
-    scores <- scores / 10000
-    write.table(scores,
-      file = file.name, sep = "\t",
-      col.names = NA, quote = FALSE
-    )
+    scores <- round(scores * 10000) / 10000
+    utils::write.table(scores, file = file.name, sep = "\t",
+                       col.names = NA, quote = FALSE)
   }
-  return(scores)
+
+  scores
 }
 
-#' Calculate microenvironment scores
+#' Calculate Microenvironment Scores
 #'
-#' microenvironmentScores Returns the adjusted xCell scores.
+#' @description
+#' Calculates combined immune and stroma scores from adjusted xCell scores.
 #'
-#' @param adjustedScores the combined microenvironment scores
+#' @param adjustedScores Adjusted xCell scores matrix.
 #'
-#' @return the microenvironment scores
+#' @return Matrix with additional microenvironment score rows.
+#'
+#' @keywords internal
 microenvironmentScores <- function(adjustedScores) {
-  ImmuneScore <- apply(adjustedScores[c("B-cells", "CD4+ T-cells", "CD8+ T-cells", "DC", "Eosinophils", "Macrophages", "Monocytes", "Mast cells", "Neutrophils", "NK cells"), ], 2, sum) / 1.5
-  StromaScore <- apply(adjustedScores[c("Adipocytes", "Endothelial cells", "Fibroblasts"), ], 2, sum) / 2
+  immune_cells <- c("B-cells", "CD4+ T-cells", "CD8+ T-cells", "DC",
+                    "Eosinophils", "Macrophages", "Monocytes", "Mast cells",
+                    "Neutrophils", "NK cells")
+  stroma_cells <- c("Adipocytes", "Endothelial cells", "Fibroblasts")
+
+  ImmuneScore <- apply(adjustedScores[immune_cells, ], 2, sum) / 1.5
+  StromaScore <- apply(adjustedScores[stroma_cells, ], 2, sum) / 2
   MicroenvironmentScore <- ImmuneScore + StromaScore
-  adjustedScores <- rbind(adjustedScores, ImmuneScore, StromaScore, MicroenvironmentScore)
+
+  rbind(adjustedScores, ImmuneScore = ImmuneScore,
+        StromaScore = StromaScore, MicroenvironmentScore = MicroenvironmentScore)
 }
 
-#' Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.
+#' Calculate Significance P-values Using Beta Distribution
 #'
-#' xCellSignifcanceBetaDist Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
+#' @description
+#' Calculates FDR-adjusted p-values for the null hypothesis that a cell type
+#' is not present in the mixture.
 #'
-#' @param scores the xCell scores.
-#' @param beta_params the pre-calculated beta distribution parameters from random mixtures.
-#' @param rnaseq if beta_params is null, than uses xCell.data beta_params. If TRUE uses sequencing-based params, else array-based params.
-#' @param file.name file name to write the p-values table.
+#' @param scores xCell scores matrix.
+#' @param beta_params Pre-calculated beta distribution parameters.
+#' @param rnaseq Logical for RNA-seq vs array parameters. Default is `TRUE`.
+#' @param file.name Character string for saving p-values. Default is `NULL`.
 #'
-#' @return a p-values matrix for each score.
-xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = T, file.name = NULL) {
-  rlang::check_installed("xCell", reason = "to calculate xCell significance")
-  if (is.null(beta_params)) {
-    if (rnaseq == T) {
-      beta_params <- xCell::xCell.data$spill$beta_params
-    } else {
-      beta_params <- xCell::xCell.data$spill.array$beta_params
-    }
+#' @return Matrix of p-values.
+#'
+#' @keywords internal
+xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
+                                     file.name = NULL) {
+  rlang::check_installed("xCell")
+
+  beta_params <- beta_params %||% if (rnaseq) {
+    xCell::xCell.data$spill$beta_params
+  } else {
+    xCell::xCell.data$spill.array$beta_params
   }
-  scores <- scores[rownames(scores) %in% colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
+
+  scores <- scores[rownames(scores) %in%
+                     colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
   pvals <- matrix(0, nrow(scores), ncol(scores))
   rownames(pvals) <- rownames(scores)
   eps <- 1e-3
 
-  for (i in 1:nrow(scores)) {
+  for (i in seq_len(nrow(scores))) {
     ct <- rownames(scores)[i]
     beta_dist <- c()
+
     for (bp in beta_params) {
       if (sum(bp[, i] == 0)) {
         bd <- matrix(eps, 1, 100000)
@@ -317,61 +303,76 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = T, fil
       }
       beta_dist <- c(beta_dist, bd)
     }
+
     pvals[i, ] <- 1 - mapply(scores[i, ], FUN = function(x) mean(x > beta_dist))
   }
 
   if (!is.null(file.name)) {
-    write.table(pvals, file = file.name, quote = FALSE, row.names = TRUE, sep = "\t", col.names = NA)
+    utils::write.table(pvals, file = file.name, quote = FALSE,
+                       row.names = TRUE, sep = "\t", col.names = NA)
   }
 
   pvals
 }
-#' Calculate significance p-values for the null hypothesis that the cell type is not present in the mixture using a random matrix.
-#'
-#' xCellSignifcanceRandomMatrix Returns the FDR adjusted p-values of the chance that the cell is not present in the mixture.
-#'
-#' @param scores the xCell scores.
-#' @param expr the input expression matrix.
-#' @param spill the Spillover object for adjusting the scores.
-#' @param alpha a value to override the spillover alpha parameter. Deafult = 0.5
-#' @param nperm number of samples in the shuffled matrix, default = 250
-#' @param file.name file name to write the p-values table.
-#'
-#' @return a list with the p-values, the xcell scores of the shuffled data and the shuffled expression matrix.
-xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5, nperm = 250, file.name = NULL) {
-  rlang::check_installed("xCell", reason = "to calculate xCell significance with random matrix")
-  shuff_expr <- mapply(seq(1:nperm), FUN = function(x) sample(nrow(expr), nrow(expr)))
 
+#' Calculate Significance Using Random Matrix
+#'
+#' @description
+#' Calculates FDR-adjusted p-values using a random shuffled matrix.
+#'
+#' @param scores xCell scores matrix.
+#' @param expr Input expression matrix.
+#' @param spill Spillover object.
+#' @param alpha Spillover alpha parameter. Default is `0.5`.
+#' @param nperm Number of permutations. Default is `250`.
+#' @param file.name Character string for saving p-values. Default is `NULL`.
+#'
+#' @return List containing p-values, shuffled xCell scores, shuffled expression,
+#'   and beta distributions.
+#'
+#' @keywords internal
+xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
+                                        nperm = 250, file.name = NULL) {
+  rlang::check_installed("xCell")
+
+  shuff_expr <- mapply(seq_len(nperm), FUN = function(x) sample(nrow(expr), nrow(expr)))
   rownames(shuff_expr) <- sample(rownames(expr))
   shuff_xcell <- xCellAnalysis(shuff_expr, spill = spill, alpha = alpha)
-
   shuff_xcell <- shuff_xcell[rownames(scores), ]
 
   pvals <- matrix(0, nrow(scores), ncol(scores))
   beta_dist <- matrix(0, nrow(scores), 100000)
   eps <- 1e-3
-  for (i in 1:nrow(scores)) {
+
+  for (i in seq_len(nrow(scores))) {
     x <- shuff_xcell[i, ]
     if (stats::sd(x) < eps) {
       beta_dist[i, ] <- rep(eps, 100000)
     } else {
       x <- x + eps
       rlang::check_installed("MASS")
-      beta_params <- MASS::fitdistr(x / ((1 + 2 * eps) * (max(x))) + eps, "beta", list(shape1 = 1, shape2 = 1), lower = eps)
-      beta_dist[i, ] <- stats::rbeta(100000, beta_params$estimate[1], beta_params$estimate[2])
+      beta_params <- MASS::fitdistr(x / ((1 + 2 * eps) * (max(x))) + eps,
+                                    "beta", list(shape1 = 1, shape2 = 1),
+                                    lower = eps)
+      beta_dist[i, ] <- stats::rbeta(100000, beta_params$estimate[1],
+                                     beta_params$estimate[2])
       beta_dist[i, ] <- ((1 + 2 * eps) * (max(x))) * beta_dist[i, ]
     }
-    # sm.density.compare(c(shuff_xcell[i,],beta_dist),factor(c(rep(1,100),rep(2,100000))),xlim=c(0,max(beta_dist)));title(rownames(scores)[i])
-    pvals[i, ] <- 1 - unlist(lapply(scores[i, ], FUN = function(x) mean(x > beta_dist[i, ])))
+
+    pvals[i, ] <- 1 - unlist(lapply(scores[i, ],
+                                    FUN = function(x) mean(x > beta_dist[i, ])))
   }
+
   rownames(pvals) <- rownames(scores)
   colnames(pvals) <- colnames(scores)
   rownames(shuff_xcell) <- rownames(scores)
   rownames(beta_dist) <- rownames(scores)
 
   if (!is.null(file.name)) {
-    write.table(pvals, file = file.name, quote = FALSE, row.names = TRUE, sep = "\t", col.names = NA)
+    utils::write.table(pvals, file = file.name, quote = FALSE,
+                       row.names = TRUE, sep = "\t", col.names = NA)
   }
 
-  list(pvals = pvals, shuff_xcell = shuff_xcell, shuff_expr = shuff_expr, beta_dist = beta_dist)
+  list(pvals = pvals, shuff_xcell = shuff_xcell,
+       shuff_expr = shuff_expr, beta_dist = beta_dist)
 }
