@@ -118,37 +118,35 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   #     ssgsea.norm = FALSE
   #   )
   # }
-  scores <- tryCatch(
-    {
-      # 新版 GSVA 推荐写法：gsvaParam + gsva(params)
-      params <- GSVA::gsvaParam(
-        as.matrix(expr),
-        signatures,
-        minSize = 1,
-        maxSize = Inf,
-        kcdf = "Gaussian",
-        tau = 1,
-        maxDiff = TRUE,
-        absRanking = FALSE
-      )
+  gsva_info <- gsva_use_new_api()
+  use_new_api <- gsva_info$use_new_api
 
-      rlang::check_installed("BiocParallel")
-      GSVA::gsva(
-        params,
-        verbose = TRUE,
-        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-      )
-    },
-    error = function(e) {
-      # 回退旧版 gsva 接口
-      GSVA::gsva(
-        expr,
-        signatures,
-        method = "ssgsea",
-        ssgsea.norm = FALSE
-      )
-    }
-  )
+  if (use_new_api) {
+    params <- GSVA::gsvaParam(
+      as.matrix(expr),
+      signatures,
+      minSize = 1,
+      maxSize = Inf,
+      kcdf = "Gaussian",
+      tau = 1,
+      maxDiff = TRUE,
+      absRanking = FALSE
+    )
+
+    rlang::check_installed("BiocParallel")
+    scores <- GSVA::gsva(
+      params,
+      verbose = TRUE,
+      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    )
+  } else {
+    scores <- GSVA::gsva(
+      expr,
+      signatures,
+      method = "ssgsea",
+      ssgsea.norm = FALSE
+    )
+  }
 
   scores <- scores - apply(scores, 1, min)
 

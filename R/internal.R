@@ -1,3 +1,28 @@
+#' GSVA API Version Detection
+#'
+#' @description Detects whether the installed GSVA package supports the new
+#' parameter-based API (gsvaParam/ssgseaParam) or the old direct argument API.
+#'
+#' @return A list with two elements:
+#'   \itemize{
+#'     \item \code{use_new_api}: Logical indicating whether to use the new API (TRUE) or old API (FALSE)
+#'     \item \code{gsva_version}: Character string of the installed GSVA version, or "not installed" if not available
+#'   }
+#'
+#' @keywords internal
+gsva_use_new_api <- function() {
+  if (!requireNamespace("GSVA", quietly = TRUE)) {
+    return(list(use_new_api = FALSE, gsva_version = "not installed"))
+  }
+
+  gsva_version <- as.character(utils::packageVersion("GSVA"))
+
+  use_new_api <- exists("gsvaParam", where = asNamespace("GSVA"), inherits = FALSE) &&
+                 exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
+
+  return(list(use_new_api = use_new_api, gsva_version = gsva_version))
+}
+
 #' Load IOBR Datasets
 #'
 #' @param name A dataset name.

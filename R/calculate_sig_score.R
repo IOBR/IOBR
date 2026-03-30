@@ -330,7 +330,8 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
   ## ---- GSVA ssGSEA: support both old and new APIs ----
   rlang::check_installed("GSVA")
 
-  use_new_api <- exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
+  gsva_info <- gsva_use_new_api()
+  use_new_api <- gsva_info$use_new_api
 
   if (use_new_api) {
     # New API (Bioc >= 3.18; old API is defunct in 3.19)
@@ -542,38 +543,38 @@ calculate_sig_score_integration <- function(pdata = NULL,
   gene_count <- vapply(signature, function(x) sum(x %in% rownames(eset)), integer(1))
   signature_ssgsea <- signature[gene_count >= ssgsea_min]
 
-  res <- tryCatch(
-    {
-      params <- GSVA::gsvaParam(
-        as.matrix(eset),
-        signature_ssgsea,
-        minSize = ssgsea_min,
-        maxSize = Inf,
-        kcdf = "Gaussian",
-        tau = 1,
-        maxDiff = TRUE,
-        absRanking = FALSE
-      )
+  gsva_info <- gsva_use_new_api()
+  use_new_api <- gsva_info$use_new_api
 
-      rlang::check_installed("BiocParallel")
+  if (use_new_api) {
+    params <- GSVA::gsvaParam(
+      as.matrix(eset),
+      signature_ssgsea,
+      minSize = ssgsea_min,
+      maxSize = Inf,
+      kcdf = "Gaussian",
+      tau = 1,
+      maxDiff = TRUE,
+      absRanking = FALSE
+    )
 
-      GSVA::gsva(
-        params,
-        verbose = TRUE,
-        BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
-      )
-    },
-    error = function(e) {
-      GSVA::gsva(
-        as.matrix(eset),
-        signature_ssgsea,
-        method = "ssgsea",
-        kcdf = "Gaussian",
-        min.sz = ssgsea_min,
-        ssgsea.norm = TRUE
-      )
-    }
-  )
+    rlang::check_installed("BiocParallel")
+
+    res <- GSVA::gsva(
+      params,
+      verbose = TRUE,
+      BPPARAM = BiocParallel::SerialParam(progressbar = TRUE)
+    )
+  } else {
+    res <- GSVA::gsva(
+      as.matrix(eset),
+      signature_ssgsea,
+      method = "ssgsea",
+      kcdf = "Gaussian",
+      min.sz = ssgsea_min,
+      ssgsea.norm = TRUE
+    )
+  }
   #####################
   res <- as.data.frame(t(res))
   if ("TMEscoreA_CIR" %in% colnames(res) & "TMEscoreB_CIR" %in% colnames(res)) {
