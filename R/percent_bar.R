@@ -1,48 +1,55 @@
 #' Create a Percent Bar Plot
 #'
-#' This function generates a bar plot that visualizes the percentage distribution of a variable grouped by another variable.
-#' It offers options to customize the plot's colors, title, axis labels, and more.
+#' @description
+#' Generates a bar plot visualizing the percentage distribution of a variable
+#' grouped by another variable.
 #'
 #' @param input Input data frame.
 #' @param x Name of the x-axis variable.
-#' @param y Name of the y-axis variable.
-#' @param color Optional color palette for the bars.
-#' @param title Optional title for the plot.
-#' @param palette Optional palette type for color selection.
-#' @param axis_angle Optional angle for the axis labels. range from [0,90]
-#' @param add_Freq default is true for data frame
-#' @param Freq Optional name for the frequency column.
-#' @param size_freq Size of the frequency labels.
-#' @param add_sum Boolean indicating whether to add the sum to the x-axis labels.
+#' @param y Name of the y-axis (grouping) variable.
 #' @param subset.x Optional subset of x-axis values.
-#' @param legend.size Size of the legend.
-#' @param legend.size.text Size of the legend text.
-#' @param print_result Boolean indicating whether to print the result data frame.
-#' @param round.num Number of decimal places to round the proportion column.
-#' @param coord_flip Boolean indicating whether to flip the x and y axes.
+#' @param color Optional color palette.
+#' @param palette Optional palette type.
+#' @param title Optional plot title.
+#' @param axis_angle Angle for axis labels (0-90). Default is 0.
+#' @param coord_flip Logical to flip coordinates. Default is FALSE.
+#' @param add_Freq Logical to add frequency count. Default is TRUE.
+#' @param Freq Name of frequency column.
+#' @param size_freq Size of frequency labels. Default is 8.
+#' @param legend.size Size of legend. Default is 0.5.
+#' @param legend.size.text Size of legend text. Default is 10.
+#' @param add_sum Logical to add sum to x-axis labels. Default is TRUE.
+#' @param print_result Logical to print result data frame. Default is TRUE.
+#' @param round.num Decimal places for proportion. Default is 2.
 #'
-#' @return A ggplot object representing the percentage bar plot.
+#' @return A ggplot object.
+#'
 #' @export
 #' @author Dongqiang Zeng
+#'
 #' @examples
+#' \donttest{
 #' sig_stad <- load_data("sig_stad")
-#' table(sig_stad$Subtype, sig_stad$Lauren)
-#' percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
+#' percent_bar_plot(
+#'   input = sig_stad, x = "Subtype", y = "Lauren",
+#'   axis_angle = 60
+#' )
+#' }
 percent_bar_plot <- function(input, x, y,
-                             subset.x = NULL,
-                             color = NULL,
-                             palette = NULL,
-                             title = NULL,
-                             axis_angle = 0,
-                             coord_flip = FALSE,
-                             add_Freq = TRUE,
-                             Freq = NULL,
-                             size_freq = 8,
-                             legend.size = 0.5,
-                             legend.size.text = 10,
-                             add_sum = T,
-                             print_result = T,
-                             round.num = 2) {
+                            subset.x = NULL,
+                            color = NULL,
+                            palette = NULL,
+                            title = NULL,
+                            axis_angle = 0,
+                            coord_flip = FALSE,
+                            add_Freq = TRUE,
+                            Freq = NULL,
+                            size_freq = 8,
+                            legend.size = 0.5,
+                            legend.size.text = 10,
+                            add_sum = TRUE,
+                            print_result = TRUE,
+                            round.num = 2) {
   input <- as.data.frame(input[, colnames(input) %in% c(x, y)])
 
   if (!is.null(subset.x)) {
@@ -52,200 +59,190 @@ percent_bar_plot <- function(input, x, y,
   if (add_Freq) {
     input$Freq <- 1
   } else {
-    # input$Freq<-1
     colnames(input)[which(colnames(input) == Freq)] <- "Freq"
   }
-  # bpercent<-as.data.frame(table(input[,x],input[,y]))
-  # colnames(bpercent)<-c(x,y,"Frequency")
-  # ce =plyr::ddply(bpercent, y, transform, percent_weight = Frequency / sum(Frequency))
-  # ce<-ce[order(ce[,y],decreasing = F),]
-  # print(ce)
-
 
   df_sum <- input %>%
-    dplyr::group_by(!!sym(x), !!sym(y)) %>%
-    dplyr::summarise(Freq = sum(Freq)) %>%
-    dplyr::group_by(!!sym(x)) %>%
-    dplyr::mutate(Prop = round(Freq / sum(Freq), round.num)) %>%
-    dplyr::mutate(count = round(sum(Freq), 0))
+    dplyr::group_by(!!rlang::sym(x), !!rlang::sym(y)) %>%
+    dplyr::summarise(Freq = sum(.data$Freq), .groups = "drop_last") %>%
+    dplyr::group_by(!!rlang::sym(x)) %>%
+    dplyr::mutate(
+      Prop = round(.data$Freq / sum(.data$Freq), round.num),
+      count = round(sum(.data$Freq), 0)
+    )
 
   if (print_result) print(df_sum)
 
-  # print(as.data.frame(df_sum))
-
-  if (!is.null(color)) {
-    color <- color
-  } else {
-    if (is.null(palette)) {
-      color <- palettes(category = "random", show_col = T, show_message = T)
+  # Get colors
+  if (is.null(color)) {
+    color <- if (is.null(palette)) {
+      palettes(category = "random", show_col = TRUE, show_message = TRUE)
     } else {
-      color <- palettes(category = "box", palette = palette, show_col = T, show_message = T)
+      palettes(category = "box", palette = palette, show_col = TRUE, show_message = TRUE)
     }
   }
-
 
   if (add_sum) {
     df_sum <- as.data.frame(df_sum)
     df_sum[, 1] <- paste0(as.character(df_sum[, 1]), "(", df_sum$count, ")")
   }
 
-  # https://github.com/tidyverse/ggplot2/issues/3369
-  c <- ggplot(df_sum, aes(x = !!sym(x), y = Prop, fill = !!sym(y))) +
-    geom_bar(stat = "identity", position = "fill", width = 0.85) +
-    geom_text(aes(label = scales::percent(Prop, suffix = "%", accuracy = 1)), position = position_stack(.5), size = size_freq) + #
-    ggtitle(title) +
-    scale_fill_manual(values = color) +
-    xlab(NULL)
+  hjust <- if (axis_angle == 0) 0.5 else 1
 
-  if (axis_angle == 0) {
-    mytheme <- design_mytheme(axis_text_size = 20, axis_angle = 0, hjust = 0.5, legend.size = legend.size, legend.size.text = legend.size.text)
-  } else {
-    mytheme <- design_mytheme(axis_text_size = 20, axis_angle = axis_angle, hjust = 1, legend.size = legend.size, legend.size.text = legend.size.text)
-    message(">>>=== When the coordinates are inverted, axis_angle can't fulfil its function")
-  }
+  pp <- ggplot2::ggplot(df_sum, ggplot2::aes(
+    x = !!rlang::sym(x), y = .data$Prop, fill = !!rlang::sym(y)
+  )) +
+    ggplot2::geom_bar(stat = "identity", position = "fill", width = 0.85) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = scales::percent(.data$Prop, suffix = "%", accuracy = 1)),
+      position = ggplot2::position_stack(0.5), size = size_freq
+    ) +
+    ggplot2::ggtitle(title) +
+    ggplot2::scale_fill_manual(values = color) +
+    ggplot2::xlab(NULL) +
+    design_mytheme(
+      axis_text_size = 20, axis_angle = axis_angle, hjust = hjust,
+      legend.size = legend.size, legend.size.text = legend.size.text
+    )
 
-  pp <- c + mytheme
   if (coord_flip) {
-    pp <- pp + coord_flip()
+    pp <- pp + ggplot2::coord_flip()
   }
+
   print(pp)
-  return(pp)
+  pp
 }
 
 
-#' pie_chart
+#' Create Pie or Donut Charts
 #'
 #' @description
-#' This function generates a pie chart or a donut chart from the input data. It allows customization of various visual aspects such as colors, labels, and title.
+#' Generates a pie chart or donut chart from input data.
 #'
-#' @param input The input dataframe.
-#' @param var The variable on which the pie chart or donut chart will be based.
-#' @param color Optional. The color palette for the chart. If not provided, a default color palette will be used.
-#' @param palette Optional. The color palette to be used if color is not specified. Default is "jama".
-#' @param title Optional. The title of the chart. Default is NULL.
-#' @param text_size  The size of the text on the chart. Default is 10.
-#' @param title_size The size of the title text on the chart. Default is 20.
-#' @param var2 Optional. A secondary variable for creating a donut chart. Default is NULL.
-#' @param type The type of chart to be generated. 1 for pie chart, 2 for donut chart, 3 for donut chart based on webr package.
-#' @param show_freq Boolean indicating whether to show frequencies on the chart. Default is FALSE.
-#' @param add_sum Boolean indicating whether to add the sum of frequencies to the chart. Default is FALSE.
+#' @param input Input dataframe.
+#' @param var Variable for the chart.
+#' @param var2 Secondary variable for donut chart (type = 3).
+#' @param type Chart type: 1 (pie), 2 (donut), 3 (PieDonut via webr).
+#' @param show_freq Logical to show frequencies. Default is FALSE.
+#' @param color Optional color palette.
+#' @param palette Color palette name. Default is "jama".
+#' @param title Plot title. Default is NULL.
+#' @param text_size Text size. Default is 10.
+#' @param title_size Title size. Default is 20.
+#' @param add_sum Logical to add sum to labels. Default is FALSE.
 #'
-#' @return Generate Pie or Donut Charts
+#' @return A ggplot object.
+#'
 #' @export
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
+#' sig_stad <- load_data("sig_stad")
 #' pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
-#' pie_chart(input = sig_stad, var = "Subtype", palette = "nrc")
-pie_chart <- function(input, var, var2 = NULL, type = 2, show_freq = FALSE, color = NULL, palette = "jama", title = NULL, text_size = 10, title_size = 20, add_sum = FALSE) {
+#' pie_chart(input = sig_stad, var = "Subtype", type = 2)
+#' }
+pie_chart <- function(input, var, var2 = NULL, type = 2,
+                    show_freq = FALSE, color = NULL, palette = "jama",
+                    title = NULL, text_size = 10, title_size = 20,
+                    add_sum = FALSE) {
   input <- input[!is.na(input[, var]), ]
   input <- as.data.frame(input)
   input[, var] <- as.character(input[, var])
 
   input2 <- input
   input <- as.data.frame(table(input[, var]))
-
   colnames(input)[1] <- "var"
 
   input <- input %>%
-    mutate(percent_weight = round(Freq / sum(Freq) * 100, 1)) %>%
-    dplyr::arrange(dplyr::desc(Freq)) %>%
-    dplyr::mutate(lab.ypos = cumsum(percent_weight) - 0.5 * percent_weight)
+    dplyr::mutate(
+      percent_weight = round(.data$Freq / sum(.data$Freq) * 100, 1)
+    ) %>%
+    dplyr::arrange(dplyr::desc(.data$Freq)) %>%
+    dplyr::mutate(lab.ypos = cumsum(.data$percent_weight) - 0.5 * .data$percent_weight)
+
   print(input)
 
-
   if (add_sum) {
-    input <- as.data.frame(input)
     input[, 1] <- paste0(as.character(input[, 1]), "(", input$Freq, ")")
   }
 
-
-  # if(!is.null(color)) color<-IOBR::palettes(category = "random",show_col = F,show_message = F)
-  # if(!is.null(palette)) color<-IOBR::palettes(category = "box",palette = palette, show_col = F,show_message = F)
-
-  if (!is.null(color)) {
-    color <- color
-  } else {
-    if (is.null(palette)) {
-      color <- palettes(category = "random", show_col = T, show_message = T)
+  if (is.null(color)) {
+    color <- if (is.null(palette)) {
+      palettes(category = "random", show_col = FALSE, show_message = TRUE)
     } else {
-      color <- palettes(category = "box", palette = palette, show_col = T, show_message = T)
+      palettes(category = "box", palette = palette, show_col = FALSE, show_message = TRUE)
     }
   }
 
+  pp <- switch(as.character(type),
+    "1" = .pie_chart_basic(input, color, title, title_size),
+    "2" = .pie_chart_donut(input, color, title, text_size, show_freq),
+    "3" = .pie_chart_piedonut(input2, var, var2),
+    cli::cli_abort("type must be 1, 2, or 3")
+  )
 
-  if (type == 1) {
-    input <- input[order(input$Freq, decreasing = F), ]
-    pp <- ggplot(input, aes(x = 2, y = percent_weight, fill = var)) +
-      geom_bar(stat = "identity", color = "white") +
-      coord_polar(theta = "y", start = 0, direction = 1) +
-      geom_text(aes(x = 2, y = lab.ypos, label = percent_weight), color = "white", size = 10) +
-      labs(x = NULL, y = NULL, fill = NULL) +
-      ggtitle(paste0(title)) +
-      scale_fill_manual(values = color) +
-      theme_void() +
-      xlim(0.5, 2.5) +
-      theme(
-        axis.line = element_blank(),
-        axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        plot.title = element_text(hjust = 0.5, color = "#666666", size = title_size)
-      )
-  }
+  if (type %in% c(1, 2)) print(pp)
 
-  if (type == 2) {
-    if (show_freq) {
-      pp <- ggplot(input, aes(x = 2, y = percent_weight, fill = var)) +
-        geom_bar(stat = "identity", color = "white") +
-        coord_polar(theta = "y", start = 0) +
-        geom_text(aes(label = paste0(Freq)),
-          color = "white",
-          size = text_size, position = position_stack(vjust = 0.5)
-        ) +
-        labs(x = NULL, y = NULL, fill = NULL) +
-        ggtitle(paste0(title)) +
-        scale_fill_manual(values = color) +
-        theme_classic() +
-        theme(
-          axis.line = element_blank(),
-          axis.text = element_blank(),
-          axis.ticks = element_blank(),
-          plot.title = element_text(hjust = 0.5, color = "#666666", size = title_size)
-        )
-    } else {
-      pp <- ggplot(input, aes(x = 2, y = percent_weight, fill = var)) +
-        geom_bar(stat = "identity", color = "white") +
-        coord_polar(theta = "y", start = 0) +
-        geom_text(aes(label = paste0(percent_weight, "%")),
-          color = "white",
-          size = text_size, position = position_stack(vjust = 0.5)
-        ) +
-        labs(x = NULL, y = NULL, fill = NULL) +
-        ggtitle(paste0(title)) +
-        scale_fill_manual(values = color) +
-        theme_classic() +
-        theme(
-          axis.line = element_blank(),
-          axis.text = element_blank(),
-          axis.ticks = element_blank(),
-          plot.title = element_text(hjust = 0.5, color = "#666666", size = title_size)
-        )
-    }
-  }
+  pp
+}
 
-  if (type == 3) {
-    # https://rpubs.com/cardiomoon/398623
-    if (is.null(var2)) stop("var2 must be defined!")
-    rlang::check_installed("webr",
-      reason = "to create PieDonut plots (type 3)"
+#' @keywords internal
+.pie_chart_basic <- function(input, color, title, title_size) {
+  input <- input[order(input$Freq, decreasing = FALSE), ]
+
+  ggplot2::ggplot(input, ggplot2::aes(x = 2, y = .data$percent_weight, fill = .data$var)) +
+    ggplot2::geom_bar(stat = "identity", color = "white") +
+    ggplot2::coord_polar(theta = "y", start = 0, direction = 1) +
+    ggplot2::geom_text(
+      ggplot2::aes(x = 2, y = .data$lab.ypos, label = .data$percent_weight),
+      color = "white", size = 10
+    ) +
+    ggplot2::labs(x = NULL, y = NULL, fill = NULL) +
+    ggplot2::ggtitle(title) +
+    ggplot2::scale_fill_manual(values = color) +
+    ggplot2::theme_void() +
+    ggplot2::xlim(0.5, 2.5) +
+    ggplot2::theme(
+      axis.line = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(hjust = 0.5, color = "#666666", size = title_size)
     )
-    pp <- webr::PieDonut(input2, aes(pies = !!sym(var), donuts = !!sym(var2)),
-      explode = 1, pieLabelSize = 7,
-      donutLabelSize = 5
+}
+
+#' @keywords internal
+.pie_chart_donut <- function(input, color, title, text_size, show_freq) {
+  label_col <- if (show_freq) "Freq" else "percent_weight"
+  label_fun <- function(x) if (show_freq) x else paste0(x, "%")
+
+  ggplot2::ggplot(input, ggplot2::aes(x = 2, y = .data$percent_weight, fill = .data$var)) +
+    ggplot2::geom_bar(stat = "identity", color = "white") +
+    ggplot2::coord_polar(theta = "y", start = 0) +
+    ggplot2::geom_text(
+      ggplot2::aes(label = label_fun(!!rlang::sym(label_col))),
+      color = "white", size = text_size, position = ggplot2::position_stack(vjust = 0.5)
+    ) +
+    ggplot2::labs(x = NULL, y = NULL, fill = NULL) +
+    ggplot2::ggtitle(title) +
+    ggplot2::scale_fill_manual(values = color) +
+    ggplot2::theme_classic() +
+    ggplot2::theme(
+      axis.line = ggplot2::element_blank(),
+      axis.text = ggplot2::element_blank(),
+      axis.ticks = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(hjust = 0.5, color = "#666666", size = 20)
     )
+}
+
+#' @keywords internal
+.pie_chart_piedonut <- function(input, var, var2) {
+  if (is.null(var2)) {
+    cli::cli_abort("var2 must be defined for type = 3")
   }
+  rlang::check_installed("webr", reason = "to create PieDonut plots")
 
-  if (type == 1 | type == 2) print(pp)
-
-  return(pp)
+  webr::PieDonut(input, ggplot2::aes(pies = !!rlang::sym(var), donuts = !!rlang::sym(var2)),
+    explode = 1, pieLabelSize = 7, donutLabelSize = 5
+  )
 }
