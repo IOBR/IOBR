@@ -192,19 +192,20 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #'
 #' @return A list containing the model object, a data frame of coefficients for different lambda values,
 #'         and a matrix of AUC values for both the training and testing sets, calculated at both lambda.min and lambda.1se.
-#'
 #' @examples
-#' # Assuming that `model` is already fitted using glmnet or a similar package:
-#' train_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' train_outcome <- rbinom(100, 1, 0.5)
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' test_outcome <- rbinom(100, 1, 0.5)
-#' fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
-#' results <- RegressionResult(
-#'   train.x = train_data, train.y = train_outcome,
-#'   test.x = test_data, test.y = test_outcome,
-#'   model = fitted_model
-#' )
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(100 * 10), ncol = 10)
+#'   train_outcome <- rbinom(100, 1, 0.5)
+#'   test_data <- matrix(rnorm(100 * 10), ncol = 10)
+#'   test_outcome <- rbinom(100, 1, 0.5)
+#'   fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
+#'   results <- RegressionResult(
+#'     train.x = train_data, train.y = train_outcome,
+#'     test.x = test_data, test.y = test_outcome,
+#'     model = fitted_model
+#'   )
+#' }
 #' @export
 RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
   coefs <- cbind(coef(model, s = model$lambda.min), coef(model, s = model$lambda.1se))
@@ -449,12 +450,10 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'
 #' # 训练简单模型
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
-#'   library(glmnet)
-#'   # 快速训练（使用较小的交叉验证折数）
-#'   fitted_model <- cv.glmnet(x_train, y_train,
+#'   fitted_model <- glmnet::cv.glmnet(x_train, y_train,
 #'     family = "binomial",
 #'     nfolds = 3
-#'   ) # 减少折数以加快速度
+#'   )
 #'
 #'   # 测试数据
 #'   new_data <- matrix(rnorm(n_test * p), n_test, p)

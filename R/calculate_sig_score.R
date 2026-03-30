@@ -6,12 +6,10 @@
 #' names while values represent internal method identifiers.
 #'
 #' @format Named character vector with the following elements:
-#' \describe{
-#'   \item{PCA}{Principal Component Analysis method (internal: "pca")}
-#'   \item{ssGSEA}{Single-sample Gene Set Enrichment Analysis (internal: "ssgsea")}
-#'   \item{z-score}{Z-score transformation method (internal: "zscore")}
-#'   \item{Integration}{Integration method (internal: "integration")}
-#' }
+#' - `PCA`: Principal Component Analysis method (internal: "pca")
+#' - `ssGSEA`: Single-sample Gene Set Enrichment Analysis (internal: "ssgsea")
+#' - `z-score`: Z-score transformation method (internal: "zscore")
+#' - `Integration`: Integration method (internal: "integration")
 #'
 #' @export
 

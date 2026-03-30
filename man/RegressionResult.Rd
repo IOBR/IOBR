@@ -27,15 +27,17 @@ It calculates the coefficients at specified regularization strengths (lambda.min
 evaluates the model's performance using Area Under the Curve (AUC) for binomial outcomes.
 }
 \examples{
-# Assuming that `model` is already fitted using glmnet or a similar package:
-train_data <- matrix(rnorm(100 * 10), ncol = 10)
-train_outcome <- rbinom(100, 1, 0.5)
-test_data <- matrix(rnorm(100 * 10), ncol = 10)
-test_outcome <- rbinom(100, 1, 0.5)
-fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
-results <- RegressionResult(
-  train.x = train_data, train.y = train_outcome,
-  test.x = test_data, test.y = test_outcome,
-  model = fitted_model
-)
+if (requireNamespace("glmnet", quietly = TRUE)) {
+  set.seed(123)
+  train_data <- matrix(rnorm(100 * 10), ncol = 10)
+  train_outcome <- rbinom(100, 1, 0.5)
+  test_data <- matrix(rnorm(100 * 10), ncol = 10)
+  test_outcome <- rbinom(100, 1, 0.5)
+  fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
+  results <- RegressionResult(
+    train.x = train_data, train.y = train_outcome,
+    test.x = test_data, test.y = test_outcome,
+    model = fitted_model
+  )
+}
 }

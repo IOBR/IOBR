@@ -14,13 +14,11 @@
 #'   to filter valid features. Default is \code{FALSE}.
 #'
 #' @return Tibble containing the following columns for each feature:
-#' \itemize{
-#'   \item \code{sig_names}: Feature name
-#'   \item \code{p.value}: Raw p-value from Kruskal-Wallis test
-#'   \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
-#'   \item \code{log10pvalue}: Negative log10-transformed p-value
-#'   \item \code{stars}: Significance stars based on p-value thresholds
-#' }
+#' - `sig_names`: Feature name
+#' - `p.value`: Raw p-value from Kruskal-Wallis test
+#' - `p.adj`: Adjusted p-value (Benjamini-Hochberg method)
+#' - `log10pvalue`: Negative log10-transformed p-value
+#' - `stars`: Significance stars based on p-value thresholds
 #'
 #' @author Dongqiang Zeng
 #' @export
