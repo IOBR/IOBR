@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' data("deg", package = "IOBR")
+#' deg <- load_data("deg")
 #' get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
 get_sig_sc <- function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100) {
   # cluster <- !!sym(cluster)

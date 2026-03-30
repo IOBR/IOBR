@@ -16,7 +16,7 @@
 #'
 #' @examples
 #' # Load expression data
-#' data("eset_tme_stad", package = "IOBR")
+#' eset_tme_stad <- load_data("eset_tme_stad")
 #' # Filter variable genes
 #' eset <- find_variable_genes(
 #'   eset = eset_tme_stad,

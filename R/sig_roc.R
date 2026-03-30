@@ -25,7 +25,7 @@
 #' @export
 #'
 #' @examples
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_roc(
 #'   data = tcga_stad_pdata, response = "OS_status",
 #'   variables = c("TMEscore_plus", "GZMB", "GNLY")

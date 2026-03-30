@@ -16,7 +16,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("tcga_stad_sig", package = "IOBR")
+#' tcga_stad_sig <- load_data("tcga_stad_sig")
 #' res <- tme_cluster(
 #'   input = tcga_stad_sig,
 #'   features = NULL, pattern = "xCell", id = "ID",

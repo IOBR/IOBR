@@ -28,8 +28,8 @@
 #' @import ggplot2
 #' @examples
 #' \dontrun{
-#' data("imvigor210_sig", package = "IOBR")
-#' data("imvigor210_pdata", package = "IOBR")
+#' imvigor210_sig <- load_data("imvigor210_sig")
+#' imvigor210_pdata <- load_data("imvigor210_pdata")
 #' pdata_prog <- imvigor210_pdata %>%
 #'   dplyr::select(ID, OS_days, OS_status) %>%
 #'   dplyr::mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
@@ -205,7 +205,8 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #'   x <- matrix(rnorm(100 * 5), ncol = 5)
 #'   y <- survival::Surv(rexp(100), rbinom(100, 1, 0.5))
 #'   fit <- glmnet::cv.glmnet(x, y, family = "cox")
-#'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = data.frame(time = y[,1], status = y[,2]))
+#'   acture_y <- data.frame(time = y[, 1], status = y[, 2])
+#'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
 #' }
 #' }
 #' @export

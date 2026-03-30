@@ -32,7 +32,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_box_batch(
 #'   input = tcga_stad_pdata,
 #'   vars = c("TMEscore_plus", "GZMB"),

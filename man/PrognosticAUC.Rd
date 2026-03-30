@@ -30,7 +30,8 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
   x <- matrix(rnorm(100 * 5), ncol = 5)
   y <- survival::Surv(rexp(100), rbinom(100, 1, 0.5))
   fit <- glmnet::cv.glmnet(x, y, family = "cox")
-  auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = data.frame(time = y[,1], status = y[,2]))
+  acture_y <- data.frame(time = y[, 1], status = y[, 2])
+  auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
 }
 }
 }

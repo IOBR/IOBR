@@ -18,7 +18,7 @@
 #' @export
 #' @examples
 #' # Load TCGA-STAD expression data
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # Convert counts to TPM
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' # Check expression set integrity

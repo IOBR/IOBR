@@ -24,7 +24,7 @@ with missing values, non-numeric variables, infinite values, and variables with 
 }
 \examples{
 # Load example data
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 # Filter features with NA or outliers
 feas <- feature_manipulation(data = eset_stad, feature = rownames(eset_stad), is_matrix = TRUE)
 }

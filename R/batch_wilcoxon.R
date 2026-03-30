@@ -14,7 +14,7 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' # Load TCGA-STAD microenvironment signature data
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' # Find microenvironmental scores associated with Gender
 #' batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 batch_wilcoxon <- function(data, target = "group", feature = NULL, feature_manipulation = FALSE) {

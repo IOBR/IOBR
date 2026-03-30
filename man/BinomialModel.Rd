@@ -48,8 +48,8 @@ and testing sets based on a provided ratio, and then fits both Lasso and Ridge m
 generates AUC plots for model evaluation. The results, along with the training dataset, are returned.
 }
 \examples{
-data("imvigor210_sig", package = "IOBR")
-data("imvigor210_pdata", package = "IOBR")
+imvigor210_sig <- load_data("imvigor210_sig")
+imvigor210_pdata <- load_data("imvigor210_pdata")
 pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
 BinomialModel(

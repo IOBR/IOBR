@@ -78,7 +78,7 @@ pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
 sm <- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
 
 # load the bulk-seq data
-data(eset_stad, package = "IOBR")
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 svr <- deconvo_tme(
   eset = eset,

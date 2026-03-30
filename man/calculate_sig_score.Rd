@@ -53,7 +53,7 @@ Calculating signature score on a gene expression dataset
 }
 \examples{
 # Loading TCGA-STAD expresion data(raw count matrix)
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 # transform count data to tpm
 eset <- count2tpm(eset_stad, idType = "ensembl")
 # signature score estimation using PCA, z-score, or ssgsea method

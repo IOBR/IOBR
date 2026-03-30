@@ -20,9 +20,9 @@
 #' @examples
 #'
 #' # loading eset
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # annotation
-#' data("anno_rnaseq", package = "IOBR")
+#' anno_rnaseq <- load_data("anno_rnaseq")
 #' eset_stad <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #' eset_stad <- rownames_to_column(eset_stad, var = "id")
 #'

@@ -21,5 +21,9 @@ IPS score data frame
 This R-script can be used to calculate Immunophenoscore (IPS)
 }
 \examples{
-首先构建图的储存文件夹
+\dontrun{
+eset_stad <- load_data("eset_stad")
+eset <- count2tpm(eset_stad, idType = "ensembl")
+ips_result <- IPS_calculation(eset = eset, project = "TCGA-STAD", plot = FALSE)
+}
 }

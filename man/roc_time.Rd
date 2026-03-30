@@ -71,8 +71,8 @@ A ggplot object representing the time-dependent ROC plot.
 Generates a time-dependent Receiver Operating Characteristic (ROC) plot to evaluate the predictive performance of one or more variables in survival analysis. Calculates the Area Under the Curve (AUC) for each specified time point and variable, and creates a multi-line ROC plot with annotated AUC values.
 }
 \examples{
-data("tcga_stad_sig", package = "IOBR")
-data("pdata_stad", package = "IOBR")
+tcga_stad_sig <- load_data("tcga_stad_sig")
+pdata_stad <- load_data("pdata_stad")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
 roc_time(
   input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),

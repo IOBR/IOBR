@@ -21,6 +21,6 @@ This function saves signature data to a specified file format, supporting CSV or
 It handles single signatures or lists of signatures, converting them to a data frame for storage.
 }
 \examples{
-data("signature_collection", package = "IOBR")
+signature_collection <- load_data("signature_collection")
 output_sig(signatures = signature_collection, format = "csv", file.name = "my_signatures")
 }

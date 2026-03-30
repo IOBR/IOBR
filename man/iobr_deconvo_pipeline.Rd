@@ -34,9 +34,9 @@ Executes an integrated TME analysis on a gene expression matrix: performs immune
 }
 \examples{
 \dontrun{
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad)
-data("lm22", package = "IOBR")
+lm22 <- load_data("lm22")
 res <- iobr_deconvo_pipeline(
   eset = eset, project = "STAD",
   array = FALSE, tumor_type = "stad",

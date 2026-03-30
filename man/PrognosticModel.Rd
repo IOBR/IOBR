@@ -50,8 +50,8 @@ time-dependent ROC curves for visual assessment of predictive accuracy.
 }
 \examples{
 \dontrun{
-data("imvigor210_sig", package = "IOBR")
-data("imvigor210_pdata", package = "IOBR")
+imvigor210_sig <- load_data("imvigor210_sig")
+imvigor210_pdata <- load_data("imvigor210_pdata")
 pdata_prog <- imvigor210_pdata \%>\%
   dplyr::select(ID, OS_days, OS_status) \%>\%
   dplyr::mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))

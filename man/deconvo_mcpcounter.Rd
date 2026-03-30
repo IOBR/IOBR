@@ -25,7 +25,7 @@ stromal cell populations from bulk gene expression data.
 }
 \examples{
 # Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 # Convert to TPM
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 # Run MCP-counter deconvolution

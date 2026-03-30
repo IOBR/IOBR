@@ -54,8 +54,8 @@ CIBERSORT is an analytical tool developed by Newman et al. to provide an estimat
 }
 \examples{
 \dontrun{
-data("lm22", package = "IOBR")
-data("eset_gse62254", package = "IOBR")
+lm22 <- load_data("lm22")
+eset_gse62254 <- load_data("eset_gse62254")
 cibersort <- CIBERSORT(
   sig_matrix = lm22,
   mixture_file = eset_gse62254, perm = 100,

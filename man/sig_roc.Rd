@@ -58,7 +58,7 @@ This function generates Receiver Operating Characteristic (ROC) curves for multi
 and optionally performs statistical comparisons between them.
 }
 \examples{
-data("tcga_stad_pdata", package = "IOBR")
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_roc(
   data = tcga_stad_pdata, response = "OS_status",
   variables = c("TMEscore_plus", "GZMB", "GNLY")

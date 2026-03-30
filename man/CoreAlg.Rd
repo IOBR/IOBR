@@ -23,8 +23,10 @@ This function performs nu-regression using support vector machines (SVM) and cal
 root mean squared error (RMSE), and correlation coefficient (R).
 }
 \examples{
+\dontrun{
 X <- matrix(rnorm(100), nrow = 10)
 y <- rnorm(10)
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
+}
 
 }

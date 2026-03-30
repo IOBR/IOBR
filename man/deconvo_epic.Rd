@@ -23,9 +23,9 @@ primarily designed for RNA-seq data.
 \examples{
 \dontrun{
 # Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
-data("TRef", package = "IOBR")
-data("BRef", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+TRef <- load_data("TRef")
+BRef <- load_data("BRef")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 }

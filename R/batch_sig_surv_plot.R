@@ -43,7 +43,7 @@
 #' @examples
 #' \dontrun{
 #' # Load TCGA-STAD microenvironment signature data
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' sig_stad <- as.data.frame(sig_stad)
 #' # Generate survival plots for multiple projects
 #' result <- batch_sig_surv_plot(

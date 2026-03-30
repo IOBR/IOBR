@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' data("signature_collection", package = "IOBR")
+#' signature_collection <- load_data("signature_collection")
 #' output_sig(signatures = signature_collection, format = "csv", file.name = "my_signatures")
 output_sig <- function(signatures, format = "csv", file.name) {
   if (length(signatures) <= 1) {

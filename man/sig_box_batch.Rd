@@ -86,7 +86,7 @@ If `return_stat_res` is TRUE, returns a data frame of statistical results; other
 Generates multiple box plots for specified features (signatures) across groups in the input data. Supports customization of plot appearance, output path, statistical annotation, and compatibility with Seurat objects. Plots are saved to the specified directory or a default folder.
 }
 \examples{
-data("tcga_stad_pdata", package = "IOBR")
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box_batch(
   input = tcga_stad_pdata,
   vars = c("TMEscore_plus", "GZMB"),

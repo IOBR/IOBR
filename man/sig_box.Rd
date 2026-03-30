@@ -85,7 +85,7 @@ single-cell data visualization.
 }
 \examples{
 # Load example data
-data("tcga_stad_pdata", package = "IOBR")
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 # Create box plot with statistical comparisons
 sig_box(
   data = tcga_stad_pdata, signature = "TMEscore_plus",

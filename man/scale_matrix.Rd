@@ -21,7 +21,7 @@ This function scales a given matrix, optionally applies logarithmic transformati
 and performs feature manipulation to remove problematic variables.
 }
 \examples{
-data("eset_gse62254", package = "IOBR")
+eset_gse62254 <- load_data("eset_gse62254")
 eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 }
 \author{

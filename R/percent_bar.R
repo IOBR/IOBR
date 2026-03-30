@@ -25,7 +25,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' table(sig_stad$Subtype, sig_stad$Lauren)
 #' percent_bar_plot(input = sig_stad, x = "Subtype", y = "Lauren", axis_angle = 60)
 percent_bar_plot <- function(input, x, y,

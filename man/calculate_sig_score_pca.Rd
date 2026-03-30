@@ -45,7 +45,7 @@ signature and used as the signature score.
 }
 \examples{
 # Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 # Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
 # Calculate signature scores using PCA method

@@ -21,7 +21,7 @@ patterns_to_na <- c("_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MC
 #' @return Modified data frame with patterns replaced.
 #' @export
 #' @examples
-#' data("imvigor210_sig", package = "IOBR")
+#' imvigor210_sig <- load_data("imvigor210_sig")
 #' input <- remove_names(imvigor210_sig,
 #'   variable = "colnames",
 #'   patterns_to_na = patterns_to_na,

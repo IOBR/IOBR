@@ -21,8 +21,8 @@
 #'         The list includes elements 'lasso_result', 'ridge_result', and 'train.x'.
 #'
 #' @examples
-#' data("imvigor210_sig", package = "IOBR")
-#' data("imvigor210_pdata", package = "IOBR")
+#' imvigor210_sig <- load_data("imvigor210_sig")
+#' imvigor210_pdata <- load_data("imvigor210_pdata")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
 #' BinomialModel(

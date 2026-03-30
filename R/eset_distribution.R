@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' data("eset_stad", package = "IOBR")
-#' data("anno_rnaseq", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
+#' anno_rnaseq <- load_data("anno_rnaseq")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #' eset_distribution(eset)
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {

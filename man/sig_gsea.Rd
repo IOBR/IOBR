@@ -131,8 +131,8 @@ signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
 # Load example data
-data("eset_stad", package = "IOBR")
-data("stad_group", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+stad_group <- load_data("stad_group")
 # Perform differential expression analysis
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group, group_id = "subtype",

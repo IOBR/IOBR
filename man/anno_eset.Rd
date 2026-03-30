@@ -49,13 +49,13 @@ The function performs the following operations:
 }
 \examples{
 # Annotate Affymetrix microarray data
-data(eset_gse62254, package = "IOBR")
-data("anno_hug133plus2", package = "IOBR")
+eset_gse62254 <- load_data("eset_gse62254")
+anno_hug133plus2 <- load_data("anno_hug133plus2")
 eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
 
 # Annotate RNA-seq data with Ensembl IDs
-data(eset_stad, package = "IOBR")
-data("anno_grch38", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 }
 \author{

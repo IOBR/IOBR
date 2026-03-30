@@ -13,7 +13,7 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' # Load example data
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # Filter features with NA or outliers
 #' feas <- feature_manipulation(data = eset_stad, feature = rownames(eset_stad), is_matrix = TRUE)
 feature_manipulation <- function(data, feature, is_matrix = FALSE, print_result = FALSE) {

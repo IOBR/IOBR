@@ -13,7 +13,7 @@
 #' @export
 #' @import survival
 #' @examples
-#' data(subgroup_data)
+#' subgroup_data <- load_data("subgroup_data")
 #' input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
 #' # Binary variable example
 #' res_bin <- subgroup_survival(

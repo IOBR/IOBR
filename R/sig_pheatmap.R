@@ -33,8 +33,8 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("tcga_stad_sig", package = "IOBR")
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_sig <- load_data("tcga_stad_sig")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 #' feas <- colnames(input)[grep("MCPcounter", colnames(input))]
 #' sig_pheatmap(input = input, feas = feas, group = "subtype", scale.matrix = TRUE)

@@ -35,8 +35,8 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("tcga_stad_sig", package = "IOBR")
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_sig <- load_data("tcga_stad_sig")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 #' feas <- grep("MCPcounter", colnames(input), value = TRUE)
 #' sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)

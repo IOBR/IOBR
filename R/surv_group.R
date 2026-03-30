@@ -32,7 +32,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' surv_group(
 #'   input_pdata = tcga_stad_pdata,
 #'   target_group = "TMEscore_plus_binary",

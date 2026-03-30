@@ -112,7 +112,7 @@ This function calculates and visualizes the correlation between two variables,
 with options for scaling, handling missing values, and incorporating grouping data.
 }
 \examples{
-data("eset_tme_stad", package = "IOBR")
+eset_tme_stad <- load_data("eset_tme_stad")
 get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
 }
 \author{

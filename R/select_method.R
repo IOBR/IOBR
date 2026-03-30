@@ -9,8 +9,8 @@
 #' @export
 #'
 #' @examples
-#' data(eset_stad, package = "IOBR")
-#' data("signature_collection", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
+#' signature_collection <- load_data("signature_collection")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' eset <- scale_matrix(eset, manipulate = TRUE)
 #' res <- calculate_sig_score(

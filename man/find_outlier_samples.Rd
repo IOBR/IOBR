@@ -37,7 +37,7 @@ Analyzes gene expression data to identify potential outlier samples using connec
 }
 \examples{
 # Load expression data
-data("eset_tme_stad", package = "IOBR")
+eset_tme_stad <- load_data("eset_tme_stad")
 outs <- find_outlier_samples(eset = eset_tme_stad)
 print(outs)
 }

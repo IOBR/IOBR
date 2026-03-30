@@ -36,7 +36,7 @@ testing using the Benjamini-Hochberg method.
 }
 \examples{
 # Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
+sig_stad <- load_data("sig_stad")
 # Perform batch correlation analysis
 results <- batch_cor(
   data = sig_stad, target = "CD_8_T_effector",

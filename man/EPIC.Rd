@@ -144,6 +144,8 @@ these cases differently, you can remove the duplicates before calling
 \emph{EPIC}.
 }
 \examples{
+melanoma_data <- load_data("melanoma_data")
+TRef <- load_data("TRef")
 res1 <- EPIC(melanoma_data$counts)
 res1$cellFractions
 res2 <- EPIC(melanoma_data$counts, TRef)

@@ -70,8 +70,8 @@ Deconvoluting Tumor microenvironment on a transcriptomic dataset
 \examples{
 \dontrun{
 # Loading TCGA-STAD expression data(raw count matrix)
-data(eset_stad, package = "IOBR")
-data("lm22", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+lm22 <- load_data("lm22")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
 # Absolute mode

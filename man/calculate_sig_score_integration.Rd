@@ -40,7 +40,7 @@ Calculating signature score using Integration method
 \examples{
 \dontrun{
 # Loading TCGA-STAD expresion data(raw count matrix)
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 # transform count data to tpm
 eset <- count2tpm(eset_stad, idType = "ensembl")
 # signature score estimation using PCA, z-score, and ssgsea method

@@ -24,7 +24,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("tcga_stad_pdata", package = "IOBR")
+#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_surv_plot(
 #'   input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
 #'   time = "time", status = "OS_status"

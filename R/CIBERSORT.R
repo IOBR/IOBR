@@ -60,9 +60,11 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
+#' }
 #'
 CoreAlg <- function(X, y, absolute, abs_method) {
   rlang::check_installed("e1071")
@@ -137,10 +139,11 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' Y <- rnorm(10)
 #' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
-#'
+#' }
 doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
 
@@ -310,8 +313,8 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1, num_cores1 = 
 #' @import stringr
 #' @examples
 #' \dontrun{
-#' data("lm22", package = "IOBR")
-#' data("eset_gse62254", package = "IOBR")
+#' lm22 <- load_data("lm22")
+#' eset_gse62254 <- load_data("eset_gse62254")
 #' cibersort <- CIBERSORT(
 #'   sig_matrix = lm22,
 #'   mixture_file = eset_gse62254, perm = 100,

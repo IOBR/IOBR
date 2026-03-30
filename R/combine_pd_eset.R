@@ -26,14 +26,14 @@
 #' @export
 #' @examples
 #' # Load TCGA-STAD expression data
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # Convert to TPM
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' colnames(eset) <- substring(colnames(eset), 1, 12)
 #' # Load phenotype data
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' # Combine phenotype and expression data
-#' data("signature_collection", package = "IOBR")
+#' signature_collection <- load_data("signature_collection")
 #' input <- combine_pd_eset(
 #'   eset = eset, pdata = sig_stad,
 #'   feas = unique(unlist(signature_collection))

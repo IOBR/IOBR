@@ -33,7 +33,7 @@ Character vector of selected feature names.
 Selects informative features using either correlation with a quantitative response or differential expression (limma) for binary/continuous responses.
 }
 \examples{
-data("imvigor210_eset", package = "IOBR")
+imvigor210_eset <- load_data("imvigor210_eset")
 mad <- apply(imvigor210_eset, 1, mad)
 imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
 pd1 <- as.numeric(imvigor210_eset["PDCD1", ])

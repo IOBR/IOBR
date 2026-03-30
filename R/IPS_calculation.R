@@ -15,6 +15,11 @@
 #' @import ggplot2
 #' @import grid
 #' @examples
+#' \dontrun{
+#' eset_stad <- load_data("eset_stad")
+#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' ips_result <- IPS_calculation(eset = eset, project = "TCGA-STAD", plot = FALSE)
+#' }
 IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
   # normalize gene expression matrix
   if (max(eset) > 100) eset <- log2(eset + 1)
@@ -105,7 +110,7 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
       abspath <- paste(getwd(), "/", file_name, "/", sep = "")
       abspath
       ################################################
-      #' 首先构建图的储存文件夹
+      # 首先构建图的储存文件夹
       plotpath <- paste(file_name, "/IPS_plot_results", sep = "")
       if (!file.exists(plotpath)) dir.create(plotpath)
       ###############################

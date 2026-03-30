@@ -22,7 +22,7 @@ This function performs deconvolution of immune cell fractions using the TIMER (T
 \examples{
 \dontrun{
 # Loading TCGA-STAD expression data (raw count matrix)
-data(eset_stad, package = "IOBR")
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 res <- deconvo_timer(eset = eset, project = "stad")
 }

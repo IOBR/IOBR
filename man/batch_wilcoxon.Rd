@@ -28,7 +28,7 @@ Performs Wilcoxon rank-sum tests on a dataset to compare the distribution of spe
 }
 \examples{
 # Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
+sig_stad <- load_data("sig_stad")
 # Find microenvironmental scores associated with Gender
 batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
 }

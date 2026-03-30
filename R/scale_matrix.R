@@ -11,7 +11,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("eset_gse62254", package = "IOBR")
+#' eset_gse62254 <- load_data("eset_gse62254")
 #' eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 scale_matrix <- function(matrix, log2matrix = TRUE, manipulate = TRUE) {
   if (log2matrix) {

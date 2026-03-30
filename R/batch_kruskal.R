@@ -26,7 +26,7 @@
 #' @export
 #' @examples
 #' # Load TCGA-STAD microenvironment signature data
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' # Test features associated with TCGA molecular subtype
 #' batch_kruskal(
 #'   data = sig_stad, group = "Subtype",

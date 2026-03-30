@@ -40,7 +40,7 @@ p-values for multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
 # Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
+sig_stad <- load_data("sig_stad")
 # Calculate partial correlations controlling for tumor purity
 res <- batch_pcc(
   input = sig_stad, interferenceid = "TumorPurity_estimate",

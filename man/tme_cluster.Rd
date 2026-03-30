@@ -39,7 +39,7 @@ A data frame with clusters appended as a new column.
 This function is designed to perform TME (Tumor Microenvironment) clustering analysis using the specified input dataset. The function allows for customization of various parameters to conduct clustering analysis, including the selection of features, scaling options, clustering method, and the range of cluster numbers to evaluate.
 }
 \examples{
-data("tcga_stad_sig", package = "IOBR")
+tcga_stad_sig <- load_data("tcga_stad_sig")
 res <- tme_cluster(
   input = tcga_stad_sig,
   features = NULL, pattern = "xCell", id = "ID",

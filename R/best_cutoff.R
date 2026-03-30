@@ -24,7 +24,7 @@
 #' @export
 #' @examples
 #' # Load TCGA-STAD microenvironment signature data
-#' data("sig_stad", package = "IOBR")
+#' sig_stad <- load_data("sig_stad")
 #' # Find the best cutoff value of TMEscore for survival analysis
 #' sig_stad2 <- best_cutoff(
 #'   pdata = sig_stad, variable = "TMEscore_CIR",

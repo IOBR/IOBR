@@ -47,7 +47,7 @@ tme_deconvolution_methods <- c(
 #' @examples
 #' \dontrun{
 #' # Load TCGA-STAD expression data (raw count matrix)
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # Convert to TPM
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' # Run xCell deconvolution
@@ -174,7 +174,7 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @importFrom tibble rownames_to_column
 #' @examples
 #' # Load TCGA-STAD expression data (raw count matrix)
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' # Convert to TPM
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' # Run MCP-counter deconvolution
@@ -222,9 +222,9 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @examples
 #' \dontrun{
 #' # Load TCGA-STAD expression data (raw count matrix)
-#' data("eset_stad", package = "IOBR")
-#' data("TRef", package = "IOBR")
-#' data("BRef", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
+#' TRef <- load_data("TRef")
+#' BRef <- load_data("BRef")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 #' }
@@ -278,8 +278,8 @@ deconvo_epic <- function(eset, project = NULL, tumor) {
 #'
 #' @examples
 #' \dontrun{
-#' data("eset_tme_stad", package = "IOBR")
-#' data("lm22", package = "IOBR")
+#' eset_tme_stad <- load_data("eset_tme_stad")
+#' lm22 <- load_data("lm22")
 #' cibersort_result <- deconvo_cibersort(
 #'   eset = eset_tme_stad,
 #'   project = "TCGA-STAD",
@@ -349,7 +349,7 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
 #' @author Dongqiang Zeng
 #' @examples
 #' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
 #'
@@ -389,7 +389,7 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
 #'
 #' @examples
 #' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_estimate(eset)
 deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
@@ -453,9 +453,9 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
 #' @examples
 #' \dontrun{
 #' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#' data("lm22", package = "IOBR")
+#' lm22 <- load_data("lm22")
 #' deconvo_ref(eset = eset, reference = lm22)
 #' }
 deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", perm = 100,
@@ -561,7 +561,7 @@ deconvo_ref <- function(eset, project = NULL, arrays = TRUE, method = "svr", per
 #' @examples
 #' \dontrun{
 #' # Loading TCGA-STAD expression data (raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' res <- deconvo_timer(eset = eset, project = "stad")
 #' }
@@ -625,7 +625,7 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' @examples
 #' \dontrun{
 #' # Loading TCGA-STAD expresion data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
 #' }
@@ -694,8 +694,8 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' @examples
 #' \dontrun{
 #' # Loading TCGA-STAD expression data(raw count matrix)
-#' data(eset_stad, package = "IOBR")
-#' data("lm22", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
+#' lm22 <- load_data("lm22")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
 #' # Absolute mode

@@ -40,7 +40,7 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' data("eset_tme_stad", package = "IOBR")
+#' eset_tme_stad <- load_data("eset_tme_stad")
 #' get_cor(eset = eset_tme_stad, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274")
 get_cor <- function(eset, pdata = NULL, is.matrix = FALSE, id_eset = "ID", id_pdata = "ID", var1, var2, scale = TRUE,
                     subtype = NULL, na.subtype.rm = FALSE, color_subtype = NULL, palette = "jama", index = NULL,

@@ -27,8 +27,9 @@ A list containing the distribution of correlation coefficients from the permutat
 doPerm performs permutation-based sampling and runs the CoreAlg function iteratively.
 }
 \examples{
+\dontrun{
 X <- matrix(rnorm(100), nrow = 10)
 Y <- rnorm(10)
 result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
-
+}
 }

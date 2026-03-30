@@ -13,7 +13,7 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' # Load data
-#' data("pbmc_small")
+#' pbmc_small <- load_data("pbmc_small")
 #' pbmc_small
 #' # Choose features
 #' vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3", "PF4", "MYL9", "GNLY", "TREML1", "CA2")

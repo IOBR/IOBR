@@ -26,7 +26,7 @@ This function performs deconvolution of the tumor microenvironment using the qua
 \examples{
 \dontrun{
 # Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
 }

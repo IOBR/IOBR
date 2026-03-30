@@ -30,6 +30,6 @@ List of character vectors; each element contains the top N genes for a cluster.
 Selects the top N marker genes per cluster from a ranked differential expression result table.
 }
 \examples{
-data("deg", package = "IOBR")
+deg <- load_data("deg")
 get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
 }

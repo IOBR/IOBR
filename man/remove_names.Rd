@@ -28,7 +28,7 @@ This function modifies column names or specified variables in a data frame by re
 specified patterns with NA or spaces.
 }
 \examples{
-data("imvigor210_sig", package = "IOBR")
+imvigor210_sig <- load_data("imvigor210_sig")
 input <- remove_names(imvigor210_sig,
   variable = "colnames",
   patterns_to_na = patterns_to_na,
