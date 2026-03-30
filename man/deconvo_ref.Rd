@@ -2,13 +2,13 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_ref}
 \alias{deconvo_ref}
-\title{Estimate the fraction of cell types using defined reference genes}
+\title{Deconvolve Using Custom Reference}
 \usage{
 deconvo_ref(
   eset,
   project = NULL,
   arrays = TRUE,
-  method = "svr",
+  method = c("svr", "lsei"),
   perm = 100,
   reference,
   scale_reference = TRUE,
@@ -17,41 +17,38 @@ deconvo_ref(
 )
 }
 \arguments{
-\item{eset}{expression data with matched gene id of reference}
+\item{eset}{Gene expression matrix.}
 
-\item{project}{project name used to distinguish different datasets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{arrays}{a logical value. If TRUE, the columns of the input data will be normalized to have the same quantiles.}
+\item{arrays}{Logical: use quantile normalization. Default is `TRUE`.}
 
-\item{method}{deconvolution method. must be "svr" or "lsei"}
+\item{method}{Method: `"svr"` or `"lsei"`. Default is `"svr"`.}
 
-\item{perm}{permutation to run svr}
+\item{perm}{Permutations for SVR. Default is 100.}
 
-\item{reference}{immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq}
+\item{reference}{Custom reference matrix (e.g., lm22, lm6).}
 
-\item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction.}
+\item{scale_reference}{Logical: scale reference. Default is `TRUE`.}
 
-\item{absolute.mode}{absolute.mode, default is FALSE}
+\item{absolute.mode}{Logical: absolute mode for SVR. Default is `FALSE`.}
 
-\item{abs.method}{abs.method, default is sig.score}
+\item{abs.method}{Method for absolute mode. Default is `"sig.score"`.}
 }
 \value{
-A data frame with the estimated cell type fractions. The columns are named with the cell types and suffixed with "_CIBERSORT".
+Data frame with cell fractions. Columns suffixed with `_CIBERSORT`.
 }
 \description{
-Estimate the fraction of cell types using defined reference genes
+Cell fraction estimation using SVR or lsei methods with custom reference.
 }
 \examples{
 \dontrun{
-# Loading TCGA-STAD expresion data(raw count matrix)
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+eset <- count2tpm(eset_stad, idType = "ensembl")
 lm22 <- load_data("lm22")
-deconvo_ref(eset = eset, reference = lm22)
+deconvo_ref(eset = eset, reference = lm22, method = "svr")
 }
 }
 \author{
-Dongqiang Zeng
-
-Rongfang Shen
+Dongqiang Zeng, Rongfang Shen
 }

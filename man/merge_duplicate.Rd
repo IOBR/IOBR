@@ -4,7 +4,16 @@
 \alias{merge_duplicate}
 \title{Merge Data Frames with Duplicated Column Names}
 \usage{
-merge_duplicate(x, y, by.x, by.y, all.x, all.y, all = NULL, choose = "x")
+merge_duplicate(
+  x,
+  y,
+  by.x,
+  by.y,
+  all.x = FALSE,
+  all.y = FALSE,
+  all = NULL,
+  choose = c("x", "y")
+)
 }
 \arguments{
 \item{x}{Data frame. First data frame to merge.}
@@ -15,25 +24,39 @@ merge_duplicate(x, y, by.x, by.y, all.x, all.y, all = NULL, choose = "x")
 
 \item{by.y}{Character. Column name(s) in `y` used for merging.}
 
-\item{all.x}{Logical. Include all rows from `x` in output. Default is FALSE.}
+\item{all.x}{Logical. Include all rows from `x` in output. Default is `FALSE`.}
 
-\item{all.y}{Logical. Include all rows from `y` in output. Default is FALSE.}
+\item{all.y}{Logical. Include all rows from `y` in output. Default is `FALSE`.}
 
-\item{all}{Logical or NULL. If not NULL, include all rows from both `x` and `y`, overriding `all.x` and `all.y`.}
+\item{all}{Logical or `NULL`. If not `NULL`, include all rows from both `x`
+and `y`, overriding `all.x` and `all.y`.}
 
-\item{choose}{Character. Which data frame's duplicated non-joining columns to retain: "x" or "y". Default is "x".}
+\item{choose}{Character. Which data frame's duplicated non-joining columns to
+retain: `"x"` or `"y"`. Default is `"x"`.}
 }
 \value{
-Data frame resulting from merging `x` and `y` according to specified parameters.
+Data frame resulting from merging `x` and `y` according to specified
+  parameters.
 }
 \description{
-Merges two data frames, resolving duplicated column names according to user preference. Allows selection of which data frame's duplicated columns to retain, ensuring data integrity during merging.
+Merges two data frames, resolving duplicated column names according to user
+preference. Allows selection of which data frame's duplicated columns to
+retain, ensuring data integrity during merging.
 }
 \examples{
 df1 <- data.frame(ID = 1:3, Name = c("A", "B", "C"), Value = 1:3)
 df2 <- data.frame(ID = 1:3, Name = c("X", "Y", "Z"), Score = 4:6)
+
+# Merge keeping duplicated columns from x
 merged_df <- merge_duplicate(df1, df2,
   by.x = "ID", by.y = "ID",
-  all.x = TRUE, all.y = FALSE, choose = "x"
+  all.x = TRUE, choose = "x"
+)
+print(merged_df)
+
+# Merge keeping duplicated columns from y
+merged_df2 <- merge_duplicate(df1, df2,
+  by.x = "ID", by.y = "ID",
+  all = TRUE, choose = "y"
 )
 }

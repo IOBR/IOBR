@@ -7,33 +7,30 @@
 deconvo_xcell(eset, project = NULL, arrays = FALSE)
 }
 \arguments{
-\item{eset}{Gene expression matrix with genes in rows and samples in columns.}
+\item{eset}{Gene expression matrix with HGNC gene symbols as row names and
+samples as columns.}
 
-\item{project}{Character string specifying an optional project name to distinguish
-different datasets. If provided, a \code{ProjectID} column is added. Default is
-\code{NULL}.}
+\item{project}{Optional project name to add as `ProjectID` column.
+Default is `NULL`.}
 
-\item{arrays}{Logical indicating whether the data is from microarray (\code{TRUE})
-or RNA-seq (\code{FALSE}). Default is \code{FALSE}.}
+\item{arrays}{Logical indicating microarray data (`TRUE`) or RNA-seq
+(`FALSE`). Default is `FALSE`.}
 }
 \value{
-Data frame containing xCell enrichment scores for immune and stromal cell
-  types. Sample IDs are in the first column, and cell type columns are suffixed
-  with \code{_xCell}.
+Data frame with xCell enrichment scores. Cell type columns are
+  suffixed with `_xCell`.
 }
 \description{
-Estimates immune cell fractions in the tumor microenvironment using the xCell
-algorithm. xCell provides cell type enrichment scores for 64 immune and stromal
-cell types from gene expression data.
+Estimates immune cell fractions using the xCell algorithm. xCell provides
+cell type enrichment scores for 64 immune and stromal cell types from gene
+expression data.
 }
 \examples{
-\dontrun{
-# Load TCGA-STAD expression data (raw count matrix)
+\donttest{
 eset_stad <- load_data("eset_stad")
-# Convert to TPM
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-# Run xCell deconvolution
-xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
+eset <- count2tpm(eset_stad, idType = "ensembl")
+xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD")
+head(xcell_result)
 }
 }
 \author{

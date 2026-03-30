@@ -31,97 +31,100 @@
 #'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 #' )
 batch_kruskal <- function(data, group, feature = NULL, feature_manipulation = FALSE) {
+  # Input validation
+  if (is.null(data) || !is.data.frame(data)) {
+    stop("'data' must be a non-null data frame.")
+  }
+  if (nrow(data) == 0) {
+    stop("'data' has no rows.")
+  }
+  if (!group %in% colnames(data)) {
+    stop(sprintf("Group variable '%s' not found in data columns.", group))
+  }
+
+  # Prepare data
   data <- as.data.frame(data)
-
-  feature <- feature[feature %in% colnames(data)]
-  data <- data[, c(group, feature)]
-
-  # change-name-of-group
-  colnames(data)[which(colnames(data) == group)] <- "group"
-
-  data <- data[!is.na(data$group), ]
-  data <- data[!data$group == "", ]
-  data$group <- as.character(data$group)
+  data$group <- as.character(data[[group]])
+  data <- data[!is.na(data$group) & data$group != "", , drop = FALSE]
   group_names <- unique(data$group)
 
-  if (is.null(feature)) {
-    message(">>>-- `feature` must be specified, or all continuous features will be estimated...")
+  if (length(group_names) < 2) {
+    stop("Group variable must have at least 2 unique values.")
+  }
 
-    index <- menu(c("all continuous features", "selected features "), title = " >>>-- Choose features:")
+  # Feature selection
+  if (is.null(feature)) {
+    if (!interactive()) {
+      stop("'feature' must be specified in non-interactive mode.")
+    }
+    message("'feature' must be specified, or all continuous features will be estimated...")
+    index <- menu(c("all continuous features", "selected features"), title = "Choose features:")
     if (index == 1) {
-      feature <- colnames(data)
-      feature <- feature[sapply(data, is.numeric)]
+      feature <- names(data)[vapply(data, is.numeric, logical(1))]
     } else {
-      stop(">>>-- Please specify the features that you want to proceed...")
+      stop("Please specify the features that you want to proceed...")
     }
   }
 
-  if (feature_manipulation) feature <- feature_manipulation(data = data, feature = feature, print_result = F)
-
-  data <- data[, c("group", feature)]
-  # if(!identical(group_names,c("High","Low"))) message(">>>--- `group_names` should be specified...")
-
-  message(">>>-- Grouping information: ")
-  print(table(data$group))
-  ###########################################
-
-  if (length(group_names) < 3) {
-    print(table(data$group))
-    stop("Variable has less than three levels...")
+  if (!is.character(feature) || length(feature) == 0) {
+    stop("'feature' must be a non-empty character vector.")
   }
 
+  # Filter valid features
+  feature <- feature[feature %in% colnames(data)]
+  if (length(feature) == 0) {
+    stop("None of the specified features were found in data columns.")
+  }
 
-  aa <- lapply(data[, feature], function(x) kruskal.test(x ~ data[, "group"]))
-  res <- data.frame(
-    p.value = sapply(aa, getElement, name = "p.value"),
-    sig_names = feature,
-    statistic = sapply(aa, getElement, name = "statistic")
-  )
-  res$p.adj <- p.adjust(res$p.value, method = "BH", n = length(res$p.value))
-  res <- res[order(res$p.adj, decreasing = F), ]
+  if (feature_manipulation) {
+    feature <- feature_manipulation(data = data, feature = feature, print_result = FALSE)
+  }
 
-  # writexl::write_xlsx(res, paste0(file_name$abspath, prefix, "0-statistical-res-with-",group,".xlsx"))
-  #######################################
+  data <- data[, c("group", feature), drop = FALSE]
 
-  result_mean <- data %>%
-    dplyr::group_by(.$group) %>%
-    dplyr::summarise_if(is.numeric, mean)
+  message("Grouping information:")
+  print(table(data$group))
 
-  # mean of each group
-  rownames(result_mean) <- NULL
-  result_mean <- result_mean %>%
-    tibble::column_to_rownames(., var = ".$group") %>%
-    base::as.data.frame() %>%
-    t() %>%
-    base::as.data.frame() %>%
-    tibble::rownames_to_column(., var = "sig_names")
-
-  result_mean <- as.data.frame(result_mean)
-  group_names <- group_names[order(group_names)]
-  colnames(result_mean)[2:ncol(result_mean)] <- group_names
-
-  result_mean$mean <- rowSums(result_mean[, 2:ncol(result_mean)]) / length(group_names)
-  result_mean[, group_names] <- apply(result_mean[, group_names], 2, function(x) x - result_mean$mean)
-  # result_mean$statistic<- result_mean[,2] - result_mean[,3]
+  # Kruskal-Wallis test - vectorized
+  results <- vapply(feature, function(feat) {
+    test <- kruskal.test(data[[feat]] ~ data$group)
+    c(statistic = test$statistic, p.value = test$p.value)
+  }, numeric(2))
 
   cc <- data.frame(
     sig_names = feature,
-    p.value = sapply(aa, getElement, name = "p.value")
+    p.value = results["p.value", ],
+    statistic = results["statistic", ],
+    stringsAsFactors = FALSE
   )
 
-  cc <- cc %>%
-    full_join(result_mean, by = "sig_names") %>%
-    dplyr::arrange(p.value) %>%
-    dplyr::mutate(p.adj = p.adjust(.$p.value, method = "BH")) %>%
-    dplyr::mutate(log10pvalue = log10(.$p.value) * -1) %>%
-    dplyr::mutate(stars = cut(.$p.value,
-      breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-      label = c("****", "***", "**", "*", "+", "")
-    ))
-  cc <- tibble::as_tibble(cc)
-  return(cc)
+  # Group means
+  result_mean <- data %>%
+    dplyr::group_by(.data$group) %>%
+    dplyr::summarise_if(is.numeric, mean, .groups = "drop")
 
-  # input<-extract_sc_data(sce = sces_merged, vars = feas, slot = "data", assay = "RNA")
-  # source("E:/18-Github/Organization/IOBR/R/batch_kruskal.R")
-  # batch_kruskal(data = input, group = "celltype_modified", feature = feas, feature_manipulation = FALSE)
+  rownames(result_mean) <- result_mean$group
+  result_mean$group <- NULL
+  result_mean <- as.data.frame(t(result_mean))
+  result_mean$sig_names <- rownames(result_mean)
+  rownames(result_mean) <- NULL
+
+  colnames(result_mean)[1:length(group_names)] <- sort(group_names)
+  result_mean$mean <- rowMeans(result_mean[, sort(group_names), drop = FALSE], na.rm = TRUE)
+  for (gn in sort(group_names)) {
+    result_mean[[gn]] <- result_mean[[gn]] - result_mean$mean
+  }
+
+  # Merge and finalize
+  cc <- merge(cc, result_mean, by = "sig_names", all.x = TRUE)
+  cc$p.adj <- p.adjust(cc$p.value, method = "BH")
+  cc$log10pvalue <- -log10(cc$p.value)
+  cc$stars <- cut(cc$p.value,
+    breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
+    labels = c("****", "***", "**", "*", "+", "")
+  )
+  cc <- cc[order(cc$p.value), , drop = FALSE]
+  rownames(cc) <- NULL
+
+  tibble::as_tibble(cc)
 }

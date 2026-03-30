@@ -1,6 +1,23 @@
-# File: R/globalVariables.R
+# R/globalVariables.R
 # Purpose: Suppress "no visible binding for global variable" NOTES from R CMD check
 # Usage: Place in R/ directory; automatically sourced, no @export needed
+
+#' Global Variables Declaration
+#'
+#' @description
+#' This file declares global variables used in the IOBR package to suppress
+#' R CMD check NOTES about "no visible binding for global variable". These
+#' variables are primarily used in tidyverse/dplyr pipelines and data.table
+#' operations where non-standard evaluation (NSE) makes static analysis difficult.
+#'
+#' @details
+#' The variables listed here fall into several categories:
+#' - tidyverse NSE variables: column names used in dplyr/data.table pipelines
+#' - Internal data: package datasets referenced in functions
+#' - Cross-package S3 methods: generic functions from suggested packages
+#'
+#' @keywords internal
+#' @noRd
 utils::globalVariables(c(
   # ---------- tidyverse / data.table internal variables ----------
   ".", "..p.format..", "value", "x", "y", "p.value", "p.adj", "padj",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_tme}
 \alias{deconvo_tme}
-\title{Deconvoluting Tumor microenvironment on a transcriptomic dataset}
+\title{Main TME Deconvolution Function}
 \usage{
 deconvo_tme(
   eset,
@@ -23,73 +23,75 @@ deconvo_tme(
 )
 }
 \arguments{
-\item{eset}{A gene expression matrix
-Either: A numeric matrix or data.frame with HGNC gene symbols as row names and sample identifiers as column names. In both cases.}
+\item{eset}{Gene expression matrix with HGNC symbols as row names.}
 
-\item{project}{project name used to distinguish different data sets, default is NULL}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{method}{a string specifying the method.
-Supported methods are `mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `quantiseq`, `estimate`,`timer`, `svr`,`lsei`,`timer`, `quantiseq`.}
+\item{method}{Deconvolution method. See [tme_deconvolution_methods].}
 
-\item{arrays}{Runs methods in a mode optimized for microarray data.
-Currently affects `CIBERSORT`, `svr` and `xCell`.}
+\item{arrays}{Logical: microarray-optimized mode. Default is `FALSE`.}
 
-\item{tumor}{logical. use a signature matrix/procedure optimized for tumor samples,
-if supported by the method. Currently affects `EPIC`}
+\item{tumor}{Logical: tumor-optimized mode (EPIC). Default is `TRUE`.}
 
-\item{perm}{set permutations for statistical analysis (>=100 permutations recommended).
-Currently affects `CIBERSORT` and `svr_ref`}
+\item{perm}{Permutations (CIBERSORT/SVR). Default is 1000.}
 
-\item{reference}{immune cell gene matrix; eg lm22, lm6 or can be generate using generateRef/generateRef_rnaseq}
+\item{reference}{Custom reference matrix (SVR/lsei).}
 
-\item{scale_reference}{a logical value indicating whether the reference be scaled or not. If TRUE, the value in reference file will be centered and scaled in row direction. Currently affects `svr` and `lsei` method}
+\item{scale_reference}{Logical: scale reference (SVR/lsei).}
 
-\item{plot}{Currently affects `IPS` method}
+\item{plot}{Logical: generate plots (IPS). Default is `FALSE`.}
 
-\item{scale_mrna}{logical. If FALSE, disable correction for mRNA content of different cell types.
-This is supported by methods that compute an absolute score (EPIC and quanTIseq)}
+\item{scale_mrna}{Logical: mRNA correction (quanTIseq/EPIC).}
 
-\item{group_list}{tumor type list of samples}
+\item{group_list}{Cancer types for TIMER (vector).}
 
-\item{platform}{character string indicating platform type. Defaults to "affymetrix"
-Currently affects `ESTIMATE` method}
+\item{platform}{Platform for ESTIMATE. Default is `"affymetrix"`.}
 
-\item{absolute.mode}{Run CIBERSORT or svr in absolute mode (default = FALSE)}
+\item{absolute.mode}{Logical: absolute mode (CIBERSORT/SVR).
+Default is `FALSE`.}
 
-\item{abs.method}{if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'}
+\item{abs.method}{Absolute mode method. Default is `"sig.score"`.}
 
-\item{...}{arguments passed to the respective method}
+\item{...}{Additional arguments passed to method.}
 }
 \value{
-`data.frame` with `ID` as first column and other column with the
-    calculated cell fractions for each sample.
+Tibble with cell fractions and `ID` column.
 }
 \description{
-Deconvoluting Tumor microenvironment on a transcriptomic dataset
+Unified interface for multiple TME deconvolution methods.
 }
 \examples{
 \dontrun{
-# Loading TCGA-STAD expression data(raw count matrix)
 eset_stad <- load_data("eset_stad")
-lm22 <- load_data("lm22")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort")
-# Absolute mode
-deconvo_tme(eset = eset, arrays = FALSE, method = "cibersort", absolute.mode = TRUE)
+eset <- count2tpm(eset_stad, idType = "ensembl")
+
+# Run CIBERSORT
+res <- deconvo_tme(eset = eset, method = "cibersort")
+
+# Run in absolute mode
+res_abs <- deconvo_tme(eset = eset, method = "cibersort", absolute.mode = TRUE)
 }
 }
 \references{
-1. Newman, A. M., Liu, C. L., Green, M. R., Gentles, A. J., Feng, W., Xu, Y., ... Alizadeh, A. A. (2015). Robust enumeration of cell subsets from tissue expression profiles. Nature Methods, 12(5), 453-457.
-2. Vegesna R, Kim H, Torres-Garcia W, ..., Verhaak R. (2013). Inferring tumour purity and stromal and immune cell admixture from expression data. Nature Communications 4, 2612.
-3. Finotello, F., Mayer, C., Plattner, C., Laschober, G., Rieder, D., Hackl, H., ..., Sopper, S. (2019). Molecular and pharmacological modulators of the tumor immune contexture revealed by deconvolution of RNA-seq data. Genome medicine, 11(1), 34.
-4. Li, B., Severson, E., Pignon, J.-C., Zhao, H., Li, T., Novak, J., ... Liu, X. S. (2016). Comprehensive analyses of tumor immunity: implications for cancer immunotherapy. Genome Biology, 17(1), 174.
-5. P. Charoentong et al., Pan-cancer Immunogenomic Analyses Reveal Genotype-Immunophenotype Relationships and Predictors of Response to Checkpoint Blockade. Cell Reports 18, 248-262 (2017).
-6. Becht, E., Giraldo, N. A., Lacroix, L., Buttard, B., Elarouci, N., Petitprez, F., ... de Reynies, A. (2016). Estimating the population abundance of tissue-infiltrating immune and stromal cell populations using gene expression. Genome Biology, 17(1), 218.
-7. Aran, D., Hu, Z., & Butte, A. J. (2017). xCell: digitally portraying the tissue cellular heterogeneity landscape. Genome Biology, 18(1), 220.
-8. Racle, J., de Jonge, K., Baumgaertner, P., Speiser, D. E., & Gfeller, D. (2017). Simultaneous enumeration of cancer and immune cell types from bulk tumor gene expression data. ELife, 6, e26476.
+\enumerate{
+  \item Newman et al. (2015). Robust enumeration of cell subsets from tissue
+    expression profiles. Nature Methods.
+  \item Vegesna et al. (2013). Inferring tumour purity and stromal/immune
+    cell admixture. Nature Communications.
+  \item Finotello et al. (2019). Molecular and pharmacological modulators of
+    the tumor immune contexture. Genome Medicine.
+  \item Li et al. (2016). Comprehensive analyses of tumor immunity.
+    Genome Biology.
+  \item Charoentong et al. (2017). Pan-cancer Immunogenomic Analyses.
+    Cell Reports.
+  \item Becht et al. (2016). Estimating population abundance of tissue-infiltrating
+    immune cells. Genome Biology.
+  \item Aran et al. (2017). xCell: digitally portraying tissue cellular
+    heterogeneity. Genome Biology.
+  \item Racle et al. (2017). Simultaneous enumeration of cancer and immune
+    cell types. ELife.
+}
 }
 \author{
-Dongqiang Zeng
-
-Rongfang Shen
+Dongqiang Zeng, Rongfang Shen
 }

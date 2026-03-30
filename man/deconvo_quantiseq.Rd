@@ -2,32 +2,35 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_quantiseq}
 \alias{deconvo_quantiseq}
-\title{Deconvoluting micrornvironment using the quanTIseq technique}
+\title{Deconvolve Using quanTIseq}
 \usage{
 deconvo_quantiseq(eset, project = NULL, tumor, arrays, scale_mrna)
 }
 \arguments{
-\item{eset}{gene expression data}
+\item{eset}{Gene expression matrix.}
 
-\item{project}{default is NULL, project name used to distinguish different data sets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{tumor}{logistic variable}
+\item{tumor}{Logical: tumor samples. Must be specified.}
 
-\item{arrays}{logistic variable, is data generated from microarray}
+\item{arrays}{Logical: microarray data. Must be specified.}
 
-\item{scale_mrna}{logistic variable}
+\item{scale_mrna}{Logical: correct for mRNA content. Must be specified.}
 }
 \value{
-A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_quantiseq".
+Data frame with quanTIseq cell fractions. Columns suffixed with `_quantiseq`.
 }
 \description{
-This function performs deconvolution of the tumor microenvironment using the quanTIseq technique. It estimates the fraction of different cell types in the expression dataset.
+quanTIseq deconvolution for RNA-seq immune cell fractions.
 }
 \examples{
 \dontrun{
-# Loading TCGA-STAD expresion data(raw count matrix)
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE, arrays = FALSE, scale_mrna = FALSE)
+eset <- count2tpm(eset_stad, idType = "ensembl")
+res <- deconvo_quantiseq(eset = eset, project = "stad", tumor = TRUE,
+                         arrays = FALSE, scale_mrna = FALSE)
 }
+}
+\author{
+Dongqiang Zeng
 }

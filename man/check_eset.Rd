@@ -7,30 +7,36 @@
 check_eset(eset, print_result = FALSE, estimate_sd = FALSE)
 }
 \arguments{
-\item{eset}{Expression matrix with genes/features in rows and samples in columns.}
+\item{eset}{Expression matrix or data frame with genes/features in rows and
+samples in columns.}
 
-\item{print_result}{Logical indicating whether to print detailed check results to
-the console. Default is \code{FALSE}.}
+\item{print_result}{Logical indicating whether to print detailed check
+results to the console. Default is `FALSE`.}
 
-\item{estimate_sd}{Logical indicating whether to check for features with zero
-standard deviation. Default is \code{FALSE}.}
+\item{estimate_sd}{Logical indicating whether to check for features with
+zero standard deviation. Default is `FALSE`.}
 }
 \value{
-Invisibly returns \code{NULL}. Function is called for its side effects
+Invisibly returns `NULL`. Function is called for its side effects
   (printing messages and issuing warnings).
 }
 \description{
-Performs quality checks on an expression matrix to identify missing values, infinite
-values, and features with zero variance. Issues warnings when potential problems are
-detected that may affect downstream analyses.
+Performs quality checks on an expression matrix to identify missing values,
+infinite values, and features with zero variance. Issues warnings when
+potential problems are detected that may affect downstream analyses.
 }
 \examples{
 # Load TCGA-STAD expression data
 eset_stad <- load_data("eset_stad")
+
 # Convert counts to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
+
 # Check expression set integrity
 check_eset(eset)
+
+# Check with detailed output
+check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
 }
 \author{
 Dongqiang Zeng

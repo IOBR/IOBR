@@ -36,15 +36,36 @@
 #'   features = colnames(sig_stad)[70:ncol(sig_stad)]
 #' )
 batch_pcc <- function(input, interferenceid, target, features, method = "pearson") {
-  dat <- input
-  features <- setdiff(features, c(unique(interferenceid, target)))
+  # Input validation
+  if (is.null(input) || !is.data.frame(input)) {
+    stop("'input' must be a non-null data frame.")
+  }
+  if (!interferenceid %in% colnames(input)) {
+    stop(sprintf("Interference variable '%s' not found in data columns.", interferenceid))
+  }
+  if (!target %in% colnames(input)) {
+    stop(sprintf("Target variable '%s' not found in data columns.", target))
+  }
+  if (!is.character(features) || length(features) == 0) {
+    stop("'features' must be a non-empty character vector.")
+  }
+  if (!method %in% c("pearson", "spearman", "kendall")) {
+    stop("'method' must be one of: 'pearson', 'spearman', 'kendall'.")
+  }
 
-  ## 替代 ppcor::pcor.test ---------------------------------
+  # Filter valid features
+  features <- setdiff(features, c(interferenceid, target))
+  features <- features[features %in% colnames(input)]
+  if (length(features) == 0) {
+    stop("None of the specified features were found in data columns.")
+  }
+
+  # Partial correlation test function
   pcor_test <- function(x, y, z, method = c("pearson", "spearman", "kendall")) {
     method <- match.arg(method)
     dat <- na.omit(cbind(x, y, z))
     if (nrow(dat) < 4) {
-      return(list(estimate = NA_real_, p.value = NA_real_))
+      return(c(estimate = NA_real_, p.value = NA_real_))
     }
     R <- cor(dat, method = method)
     rxy <- R["x", "y"]
@@ -54,35 +75,29 @@ batch_pcc <- function(input, interferenceid, target, features, method = "pearson
     n <- nrow(dat)
     tstat <- rho * sqrt((n - 3) / (1 - rho^2))
     pval <- 2 * pt(abs(tstat), df = n - 3, lower.tail = FALSE)
-    list(estimate = rho, p.value = pval)
+    c(estimate = rho, p.value = pval)
   }
 
-  # aa <- dat[, features] %>%
-  #   tibble::as_tibble() %>%
-  #   map(pcor_test, y = dat[, target], z = dat[, interferenceid], method = method)
-  aa <- dat[, features] %>%
-    tibble::as_tibble() %>%
-    purrr::map(
-      pcor_test,
-      y = dat[[target]],
-      z = dat[[interferenceid]],
-      method = method
-    )
-  pvalue <- aa %>% purrr::map_dbl("p.value")
-  statistic <- aa %>% purrr::map_dbl("estimate")
+  # Vectorized partial correlation calculation
+  results <- vapply(features, function(feat) {
+    pcor_test(input[[feat]], input[[target]], input[[interferenceid]], method = method)
+  }, numeric(2))
+
+  # Build results data frame
   cc <- data.frame(
     sig_names = features,
-    p.value = pvalue,
-    statistic = statistic
+    p.value = results["p.value", ],
+    statistic = results["estimate", ],
+    stringsAsFactors = FALSE
   )
-  cc <- cc[order(cc$p.value, decreasing = F), ]
   cc$p.adj <- p.adjust(cc$p.value, method = "BH")
-  cc$log10pvalue <- -1 * log10(cc$p.value)
-  rownames(cc) <- NULL
+  cc$log10pvalue <- -log10(cc$p.value)
   cc$stars <- cut(cc$p.adj,
     breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-    label = c("****", "***", "**", "*", "+", "")
+    labels = c("****", "***", "**", "*", "+", "")
   )
-  cc <- tibble::as_tibble(cc)
-  return(cc)
+  cc <- cc[order(cc$p.value), , drop = FALSE]
+  rownames(cc) <- NULL
+
+  tibble::as_tibble(cc)
 }

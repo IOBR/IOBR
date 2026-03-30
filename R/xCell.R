@@ -19,7 +19,29 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
                           spill = NULL, rnaseq = TRUE, file.name = NULL, scale = TRUE,
                           alpha = 0.5, save.raw = FALSE,
                           cell.types.use = NULL) {
+  # Input validation
+  if (is.null(expr)) {
+    stop("'expr' cannot be NULL. Please provide a gene expression matrix.")
+  }
+  if (!is.matrix(expr) && !is.data.frame(expr)) {
+    stop("'expr' must be a matrix or data frame with genes as rows and samples as columns.")
+  }
+  if (nrow(expr) == 0 || ncol(expr) == 0) {
+    stop("'expr' is empty. Please provide a non-empty expression matrix.")
+  }
+  if (is.null(rownames(expr))) {
+    stop("'expr' must have row names (gene symbols).")
+  }
+  if (!is.logical(rnaseq) || length(rnaseq) != 1) {
+    stop("'rnaseq' must be a single logical value (TRUE or FALSE).")
+  }
+  if (!is.numeric(alpha) || length(alpha) != 1 || alpha < 0 || alpha > 1) {
+    stop("'alpha' must be a single numeric value between 0 and 1.")
+  }
+
   rlang::check_installed("xCell", reason = "to run xCell analysis")
+
+  # Load default data if not provided
   if (is.null(signatures)) {
     signatures <- xCell::xCell.data$signatures
   }
@@ -27,24 +49,25 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
     genes <- xCell::xCell.data$genes
   }
   if (is.null(spill)) {
-    if (rnaseq == TRUE) {
-      spill <- xCell::xCell.data$spill
-    } else {
-      spill <- xCell::xCell.data$spill.array
-    }
+    spill <- if (rnaseq) xCell::xCell.data$spill else xCell::xCell.data$spill.array
   }
 
-  # Caulcate average ssGSEA scores for cell types
-  if (is.null(file.name) || save.raw == FALSE) {
-    fn <- NULL
-  } else {
-    fn <- paste0(file.name, "_RAW.txt")
-  }
+  # Calculate average ssGSEA scores for cell types
+  fn <- if (is.null(file.name) || !save.raw) NULL else paste0(file.name, "_RAW.txt")
 
+  # Validate cell types if specified
   if (!is.null(cell.types.use)) {
-    A <- intersect(cell.types.use, rownames(spill$K))
-    if (length(A) < length(cell.types.use)) {
-      return("ERROR - not all cell types listed are available")
+    if (!is.character(cell.types.use)) {
+      stop("'cell.types.use' must be a character vector of cell type names.")
+    }
+    available_types <- rownames(spill$K)
+    invalid_types <- setdiff(cell.types.use, available_types)
+    if (length(invalid_types) > 0) {
+      stop(sprintf(
+        "Invalid cell types: %s. Available types: %s",
+        paste(head(invalid_types, 5), collapse = ", "),
+        paste(head(available_types, 10), collapse = ", ")
+      ))
     }
   }
 

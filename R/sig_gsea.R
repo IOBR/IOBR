@@ -107,11 +107,36 @@ sig_gsea <- function(deg,
                      seed = FALSE,
                      fig.type = "pdf",
                      print_bar = TRUE) {
+  # Input validation
+  if (is.null(deg)) {
+    stop("'deg' cannot be NULL. Please provide differential expression results.")
+  }
+  if (!is.data.frame(deg)) {
+    stop("'deg' must be a data frame.")
+  }
+  if (!gene_symbol %in% colnames(deg)) {
+    stop(sprintf("Gene symbol column '%s' not found in deg.", gene_symbol))
+  }
+  if (!logfc %in% colnames(deg)) {
+    stop(sprintf("Log fold change column '%s' not found in deg.", logfc))
+  }
+  if (!org %in% c("hsa", "mus")) {
+    stop("'org' must be either 'hsa' (human) or 'mus' (mouse).")
+  }
+  if (minGSSize < 1 || maxGSSize < minGSSize) {
+    stop("Invalid gene set size parameters: minGSSize must be >= 1 and maxGSSize must be >= minGSSize.")
+  }
+
+  # Check required packages
+  if (!requireNamespace("clusterProfiler", quietly = TRUE)) {
+    stop("Package 'clusterProfiler' is required. Install with: BiocManager::install('clusterProfiler')")
+  }
+
   # set path to store enrichment analyses result
   if (!is.null(path)) {
     file_store <- path
-    if (!file.exists(file_store)) dir.create(file_store)
-    abspath <- paste(getwd(), "/", file_store, "/", sep = "")
+    if (!file.exists(file_store)) dir.create(file_store, recursive = TRUE)
+    abspath <- file.path(getwd(), file_store, "")
     save_results <- TRUE
   } else {
     save_results <- FALSE
@@ -121,14 +146,12 @@ sig_gsea <- function(deg,
 
   #################################################
 
-  # if(!is.null(input)) (load(paste0(file_source,"/",input)))
-
-  if (gene_symbol != "symbol") {
-    colnames(deg)[which(colnames(deg) == "symbol")] <- "symbol_subs"
+  # Safely rename columns
+  if (gene_symbol != "symbol" && "symbol" %in% colnames(deg)) {
+    colnames(deg)[colnames(deg) == "symbol"] <- "symbol_subs"
   }
-
-  colnames(deg)[which(colnames(deg) == gene_symbol)] <- "symbol"
-  colnames(deg)[which(colnames(deg) == logfc)] <- "logfc"
+  colnames(deg)[colnames(deg) == gene_symbol] <- "symbol"
+  colnames(deg)[colnames(deg) == logfc] <- "logfc"
   ##################################
 
   message("`>>>--- Parametar org must be one of: hsa or mus`")

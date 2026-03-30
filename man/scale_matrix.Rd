@@ -7,22 +7,27 @@
 scale_matrix(matrix, log2matrix = TRUE, manipulate = TRUE)
 }
 \arguments{
-\item{matrix}{The matrix to be scaled and manipulated.}
+\item{matrix}{Numeric matrix with genes as rows and samples as columns.}
 
-\item{log2matrix}{Logical indicating whether to apply log2 transformation. Default is TRUE.}
+\item{log2matrix}{Logical indicating whether to apply log2 transformation
+using [log2eset()]. Default is `TRUE`.}
 
-\item{manipulate}{Logical indicating whether to perform feature manipulation. Default is TRUE.}
+\item{manipulate}{Logical indicating whether to perform feature manipulation
+to remove problematic features. Default is `TRUE`.}
 }
 \value{
-A data frame of the scaled and manipulated matrix.
+A scaled matrix (genes as rows, samples as columns).
 }
 \description{
-This function scales a given matrix, optionally applies logarithmic transformation,
-and performs feature manipulation to remove problematic variables.
+Scales a gene expression matrix, optionally applies logarithmic
+transformation, and performs feature manipulation to remove problematic
+variables (e.g., genes with zero variance or missing values).
 }
 \examples{
+\donttest{
 eset_gse62254 <- load_data("eset_gse62254")
 eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+}
 }
 \author{
 Dongqiang Zeng

@@ -2,28 +2,31 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_timer}
 \alias{deconvo_timer}
-\title{Deconvoluting using the TIMER technique}
+\title{Deconvolve Using TIMER}
 \usage{
 deconvo_timer(eset, project = NULL, indications = NULL)
 }
 \arguments{
-\item{eset}{gene matrix}
+\item{eset}{Gene expression matrix.}
 
-\item{project}{default is NULL, project name used to distinguish different data sets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{indications}{a n-vector giving and indication string (e.g. 'brca') for each sample. Accepted indications are 'kich', 'blca', 'brca', 'cesc', 'gbm', 'hnsc', 'kirp', 'lgg','lihc', 'luad', 'lusc', 'prad', 'sarc', 'pcpg', 'paad', 'tgct','ucec', 'ov', 'skcm', 'dlbc', 'kirc', 'acc', 'meso', 'thca','uvm', 'ucs', 'thym', 'esca', 'stad', 'read', 'coad', 'chol'}
+\item{indications}{Cancer type for each sample (e.g., `"brca"`, `"stad"`).
+Must match number of columns in `eset`.}
 }
 \value{
-A data frame with the estimated cell type fractions, with columns named according to the cell types and suffixed with "_TIMER".
+Data frame with TIMER cell fractions. Columns suffixed with `_TIMER`.
 }
 \description{
-This function performs deconvolution of immune cell fractions using the TIMER (Tumor Immune Estimation Resource) technique. Unlike the other methods, TIMER needs the specification of the cancer type for each sample.
+TIMER deconvolution for cancer-specific immune estimation.
 }
 \examples{
 \dontrun{
-# Loading TCGA-STAD expression data (raw count matrix)
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-res <- deconvo_timer(eset = eset, project = "stad")
+eset <- count2tpm(eset_stad, idType = "ensembl")
+res <- deconvo_timer(eset = eset, project = "stad", indications = "stad")
 }
+}
+\author{
+Dongqiang Zeng
 }

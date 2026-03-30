@@ -11,26 +11,26 @@ exact_pvalue(x, y, method)
 
 \item{y}{Numeric vector representing the second variable.}
 
-\item{method}{Character string specifying the correlation method. Options include
-\code{"spearman"}, \code{"pearson"}, or \code{"kendall"}.}
+\item{method}{Character string specifying the correlation method:
+`"spearman"`, `"pearson"`, or `"kendall"`.}
 }
 \value{
-Numeric value representing the exact p-value from the correlation test.
+Numeric value representing the exact p-value.
 }
 \description{
 Computes the exact p-value for the correlation between two numeric variables
-using a specified correlation method. This function provides detailed statistical
-support for correlation analyses.
+using a specified correlation method.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
+\donttest{
 sig_stad <- load_data("sig_stad")
-# Calculate exact p-value for correlation between two variables
 p_val <- exact_pvalue(
-  x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
+  x = sig_stad$CD8.T.cells,
+  y = sig_stad$CD_8_T_effector,
   method = "spearman"
 )
 print(p_val)
+}
 }
 \author{
 Dongqiang Zeng

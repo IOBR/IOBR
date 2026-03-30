@@ -7,14 +7,36 @@
 load_data(name)
 }
 \arguments{
-\item{name}{A dataset name.}
+\item{name}{Character string. Name of the dataset to load. Must be a single value.
+Available datasets include:
+- Expression data: `"eset_stad"`, `"imvigor210_eset"`, `"melanoma_data"`
+- Signatures: `"signature_tme"`, `"signature_metabolism"`, `"signature_collection"`
+- Gene sets: `"hallmark"`, `"kegg"`, `"go_bp"`, `"go_cc"`, `"go_mf"`
+- Cell markers: `"cellmarkers"`, `"mcp_genes"`
+- Phenotype data: `"pdata_stad"`, `"pdata_sig_tme"`, `"pdata_acrg"`
+- Reference data: `"xCell.data"`, `"quantiseq_data"`, `"TRef"`, `"BRef"`
+- Color palettes: `"palette1"`, `"palette2"`, `"palette3"`, `"palette4"`}
 }
 \value{
-Dataset, typically `list` or `data.frame`.
+Dataset object, typically a `list`, `data.frame`, or `matrix`.
+  The exact type depends on the requested dataset.
 }
 \description{
-Load IOBR Datasets
+Loads internal datasets from the IOBR package. Supports both sysdata (internal)
+and exported data files included in the package.
 }
 \examples{
-load_data("deg")
+# Load signature collection
+sig_tme <- load_data("signature_tme")
+
+# Load expression data
+eset <- load_data("eset_stad")
+
+# Load color palette
+colors <- load_data("palette1")
+
+# Error handling with suggestions for similar names
+\dontrun{
+try(load_data("sign_tme"))  # Will suggest "signature_tme"
+}
 }

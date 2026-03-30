@@ -2,76 +2,132 @@
 #'
 #' @description
 #' Performs correlation analysis between a target variable and multiple feature
-#' variables. Computes correlation coefficients, p-values, and adjusts for multiple
-#' testing using the Benjamini-Hochberg method.
+#' variables. Computes correlation coefficients, p-values, and adjusts for
+#' multiple testing using the Benjamini-Hochberg method.
 #'
 #' @param data Data frame containing the target and feature variables.
 #' @param target Character string specifying the name of the target variable.
 #' @param feature Character vector specifying the names of feature variables to
 #'   correlate with the target.
 #' @param method Character string specifying the correlation method. Options are
-#'   \code{"spearman"}, \code{"pearson"}, or \code{"kendall"}. Default is
-#'   \code{"spearman"}.
+#'   `"spearman"`, `"pearson"`, or `"kendall"`. Default is `"spearman"`.
 #'
 #' @return Tibble containing the following columns for each feature:
-#' - `sig_names`: Feature name
-#' - `p.value`: Raw p-value
-#' - `statistic`: Correlation coefficient
-#' - `p.adj`: Adjusted p-value (Benjamini-Hochberg method)
-#' - `log10pvalue`: Negative log10-transformed p-value
-#' - `stars`: Significance stars based on p-value thresholds
+#' \describe{
+#'   \item{sig_names}{Feature name}
+#'   \item{p.value}{Raw p-value}
+#'   \item{statistic}{Correlation coefficient}
+#'   \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+#'   \item{log10pvalue}{Negative log10-transformed p-value}
+#'   \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+#'     ** p<0.01, * p<0.05, + p<0.5}
+#' }
 #'
 #' @author Dongqiang Zeng
 #' @export
+#'
 #' @examples
-#' # Load TCGA-STAD microenvironment signature data
+#' \donttest{
+#' # Load TCGA-STAD signature data
 #' sig_stad <- load_data("sig_stad")
-#' # Perform batch correlation analysis
+#'
+#' # Perform batch correlation
 #' results <- batch_cor(
-#'   data = sig_stad, target = "CD_8_T_effector",
+#'   data = sig_stad,
+#'   target = "CD_8_T_effector",
 #'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 #' )
-batch_cor <- function(data, target, feature, method = "spearman") {
-  if (!target %in% colnames(data)) stop(">>>== target was not in the colnames of data")
-  data <- as.data.frame(data)
-  feature <- feature[feature %in% colnames(data)]
+#' head(results)
+#' }
+batch_cor <- function(data,
+                      target,
+                      feature,
+                      method = c("spearman", "pearson", "kendall")) {
 
-  if (length(feature) == 0) stop(">>>== features were not in the colnames of data")
+  # Input validation
+  if (is.null(data) || !is.data.frame(data)) {
+    cli::cli_abort("{.arg data} must be a non-null data frame.")
+  }
+  if (nrow(data) == 0) {
+    cli::cli_abort("{.arg data} has no rows.")
+  }
+  if (!target %in% colnames(data)) {
+    cli::cli_abort("Target {.val {target}} not found in data columns.")
+  }
+  if (!is.character(feature) || length(feature) == 0) {
+    cli::cli_abort("{.arg feature} must be a non-empty character vector.")
+  }
 
-  feature <- feature_manipulation(data = data, feature = feature)
+  method <- rlang::arg_match(method)
 
-  feature <- feature[!feature == target]
+  # Filter valid features
+  valid_features <- feature[feature %in% colnames(data)]
+  invalid_features <- setdiff(feature, colnames(data))
 
-  data <- data[!is.na(data[, target]), ]
+  if (length(invalid_features) > 0) {
+    cli::cli_alert_warning(
+      "Ignoring {length(invalid_features)} invalid feature{?s}: {.val {invalid_features}}"
+    )
+  }
 
-  feature <- feature[sapply(data[, feature], function(x) sd(x, na.rm = TRUE) > 0)]
+  if (length(valid_features) == 0) {
+    cli::cli_abort("No valid features found in data.")
+  }
 
-  aa <- lapply(data[, feature], function(x) cor.test(x, data[, target], method = method))
+  valid_features <- setdiff(valid_features, target)
 
-  bb <- lapply(data[, feature], function(x) exact_pvalue(x, data[, target], method = method))
+  # Remove rows with NA in target
+  data <- data[!is.na(data[[target]]), , drop = FALSE]
 
-  bb <- as.data.frame(bb)
+  if (nrow(data) < 3) {
+    cli::cli_abort("Insufficient data after removing NA values (need >= 3).")
+  }
 
-  bb <- as.data.frame(t(bb))
-  # print(head(bb))
-  cc <- data.frame(
-    sig_names = feature,
-    p.value = bb$V1,
-    statistic = sapply(aa, getElement, name = "estimate")
+  # Filter features with zero variance
+  valid_features <- valid_features[
+    vapply(data[, valid_features, drop = FALSE],
+           function(x) stats::sd(x, na.rm = TRUE) > 0,
+           logical(1))
+  ]
+
+  if (length(valid_features) == 0) {
+    cli::cli_abort("All features have zero variance.")
+  }
+
+  cli::cli_alert_info(
+    "Computing {method} correlation for {length(valid_features)} feature{?s}"
   )
 
-  # cc<-cc[base::order(cc$p.value, decreasing = FALSE),]
-  cc$p.adj <- p.adjust(cc$p.value, method = "BH")
-  cc$log10pvalue <- -1 * log10(cc$p.value)
-  rownames(cc) <- NULL
+  # Vectorized correlation analysis
+  results <- vapply(valid_features, function(feat) {
+    test <- stats::cor.test(data[[feat]], data[[target]],
+                            method = method, use = "complete.obs")
+    p_val <- exact_pvalue(data[[feat]], data[[target]], method)
+    c(p.value = p_val, estimate = test$estimate)
+  }, numeric(2))
+
+  # Build results data frame
+  cc <- data.frame(
+    sig_names = valid_features,
+    p.value = results["p.value", ],
+    statistic = results["estimate", ],
+    stringsAsFactors = FALSE,
+    row.names = NULL
+  )
+
+  cc$p.adj <- stats::p.adjust(cc$p.value, method = "BH")
+  cc$log10pvalue <- -log10(cc$p.value)
   cc$stars <- cut(cc$p.value,
     breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-    label = c("****", "***", "**", "*", "+", "")
+    labels = c("****", "***", "**", "*", "+", "")
   )
-  cc <- cc[base::order(cc$p.value, decreasing = FALSE), ]
-  cc <- tibble::as_tibble(cc)
-  print(head(cc))
-  return(cc)
+
+  cc <- cc[order(cc$p.value), , drop = FALSE]
+  rownames(cc) <- NULL
+
+  cli::cli_alert_success("Correlation analysis complete")
+
+  tibble::as_tibble(cc)
 }
 
 
@@ -79,39 +135,42 @@ batch_cor <- function(data, target, feature, method = "spearman") {
 #'
 #' @description
 #' Computes the exact p-value for the correlation between two numeric variables
-#' using a specified correlation method. This function provides detailed statistical
-#' support for correlation analyses.
+#' using a specified correlation method.
 #'
 #' @param x Numeric vector representing the first variable.
 #' @param y Numeric vector representing the second variable.
-#' @param method Character string specifying the correlation method. Options include
-#'   \code{"spearman"}, \code{"pearson"}, or \code{"kendall"}.
+#' @param method Character string specifying the correlation method:
+#'   `"spearman"`, `"pearson"`, or `"kendall"`.
 #'
-#' @return Numeric value representing the exact p-value from the correlation test.
+#' @return Numeric value representing the exact p-value.
 #'
 #' @author Dongqiang Zeng
 #' @export
+#'
 #' @examples
-#' # Load TCGA-STAD microenvironment signature data
+#' \donttest{
 #' sig_stad <- load_data("sig_stad")
-#' # Calculate exact p-value for correlation between two variables
 #' p_val <- exact_pvalue(
-#'   x = sig_stad$CD8.T.cells, y = sig_stad$CD_8_T_effector,
+#'   x = sig_stad$CD8.T.cells,
+#'   y = sig_stad$CD_8_T_effector,
 #'   method = "spearman"
 #' )
 #' print(p_val)
+#' }
 exact_pvalue <- function(x, y, method) {
-  l <- length(y)
-  r <- cor(x = x, y = y, method = method, use = "complete.obs")
+  l <- sum(!is.na(x) & !is.na(y))
 
-  if (r < 0) {
-    t <- r * sqrt((l - 2) / (1 - r^2))
-    s <- (l^3 - l) * (1 - r) / 6
-    p <- 2 * (pt(q = t, df = l - 2))
-  } else {
-    t <- r * sqrt((l - 2) / (1 - r^2))
-    s <- (l^3 - l) * (1 - r) / 6
-    p <- 2 * (pt(q = -t, df = l - 2))
+  if (l < 3) {
+    return(NA_real_)
   }
-  return(p)
+
+  r <- stats::cor(x = x, y = y, method = method, use = "complete.obs")
+
+  # t-statistic for correlation
+  t_stat <- r * sqrt((l - 2) / (1 - r^2))
+
+  # Two-tailed p-value
+  p <- 2 * stats::pt(q = abs(t_stat), df = l - 2, lower.tail = FALSE)
+
+  p
 }

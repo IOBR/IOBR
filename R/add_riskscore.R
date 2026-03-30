@@ -35,43 +35,57 @@
 #'   )
 #' }
 add_riskscore <- function(input, family = "cox", target = NULL, time = NULL, status = NULL, vars, new_var_name = "riskscore") {
-  # Check the 'family' parameter and perform the corresponding model fitting
-  if (family == "cox") {
-    # Combine all variables to be used in the survival model
-    formula <- stats::as.formula(paste("survival::Surv(", time, ",", status, ") ~ ", paste(vars, collapse = " + ")))
-
-    # Fit the Cox survival model
-    model <- coxph(formula, data = input)
-
-    # Print model summary
-    print(summary(model))
-
-    # Add a risk score column to the input data frame
-    input[[new_var_name]] <- predict(model, newdata = input, type = "lp")
-  } else if (family == "binary") {
-    # Ensure the target is binary
-    if (length(unique(input[[target]])) != 2) {
-      stop("Target variable must be binary.")
-    }
-
-    # Convert the target variable to 0 and 1
-    input[[target]] <- as.numeric(as.factor(input[[target]])) - 1
-
-    # Combine all variables to be used in the logistic regression
-    formula <- as.formula(paste(target, "~", paste(vars, collapse = " + ")))
-
-    # Fit the logistic regression model
-    model <- glm(formula, data = input, family = binomial())
-
-    # Print model summary
-    print(summary(model))
-
-    # Add a prediction column to the input data frame
-    input[[new_var_name]] <- predict(model, newdata = input, type = "response")
-  } else {
-    stop("Unsupported family specified. Use 'cox' for Cox regression or 'binary' for binary logistic regression.")
+  # Input validation
+  if (is.null(input) || !is.data.frame(input)) {
+    stop("'input' must be a non-null data frame.")
+  }
+  if (nrow(input) == 0) {
+    stop("'input' has no rows.")
+  }
+  if (!family %in% c("cox", "binary")) {
+    stop("'family' must be either 'cox' or 'binary'.")
+  }
+  if (missing(vars) || !is.character(vars) || length(vars) == 0) {
+    stop("'vars' must be a non-empty character vector of variable names.")
+  }
+  missing_vars <- setdiff(vars, colnames(input))
+  if (length(missing_vars) > 0) {
+    stop(sprintf("Variables not found in input: %s", paste(missing_vars, collapse = ", ")))
   }
 
-  # Return the input data frame containing the risk scores or predictions
+  # Validate family-specific parameters
+  if (family == "cox") {
+    if (is.null(time) || !time %in% colnames(input)) {
+      stop(sprintf("Cox model requires 'time' parameter pointing to a valid column."))
+    }
+    if (is.null(status) || !status %in% colnames(input)) {
+      stop(sprintf("Cox model requires 'status' parameter pointing to a valid column."))
+    }
+  } else if (family == "binary") {
+    if (is.null(target) || !target %in% colnames(input)) {
+      stop(sprintf("Binary model requires 'target' parameter pointing to a valid column."))
+    }
+    if (length(unique(input[[target]])) != 2) {
+      stop("Target variable must be binary (exactly 2 unique values).")
+    }
+  }
+
+  # Build and fit model
+  if (family == "cox") {
+    formula <- stats::as.formula(paste("survival::Surv(", time, ",", status, ") ~ ", paste(vars, collapse = " + ")))
+    model <- survival::coxph(formula, data = input)
+    input[[new_var_name]] <- predict(model, newdata = input, type = "lp")
+  } else {
+    # Convert target to 0/1 for binary logistic
+    input[[target]] <- as.numeric(factor(input[[target]])) - 1
+    formula <- stats::as.formula(paste(target, "~", paste(vars, collapse = " + ")))
+    model <- stats::glm(formula, data = input, family = stats::binomial())
+    input[[new_var_name]] <- predict(model, newdata = input, type = "response")
+  }
+
+  if (interactive()) {
+    print(summary(model))
+  }
+
   return(input)
 }

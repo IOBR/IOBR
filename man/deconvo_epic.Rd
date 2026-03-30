@@ -4,29 +4,25 @@
 \alias{deconvo_epic}
 \title{Deconvolve Immune Microenvironment Using EPIC}
 \usage{
-deconvo_epic(eset, project = NULL, tumor)
+deconvo_epic(eset, project = NULL, tumor = TRUE)
 }
 \arguments{
-\item{eset}{A gene expression matrix with genes in rows and samples in columns.}
+\item{eset}{Gene expression matrix with genes as row names.}
 
-\item{project}{Optional project name to distinguish different datasets.}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{tumor}{Logical indicating whether the input samples are tumor (TRUE) or normal (FALSE).}
+\item{tumor}{Logical indicating tumor (`TRUE`) or normal (`FALSE`) samples.}
 }
 \value{
-A data frame containing EPIC immune cell fraction estimates with sample IDs.
+Data frame with EPIC cell fraction estimates. Columns suffixed with `_EPIC`.
 }
 \description{
-This function estimates immune cell fractions in the tumor microenvironment using the EPIC algorithm,
-primarily designed for RNA-seq data.
+Estimates immune cell fractions using EPIC algorithm.
 }
 \examples{
 \dontrun{
-# Load TCGA-STAD expression data (raw count matrix)
 eset_stad <- load_data("eset_stad")
-TRef <- load_data("TRef")
-BRef <- load_data("BRef")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+eset <- count2tpm(eset_stad, idType = "ensembl")
 epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 }
 }

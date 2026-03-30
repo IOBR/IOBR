@@ -2,32 +2,29 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_ips}
 \alias{deconvo_ips}
-\title{Calculating immune phenotype score using IPS}
+\title{Calculate Immunophenoscore (IPS)}
 \usage{
 deconvo_ips(eset, project = NULL, plot = FALSE)
 }
 \arguments{
-\item{eset}{expression set with genes at row, sample ID at column}
+\item{eset}{Gene expression matrix.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{plot}{Logical; whether to visualize the calculated Immunophenoscore (IPS)
-results. If \code{TRUE}, the function generates a summary plot of IPS scores
-across samples or groups. If \code{FALSE}, only the numeric IPS data frame is
-returned without plotting. Default is \code{FALSE}.}
+\item{plot}{Logical: generate visualization. Default is `FALSE`.}
 }
 \value{
-IPS data frame
+Data frame with IPS scores. Columns suffixed with `_IPS`.
 }
 \description{
-Calculating immune phenotype score using IPS
+Calculates immune phenotype scores from gene expression data.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
+\donttest{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+eset <- count2tpm(eset_stad, idType = "ensembl")
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
-
+}
 }
 \author{
 Dongqiang Zeng

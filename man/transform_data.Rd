@@ -9,24 +9,37 @@ transform_data(data, feature, data_type = c("NA", "Inf", "zero"), into = 0)
 \arguments{
 \item{data}{Data frame. Input data to be transformed.}
 
-\item{feature}{Character vector. Column names in 'data' to apply transformation.}
+\item{feature}{Character vector. Column names in `data` to apply
+transformation.}
 
-\item{data_type}{Character. Type of value to replace: "NA", "Inf", or "zero".}
+\item{data_type}{Character. Type of value to replace: `"NA"`, `"Inf"`, or
+`"zero"`.}
 
-\item{into}{Value to replace specified type with. Default is 0. If "mean", replaces with column mean.}
+\item{into}{Value to replace specified type with. Default is 0. If `"mean"`,
+replaces with column mean (excluding NA/Inf values as appropriate).}
 }
 \value{
-Data frame with specified transformations applied to selected features.
+Data frame with specified transformations applied to selected
+  features.
 }
 \description{
-Replaces NA, Inf, or zero values in specified columns of a data frame with a user-defined value or the column mean.
+Replaces NA, Inf, or zero values in specified columns of a data frame with a
+user-defined value or the column mean.
 }
 \examples{
-data_matrix <- data.frame(A = c(1, 2, NA, 4, Inf), B = c(Inf, 2, 3, 4, 5), C = c(0, 0, 0, 1, 2))
+data_matrix <- data.frame(
+  A = c(1, 2, NA, 4, Inf),
+  B = c(Inf, 2, 3, 4, 5),
+  C = c(0, 0, 0, 1, 2)
+)
+
 # Replace NAs with 0
 transform_data(data_matrix, feature = c("A", "B"), data_type = "NA")
+
 # Replace Inf values with the mean of the column
-transform_data(data_matrix, feature = c("A", "B"), data_type = "Inf", into = "mean")
+transform_data(data_matrix, feature = c("A", "B"),
+               data_type = "Inf", into = "mean")
+
 # Replace zeros with -1 in column C
 transform_data(data_matrix, feature = "C", data_type = "zero", into = -1)
 }

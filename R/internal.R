@@ -1,13 +1,25 @@
 #' GSVA API Version Detection
 #'
-#' @description Detects whether the installed GSVA package supports the new
+#' @description
+#' Detects whether the installed GSVA package supports the new
 #' parameter-based API (gsvaParam/ssgseaParam) or the old direct argument API.
+#' This function is used internally to ensure compatibility across different
+#' GSVA package versions (1.50.0+ vs older versions).
 #'
 #' @return A list with two elements:
-#'   - `use_new_api`: Logical indicating whether to use the new API (TRUE) or old API (FALSE)
-#'   - `gsva_version`: Character string of the installed GSVA version, or "not installed" if not available
+#'   - `use_new_api`: Logical indicating whether to use the new API (`TRUE`)
+#'     or old API (`FALSE`)
+#'   - `gsva_version`: Character string of the installed GSVA version,
+#'     or `"not installed"` if not available
 #'
 #' @keywords internal
+#'
+#' @examples
+#' \donttest{
+#' # Detect GSVA API version (only runs if GSVA is installed)
+#' api_info <- IOBR:::gsva_use_new_api()
+#' print(api_info)
+#' }
 gsva_use_new_api <- function() {
   if (!requireNamespace("GSVA", quietly = TRUE)) {
     return(list(use_new_api = FALSE, gsva_version = "not installed"))
@@ -15,23 +27,55 @@ gsva_use_new_api <- function() {
 
   gsva_version <- as.character(utils::packageVersion("GSVA"))
 
+  # Check for new API functions (introduced in GSVA 1.50.0)
   use_new_api <- exists("gsvaParam", where = asNamespace("GSVA"), inherits = FALSE) &&
                  exists("ssgseaParam", where = asNamespace("GSVA"), inherits = FALSE)
 
-  return(list(use_new_api = use_new_api, gsva_version = gsva_version))
+  list(use_new_api = use_new_api, gsva_version = gsva_version)
 }
 
 #' Load IOBR Datasets
 #'
-#' @param name A dataset name.
+#' @description
+#' Loads internal datasets from the IOBR package. Supports both sysdata (internal)
+#' and exported data files included in the package.
 #'
-#' @returns Dataset, typically `list` or `data.frame`.
+#' @param name Character string. Name of the dataset to load. Must be a single value.
+#'   Available datasets include:
+#'   - Expression data: `"eset_stad"`, `"imvigor210_eset"`, `"melanoma_data"`
+#'   - Signatures: `"signature_tme"`, `"signature_metabolism"`, `"signature_collection"`
+#'   - Gene sets: `"hallmark"`, `"kegg"`, `"go_bp"`, `"go_cc"`, `"go_mf"`
+#'   - Cell markers: `"cellmarkers"`, `"mcp_genes"`
+#'   - Phenotype data: `"pdata_stad"`, `"pdata_sig_tme"`, `"pdata_acrg"`
+#'   - Reference data: `"xCell.data"`, `"quantiseq_data"`, `"TRef"`, `"BRef"`
+#'   - Color palettes: `"palette1"`, `"palette2"`, `"palette3"`, `"palette4"`
+#'
+#' @returns Dataset object, typically a `list`, `data.frame`, or `matrix`.
+#'   The exact type depends on the requested dataset.
+#'
 #' @export
 #'
 #' @examples
-#' load_data("deg")
+#' # Load signature collection
+#' sig_tme <- load_data("signature_tme")
+#'
+#' # Load expression data
+#' eset <- load_data("eset_stad")
+#'
+#' # Load color palette
+#' colors <- load_data("palette1")
+#'
+#' # Error handling with suggestions for similar names
+#' \dontrun{
+#' try(load_data("sign_tme"))  # Will suggest "signature_tme"
+#' }
 load_data <- function(name) {
-  stopifnot(length(name) == 1)
+  # Input validation
+  if (!is.character(name) || length(name) != 1 || is.na(name) || nchar(name) == 0) {
+    stop("'name' must be a single non-empty character string")
+  }
+
+  # Define sysdata names (internal package data)
   sysdata_names <- c(
     "cancer_type_genes", "cellmarkers", "common_genes", "go_bp",
     "go_cc", "go_mf", "hallmark", "immuneCuratedData", "imvigor210_eset",
@@ -46,16 +90,43 @@ load_data <- function(name) {
     "tcga_stad_var", "xCell.data"
   )
 
-  data_names <- utils::data(package = "IOBR")$results[, "Item"]
+  # Get available data names from package
+  pkg_data <- utils::data(package = "IOBR")$results
+  data_names <- if (nrow(pkg_data) > 0) pkg_data[, "Item"] else character(0)
 
+  # Load data based on type
   if (name %in% sysdata_names) {
-    eval(parse(text = name))
-  } else if (name %in% data_names) {
-    data(list = name, package = "IOBR", envir = environment())
-    get(name)
-  } else {
-    print("Available datasets:")
-    print(c(sysdata_names, data_names))
-    stop("Input dataset name not found, availables see above")
+    # Internal sysdata - use eval for lazy loading
+    result <- eval(parse(text = name))
+    return(result)
   }
+
+  if (name %in% data_names) {
+    # External data file
+    data(list = name, package = "IOBR", envir = environment())
+    return(get(name, envir = environment()))
+  }
+
+  # Dataset not found - provide helpful error message with suggestions
+  available <- sort(c(sysdata_names, data_names))
+
+  # Find similar names for suggestions
+  distances <- utils::adist(name, available, ignore.case = TRUE)
+  suggestions <- available[which(distances <= 3)]
+
+  error_msg <- c(
+    "Dataset {.val {name}} not found in IOBR package.",
+    "i" = paste("Available datasets:",
+                paste(utils::head(available, 50), collapse = ", "),
+                ifelse(length(available) > 50, "...", ""))
+  )
+
+  if (length(suggestions) > 0) {
+    error_msg <- c(
+      error_msg,
+      "!" = "Did you mean: {.val {suggestions}}?"
+    )
+  }
+
+  cli::cli_abort(error_msg)
 }

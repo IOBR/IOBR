@@ -199,7 +199,8 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 #'   train_outcome <- rbinom(100, 1, 0.5)
 #'   test_data <- matrix(rnorm(100 * 10), ncol = 10)
 #'   test_outcome <- rbinom(100, 1, 0.5)
-#'   fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
+#'   # Use cv.glmnet for cross-validated model (required for lambda.min/lambda.1se)
+#'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
 #'   results <- RegressionResult(
 #'     train.x = train_data, train.y = train_outcome,
 #'     test.x = test_data, test.y = test_outcome,

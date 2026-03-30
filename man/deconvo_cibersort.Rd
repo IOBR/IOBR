@@ -2,12 +2,12 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_cibersort}
 \alias{deconvo_cibersort}
-\title{Decoding immune microenvironment using CIBERSORT}
+\title{Deconvolve Using CIBERSORT}
 \usage{
 deconvo_cibersort(
   eset,
   project = NULL,
-  arrays,
+  arrays = FALSE,
   perm = 1000,
   absolute = FALSE,
   abs_method = "sig.score",
@@ -17,33 +17,31 @@ deconvo_cibersort(
 )
 }
 \arguments{
-\item{eset}{expression set with gene symbol at row name, sample ID at column}
+\item{eset}{Expression matrix with gene symbols as row names.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{arrays}{logical: Runs methods in a mode optimized for microarray data.}
+\item{arrays}{Logical: optimized for microarray data. Default is `FALSE`.}
 
-\item{perm}{permutation to run CIBERSORT}
+\item{perm}{Permutations for statistical analysis. Default is 1000.}
 
-\item{absolute}{logical: Runs CIBERSORT in absolute mode}
+\item{absolute}{Logical: run in absolute mode. Default is `FALSE`.}
 
-\item{abs_method}{Character string specifying how to compute absolute abundance}
+\item{abs_method}{Method for absolute mode: `"sig.score"` or `"no.sumto1"`.
+Default is `"sig.score"`.}
 
-\item{parallel}{Logical. Enable parallel execution? (default = FALSE)}
+\item{parallel}{Enable parallel execution. Default is `FALSE`.}
 
-\item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
+\item{num_cores}{Number of cores for parallel mode. Default is 2.}
 
-\item{seed}{Integer. Random seed for reproducible permutation testing.
-If \code{NULL} (default), uses current random state. Set to a specific
-value (e.g., 123) for reproducible results across runs. Applies to both
-parallel and serial permutation.}
+\item{seed}{Random seed for reproducibility. Default is `NULL`.}
 }
 \value{
-cibersrot with immune cell fractions
+Data frame with CIBERSORT cell fractions. Columns suffixed with `_CIBERSORT`.
 }
 \description{
-CIBERSORT is only freely available to academic users.
-A license an the binary can be obtained from https://cibersort.stanford.edu.
+CIBERSORT is freely available to academic users. License and binary can be
+obtained from https://cibersort.stanford.edu.
 }
 \examples{
 \dontrun{
@@ -52,11 +50,8 @@ lm22 <- load_data("lm22")
 cibersort_result <- deconvo_cibersort(
   eset = eset_tme_stad,
   project = "TCGA-STAD",
-  arrays = FALSE,
-  absolute = FALSE,
   perm = 100
 )
-head(cibersort_result)
 }
 }
 \author{

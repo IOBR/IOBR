@@ -53,13 +53,34 @@ iobr_deg <- function(eset,
                      heatmap = TRUE,
                      col_heatmap = 1,
                      parallel = FALSE) {
-  # if (is.null(path)) {
-  #   # set path to store enrichment analyses result
-  #   path <- creat_folder(paste0("Result-of-DEGs"))
-  # } else {
-  #   path <- creat_folder(path)
-  # }
-  # abspath <- path$abspath
+  # Input validation
+  if (is.null(eset)) {
+    stop("'eset' cannot be NULL. Please provide a gene expression matrix.")
+  }
+  if (!is.matrix(eset) && !is.data.frame(eset)) {
+    stop("'eset' must be a matrix or data frame.")
+  }
+  if (nrow(eset) == 0 || ncol(eset) == 0) {
+    stop("'eset' is empty. Please provide a non-empty expression matrix.")
+  }
+  if (is.null(pdata)) {
+    stop("'pdata' cannot be NULL. Please provide phenotype data.")
+  }
+  pdata <- as.data.frame(pdata)
+  if (!pdata_id %in% colnames(pdata)) {
+    stop(sprintf("'pdata_id' column '%s' not found in pdata.", pdata_id))
+  }
+  if (!group_id %in% colnames(pdata)) {
+    stop(sprintf("'group_id' column '%s' not found in pdata.", group_id))
+  }
+  if (!method %in% c("DESeq2", "limma")) {
+    stop("'method' must be either 'DESeq2' or 'limma'.")
+  }
+  if (length(contrast) != 2) {
+    stop("'contrast' must be a character vector of length 2.")
+  }
+
+  # Setup output path
   if (is.null(path)) {
     abspath <- NULL
   } else {
@@ -68,8 +89,13 @@ iobr_deg <- function(eset,
   }
   ############################################
 
-  colnames(pdata)[which(colnames(pdata) == pdata_id)] <- "ID"
-  colnames(pdata)[which(colnames(pdata) == group_id)] <- "deg_group"
+  # Safely rename columns
+  if (pdata_id != "ID") {
+    colnames(pdata)[colnames(pdata) == pdata_id] <- "ID"
+  }
+  if (group_id != "deg_group") {
+    colnames(pdata)[colnames(pdata) == group_id] <- "deg_group"
+  }
 
   message(">>>== Matching grouping information and expression matrix \n")
   if (group_id == "group3") {
