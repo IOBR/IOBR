@@ -304,7 +304,7 @@ deconvo_cibersort <- function(eset, project = NULL, arrays, perm = 1000, absolut
   # (see CIBERSORT website).
   quantile_norm <- arrays
   ##############################
-  sig_matrix <- .load_data("lm22")
+  sig_matrix <- load_data("lm22")
   res <- CIBERSORT(
     sig_matrix = sig_matrix,
     mixture_file = eset,

@@ -323,7 +323,7 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE, absolute
                       abs_method = "sig.score", parallel = FALSE, num_cores = 2,
                       seed = NULL) {
   if (is.null(sig_matrix)) {
-  sig_matrix <- .load_data("lm22")
+  sig_matrix <- load_data("lm22")
 }
   # Input validation
   if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0) {

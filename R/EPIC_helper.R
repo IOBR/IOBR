@@ -150,7 +150,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   # 'reference'.
   with_w <- TRUE
   if (is.null(reference)) {
-    reference <- .load_data("TRef")
+    reference <- load_data("TRef")
   } else if (is.character(reference)) {
     if (reference %in% c("TRef", "BRef")) {
       data(list = reference, package = "IOBR", envir = environment())
