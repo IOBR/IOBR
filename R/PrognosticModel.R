@@ -16,11 +16,9 @@
 #' @param palette String specifying color palette. Default is \code{"jama"}.
 #'
 #' @return A list containing:
-#' \itemize{
-#'   \item \code{lasso_result}: Results from LASSO model including coefficients and AUC
-#'   \item \code{ridge_result}: Results from Ridge model including coefficients and AUC
-#'   \item \code{train.x}: Training data with sample IDs
-#' }
+#' - `lasso_result`: Results from LASSO model including coefficients and AUC
+#' - `ridge_result`: Results from Ridge model including coefficients and AUC
+#' - `train.x`: Training data with sample IDs
 #' @author Dongqiang Zeng
 #' @export
 #' @importFrom glmnet cv.glmnet
@@ -111,11 +109,9 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #' @param test.y Testing dataset survival outcomes (time and status).
 #'
 #' @return A list containing:
-#' \itemize{
-#'   \item \code{model}: The fitted model object
-#'   \item \code{coefs}: Data frame of coefficients at \code{lambda.min} and \code{lambda.1se}
-#'   \item \code{AUC}: Data frame with AUC values for train/test at both lambda values
-#' }
+#' - `model`: The fitted model object
+#' - `coefs`: Data frame of coefficients at `lambda.min` and `lambda.1se`
+#' - `AUC`: Data frame with AUC values for train/test at both lambda values
 #'
 #' @author Dongqiang Zeng
 #' @export

@@ -28,33 +28,13 @@ signature genes (except if \code{scaleExprs = FALSE} in which case it
 doesn't make any difference).}
 
 \item{reference}{(optional): A string or a list defining the reference cells.
-It can take multiple formats, either: \itemize{
-  \item\code{NULL}: to use the default reference profiles and genes
-    signature \code{\link{TRef}}.
-  \item a char: either \emph{"BRef"} or \emph{"TRef"}
-    to use the reference cells and genes signature of the corresponding
-    datasets (see \code{\link{BRef}} and \code{\link{TRef}}).
-  \item a list. When a list it should include: \describe{
-    \item{\code{$refProfiles}}{a matrix (\code{nGenes} x \code{nCellTypes})
-    of the reference cells genes expression (don't include a column of
-    the 'other cells' (representing usually the cancer cells for which
-    such a profile is usually not conserved between samples);
-    the rownames needs to be defined as well as the colnames giving the
-    names of each gene and reference cell types respectively.
-    It is advised to keep all genes in this \code{refProfiles} matrix
-    instead of a subset of signature genes;
-    }
-    \item{\code{$sigGenes}}{a character vector of the gene names to use as
-      signature - sigGenes can also be given as a direct input to EPIC
-      function;}
-    \item{\code{$refProfiles.var}}{(optional): a matrix (\code{nGenes} x
-    \code{nCellTypes}) of the variability of each gene expression for each
-    cell type, which is used to define weights on each gene for the
-    optimization (if this is absent, we assume an identical variability
-    for all genes in all cells) - it needs to have the same dimnames than
-    refProfiles;}
-    }
-}}
+It can take multiple formats:
+- `NULL`: to use the default reference profiles and genes signature \code{\link{TRef}}
+- A character: either \code{"BRef"} or \code{"TRef"} to use the reference cells and genes signature of the corresponding datasets (see \code{\link{BRef}} and \code{\link{TRef}})
+- A list containing:
+  - `$refProfiles`: a matrix (\code{nGenes} x \code{nCellTypes}) of the reference cells genes expression (don't include a column of the 'other cells' (representing usually the cancer cells for which such a profile is usually not conserved between samples); the rownames needs to be defined as well as the colnames giving the names of each gene and reference cell types respectively. It is advised to keep all genes in this \code{refProfiles} matrix instead of a subset of signature genes
+  - `$sigGenes`: a character vector of the gene names to use as signature - sigGenes can also be given as a direct input to EPIC function
+  - `$refProfiles.var` (optional): a matrix (\code{nGenes} x \code{nCellTypes}) of the variability of each gene expression for each cell type, which is used to define weights on each gene for the optimization (if this is absent, we assume an identical variability for all genes in all cells) - it needs to have the same dimnames than refProfiles}
 
 \item{mRNA_cell}{(optional): A named numeric vector: tells (in arbitrary
 units) the amount of mRNA for each of the reference cells and of the
@@ -111,19 +91,10 @@ error that the optimization tries to minimize is by how much
 the predicted gene expression is outside of this allowed range of values.}
 }
 \value{
-A list of 3 matrices:\describe{
- \item{\code{mRNAProportions}}{(\code{nSamples} x (\code{nCellTypes+1})) the
-   proportion of mRNA coming from all cell types with a ref profile + the
-   uncharacterized other cell.}
- \item{\code{cellFractions}}{(\code{nSamples} x (\code{nCellTypes+1})) this
-   gives the proportion of cells from each cell type after accounting for
-   the mRNA / cell value.}
- \item{\code{fit.gof}}{(\code{nSamples} x 12) a matrix telling the quality
-   for the fit of the signature genes in each sample. It tells if the
-   minimization converged, and other info about this fit comparing the
-   measured gene expression in the sigGenes vs predicted gene expression in
-   the sigGenes.}
-}
+A list of 3 matrices:
+- `mRNAProportions`: (\code{nSamples} x (\code{nCellTypes+1})) the proportion of mRNA coming from all cell types with a ref profile + the uncharacterized other cell
+- `cellFractions`: (\code{nSamples} x (\code{nCellTypes+1})) this gives the proportion of cells from each cell type after accounting for the mRNA / cell value
+- `fit.gof`: (\code{nSamples} x 12) a matrix telling the quality for the fit of the signature genes in each sample. It tells if the minimization converged, and other info about this fit comparing the measured gene expression in the sigGenes vs predicted gene expression in the sigGenes
 }
 \description{
 \code{EPIC} takes as input bulk gene expression data (RNA-seq) and returns

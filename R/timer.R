@@ -129,28 +129,19 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' (`timer_available_cancers`).
 #'
 #' The input can be provided in two ways:
-#' \itemize{
-#'   \item \strong{Batch mode}: A CSV file path specified in \code{args$batch}.
-#''         The file is expected to have at least two columns, where the
-#'         second column contains cancer categories.
-#'   \item \strong{Direct mode}: Vectors provided via \code{args$expression}
-#'         and \code{args$category}.
-#' }
+#' - **Batch mode**: A CSV file path specified in `args$batch`. The file is expected to have at least two columns, where the second column contains cancer categories.
+#' - **Direct mode**: Vectors provided via `args$expression` and `args$category`.
 #'
 #' If any cancer category is not recognized, the function stops with an error.
 #'
 #' @param args A list containing input parameters:
-#' \describe{
-#'   \item{batch}{Character string. Path to a CSV file (optional).}
-#'   \item{expression}{Character vector of expression identifiers (used if \code{batch} is NULL).}
-#'   \item{category}{Character vector of cancer types (used if \code{batch} is NULL).}
-#' }
+#' - `batch`: Character string. Path to a CSV file (optional).
+#' - `expression`: Character vector of expression identifiers (used if `batch` is NULL).
+#' - `category`: Character vector of cancer types (used if `batch` is NULL).
 #'
 #' @return A character matrix with two columns:
-#' \itemize{
-#'   \item Column 1: expression identifiers
-#'   \item Column 2: cancer categories
-#' }
+#' - Column 1: expression identifiers
+#' - Column 2: cancer categories
 #' Each row corresponds to one record.
 #'
 #' @examples

@@ -41,12 +41,9 @@ The same unit will be used for ROC calculation and displayed in the plot
 \item{palette}{Character. Color palette for the plot(used when cols is "normal" or NULL). Default is "jama".}
 
 \item{cols}{Character vector or string. Color specification. Three options:
-\itemize{
-  \item \code{"normal"}: Use default palette colors (default)
-  \item \code{"random"}: Use randomized/shuffled palette colors
-  \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")}
-        or \code{c("red", "blue", "green")}
-}}
+- `"normal"`: Use default palette colors (default)
+- `"random"`: Use randomized/shuffled palette colors
+- Custom color vector: e.g., `c("#E64B35", "#4DBBD5", "#00A087")` or `c("red", "blue", "green")`}
 
 \item{seed}{Integer. Random seed for reproducibility. Default is 1234.}
 

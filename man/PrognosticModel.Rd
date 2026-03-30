@@ -37,11 +37,9 @@ PrognosticModel(
 }
 \value{
 A list containing:
-\itemize{
-  \item \code{lasso_result}: Results from LASSO model including coefficients and AUC
-  \item \code{ridge_result}: Results from Ridge model including coefficients and AUC
-  \item \code{train.x}: Training data with sample IDs
-}
+- `lasso_result`: Results from LASSO model including coefficients and AUC
+- `ridge_result`: Results from Ridge model including coefficients and AUC
+- `train.x`: Training data with sample IDs
 }
 \description{
 Prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models

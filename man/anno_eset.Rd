@@ -39,13 +39,11 @@ for resolving duplicate gene symbols.
 }
 \details{
 The function performs the following operations:
-\itemize{
-  \item Filters probes with missing symbols or labeled as "NA_NA"
-  \item Matches probes between expression set and annotation data
-  \item Merges annotation with expression data
-  \item Handles duplicate gene symbols using specified aggregation method
-  \item Removes rows with all zeros, all NAs, or missing values in the first column
-}
+- Filters probes with missing symbols or labeled as "NA_NA"
+- Matches probes between expression set and annotation data
+- Merges annotation with expression data
+- Handles duplicate gene symbols using specified aggregation method
+- Removes rows with all zeros, all NAs, or missing values in the first column
 }
 \examples{
 # Annotate Affymetrix microarray data

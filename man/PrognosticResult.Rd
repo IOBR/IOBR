@@ -19,11 +19,9 @@ PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \value{
 A list containing:
-\itemize{
-  \item \code{model}: The fitted model object
-  \item \code{coefs}: Data frame of coefficients at \code{lambda.min} and \code{lambda.1se}
-  \item \code{AUC}: Data frame with AUC values for train/test at both lambda values
-}
+- `model`: The fitted model object
+- `coefs`: Data frame of coefficients at `lambda.min` and `lambda.1se`
+- `AUC`: Data frame with AUC values for train/test at both lambda values
 }
 \description{
 Computes and compiles prognostic results from a survival model fitted with \code{glmnet}.

@@ -12,12 +12,9 @@
 #'   (supported: "day" or "month"). Default is "month".
 #' @param palette Character. Color palette for the plot(used when cols is "normal" or NULL). Default is "jama".
 #' @param cols Character vector or string. Color specification. Three options:
-#'   \itemize{
-#'     \item \code{"normal"}: Use default palette colors (default)
-#'     \item \code{"random"}: Use randomized/shuffled palette colors
-#'     \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")}
-#'           or \code{c("red", "blue", "green")}
-#'   }
+#'   - `"normal"`: Use default palette colors (default)
+#'   - `"random"`: Use randomized/shuffled palette colors
+#'   - Custom color vector: e.g., `c("#E64B35", "#4DBBD5", "#00A087")` or `c("red", "blue", "green")`
 #' @param seed Integer. Random seed for reproducibility. Default is 1234.
 #' @param show_col Logical. Whether to display the color palette. Default is FALSE.
 #' @param path Character or NULL. Path to save the plot. Default is NULL.

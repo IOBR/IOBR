@@ -117,12 +117,10 @@ Default is \code{TRUE}.}
 }
 \value{
 List containing:
-\itemize{
-  \item \code{up}: Data frame of up-regulated enriched gene sets
-  \item \code{down}: Data frame of down-regulated enriched gene sets
-  \item \code{gsea_result}: Complete GSEA result object
-  \item \code{gsea_plots}: List of GSEA enrichment plots (if generated)
-}
+- `up`: Data frame of up-regulated enriched gene sets
+- `down`: Data frame of down-regulated enriched gene sets
+- `gsea_result`: Complete GSEA result object
+- `gsea_plots`: List of GSEA enrichment plots (if generated)
 }
 \description{
 Conducts Gene Set Enrichment Analysis to identify significantly enriched gene sets
