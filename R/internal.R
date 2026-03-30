@@ -4,10 +4,8 @@
 #' parameter-based API (gsvaParam/ssgseaParam) or the old direct argument API.
 #'
 #' @return A list with two elements:
-#'   \itemize{
-#'     \item \code{use_new_api}: Logical indicating whether to use the new API (TRUE) or old API (FALSE)
-#'     \item \code{gsva_version}: Character string of the installed GSVA version, or "not installed" if not available
-#'   }
+#'   - `use_new_api`: Logical indicating whether to use the new API (TRUE) or old API (FALSE)
+#'   - `gsva_version`: Character string of the installed GSVA version, or "not installed" if not available
 #'
 #' @keywords internal
 gsva_use_new_api <- function() {
