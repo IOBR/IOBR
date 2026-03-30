@@ -168,22 +168,22 @@ sig_pheatmap <- function(input, feas, group,
   cluster_colors1[[group]] <- cluster_vec1
   ######################################################
   if (!is.null(group2)) {
-  lev2 <- unique(as.character(input[[group2]]))
-  lev2 <- lev2[!is.na(lev2)]
-  cluster_vec2 <- mycols2[seq_along(lev2)]
-  names(cluster_vec2) <- lev2
-  cluster_colors2 <- list()
-  cluster_colors2[[group2]] <- cluster_vec2
+    lev2 <- unique(as.character(input[[group2]]))
+    lev2 <- lev2[!is.na(lev2)]
+    cluster_vec2 <- mycols2[seq_along(lev2)]
+    names(cluster_vec2) <- lev2
+    cluster_colors2 <- list()
+    cluster_colors2[[group2]] <- cluster_vec2
   }
   ######################################################
   if (!is.null(group3)) {
-  lev3 <- unique(as.character(input[[group3]]))
-  lev3 <- lev3[!is.na(lev3)]
-  cluster_vec3 <- mycols3[seq_along(lev3)]
-  names(cluster_vec3) <- lev3
-  cluster_colors3 <- list()
-  cluster_colors3[[group3]] <- cluster_vec3
- }
+    lev3 <- unique(as.character(input[[group3]]))
+    lev3 <- lev3[!is.na(lev3)]
+    cluster_vec3 <- mycols3[seq_along(lev3)]
+    names(cluster_vec3) <- lev3
+    cluster_colors3 <- list()
+    cluster_colors3[[group3]] <- cluster_vec3
+  }
   ######################################################
 
   if (is.null(group3) & is.null(group2)) {

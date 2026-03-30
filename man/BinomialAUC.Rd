@@ -31,7 +31,7 @@ is typically used to assess model performance in classification tasks.
 # Assuming 'model', 'newx', and 'actual.y' are predefined:
 fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
 test_data <- matrix(rnorm(100 * 10), ncol = 10)
-  test_outcomes <- rbinom(100, 1, 0.5)
+test_outcomes <- rbinom(100, 1, 0.5)
 auc_value <- BinomialAUC(
   model = fitted_model,
   newx = test_data,

@@ -16,47 +16,35 @@ PlotTimeROC(
 )
 }
 \arguments{
-\item{train.x}{Matrix or data frame containing the predictor variables used to fit
-the model for the training dataset. These variables should correspond to the
-same predictors used in model fitting.}
+\item{train.x}{Matrix or data frame of training predictors.}
 
-\item{train.y}{Training dataset outcomes, which must include survival time and
-event status (e.g., censoring status). This data should be formatted as a
-two-column data frame or matrix where the first column is the survival time
-and the second column is the event status.}
+\item{train.y}{Training survival outcomes (time and status).}
 
-\item{test.x}{Matrix or data frame containing the predictor variables used for
-evaluating the model on the testing dataset. Like train.x, this should include
-the same type of predictors used in model fitting.}
+\item{test.x}{Matrix or data frame of testing predictors.}
 
-\item{test.y}{Testing dataset outcomes, formatted in the same way as train.y, with
-survival time and event status.}
+\item{test.y}{Testing survival outcomes (time and status).}
 
-\item{model}{The model object used for predictions. Typically, this would be a model
-object created by a survival analysis method compatible with time-dependent
-ROC calculations.}
+\item{model}{Fitted survival model object.}
 
-\item{modelname}{A string representing the name of the model, used for creating
-titles or labels in the plots.}
+\item{modelname}{Character string for model identification.}
 
-\item{cols}{Optionally, a vector of colors for plotting. If not provided, colors
-are automatically chosen based on the 'palette' parameter.}
+\item{cols}{Optional vector of colors for plotting.}
 
-\item{palette}{A character string specifying the color palette to use if 'cols' is
-not provided. The default is "jama", which refers to a pre-defined palette.}
+\item{palette}{Character string specifying color palette (default: \code{"jama"}).}
 }
 \value{
-A ggplot object representing the ROC curve plot for the provided model at
-        the specified time quantile. The plot includes both training and testing
-        datasets across different regularization strengths or model specifications.
+A \code{ggplot} object representing the ROC curve plot.
 }
 \description{
-This function generates time-dependent Receiver Operating Characteristic (ROC) curves
-for evaluating the prognostic accuracy of models based on survival data. It handles
-both training and testing datasets to plot ROC curves at specific time quantiles.
-Customizable options for colors and legends are provided via function parameters.
+Generates time-dependent ROC curves for evaluating prognostic accuracy of survival models.
+Plots training and testing ROC curves at the 90th percentile survival time.
 }
 \examples{
-# Assuming model and data are predefined:
+\dontrun{
+# Example usage with fitted model
 PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
+}
+}
+\author{
+Dongqiang Zeng
 }

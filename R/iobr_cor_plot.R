@@ -146,9 +146,9 @@ iobr_cor_plot <- function(pdata_group,
   ##################################################
   pdata_group <- as.data.frame(pdata_group)
   colnames(pdata_group)[which(colnames(pdata_group) == id1)] <- "ID"
-  
+
   if (!is.null(target) && !target %in% colnames(pdata_group)) {
-  stop(paste0("target '", target, "' is not a column in pdata_group."))
+    stop(paste0("target '", target, "' is not a column in pdata_group."))
   }
 
   if (!is.null(target) & is_target_continuous) pdata_group[, target] <- as.numeric(pdata_group[, target])

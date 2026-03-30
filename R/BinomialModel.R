@@ -327,7 +327,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #' # Assuming 'model', 'newx', and 'actual.y' are predefined:
 #' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
 #' test_data <- matrix(rnorm(100 * 10), ncol = 10)
-#'   test_outcomes <- rbinom(100, 1, 0.5)
+#' test_outcomes <- rbinom(100, 1, 0.5)
 #' auc_value <- BinomialAUC(
 #'   model = fitted_model,
 #'   newx = test_data,
@@ -337,7 +337,7 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #' print(auc_value)
 #' }
 #' @export
-BinomialAUC <- function(model, newx, s, acture.y){
+BinomialAUC <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
@@ -451,14 +451,15 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   library(glmnet)
 #'   # 快速训练（使用较小的交叉验证折数）
-#'   fitted_model <- cv.glmnet(x_train, y_train, 
-#'                            family = "binomial",
-#'                            nfolds = 3)  # 减少折数以加快速度
-#'   
+#'   fitted_model <- cv.glmnet(x_train, y_train,
+#'     family = "binomial",
+#'     nfolds = 3
+#'   ) # 减少折数以加快速度
+#'
 #'   # 测试数据
 #'   new_data <- matrix(rnorm(n_test * p), n_test, p)
 #'   actual_outcomes <- sample(0:1, n_test, replace = TRUE)
-#'   
+#'
 #'   # 计算性能
 #'   perf_metrics <- CalculatePref(
 #'     model = fitted_model,
@@ -466,12 +467,12 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = N
 #'     s = "lambda.min",
 #'     acture.y = actual_outcomes
 #'   )
-#'   
+#'
 #'   # 简要输出
 #'   print("Performance metrics calculated successfully")
 #' }
 #' @export
-CalculatePref <- function(model, newx, s, acture.y){
+CalculatePref <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)

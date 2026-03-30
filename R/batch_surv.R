@@ -53,12 +53,14 @@ batch_surv <- function(pdata, variable, time = "time", status = "status", best_c
   }
   #################################################
   result_list <- lapply(
-  pdata[, variable],
-  function(x) survival::coxph(
-    survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ x,
-    data = pdata[, variable]
-   )
- )
+    pdata[, variable],
+    function(x) {
+      survival::coxph(
+        survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ x,
+        data = pdata[, variable]
+      )
+    }
+  )
   result <- data.frame(NULL)
   for (i in 1:length(result_list)) {
     result1 <- getHRandCIfromCoxph(result_list[[i]])

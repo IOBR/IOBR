@@ -52,7 +52,7 @@ tme_deconvolution_methods <- c(
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' # Run xCell deconvolution
 #' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD", arrays = FALSE)
-#'}
+#' }
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   rlang::check_installed("xCell", reason = "to run xCell deconvolution")
   message(paste0("\n", ">>> Running ", "xCell"))
@@ -227,7 +227,7 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' data("BRef", package = "IOBR")
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
-#'}
+#' }
 deconvo_epic <- function(eset, project = NULL, tumor) {
   message(paste0("\n", ">>> Running ", "EPIC"))
 

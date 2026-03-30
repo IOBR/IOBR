@@ -66,7 +66,6 @@ sig_heatmap <- function(input,
                         show_heatmap_col_name = FALSE,
                         path = NULL,
                         index = NULL) {
-
   input <- as.data.frame(input)
 
   if (!ID %in% colnames(input)) {

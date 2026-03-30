@@ -157,8 +157,10 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' # ---- Batch mode example ----
 #' tf <- tempfile(fileext = ".csv")
 #' write.table(
-#'   data.frame("exp1", "lung",
-#'              "exp2", "breast"),
+#'   data.frame(
+#'     "exp1", "lung",
+#'     "exp2", "breast"
+#'   ),
 #'   file = tf,
 #'   sep = ",",
 #'   row.names = FALSE,
@@ -173,14 +175,13 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' # ---- Direct input example ----
 #' args <- list(
 #'   expression = c("exp1", "exp2"),
-#'   category   = c("lung", "breast"),
+#'   category = c("lung", "breast"),
 #'   batch = NULL
 #' )
 #'
 #' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
 check_cancer_types <- function(args) {
-
   if (!is.null(args$batch)) {
     TimerINFO("Enter batch mode\n")
     cancers <- as.matrix(read.table(args$batch, sep = ",", stringsAsFactors = FALSE))

@@ -45,7 +45,7 @@ data("eset_stad", package = "IOBR")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 # signature score estimation using PCA, z-score, and ssgsea method
 calculate_sig_score_integration(eset = eset, signature = signature_tme)
-}                                                                                                       
+}
 }
 \author{
 Dongqiang Zeng

@@ -43,8 +43,10 @@ If any cancer category is not recognized, the function stops with an error.
 # ---- Batch mode example ----
 tf <- tempfile(fileext = ".csv")
 write.table(
-  data.frame("exp1", "lung",
-             "exp2", "breast"),
+  data.frame(
+    "exp1", "lung",
+    "exp2", "breast"
+  ),
   file = tf,
   sep = ",",
   row.names = FALSE,
@@ -59,7 +61,7 @@ result <- check_cancer_types(args)
 # ---- Direct input example ----
 args <- list(
   expression = c("exp1", "exp2"),
-  category   = c("lung", "breast"),
+  category = c("lung", "breast"),
   batch = NULL
 )
 

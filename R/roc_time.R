@@ -92,8 +92,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   if (length(vars) == 1) {
     message(paste0(">>>--- For one variable, `time_point`: Three different times can be set (unit: ", unit_label, ")."))
 
-    # time_point <- round(c(quantile(time)[2], quantile(time)[3], quantile(time)[4]), 0)
-    # 事件时间（只取 status==1 的 time）
+    # Use event times (time where status==1) for quantile calculation
     event_time <- time[status == 1]
 
     if (length(time_point) == 1) {
@@ -105,7 +104,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
       }
     }
 
-    # 基础合法性检查
+    # Basic validation checks
     if (!(length(time_point) %in% c(1, 3))) {
       stop("For length(vars)==1, `time_point` must be length 1 (auto 3 quantiles) or length 3 (explicit).")
     }
@@ -123,7 +122,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
       )
     }
 
-    # 不要超过最大事件时间太多（否则ROC几乎无信息）
+    # Warn if time_point exceeds max event time (ROC may be uninformative)
     max_event_time <- ifelse(sum(status == 1) > 0, max(time[status == 1], na.rm = TRUE), NA_real_)
     if (is.finite(max_event_time) && any(time_point >= max_event_time)) {
       warning(
@@ -132,7 +131,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
       )
     }
 
-    # 每个时间点至少要有足够事件（否则AUC非常飘）
+    # Ensure sufficient events at each time point for reliable AUC
     min_events <- 10
     for (t in time_point) {
       n_event <- sum(time <= t & status == 1, na.rm = TRUE)
@@ -207,7 +206,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     var2 <- vars[2]
     var3 <- paste0(var1, " + ", var2)
     # cox regression
-    marker3 <- survival::coxph(Surv(time, status) ~ input[, var1] + input[, var2], data = input)
+    marker3 <- survival::coxph(survival::Surv(time, status) ~ input[, var1] + input[, var2], data = input)
     input$var3 <- predict(marker3, type = "lp", newdata = input)
 
     roc1 <- timeROC::timeROC(
@@ -274,7 +273,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
     var3 <- vars[3]
     var4 <- paste0(var1, "+", var2, "+", var3)
     # cox regression
-    marker4 <- survival::coxph(Surv(time, status) ~ input[, var1] + input[, var2] + input[, var3], data = input)
+    marker4 <- survival::coxph(survival::Surv(time, status) ~ input[, var1] + input[, var2] + input[, var3], data = input)
     input$var4 <- predict(marker4, type = "lp", newdata = input)
 
     message(">>=== Predicting combined score...")
@@ -354,7 +353,7 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   #   filename = paste0(index, "-", main, "-ROC-time", ".", fig.type),
   #   width = width, height = height, path = path$folder_name
   # )
-  ## 只在调用者给了路径时才写文件
+  # Save plot only when path is provided
   if (save_plot) {
     ggsave(p,
       filename = paste0(index, "-", main, "-ROC-time", ".", fig.type),

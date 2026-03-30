@@ -17,40 +17,51 @@ PrognosticModel(
 )
 }
 \arguments{
-\item{x}{A matrix or data frame of predictor variables.}
+\item{x}{A matrix or data frame of predictor variables (features).}
 
-\item{y}{A data frame of survival outcomes, including time and status columns.}
+\item{y}{A data frame of survival outcomes with two columns: survival time and event status.}
 
-\item{scale}{Logical indicating whether to scale predictor variables. Default is FALSE.}
+\item{scale}{Logical indicating whether to scale predictor variables. Default is \code{FALSE}.}
 
-\item{seed}{Integer seed for random number generation to ensure reproducibility.}
+\item{seed}{Integer seed for random number generation to ensure reproducibility. Default is \code{123456}.}
 
-\item{train_ratio}{Numeric proportion of data for training (e.g., 0.7). Default is 0.7.}
+\item{train_ratio}{Numeric proportion of data for training (e.g., 0.7). Default is \code{0.7}.}
 
-\item{nfold}{Integer number of folds for cross-validation. Default is 10.}
+\item{nfold}{Integer number of folds for cross-validation. Default is \code{10}.}
 
-\item{plot}{Logical indicating whether to plot ROC curves. Default is TRUE.}
+\item{plot}{Logical indicating whether to plot ROC curves. Default is \code{TRUE}.}
 
-\item{palette}{String specifying color palette. Default is "jama".}
+\item{palette}{String specifying color palette. Default is \code{"jama"}.}
 
-\item{cols}{Optional vector of colors for ROC curves. If NULL, uses default palette.}
+\item{cols}{Optional vector of colors for ROC curves. If \code{NULL}, uses default palette.}
 }
 \value{
-A list containing results from LASSO and Ridge models, training data, and optionally ROC plots.
+A list containing:
+\itemize{
+  \item \code{lasso_result}: Results from LASSO model including coefficients and AUC
+  \item \code{ridge_result}: Results from Ridge model including coefficients and AUC
+  \item \code{train.x}: Training data with sample IDs
+}
 }
 \description{
-This function prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models
-for survival analysis. It evaluates the models and optionally plots time-dependent ROC curves.
+Prepares data, splits it into training and testing sets, and fits LASSO and Ridge regression models
+for survival analysis. Evaluates model performance using cross-validation and optionally generates
+time-dependent ROC curves for visual assessment of predictive accuracy.
 }
 \examples{
+\dontrun{
 data("imvigor210_sig", package = "IOBR")
 data("imvigor210_pdata", package = "IOBR")
 pdata_prog <- imvigor210_pdata \%>\%
   dplyr::select(ID, OS_days, OS_status) \%>\%
-  mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
+  dplyr::mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
 prognostic_result <- PrognosticModel(
   x = imvigor210_sig, y = pdata_prog,
   scale = TRUE, seed = 123456,
   train_ratio = 0.7, nfold = 10, plot = TRUE
 )
+}
+}
+\author{
+Dongqiang Zeng
 }

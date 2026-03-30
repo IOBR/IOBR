@@ -273,10 +273,12 @@ sig_surv_plot <- function(input_pdata,
   df <- tibble(x = 0, y = 0, tb = list(addTab))
   # pp2$plot <- pp2$plot + ggpp::geom_table(data = df, aes(x = x, y = y, label = tb), table.rownames = TRUE)
   rlang::check_installed("gridExtra")
-  tb_grob <- gridExtra::tableGrob(df$tb, rows = TRUE,
-  theme = gridExtra::ttheme_minimal(base_size = 6))
+  tb_grob <- gridExtra::tableGrob(df$tb,
+    rows = TRUE,
+    theme = gridExtra::ttheme_minimal(base_size = 6)
+  )
 
-  
+
   ## 把 ggpp::geom_table 换成 geom_text + annotation_custom
   pp2$plot <- pp2$plot +
     ggplot2::geom_text(aes(x = x, y = y, label = ""), data = df, size = 0) +

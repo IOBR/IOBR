@@ -2,64 +2,50 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{CalculateTimeROC}
 \alias{CalculateTimeROC}
-\title{Calculate Time-Dependent ROC}
+\title{Calculate Time-Dependent ROC Curve}
 \usage{
 CalculateTimeROC(model, newx, s, acture.y, modelname, time_prob = 0.9)
 }
 \arguments{
-\item{model}{A survival model object from which predictions will be made.}
+\item{model}{A fitted survival model object.}
 
-\item{newx}{A matrix or data frame of new data points for which predictions need to be made.}
+\item{newx}{A matrix or data frame of new data for prediction.}
 
-\item{s}{The value of the penalty parameter 'lambda' at which predictions are requested.
-This can be a specific value or a character string specifying a criterion,
-such as 'lambda.min' or 'lambda.1se' which are commonly used in models like those from `glmnet`.}
+\item{s}{Lambda value for prediction.}
 
-\item{acture.y}{A data frame containing the actual survival data, expected to have at least two columns:
-'time' which is the survival time, and 'status' which is the event indicator (1 if the event occurred, 0 otherwise).}
+\item{acture.y}{Data frame with \code{time} and \code{status} columns.}
 
-\item{modelname}{A character string specifying the name of the model, used for identification in outputs or plots.}
+\item{modelname}{Character string for model identification.}
 
-\item{time_prob}{A numeric value specifying the quantile of interest for the ROC calculation.
-The default is 0.9, which calculates the ROC at the 90th percentile of the survival time.}
+\item{time_prob}{Numeric quantile for ROC calculation (default: \code{0.9}).}
 }
 \value{
-An object of class `timeROC` that contains the time-dependent ROC curve information.
+An object of class \code{timeROC} containing ROC curve information.
 }
 \description{
-This function computes the time-dependent Receiver Operating Characteristic (ROC) curve for a given survival model.
-It uses the `timeROC` package to compute ROC statistics based on predicted risk scores from the model and actual survival outcomes.
-This is particularly useful for evaluating the predictive accuracy of survival models at a specified time probability.
+Computes time-dependent ROC curve for survival models using the \code{timeROC} package.
+Evaluates predictive accuracy at a specified time quantile.
 }
 \examples{
+\dontrun{
 if (requireNamespace("glmnet", quietly = TRUE) &&
     requireNamespace("survival", quietly = TRUE)) {
-
-  # 使用真实内置数据，并去掉缺失值
+  # Use lung dataset and remove missing values
   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
-
-  # glmnet 的 Cox 模型要求状态变量通常为 0/1
+  # Convert status to 0/1 for glmnet Cox model
   dat$status <- dat$status - 1
-
   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
   y <- survival::Surv(dat$time, dat$status)
-
   fit <- glmnet::glmnet(x, y, family = "cox")
-
-  actual_outcome <- data.frame(
-    time = dat$time,
-    status = dat$status
-  )
-
+  actual_outcome <- data.frame(time = dat$time, status = dat$status)
   roc_info <- CalculateTimeROC(
-    model = fit,
-    newx = x,
-    s = 0.01,
-    acture.y = actual_outcome,
-    modelname = "glmnet Cox Model",
-    time_prob = 0.5
+    model = fit, newx = x, s = 0.01, acture.y = actual_outcome,
+    modelname = "glmnet Cox Model", time_prob = 0.5
   )
-
-  roc_info$AUC
+  print(roc_info$AUC)
 }
+}
+}
+\author{
+Dongqiang Zeng
 }

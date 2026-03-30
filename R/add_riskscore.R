@@ -38,7 +38,7 @@ add_riskscore <- function(input, family = "cox", target = NULL, time = NULL, sta
   # Check the 'family' parameter and perform the corresponding model fitting
   if (family == "cox") {
     # Combine all variables to be used in the survival model
-    formula <- as.formula(paste("Surv(", time, ",", status, ") ~ ", paste(vars, collapse = " + ")))
+    formula <- stats::as.formula(paste("survival::Surv(", time, ",", status, ") ~ ", paste(vars, collapse = " + ")))
 
     # Fit the Cox survival model
     model <- coxph(formula, data = input)

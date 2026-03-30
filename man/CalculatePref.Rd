@@ -42,14 +42,15 @@ y_train <- sample(0:1, n_train, replace = TRUE)
 if (requireNamespace("glmnet", quietly = TRUE)) {
   library(glmnet)
   # 快速训练（使用较小的交叉验证折数）
-  fitted_model <- cv.glmnet(x_train, y_train, 
-                           family = "binomial",
-                           nfolds = 3)  # 减少折数以加快速度
-  
+  fitted_model <- cv.glmnet(x_train, y_train,
+    family = "binomial",
+    nfolds = 3
+  ) # 减少折数以加快速度
+
   # 测试数据
   new_data <- matrix(rnorm(n_test * p), n_test, p)
   actual_outcomes <- sample(0:1, n_test, replace = TRUE)
-  
+
   # 计算性能
   perf_metrics <- CalculatePref(
     model = fitted_model,
@@ -57,7 +58,7 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
     s = "lambda.min",
     acture.y = actual_outcomes
   )
-  
+
   # 简要输出
   print("Performance metrics calculated successfully")
 }

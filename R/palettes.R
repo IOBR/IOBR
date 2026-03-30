@@ -164,27 +164,27 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1, counts = 50, 
   }
 
   if (category == "tidyheatmap") {
-  if (show_message) message("There are six palettes you can choose: 1, 2, 3, 4, 5, 6")
+    if (show_message) message("There are six palettes you can choose: 1, 2, 3, 4, 5, 6")
 
-  if (palette == 1) {
-    mypal <- c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF")
-  } else if (palette == 2) {
-    mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlBu"))
-  } else if (palette == 3) {
-    mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlGn"))
-  } else if (palette == 4) {
-    mypal <- rev(RColorBrewer::brewer.pal(5, "Spectral"))
-  } else if (palette == 5) {
-    mypal <- rev(RColorBrewer::brewer.pal(5, "PiYG"))
-  } else if (palette == 6) {
-    mypal <- c("navy", "white", "firebrick")
-  }
+    if (palette == 1) {
+      mypal <- c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF")
+    } else if (palette == 2) {
+      mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlBu"))
+    } else if (palette == 3) {
+      mypal <- rev(RColorBrewer::brewer.pal(5, "RdYlGn"))
+    } else if (palette == 4) {
+      mypal <- rev(RColorBrewer::brewer.pal(5, "Spectral"))
+    } else if (palette == 5) {
+      mypal <- rev(RColorBrewer::brewer.pal(5, "PiYG"))
+    } else if (palette == 6) {
+      mypal <- c("navy", "white", "firebrick")
+    }
 
-  if (show_col) {
-    print(paste0("'", mypal, "'", collapse = ", "))
-    scales::show_col(mypal)
+    if (show_col) {
+      print(paste0("'", mypal, "'", collapse = ", "))
+      scales::show_col(mypal)
+    }
   }
-}
 
   return(mypal)
 }
