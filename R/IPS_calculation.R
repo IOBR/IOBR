@@ -109,13 +109,13 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
     if (plot) {
       # file to deposit reslut
       file_name <- paste0("IPS-Results")
-      if (!file.exists(file_name)) dir.create(file_name)
-      abspath <- paste(getwd(), "/", file_name, "/", sep = "")
+      if (!dir.exists(file_name)) dir.create(file_name, recursive = TRUE)
+      abspath <- file.path(normalizePath(file_name, winslash = "/", mustWork = FALSE), "")
       abspath
       ################################################
       # 首先构建图的储存文件夹
-      plotpath <- paste(file_name, "/IPS_plot_results", sep = "")
-      if (!file.exists(plotpath)) dir.create(plotpath)
+      plotpath <- file.path(file_name, "IPS_plot_results")
+      if (!dir.exists(plotpath)) dir.create(plotpath, recursive = TRUE)
       ###############################
       ###############################
 

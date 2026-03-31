@@ -156,7 +156,8 @@ MCPcounter.estimate <- function(
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#' # This function requires null_models data which is loaded internally
 #' # Create example data
 #' scores <- matrix(runif(30), nrow = 3, ncol = 10)
 #' rownames(scores) <- c("T cells", "B cells", "NK cells")
@@ -165,6 +166,15 @@ MCPcounter.estimate <- function(
 test_for_infiltration <- function(MCPcounterMatrix,
                                   platform = c("133P2", "133A", "HG1")) {
   platform <- rlang::arg_match(platform)
+
+  # Load null_models from internal data
+  null_models <- tryCatch(load_data("null_models"), error = function(e) NULL)
+  if (is.null(null_models)) {
+    cli::cli_abort(c(
+      "Unable to load required data: null_models",
+      "i" = "This data may need to be downloaded separately or is not available."
+    ))
+  }
 
   MCPcounterMatrix <- t(MCPcounterMatrix)
   params <- null_models[grep(platform, colnames(null_models))]

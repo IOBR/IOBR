@@ -69,7 +69,7 @@ sig_surv_plot <- function(input_pdata,
   abspath <- NULL
   if (!is.null(save_path)) {
     if (!dir.exists(save_path)) dir.create(save_path, recursive = TRUE)
-    abspath <- file.path(getwd(), save_path, "")
+    abspath <- file.path(normalizePath(save_path, winslash = "/", mustWork = FALSE), "")
   }
 
   # Select relevant columns
@@ -162,9 +162,10 @@ sig_surv_plot <- function(input_pdata,
 
   # Define break time
   break_month_val <- break_month
-  if (break_month_val == "auto") {
-    break_month_val <- break_month(input = input_pdata$time, block = 6)
+  if (identical(break_month_val, "auto")) {
+    break_month_val <- calculate_break_month(input = input_pdata$time, block = 6)
   }
+  break_month_val <- as.numeric(break_month_val)
   max_month <- break_month_val * 6
 
   # Get colors
@@ -176,7 +177,7 @@ sig_surv_plot <- function(input_pdata,
   pp1 <- survminer::ggsurvplot(
     sfit,
     data = input_pdata, censor = TRUE, ncensor.plot = FALSE, conf.int = FALSE,
-    xlim = c(0, max_month), break.time.by = break_month,
+    xlim = c(0, max_month), break.time.by = break_month_val,
     xlab = "Months after diagnosis", surv.median.line = "h",
     legend.labs = c(paste0("Low ", mini_sig), paste0("High ", mini_sig)),
     submain = paste0(signature, "-in-", project),
@@ -218,7 +219,7 @@ sig_surv_plot <- function(input_pdata,
   pp2 <- survminer::ggsurvplot(
     sfit,
     data = input_pdata, censor = TRUE, ncensor.plot = FALSE,
-    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month,
+    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month_val,
     xlab = "Months after diagnosis",
     submain = paste0(signature, "-in-", project),
     surv.median.line = "h", risk.table = TRUE, tables.height = 0.25,
@@ -305,7 +306,7 @@ sig_surv_plot <- function(input_pdata,
   pp3 <- survminer::ggsurvplot(
     sfit,
     data = input_pdata, censor = TRUE, ncensor.plot = FALSE,
-    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month,
+    conf.int = FALSE, xlim = c(0, max_month), break.time.by = break_month_val,
     xlab = "Months after diagnosis",
     legend.labs = c(paste0("Low ", mini_sig), paste0("High ", mini_sig)),
     submain = paste0(signature, "-in-", project),
@@ -341,4 +342,15 @@ sig_surv_plot <- function(input_pdata,
   combined_plots <- survminer::arrange_ggsurvplots(plots, print = FALSE, ncol = 3, nrow = 1)
 
   list(data = input_pdata, plots = combined_plots)
+}
+
+#' Calculate break points for survival plots
+#' @keywords internal
+#' @noRd
+calculate_break_month <- function(input, block = 6) {
+  max_follow_up <- max(input, na.rm = TRUE)
+  max_follow_up <- ceiling(max_follow_up)
+  break_month_val <- max_follow_up / block
+  break_month_val <- ceiling(break_month_val)
+  break_month_val
 }

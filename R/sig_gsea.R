@@ -80,6 +80,7 @@
 #'   contrast = c("EBV", "GS"), path = "STAD"
 #' )
 #' # Run GSEA with custom gene sets
+#' signature_tme <- load_data("signature_tme")
 #' res <- sig_gsea(deg = deg, genesets = signature_tme)
 #' }
 sig_gsea <- function(deg,
@@ -133,7 +134,7 @@ sig_gsea <- function(deg,
   if (save_results) {
     file_store <- path
     if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
-    abspath <- file.path(getwd(), file_store, "")
+    abspath <- file.path(normalizePath(file_store, winslash = "/", mustWork = FALSE), "")
   }
 
   # Safely rename columns

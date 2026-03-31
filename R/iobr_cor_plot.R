@@ -130,14 +130,20 @@ iobr_cor_plot <- function(pdata_group,
   }
 
   # Create output directory
-  file_store <- path %||% if (!is.null(target)) {
-    paste0(index, "-1-", ProjectID, "-", target, "-relevant-", category)
+  if (is.null(path)) {
+    file_store <- if (!is.null(target)) {
+      paste0(index, "-1-", ProjectID, "-", target, "-relevant-", category)
+    } else {
+      paste0(index, "-1-", ProjectID, "-", group, "-relevant-", category)
+    }
+    if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
+    abspath <- file.path(getwd(), file_store, "")
   } else {
-    paste0(index, "-1-", ProjectID, "-", group, "-relevant-", category)
+    # Use provided path directly (handles absolute paths like tempdir())
+    file_store <- path
+    if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
+    abspath <- file.path(normalizePath(file_store, winslash = "/", mustWork = FALSE), "")
   }
-
-  if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
-  abspath <- file.path(getwd(), file_store, "")
 
   if (is.null(names(signature_group))) {
     signature_group <- list("signature" = signature_group)
@@ -476,6 +482,7 @@ iobr_cor_plot <- function(pdata_group,
       corr <- bbcor$r
       p.mat <- bbcor$P
       corr[upper.tri(corr)] <- NA
+      p.mat[upper.tri(p.mat)] <- NA
 
       hc <- stats::hclust(stats::dist(corr))
       corr <- corr[hc$order, hc$order]
@@ -485,7 +492,10 @@ iobr_cor_plot <- function(pdata_group,
       colnames(df) <- c("row", "col", "corr")
       df$row <- factor(df$row, levels = rev(unique(df$row)))
       df$col <- factor(df$col, levels = unique(df$col))
-      df$stars <- ifelse(p.mat < 0.05 & !is.na(p.mat), "*", "")
+
+      # Create p-value data frame with same structure as corr
+      df_p <- as.data.frame.table(p.mat, stringsAsFactors = FALSE)
+      df$stars <- ifelse(df_p$Freq < 0.05 & !is.na(df_p$Freq), "*", "")
       col_fun <- grDevices::colorRampPalette(c("darkblue", "white", "darkred"))
 
       p <- ggplot2::ggplot(df, ggplot2::aes(

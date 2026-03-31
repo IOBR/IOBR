@@ -32,9 +32,11 @@ signature_tme <- load_data("signature_tme")
 genes <- signature_tme[["CD_8_T_effector"]]
 genes <- genes[genes \%in\% rownames(eset)]
 
-# Calculate scores
-score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
-score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
+# Calculate scores (only if enough genes are available)
+if (length(genes) >= 2) {
+  score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
+  score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
+}
 }
 }
 \author{

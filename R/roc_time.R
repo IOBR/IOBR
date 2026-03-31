@@ -30,6 +30,7 @@
 #'
 #' @export
 #' @author Dongqiang Zeng
+#' @rawNamespace import(survival, except = c(offset, compact))
 #'
 #' @examples
 #' \donttest{
@@ -46,6 +47,13 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
                      seed = 1234, show_col = FALSE, path = NULL, main = "PFS",
                      index = 1, fig.type = "pdf", width = 5, height = 5.2) {
   rlang::check_installed("timeROC")
+  rlang::check_installed("survival")
+
+  # Ensure survival is attached for timeROC internal calls
+  if (!"package:survival" %in% search()) {
+    attachNamespace("survival")
+    on.exit(detach("package:survival", character.only = TRUE, unload = FALSE), add = TRUE)
+  }
 
   save_plot <- !is.null(path)
 
@@ -65,7 +73,8 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   colnames(input)[colnames(input) == status] <- "status"
 
   # Validate and convert
-  unit_label <- rlang::arg_match(tolower(time_type), c("day", "month"))
+  time_type <- tolower(time_type)
+  unit_label <- match.arg(time_type, c("day", "month"))
 
   input$time <- as.numeric(input$time)
   input$status <- as.numeric(as.character(input$status))

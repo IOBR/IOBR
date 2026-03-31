@@ -67,8 +67,8 @@ surv_group <- function(input_pdata,
 
   # Setup save path
   if (!is.null(save_path)) {
-    if (!file.exists(save_path)) dir.create(save_path, recursive = TRUE)
-    abspath <- file.path(getwd(), save_path, "")
+    if (!dir.exists(save_path)) dir.create(save_path, recursive = TRUE)
+    abspath <- file.path(normalizePath(save_path, winslash = "/", mustWork = FALSE), "")
   } else {
     abspath <- NULL
   }
@@ -106,9 +106,10 @@ surv_group <- function(input_pdata,
 
   # Define break time and colors
   break_month_val <- break_month
-  if (break_month_val == "auto") {
-    break_month_val <- break_month(input = input_pd$time, block = 6)
+  if (identical(break_month_val, "auto")) {
+    break_month_val <- calculate_break_month(input = input_pd$time, block = 6)
   }
+  break_month_val <- as.numeric(break_month_val)
   max_month <- break_month_val * 6
 
   if (is.null(cols)) {
@@ -285,8 +286,8 @@ surv_group <- function(input_pdata,
 #'
 #' @examples
 #' time_data <- c(24, 36, 12, 48)
-#' blocks <- break_month(input = time_data)
-break_month <- function(input, block = 6, time_type = c("month", "day")) {
+#' blocks <- calculate_break_month(input = time_data)
+calculate_break_month <- function(input, block = 6, time_type = c("month", "day")) {
   time_type <- rlang::arg_match(time_type)
 
   max_time <- max(input, na.rm = TRUE)

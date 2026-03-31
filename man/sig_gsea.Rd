@@ -137,6 +137,7 @@ deg <- iobr_deg(
   contrast = c("EBV", "GS"), path = "STAD"
 )
 # Run GSEA with custom gene sets
+signature_tme <- load_data("signature_tme")
 res <- sig_gsea(deg = deg, genesets = signature_tme)
 }
 }

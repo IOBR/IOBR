@@ -54,8 +54,8 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   rlang::check_installed("PMCMRplus")
   if (!is.null(save_path)) {
     file_name <- save_path
-    if (!file.exists(file_name)) dir.create(file_name)
-    abspath <- paste0(getwd(), "/", file_name, "/")
+    if (!dir.exists(file_name)) dir.create(file_name, recursive = TRUE)
+    abspath <- file.path(normalizePath(file_name, winslash = "/", mustWork = FALSE), "")
   } else {
     abspath <- NULL
   }
