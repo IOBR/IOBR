@@ -68,21 +68,22 @@
 #' )
 #' }
 batch_sig_surv_plot <- function(
-    input_pdata,
-    signature,
-    id = "ID",
-    column_of_project = "ProjectID",
-    project = NULL,
-    time = "time",
-    status = "status",
-    time_type = "day",
-    break_month = "auto",
-    palette = "jama",
-    cols = NULL,
-    mini_sig = "score",
-    save_path = "Multiple-KM-plot",
-    show_col = TRUE,
-    fig_type = "pdf") {
+  input_pdata,
+  signature,
+  id = "ID",
+  column_of_project = "ProjectID",
+  project = NULL,
+  time = "time",
+  status = "status",
+  time_type = "day",
+  break_month = "auto",
+  palette = "jama",
+  cols = NULL,
+  mini_sig = "score",
+  save_path = "Multiple-KM-plot",
+  show_col = TRUE,
+  fig_type = "pdf"
+) {
   input_pdata <- as.data.frame(input_pdata)
   goi <- as.character(levels(as.factor(
     as.character(input_pdata[, column_of_project])

@@ -84,8 +84,10 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
     scores.adjusted <- spillOver(scores.transformed, spill$K, alpha, file.name)
     scores.adjusted <- microenvironmentScores(scores.adjusted)
   } else {
-    scores.adjusted <- spillOver(scores.transformed[cell.types.use, ],
-                                  spill$K, alpha, file.name)
+    scores.adjusted <- spillOver(
+      scores.transformed[cell.types.use, ],
+      spill$K, alpha, file.name
+    )
   }
 
   scores.adjusted
@@ -356,7 +358,8 @@ xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
   rlang::check_installed("xCell")
 
   shuff_expr <- mapply(seq_len(nperm),
-                       FUN = function(x) sample(nrow(expr), nrow(expr)))
+    FUN = function(x) sample(nrow(expr), nrow(expr))
+  )
   rownames(shuff_expr) <- sample(rownames(expr))
   shuff_xcell <- xCellAnalysis(shuff_expr, spill = spill, alpha = alpha)
   shuff_xcell <- shuff_xcell[rownames(scores), ]

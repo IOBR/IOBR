@@ -140,8 +140,8 @@ deconvolute_quantiseq.default <- function(mix.mat,
       sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
       n2 <- nrow(sig.mat)
       message(paste0(
-      "Removing ", n1 - n2, " genes with high expression in tumors\n"
-    ))
+        "Removing ", n1 - n2, " genes with high expression in tumors\n"
+      ))
     }
   }
 
@@ -162,7 +162,7 @@ deconvolute_quantiseq.default <- function(mix.mat,
     method = method
   )
   if ("Tregs" %in% colnames(sig.mat) && "T.cells.CD4" %in% colnames(sig.mat) &&
-      method %in% c("lsei")) {
+    method %in% c("lsei")) {
     minTregs <- 0.02
     i <- which(colnames(sig.mat) == "T.cells.CD4")
     results2 <- quanTIseq(sig.mat[, -i],

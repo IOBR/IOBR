@@ -190,10 +190,14 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
         "'reference$refProfiles.var' needs to be given as a matrix or ",
         "data.frame when present."
       )
-    } else if (!identical(dim(reference$refProfiles.var),
-                          dim(reference$refProfiles)) ||
-               !identical(dimnames(reference$refProfiles.var),
-                          dimnames(reference$refProfiles))) {
+    } else if (!identical(
+      dim(reference$refProfiles.var),
+      dim(reference$refProfiles)
+    ) ||
+      !identical(
+        dimnames(reference$refProfiles.var),
+        dimnames(reference$refProfiles)
+      )) {
       stop(
         "The dimensions and dimnames of 'reference$refProfiles' and ",
         "'reference$refProfiles.var' need to be the same"
@@ -394,7 +398,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
       rmse_pred <- sqrt(
         minFun(x = fit$x, A = refProfiles, b = b, w = w) / nSigGenes
       )
-            rmse_0 <- sqrt(
+      rmse_0 <- sqrt(
         minFun(x = rep(0, nRefCells), A = refProfiles, b = b, w = w) / nSigGenes
       )
     } else {
@@ -508,7 +512,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
 #'
 #' @keywords internal
 scaleCounts <- function(counts, sigGenes = NULL, renormGenes = NULL,
-                         normFact = NULL) {
+                        normFact = NULL) {
   if (is.null(sigGenes)) {
     sigGenes <- 1:nrow(counts)
   }
@@ -557,7 +561,8 @@ merge_duplicates <- function(mat, warn = TRUE, in_type = NULL) {
     # gene names in the mat matrix.
     mat[dupl_genes, ] <- t(sapply(dupl_genes, FUN = function(cgene) {
       apply(mat_dupl[mat_dupl_names == cgene, , drop = FALSE],
-            MARGIN = 2, FUN = median)
+        MARGIN = 2, FUN = median
+      )
     }))
   }
   return(mat)

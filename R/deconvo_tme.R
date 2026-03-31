@@ -154,7 +154,7 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
   mcp_genes <- load_data("mcp_genes")
   mcp_probesets <- load_data("mcp_probesets")
 
-  res <- MCPcounter::MCPcounter.estimate(
+  res <- MCPcounter.estimate(
     eset,
     featuresType = "HUGO_symbols",
     probesets = mcp_probesets,
@@ -187,12 +187,11 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
 #' }
 deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
-  rlang::check_installed("EPIC", reason = "to run EPIC deconvolution")
   cli::cli_alert_info("Running EPIC deconvolution")
 
   ref <- if (tumor) "TRef" else "BRef"
 
-  out <- EPIC::EPIC(
+  out <- EPIC(
     bulk = eset,
     reference = ref,
     mRNA_cell = NULL,

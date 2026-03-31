@@ -45,7 +45,6 @@ batch_wilcoxon <- function(data,
                            target = "group",
                            feature = NULL,
                            feature_manipulation = FALSE) {
-
   # Input validation
   if (is.null(data) || !is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a non-null data frame.")
@@ -158,7 +157,7 @@ batch_wilcoxon <- function(data,
   result_mean$sig_names <- rownames(result_mean)
 
   # Calculate statistic (difference between groups)
-  if (ncol(result_mean) >= 3) {  # 2 groups + sig_names column
+  if (ncol(result_mean) >= 3) { # 2 groups + sig_names column
     result_mean$statistic <- result_mean[[1]] - result_mean[[2]]
   } else {
     result_mean$statistic <- NA_real_

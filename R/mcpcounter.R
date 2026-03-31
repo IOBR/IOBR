@@ -28,8 +28,10 @@
 #' }
 MCPcounter.estimate <- function(
   expression,
-  featuresType = c("affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID",
-                   "ENSEMBL_ID"),
+  featuresType = c(
+    "affy133P2_probesets", "HUGO_symbols", "ENTREZ_ID",
+    "ENSEMBL_ID"
+  ),
   probesets = read.table(
     url(paste0(
       "https://raw.githubusercontent.com/ebecht/",

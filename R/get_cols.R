@@ -53,7 +53,7 @@ get_cols <- function(cols = "normal",
     if (palette_key %in% names(palette_map)) {
       palette <- palette_map[palette_key]
     } else {
-      palette <- "nrc"  # default fallback
+      palette <- "nrc" # default fallback
     }
   }
 

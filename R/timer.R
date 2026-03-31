@@ -130,7 +130,8 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   tmp.batch <- c(rep(1, N1), rep(2, N2))
   rlang::check_installed(c("sva", "BiocParallel"))
   tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
-                         BPPARAM = BiocParallel::bpparam("SerialParam"))
+    BPPARAM = BiocParallel::bpparam("SerialParam")
+  )
 
   ## separate cancer and immune expression data after batch effect removing
   dd.br <- tmp.dd0[, 1:N1]
@@ -144,7 +145,9 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 
     if (length(tmp.vv) == 1) {
       median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE],
-                                 1, median, na.rm = TRUE)
+        1, median,
+        na.rm = TRUE
+      )
     } else {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
@@ -221,8 +224,10 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 check_cancer_types <- function(args) {
   if (!is.null(args$batch)) {
     TimerINFO("Enter batch mode\n")
-    cancers <- as.matrix(read.table(args$batch, sep = ",",
-                                    stringsAsFactors = FALSE))
+    cancers <- as.matrix(read.table(args$batch,
+      sep = ",",
+      stringsAsFactors = FALSE
+    ))
   } else {
     if (length(args$expression) != length(args$category)) {
       stop("expression and category must have the same length")
@@ -493,8 +498,8 @@ GetOutlierGenes <- function(cancers) {
     cancer.expression <- ParseInputExpression(cancer.expFile)
     for (j in seq_len(ncol(cancer.expression))) {
       outlier <- rownames(cancer.expression)[
-    tail(order(cancer.expression[, j]), 5)
-  ]
+        tail(order(cancer.expression[, j]), 5)
+      ]
       outlier.total <- c(outlier.total, outlier)
     }
   }

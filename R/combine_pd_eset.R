@@ -45,7 +45,7 @@
 #' input2 <- combine_pd_eset(
 #'   eset = eset,
 #'   pdata = sig_stad,
-#'   feas = rownames(eset)[1:100]  # Use first 100 genes as example
+#'   feas = rownames(eset)[1:100] # Use first 100 genes as example
 #' )
 #' }
 combine_pd_eset <- function(eset,
