@@ -195,6 +195,7 @@ estimateScore <- function(input.ds,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Create a sample common_genes dataframe
 #' common_genes <- data.frame(
 #'   GeneSymbol = c("BRCA1", "TP53", "EGFR"),
@@ -208,14 +209,18 @@ estimateScore <- function(input.ds,
 #'   stringsAsFactors = FALSE
 #' )
 #'
-#' # Write the input data to input.txt file, including row names
+#' # Write the input data to temporary file
+#' input_file <- tempfile(fileext = ".txt")
+#' output_file <- tempfile(fileext = ".txt")
 #' write.table(input_data,
-#'   file = "input.txt", sep = "\t", row.names = TRUE,
+#'   file = input_file, sep = "\t", row.names = TRUE,
 #'   quote = FALSE
 #' )
 #'
-#' # Call the filterCommonGenes function using the sample input.txt file
-#' filterCommonGenes("input.txt", "output.txt", id = "GeneSymbol")
+#' # Call the filterCommonGenes function
+#' # Note: This example requires IOBR::common_genes data
+#' # filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+#' }
 filterCommonGenes <- function(input.f,
                               output.f,
                               id = c("GeneSymbol", "EntrezID")) {
@@ -257,6 +262,7 @@ filterCommonGenes <- function(input.f,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Create a sample input data frame
 #' sample_data <- data.frame(
 #'   Gene = c("BRCA1", "TP53", "EGFR"),
@@ -267,17 +273,10 @@ filterCommonGenes <- function(input.f,
 #' rownames(sample_data) <- sample_data$Gene
 #' sample_data <- sample_data[, -1]
 #'
-#' # Write the sample data to input.txt file
-#' write.table(sample_data,
-#'   file = "input.txt", sep = "\t", row.names = TRUE,
-#'   quote = FALSE
-#' )
-#'
-#' # Convert the input data frame to GCT format and save it to output.gct
-#' outputGCT(sample_data, "output.gct")
-#'
-#' # Convert the input.txt file to GCT format and save it to output.gct
-#' outputGCT("input.txt", "output.gct")
+#' # Convert the input data frame to GCT format and save to temporary file
+#' output_file <- tempfile(fileext = ".gct")
+#' outputGCT(sample_data, output_file)
+#' }
 outputGCT <- function(input.f,
                       output.f) {
   ## Check arguments
@@ -328,6 +327,7 @@ outputGCT <- function(input.f,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Create a sample ESTIMATE score matrix
 #' scores_data <- data.frame(
 #'   Sample1 = c(100, 200, 500, 0.80),
@@ -343,20 +343,6 @@ outputGCT <- function(input.f,
 #' # Write to a temporary GCT file
 #' scores_file <- tempfile(fileext = ".gct")
 #' outputGCT(scores_data, scores_file)
-#'
-#' # Plot purity for all samples
-#' \dontrun{
-#' plotPurity(scores_file, platform = "affymetrix", output.dir = tempdir())
-#' }
-#'
-#' # Plot purity for specific samples
-#' \dontrun{
-#' plotPurity(
-#'   scores_file,
-#'   samples = c("Sample1", "Sample3"),
-#'   platform = "affymetrix",
-#'   output.dir = tempdir()
-#' )
 #' }
 plotPurity <- function(scores,
                        samples = "all_samples",

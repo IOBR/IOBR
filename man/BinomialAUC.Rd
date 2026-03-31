@@ -24,8 +24,16 @@ Computes AUC for model predictions.
 \examples{
 \dontrun{
 if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
-  fitted_model <- glmnet::glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), family = "binomial")
-  auc_value <- BinomialAUC(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
+  fitted_model <- glmnet::glmnet(
+    matrix(rnorm(100), ncol = 2),
+    rbinom(50, 1, 0.5),
+    family = "binomial"
+  )
+  auc_value <- BinomialAUC(
+    fitted_model,
+    matrix(rnorm(20), ncol = 2),
+    "lambda.min", rbinom(10, 1, 0.5)
+  )
 }
 }
 }

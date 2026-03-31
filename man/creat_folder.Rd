@@ -27,9 +27,14 @@ Creates one to three nested folders (if not existing) under the current
 working directory and returns their names and absolute paths.
 }
 \examples{
-# Create single folder
+\donttest{
+# Create single folder (in temp directory for examples)
+oldwd <- getwd()
+on.exit(setwd(oldwd))
+setwd(tempdir())
 creat_folder("1-result")
 
 # Create nested folders
 creat_folder("1-result", "figures", "correlation")
+}
 }

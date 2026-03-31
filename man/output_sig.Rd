@@ -23,9 +23,12 @@ It handles single signatures or lists of signatures, converting them to a
 data frame for storage.
 }
 \examples{
+\donttest{
 signature_collection <- load_data("signature_collection")
+tmpfile <- tempfile(fileext = ".csv")
 output_sig(
-  signatures = signature_collection, format = "csv", file.name =
-    "my_signatures"
+  signatures = signature_collection, format = "csv",
+  file.name = tools::file_path_sans_ext(tmpfile)
 )
+}
 }

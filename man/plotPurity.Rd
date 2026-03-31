@@ -28,6 +28,7 @@ This function generates scatterplots of tumor purity based on ESTIMATE
 scores for given samples.
 }
 \examples{
+\donttest{
 # Create a sample ESTIMATE score matrix
 scores_data <- data.frame(
   Sample1 = c(100, 200, 500, 0.80),
@@ -43,19 +44,5 @@ scores_data <- data.frame(
 # Write to a temporary GCT file
 scores_file <- tempfile(fileext = ".gct")
 outputGCT(scores_data, scores_file)
-
-# Plot purity for all samples
-\dontrun{
-plotPurity(scores_file, platform = "affymetrix", output.dir = tempdir())
-}
-
-# Plot purity for specific samples
-\dontrun{
-plotPurity(
-  scores_file,
-  samples = c("Sample1", "Sample3"),
-  platform = "affymetrix",
-  output.dir = tempdir()
-)
 }
 }

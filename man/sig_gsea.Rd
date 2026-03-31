@@ -131,6 +131,9 @@ signatures, and generates comprehensive visualizations and statistical results.
 # Load example data
 eset_stad <- load_data("eset_stad")
 stad_group <- load_data("stad_group")
+oldwd <- getwd()
+on.exit(setwd(oldwd))
+setwd(tempdir())
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group, group_id = "subtype",
   pdata_id = "ID", array = FALSE, method = "DESeq2",

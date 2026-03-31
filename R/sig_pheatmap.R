@@ -52,6 +52,9 @@
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 #' feas <- grep("MCPcounter", colnames(input), value = TRUE)
+#' oldwd <- getwd()
+#' on.exit(setwd(oldwd))
+#' setwd(tempdir())
 #' sig_pheatmap(input = input, feas = feas, group = "subtype", scale.matrix = TRUE)
 #' }
 sig_pheatmap <- function(input,

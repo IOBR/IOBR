@@ -23,3 +23,13 @@
 ^COMPLETE_WORK_SUMMARY\.md$
 ^\.claude$
 ^CLAUDE\.md$
+^1-result$
+^1-sig-box-batch$
+^Marker-heatmap-average$
+^STAD$
+^find_outlier_eset$
+^result$
+^input\.txt$
+^output\.gct$
+^output\.txt$
+^my_signatures\.csv$

@@ -18,6 +18,7 @@ No return value. The function writes the dataset to the specified output file in
 This function converts a gene expression dataset to a GCT format file.
 }
 \examples{
+\donttest{
 # Create a sample input data frame
 sample_data <- data.frame(
   Gene = c("BRCA1", "TP53", "EGFR"),
@@ -28,15 +29,8 @@ sample_data <- data.frame(
 rownames(sample_data) <- sample_data$Gene
 sample_data <- sample_data[, -1]
 
-# Write the sample data to input.txt file
-write.table(sample_data,
-  file = "input.txt", sep = "\t", row.names = TRUE,
-  quote = FALSE
-)
-
-# Convert the input data frame to GCT format and save it to output.gct
-outputGCT(sample_data, "output.gct")
-
-# Convert the input.txt file to GCT format and save it to output.gct
-outputGCT("input.txt", "output.gct")
+# Convert the input data frame to GCT format and save to temporary file
+output_file <- tempfile(fileext = ".gct")
+outputGCT(sample_data, output_file)
+}
 }

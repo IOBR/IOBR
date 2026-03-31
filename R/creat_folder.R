@@ -18,11 +18,16 @@
 #' @export
 #'
 #' @examples
-#' # Create single folder
+#' \donttest{
+#' # Create single folder (in temp directory for examples)
+#' oldwd <- getwd()
+#' on.exit(setwd(oldwd))
+#' setwd(tempdir())
 #' creat_folder("1-result")
 #'
 #' # Create nested folders
 #' creat_folder("1-result", "figures", "correlation")
+#' }
 creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {
   # Validate inputs
   if (!is.character(f1) || length(f1) != 1 || nchar(f1) == 0) {

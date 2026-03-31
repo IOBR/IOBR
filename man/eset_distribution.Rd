@@ -22,8 +22,13 @@ This function does not return a value but saves boxplots and density plots as PN
 eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
 }
 \examples{
+\donttest{
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+oldwd <- getwd()
+on.exit(setwd(oldwd))
+setwd(tempdir())
 eset_distribution(eset)
+}
 }

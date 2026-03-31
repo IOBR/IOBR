@@ -40,10 +40,12 @@ plots, and optionally performs hierarchical clustering. Outlier samples are
 those with connectivity z-scores exceeding the specified threshold.
 }
 \examples{
+\donttest{
 # Load expression data
 eset_tme_stad <- load_data("eset_tme_stad")
-outs <- find_outlier_samples(eset = eset_tme_stad)
+outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 print(outs)
+}
 }
 \author{
 Dongqiang Zeng
