@@ -1,51 +1,55 @@
 #' Transform Signature Data into List Format
 #'
-#' This function converts signature data from a data frame (with signatures as
-#' columns and genes as rows)
-#' into a list format suitable for IOBR functions, replacing NA values
-#' appropriately.
+#' @description
+#' Converts signature data from a data frame (with signatures as columns and
+#' genes as rows) into a list format suitable for IOBR functions. Handles
+#' NA values appropriately.
 #'
-#' @param sig_data Data frame with signature names as columns and genes in rows; use NA for missing values.
-#' @param save_signature Logical indicating whether to save the signature list as RData. Default is FALSE.
-#' @param output_name String for the output RData file name. Default is "signatures".
+#' @param sig_data Data frame with signature names as columns and genes in
+#'   rows. Use `NA` for missing values.
+#' @param save_signature Logical. Whether to save the signature list as RData.
+#'   Default is `FALSE`.
+#' @param output_name Character. Output RData file name. Default is `"signatures"`.
 #'
-#' @return A list of signatures.
+#' @return List of signatures.
+#'
 #' @export
 #' @author Dongqiang Zeng
+#'
 #' @examples
-#' # Create example signature data frame
 #' sig_data <- data.frame(
 #'   Signature1 = c("Gene1", "Gene2", "Gene3", NA),
 #'   Signature2 = c("Gene4", "Gene5", NA, NA)
 #' )
-#' # Transform into gene list for IOBR functions
 #' format_signatures(sig_data)
 format_signatures <- function(sig_data, save_signature = FALSE, output_name = "signatures") {
-  message(paste0(">>> There are ", dim(sig_data)[2], "  signatures >>>"))
+  if (!is.data.frame(sig_data) && !is.matrix(sig_data)) {
+    cli::cli_abort("{.arg sig_data} must be a data frame or matrix")
+  }
+  if (ncol(sig_data) == 0) {
+    cli::cli_abort("{.arg sig_data} must have at least one column")
+  }
+
+  cli::cli_alert_info("There are {ncol(sig_data)} signatures")
 
   sig_data <- as.data.frame(sig_data)
   sig_data[sig_data == "NA"] <- NA
-  # reading each column and transfer it to a list
-  bb <- as.list(NULL)
-  for (i in 1:ncol(sig_data)) {
+
+  bb <- lapply(seq_len(ncol(sig_data)), function(i) {
     aa <- as.character(sig_data[, i])
-    aa <- list(aa)
-    names(aa) <- names(sig_data[i])
-    bb <- append(bb, aa)
-  }
-  bb <- lapply(bb, function(x) na.omit(x))
-  bb <- lapply(bb, function(x) as.character(x))
-  bb <- lapply(bb, function(x) unique(x))
-  bb <- lapply(bb, function(x) x[!x == ""])
-  # standerdized the name of list
-  # names(bb)<-gsub(names(bb),pattern = "\\.",replacement = "_")
+    aa <- aa[!is.na(aa)]
+    aa <- aa[aa != ""]
+    unique(aa)
+  })
+  names(bb) <- names(sig_data)
+
   names(bb) <- gsub(names(bb), pattern = "\\ ", replacement = "_")
-  # names(bb)<-gsub(names(bb),pattern = "\\-",replacement = "_")
-  # ########################################
+
   my_signatures <- bb
-  ##########################################
-  if (save_signature == TRUE) {
+
+  if (save_signature) {
     save(my_signatures, file = paste0(output_name, ".RData"))
   }
-  return(my_signatures)
+
+  my_signatures
 }

@@ -7,28 +7,27 @@
 format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
 }
 \arguments{
-\item{sig_data}{Data frame with signature names as columns and genes in rows; use NA for missing values.}
+\item{sig_data}{Data frame with signature names as columns and genes in
+rows. Use `NA` for missing values.}
 
-\item{save_signature}{Logical indicating whether to save the signature list as RData. Default is FALSE.}
+\item{save_signature}{Logical. Whether to save the signature list as RData.
+Default is `FALSE`.}
 
-\item{output_name}{String for the output RData file name. Default is "signatures".}
+\item{output_name}{Character. Output RData file name. Default is `"signatures"`.}
 }
 \value{
-A list of signatures.
+List of signatures.
 }
 \description{
-This function converts signature data from a data frame (with signatures as
-columns and genes as rows)
-into a list format suitable for IOBR functions, replacing NA values
-appropriately.
+Converts signature data from a data frame (with signatures as columns and
+genes as rows) into a list format suitable for IOBR functions. Handles
+NA values appropriately.
 }
 \examples{
-# Create example signature data frame
 sig_data <- data.frame(
   Signature1 = c("Gene1", "Gene2", "Gene3", NA),
   Signature2 = c("Gene4", "Gene5", NA, NA)
 )
-# Transform into gene list for IOBR functions
 format_signatures(sig_data)
 }
 \author{

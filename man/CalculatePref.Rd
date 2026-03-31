@@ -7,19 +7,20 @@
 CalculatePref(model, newx, s, acture.y)
 }
 \arguments{
-\item{model}{Fitted model.}
+\item{model}{Fitted glmnet model.}
 
-\item{newx}{New data for prediction.}
+\item{newx}{New data matrix for prediction.}
 
-\item{s}{Lambda value.}
+\item{s}{Lambda value for prediction.}
 
-\item{acture.y}{Actual outcomes.}
+\item{acture.y}{Actual binary outcomes.}
 }
 \value{
-ROCR performance object.
+ROCR performance object containing TPR and FPR values.
 }
 \description{
-Computes TPR and FPR for ROC analysis.
+Computes True Positive Rate (TPR) and False Positive Rate (FPR) for ROC
+analysis using the ROCR package. Used internally for ROC curve generation.
 }
 \examples{
 \dontrun{

@@ -11,20 +11,25 @@ rbind_iobr(data1, data2, data3 = NULL)
 
 \item{data2}{Data frame or matrix. Second dataset to combine.}
 
-\item{data3}{Data frame or matrix, optional. Additional dataset to combine. Default is NULL.}
+\item{data3}{Data frame or matrix or `NULL`. Optional third dataset.
+Default is `NULL`.}
 }
 \value{
-Combined data frame or matrix resulting from row binding the input datasets.
+Combined data frame resulting from row binding the input datasets.
 }
 \description{
-Combines two or three data frames or matrices vertically using the `rbind`
-operation. Ensures compatibility of input data before binding.
+Combines two or three data frames or matrices vertically using `rbind`.
+Ensures compatibility of input data before binding by aligning columns.
 }
 \examples{
 data1 <- data.frame(A = 1:5, B = letters[1:5])
 data2 <- data.frame(A = 6:10, B = letters[6:10])
 combined_data <- rbind_iobr(data1, data2)
+
 # With three datasets
 data3 <- data.frame(A = 11:15, B = letters[11:15])
 combined_data <- rbind_iobr(data1, data2, data3)
+}
+\author{
+Dongqiang Zeng
 }

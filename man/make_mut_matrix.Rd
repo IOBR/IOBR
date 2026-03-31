@@ -8,7 +8,7 @@ make_mut_matrix(
   maf = NULL,
   mut_data = NULL,
   isTCGA = TRUE,
-  category = "multi",
+  category = c("multi", "all", "snp", "indel", "frameshift"),
   Tumor_Sample_Barcode = "Tumor_Sample_Barcode",
   Hugo_Symbol = "Hugo_Symbol",
   Variant_Classification = "Variant_Classification",

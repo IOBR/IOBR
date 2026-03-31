@@ -7,19 +7,20 @@
 BinomialAUC(model, newx, s, acture.y)
 }
 \arguments{
-\item{model}{Fitted model object.}
+\item{model}{Fitted glmnet model object.}
 
-\item{newx}{New data for prediction.}
+\item{newx}{New data matrix for prediction.}
 
-\item{s}{Lambda value for prediction.}
+\item{s}{Lambda value for prediction (e.g., "lambda.min" or numeric).}
 
-\item{acture.y}{Actual binary outcomes.}
+\item{acture.y}{Actual binary outcomes (numeric 0/1 or factor).}
 }
 \value{
-Numeric AUC value.
+Numeric AUC value between 0 and 1.
 }
 \description{
-Computes AUC for model predictions.
+Computes Area Under the ROC Curve (AUC) for model predictions using the
+ROCR package. Handles binary classification models from glmnet.
 }
 \examples{
 \dontrun{

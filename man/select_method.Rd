@@ -4,15 +4,16 @@
 \alias{select_method}
 \title{Select a Signature Scoring Method Subset}
 \usage{
-select_method(data, method = "ssGSEA")
+select_method(data, method = c("ssGSEA", "PCA", "zscore"))
 }
 \arguments{
 \item{data}{Data frame or matrix. Integrated signature score matrix.}
 
-\item{method}{Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive). Default "ssGSEA".}
+\item{method}{Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive).
+Default is "ssGSEA".}
 }
 \value{
-Matrix/data frame containing only the selected method's scores.
+Matrix or data frame containing only the selected method's scores.
 }
 \description{
 Filters an integrated signature score matrix to retain results from a
@@ -23,7 +24,6 @@ column names.
 \dontrun{
 eset_stad <- load_data("eset_stad")
 signature_collection <- load_data("signature_collection")
-# Use original eset with GeneSymbol
 eset <- scale_matrix(eset_stad, manipulate = TRUE)
 res <- calculate_sig_score(
   eset = eset,
@@ -32,4 +32,7 @@ res <- calculate_sig_score(
 )
 select_method(res, method = "PCA")
 }
+}
+\author{
+Dongqiang Zeng
 }

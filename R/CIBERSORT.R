@@ -6,20 +6,28 @@
 #   R v3.0 or later.
 # License: http://cibersort.stanford.edu/CIBERSORT_License.txt
 
-# Core algorithm
-#' Perform Nu-Regression Using Support Vector Machines
+#' Core Algorithm for CIBERSORT Deconvolution
 #'
-#' This function performs nu-regression using support vector machines (SVM) and
-#' calculates weights,
-#' #' root mean squared error (RMSE), and correlation coefficient (R).
+#' @description
+#' Performs nu-regression using support vector machines (SVM) to estimate
+#' cell type proportions. This is the core computational engine of CIBERSORT,
+#' using nu-SVR with linear kernel to decompose mixed gene expression signals.
 #'
-#' @param X A matrix or data frame containing the predictor variables.
-#' @param y A numeric vector containing the response variable.
-#' @param absolute Logical indicating whether to use absolute space for weights. Default is FALSE.
-#' @param abs_method String specifying the method for absolute space weights: "sig.score" or "no.sumto1".
+#' @param X Matrix or data frame containing signature matrix (predictor variables).
+#'   Rows are genes, columns are cell types.
+#' @param y Numeric vector containing the mixture sample expression (response variable).
+#' @param absolute Logical indicating whether to use absolute space for weights.
+#'   Default is FALSE (relative proportions).
+#' @param abs_method String specifying the method for absolute space weights:
+#'   `"sig.score"` or `"no.sumto1"`.
 #'
-#' @return A list containing the weights (`w`), root mean squared error
-#'   (`mix_rmse`), and correlation coefficient (`mix_r`).
+#' @return List containing:
+#' \describe{
+#'   \item{w}{Estimated cell type weights/proportions}
+#'   \item{mix_rmse}{Root mean squared error of the deconvolution}
+#'   \item{mix_r}{Correlation coefficient between observed and predicted mixture}
+#' }
+#'
 #' @export
 #'
 #' @examples
@@ -28,25 +36,16 @@
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
 #' }
-#'
 CoreAlg <- function(X, y, absolute, abs_method) {
   rlang::check_installed("e1071")
-  # try different values of nu
+
   svn_itor <- 3
+  nus <- c(0.25, 0.5, 0.75)
 
   res <- function(i) {
-    if (i == 1) {
-      nus <- 0.25
-    }
-    if (i == 2) {
-      nus <- 0.5
-    }
-    if (i == 3) {
-      nus <- 0.75
-    }
     model <- e1071::svm(X, y,
       type = "nu-regression", kernel = "linear",
-      nu = nus, scale = FALSE
+      nu = nus[i], scale = FALSE
     )
     model
   }
@@ -57,56 +56,56 @@ CoreAlg <- function(X, y, absolute, abs_method) {
     out <- mclapply(1:svn_itor, res, mc.cores = svn_itor)
   }
 
-  nusvm <- rep(0, svn_itor)
-  corrv <- rep(0, svn_itor)
+  nusvm <- numeric(svn_itor)
+  corrv <- numeric(svn_itor)
 
-  # do cibersort
-  t <- 1
-  while (t <= svn_itor) {
+  for (t in seq_len(svn_itor)) {
     weights <- t(out[[t]]$coefs) %*% out[[t]]$SV
     weights[which(weights < 0)] <- 0
     w <- weights / sum(weights)
     u <- sweep(X, MARGIN = 2, w, "*")
     k <- apply(u, 1, sum)
-    nusvm[t] <- sqrt((mean((k - y)^2)))
+    nusvm[t] <- sqrt(mean((k - y)^2))
     corrv[t] <- cor(k, y)
-    t <- t + 1
   }
 
-  # pick best model
-  rmses <- nusvm
-  mn <- which.min(rmses)
+  mn <- which.min(nusvm)
   model <- out[[mn]]
 
-  # get and normalize coefficients
   q <- t(model$coefs) %*% model$SV
   q[which(q < 0)] <- 0
-  # relative space (returns fractions)
-  if (!absolute || abs_method == "sig.score") w <- (q / sum(q))
-  # absolute space (returns scores)
-  if (absolute && abs_method == "no.sumto1") w <- q
 
-  mix_rmse <- rmses[mn]
-  mix_r <- corrv[mn]
+  if (!absolute || abs_method == "sig.score") {
+    w <- q / sum(q)
+  } else if (absolute && abs_method == "no.sumto1") {
+    w <- q
+  }
 
-  list(w = w, mix_rmse = mix_rmse, mix_r = mix_r)
+  list(w = w, mix_rmse = nusvm[mn], mix_r = corrv[mn])
 }
 
-# do permutations
-#' Title
-#' @description doPerm performs permutation-based sampling and runs the CoreAlg
-#' function iteratively.
-#' @param perm Number of permutations to perform.
-#' @param X Input matrix or data frame containing the predictor variables.
-#' @param Y Numeric vector containing the response variable.
-#' @param absolute Logical value indicating whether to use absolute space or
-#'   relative space for the weights.
-#' @param abs_method String indicating the method to calculate the weights in
-#'   absolute space. Can be either 'sig.score' or 'no.sumto1'.
-#' @param seed Integer. Random seed for reproducibility. If NULL (default),
-#'   uses current random state. Set to a specific value for reproducible results.
+#' Permutation Test for CIBERSORT
 #'
-#' @return A list containing the distribution of correlation coefficients from the permutations.
+#' @description
+#' Performs permutation-based sampling to generate an empirical null distribution
+#' of correlation coefficients for p-value calculation in CIBERSORT analysis.
+#' Randomly samples from the mixture data to create null distributions.
+#'
+#' @param perm Integer. Number of permutations to perform (≥100 recommended for
+#'   reliable p-value estimation).
+#' @param X Matrix or data frame containing signature matrix (predictor variables).
+#' @param Y Numeric vector containing the mixture sample expression.
+#' @param absolute Logical indicating whether to use absolute space for weights.
+#' @param abs_method String specifying the method for absolute space weights:
+#'   `"sig.score"` or `"no.sumto1"`.
+#' @param seed Integer. Random seed for reproducibility. If NULL (default),
+#'   uses current random state.
+#'
+#' @return List containing:
+#' \describe{
+#'   \item{dist}{Numeric vector of correlation coefficients from permutations}
+#' }
+#'
 #' @export
 #'
 #' @examples
@@ -118,31 +117,20 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
 
-  itor <- 1
-  Ylist <- as.list(data.matrix(Y))
-  dist <- matrix()
-
-  while (itor <= perm) {
-    # random mixture
-    yr <- as.numeric(Ylist[sample(length(Ylist), dim(X)[1])])
-
-    # standardize mixture
-    yr <- (yr - mean(yr)) / sd(yr)
-
-    # run CIBERSORT core algorithm
-    result <- CoreAlg(X, yr, absolute, abs_method)
-
-    mix_r <- result$mix_r
-
-    # store correlation
-    if (itor == 1) {
-      dist <- mix_r
-    } else {
-      dist <- rbind(dist, mix_r)
-    }
-
-    itor <- itor + 1
+  if (perm < 1) {
+    cli::cli_abort("{.arg perm} must be at least 1, got {perm}")
   }
+
+  Ylist <- as.list(data.matrix(Y))
+  dist <- numeric(perm)
+
+  for (itor in seq_len(perm)) {
+    yr <- as.numeric(Ylist[sample(length(Ylist), dim(X)[1])])
+    yr <- (yr - mean(yr)) / sd(yr)
+    result <- CoreAlg(X, yr, absolute, abs_method)
+    dist[itor] <- result$mix_r
+  }
+
   list(dist = dist)
 }
 
@@ -165,10 +153,11 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #'   uses current random state. Set to a specific value (e.g., 123) for
 #'   reproducible results across runs.
 #'
-#' @return
-#' A list containing:
-#' \item{dist}{Numeric vector of correlation coefficients from permutations,
-#'   representing the empirical null distribution.}
+#' @return List containing:
+#' \describe{
+#'   \item{dist}{Numeric vector of correlation coefficients from permutations,
+#'     representing the empirical null distribution.}
+#' }
 #'
 #' @details
 #' This function utilizes the \code{foreach} and \code{doParallel} packages
@@ -185,57 +174,52 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' # Prepare data (using example data structure from CIBERSORT)
-#' X <- matrix(rnorm(1000), nrow = 100) # Signature matrix
-#' Y <- matrix(rnorm(500), nrow = 100) # Mixture matrix
+#' X <- matrix(rnorm(1000), nrow = 100)
+#' Y <- matrix(rnorm(500), nrow = 100)
 #' rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
 #'
-#' # Run parallel permutation (using 2 cores)
 #' result <- parallel_doperm(
-#'   perm1 = 100,
-#'   X1 = X,
-#'   Y1 = Y,
-#'   absolute1 = FALSE,
-#'   abs_method1 = "sig.score",
-#'   num_cores1 = 2
+#'   perm1 = 100, X1 = X, Y1 = Y,
+#'   absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 2
 #' )
 #' str(result$dist)
 #' }
 parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
                             num_cores1 = 2, seed = NULL) {
-  # 检查依赖包
   rlang::check_installed("foreach", reason = "for parallel permutation")
   rlang::check_installed("doParallel", reason = "for parallel backend")
 
+  if (perm1 < 1) {
+    cli::cli_abort("{.arg perm1} must be at least 1, got {perm1}")
+  }
+  if (num_cores1 < 1) {
+    cli::cli_abort("{.arg num_cores1} must be at least 1, got {num_cores1}")
+  }
+
   `%dopar%` <- foreach::`%dopar%`
-  # 预生成随机索引（确定性）
+
   if (!is.null(seed)) set.seed(seed)
   n <- dim(X1)[1]
   Ylist_len <- length(as.list(data.matrix(Y1)))
-  perm_indices <- lapply(1:perm1, function(i) sample(Ylist_len, n))
+  perm_indices <- lapply(seq_len(perm1), function(i) sample(Ylist_len, n))
 
-
-  # 创建集群并使用 on.exit 确保资源释放
-  # 注意：makeCluster 是 parallel 包的函数，不是 doParallel
   cl <- parallel::makeCluster(num_cores1)
   on.exit(
     {
       parallel::stopCluster(cl)
-      foreach::registerDoSEQ() # reset to sequential mode
+      foreach::registerDoSEQ()
     },
     add = TRUE
   )
 
   doParallel::registerDoParallel(cl)
 
-  # 并行执行置换检验（使用预计算索引，无随机性）
   dist <- foreach::foreach(
-    itor = 1:perm1,
+    itor = seq_len(perm1),
     .combine = rbind,
     .export = c("perm_indices", "Y1", "X1", "absolute1", "abs_method1"),
     .packages = "e1071"
   ) %dopar% {
-    # 使用预计算的确定性索引
     Ylist <- as.list(data.matrix(Y1))
     yr <- as.numeric(Ylist[perm_indices[[itor]]])
     yr <- (yr - mean(yr)) / sd(yr)

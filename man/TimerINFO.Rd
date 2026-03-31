@@ -2,22 +2,18 @@
 % Please edit documentation in R/timer.R
 \name{TimerINFO}
 \alias{TimerINFO}
-\title{Display Timed Information Messages}
+\title{Display Timer Information Messages (Deprecated)}
 \usage{
 TimerINFO(string)
 }
 \arguments{
-\item{string}{A character string representing the message to be displayed.}
+\item{string}{Character. Message to be displayed.}
 }
 \value{
-None; the function is used for its side effect of printing a message.
+None; used for its side effect of printing a message.
 }
 \description{
-This function formats and displays informational messages, primarily for
-timing or logging purposes. It is useful for tracking the progress or
-stages of execution within scripts, especially in long-running operations.
-The function outputs messages to the R console with a prefixed '##' to
-highlight them.
+This function is deprecated. Use [timer_info()] instead.
 }
 \examples{
 TimerINFO("Data processing started.")

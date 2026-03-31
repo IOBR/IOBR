@@ -7,40 +7,26 @@
 DrawQQPlot(cancer.exp, immune.exp, name = "")
 }
 \arguments{
-\item{cancer.exp}{A vector of gene expression data for cancer samples.}
+\item{cancer.exp}{Vector. Gene expression data for cancer samples.}
 
-\item{immune.exp}{A vector of gene expression data for immune samples.}
+\item{immune.exp}{Vector. Gene expression data for immune samples.}
 
-\item{name}{Optional parameter to add a subtitle with additional information.}
+\item{name}{Character. Optional subtitle with additional information.}
 }
 \value{
 Generates a QQ plot.
 }
 \description{
-This function creates a quantile-quantile (QQ) plot to compare the gene
-expression
-distributions between cancer and immune samples. The QQ plot helps assess
-if the
-two distributions are similarly shaped by plotting their quantiles against
-each other.
-Points lining up along the diagonal line indicate similar distributions.
-The function also fits a linear model to the central portion of the data
-(excluding
-the lowest 40% and the highest 10% of data points) to highlight the trend.
+Creates a quantile-quantile (QQ) plot to compare gene expression
+distributions between cancer and immune samples. Points along the diagonal
+indicate similar distributions.
 }
 \examples{
 cancer_exp <- rnorm(100, mean = 5, sd = 1.5)
-
 immune_exp <- rnorm(100, mean = 5, sd = 1.5)
-
-expression_data <- data.frame(
-  Cancer_Expression = cancer_exp,
-  Immune_Expression = immune_exp
-)
-
 DrawQQPlot(
-  cancer.exp = expression_data$Cancer_Expression,
-  immune.exp = expression_data$Immune_Expression,
+  cancer.exp = cancer_exp,
+  immune.exp = immune_exp,
   name = "Comparison of Gene Expression"
 )
 }

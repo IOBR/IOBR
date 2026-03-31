@@ -12,27 +12,33 @@ remove_names(
 )
 }
 \arguments{
-\item{input_df}{Input data frame.}
+\item{input_df}{Data frame. Input data to modify.}
 
-\item{variable}{Column to modify: "colnames" for column names, or a specific column name. Default is "colnames".}
+\item{variable}{Character. Column to modify: "colnames" for column names,
+or a specific column name. Default is "colnames".}
 
-\item{patterns_to_na}{Vector of patterns to replace with empty string. Default uses predefined patterns.}
+\item{patterns_to_na}{Character vector. Patterns to replace with empty
+string. Default uses [patterns_to_na].}
 
-\item{patterns_space}{Vector of patterns to replace with spaces. Default is NULL.}
+\item{patterns_space}{Character vector or `NULL`. Patterns to replace with
+spaces. Default is `NULL`.}
 }
 \value{
 Modified data frame with patterns replaced.
 }
 \description{
-This function modifies column names or specified variables in a data frame
-by replacing
-specified patterns with NA or spaces.
+Modifies column names or specified variables in a data frame by replacing
+specified patterns with empty strings or spaces.
 }
 \examples{
 imvigor210_sig <- load_data("imvigor210_sig")
-input <- remove_names(imvigor210_sig,
+input <- remove_names(
+  imvigor210_sig,
   variable = "colnames",
   patterns_to_na = patterns_to_na,
   patterns_space = NULL
 )
+}
+\author{
+Dongqiang Zeng
 }

@@ -27,6 +27,7 @@ List containing:
 \description{
 Preprocesses data for binomial or survival analysis. Aligns and filters data
 based on sample IDs, optionally scales data, and ensures appropriate data types.
+Handles missing values by removing columns with NA values.
 }
 \examples{
 \donttest{

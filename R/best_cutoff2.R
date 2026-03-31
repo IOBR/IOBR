@@ -29,9 +29,7 @@
 #'
 #' @examples
 #' \donttest{
-#' # Loading TCGA-STAD microenvironment signature data
 #' sig_stad <- load_data("sig_stad")
-#' # Finding the best cutoff value of TMEscore for survival
 #' result <- best_cutoff2(
 #'   pdata = sig_stad,
 #'   variable = "TMEscore_CIR",
@@ -43,12 +41,30 @@
 #' }
 best_cutoff2 <- function(pdata, variable, time = "time", status = "status",
                          print_result = TRUE) {
-  pdata <- as.data.frame(pdata)
-  colnames(pdata)[which(colnames(pdata) == time)] <- "time"
-  colnames(pdata)[which(colnames(pdata) == status)] <- "status"
+  if (!is.data.frame(pdata)) {
+    cli::cli_abort("{.arg pdata} must be a data frame")
+  }
+  if (nrow(pdata) == 0) {
+    cli::cli_abort("{.arg pdata} has no rows")
+  }
+  if (!variable %in% colnames(pdata)) {
+    cli::cli_abort("Variable {.val {variable}} not found in pdata")
+  }
+  if (!time %in% colnames(pdata)) {
+    cli::cli_abort("Time column {.val {time}} not found in pdata")
+  }
+  if (!status %in% colnames(pdata)) {
+    cli::cli_abort("Status column {.val {status}} not found in pdata")
+  }
 
-  pdata <- pdata[!is.na(pdata$time), ]
-  pdata <- pdata[!is.na(pdata$status), ]
+  pdata <- as.data.frame(pdata)
+  colnames(pdata)[colnames(pdata) == time] <- "time"
+  colnames(pdata)[colnames(pdata) == status] <- "status"
+
+  pdata <- pdata[!is.na(pdata$time) & !is.na(pdata$status), , drop = FALSE]
+  if (nrow(pdata) == 0) {
+    cli::cli_abort("No valid data after removing NA values")
+  }
 
   pdata$time <- as.numeric(pdata$time)
   pdata$status <- as.numeric(pdata$status)
@@ -60,43 +76,47 @@ best_cutoff2 <- function(pdata, variable, time = "time", status = "status",
     event = "status",
     variables = variable
   )
-  aa <- paste("best cutoff = ", iscutoff$cutpoint$cutpoint)
+
+  cutoff_value <- iscutoff$cutpoint$cutpoint
+  cli::cli_alert_success("Best cutoff for {.val {variable}}: {round(cutoff_value, 3)}")
   plot(iscutoff, variable, palette = "npg")
 
-  bb <- base::summary(survival::coxph(
-    surv_obj ~ pdata[, which(colnames(pdata) == variable)],
+  cox_cont <- summary(survival::coxph(
+    surv_obj ~ pdata[[variable]],
     data = pdata
   ))
 
-  variable2 <- paste(variable, "_binary", sep = "")
-  pdata[, variable2] <- ifelse(
-    pdata[, variable] < iscutoff$cutpoint$cutpoint,
+  variable2 <- paste0(variable, "_binary")
+  pdata[[variable2]] <- ifelse(
+    pdata[[variable]] < cutoff_value,
     "Low",
     "High"
   )
-  pdata[, variable2] <- as.factor(pdata[, variable2])
+  pdata[[variable2]] <- factor(pdata[[variable2]], levels = c("Low", "High"))
 
-  colnames(pdata)[which(colnames(pdata) == "time")] <- time
-  colnames(pdata)[which(colnames(pdata) == "status")] <- status
+  colnames(pdata)[colnames(pdata) == "time"] <- time
+  colnames(pdata)[colnames(pdata) == "status"] <- status
 
-  cc <- summary(pdata[, variable2])
-  dd <- base::summary(survival::coxph(
-    surv_obj ~ pdata[, which(colnames(pdata) == variable2)],
+  binary_summary <- summary(pdata[[variable2]])
+  cox_binary <- summary(survival::coxph(
+    surv_obj ~ pdata[[variable2]],
     data = pdata
   ))
+
   if (print_result) {
     print(list(
-      best_cutoff = aa,
-      cox_continuous_object = bb,
-      summary_binary_variable = cc,
-      cox_binary_object = dd
+      best_cutoff = paste0("best cutoff = ", cutoff_value),
+      cox_continuous_object = cox_cont,
+      summary_binary_variable = binary_summary,
+      cox_binary_object = cox_binary
     ))
   }
+
   list(
     pdata = pdata,
-    best_cutoff = iscutoff$cutpoint$cutpoint,
-    cox_continuous_object = bb,
-    summary_binary_variable = cc,
-    cox_binary_object = dd
+    best_cutoff = cutoff_value,
+    cox_continuous_object = cox_cont,
+    summary_binary_variable = binary_summary,
+    cox_binary_object = cox_binary
   )
 }

@@ -2,31 +2,39 @@
 % Please edit documentation in R/IPS_calculation.R
 \name{IPS_calculation}
 \alias{IPS_calculation}
-\title{This R-script can be used to calculate Immunophenoscore (IPS)}
+\title{Calculate Immunophenoscore (IPS)}
 \usage{
 IPS_calculation(project = NULL, eset, plot = FALSE)
 }
 \arguments{
-\item{project}{default is NULL}
+\item{project}{Character string for project identifier. Default is NULL.}
 
-\item{eset}{expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
-expression values (i.e. log2(TPM+1) for each sample in columns}
+\item{eset}{Gene expression matrix with official human gene symbols (HGNC)
+as rownames. Expression values should be log2(TPM+1) or will be transformed
+if max value > 100.}
 
-\item{plot}{default = FALSE;Needs packages ggplot2, grid, gridExtra}
+\item{plot}{Logical. Whether to generate immunophenogram plots. Default is FALSE.}
 }
 \value{
-IPS score data frame
+Data frame containing:
+\describe{
+  \item{MHC}{MHC molecules score}
+  \item{EC}{Effector cells score}
+  \item{SC}{Suppressor cells score}
+  \item{CP}{Checkpoints/Immunomodulators score}
+  \item{AZ}{Aggregate score (sum of MHC, CP, EC, SC)}
+  \item{IPS}{Immunophenoscore (0-10 scale)}
+}
 }
 \description{
-This R-script can be used to calculate Immunophenoscore (IPS)
+Calculates Immunophenoscore (IPS) from gene expression data. IPS is a
+composite score measuring immunophenotype based on four major categories:
+MHC molecules, immunomodulators, effector cells, and suppressor cells.
 }
 \examples{
 \dontrun{
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
-ips_result <- IPS_calculation(
-  eset = eset, project = "TCGA-STAD", plot =
-    FALSE
-)
+ips_result <- IPS_calculation(eset = eset, project = "TCGA-STAD", plot = FALSE)
 }
 }

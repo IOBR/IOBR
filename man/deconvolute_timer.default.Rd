@@ -7,20 +7,21 @@
 deconvolute_timer.default(args)
 }
 \arguments{
-\item{args}{An environment or list containing parameters and file paths
-necessary for the function to execute. This should include `outdir` for
-output directory, `batch` for a file containing paths to expression data
-and cancer types.}
+\item{args}{List or environment containing parameters:
+\describe{
+  \item{outdir}{Character. Output directory path.}
+  \item{batch}{Character. File containing paths to expression data and
+    cancer types.}
+}}
 }
 \value{
-Returns a matrix of abundance scores for different immune cell types across multiple cancer samples.
+Matrix of abundance scores for different immune cell types across
+  multiple cancer samples.
 }
 \description{
-This function performs deconvolution of the tumor microenvironment using
-the TIMER algorithm. It processes multiple cancer datasets, removes batch
-effects, and estimates immune cell type abundances. The function relies on
-specific data and helper functions to manage the expression data and
-analyze the tumor microenvironment.
+Performs deconvolution of the tumor microenvironment using the TIMER
+algorithm. Processes multiple cancer datasets, removes batch effects,
+and estimates immune cell type abundances.
 }
 \examples{
 \dontrun{

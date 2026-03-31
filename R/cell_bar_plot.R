@@ -44,29 +44,42 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
                           features = NULL, pattern = NULL,
                           legend.position = "bottom", coord_flip = TRUE,
                           palette = 3, show_col = FALSE, cols = NULL) {
-  input <- as.data.frame(input)
-  colnames(input)[which(colnames(input) == id)] <- "ID"
+  if (!is.data.frame(input)) {
+    cli::cli_abort("{.arg input} must be a data frame")
+  }
+  if (nrow(input) == 0) {
+    cli::cli_abort("{.arg input} has no rows")
+  }
+  if (!id %in% colnames(input)) {
+    cli::cli_abort("ID column {.val {id}} not found in input")
+  }
 
-  # Get features to plot
+  input <- as.data.frame(input)
+  colnames(input)[colnames(input) == id] <- "ID"
+
   if (is.null(features)) {
     if (is.null(pattern)) {
       cli::cli_abort("{.arg pattern} must be provided when {.arg features} is NULL")
     }
     feas <- colnames(input)[stringr::str_detect(colnames(input), pattern)]
+    if (length(feas) == 0) {
+      cli::cli_abort("No columns match pattern {.val {pattern}}")
+    }
   } else {
-    feas <- features
+    feas <- features[features %in% colnames(input)]
+    if (length(feas) == 0) {
+      cli::cli_abort("None of the specified features found in input")
+    }
   }
 
-  input <- input[, c("ID", feas)]
+  input <- input[, c("ID", feas), drop = FALSE]
 
-  # Determine legend direction
   legend.direction <- if (legend.position %in% c("top", "bottom")) {
     "horizontal"
   } else {
     "vertical"
   }
 
-  # Get colors
   if (is.null(cols)) {
     cols <- palettes(
       category = "random",
@@ -76,10 +89,8 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
     )
   }
 
-  # Create plot data
   plot_data <- tidyr::gather(input, "cell_type", "fraction", -.data$ID)
 
-  # Build plot
   p <- ggplot2::ggplot(plot_data, ggplot2::aes(
     x = .data$ID, y = .data$fraction, fill = .data$cell_type
   )) +

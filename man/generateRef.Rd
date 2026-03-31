@@ -7,52 +7,48 @@
 generateRef(dds, pheno, FDR = 0.05, dat, method = "limma")
 }
 \arguments{
-\item{dds}{raw count data from RNA-seq; Necessary if used the method DESeq2}
+\item{dds}{Matrix. Raw count data from RNA-seq. Required if
+`method = "DESeq2"`.}
 
-\item{pheno}{character vector; cell type class of the samples}
+\item{pheno}{Character vector. Cell type class of the samples.}
 
-\item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
+\item{FDR}{Numeric. Genes with BH adjusted p-value < FDR are considered
+significant. Default is 0.05.}
 
-\item{dat}{data frame or matrix; normalized transcript quantification data (like FPKM, TPM). Note: cell's median expression level of the identified probes will be the output of reference_matrix.}
+\item{dat}{Matrix or data frame. Normalized transcript quantification data
+(e.g., FPKM, TPM).}
 
-\item{method}{limma or DESeq2}
+\item{method}{Character. Method for differential expression: `"limma"` or
+`"DESeq2"`. Default is `"limma"`.}
 }
 \value{
-A list containing the reference signature matrix and possibly other elements depending on the analysis method used.
-        The cells of the matrix represent the median expression level of
-        identified significant genes across samples grouped by cell type.
+List containing:
+  - `reference_matrix`: Data frame of median expression for significant
+    genes across cell types.
+  - `G`: Optimal number of probes minimizing condition number.
+  - `condition_number`: Minimum condition number.
+  - `whole_matrix`: Full median expression matrix.
 }
 \description{
-This function generates a reference signature matrix for cell types based
-on differential expression analysis.
-It can use either 'limma' for normalized data or 'DESeq2' for raw count
-data. The function identifies genes
-with significant expression changes at a specified false discovery rate
-(FDR) threshold.
+Generates a reference signature matrix for cell types based on
+differential expression analysis. Supports both limma for normalized data
+and DESeq2 for raw count data.
 }
 \examples{
-# Simulate expression data for 1000 genes across 4 samples
 expressionData <- matrix(runif(1000 * 4, min = 0, max = 10), ncol = 4)
 rownames(expressionData) <- paste("Gene", 1:1000, sep = "_")
 colnames(expressionData) <- paste("Sample", 1:4, sep = "_")
 
-# Create phenotype data for the samples
 phenotype <- c("celltype1", "celltype2", "celltype1", "celltype2")
 
-# Simulate raw count data for 1000 genes across 4 samples
 rawCountData <- matrix(sample(1:100, 1000 * 4, replace = TRUE), ncol = 4)
 rownames(rawCountData) <- paste("Gene", 1:1000, sep = "_")
 colnames(rawCountData) <- paste("Sample", 1:4, sep = "_")
 
-# Create column data for building a DESeqDataSet
-library(DESeq2)
-colData <- data.frame(
-  celltype = phenotype,
-  condition = c("treated", "control", "treated", "control"),
-  row.names = colnames(rawCountData)
+\dontrun{
+result <- generateRef(
+  dds = rawCountData, pheno = phenotype,
+  FDR = 0.05, dat = expressionData, method = "DESeq2"
 )
-# Assuming the design matrix is based on the condition
-dds_object <- DESeqDataSetFromMatrix(
-  countData = rawCountData, colData = colData, design = ~condition
-)
+}
 }

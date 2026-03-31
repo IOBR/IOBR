@@ -2,7 +2,7 @@
 % Please edit documentation in R/LR_cal.R
 \name{LR_cal}
 \alias{LR_cal}
-\title{LR_cal}
+\title{Calculate Ligand-Receptor Interaction Scores}
 \usage{
 LR_cal(
   eset,
@@ -12,20 +12,24 @@ LR_cal(
 )
 }
 \arguments{
-\item{eset}{ExpressionSet object containing gene expression data.}
+\item{eset}{Gene expression matrix with genes as rows and samples as columns.}
 
-\item{data_type}{Type of input data, possible values are "count" or "tpm".}
+\item{data_type}{Type of input data. Options are `"count"` or `"tpm"`.
+If `"count"`, data will be converted to TPM before analysis.}
 
-\item{id_type}{Type of gene identifier, default is "ensembl".}
+\item{id_type}{Type of gene identifier. Default is `"ensembl"`.}
 
-\item{cancer_type}{Character string specifying the cancer type used by easier.}
+\item{cancer_type}{Character string specifying the cancer type for easier.
+Default is `"pancan"` for pan-cancer analysis.}
 }
 \value{
-A data frame containing ligand-receptor interaction scores
+Data frame containing ligand-receptor interaction scores with
+  sample IDs as row names.
 }
 \description{
 Quantifies ligand-receptor interactions in the tumor microenvironment from
-bulk gene expression
+bulk gene expression data using the easier package. This function processes
+raw counts or TPM data and computes interaction scores for each sample.
 }
 \examples{
 \dontrun{
@@ -36,5 +40,7 @@ if (requireNamespace("easier", quietly = TRUE)) {
 }
 }
 \references{
-Lapuente-Santana, van Genderen, M., Hilbers, P., Finotello, F., & Eduati, F. (2021). 'Interpretable systems biomarkers predict response to immune-checkpoint inhibitors.' Patterns (New York, N.Y.), 2(8), 100293. https://doi.org/10.1016/j.patter.2021.100293
+Lapuente-Santana, van Genderen, M., Hilbers, P., Finotello, F., & Eduati, F. (2021).
+Interpretable systems biomarkers predict response to immune-checkpoint inhibitors.
+Patterns (New York, N.Y.), 2(8), 100293. https://doi.org/10.1016/j.patter.2021.100293
 }

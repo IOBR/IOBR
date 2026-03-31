@@ -78,10 +78,8 @@ stratification and creates publication-ready survival curves.
 }
 \examples{
 \dontrun{
-# Load TCGA-STAD microenvironment signature data
 sig_stad <- load_data("sig_stad")
 sig_stad <- as.data.frame(sig_stad)
-# Generate survival plots for multiple projects
 result <- batch_sig_surv_plot(
   input_pdata = sig_stad,
   signature = "T.cells.CD8",

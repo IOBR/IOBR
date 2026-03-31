@@ -44,9 +44,7 @@ created based on the best cutoff point.
 }
 \examples{
 \donttest{
-# Loading TCGA-STAD microenvironment signature data
 sig_stad <- load_data("sig_stad")
-# Finding the best cutoff value of TMEscore for survival
 result <- best_cutoff2(
   pdata = sig_stad,
   variable = "TMEscore_CIR",

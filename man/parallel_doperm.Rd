@@ -32,9 +32,11 @@ uses current random state. Set to a specific value (e.g., 123) for
 reproducible results across runs.}
 }
 \value{
-A list containing:
-\item{dist}{Numeric vector of correlation coefficients from permutations,
-  representing the empirical null distribution.}
+List containing:
+\describe{
+  \item{dist}{Numeric vector of correlation coefficients from permutations,
+    representing the empirical null distribution.}
+}
 }
 \description{
 Parallel version of doPerm. Performs permutation-based sampling and runs
@@ -52,19 +54,13 @@ parallelization (PSOCK) versus forking on Unix systems.
 }
 \examples{
 \dontrun{
-# Prepare data (using example data structure from CIBERSORT)
-X <- matrix(rnorm(1000), nrow = 100) # Signature matrix
-Y <- matrix(rnorm(500), nrow = 100) # Mixture matrix
+X <- matrix(rnorm(1000), nrow = 100)
+Y <- matrix(rnorm(500), nrow = 100)
 rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
 
-# Run parallel permutation (using 2 cores)
 result <- parallel_doperm(
-  perm1 = 100,
-  X1 = X,
-  Y1 = Y,
-  absolute1 = FALSE,
-  abs_method1 = "sig.score",
-  num_cores1 = 2
+  perm1 = 100, X1 = X, Y1 = Y,
+  absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 2
 )
 str(result$dist)
 }

@@ -2,32 +2,36 @@
 % Please edit documentation in R/CIBERSORT.R
 \name{doPerm}
 \alias{doPerm}
-\title{Title}
+\title{Permutation Test for CIBERSORT}
 \usage{
 doPerm(perm, X, Y, absolute, abs_method, seed = NULL)
 }
 \arguments{
-\item{perm}{Number of permutations to perform.}
+\item{perm}{Integer. Number of permutations to perform (≥100 recommended for
+reliable p-value estimation).}
 
-\item{X}{Input matrix or data frame containing the predictor variables.}
+\item{X}{Matrix or data frame containing signature matrix (predictor variables).}
 
-\item{Y}{Numeric vector containing the response variable.}
+\item{Y}{Numeric vector containing the mixture sample expression.}
 
-\item{absolute}{Logical value indicating whether to use absolute space or
-relative space for the weights.}
+\item{absolute}{Logical indicating whether to use absolute space for weights.}
 
-\item{abs_method}{String indicating the method to calculate the weights in
-absolute space. Can be either 'sig.score' or 'no.sumto1'.}
+\item{abs_method}{String specifying the method for absolute space weights:
+`"sig.score"` or `"no.sumto1"`.}
 
 \item{seed}{Integer. Random seed for reproducibility. If NULL (default),
-uses current random state. Set to a specific value for reproducible results.}
+uses current random state.}
 }
 \value{
-A list containing the distribution of correlation coefficients from the permutations.
+List containing:
+\describe{
+  \item{dist}{Numeric vector of correlation coefficients from permutations}
+}
 }
 \description{
-doPerm performs permutation-based sampling and runs the CoreAlg
-function iteratively.
+Performs permutation-based sampling to generate an empirical null distribution
+of correlation coefficients for p-value calculation in CIBERSORT analysis.
+Randomly samples from the mixture data to create null distributions.
 }
 \examples{
 \dontrun{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_sc_data.R
 \name{extract_sc_data}
 \alias{extract_sc_data}
-\title{Extract data frame}
+\title{Extract Data Frame from Seurat Object}
 \usage{
 extract_sc_data(
   sce,
@@ -13,37 +13,33 @@ extract_sc_data(
 )
 }
 \arguments{
-\item{sce}{Seurat object}
+\item{sce}{Seurat object.}
 
-\item{vars}{Vector of variables as features}
+\item{vars}{Character vector of feature names to extract. If `NULL`, all
+features are extracted.}
 
-\item{assay}{Assay to pull data from}
+\item{assay}{Character vector specifying assay(s) to pull data from.}
 
-\item{slot}{Specific assay data to get or set}
+\item{slot}{Character string specifying the assay data slot. Default is
+`"scale.data"`.}
 
-\item{combine_meta_data}{Whether to combine metadata with the extracted data frame}
+\item{combine_meta_data}{Logical indicating whether to combine metadata
+with the extracted data frame. Default is `TRUE`.}
 }
 \value{
-Data frame with cells as rows and features as columns
+Data frame with cells as rows and features as columns.
 }
 \description{
-Extract and combine data frame with cells as rows and features as columns
-from Seurat assay data.
+Extracts and combines a data frame with cells as rows and features as columns
+from Seurat assay data. Supports multiple assays and optional metadata
+integration.
 }
 \examples{
 \dontrun{
-# Load data
 pbmc_small <- load_data("pbmc_small")
-pbmc_small
-# Choose features
-vars <- c(
-  "PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3", "PF4", "MYL9",
-  "GNLY", "TREML1", "CA2"
-)
-# Get extracted data frame
+vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3")
 eset <- extract_sc_data(sce = pbmc_small, vars = vars, assay = "RNA")
 }
-
 }
 \author{
 Dongqiang Zeng

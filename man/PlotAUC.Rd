@@ -16,30 +16,41 @@ PlotAUC(
 )
 }
 \arguments{
-\item{train.x}{Training predictors.}
+\item{train.x}{Training predictors matrix.}
 
-\item{train.y}{Training outcomes.}
+\item{train.y}{Training outcomes (binary factor).}
 
-\item{test.x}{Testing predictors.}
+\item{test.x}{Testing predictors matrix.}
 
-\item{test.y}{Testing outcomes.}
+\item{test.y}{Testing outcomes (binary factor).}
 
-\item{model}{Fitted model.}
+\item{model}{Fitted cv.glmnet model.}
 
-\item{modelname}{Model name for title.}
+\item{modelname}{Character string for plot title.}
 
-\item{cols}{Optional color vector.}
+\item{cols}{Optional color vector for ROC curves.}
 
-\item{palette}{Color palette name.}
+\item{palette}{Color palette name from IOBR palettes. Default is `"jama"`.}
 }
 \value{
-ggplot object of ROC curve.
+ggplot object of ROC curves.
 }
 \description{
-Generates ROC curves for model evaluation.
+Generates ROC curves for model evaluation comparing training and testing
+performance at both lambda.min and lambda.1se. Creates a ggplot visualization
+with AUC values in the legend.
 }
 \examples{
 \dontrun{
-PlotAUC(train.x, train.y, test.x, test.y, fitted_model, "MyModel")
+if (requireNamespace("glmnet", quietly = TRUE)) {
+  set.seed(123)
+  train_data <- matrix(rnorm(100 * 5), ncol = 5)
+  train_outcome <- rbinom(100, 1, 0.5)
+  test_data <- matrix(rnorm(50 * 5), ncol = 5)
+  test_outcome <- rbinom(50, 1, 0.5)
+  fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+  p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
+  print(p)
+}
 }
 }

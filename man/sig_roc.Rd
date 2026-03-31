@@ -21,44 +21,49 @@ sig_roc(
 )
 }
 \arguments{
-\item{data}{A data frame containing the predictor variables and the binary outcome variable.}
+\item{data}{Data frame containing the predictor variables and binary outcome.}
 
-\item{response}{The name of the binary outcome variable in `data`.}
+\item{response}{Character. Name of the binary outcome variable in `data`.}
 
-\item{variables}{A vector of names of predictor variables in `data` for which ROC curves will be plotted.}
+\item{variables}{Character vector. Names of predictor variables for ROC curves.}
 
-\item{fig.path}{Directory path to save the output PDF file. Default is NULL.}
+\item{fig.path}{Character or `NULL`. Directory path to save output PDF.
+Default is `NULL`.}
 
-\item{main}{Main title for the ROC plot.}
+\item{main}{Character or `NULL`. Main title for the ROC plot. Default is `NULL`.}
 
-\item{file.name}{Name of the output PDF file without extension. Default is "0-ROC of multiple variables".}
+\item{file.name}{Character or `NULL`. Output PDF filename without extension.
+Default is `"0-ROC of multiple variables"`.}
 
-\item{palette}{Color palette for plotting ROC curves. Default is "jama".}
+\item{palette}{Character. Color palette for ROC curves. Default is `"jama"`.}
 
-\item{cols}{Optional vector of colors for ROC curves. If NULL, colors are assigned automatically.}
+\item{cols}{Character vector or `NULL`. Custom colors for ROC curves.
+Default is `NULL`.}
 
-\item{alpha}{Transparency level of colors (1 = opaque, 0 = transparent). Default is 1.}
+\item{alpha}{Numeric. Transparency level (1 = opaque, 0 = transparent).
+Default is `1`.}
 
-\item{compare}{Logical indicating whether to perform statistical comparison of AUCs. Default is FALSE.}
+\item{compare}{Logical. Whether to perform statistical comparison of AUCs.
+Default is `FALSE`.}
 
-\item{smooth}{Logical indicating whether to smooth ROC curves. Default is TRUE.}
+\item{smooth}{Logical. Whether to smooth ROC curves. Default is `TRUE`.}
 
-\item{compare_method}{Method for comparing ROC curves if `compare` is TRUE. Default is "bootstrap".}
+\item{compare_method}{Character. Method for comparing ROC curves.
+Default is `"bootstrap"`.}
 
-\item{boot.n}{Number of bootstrap replications for comparison. Default is 100.}
+\item{boot.n}{Integer. Number of bootstrap replications. Default is `100`.}
 }
 \value{
 A list containing:
-  - `auc.out`: Data frame with AUC values and confidence intervals for each
-  variable.
-  - `legend.name`: Vector of legend entries for the plot.
-  - `p.out`: If `compare` is TRUE, data frame with p-values from pairwise
-  comparisons.
+\describe{
+  \item{auc.out}{Data frame with AUC values and confidence intervals}
+  \item{legend.name}{Vector of legend entries for the plot}
+  \item{p.out}{If `compare = TRUE`, data frame with p-values from comparisons}
+}
 }
 \description{
-This function generates Receiver Operating Characteristic (ROC) curves for
-multiple predictors
-and optionally performs statistical comparisons between them.
+Generates Receiver Operating Characteristic (ROC) curves for multiple
+predictors and optionally performs statistical comparisons between them.
 }
 \examples{
 \donttest{

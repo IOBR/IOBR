@@ -45,10 +45,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Load TCGA-STAD microenvironment signature data
 #' sig_stad <- load_data("sig_stad")
 #' sig_stad <- as.data.frame(sig_stad)
-#' # Generate survival plots for multiple projects
 #' result <- batch_sig_surv_plot(
 #'   input_pdata = sig_stad,
 #'   signature = "T.cells.CD8",
@@ -68,41 +66,56 @@
 #' )
 #' }
 batch_sig_surv_plot <- function(
-  input_pdata,
-  signature,
-  id = "ID",
-  column_of_project = "ProjectID",
-  project = NULL,
-  time = "time",
-  status = "status",
-  time_type = "day",
-  break_month = "auto",
-  palette = "jama",
-  cols = NULL,
-  mini_sig = "score",
-  save_path = "Multiple-KM-plot",
-  show_col = TRUE,
-  fig_type = "pdf"
-) {
+    input_pdata,
+    signature,
+    id = "ID",
+    column_of_project = "ProjectID",
+    project = NULL,
+    time = "time",
+    status = "status",
+    time_type = "day",
+    break_month = "auto",
+    palette = "jama",
+    cols = NULL,
+    mini_sig = "score",
+    save_path = "Multiple-KM-plot",
+    show_col = TRUE,
+    fig_type = "pdf") {
+  if (!is.data.frame(input_pdata)) {
+    cli::cli_abort("{.arg input_pdata} must be a data frame")
+  }
+  if (!signature %in% colnames(input_pdata)) {
+    cli::cli_abort("Signature column {.val {signature}} not found in input_pdata")
+  }
+  if (!column_of_project %in% colnames(input_pdata)) {
+    cli::cli_abort("Project column {.val {column_of_project}} not found in input_pdata")
+  }
+
   input_pdata <- as.data.frame(input_pdata)
-  goi <- as.character(levels(as.factor(
-    as.character(input_pdata[, column_of_project])
-  )))
+  colnames(input_pdata)[colnames(input_pdata) == column_of_project] <- "ProjectID"
+  input_pdata$ProjectID <- as.character(input_pdata$ProjectID)
 
-  colnames(input_pdata)[
-    which(colnames(input_pdata) == column_of_project)
-  ] <- "ProjectID"
+  goi <- if (is.null(project)) {
+    unique(input_pdata$ProjectID)
+  } else {
+    intersect(project, unique(input_pdata$ProjectID))
+  }
 
-  input_pdata[, "ProjectID"] <- as.character(input_pdata[, "ProjectID"])
+  if (length(goi) == 0) {
+    cli::cli_abort("No valid projects found")
+  }
 
-  input_pdata_com <- data.frame(NULL)
-
-  for (i in seq_along(goi)) {
+  results <- lapply(seq_along(goi), function(i) {
     var <- goi[i]
-    message(">>> Preprocessing dataset: ", var)
-    pd <- input_pdata[input_pdata$ProjectID %in% var, ]
+    cli::cli_alert_info("Processing project: {.val {var}}")
 
-    pd <- sig_surv_plot(
+    pd <- input_pdata[input_pdata$ProjectID == var, , drop = FALSE]
+    if (nrow(pd) == 0) {
+      cli::cli_alert_warning("No data for project {.val {var}}, skipping")
+      return(NULL)
+    }
+
+    sig_surv_plot(
       input_pdata = pd,
       signature = signature,
       project = var,
@@ -118,10 +131,8 @@ batch_sig_surv_plot <- function(
       fig.type = fig_type,
       save_path = save_path,
       index = i
-    )
+    )$data
+  })
 
-    input_pdata_com <- rbind(input_pdata_com, pd$data)
-  }
-
-  input_pdata_com
+  dplyr::bind_rows(results)
 }

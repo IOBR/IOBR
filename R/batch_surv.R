@@ -22,9 +22,7 @@
 #'
 #' @examples
 #' \donttest{
-#' # Load TCGA-STAD microenvironment signature data
 #' sig_stad <- load_data("sig_stad")
-#' # Perform batch survival analysis
 #' batch_surv(
 #'   pdata = sig_stad,
 #'   variable = colnames(sig_stad)[69:ncol(sig_stad)],
@@ -33,23 +31,27 @@
 #' )
 #' }
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
-  pdata <- as.data.frame(pdata)
-
-  # Validate columns
+  if (!is.data.frame(pdata)) {
+    cli::cli_abort("{.arg pdata} must be a data frame")
+  }
+  if (nrow(pdata) == 0) {
+    cli::cli_abort("{.arg pdata} has no rows")
+  }
   if (!time %in% colnames(pdata)) {
     cli::cli_abort("Time column {.val {time}} not found in pdata")
   }
   if (!status %in% colnames(pdata)) {
     cli::cli_abort("Status column {.val {status}} not found in pdata")
   }
+  if (!is.character(variable) || length(variable) == 0) {
+    cli::cli_abort("{.arg variable} must be a non-empty character vector")
+  }
 
-  # Standardize column names
+  pdata <- as.data.frame(pdata)
   colnames(pdata)[colnames(pdata) == time] <- "time_iobr"
   colnames(pdata)[colnames(pdata) == status] <- "status_iobr"
 
-  # Remove NA values
-  pdata <- pdata[!is.na(pdata$time_iobr) & !is.na(pdata$status_iobr), ]
-
+  pdata <- pdata[!is.na(pdata$time_iobr) & !is.na(pdata$status_iobr), , drop = FALSE]
   if (nrow(pdata) == 0) {
     cli::cli_abort("No valid data after removing NA values")
   }
@@ -57,12 +59,18 @@ batch_surv <- function(pdata, variable, time = "time", status = "status", best_c
   pdata$time_iobr <- as.numeric(pdata$time_iobr)
   pdata$status_iobr <- as.numeric(pdata$status_iobr)
 
-  # Apply best cutoff if requested
-  if (best_cutoff) {
-    for (i in seq_along(variable)) {
-      var <- variable[i]
-      cli::cli_alert_info("Processing variable: {.val {var}}")
+  valid_vars <- variable[variable %in% colnames(pdata)]
+  invalid_vars <- setdiff(variable, colnames(pdata))
+  if (length(invalid_vars) > 0) {
+    cli::cli_alert_warning("Ignoring {length(invalid_vars)} variable{?s} not found: {.val {invalid_vars}}")
+  }
+  if (length(valid_vars) == 0) {
+    cli::cli_abort("No valid variables found in pdata")
+  }
 
+  if (best_cutoff) {
+    cli::cli_alert_info("Computing optimal cutoffs for {length(valid_vars)} variable{?s}")
+    for (var in valid_vars) {
       pdata <- best_cutoff(
         pdata = pdata,
         time = "time_iobr",
@@ -70,34 +78,23 @@ batch_surv <- function(pdata, variable, time = "time", status = "status", best_c
         variable = var,
         print_result = FALSE
       )
-
       binary_col <- paste0(var, "_binary")
       pdata[[binary_col]] <- ifelse(pdata[[binary_col]] == "High", 1, 0)
     }
-    variable <- paste0(variable, "_binary")
+    valid_vars <- paste0(valid_vars, "_binary")
   }
 
-  # Run Cox models
-  result_list <- lapply(
-    variable,
-    function(var) {
-      fit <- survival::coxph(
-        survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ pdata[[var]],
-        data = pdata
-      )
-      getHRandCIfromCoxph(fit)
-    }
-  )
+  result_list <- lapply(valid_vars, function(var) {
+    fit <- survival::coxph(
+      survival::Surv(pdata$time_iobr, pdata$status_iobr) ~ pdata[[var]],
+      data = pdata
+    )
+    getHRandCIfromCoxph(fit)
+  })
 
-  # Combine results
   result <- dplyr::bind_rows(result_list)
-  result$ID <- variable
-
-  if (best_cutoff) {
-    result$ID <- gsub("_binary$", "", result$ID)
-  }
-
-  result <- result[order(result$P, decreasing = FALSE), ]
+  result$ID <- if (best_cutoff) gsub("_binary$", "", valid_vars) else valid_vars
+  result <- result[order(result$P, decreasing = FALSE), , drop = FALSE]
   rownames(result) <- NULL
 
   tibble::as_tibble(result)

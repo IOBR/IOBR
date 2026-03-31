@@ -3,8 +3,7 @@
 \docType{data}
 \name{timer_available_cancers}
 \alias{timer_available_cancers}
-\title{TIMER signatures are cancer specific. This is the list of available cancer
-types.}
+\title{TIMER Available Cancer Types}
 \format{
 An object of class \code{character} of length 32.
 }
@@ -12,7 +11,7 @@ An object of class \code{character} of length 32.
 timer_available_cancers
 }
 \description{
-TIMER signatures are cancer specific. This is the list of available cancer
-types.
+Character vector of cancer types supported by TIMER deconvolution.
+TIMER signatures are cancer-specific.
 }
 \keyword{datasets}

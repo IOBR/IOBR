@@ -37,9 +37,7 @@ modeling. Returns hazard ratios, confidence intervals, and p-values for each var
 }
 \examples{
 \donttest{
-# Load TCGA-STAD microenvironment signature data
 sig_stad <- load_data("sig_stad")
-# Perform batch survival analysis
 batch_surv(
   pdata = sig_stad,
   variable = colnames(sig_stad)[69:ncol(sig_stad)],

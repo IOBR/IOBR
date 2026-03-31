@@ -2,28 +2,28 @@
 % Please edit documentation in R/format_msigdb.R
 \name{format_msigdb}
 \alias{format_msigdb}
-\title{Format input signatures from MSigDB}
+\title{Format Input Signatures from MSigDB}
 \usage{
 format_msigdb(gmt, ont = "term", gene = "gene")
 }
 \arguments{
 \item{gmt}{Character string. Path to a GMT file.}
 
-\item{ont}{Character string. Name of the signature/set column in the parsed GMT table.
-Default is \code{"term"}.}
+\item{ont}{Character string. Name of the signature/set column in the parsed
+GMT table. Default is `"term"`.}
 
-\item{gene}{Character string. Name of the gene column in the parsed GMT table.
-Default is \code{"gene"}.}
+\item{gene}{Character string. Name of the gene column in the parsed GMT
+table. Default is `"gene"`.}
 }
 \value{
-A named list of character vectors, where each element contains the genes
-  belonging to one signature.
+Named list of character vectors, where each element contains the
+  genes belonging to one signature.
 }
 \description{
-Read a GMT file from MSigDB and convert it into a named list of gene sets.
+Reads a GMT file from MSigDB and converts it into a named list of gene sets
+suitable for IOBR functions.
 }
 \examples{
-# Create a minimal GMT file for the example
 tf <- tempfile(fileext = ".gmt")
 writeLines(
   c(

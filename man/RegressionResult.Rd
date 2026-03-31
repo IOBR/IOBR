@@ -9,20 +9,26 @@ RegressionResult(train.x, train.y, test.x, test.y, model)
 \arguments{
 \item{train.x}{Training predictors matrix.}
 
-\item{train.y}{Training outcomes.}
+\item{train.y}{Training outcomes (binary factor).}
 
 \item{test.x}{Testing predictors matrix.}
 
-\item{test.y}{Testing outcomes.}
+\item{test.y}{Testing outcomes (binary factor).}
 
-\item{model}{Fitted model object.}
+\item{model}{Fitted cv.glmnet model object.}
 }
 \value{
-List containing model, coefficients, and AUC values.
+List containing:
+\describe{
+  \item{model}{The fitted cv.glmnet model}
+  \item{coefs}{Data frame with feature names and coefficients at lambda.min and lambda.1se}
+  \item{AUC}{Matrix of AUC values for train/test sets at both lambda values}
+}
 }
 \description{
 Computes regression results with coefficients at lambda.min and lambda.1se,
-and evaluates AUC for binomial outcomes.
+and evaluates AUC for binomial outcomes. Returns a comprehensive summary
+of model performance on both training and testing datasets.
 }
 \examples{
 \donttest{

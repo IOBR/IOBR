@@ -150,7 +150,6 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #' }
 #' }
 PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
-  # Extract coefficients
   coefs <- cbind(
     stats::coef(model, s = "lambda.min"),
     stats::coef(model, s = "lambda.1se")
@@ -162,19 +161,16 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
     row.names = NULL
   )
 
-  # Prepare AUC calculation parameters
-  args <- list(
-    newx = list(train.x, train.x, test.x, test.x),
-    s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se"),
-    acture.y = list(train.y, train.y, test.y, test.y)
+  datasets <- list(
+    list(data = train.x, outcome = train.y, lambda = "lambda.min"),
+    list(data = train.x, outcome = train.y, lambda = "lambda.1se"),
+    list(data = test.x, outcome = test.y, lambda = "lambda.min"),
+    list(data = test.x, outcome = test.y, lambda = "lambda.1se")
   )
 
-  auc_list <- purrr::pmap(
-    args,
-    function(newx, s, acture.y) {
-      PrognosticAUC(model = model, newx = newx, s = s, acture.y = acture.y)
-    }
-  )
+  auc_list <- lapply(datasets, function(d) {
+    PrognosticAUC(model = model, newx = d$data, s = d$lambda, acture.y = d$outcome)
+  })
 
   auc <- dplyr::bind_rows(auc_list)
   rownames(auc) <- c(
@@ -308,7 +304,16 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #'
 #' @examples
 #' \dontrun{
-#' PlotTimeROC(train.x, train.y, test.x, test.y, fitted_model, "Cox Model")
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'     requireNamespace("survival", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_x <- matrix(rnorm(100 * 5), ncol = 5)
+#'   train_y <- data.frame(time = rexp(100), status = rbinom(100, 1, 0.5))
+#'   test_x <- matrix(rnorm(50 * 5), ncol = 5)
+#'   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
+#'   fit <- glmnet::cv.glmnet(train_x, survival::Surv(train_y$time, train_y$status), family = "cox")
+#'   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
+#' }
 #' }
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
                         cols = NULL, palette = "jama") {
@@ -316,18 +321,16 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
     cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
   }
 
-  args <- list(
-    newx = list(train.x, train.x, test.x, test.x),
-    s = list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se"),
-    acture.y = list(train.y, train.y, test.y, test.y)
+  datasets <- list(
+    list(data = train.x, outcome = train.y, lambda = "lambda.min"),
+    list(data = train.x, outcome = train.y, lambda = "lambda.1se"),
+    list(data = test.x, outcome = test.y, lambda = "lambda.min"),
+    list(data = test.x, outcome = test.y, lambda = "lambda.1se")
   )
 
-  auc_list <- purrr::pmap(
-    args,
-    function(newx, s, acture.y) {
-      PrognosticAUC(model = model, newx = newx, s = s, acture.y = acture.y)
-    }
-  )
+  auc_list <- lapply(datasets, function(d) {
+    PrognosticAUC(model = model, newx = d$data, s = d$lambda, acture.y = d$outcome)
+  })
 
   auc <- dplyr::bind_rows(auc_list)
   rownames(auc) <- c(
@@ -335,15 +338,12 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
     "Test_lambda.min", "Test_lambda.1se"
   )
 
-  roclist <- purrr::pmap(
-    args,
-    function(newx, s, acture.y) {
-      CalculateTimeROC(
-        model = model, newx = newx, s = s,
-        acture.y = acture.y, modelname = modelname
-      )
-    }
-  )
+  roclist <- lapply(datasets, function(d) {
+    CalculateTimeROC(
+      model = model, newx = d$data, s = d$lambda,
+      acture.y = d$outcome, modelname = modelname
+    )
+  })
 
   aucs <- round(auc$probs.9, 2)
   legend.name <- paste(
@@ -356,9 +356,13 @@ PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
     "test_lambda.min", "test_lambda.1se"
   )
 
-  plotdat <- purrr::map_dfr(roclist, function(z) {
-    data.frame(x = z$FP[, 2], y = z$TP[, 2])
-  }, .id = "s")
+  plotdat <- do.call(rbind, lapply(names(roclist), function(nm) {
+    data.frame(
+      s = nm,
+      x = roclist[[nm]]$FP[, 2],
+      y = roclist[[nm]]$TP[, 2]
+    )
+  }))
 
   plotdat$s <- factor(plotdat$s, levels = names(roclist))
 

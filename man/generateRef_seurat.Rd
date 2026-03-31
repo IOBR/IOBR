@@ -2,7 +2,7 @@
 % Please edit documentation in R/generateRef_seurat.R
 \name{generateRef_seurat}
 \alias{generateRef_seurat}
-\title{generateRef_seurat}
+\title{Generate Reference Matrix from Seurat Object}
 \usage{
 generateRef_seurat(
   sce,
@@ -23,50 +23,48 @@ generateRef_seurat(
 \arguments{
 \item{sce}{Seurat object containing single-cell RNA-seq data.}
 
-\item{celltype}{(Optional) A character vector specifying cell type for which marker genes will be identified.}
+\item{celltype}{Character. Cell type column name in metadata.
+Default is `NULL` (uses default identity).}
 
-\item{proportion}{(Optional) A numeric value specifying the proportion of cells to be randomly selected for analysis.}
+\item{proportion}{Numeric. Proportion of cells to randomly select for
+analysis. Default is `NULL` (use all cells).}
 
-\item{assay_deg}{(Default = "RNA") A character string specifying the assay to be used for finding markers.}
+\item{assay_deg}{Character. Assay for finding markers. Default is `"RNA"`.}
 
-\item{slot_deg}{(Default = "data") A character string specifying the slot to be used for finding markers.}
+\item{slot_deg}{Character. Slot for finding markers. Default is `"data"`.}
 
-\item{adjust_assay}{(Default = FALSE) A logical value specifying whether to adjust the assay.}
+\item{adjust_assay}{Logical. Whether to adjust assay for SCT. Default is
+`FALSE`.}
 
-\item{assay_out}{(Default = "RNA") A character string specifying the assay used in the output.}
+\item{assay_out}{Character. Assay for output. Default is `"RNA"`.}
 
-\item{slot_out}{(Default = "data") A character string specifying the slot used in the output.}
+\item{slot_out}{Character. Slot for output. Default is `"data"`.}
 
-\item{verbose}{(Default = FALSE) A logical value specifying whether to print verbose messages.}
+\item{verbose}{Logical. Print verbose messages. Default is `FALSE`.}
 
-\item{only.pos}{(Default = TRUE) A logical value specifying whether to consider only positive results.}
+\item{only.pos}{Logical. Return only positive markers. Default is `TRUE`.}
 
-\item{n_ref_genes}{(Default = 50) An integer specifying the number of reference genes to be selected.}
+\item{n_ref_genes}{Integer. Number of reference genes per cell type.
+Default is 50.}
 
-\item{logfc.threshold}{(Default = 0.15) A numeric value specifying the threshold for log-fold change.}
+\item{logfc.threshold}{Numeric. Log fold change threshold. Default is 0.15.}
 
-\item{test.use}{(Default = "wilcox") A character string specifying the statistical test to be used.}
+\item{test.use}{Character. Statistical test for marker identification.
+Default is `"wilcox"`.}
 }
 \value{
-A matrix containing aggregated expression data for the reference genes.
+Matrix containing aggregated expression data for reference genes.
 }
 \description{
-The "generateRef_seurat" function takes a Seurat object "sce" and
-additional parameters to perform various operations for generating
-reference gene expression data. The function allows for specifying cell
-types, proportions, assays, preprocessing options, and statistical testing
-parameters.
+Generates reference gene expression data from a Seurat object by
+identifying marker genes for each cell type and aggregating expression
+data.
 }
 \examples{
 \dontrun{
-# This example requires Seurat and a local 10X dataset
 if (requireNamespace("Seurat", quietly = TRUE)) {
-  # For demonstration, using pbmc_small dataset
   pbmc <- load_data("pbmc_small")
-  # generate reference matrix
-  sm <- generateRef_seurat(
-    sce = pbmc, celltype = "groups", slot_out = "data"
-  )
+  sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
 }
 }
 }

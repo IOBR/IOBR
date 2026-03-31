@@ -25,31 +25,39 @@ find_variable_genes(
 )
 }
 \arguments{
-\item{eset}{Numeric matrix. Gene expression data (genes as rows, samples as columns).}
+\item{eset}{Numeric matrix. Gene expression data (genes as rows,
+samples as columns).}
 
-\item{data_type}{Character. Type of data: "count" or "normalized". Default is "count".}
+\item{data_type}{Character. Type of data: `"count"` or `"normalized"`.
+Default is `"count"`.}
 
-\item{methods}{Character vector. Methods for gene selection: "low", "mad". Default is c("low", "mad").}
+\item{methods}{Character vector. Methods for gene selection: `"low"`,
+`"mad"`. Default is `c("low", "mad")`.}
 
-\item{prop}{Numeric. Proportion of samples in which a gene must be expressed. Default is 0.7.}
+\item{prop}{Numeric. Proportion of samples in which a gene must be expressed.
+Default is 0.7.}
 
-\item{quantile}{Numeric vector. Quantiles for minimum MAD threshold. Default is c(0.75, 0.5, 0.25).}
+\item{quantile}{Numeric. Quantile threshold for minimum MAD (0.25, 0.5, 0.75).
+Default is 0.75.}
 
 \item{min.mad}{Numeric. Minimum allowable MAD value. Default is 0.1.}
 
-\item{feas}{Character vector or NULL. Additional features to include. Default is NULL.}
+\item{feas}{Character vector or `NULL`. Additional features to include.
+Default is `NULL`.}
 }
 \value{
 Matrix subset of `eset` containing variable genes.
 
-Matrix subset of `eset` containing only variable genes identified by the specified criteria.
+Matrix subset of `eset` containing variable genes.
 }
 \description{
 Identifies variable genes from a gene expression dataset using specified
 selection criteria. Supports multiple methods, including expression
 thresholding and variability estimation via median absolute deviation (MAD).
 
-Identifies variable genes from a gene expression dataset using specified selection criteria. Supports multiple methods, including expression thresholding and variability estimation via median absolute deviation (MAD). Handles both count and normalized data.
+Identifies variable genes from a gene expression dataset using specified
+selection criteria. Supports multiple methods, including expression
+thresholding and variability estimation via median absolute deviation (MAD).
 }
 \examples{
 \donttest{
@@ -61,12 +69,15 @@ eset <- find_variable_genes(
   quantile = 0.25
 )
 }
-# Load expression data
+\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
-# Filter variable genes
 eset <- find_variable_genes(
-  eset = eset_tme_stad, data_type = "normalized", methods = "mad", quantile = 0.25
+  eset = eset_tme_stad,
+  data_type = "normalized",
+  methods = "mad",
+  quantile = 0.25
 )
+}
 }
 \author{
 Dongqiang Zeng

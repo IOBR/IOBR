@@ -9,19 +9,27 @@ SplitTrainTest(x, y, train_ratio, type = c("binomial", "survival"), seed)
 \arguments{
 \item{x}{Predictor matrix or data frame.}
 
-\item{y}{Outcome vector or matrix.}
+\item{y}{Outcome vector (binomial) or matrix with time/status (survival).}
 
-\item{train_ratio}{Proportion for training (0-1).}
+\item{train_ratio}{Proportion for training (0-1). Default is `0.7`.}
 
-\item{type}{`"binomial"` or `"survival"`.}
+\item{type}{Analysis type: `"binomial"` or `"survival"`.}
 
-\item{seed}{Random seed.}
+\item{seed}{Random seed for reproducibility.}
 }
 \value{
-List with train.x, train.y, test.x, test.y, train_sample.
+List containing:
+\describe{
+  \item{train.x}{Training predictors matrix}
+  \item{train.y}{Training outcomes}
+  \item{test.x}{Testing predictors matrix}
+  \item{test.y}{Testing outcomes}
+  \item{train_sample}{Indices of training samples}
+}
 }
 \description{
-Divides dataset into training and testing sets.
+Divides dataset into training and testing sets using random sampling.
+Maintains data integrity for both binomial and survival analysis types.
 }
 \examples{
 \donttest{

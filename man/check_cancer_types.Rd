@@ -8,60 +8,39 @@ check_cancer_types(args)
 }
 \arguments{
 \item{args}{A list containing input parameters:
-- `batch`: Character string. Path to a CSV file (optional).
-- `expression`: Character vector of expression identifiers (used if `batch`
-is NULL).
-- `category`: Character vector of cancer types (used if `batch` is NULL).}
+\describe{
+  \item{batch}{Character. Path to a CSV file (optional).}
+  \item{expression}{Character vector of expression identifiers (used if
+    `batch` is NULL).}
+  \item{category}{Character vector of cancer types (used if `batch` is NULL).}
+}}
 }
 \value{
 A character matrix with two columns:
-- Column 1: expression identifiers
-- Column 2: cancer categories
-Each row corresponds to one record.
+\describe{
+  \item{Column 1}{Expression identifiers}
+  \item{Column 2}{Cancer categories}
+}
 }
 \description{
-This function processes input data containing cancer types and validates
-each category against a predefined list of supported cancer types
-(`timer_available_cancers`).
-}
-\details{
-The input can be provided in two ways:
-- **Batch mode**: A CSV file path specified in `args$batch`. The file is
-expected to have at least two columns, where the second column contains
-cancer categories.
-- **Direct mode**: Vectors provided via `args$expression` and
-`args$category`.
-
-If any cancer category is not recognized, the function stops with an error.
+Processes input data containing cancer types and validates each category
+against a predefined list of supported cancer types (`timer_available_cancers`).
 }
 \examples{
 \dontrun{
-# ---- Batch mode example ----
+# Batch mode
 tf <- tempfile(fileext = ".csv")
-write.table(
-  data.frame(
-    "exp1", "lung",
-    "exp2", "breast"
-  ),
-  file = tf,
-  sep = ",",
-  row.names = FALSE,
-  col.names = FALSE,
-  quote = FALSE
-)
-
+write.table(data.frame("exp1", "lung", "exp2", "breast"),
+  file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE)
 args <- list(batch = tf)
-# timer_available_cancers <- c("lung", "breast")  # define for testing
 result <- check_cancer_types(args)
 
-# ---- Direct input example ----
+# Direct input mode
 args <- list(
   expression = c("exp1", "exp2"),
-  category = c("lung", "breast"),
+  category = c("luad", "brca"),
   batch = NULL
 )
-
-# timer_available_cancers <- c("lung", "breast")  # define for testing
 result <- check_cancer_types(args)
 }
 }

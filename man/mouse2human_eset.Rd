@@ -2,54 +2,56 @@
 % Please edit documentation in R/mouse2human_eset.R
 \name{mouse2human_eset}
 \alias{mouse2human_eset}
-\title{Converting mouse gene symbol to human gene symbol of expression set.}
+\title{Convert Mouse Gene Symbols to Human Gene Symbols}
 \usage{
 mouse2human_eset(
   eset,
-  source = "ensembl",
+  source = c("ensembl", "local"),
   is_matrix = TRUE,
   column_of_symbol = NULL,
   verbose = FALSE
 )
 }
 \arguments{
-\item{eset}{expression matrix or data frame}
+\item{eset}{Matrix or data frame. Expression matrix with genes in rows.}
 
-\item{source}{default is ensembl, if an error is reported, set parameter to
-`local` and mus_human_gene_symbol will be use to convert gene symbols}
+\item{source}{Character. Data source for conversion: "ensembl" (online) or
+"local". Default is "ensembl". If Ensembl fails, use "local" which uses
+the internal `mus_human_gene_symbol` dataset.}
 
-\item{is_matrix}{Boolean indicating if 'eset' is a matrix; defaults to TRUE.
-If FALSE, 'column_of_symbol' must be specified.}
+\item{is_matrix}{Logical. Whether `eset` is a matrix with gene symbols as
+row names. Default is `TRUE`. If `FALSE`, `column_of_symbol` must be
+specified.}
 
-\item{column_of_symbol}{default is null.Name of the column in 'eset' that
-contains gene symbols, if 'eset' is not a matrix. This parameter must be
-specified if 'is_matrix' is FALSE.}
+\item{column_of_symbol}{Character or `NULL`. Column name containing gene
+symbols if `eset` is not a matrix. Default is `NULL`.}
 
-\item{verbose}{Logical; if `TRUE`, prints information about available Ensembl
-datasets. Defaults to `FALSE`.}
+\item{verbose}{Logical. If `TRUE`, prints available Ensembl datasets.
+Default is `FALSE`.}
 }
 \value{
-Returns the expression set with human gene symbols for further
-  analysis.
+Expression set with human gene symbols.
 }
 \description{
-This function converts mouse gene symbols to human gene symbols in an
-expression dataset. It supports using either an online resource (Ensembl)
-or a local dataset for conversion.
+Converts mouse gene symbols to human gene symbols in an expression dataset.
+Supports using either an online resource (Ensembl) or a local dataset for
+conversion.
 }
 \examples{
-# Set the number of rows and columns
+\donttest{
+# Create example mouse expression data
+anno_gc_vm32 <- load_data("anno_gc_vm32")
 num_rows <- 200
 num_cols <- 10
-
-# Generate sample names and mouse gene symbols
 sample_names <- paste0("Sample", 1:num_cols)
-mouse_genes <- paste0("MouseGene", 1:num_rows)
-
-# Create random data for the data frame
 data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
-df <- data
-anno_gc_vm32 <- load_data("anno_gc_vm32")
-rownames(df) <- anno_gc_vm32$symbol[1:200]
-human_data <- mouse2human_eset(df, source = "local", is_matrix = TRUE)
+rownames(data) <- anno_gc_vm32$symbol[1:200]
+colnames(data) <- sample_names
+
+# Convert using local database
+human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+}
+}
+\author{
+Dongqiang Zeng
 }

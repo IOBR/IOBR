@@ -7,38 +7,34 @@
 generateRef_limma(dat, pheno, FDR = 0.05)
 }
 \arguments{
-\item{dat}{data frame or matrix; gene probes in the row and samples in the column}
+\item{dat}{Matrix or data frame. Gene probes in rows and samples in columns.}
 
-\item{pheno}{character vector; cell type class of the samples}
+\item{pheno}{Character vector. Cell type class of the samples.}
 
-\item{FDR}{numeric; genes with BH adjust p value < FDR are considered significant.}
+\item{FDR}{Numeric. Genes with BH adjusted p-value < FDR are considered
+significant. Default is 0.05.}
 }
 \value{
-A list containing:
-        - `reference_matrix`: A dataframe of median expression values for
-        significantly expressed genes, with genes as rows.
-        - `G`: The number of probes used in the reference matrix that
-        resulted in the lowest condition number.
-        - `condition_number`: The minimum condition number obtained from
-        the analysis.
-        - `whole_matrix`: A matrix of median values across all samples and
-        conditions for further analysis.
+List containing:
+  - `reference_matrix`: Data frame of median expression values for
+    significantly expressed genes.
+  - `G`: Number of probes used that resulted in the lowest condition number.
+  - `condition_number`: Minimum condition number obtained.
+  - `whole_matrix`: Matrix of median values across all samples.
 }
 \description{
-This function performs differential expression analysis using the limma
-package to identify significantly
-expressed genes across different cell types specified in `pheno`. It
-computes median expression levels
-of these significant genes to create a reference signature matrix. The
-function is particularly useful
-for constructing signature matrices in gene expression studies involving
-multiple cell types or conditions.
+Performs differential expression analysis using the limma package to
+identify significantly expressed genes across different cell types.
+Computes median expression levels of these significant genes to create
+a reference signature matrix.
 }
 \examples{
-# Assume 'dat' is a matrix of gene expression data and
-#' pheno' is the corresponding cell type information
 dat <- matrix(rnorm(2000), nrow = 100)
+rownames(dat) <- paste("Gene", 1:100, sep = "_")
+colnames(dat) <- paste("Sample", 1:20, sep = "_")
 pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
+\dontrun{
 results <- generateRef_limma(dat, pheno)
 print(results)
+}
 }

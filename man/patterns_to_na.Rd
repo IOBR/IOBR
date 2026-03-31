@@ -3,7 +3,7 @@
 \docType{data}
 \name{patterns_to_na}
 \alias{patterns_to_na}
-\title{Default pattern list for name cleaning}
+\title{Default Pattern List for Name Cleaning}
 \format{
 A character vector of length 12.
 }
@@ -11,7 +11,7 @@ A character vector of length 12.
 patterns_to_na
 }
 \description{
-A character vector of common substrings to remove from feature names
-(used in \code{remove_names()} and other helper functions).
+A character vector of common substrings to remove from feature names.
+Used in [remove_names()] and other helper functions.
 }
 \keyword{datasets}

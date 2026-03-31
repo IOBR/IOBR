@@ -16,21 +16,24 @@ high_var_fea(
 )
 }
 \arguments{
-\item{result}{Data frame or tibble. Statistical results containing feature, adjusted p-value, and logFC columns.}
+\item{result}{Data frame or tibble. Statistical results containing feature,
+adjusted p-value, and logFC columns.}
 
 \item{target}{Character. Column name of feature identifiers.}
 
-\item{name_padj}{Character. Adjusted p-value column name. Default "padj".}
+\item{name_padj}{Character. Adjusted p-value column name. Default is `"padj"`.}
 
-\item{padj_cutoff}{Numeric. Adjusted p-value threshold. Default 1.}
+\item{padj_cutoff}{Numeric. Adjusted p-value threshold. Default is 1.}
 
 \item{name_logfc}{Character. log2 fold-change column name.}
 
-\item{logfc_cutoff}{Numeric. Absolute log2 fold-change threshold. Default 0.}
+\item{logfc_cutoff}{Numeric. Absolute log2 fold-change threshold. Default is 0.}
 
-\item{n}{Integer. Number of top up and top down features to select. Default 10.}
+\item{n}{Integer. Number of top up and top down features to select.
+Default is 10.}
 
-\item{data_type}{Character or NULL. If "survival", adjusts logFC interpretation.}
+\item{data_type}{Character or `NULL`. If `"survival"`, adjusts logFC
+interpretation. Default is `NULL`.}
 }
 \value{
 Character vector of selected feature names (combined up and down sets).
@@ -41,14 +44,18 @@ p-value and log fold-change thresholds.
 }
 \examples{
 result_data <- data.frame(
-  gene = c("Gene1", "Gene2", "Gene3"),
-  padj = c(0.01, 0.2, 0.05),
-  logfc = c(-2, 1.5, -3)
+  gene = c("Gene1", "Gene2", "Gene3", "Gene4", "Gene5"),
+  padj = c(0.01, 0.02, 0.05, 0.001, 0.03),
+  logfc = c(-2, 1.5, -3, 2.5, 0.5)
 )
 high_var_fea(
-  result = result_data, target = "gene", name_padj = "padj", name_logfc =
-    "logfc", n = 2,
-  padj_cutoff = 0.05, logfc_cutoff = 1.5
+  result = result_data,
+  target = "gene",
+  name_padj = "padj",
+  name_logfc = "logfc",
+  n = 2,
+  padj_cutoff = 0.05,
+  logfc_cutoff = 1.5
 )
 }
 \author{

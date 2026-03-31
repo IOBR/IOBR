@@ -1,54 +1,78 @@
-#' Default pattern list for name cleaning
+#' Default Pattern List for Name Cleaning
 #'
-#' A character vector of common substrings to remove from feature names
-#' (used in \code{remove_names()} and other helper functions).
+#' @description
+#' A character vector of common substrings to remove from feature names.
+#' Used in [remove_names()] and other helper functions.
 #'
 #' @format A character vector of length 12.
 #' @export
-patterns_to_na <- c("_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MCP", "HALLMARK_", "_CIBERSORT", "xcell", "_timer", "_mcp", "_epic")
+patterns_to_na <- c(
+  "_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MCP",
+  "HALLMARK_", "_CIBERSORT", "xcell", "_timer", "_mcp", "_epic"
+)
 
 
 #' Remove Patterns from Column Names or Variables
 #'
-#' This function modifies column names or specified variables in a data frame
-#' by replacing
-#' specified patterns with NA or spaces.
+#' @description
+#' Modifies column names or specified variables in a data frame by replacing
+#' specified patterns with empty strings or spaces.
 #'
-#' @param input_df Input data frame.
-#' @param variable Column to modify: "colnames" for column names, or a specific column name. Default is "colnames".
-#' @param patterns_to_na Vector of patterns to replace with empty string. Default uses predefined patterns.
-#' @param patterns_space Vector of patterns to replace with spaces. Default is NULL.
+#' @param input_df Data frame. Input data to modify.
+#' @param variable Character. Column to modify: "colnames" for column names,
+#'   or a specific column name. Default is "colnames".
+#' @param patterns_to_na Character vector. Patterns to replace with empty
+#'   string. Default uses [patterns_to_na].
+#' @param patterns_space Character vector or `NULL`. Patterns to replace with
+#'   spaces. Default is `NULL`.
 #'
 #' @return Modified data frame with patterns replaced.
+#'
 #' @export
+#' @author Dongqiang Zeng
+#'
 #' @examples
 #' imvigor210_sig <- load_data("imvigor210_sig")
-#' input <- remove_names(imvigor210_sig,
+#' input <- remove_names(
+#'   imvigor210_sig,
 #'   variable = "colnames",
 #'   patterns_to_na = patterns_to_na,
 #'   patterns_space = NULL
 #' )
-remove_names <- function(input_df, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = NULL) {
+remove_names <- function(input_df, 
+                         variable = "colnames", 
+                         patterns_to_na = patterns_to_na, 
+                         patterns_space = NULL) {
+  
+  if (!is.data.frame(input_df)) {
+    cli::cli_abort("{.arg input_df} must be a data frame.")
+  }
+  
+  if (variable != "colnames" && !variable %in% colnames(input_df)) {
+    cli::cli_abort("Column {.val {variable}} not found in {.arg input_df}.")
+  }
+  
   if (variable == "colnames") {
-    for (i in 1:length(patterns_to_na)) {
-      colnames(input_df) <- gsub(colnames(input_df), pattern = patterns_to_na[i], replacement = "")
+    for (pattern in patterns_to_na) {
+      colnames(input_df) <- gsub(colnames(input_df), pattern = pattern, replacement = "")
     }
-
+    
     if (!is.null(patterns_space)) {
-      for (j in 1:length(patterns_space)) {
-        colnames(input_df) <- gsub(colnames(input_df), pattern = patterns_space[j], replacement = " ")
+      for (pattern in patterns_space) {
+        colnames(input_df) <- gsub(colnames(input_df), pattern = pattern, replacement = " ")
       }
     }
   } else {
-    input_df <- as.data.frame(input_df)
-    for (i in 1:length(patterns_to_na)) {
-      input_df[, variable] <- gsub(input_df[, variable], pattern = patterns_to_na[i], replacement = "")
+    for (pattern in patterns_to_na) {
+      input_df[[variable]] <- gsub(input_df[[variable]], pattern = pattern, replacement = "")
     }
+    
     if (!is.null(patterns_space)) {
-      for (j in 1:length(patterns_space)) {
-        input_df[, variable] <- gsub(input_df[, variable], pattern = patterns_space[j], replacement = " ")
+      for (pattern in patterns_space) {
+        input_df[[variable]] <- gsub(input_df[[variable]], pattern = pattern, replacement = " ")
       }
     }
   }
-  return(input_df)
+  
+  input_df
 }

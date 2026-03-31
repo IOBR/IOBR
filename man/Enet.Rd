@@ -9,17 +9,23 @@ Enet(train.x, train.y, lambdamax, nfold = 10)
 \arguments{
 \item{train.x}{Training predictors matrix.}
 
-\item{train.y}{Training binary outcomes.}
+\item{train.y}{Training binary outcomes (0/1 or factor).}
 
-\item{lambdamax}{Maximum lambda value.}
+\item{lambdamax}{Maximum lambda value for the grid search.}
 
 \item{nfold}{Number of CV folds. Default is `10`.}
 }
 \value{
-List with `chose_alpha` and `chose_lambda`.
+List containing:
+\describe{
+  \item{chose_alpha}{Optimal alpha value (0-1)}
+  \item{chose_lambda}{Optimal lambda value}
+}
 }
 \description{
 Fits elastic net model with cross-validation to find optimal alpha and lambda.
+Searches across a grid of alpha values (0 to 1) and lambda values to minimize
+cross-validation error.
 }
 \examples{
 \dontrun{

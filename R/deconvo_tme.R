@@ -281,7 +281,7 @@ deconvo_cibersort <- function(eset,
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")

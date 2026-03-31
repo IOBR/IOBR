@@ -2,27 +2,34 @@
 % Please edit documentation in R/CIBERSORT.R
 \name{CoreAlg}
 \alias{CoreAlg}
-\title{Perform Nu-Regression Using Support Vector Machines}
+\title{Core Algorithm for CIBERSORT Deconvolution}
 \usage{
 CoreAlg(X, y, absolute, abs_method)
 }
 \arguments{
-\item{X}{A matrix or data frame containing the predictor variables.}
+\item{X}{Matrix or data frame containing signature matrix (predictor variables).
+Rows are genes, columns are cell types.}
 
-\item{y}{A numeric vector containing the response variable.}
+\item{y}{Numeric vector containing the mixture sample expression (response variable).}
 
-\item{absolute}{Logical indicating whether to use absolute space for weights. Default is FALSE.}
+\item{absolute}{Logical indicating whether to use absolute space for weights.
+Default is FALSE (relative proportions).}
 
-\item{abs_method}{String specifying the method for absolute space weights: "sig.score" or "no.sumto1".}
+\item{abs_method}{String specifying the method for absolute space weights:
+`"sig.score"` or `"no.sumto1"`.}
 }
 \value{
-A list containing the weights (`w`), root mean squared error
-  (`mix_rmse`), and correlation coefficient (`mix_r`).
+List containing:
+\describe{
+  \item{w}{Estimated cell type weights/proportions}
+  \item{mix_rmse}{Root mean squared error of the deconvolution}
+  \item{mix_r}{Correlation coefficient between observed and predicted mixture}
+}
 }
 \description{
-This function performs nu-regression using support vector machines (SVM) and
-calculates weights,
-#' root mean squared error (RMSE), and correlation coefficient (R).
+Performs nu-regression using support vector machines (SVM) to estimate
+cell type proportions. This is the core computational engine of CIBERSORT,
+using nu-SVR with linear kernel to decompose mixed gene expression signals.
 }
 \examples{
 \dontrun{
@@ -30,5 +37,4 @@ X <- matrix(rnorm(100), nrow = 10)
 y <- rnorm(10)
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
 }
-
 }
