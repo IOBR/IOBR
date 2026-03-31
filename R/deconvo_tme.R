@@ -148,6 +148,7 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' mcp_result <- deconvo_mcpcounter(eset = eset_stad, project = "TCGA-STAD")
 #' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
+  rlang::check_installed("MCPcounter", reason = "to run MCP-counter deconvolution")
   cli::cli_alert_info("Running MCP-counter deconvolution")
 
   mcp_genes <- load_data("mcp_genes")

@@ -263,19 +263,19 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1,
   }
 
   if (palette == 1) {
-    return(c("#000004FF", "#6B0A7DFF", "#B63679FF", "#FCA50AFF", "#F7F419FF"))
+    return(c("#000004FF", "#B63679FF", "#F7F419FF"))
   }
   if (palette == 2) {
-    return(rev(RColorBrewer::brewer.pal(5, "RdYlBu")))
+    return(rev(RColorBrewer::brewer.pal(3, "RdYlBu")))
   }
   if (palette == 3) {
-    return(rev(RColorBrewer::brewer.pal(5, "RdYlGn")))
+    return(rev(RColorBrewer::brewer.pal(3, "RdYlGn")))
   }
   if (palette == 4) {
-    return(rev(RColorBrewer::brewer.pal(5, "Spectral")))
+    return(rev(RColorBrewer::brewer.pal(3, "Spectral")))
   }
   if (palette == 5) {
-    return(rev(RColorBrewer::brewer.pal(5, "PiYG")))
+    return(rev(RColorBrewer::brewer.pal(3, "PiYG")))
   }
   if (palette == 6) {
     return(c("navy", "white", "firebrick"))

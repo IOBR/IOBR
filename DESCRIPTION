@@ -29,9 +29,10 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
     R (>= 3.6.0)
-Imports: 
+Imports:
     biomaRt,
     circlize,
+    cli,
     clusterProfiler,
     ComplexHeatmap,
     dplyr,
@@ -41,7 +42,6 @@ Imports:
     GSVA,
     limSolve,
     methods,
-    plyr,
     preprocessCore,
     purrr,
     RColorBrewer,

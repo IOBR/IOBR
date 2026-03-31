@@ -121,7 +121,7 @@ sig_heatmap <- function(input,
   # Convert to long format
   pf_long_group <- tidyr::pivot_longer(
     input_copy,
-    cols = tidyselect::all_of(features),
+    cols = dplyr::all_of(features),
     names_to = "variables",
     values_to = "value"
   )

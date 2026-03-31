@@ -285,19 +285,18 @@ iobr_cor_plot <- function(pdata_group,
 
     # Prepare long format data
     if (!is.null(target)) {
-      target_idx <- which(colnames(pf) == target)
-      cols_to_select <- c(setdiff(colnames(pdata_group), target), target, features)
-      pf_inter <- tibble::as_tibble(pf[, cols_to_select])
-      pf_long <- tidyr::pivot_longer(pf_inter, (target_idx + 1):ncol(pf_inter),
+      # Select ID, target, group columns, and feature columns
+      pf_inter <- tibble::as_tibble(pf[, c("ID", target, group, features)])
+      pf_long <- tidyr::pivot_longer(pf_inter, (3 + length(group)):ncol(pf_inter),
         names_to = "variables", values_to = "value"
       )
       pf_long$value <- as.numeric(pf_long$value)
     } else {
       pf_inter <- tibble::as_tibble(pf[, c("ID", group, features)])
       pf_long <- tidyr::pivot_longer(pf_inter, 3:ncol(pf_inter),
-        names_to = "variables", values_to = "value"
+        names_to = "variables", values_to = "value",
+        values_transform = list(value = as.numeric)
       )
-      pf_long$value <- as.numeric(pf_long$value)
     }
 
     pf_long$variables <- substring(pf_long$variables, 1, character_limit)
@@ -368,7 +367,7 @@ iobr_cor_plot <- function(pdata_group,
       ggplot2::aes(group = !!group_box, label = paste0("p = ", ggplot2::after_stat(p.format))),
       size = 2.6, label.y = max_variables - 0.3
     )
-    pp2 <- p + ggpubr::compare_means(
+    pp2 <- p + ggpubr::stat_compare_means(
       ggplot2::aes(group = !!group_box),
       label = "p.signif",
       size = 6, label.y = max_variables - 0.6

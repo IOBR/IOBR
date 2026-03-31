@@ -161,10 +161,11 @@ sig_surv_plot <- function(input_pdata,
   )
 
   # Define break time
-  if (break_month == "auto") {
-    break_month <- break_month(input = input_pdata$time, block = 6)
+  break_month_val <- break_month
+  if (break_month_val == "auto") {
+    break_month_val <- break_month(input = input_pdata$time, block = 6)
   }
-  max_month <- break_month * 6
+  max_month <- break_month_val * 6
 
   # Get colors
   if (is.null(cols)) {
