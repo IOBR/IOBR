@@ -306,8 +306,16 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #' @examples
 #' \dontrun{
 #' if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
-#'   fitted_model <- glmnet::glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), family = "binomial")
-#'   auc_value <- BinomialAUC(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
+#'   fitted_model <- glmnet::glmnet(
+#'     matrix(rnorm(100), ncol = 2),
+#'     rbinom(50, 1, 0.5),
+#'     family = "binomial"
+#'   )
+#'   auc_value <- BinomialAUC(
+#'     fitted_model,
+#'     matrix(rnorm(20), ncol = 2),
+#'     "lambda.min", rbinom(10, 1, 0.5)
+#'   )
 #' }
 #' }
 BinomialAUC <- function(model, newx, s, acture.y) {
@@ -428,7 +436,11 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #' \donttest{
 #' data_matrix <- matrix(rnorm(200), ncol = 2)
 #' outcome_vector <- rbinom(100, 1, 0.5)
-#' split_data <- SplitTrainTest(data_matrix, outcome_vector, train_ratio = 0.7, type = "binomial", seed = 123)
+#' split_data <- SplitTrainTest(
+#'   data_matrix, outcome_vector,
+#'   train_ratio = 0.7,
+#'   type = "binomial", seed = 123
+#' )
 #' }
 SplitTrainTest <- function(x, y, train_ratio, type = c("binomial", "survival"), seed) {
   type <- rlang::arg_match(type)
