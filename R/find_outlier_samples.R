@@ -57,16 +57,16 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   )
   ################################
 
-  p <- ggplot(connectivity.plot, aes(x = Sample.Num, y = Z.score, label = Sample.Name)) +
-    geom_text(size = 4, colour = "red")
-  p <- p + geom_hline(aes(yintercept = yinter))
-  p <- p + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
+  p <- ggplot2::ggplot(connectivity.plot, ggplot2::aes(x = Sample.Num, y = Z.score, label = Sample.Name)) +
+    ggplot2::geom_text(size = 4, colour = "red")
+  p <- p + ggplot2::geom_hline(ggplot2::aes(yintercept = yinter))
+  p <- p + ggplot2::theme_bw() + ggplot2::theme(panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank())
+  p <- p + ggplot2::xlab("Sample Number") + ggplot2::ylab("Z score") + ggplot2::ggtitle("Sample Connectivity")
   p <- p + design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
   if (show_plot) print(p)
 
   if (save) {
-    ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
+    ggplot2::ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
   }
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]
