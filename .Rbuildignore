@@ -33,3 +33,6 @@
 ^output\.gct$
 ^output\.txt$
 ^my_signatures\.csv$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
