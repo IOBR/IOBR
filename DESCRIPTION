@@ -28,7 +28,7 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
     https://iobr.github.io/book/ (docs)
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
-    R (>= 3.6.0)
+    R (>= 4.1.0)
 Imports:
     biomaRt,
     circlize,
@@ -67,6 +67,7 @@ Suggests:
     factoextra,
     FactoMineR,
     foreach,
+    ggdensity,
     ggpubr,
     ggsci,
     gridExtra,
@@ -86,14 +87,13 @@ Suggests:
     pROC,
     psych,
     rmarkdown,
+    ROCR,
     Seurat,
     SeuratObject,
     testthat (>= 3.0.0),
     webr,
     WGCNA,
-    xCell,
-    ggdensity,
-    ROCR
+    xCell
 VignetteBuilder: 
     knitr
 Remotes:
