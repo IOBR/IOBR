@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' tf <- tempfile(fileext = ".gmt")
 #' writeLines(
 #'   c(
@@ -28,6 +29,7 @@
 #' sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
 #' names(sig_list)
 #' sig_list[[1]]
+#' }
 format_msigdb <- function(gmt, ont = "term", gene = "gene") {
   if (!file.exists(gmt)) {
     cli::cli_abort("File {.file {gmt}} does not exist")

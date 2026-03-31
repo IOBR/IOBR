@@ -43,7 +43,7 @@ find_variable_genes <- function(eset,
                                 feas = NULL) {
   data_type <- rlang::arg_match(data_type)
   methods <- match.arg(methods, c("low", "mad"), several.ok = TRUE)
-  quantile <- rlang::arg_match(as.character(quantile), c("0.25", "0.5", "0.75"))
+  quantile <- match.arg(as.character(quantile), c("0.25", "0.5", "0.75"))
   quantile <- as.numeric(quantile)
 
   eset <- as.matrix(eset)
