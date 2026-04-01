@@ -1,0 +1,691 @@
+# IOBR: Immuno-Oncology Biological Research
+
+[![GitHub
+release](https://img.shields.io/github/release/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/releases/)
+[![GitHub
+stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/stargazers/)
+[![GitHub
+issues](https://img.shields.io/github/issues/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/issues/)
+[![License](https://img.shields.io/badge/license-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
+
+IOBR is a comprehensive R package designed for immuno-oncology research,
+providing a one-stop solution for tumor microenvironment (TME)
+deconvolution, signature analysis, and integrated visualization. It
+integrates multiple state-of-the-art algorithms and curated gene sets to
+facilitate in-depth analysis of tumor immunity.
+
+## 📊 Package Workflow
+
+![IOBR Workflow](./reference/figures/IOBR-Workflow.png)
+
+IOBR Workflow
+
+![IOBR Package](./reference/figures/IOBR-Package.png)
+
+IOBR Package
+
+## 🎯 Key Features
+
+### 1. Extensive Signature Collection
+
+- **322+ published signature gene sets** covering TME, metabolism, m6A,
+  exosomes, microsatellite instability, tertiary lymphoid structure, and
+  more
+- Easy access to signature genes and source citations
+- Flexible signature management and customization
+
+### 2. Multi-algorithm TME Deconvolution
+
+Integrates 8 cutting-edge TME decoding methodologies:
+
+- `CIBERSORT` - Cell-type identification by estimating relative subsets
+  of RNA transcripts
+- `TIMER` - Tumor Immune Estimation Resource
+- `xCell` - Digital portrayal of tissue cellular heterogeneity
+- `MCPcounter` - Estimation of immune and stromal cell populations
+- `ESTIMATE` - Inference of tumor purity and stromal/immune cell
+  admixture
+- `EPIC` - Enumeration of cancer and immune cell types
+- `IPS` - Immunophenoscore calculation
+- `quanTIseq` - Quantification of tumor-infiltrating immune cells
+
+### 3. Signature Score Calculation
+
+Three robust computational methods for signature scoring:
+
+- `PCA` - Principal Component Analysis
+- `z-score` - Standardized expression scoring
+- `ssGSEA` - Single-sample Gene Set Enrichment Analysis
+
+### 4. Integrated Analysis Pipeline
+
+- Data preprocessing and normalization
+- Batch effect correction
+- Feature selection and dimensionality reduction
+- Survival analysis and risk modeling
+- Statistical testing and visualization
+
+### 5. Rich Visualization Tools
+
+- Batch survival analysis plots
+- Subgroup characteristic visualization
+- Correlation heatmaps and scatter plots
+- Forest plots for biomarker validation
+- Customizable themes and color palettes
+
+## 📦 Installation
+
+### Prerequisites
+
+- R version 3.6.0 or higher
+- Bioconductor version 3.10 or higher
+
+### Install from GitHub
+
+#### Standard Installation
+
+``` r
+# Install BiocManager if not already installed
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+# Install IOBR from GitHub
+BiocManager::install("IOBR/IOBR")
+```
+
+#### For Chinese Users (Faster Download)
+
+``` r
+# Install remotes if not already installed
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+# Install IOBR using a mirror for faster download
+remotes::install_git("https://ghfast.top/https://github.com/IOBR/IOBR")
+```
+
+### Load the Package
+
+``` r
+library(IOBR)
+```
+
+## 🚀 Quick Start
+
+### TME Deconvolution
+
+``` r
+# List available TME deconvolution methods
+tme_deconvolution_methods
+
+# Perform TME deconvolution using multiple methods
+# Assuming you have an expression set object 'eset'
+tme_result <- deconvo_tme(eset, 
+                          methods = c("cibersort", "timer", "xcell"),
+                          output_format = "data.frame")
+```
+
+### Signature Score Calculation
+
+``` r
+# List available signature score calculation methods
+signature_score_calculation_methods
+
+# Calculate signature scores using ssGSEA
+# Assuming you have an expression set object 'eset' and signature list 'sig_list'
+sig_scores <- sigScore(eset, 
+                       signature = sig_list,
+                       method = "ssgsea")
+```
+
+## 📖 Documentation
+
+### IOBR Book
+
+For detailed tutorials and case studies, please refer to the [IOBR
+Book](https://iobr.github.io/book/), which provides comprehensive
+guidance on:
+
+- Installation and setup
+- Data preprocessing
+- TME deconvolution
+- Signature analysis
+- Survival analysis
+- Visualization techniques
+
+### Package Vignettes
+
+Vignettes are available within the package and can be accessed using:
+
+``` r
+browseVignettes("IOBR")
+```
+
+## 🛠️ Available Methods
+
+### TME Deconvolution Methods
+
+``` r
+tme_deconvolution_methods
+#>         MCPcounter               EPIC              xCell          CIBERSORT 
+#>       "mcpcounter"             "epic"            "xcell"        "cibersort" 
+#> CIBERSORT Absolute                IPS           ESTIMATE                SVR 
+#>    "cibersort_abs"              "ips"         "estimate"              "svr" 
+#>               lsei              TIMER          quanTIseq 
+#>             "lsei"            "timer"        "quantiseq"
+```
+
+### Signature Score Calculation Methods
+
+``` r
+signature_score_calculation_methods
+#>           PCA        ssGSEA       z-score   Integration 
+#>         "pca"      "ssgsea"      "zscore" "integration"
+```
+
+### Signature Collection
+
+``` r
+data("signature_collection")
+# Number of available signatures
+length(signature_collection)
+#> [1] 323
+
+head(signature_collection)
+#> $CD_8_T_effector
+#> [1] "CD8A"   "GZMA"   "GZMB"   "IFNG"   "CXCL9"  "CXCL10" "PRF1"   "TBX21" 
+#> 
+#> $DDR
+#>   [1] "UNG"     "SMUG1"   "MBD4"    "OGG1"    "MUTYH"   "NTHL1"   "MPG"    
+#>   [8] "NEIL1"   "NEIL2"   "NEIL3"   "APEX1"   "APEX2"   "LIG3"    "XRCC1"  
+#>  [15] "PNKP"    "APLF"    "PARP1"   "PARP2"   "PARP3"   "MGMT"    "ALKBH2" 
+#>  [22] "ALKBH3"  "TDP1"    "TDP2"    "MSH2"    "MSH3"    "MSH6"    "MLH1"   
+#>  [29] "PMS2"    "MSH4"    "MSH5"    "MLH3"    "PMS1"    "XPC"     "RAD23B" 
+#>  [36] "CETN2"   "RAD23A"  "XPA"     "DDB1"    "DDB2"    "RPA1"    "RPA2"   
+#>  [43] "RPA3"    "ERCC3"   "ERCC2"   "GTF2H1"  "GTF2H2"  "GTF2H3"  "GTF2H4" 
+#>  [50] "GTF2H5"  "CDK7"    "CCNH"    "MNAT1"   "ERCC5"   "ERCC1"   "ERCC4"  
+#>  [57] "LIG1"    "ERCC8"   "ERCC6"   "UVSSA"   "XAB2"    "MMS19"   "RAD51"  
+#>  [64] "RAD51B"  "RAD51D"  "DMC1"    "XRCC2"   "XRCC3"   "RAD52"   "RAD54L" 
+#>  [71] "RAD54B"  "BRCA1"   "SHFM1"   "RAD50"   "MRE11A"  "NBN"     "RBBP8"  
+#>  [78] "MUS81"   "EME1"    "EME2"    "GEN1"    "FANCA"   "FANCB"   "FANCC"  
+#>  [85] "BRCA2"   "FANCD2"  "FANCE"   "FANCF"   "FANCG"   "FANCI"   "BRIP1"  
+#>  [92] "FANCL"   "FANCM"   "PALB2"   "RAD51C"  "XRCC6"   "XRCC5"   "PRKDC"  
+#>  [99] "LIG4"    "XRCC4"   "DCLRE1C" "NHEJ1"   "NUDT1"   "DUT"     "RRM2B"  
+#> [106] "POLB"    "POLG"    "POLD1"   "POLE"    "PCNA"    "REV3L"   "MAD2L2" 
+#> [113] "POLH"    "POLI"    "POLQ"    "POLK"    "POLL"    "POLM"    "POLN"   
+#> [120] "FEN1"    "FAN1"    "TREX1"   "EXO1"    "APTX"    "ENDOV"   "UBE2A"  
+#> [127] "UBE2B"   "RAD18"   "SHPRH"   "HLTF"    "RNF168"  "SPRTN"   "RNF8"   
+#> [134] "RNF4"    "UBE2V2"  "UBE2N"   "H2AFX"   "CHAF1A"  "SETMAR"  "BLM"    
+#> [141] "WRN"     "RECQL4"  "ATM"     "DCLRE1A" "DCLRE1B" "RPA4"    "PRPF19" 
+#> [148] "RECQL"   "RECQL5"  "HELQ"    "RDM1"    "ATR"     "ATRIP"   "MDC1"   
+#> [155] "RAD1"    "RAD9A"   "HUS1"    "RAD17"   "CHEK1"   "CHEK2"   "TP53"   
+#> [162] "TP53BP1" "RIF1"    "TOPBP1"  "CLK2"    "PER1"   
+#> 
+#> $APM
+#> [1] "B2M"   "HLA-A" "HLA-B" "HLA-C" "TAP1"  "TAP2" 
+#> 
+#> $Immune_Checkpoint
+#> [1] "CD274"    "PDCD1LG2" "CTLA4"    "PDCD1"    "LAG3"     "HAVCR2"   "TIGIT"   
+#> 
+#> $CellCycle_Reg
+#>  [1] "ATM"    "CDKN1A" "CDKN2A" "MDM2"   "TP53"   "CCND1"  "RB1"    "CCNE1" 
+#>  [9] "FBXW7"  "E2F3"  
+#> 
+#> $Pan_F_TBRs
+#>  [1] "ACTA2"    "ACTG2"    "ADAM12"   "ADAM19"   "CNN1"     "COL4A1"  
+#>  [7] "CTGF"     "CTPS1"    "FAM101B"  "FSTL3"    "HSPB1"    "IGFBP3"  
+#> [13] "PXDC1"    "SEMA7A"   "SH3PXD2A" "TAGLN"    "TGFBI"    "TNS1"    
+#> [19] "TPM1"
+
+data("signature_collection_citation")
+head(signature_collection_citation)
+#> # A tibble: 6 × 6
+#>   Signatures        `Published year` Journal Title                   PMID  DOI  
+#>   <chr>                        <dbl> <chr>   <chr>                   <chr> <chr>
+#> 1 CD_8_T_effector               2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+#> 2 DDR                           2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+#> 3 APM                           2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+#> 4 Immune_Checkpoint             2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+#> 5 CellCycle_Reg                 2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+#> 6 Pan_F_TBRs                    2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
+
+data("sig_group")
+sig_group[1:3]
+#> $tumor_signature
+#>  [1] "CellCycle_Reg"                            
+#>  [2] "Cell_cycle"                               
+#>  [3] "DDR"                                      
+#>  [4] "Mismatch_Repair"                          
+#>  [5] "Histones"                                 
+#>  [6] "Homologous_recombination"                 
+#>  [7] "Nature_metabolism_Hypoxia"                
+#>  [8] "Molecular_Cancer_m6A"                     
+#>  [9] "MT_exosome"                               
+#> [10] "Positive_regulation_of_exosomal_secretion"
+#> [11] "Ferroptosis"                              
+#> [12] "EV_Cell_2020"                             
+#> 
+#> $EMT
+#> [1] "Pan_F_TBRs" "EMT1"       "EMT2"       "EMT3"       "WNT_target"
+#> 
+#> $io_biomarkers
+#>  [1] "TMEscore_CIR"                    "TMEscoreA_CIR"                  
+#>  [3] "TMEscoreB_CIR"                   "T_cell_inflamed_GEP_Ayers_et_al"
+#>  [5] "CD_8_T_effector"                 "IPS_IPS"                        
+#>  [7] "Immune_Checkpoint"               "Exhausted_CD8_Danaher_et_al"    
+#>  [9] "Pan_F_TBRs"                      "Mismatch_Repair"                
+#> [11] "APM"
+```
+
+## 📊 Licenses and Citations
+
+### TME Deconvolution Methods
+
+| Method                                                                      | License                                                                                                       | Citation                                                                                                |
+|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [CIBERSORT](https://cibersort.stanford.edu/)                                | Free for non-commercial use only                                                                              | Newman, A. M., et al. (2015). Nature Methods, 12(5), 453–457. <https://doi.org/10.1038/nmeth.3337>      |
+| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | Free ([GPL2.0](https://bioinformatics.mdanderson.org/estimate/))                                              | Vegesna R, et al. (2013). Nature Communications, 4, 2612. <http://doi.org/10.1038/ncomms3612>           |
+| [quanTIseq](http://icbi.at/software/quantiseq/doc/index.md)                 | Free ([BSD](https://github.com/icbi-lab/immunedeconv/blob/master/LICENSE.md))                                 | Finotello, F., et al. (2019). Genome Medicine, 11(1), 34. <https://doi.org/10.1186/s13073-019-0638-6>   |
+| [TIMER](http://cistrome.org/TIMER/)                                         | Free ([GPL 2.0](http://cistrome.org/TIMER/download.md))                                                       | Li, B., et al. (2016). Genome Biology, 17(1), 174. <https://doi.org/10.1186/s13059-016-1028-7>          |
+| [IPS](https://github.com/icbi-lab/Immunophenogram)                          | Free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE))                                 | Charoentong P, et al. (2017). Cell Reports, 18, 248-262. <https://doi.org/10.1016/j.celrep.2016.12.019> |
+| [MCPCounter](https://github.com/ebecht/MCPcounter)                          | Free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License))                             | Becht, E., et al. (2016). Genome Biology, 17(1), 218. <https://doi.org/10.1186/s13059-016-1070-5>       |
+| [xCell](http://xcell.ucsf.edu/)                                             | Free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION))                                   | Aran, D., et al. (2017). Genome Biology, 18(1), 220. <https://doi.org/10.1186/s13059-017-1349-1>        |
+| [EPIC](https://gfellerlab.shinyapps.io/EPIC_1-1/)                           | Free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., et al. (2017). eLife, 6, e26476. <https://doi.org/10.7554/eLife.26476>                       |
+
+### Signature Estimation Methods
+
+| Method                                                                 | License                                                | Citation                                                                                         |
+|------------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| [GSVA](http://www.bioconductor.org/packages/release/bioc/html/GSVA.md) | Free ([GPL (\>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, et al. (2013). BMC Bioinformatics, 14, 7. <https://doi.org/10.1186/1471-2105-14-7> |
+
+## 📝 Citing IOBR
+
+If you use IOBR in your research, please cite both the IOBR package and
+the specific methods you employ.
+
+1.  Zeng DQ, Fang YR, …, Liao WJ. Enhancing Immuno-Oncology
+    Investigations Through Multidimensional Decoding of Tumour
+    Microenvironment with IOBR 2.0, **Cell Reports Methods**, 2024
+    <https://doi.org/10.1016/j.crmeth.2024.100910>
+
+2.  Fang YR, …, Liao WJ, Zeng DQ, Systematic Investigation of Tumor
+    Microenvironment and Antitumor Immunity With IOBR, **Med Research**,
+    2025 <https://onlinelibrary.wiley.com/doi/epdf/10.1002/mdr2.70001>
+
+## 🤝 Contributing
+
+We welcome contributions to IOBR! If you’re interested in contributing,
+please:
+
+1.  Fork the repository
+2.  Create a feature branch
+3.  Make your changes
+4.  Submit a pull request
+
+Please ensure your code follows the project’s coding standards and
+includes appropriate documentation and tests.
+
+## 🐛 Reporting Bugs
+
+If you encounter any bugs or issues, please report them to the [GitHub
+issues page](https://github.com/IOBR/IOBR/issues). When reporting bugs,
+please include:
+
+- A clear and descriptive title
+- A detailed description of the issue
+- Minimal reproducible example (if possible)
+- Your R and IOBR versions
+- Any error messages or warnings
+
+## 📧 Contact
+
+For questions or inquiries, please contact:
+
+- Dr. Deqiang Zeng: <interlaken@smu.edu.cn>
+- Dr. Yunru Fang: <fyr_nate@163.com>
+
+## 📄 License
+
+IOBR is released under the [GNU General Public License
+v3.0](https://iobr.github.io/IOBR/LICENSE).
+
+# Package index
+
+## All functions
+
+- [`BRef`](https://iobr.github.io/IOBR/reference/BRef.md) : Reference
+  profiles for B cell–related deconvolution (EPIC/IOBR)
+- [`BinomialAUC()`](https://iobr.github.io/IOBR/reference/BinomialAUC.md)
+  : Calculate AUC for Binomial Model
+- [`BinomialModel()`](https://iobr.github.io/IOBR/reference/BinomialModel.md)
+  : Binomial Model Construction
+- [`CIBERSORT()`](https://iobr.github.io/IOBR/reference/CIBERSORT.md) :
+  CIBERSORT Deconvolution Algorithm
+- [`CalculatePref()`](https://iobr.github.io/IOBR/reference/CalculatePref.md)
+  : Calculate Performance Metrics
+- [`CalculateTimeROC()`](https://iobr.github.io/IOBR/reference/CalculateTimeROC.md)
+  : Calculate Time-Dependent ROC Curve
+- [`Construct_con()`](https://iobr.github.io/IOBR/reference/Construct_con.md)
+  : Construct Contrast Matrix
+- [`ConvertRownameToLoci()`](https://iobr.github.io/IOBR/reference/ConvertRownameToLoci.md)
+  : Convert Rowname To Loci
+- [`CoreAlg()`](https://iobr.github.io/IOBR/reference/CoreAlg.md) : Core
+  Algorithm for CIBERSORT Deconvolution
+- [`DrawQQPlot()`](https://iobr.github.io/IOBR/reference/DrawQQPlot.md)
+  : Draw QQ Plot Comparing Cancer and Immune Expression
+- [`EPIC()`](https://iobr.github.io/IOBR/reference/EPIC.md) : Estimate
+  the proportion of immune and cancer cells.
+- [`Enet()`](https://iobr.github.io/IOBR/reference/Enet.md) : Elastic
+  Net Model Fitting
+- [`GetFractions.Abbas()`](https://iobr.github.io/IOBR/reference/GetFractions.Abbas.md)
+  : Constrained Regression Method (Abbas et al., 2009)
+- [`GetOutlierGenes()`](https://iobr.github.io/IOBR/reference/GetOutlierGenes.md)
+  : Get Outlier Genes
+- [`IPS_calculation()`](https://iobr.github.io/IOBR/reference/IPS_calculation.md)
+  : Calculate Immunophenoscore (IPS)
+- [`LR_cal()`](https://iobr.github.io/IOBR/reference/LR_cal.md) :
+  Calculate Ligand-Receptor Interaction Scores
+- [`MCPcounter.estimate()`](https://iobr.github.io/IOBR/reference/MCPcounter.estimate.md)
+  : MCP-counter Cell Population Abundance Estimation
+- [`ParseInputExpression()`](https://iobr.github.io/IOBR/reference/ParseInputExpression.md)
+  : Parse Input Gene Expression Data
+- [`PlotAUC()`](https://iobr.github.io/IOBR/reference/PlotAUC.md) : Plot
+  AUC ROC Curves
+- [`PlotTimeROC()`](https://iobr.github.io/IOBR/reference/PlotTimeROC.md)
+  : Plot Time-Dependent ROC Curves
+- [`ProcessingData()`](https://iobr.github.io/IOBR/reference/ProcessingData.md)
+  : Process Data for Model Construction
+- [`PrognosticAUC()`](https://iobr.github.io/IOBR/reference/PrognosticAUC.md)
+  : Calculate Time-Dependent AUC for Survival Models
+- [`PrognosticModel()`](https://iobr.github.io/IOBR/reference/PrognosticModel.md)
+  : Build Prognostic Models Using LASSO and Ridge Regression
+- [`PrognosticResult()`](https://iobr.github.io/IOBR/reference/PrognosticResult.md)
+  : Compute Prognostic Results for Survival Models
+- [`RegressionResult()`](https://iobr.github.io/IOBR/reference/RegressionResult.md)
+  : Regression Result Computation
+- [`RemoveBatchEffect()`](https://iobr.github.io/IOBR/reference/RemoveBatchEffect.md)
+  : Remove Batch Effect of Expression Set
+- [`SplitTrainTest()`](https://iobr.github.io/IOBR/reference/SplitTrainTest.md)
+  : Split Data into Training and Testing Sets
+- [`TRef`](https://iobr.github.io/IOBR/reference/TRef.md) : Reference
+  profiles from tumor-infiltrating non-malignant cells
+- [`TimerINFO()`](https://iobr.github.io/IOBR/reference/TimerINFO.md) :
+  Display Timer Information Messages (Deprecated)
+- [`Top_probe()`](https://iobr.github.io/IOBR/reference/Top_probe.md) :
+  Top Probe Selector
+- [`add_riskscore()`](https://iobr.github.io/IOBR/reference/add_riskscore.md)
+  : Add Risk Score to Dataset
+- [`anno_eset()`](https://iobr.github.io/IOBR/reference/anno_eset.md) :
+  Annotate Gene Expression Matrix and Remove Duplicated Genes
+- [`anno_gc_vm32`](https://iobr.github.io/IOBR/reference/anno_gc_vm32.md)
+  : Mouse Genome Annotation (GC/VM32)
+- [`anno_grch38`](https://iobr.github.io/IOBR/reference/anno_grch38.md)
+  : GRCh38 Human Genome Annotation
+- [`anno_hug133plus2`](https://iobr.github.io/IOBR/reference/anno_hug133plus2.md)
+  : Affymetrix Human Genome U133 Plus 2.0 Array Annotation
+- [`anno_illumina`](https://iobr.github.io/IOBR/reference/anno_illumina.md)
+  : Illumina Microarray Annotation
+- [`anno_rnaseq`](https://iobr.github.io/IOBR/reference/anno_rnaseq.md)
+  : General RNA-seq Annotation
+- [`assimilate_data()`](https://iobr.github.io/IOBR/reference/assimilate_data.md)
+  : Harmonize Two Data Frames by Column Structure
+- [`batch_cor()`](https://iobr.github.io/IOBR/reference/batch_cor.md) :
+  Batch Correlation Analysis
+- [`batch_kruskal()`](https://iobr.github.io/IOBR/reference/batch_kruskal.md)
+  : Batch Kruskal-Wallis Test
+- [`batch_pcc()`](https://iobr.github.io/IOBR/reference/batch_pcc.md) :
+  Batch Calculation of Partial Correlation Coefficients
+- [`batch_sig_surv_plot()`](https://iobr.github.io/IOBR/reference/batch_sig_surv_plot.md)
+  : Batch Signature Survival Plot
+- [`batch_surv()`](https://iobr.github.io/IOBR/reference/batch_surv.md)
+  : Batch Survival Analysis
+- [`batch_wilcoxon()`](https://iobr.github.io/IOBR/reference/batch_wilcoxon.md)
+  : Batch Wilcoxon Rank-Sum Test Between Two Groups
+- [`best_cutoff()`](https://iobr.github.io/IOBR/reference/best_cutoff.md)
+  : Extract Best Cutoff and Add Binary Variable to Data Frame
+- [`best_cutoff2()`](https://iobr.github.io/IOBR/reference/best_cutoff2.md)
+  : Extract Best Cutoff and Add Binary Variable to Data Frame
+- [`calculate_break_month()`](https://iobr.github.io/IOBR/reference/calculate_break_month.md)
+  : Break Time Into Blocks
+- [`calculate_sig_score()`](https://iobr.github.io/IOBR/reference/calculate_sig_score.md)
+  : Calculate Signature Score
+- [`calculate_sig_score_integration()`](https://iobr.github.io/IOBR/reference/calculate_sig_score_integration.md)
+  : Calculate Signature Score Using Integration Method
+- [`calculate_sig_score_pca()`](https://iobr.github.io/IOBR/reference/calculate_sig_score_pca.md)
+  : Calculate Signature Score Using PCA Method
+- [`calculate_sig_score_ssgsea()`](https://iobr.github.io/IOBR/reference/calculate_sig_score_ssgsea.md)
+  : Calculate Signature Score Using ssGSEA Method
+- [`calculate_sig_score_zscore()`](https://iobr.github.io/IOBR/reference/calculate_sig_score_zscore.md)
+  : Calculate Signature Score Using Z-Score Method
+- [`cell_bar_plot()`](https://iobr.github.io/IOBR/reference/cell_bar_plot.md)
+  : Visualize Cell Fractions as Stacked Bar Chart
+- [`check_cancer_types()`](https://iobr.github.io/IOBR/reference/check_cancer_types.md)
+  : Process Batch Table and Validate Cancer Types
+- [`check_eset()`](https://iobr.github.io/IOBR/reference/check_eset.md)
+  : Check Integrity and Outliers of Expression Set
+- [`combine_pd_eset()`](https://iobr.github.io/IOBR/reference/combine_pd_eset.md)
+  : Combine Phenotype Data and Expression Set
+- [`count2tpm()`](https://iobr.github.io/IOBR/reference/count2tpm.md) :
+  Convert Read Counts to Transcripts Per Million (TPM)
+- [`creat_folder()`](https://iobr.github.io/IOBR/reference/creat_folder.md)
+  : Create Nested Output Folders
+- [`deconvo_cibersort()`](https://iobr.github.io/IOBR/reference/deconvo_cibersort.md)
+  : Deconvolve Using CIBERSORT
+- [`deconvo_epic()`](https://iobr.github.io/IOBR/reference/deconvo_epic.md)
+  : Deconvolve Immune Microenvironment Using EPIC
+- [`deconvo_estimate()`](https://iobr.github.io/IOBR/reference/deconvo_estimate.md)
+  : Calculate ESTIMATE Scores
+- [`deconvo_ips()`](https://iobr.github.io/IOBR/reference/deconvo_ips.md)
+  : Calculate Immunophenoscore (IPS)
+- [`deconvo_mcpcounter()`](https://iobr.github.io/IOBR/reference/deconvo_mcpcounter.md)
+  : Deconvolve Immune Microenvironment Using MCP-Counter
+- [`deconvo_quantiseq()`](https://iobr.github.io/IOBR/reference/deconvo_quantiseq.md)
+  : Deconvolve Using quanTIseq
+- [`deconvo_ref()`](https://iobr.github.io/IOBR/reference/deconvo_ref.md)
+  : Deconvolve Using Custom Reference
+- [`deconvo_timer()`](https://iobr.github.io/IOBR/reference/deconvo_timer.md)
+  : Deconvolve Using TIMER
+- [`deconvo_tme()`](https://iobr.github.io/IOBR/reference/deconvo_tme.md)
+  : Main TME Deconvolution Function
+- [`deconvo_xcell()`](https://iobr.github.io/IOBR/reference/deconvo_xcell.md)
+  : Deconvolve Immune Microenvironment Using xCell
+- [`deconvolute_quantiseq.default()`](https://iobr.github.io/IOBR/reference/deconvolute_quantiseq.default.md)
+  : Use quanTIseq to Deconvolute a Gene Expression Matrix
+- [`deconvolute_timer.default()`](https://iobr.github.io/IOBR/reference/deconvolute_timer.default.md)
+  : Deconvolute Tumor Microenvironment Using TIMER
+- [`deg`](https://iobr.github.io/IOBR/reference/deg.md) : Single-cell
+  RNA-seq Differential Expression Analysis Results
+- [`design_mytheme()`](https://iobr.github.io/IOBR/reference/design_mytheme.md)
+  : Design Custom Theme for ggplot2 Plots
+- [`doPerm()`](https://iobr.github.io/IOBR/reference/doPerm.md) :
+  Permutation Test for CIBERSORT
+- [`enrichment_barplot()`](https://iobr.github.io/IOBR/reference/enrichment_barplot.md)
+  : Enrichment Bar Plot with Two Directions
+- [`eset_blca`](https://iobr.github.io/IOBR/reference/eset_blca.md) :
+  TCGA-BLCA Bladder Cancer Expression Data
+- [`eset_distribution()`](https://iobr.github.io/IOBR/reference/eset_distribution.md)
+  : Visualize Expression Set Distribution
+- [`eset_gse62254`](https://iobr.github.io/IOBR/reference/eset_gse62254.md)
+  : GSE62254 Gastric Cancer Expression Data
+- [`eset_stad`](https://iobr.github.io/IOBR/reference/eset_stad.md) :
+  Toy STAD expression matrix
+- [`eset_tme_stad`](https://iobr.github.io/IOBR/reference/eset_tme_stad.md)
+  : TCGA-STAD Tumor Microenvironment Signature Scores
+- [`estimateScore()`](https://iobr.github.io/IOBR/reference/estimateScore.md)
+  : estimateScore
+- [`exact_pvalue()`](https://iobr.github.io/IOBR/reference/exact_pvalue.md)
+  : Calculate Exact P-Value for Correlation
+- [`extract_sc_data()`](https://iobr.github.io/IOBR/reference/extract_sc_data.md)
+  : Extract Data Frame from Seurat Object
+- [`feature_manipulation()`](https://iobr.github.io/IOBR/reference/feature_manipulation.md)
+  : Feature Quality Control and Filtering
+- [`feature_select()`](https://iobr.github.io/IOBR/reference/feature_select.md)
+  : Feature Selection via Correlation or Differential Expression
+- [`filterCommonGenes()`](https://iobr.github.io/IOBR/reference/filterCommonGenes.md)
+  : filterCommonGenes
+- [`find_markers_in_bulk()`](https://iobr.github.io/IOBR/reference/find_markers_in_bulk.md)
+  : Identify Marker Features in Bulk Expression Data
+- [`find_mutations()`](https://iobr.github.io/IOBR/reference/find_mutations.md)
+  : Analyze Mutations Related to Signature Scores
+- [`find_outlier_samples()`](https://iobr.github.io/IOBR/reference/find_outlier_samples.md)
+  : Identify Outlier Samples in Gene Expression Data
+- [`find_variable_genes()`](https://iobr.github.io/IOBR/reference/find_variable_genes.md)
+  : Identify Variable Genes in Expression Data
+- [`format_msigdb()`](https://iobr.github.io/IOBR/reference/format_msigdb.md)
+  : Format Input Signatures from MSigDB
+- [`format_signatures()`](https://iobr.github.io/IOBR/reference/format_signatures.md)
+  : Transform Signature Data into List Format
+- [`generateRef()`](https://iobr.github.io/IOBR/reference/generateRef.md)
+  : Generate Reference Signature Matrix
+- [`generateRef_DEseq2()`](https://iobr.github.io/IOBR/reference/generateRef_DEseq2.md)
+  : Generate Reference Signature Matrix Using DESeq2
+- [`generateRef_limma()`](https://iobr.github.io/IOBR/reference/generateRef_limma.md)
+  : Generate Reference Signature Matrix Using Limma
+- [`generateRef_rnaseq()`](https://iobr.github.io/IOBR/reference/generateRef_rnaseq.md)
+  : Generate Reference Gene Matrix from RNA-seq DEGs
+- [`generateRef_seurat()`](https://iobr.github.io/IOBR/reference/generateRef_seurat.md)
+  : Generate Reference Matrix from Seurat Object
+- [`getHRandCIfromCoxph()`](https://iobr.github.io/IOBR/reference/getHRandCIfromCoxph.md)
+  : Extract Hazard Ratio and Confidence Intervals from Cox Model
+- [`get_cols()`](https://iobr.github.io/IOBR/reference/get_cols.md) :
+  Set and View Color Palettes
+- [`get_cor()`](https://iobr.github.io/IOBR/reference/get_cor.md) :
+  Calculate and Visualize Correlation Between Two Variables
+- [`get_cor_matrix()`](https://iobr.github.io/IOBR/reference/get_cor_matrix.md)
+  : Calculate and Visualize Correlation Matrix Between Two Variable Sets
+- [`get_sig_sc()`](https://iobr.github.io/IOBR/reference/get_sig_sc.md)
+  : Extract Top Marker Genes from Single-Cell Differential Results
+- [`high_var_fea()`](https://iobr.github.io/IOBR/reference/high_var_fea.md)
+  : Identify High-Variance Features from Statistical Results
+- [`imvigor210_pdata`](https://iobr.github.io/IOBR/reference/imvigor210_pdata.md)
+  : IMvigor210 Bladder Cancer Immunotherapy Cohort Data
+- [`imvigor210_sig`](https://iobr.github.io/IOBR/reference/imvigor210_sig.md)
+  : IMvigor210 Bladder Cancer Cohort Multi-omics Signatures
+- [`iobr_cor_plot()`](https://iobr.github.io/IOBR/reference/iobr_cor_plot.md)
+  : Integrative Correlation Analysis Between Phenotype and Features
+- [`iobr_deconvo_pipeline()`](https://iobr.github.io/IOBR/reference/iobr_deconvo_pipeline.md)
+  : Tumor Microenvironment (TME) Deconvolution Pipeline
+- [`iobr_deg()`](https://iobr.github.io/IOBR/reference/iobr_deg.md) :
+  Differential Expression Analysis
+- [`iobr_pca()`](https://iobr.github.io/IOBR/reference/iobr_pca.md) :
+  Principal Component Analysis (PCA) Visualization
+- [`ipsmap()`](https://iobr.github.io/IOBR/reference/ipsmap.md) : Map
+  Score to Immunophenoscore
+- [`lasso_select()`](https://iobr.github.io/IOBR/reference/lasso_select.md)
+  : Feature Selection for Predictive or Prognostic Models Using LASSO
+  Regression
+- [`limma.dif()`](https://iobr.github.io/IOBR/reference/limma.dif.md) :
+  Differential Expression Analysis Using Limma
+- [`lm22`](https://iobr.github.io/IOBR/reference/lm22.md) : Reference
+  profiles for immune cell types using lm22 (EPIC/IOBR)
+- [`load_data()`](https://iobr.github.io/IOBR/reference/load_data.md) :
+  Load IOBR Datasets
+- [`log2eset()`](https://iobr.github.io/IOBR/reference/log2eset.md) :
+  Log2 Transformation of Gene Expression Matrix
+- [`make_mut_matrix()`](https://iobr.github.io/IOBR/reference/make_mut_matrix.md)
+  : Construct Mutation Matrices from MAF Data
+- [`mapbw()`](https://iobr.github.io/IOBR/reference/mapbw.md) : Map
+  Score to Black and White Color
+- [`mapcolors()`](https://iobr.github.io/IOBR/reference/mapcolors.md) :
+  Map Score to Color
+- [`merge_duplicate()`](https://iobr.github.io/IOBR/reference/merge_duplicate.md)
+  : Merge Data Frames with Duplicated Column Names
+- [`merge_eset()`](https://iobr.github.io/IOBR/reference/merge_eset.md)
+  : Merge Expression Sets by Row Names
+- [`mouse2human_eset()`](https://iobr.github.io/IOBR/reference/mouse2human_eset.md)
+  : Convert Mouse Gene Symbols to Human Gene Symbols
+- [`null_models`](https://iobr.github.io/IOBR/reference/null_models.md)
+  : NULL Model Coefficients for MCPcounter
+- [`outputGCT()`](https://iobr.github.io/IOBR/reference/outputGCT.md) :
+  outputGCT
+- [`output_sig()`](https://iobr.github.io/IOBR/reference/output_sig.md)
+  : Save Signature Data to File
+- [`palettes()`](https://iobr.github.io/IOBR/reference/palettes.md) :
+  Select Color Palettes for Visualization
+- [`parallel_doperm()`](https://iobr.github.io/IOBR/reference/parallel_doperm.md)
+  : Parallel Permutation Test for CIBERSORT
+- [`patterns_to_na`](https://iobr.github.io/IOBR/reference/patterns_to_na.md)
+  : Default Pattern List for Name Cleaning
+- [`pdata_stad`](https://iobr.github.io/IOBR/reference/pdata_stad.md) :
+  Toy STAD Phenotype Data
+- [`percent_bar_plot()`](https://iobr.github.io/IOBR/reference/percent_bar_plot.md)
+  : Create a Percent Bar Plot
+- [`pie_chart()`](https://iobr.github.io/IOBR/reference/pie_chart.md) :
+  Create Pie or Donut Charts
+- [`plotPurity()`](https://iobr.github.io/IOBR/reference/plotPurity.md)
+  : plotPurity
+- [`rbind_iobr()`](https://iobr.github.io/IOBR/reference/rbind_iobr.md)
+  : Row Bind Multiple Data Sets
+- [`remove_batcheffect()`](https://iobr.github.io/IOBR/reference/remove_batcheffect.md)
+  : Removing Batch Effect from Expression Sets
+- [`remove_duplicate_genes()`](https://iobr.github.io/IOBR/reference/remove_duplicate_genes.md)
+  : Remove Duplicate Gene Symbols in Gene Expression Data
+- [`remove_names()`](https://iobr.github.io/IOBR/reference/remove_names.md)
+  : Remove Patterns from Column Names or Variables
+- [`roc_time()`](https://iobr.github.io/IOBR/reference/roc_time.md) :
+  Time-dependent ROC Curve for Survival Analysis
+- [`scale_matrix()`](https://iobr.github.io/IOBR/reference/scale_matrix.md)
+  : Scale and Manipulate a Matrix
+- [`select_method()`](https://iobr.github.io/IOBR/reference/select_method.md)
+  : Select a Signature Scoring Method Subset
+- [`sigScore()`](https://iobr.github.io/IOBR/reference/sigScore.md) :
+  Calculate Signature Score Using PCA, Mean, or Z-score Methods
+- [`sig_box()`](https://iobr.github.io/IOBR/reference/sig_box.md) :
+  Signature Box Plot with Statistical Comparisons
+- [`sig_box_batch()`](https://iobr.github.io/IOBR/reference/sig_box_batch.md)
+  : Batch Signature Box Plots for Group Comparisons
+- [`sig_forest()`](https://iobr.github.io/IOBR/reference/sig_forest.md)
+  : Forest Plot for Survival Analysis Results
+- [`sig_group`](https://iobr.github.io/IOBR/reference/sig_group.md) :
+  Grouped gene signatures for IOBR analysis
+- [`sig_gsea()`](https://iobr.github.io/IOBR/reference/sig_gsea.md) :
+  Perform Gene Set Enrichment Analysis (GSEA)
+- [`sig_heatmap()`](https://iobr.github.io/IOBR/reference/sig_heatmap.md)
+  : Signature Heatmap with Optional Annotations
+- [`sig_pheatmap()`](https://iobr.github.io/IOBR/reference/sig_pheatmap.md)
+  : Generate Heatmap for Signature Data
+- [`sig_roc()`](https://iobr.github.io/IOBR/reference/sig_roc.md) : Plot
+  ROC Curves and Compare Them
+- [`sig_stad`](https://iobr.github.io/IOBR/reference/sig_stad.md) :
+  TCGA-STAD Gastric Cancer Cohort with Molecular and Clinical Data
+- [`sig_surv_plot()`](https://iobr.github.io/IOBR/reference/sig_surv_plot.md)
+  : Generate Kaplan-Meier Survival Plot for Signature
+- [`signature_collection`](https://iobr.github.io/IOBR/reference/signature_collection.md)
+  : Gene signature collection for pathway and immune analysis
+- [`signature_score_calculation_methods`](https://iobr.github.io/IOBR/reference/signature_score_calculation_methods.md)
+  : Signature Score Calculation Methods
+- [`stad_group`](https://iobr.github.io/IOBR/reference/stad_group.md) :
+  Example Clinical Data for TCGA-STAD Gastric Cancer Analysis
+- [`subgroup_data`](https://iobr.github.io/IOBR/reference/subgroup_data.md)
+  : Example Dataset for Subgroup Survival Analysis
+- [`subgroup_survival()`](https://iobr.github.io/IOBR/reference/subgroup_survival.md)
+  : Subgroup Survival Analysis Using Cox Proportional Hazards Models
+- [`surv_group()`](https://iobr.github.io/IOBR/reference/surv_group.md)
+  : Generate Kaplan-Meier Survival Plots for Categorical Groups
+- [`tcga_rna_preps()`](https://iobr.github.io/IOBR/reference/tcga_rna_preps.md)
+  : Preprocess TCGA RNA-seq Data
+- [`tcga_stad_pdata`](https://iobr.github.io/IOBR/reference/tcga_stad_pdata.md)
+  : TCGA-STAD Clinical and Molecular Annotation Data
+- [`tcga_stad_sig`](https://iobr.github.io/IOBR/reference/tcga_stad_sig.md)
+  : TCGA-STAD Gastric Cancer Immune Infiltration Signatures
+- [`test_for_infiltration()`](https://iobr.github.io/IOBR/reference/test_for_infiltration.md)
+  : Test for Cell Population Infiltration
+- [`timer_available_cancers`](https://iobr.github.io/IOBR/reference/timer_available_cancers.md)
+  : TIMER Available Cancer Types
+- [`timer_info()`](https://iobr.github.io/IOBR/reference/timer_info.md)
+  : Source code for the TIMER deconvolution method.
+- [`tme_cluster()`](https://iobr.github.io/IOBR/reference/tme_cluster.md)
+  : Identification of TME Cluster
+- [`tme_deconvolution_methods`](https://iobr.github.io/IOBR/reference/tme_deconvolution_methods.md)
+  : TME Deconvolution Methods
+- [`transform_data()`](https://iobr.github.io/IOBR/reference/transform_data.md)
+  : Transform NA, Inf, or Zero Values in Data
+
+# Articles
+
+### All vignettes
+
+- [Multidimensional Decoding Tumor Microenvironment for Immuno-Oncology
+  Research](https://iobr.github.io/IOBR/articles/IOBR-user-manual.md):
