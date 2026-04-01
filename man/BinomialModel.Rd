@@ -60,6 +60,7 @@ result <- BinomialModel(
   x = imvigor210_sig, y = pdata_group,
   seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
 )
+str(result, max.level = 1)
 }
 }
 \author{

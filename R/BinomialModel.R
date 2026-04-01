@@ -37,6 +37,7 @@
 #'   x = imvigor210_sig, y = pdata_group,
 #'   seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
 #' )
+#' str(result, max.level = 1)
 #' }
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
                           nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
@@ -345,7 +346,8 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #'
 #' @examples
 #' \donttest{
-#' if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'   requireNamespace("ROCR", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- matrix(rnorm(100 * 5), ncol = 5)
 #'   train_outcome <- rbinom(100, 1, 0.5)
@@ -468,7 +470,8 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
 #'
 #' @examples
 #' \donttest{
-#' if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'   requireNamespace("ROCR", quietly = TRUE)) {
 #'   fitted_model <- glmnet::cv.glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), nfolds = 3)
 #'   perf <- CalculatePref(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
 #' }

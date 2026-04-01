@@ -24,7 +24,8 @@ ROCR package. Handles binary classification models from glmnet.
 }
 \examples{
 \donttest{
-if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+if (requireNamespace("glmnet", quietly = TRUE) &&
+  requireNamespace("ROCR", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 5), ncol = 5)
   train_outcome <- rbinom(100, 1, 0.5)
