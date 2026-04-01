@@ -55,23 +55,15 @@ Main interface for calculating signature scores from gene expression data.
 Supports PCA, z-score, ssGSEA, and integration methods.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-# Use original eset with GeneSymbol to match signature_tme
-signature_tme <- load_data("signature_tme")
-
-# PCA method (fastest)
-result_pca <- calculate_sig_score(
-  eset = eset_stad, signature = signature_tme,
-  method = "pca"
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+signature <- list(
+  Signature1 = paste0("Gene", 1:10),
+  Signature2 = paste0("Gene", 11:20)
 )
-
-# ssGSEA method (most robust)
-result_ssgsea <- calculate_sig_score(
-  eset = eset_stad, signature = signature_tme,
-  method = "ssgsea"
-)
-}
+result <- calculate_sig_score(eset = eset, signature = signature, method = "pca")
 }
 \references{
 \enumerate{

@@ -19,4 +19,8 @@ signature_score_calculation_methods
 \description{
 A named vector of supported methods for calculating signature scores.
 }
+\examples{
+signature_score_calculation_methods
+signature_score_calculation_methods["PCA"]
+}
 \keyword{datasets}

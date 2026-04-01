@@ -42,7 +42,6 @@ Data frame with cell fractions. Columns suffixed with `_CIBERSORT`.
 Cell fraction estimation using SVR or lsei methods with custom reference.
 }
 \examples{
-\donttest{
 lm22 <- load_data("lm22")
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
@@ -52,7 +51,6 @@ sim_eset <- as.data.frame(matrix(
 rownames(sim_eset) <- common_genes
 colnames(sim_eset) <- paste0("Sample", 1:5)
 deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
-}
 }
 \author{
 Dongqiang Zeng, Rongfang Shen

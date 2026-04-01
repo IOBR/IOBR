@@ -51,17 +51,19 @@ training/testing sets, and fits both Lasso and Ridge models. Optionally generate
 AUC plots for model evaluation.
 }
 \examples{
-\donttest{
-imvigor210_sig <- load_data("imvigor210_sig")
-imvigor210_pdata <- load_data("imvigor210_pdata")
-pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
-pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
-result <- BinomialModel(
-  x = imvigor210_sig, y = pdata_group,
-  seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
+set.seed(123)
+x <- data.frame(
+  ID = paste0("Sample", 1:50),
+  Feature1 = rnorm(50),
+  Feature2 = rnorm(50),
+  Feature3 = rnorm(50)
 )
+y <- data.frame(
+  ID = x$ID,
+  Outcome = factor(rbinom(50, 1, 0.5))
+)
+result <- BinomialModel(x = x, y = y, plot = FALSE, nfold = 5)
 str(result, max.level = 1)
-}
 }
 \author{
 Dongqiang Zeng

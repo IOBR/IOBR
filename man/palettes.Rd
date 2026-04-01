@@ -37,12 +37,10 @@ Provides curated qualitative, sequential, and diverging palettes for multiple
 plot types. Supports intensity adjustment and preview.
 }
 \examples{
-\donttest{
-colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
+colors <- palettes(category = "box", palette = "nrc", show_col = FALSE)
 heatmap_colors <- palettes(
-  category = "heatmap", palette = 1, counts = 100, show_col = TRUE
+  category = "heatmap", palette = 1, counts = 10, show_col = FALSE
 )
-}
 }
 \author{
 Dongqiang Zeng

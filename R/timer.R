@@ -28,26 +28,6 @@ timer_info <- function(string) {
 }
 
 
-#' Display Timer Information Messages (Deprecated)
-#'
-#' @description
-#' This function is deprecated. Use [timer_info()] instead.
-#'
-#' @param string Character. Message to be displayed.
-#'
-#' @return None; used for its side effect of printing a message.
-#'
-#' @export
-#' @author Bo Li
-#'
-#' @examples
-#' TimerINFO("Data processing started.")
-TimerINFO <- function(string) {
-  .Deprecated("timer_info")
-  timer_info(string)
-}
-
-
 #' TIMER Available Cancer Types
 #'
 #' Character vector of cancer types supported by TIMER deconvolution.
@@ -180,23 +160,12 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Batch mode
-#' tf <- tempfile(fileext = ".csv")
-#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
-#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
-#' )
-#' args <- list(batch = tf)
-#' result <- check_cancer_types(args)
-#'
-#' # Direct input mode
 #' args <- list(
 #'   expression = c("exp1", "exp2"),
 #'   category = c("luad", "brca"),
 #'   batch = NULL
 #' )
 #' result <- check_cancer_types(args)
-#' }
 check_cancer_types <- function(args) {
   if (!is.null(args$batch)) {
     timer_info("Enter batch mode")

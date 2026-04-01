@@ -159,7 +159,6 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 #' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
-  rlang::check_installed("MCPcounter", reason = "to run MCP-counter deconvolution")
   cli::cli_alert_info("Running MCP-counter deconvolution")
 
   mcp_genes <- load_data("mcp_genes")
@@ -394,7 +393,6 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' lm22 <- load_data("lm22")
 #' common_genes <- rownames(lm22)[1:500]
 #' sim_eset <- as.data.frame(matrix(
@@ -404,7 +402,6 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
 #' rownames(sim_eset) <- common_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:5)
 #' deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
-#' }
 deconvo_ref <- function(eset,
                         project = NULL,
                         arrays = TRUE,
@@ -503,8 +500,11 @@ deconvo_ref <- function(eset,
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:3]
-#' res <- deconvo_timer(eset = eset, project = "stad", indications = rep("stad", ncol(eset)))
+#' eset <- eset[1:500, 1:6]
+#' res <- deconvo_timer(
+#'   eset = eset, project = "stad",
+#'   indications = rep("stad", ncol(eset))
+#' )
 #' }
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   cli::cli_alert_info("Running TIMER deconvolution")
@@ -586,7 +586,7 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
     mRNAscale = scale_mrna
   )
 
-  res <- tibble::column_to_rownames(as.data.frame(res), var = "Sample")
+  res <- tibble::column_to_rownames(tibble::as_tibble(res), var = "Sample")
 
   .format_deconv_result(res, project, "quantiseq")
 }
@@ -639,7 +639,6 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' }
 #'
 #' @examples
-#' \donttest{
 #' lm22 <- load_data("lm22")
 #' common_genes <- rownames(lm22)[1:500]
 #' sim_eset <- as.data.frame(matrix(
@@ -649,7 +648,6 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' rownames(sim_eset) <- common_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:5)
 #' res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
-#' }
 deconvo_tme <- function(eset,
                         project = NULL,
                         method = tme_deconvolution_methods,

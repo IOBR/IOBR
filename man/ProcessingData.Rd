@@ -30,9 +30,7 @@ based on sample IDs, optionally scales data, and ensures appropriate data types.
 Handles missing values by removing columns with NA values.
 }
 \examples{
-\donttest{
 x <- data.frame(ID = 1:10, predictor1 = rnorm(10), predictor2 = rnorm(10))
 y <- data.frame(ID = 1:10, outcome = sample(c(0, 1), 10, replace = TRUE))
 result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
-}
 }

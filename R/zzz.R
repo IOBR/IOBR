@@ -46,6 +46,7 @@
   msg <- paste0(
     "==========================================================================\n",
     "  ", pkgname, " v", pkgVersion, "  Immuno-Oncology Biological Research ", "\n",
+    "  For Documentation: https://iobr.github.io/IOBR/", "\n",
     "  For Tutorial: https://iobr.github.io/book/", "\n",
     "  For Help: https://github.com/IOBR/IOBR/issues", "\n\n"
   )

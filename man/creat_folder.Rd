@@ -27,11 +27,6 @@ Creates one to three nested folders (if not existing) under the current
 working directory and returns their names and absolute paths.
 }
 \examples{
-\donttest{
-# Create single folder
 creat_folder(file.path(tempdir(), "1-result"))
-
-# Create nested folders
 creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
-}
 }

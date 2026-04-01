@@ -28,17 +28,19 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' imvigor210_sig <- load_data("imvigor210_sig")
-#' imvigor210_pdata <- load_data("imvigor210_pdata")
-#' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
-#' pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
-#' result <- BinomialModel(
-#'   x = imvigor210_sig, y = pdata_group,
-#'   seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
+#' set.seed(123)
+#' x <- data.frame(
+#'   ID = paste0("Sample", 1:50),
+#'   Feature1 = rnorm(50),
+#'   Feature2 = rnorm(50),
+#'   Feature3 = rnorm(50)
 #' )
+#' y <- data.frame(
+#'   ID = x$ID,
+#'   Outcome = factor(rbinom(50, 1, 0.5))
+#' )
+#' result <- BinomialModel(x = x, y = y, plot = FALSE, nfold = 5)
 #' str(result, max.level = 1)
-#' }
 BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
                           nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
   rlang::check_installed("glmnet")
@@ -132,11 +134,9 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' x <- data.frame(ID = 1:10, predictor1 = rnorm(10), predictor2 = rnorm(10))
 #' y <- data.frame(ID = 1:10, outcome = sample(c(0, 1), 10, replace = TRUE))
 #' result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
-#' }
 ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
   type <- rlang::arg_match(type)
 
@@ -221,7 +221,6 @@ ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- matrix(rnorm(100 * 10), ncol = 10)
@@ -233,7 +232,6 @@ ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
 #'     train.x = train_data, train.y = train_outcome,
 #'     test.x = test_data, test.y = test_outcome, model = fitted_model
 #'   )
-#' }
 #' }
 RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
   if (!is.matrix(train.x) || !is.matrix(test.x)) {
@@ -290,13 +288,11 @@ RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- matrix(rnorm(50 * 5), ncol = 5)
 #'   train_outcome <- rbinom(50, 1, 0.5)
 #'   result <- Enet(train.x = train_data, train.y = train_outcome, lambdamax = 1, nfold = 5)
-#' }
 #' }
 Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
   train.x <- as.matrix(train.x)

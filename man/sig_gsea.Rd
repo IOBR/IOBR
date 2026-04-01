@@ -127,17 +127,17 @@ from differential gene expression data. Supports MSigDB gene sets or custom gene
 signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-stad_group <- load_data("stad_group")
-deg <- iobr_deg(
-  eset = eset_stad, pdata = stad_group, group_id = "subtype",
-  pdata_id = "ID", array = FALSE, method = "DESeq2",
-  contrast = c("EBV", "GS"), path = file.path(tempdir(), "STAD")
+set.seed(123)
+deg <- data.frame(
+  symbol = paste0("Gene", 1:100),
+  log2FoldChange = rnorm(100, mean = 0, sd = 2),
+  padj = runif(100, 0, 0.1)
 )
-signature_tme <- load_data("signature_tme")
-res <- sig_gsea(deg = deg, genesets = signature_tme, path = tempdir())
-}
+signature <- list(
+  Signature1 = paste0("Gene", 1:20),
+  Signature2 = paste0("Gene", 21:40)
+)
+res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE)
 }
 \author{
 Dongqiang Zeng

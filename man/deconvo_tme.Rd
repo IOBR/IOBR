@@ -61,7 +61,6 @@ Tibble with cell fractions and `ID` column.
 Unified interface for multiple TME deconvolution methods.
 }
 \examples{
-\donttest{
 lm22 <- load_data("lm22")
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
@@ -71,7 +70,6 @@ sim_eset <- as.data.frame(matrix(
 rownames(sim_eset) <- common_genes
 colnames(sim_eset) <- paste0("Sample", 1:5)
 res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
-}
 }
 \references{
 \enumerate{

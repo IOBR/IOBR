@@ -34,12 +34,15 @@ Tibble with signature scores.
 Computes signature scores using z-score transformation.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-signature_tme <- load_data("signature_tme")
-result <- calculate_sig_score_zscore(eset = eset, signature = signature_tme)
-}
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+signature <- list(
+  Signature1 = paste0("Gene", 1:10),
+  Signature2 = paste0("Gene", 11:20)
+)
+result <- calculate_sig_score_zscore(eset = eset, signature = signature)
 }
 \author{
 Dongqiang Zeng

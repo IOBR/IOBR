@@ -46,17 +46,20 @@ regression or binary logistic regression. The function fits the specified
 model and returns the dataset with an added risk score column.
 }
 \examples{
-\donttest{
-if (requireNamespace("survival", quietly = TRUE)) {
-  lung <- survival::lung
-  result <- add_riskscore(
-    lung,
-    time = "time", status = "status",
-    vars = c("age", "sex")
-  )
-  head(result)
-}
-}
+set.seed(123)
+input_data <- data.frame(
+  time = rexp(100),
+  status = rbinom(100, 1, 0.5),
+  age = rnorm(100, 60, 10),
+  score1 = rnorm(100),
+  score2 = rnorm(100)
+)
+result <- add_riskscore(
+  input_data,
+  time = "time", status = "status",
+  vars = c("age", "score1", "score2")
+)
+head(result$riskscore)
 }
 \author{
 Dongqiang Zeng

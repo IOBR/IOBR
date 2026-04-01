@@ -27,21 +27,10 @@ Processes input data containing cancer types and validates each category
 against a predefined list of supported cancer types (`timer_available_cancers`).
 }
 \examples{
-\donttest{
-# Batch mode
-tf <- tempfile(fileext = ".csv")
-write.table(data.frame("exp1", "luad", "exp2", "brca"),
-  file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
-)
-args <- list(batch = tf)
-result <- check_cancer_types(args)
-
-# Direct input mode
 args <- list(
   expression = c("exp1", "exp2"),
   category = c("luad", "brca"),
   batch = NULL
 )
 result <- check_cancer_types(args)
-}
 }

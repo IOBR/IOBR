@@ -19,19 +19,11 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Load TCGA-STAD expression data
-#' eset_stad <- load_data("eset_stad")
-#'
-#' # Convert counts to TPM
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#'
-#' # Check expression set integrity
-#' check_eset(eset)
-#'
-#' # Check with detailed output
-#' check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
-#' }
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' check_eset(eset, print_result = TRUE)
 check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
   # Input validation
   if (!is.matrix(eset) && !is.data.frame(eset)) {
