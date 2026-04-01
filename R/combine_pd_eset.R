@@ -35,18 +35,20 @@
 #' sig_stad <- load_data("sig_stad")
 #'
 #' # Example 1: Combine all features (no filtering)
-#' input <- combine_pd_eset(
+#' out <- combine_pd_eset(
 #'   eset = eset,
 #'   pdata = sig_stad
 #' )
+#' dim(out)
 #'
 #' # Example 2: Combine with specific features
 #' # Note: features must match rownames of eset after ID conversion
-#' input2 <- combine_pd_eset(
+#' out2 <- combine_pd_eset(
 #'   eset = eset,
 #'   pdata = sig_stad,
 #'   feas = rownames(eset)[1:100] # Use first 100 genes as example
 #' )
+#' dim(out2)
 #' }
 combine_pd_eset <- function(eset,
                             pdata,

@@ -19,6 +19,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load TCGA-STAD expression data
 #' eset_stad <- load_data("eset_stad")
 #'
@@ -30,6 +31,7 @@
 #'
 #' # Check with detailed output
 #' check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
+#' }
 check_eset <- function(eset, print_result = FALSE, estimate_sd = FALSE) {
   # Input validation
   if (!is.matrix(eset) && !is.data.frame(eset)) {

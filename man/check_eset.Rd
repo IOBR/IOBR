@@ -26,6 +26,7 @@ infinite values, and features with zero variance. Issues warnings when
 potential problems are detected that may affect downstream analyses.
 }
 \examples{
+\donttest{
 # Load TCGA-STAD expression data
 eset_stad <- load_data("eset_stad")
 
@@ -37,6 +38,7 @@ check_eset(eset)
 
 # Check with detailed output
 check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
+}
 }
 \author{
 Dongqiang Zeng

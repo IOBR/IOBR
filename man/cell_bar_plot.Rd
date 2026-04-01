@@ -60,7 +60,7 @@ methods such as CIBERSORT, EPIC, and quanTIseq.
 \donttest{
 sig_stad <- load_data("sig_stad")
 cell_bar_plot(
-  input = sig_stad[1:20, ],
+  input = sig_stad[1:10, ],
   id = "ID",
   features = colnames(sig_stad)[25:46]
 )
