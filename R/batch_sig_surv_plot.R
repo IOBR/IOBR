@@ -29,7 +29,7 @@
 #' @param mini_sig Character string for the signature label in the legend.
 #'   Default is `"score"`.
 #' @param save_path Character string specifying the directory path for saving
-#'   plots. Default is `"Multiple-KM-plot"`.
+#'   plots.
 #' @param show_col Logical indicating whether to display color information.
 #'   Default is `TRUE`.
 #' @param fig_type Character string specifying the output file format
@@ -46,7 +46,6 @@
 #' @examples
 #' \donttest{
 #' sig_stad <- load_data("sig_stad")
-#' sig_stad <- as.data.frame(sig_stad)
 #' result <- batch_sig_surv_plot(
 #'   input_pdata = sig_stad,
 #'   signature = "T.cells.CD8",
@@ -60,7 +59,6 @@
 #'   palette = "jama",
 #'   cols = NULL,
 #'   mini_sig = "score",
-#'   save_path = "Multiple-KM-plot",
 #'   show_col = TRUE,
 #'   fig_type = "pdf"
 #' )
@@ -78,7 +76,7 @@ batch_sig_surv_plot <- function(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  save_path = "Multiple-KM-plot",
+  save_path = file.path(tempdir(), "Multiple-KM-plot"),
   show_col = TRUE,
   fig_type = "pdf"
 ) {
@@ -135,5 +133,5 @@ batch_sig_surv_plot <- function(
     )$data
   })
 
-  dplyr::bind_rows(results)
+  invisible(dplyr::bind_rows(results))
 }

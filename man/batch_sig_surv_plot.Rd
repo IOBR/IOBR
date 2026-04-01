@@ -17,7 +17,7 @@ batch_sig_surv_plot(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  save_path = "Multiple-KM-plot",
+  save_path = file.path(tempdir(), "Multiple-KM-plot"),
   show_col = TRUE,
   fig_type = "pdf"
 )
@@ -59,7 +59,7 @@ Default is `NULL`.}
 Default is `"score"`.}
 
 \item{save_path}{Character string specifying the directory path for saving
-plots. Default is `"Multiple-KM-plot"`.}
+plots.}
 
 \item{show_col}{Logical indicating whether to display color information.
 Default is `TRUE`.}
@@ -79,7 +79,6 @@ stratification and creates publication-ready survival curves.
 \examples{
 \donttest{
 sig_stad <- load_data("sig_stad")
-sig_stad <- as.data.frame(sig_stad)
 result <- batch_sig_surv_plot(
   input_pdata = sig_stad,
   signature = "T.cells.CD8",
@@ -93,7 +92,6 @@ result <- batch_sig_surv_plot(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  save_path = "Multiple-KM-plot",
   show_col = TRUE,
   fig_type = "pdf"
 )

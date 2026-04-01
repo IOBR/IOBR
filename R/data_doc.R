@@ -1,3 +1,10 @@
+#' NULL Model Coefficients for MCPcounter
+#'
+#' @format A `data.frame` with cell types in rows and coefficients in columns.
+#' @usage data(null_models)
+#' @keywords datasets
+"null_models"
+
 #' Toy STAD expression matrix
 #'
 #' A subset of TCGA-STAD RNA-seq count data used in the IOBR vignette and unit

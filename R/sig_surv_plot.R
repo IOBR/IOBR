@@ -68,6 +68,7 @@ sig_surv_plot <- function(input_pdata,
   # Create output directory
   abspath <- NULL
   if (!is.null(save_path)) {
+    cli::cli_alert_info("Saving plots to: {.val {save_path}}")
     if (!dir.exists(save_path)) dir.create(save_path, recursive = TRUE)
     abspath <- file.path(normalizePath(save_path, winslash = "/", mustWork = FALSE), "")
   }
