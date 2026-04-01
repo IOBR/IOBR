@@ -2,13 +2,13 @@
 % Please edit documentation in R/get_cor_matrix.R
 \name{get_cor_matrix}
 \alias{get_cor_matrix}
-\title{Calculate and Visualize Correlation Matrix between Two Variable Sets}
+\title{Calculate and Visualize Correlation Matrix Between Two Variable Sets}
 \usage{
 get_cor_matrix(
   data,
   feas1,
   feas2,
-  method = "pearson",
+  method = c("pearson", "spearman", "kendall"),
   path = NULL,
   index = 1,
   fig.type = "pdf",
@@ -16,72 +16,78 @@ get_cor_matrix(
   height = NULL,
   project = NULL,
   is.matrix = FALSE,
-  scale = T,
-  font.size.star = 8,
+  scale = TRUE,
   font.size = 15,
   fill_by_cor = FALSE,
   round.num = 1,
+  font.size.star = 8,
   cols = NULL
 )
 }
 \arguments{
-\item{data}{The input dataset for correlation analysis. Genes or signatures in columns. If data is a matrix, please set `is.matrix` = TRUE, and data will be t()}
+\item{data}{Input data frame or matrix. Variables should be in columns.}
 
-\item{feas1}{A vector of variable names representing the first set of variables for correlation analysis.}
+\item{feas1}{Character vector of variable names for the first set.}
 
-\item{feas2}{A vector of variable names representing the second set of variables for correlation analysis.}
+\item{feas2}{Character vector of variable names for the second set.}
 
-\item{method}{The method used to calculate correlation. Default is "pearson".}
+\item{method}{Correlation method: `"pearson"`, `"spearman"`, or `"kendall"`.
+Default is `"pearson"`.}
 
-\item{path}{The path to save the correlation plot. If not specified, the plot will be saved in a folder named "index-cor_matrix_plot".}
+\item{path}{Directory to save the plot. If `NULL`, plot is not saved.
+Default is `NULL`.}
 
-\item{index}{A numeric value used for naming the output plot file. Default is 1.}
+\item{index}{Numeric prefix for output filename. Default is 1.}
 
-\item{fig.type}{The file format of the output plot. Default is "pdf".}
+\item{fig.type}{File format: `"pdf"`, `"png"`, etc. Default is `"pdf"`.}
 
-\item{width}{The width of the output plot.}
+\item{width}{Plot width in inches. Auto-calculated if `NULL`.}
 
-\item{height}{The height of the output plot.}
+\item{height}{Plot height in inches. Auto-calculated if `NULL`.}
 
-\item{project}{The name of the project or analysis. This will be used as the plot title. Default is NULL.}
+\item{project}{Project name for plot title. Default is `NULL`.}
 
-\item{is.matrix}{A logical value indicating whether the input data is a matrix. Default is FALSE.}
+\item{is.matrix}{Logical: if `TRUE`, data is transposed. Default is `FALSE`.}
 
-\item{scale}{A logical value indicating whether to scale the data before correlation analysis. Default is TRUE.}
+\item{scale}{Logical: scale variables before correlation. Default is `TRUE`.}
 
-\item{font.size.star}{The font size of the significance stars in the plot. Default is 8.}
+\item{font.size}{Font size for axis labels. Default is 15.}
 
-\item{font.size}{The font size of the axis labels and tick marks in the plot. Default is 15.}
+\item{fill_by_cor}{Logical: show correlation values instead of stars.
+Default is `FALSE`.}
 
-\item{fill_by_cor}{A logical value indicating whether to fill the tiles in the plot according to the correlation values. Default is FALSE.}
+\item{round.num}{Decimal places for correlation values. Default is 1.}
 
-\item{round.num}{The number of decimal places to round the correlation values. Default is 1.}
+\item{font.size.star}{Font size for significance stars. Default is 8.}
 
-\item{cols}{Character vector. Custom colors for correlation gradient
-(low, mid, high). If NULL, uses default blue-white-red. Default is NULL.}
+\item{cols}{Custom colors for gradient (low, mid, high). If `NULL`, uses
+blue-white-red. Default is `NULL`.}
 }
 \value{
-A ggplot object displaying the correlation matrix.
+ggplot object displaying the correlation matrix heatmap.
 }
 \description{
-The "get_cor_matrix" function calculates and visualizes the correlation matrix between two sets of variables in a dataset. It provides flexibility in defining correlation methods, handling missing values, and incorporating additional data. The function supports various correlation methods, such as Pearson correlation, and displays the correlation result in a customizable plot. The plot includes color-coded tiles representing the correlation value between each pair of variables. Additionally, the function offers options to save the plot and data for further analysis.
+Calculates and visualizes the correlation matrix between two sets of variables.
+Supports Pearson, Spearman, and Kendall correlation methods. The function
+generates a customizable heatmap with significance stars.
 }
 \examples{
-# Assuming 'data' is a data frame or matrix with genes or signatures as columns
+\donttest{
 set.seed(123)
 data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
-colnames(data) <- paste("Gene", 1:10, sep = "_")
+colnames(data) <- paste0("Gene_", 1:10)
 
-# Define two sets of variables for correlation analysis
 feas1 <- c("Gene_1", "Gene_2", "Gene_3")
 feas2 <- c("Gene_4", "Gene_5", "Gene_6")
 
-# Generate and visualize the correlation matrix
 cor_plot <- get_cor_matrix(
-  data = data, feas1 = feas1, feas2 = feas2, scale = TRUE,
-  method = "spearman", project = "Example Correlation Matrix"
+  data = data,
+  feas1 = feas1,
+  feas2 = feas2,
+  method = "spearman",
+  project = "Example Correlation"
 )
-print(cor_plot)
+}
 }
 \author{
 Dongqiang Zeng

@@ -7,8 +7,8 @@
 count2tpm(
   countMat,
   idType = "Ensembl",
-  org = "hsa",
-  source = "local",
+  org = c("hsa", "mmus"),
+  source = c("local", "biomart"),
   effLength = NULL,
   id = "id",
   gene_symbol = "symbol",
@@ -17,60 +17,54 @@ count2tpm(
 )
 }
 \arguments{
-\item{countMat}{Numeric matrix of raw read counts with genes in rows and samples
-in columns.}
+\item{countMat}{Numeric matrix of raw read counts with genes in rows and
+samples in columns.}
 
-\item{idType}{Character string specifying the gene identifier type. Options are
-\code{"Ensembl"}, \code{"Entrez"}, or \code{"Symbol"}. Default is \code{"Ensembl"}.}
+\item{idType}{Character string specifying the gene identifier type. Options
+are `"Ensembl"`, `"Entrez"`, or `"Symbol"`. Default is `"Ensembl"`.}
 
-\item{org}{Character string specifying the organism. Options include \code{"hsa"}
-(human) or \code{"mmus"} (mouse). Default is \code{"hsa"}.}
+\item{org}{Character string specifying the organism. Options include
+`"hsa"` (human) or `"mmus"` (mouse). Default is `"hsa"`.}
 
-\item{source}{Character string specifying the source for gene length information.
-Options are \code{"biomart"} (retrieve from Ensembl BioMart) or \code{"local"}
-(use local dataset). Default is \code{"local"}.}
+\item{source}{Character string specifying the source for gene length
+information. Options are `"biomart"` (retrieve from Ensembl BioMart) or
+`"local"` (use local dataset). Default is `"local"`.}
 
 \item{effLength}{Data frame containing effective gene length information. If
-\code{NULL}, lengths are retrieved based on \code{source}. Default is \code{NULL}.}
+`NULL`, lengths are retrieved based on `source`. Default is `NULL`.}
 
-\item{id}{Character string specifying the column name in \code{effLength} containing
-gene identifiers. Default is \code{"id"}.}
+\item{id}{Character string specifying the column name in `effLength`
+containing gene identifiers. Default is `"id"`.}
 
-\item{gene_symbol}{Character string specifying the column name in \code{effLength}
-containing gene symbols. Default is \code{"symbol"}.}
+\item{gene_symbol}{Character string specifying the column name in `effLength`
+containing gene symbols. Default is `"symbol"`.}
 
-\item{length}{Character string specifying the column name in \code{effLength}
-containing gene lengths. Default is \code{"eff_length"}.}
+\item{length}{Character string specifying the column name in `effLength`
+containing gene lengths. Default is `"eff_length"`.}
 
-\item{check_data}{Logical indicating whether to check for missing values in the
-count matrix. Default is \code{FALSE}.}
+\item{check_data}{Logical indicating whether to check for missing values in
+the count matrix. Default is `FALSE`.}
 }
 \value{
-Data frame of TPM-normalized expression values with genes in rows and
-  samples in columns.
+Data frame of TPM-normalized expression values with genes in rows
+  and samples in columns.
 }
 \description{
-Transforms gene expression count data into Transcripts Per Million (TPM) values,
-normalizing for gene length and library size. Supports multiple gene ID types and
-can retrieve gene length information from BioMart or use local datasets.
+Transforms gene expression count data into Transcripts Per Million (TPM)
+values, normalizing for gene length and library size. Supports multiple gene
+ID types and can retrieve gene length information from BioMart or use local
+datasets.
 }
 \examples{
+\donttest{
 # Load TCGA count data
-utils::data(eset_stad, package = "IOBR", envir = environment())
+eset_stad <- load_data("eset_stad")
+
 # Transform to TPM using local gene annotation
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 head(eset)
-
-# Alternative: TPM transformation using gene symbols (not recommended)
-utils::data("anno_grch38", package = "IOBR", envir = environment())
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-eset <- count2tpm(countMat = eset, source = "local", idType = "symbol")
-head(eset)
+}
 }
 \author{
-Wubing Zhang
-
-Dongqiang Zeng
-
-Yiran Fang
+Wubing Zhang, Dongqiang Zeng, Yiran Fang
 }

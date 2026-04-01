@@ -1,123 +1,182 @@
-#' Removing batch effect of two or three expression set
+#' Removing Batch Effect from Expression Sets
 #'
 #' @description
-#' This function is designed to remove batch effects from given expression datasets and visualize the corrected data using principal component analysis (PCA). It takes three expression datasets as input and performs batch effect correction using the "sva::ComBat" or "sva::ComBat_seq" methods. The function then generates PCA plots to compare the data before and after correction. The PCA plots are customized based on the specified parameters like data type, color palette, log transformation, and path for saving the plots.
+#' Removes batch effects from expression datasets using sva::ComBat (for
+#' microarray/TPM data) or sva::ComBat_seq (for RNA-seq count data). Generates
+#' PCA plots to visualize data before and after correction.
 #'
-#' @param eset1 These are the expression sets for which you want to remove the batch effect.
-#' @param eset2 These are the expression sets for which you want to remove the batch effect.
-#' @param eset3 These are the expression sets for which you want to remove the batch effect. Input 'NULL' for eset3 if not available.
-#' @param check_eset Logical, determining whether to check the eset or not. If TRUE, checks for errors in the expression set. Default is TRUE.
-#' @param palette Color palette to use for the plot. Default is 'jama'.
-#' @param log2  it performs log2 transformation of the data. Defaults to TRUE.
-#' @param path Directory where the results should be saved. Default is NULL (display only, no saving).
-#' @param adjust_eset Logical, whether to adjust the expression set by manipulating the features. Default is TRUE.
-#' @param id_type Type of id present in the expression set (like Ensembl ID or Gene Symbol).
-#' @param data_type Type of data in the expression set ("array", "count", or "tpm"). Default is "array".
-#' @param cols Color scale to use for the PCA plot. Default is 'normal'.
-#' @param repel whether to add labels to the PCA plot. Default is FALSE.
+#' @param eset1 First expression set (matrix or data frame with genes as rows).
+#' @param eset2 Second expression set.
+#' @param eset3 Optional third expression set. Use `NULL` if not available.
+#' @param id_type Type of gene ID in expression sets (e.g., `"ensembl"`,
+#'   `"symbol"`). Required for count data normalization.
+#' @param data_type Type of data: `"array"`, `"count"`, or `"tpm"`.
+#'   Default is `"array"`.
+#' @param cols Color scale for PCA plot. Default is `"normal"`.
+#' @param palette Color palette for PCA plot. Default is `"jama"`.
+#' @param log2 Whether to perform log2 transformation. Default is `TRUE`.
+#'   Ignored for count data.
+#' @param check_eset Whether to check expression sets for errors.
+#'   Default is `TRUE`.
+#' @param adjust_eset Whether to adjust expression sets by removing problematic
+#'   features. Default is `TRUE`.
+#' @param repel Whether to add repelling labels to PCA plot. Default is `FALSE`.
+#' @param path Directory where results should be saved. Default is `NULL`
+#'   (display only).
 #'
-#' @return eset after batch correction
+#' @return Expression matrix after batch correction.
+#'
 #' @export
 #' @author Dongqiang Zeng
-#' @references Yuqing Zhang and others, ComBat-seq: batch effect adjustment for RNA-seq count data, NAR Genomics and Bioinformatics, Volume 2, Issue 3, September 2020, lqaa078, https://doi.org/10.1093/nargab/lqaa078
-#' @references Leek, J. T., Johnson, W. E., Parker, H. S., Jaffe, A. E., & Storey, J. D. (2012). The sva package for removing batch effects and other unwanted variation in high-throughput experiments. Bioinformatics, 28(6), 882-883.
+#'
+#' @references
+#' Zhang Y, et al. ComBat-seq: batch effect adjustment for RNA-seq count data.
+#' NAR Genomics and Bioinformatics. 2020;2(3):lqaa078.
+#' doi:10.1093/nargab/lqaa078
+#'
+#' Leek JT, et al. The sva package for removing batch effects and other
+#' unwanted variation in high-throughput experiments. Bioinformatics.
+#' 2012;28(6):882-883.
+#'
 #' @examples
-#' \dontrun{
-#' # The returned matrix is the count matrix after removing the batches.
-#' # eset_blca is an internal dataset in IOBR
-#' # To use this example, you need to load TCGA-BLCA data separately
-#' eset <- remove_batcheffect(eset_stad, eset_blca, id_type = "ensembl", data_type = "count")
+#' \donttest{
+#' eset_stad <- load_data("eset_stad")
+#' eset_blca <- load_data("eset_blca")
+#' eset_corrected <- remove_batcheffect(
+#'   eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
+#'   id_type = "ensembl",
+#'   data_type = "count"
+#' )
 #' }
-remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = c("array", "count", "tpm"), cols = "normal", palette = "jama",
-                               log2 = TRUE, check_eset = TRUE, adjust_eset = TRUE, repel = FALSE, path = NULL) {
+remove_batcheffect <- function(eset1,
+                               eset2,
+                               eset3 = NULL,
+                               id_type,
+                               data_type = c("array", "count", "tpm"),
+                               cols = "normal",
+                               palette = "jama",
+                               log2 = TRUE,
+                               check_eset = TRUE,
+                               adjust_eset = TRUE,
+                               repel = FALSE,
+                               path = NULL) {
+  # Validate data_type
+  data_type <- rlang::arg_match(data_type)
+
+  # Create output folder if path provided
   if (!is.null(path)) {
     path <- creat_folder(path)
   }
-  #######################################################
-  if (!data_type == "count") {
-    if (log2) {
-      eset2 <- log2eset(eset2)
-      eset1 <- log2eset(eset1)
+
+  # Log2 transformation for non-count data
+  if (data_type != "count" && log2) {
+    eset1 <- log2eset(eset1)
+    eset2 <- log2eset(eset2)
+    if (!is.null(eset3)) {
+      eset3 <- log2eset(eset3)
     }
   }
-  ###########################
+
+  # Check expression sets
   if (check_eset) {
     check_eset(eset1)
     check_eset(eset2)
+    if (!is.null(eset3)) check_eset(eset3)
   }
-  ###########################
+
+  # Adjust expression sets
   if (adjust_eset) {
-    feas <- feature_manipulation(data = eset1, is_matrix = T)
-    eset1 <- eset1[rownames(eset1) %in% feas, ]
-
-    feas <- feature_manipulation(data = eset2, is_matrix = T)
-    eset2 <- eset2[rownames(eset2) %in% feas, ]
-  }
-  ###########################
-
-  if (!is.null(eset3)) {
-    if (log2) eset3 <- log2eset(eset3)
-    if (check_eset) check_eset(eset3)
-    if (adjust_eset) {
-      feas <- feature_manipulation(data = eset3, is_matrix = T)
-      eset3 <- eset3[rownames(eset3) %in% feas, ]
+    eset1 <- eset1[rownames(eset1) %in%
+      feature_manipulation(eset1, is_matrix = TRUE), ]
+    eset2 <- eset2[rownames(eset2) %in%
+      feature_manipulation(eset2, is_matrix = TRUE), ]
+    if (!is.null(eset3)) {
+      eset3 <- eset3[rownames(eset3) %in%
+        feature_manipulation(eset3, is_matrix = TRUE), ]
     }
   }
 
+  # Find common genes
   if (is.null(eset3)) {
     comgene <- intersect(rownames(eset1), rownames(eset2))
-    comgene <- comgene[!comgene == ""]
-    comgene <- comgene[!is.na(comgene)]
+    comgene <- comgene[nzchar(comgene) & !is.na(comgene)]
 
-    message(paste0(">>>== The two expression matrices share ", length(comgene), " features in common. "))
-    combined.expr <- cbind.data.frame(
-      eset1[comgene, ],
-      eset2[comgene, ]
+    cli::cli_alert_info(
+      "The two expression matrices share {length(comgene)} features"
     )
-    batch <- data.frame("ID" = colnames(combined.expr), "batch" = rep(c("eset1", "eset2"), times = c(ncol(eset1), ncol(eset2))))
-  }
-  ######################
 
-  if (!is.null(eset3)) {
-    comgene <- intersect(intersect(rownames(eset1), rownames(eset2)), rownames(eset3))
-    comgene <- comgene[!comgene == ""]
-    comgene <- comgene[!is.na(comgene)]
-
-    message(paste0(">>>== The three expression matrices share ", length(comgene), " features in common. "))
-    combined.expr <- cbind.data.frame(
-      eset1[comgene, ],
-      eset2[comgene, ],
-      eset3[comgene, ]
+    combined.expr <- cbind(
+      eset1[comgene, , drop = FALSE],
+      eset2[comgene, , drop = FALSE]
     )
-    batch <- data.frame("ID" = colnames(combined.expr), "batch" = rep(c("eset1", "eset2", "eset3"), times = c(ncol(eset1), ncol(eset2), ncol(eset3))))
-  }
-  ########################################################################
+    batch <- data.frame(
+      ID = colnames(combined.expr),
+      batch = rep(c("eset1", "eset2"), times = c(ncol(eset1), ncol(eset2)))
+    )
+  } else {
+    comgene <- intersect(
+      intersect(rownames(eset1), rownames(eset2)),
+      rownames(eset3)
+    )
+    comgene <- comgene[nzchar(comgene) & !is.na(comgene)]
 
-  if (!data_type == "count") {
-    message(">>>=== Processing method: sva:: ComBat")
-    modcombat <- model.matrix(~1, data = batch)
-    rlang::check_installed("sva")
-    combined.expr.combat <- as.data.frame(sva::ComBat(dat = as.matrix(combined.expr), batch = batch$batch, mod = modcombat))
-    combined.expr.combat <- preprocessCore::normalize.quantiles(as.matrix(combined.expr.combat), keep.names = TRUE)
+    cli::cli_alert_info(
+      "The three expression matrices share {length(comgene)} features"
+    )
+
+    combined.expr <- cbind(
+      eset1[comgene, , drop = FALSE],
+      eset2[comgene, , drop = FALSE],
+      eset3[comgene, , drop = FALSE]
+    )
+    batch <- data.frame(
+      ID = colnames(combined.expr),
+      batch = rep(c("eset1", "eset2", "eset3"),
+        times = c(ncol(eset1), ncol(eset2), ncol(eset3))
+      )
+    )
+  }
+
+  # Batch correction
+  rlang::check_installed("sva")
+
+  if (data_type != "count") {
+    cli::cli_alert_info("Processing method: sva::ComBat")
+    modcombat <- stats::model.matrix(~1, data = batch)
+    combined.expr.combat <- sva::ComBat(
+      dat = as.matrix(combined.expr),
+      batch = batch$batch,
+      mod = modcombat
+    )
+    combined.expr.combat <- preprocessCore::normalize.quantiles(
+      as.matrix(combined.expr.combat),
+      keep.names = TRUE
+    )
     prefix <- data_type
-  } else if (data_type == "count") {
-    message(">>>=== Processing method: sva:: ComBat_seq")
-    rlang::check_installed("sva")
-    combined.expr.combat <- sva::ComBat_seq(as.matrix(combined.expr), batch = batch$batch)
-    # print(head(combined.expr.combat))
-    eset2_tpm <- count2tpm(countMat = combined.expr.combat, idType = id_type, source = "local")
+  } else {
+    cli::cli_alert_info("Processing method: sva::ComBat_seq")
+    combined.expr.combat <- sva::ComBat_seq(
+      as.matrix(combined.expr),
+      batch = batch$batch
+    )
+
+    # Convert corrected counts to TPM
+    eset2_tpm <- count2tpm(
+      countMat = combined.expr.combat,
+      idType = id_type,
+      source = "local"
+    )
     eset2_tpm <- log2eset(eset2_tpm)
-    message(">>>=== Count data after proccessing sva::ComBat_seq will be return...")
+    cli::cli_alert_info("Count data processed with ComBat_seq")
     prefix <- "count"
   }
 
-  ########################################################################
+  # Generate PCA plots
   p1 <- iobr_pca(
     data = combined.expr,
     is.matrix = TRUE,
     scale = TRUE,
     is.log = TRUE,
-    # geom.ind  = "point",
     pdata = batch,
     id_pdata = "ID",
     group = "batch",
@@ -127,7 +186,7 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
     ncp = 3,
     axes = c(1, 2),
     addEllipses = TRUE
-  )
+  ) + ggplot2::ggtitle(paste("Before correction:", prefix))
 
   p2 <- iobr_pca(
     data = combined.expr.combat,
@@ -140,48 +199,48 @@ remove_batcheffect <- function(eset1, eset2, eset3 = NULL, id_type, data_type = 
     cols = cols,
     palette = palette,
     repel = repel,
-    ncp = 3, axes = c(1, 2),
+    ncp = 3,
+    axes = c(1, 2),
     addEllipses = TRUE
-  )
-  p1 <- p1 + ggtitle(paste0("Data before correction: ", prefix))
-  p2 <- p2 + ggtitle(paste0("Data after correction: ", prefix))
+  ) + ggplot2::ggtitle(paste("After correction:", prefix))
 
   if (data_type == "count") {
     p3 <- iobr_pca(
       data = eset2_tpm,
       is.matrix = TRUE,
-      scale = TRUE, is.log = TRUE, # 取对数+scale
-      pdata = batch, id_pdata = "ID", group = "batch",
+      scale = TRUE,
+      is.log = TRUE,
+      pdata = batch,
+      id_pdata = "ID",
+      group = "batch",
       cols = cols,
       palette = palette,
       repel = repel,
-      ncp = 3, axes = c(1, 2),
+      ncp = 3,
+      axes = c(1, 2),
       addEllipses = TRUE
-    )
-    p3 <- p3 + ggtitle("Data after correction: count2TPM")
+    ) + ggplot2::ggtitle("After correction: count2TPM")
 
-    p <- p1 | p2 | p3
-    # combined.expr.combat <- eset2_tpm
+    p <- patchwork::wrap_plots(p1, p2, p3, nrow = 1)
   } else {
-    p <- p1 | p2
+    p <- patchwork::wrap_plots(p1, p2, nrow = 1)
   }
 
   print(p)
-  ########################################
+
+  # Save plot if path provided
   if (!is.null(path)) {
-    if (!data_type == "count") {
-      num <- 2
-      width <- 2 * 5
-    } else {
-      num <- 3
-      width <- 3 * 5
-    }
-    ggsave(p,
-      filename = paste0("0-PCA-of-", num, "-eset.pdf"),
-      width = width, height = 5, path = path$folder_name
+    num_plots <- if (data_type == "count") 3 else 2
+    width <- num_plots * 5
+
+    ggplot2::ggsave(
+      p,
+      filename = paste0("0-PCA-of-", num_plots, "-eset.pdf"),
+      width = width,
+      height = 5,
+      path = path$folder_name
     )
   }
-  ########################################
 
-  return(combined.expr.combat)
+  invisible(combined.expr.combat)
 }

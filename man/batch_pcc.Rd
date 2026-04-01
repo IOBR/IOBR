@@ -4,7 +4,13 @@
 \alias{batch_pcc}
 \title{Batch Calculation of Partial Correlation Coefficients}
 \usage{
-batch_pcc(input, interferenceid, target, features, method = "pearson")
+batch_pcc(
+  input,
+  interferenceid,
+  target,
+  features,
+  method = c("pearson", "spearman", "kendall")
+)
 }
 \arguments{
 \item{input}{Data frame containing feature variables, target variable, and
@@ -13,40 +19,47 @@ interference variable.}
 \item{interferenceid}{Character string specifying the column name of the
 interference (confounding) variable to control for.}
 
-\item{target}{Character string specifying the column name of the target variable.}
+\item{target}{Character string specifying the column name of the target
+variable.}
 
-\item{features}{Character vector specifying the column names of feature variables
-to correlate with the target.}
+\item{features}{Character vector specifying the column names of feature
+variables to correlate with the target.}
 
 \item{method}{Character string specifying the correlation method. Options are
-\code{"pearson"}, \code{"spearman"}, or \code{"kendall"}. Default is
-\code{"pearson"}.}
+`"pearson"`, `"spearman"`, or `"kendall"`. Default is `"pearson"`.}
 }
 \value{
 Tibble containing the following columns for each feature:
-\itemize{
-  \item \code{sig_names}: Feature name
-  \item \code{p.value}: Raw p-value
-  \item \code{statistic}: Partial correlation coefficient
-  \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
-  \item \code{log10pvalue}: Negative log10-transformed p-value
-  \item \code{stars}: Significance stars based on adjusted p-value thresholds
+\describe{
+  \item{sig_names}{Feature name}
+  \item{p.value}{Raw p-value}
+  \item{statistic}{Partial correlation coefficient}
+  \item{p.adj}{Adjusted p-value (Benjamini-Hochberg method)}
+  \item{log10pvalue}{Negative log10-transformed p-value}
+  \item{stars}{Significance stars: **** p.adj<0.0001, *** p.adj<0.001,
+    ** p.adj<0.01, * p.adj<0.05, + p.adj<0.5}
 }
 }
 \description{
-Computes partial correlation coefficients between multiple features and a target
-variable while controlling for an interference (confounding) variable. Adjusts
-p-values for multiple testing using the Benjamini-Hochberg method.
+Computes partial correlation coefficients between multiple features and a
+target variable while controlling for an interference (confounding) variable.
+Adjusts p-values for multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
+\donttest{
+# Load TCGA-STAD signature data
+sig_stad <- load_data("sig_stad")
+
 # Calculate partial correlations controlling for tumor purity
 res <- batch_pcc(
-  input = sig_stad, interferenceid = "TumorPurity_estimate",
-  target = "Pan_F_TBRs", method = "pearson",
+  input = sig_stad,
+  interferenceid = "TumorPurity_estimate",
+  target = "Pan_F_TBRs",
+  method = "pearson",
   features = colnames(sig_stad)[70:ncol(sig_stad)]
 )
+head(res)
+}
 }
 \author{
 Rongfang Shen

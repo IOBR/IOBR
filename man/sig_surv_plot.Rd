@@ -25,47 +25,59 @@ sig_surv_plot(
 \arguments{
 \item{input_pdata}{Data frame with survival data and signature scores.}
 
-\item{signature}{Column name of the target signature.}
+\item{signature}{Character string. Column name of the target signature.}
 
-\item{project}{Project name for output. Default is "KM".}
+\item{project}{Character string. Project name for output. Default is `"KM"`.}
 
-\item{ID}{Column name for sample IDs. Default is "ID".}
+\item{ID}{Character string. Column name for sample IDs. Default is `"ID"`.}
 
-\item{time}{Column name for survival time. Default is "time".}
+\item{time}{Character string. Column name for survival time. Default is `"time"`.}
 
-\item{status}{Column name for survival status. Default is "status".}
+\item{status}{Character string. Column name for survival status. Default is `"status"`.}
 
-\item{time_type}{Time unit. Default is "month".}
+\item{time_type}{Character string. Time unit (`"month"` or `"day"`).
+Default is `"month"`.}
 
-\item{break_month}{Time axis breaks. Default is "auto".}
+\item{break_month}{Numeric or `"auto"`. Time axis breaks. Default is `"auto"`.}
 
-\item{cols}{Optional color vector.}
+\item{cols}{Character vector. Optional custom colors.}
 
-\item{palette}{Color palette if cols not provided. Default is "jama".}
+\item{palette}{Character string. Color palette if `cols` not provided.
+Default is `"jama"`.}
 
-\item{show_col}{Logical indicating whether to show colors. Default is TRUE.}
+\item{show_col}{Logical indicating whether to show colors. Default is `TRUE`.}
 
-\item{mini_sig}{Label for low score group. Default is "score".}
+\item{mini_sig}{Character string. Label for low score group. Default is `"score"`.}
 
-\item{fig.type}{File format. Default is "png".}
+\item{fig.type}{Character string. File format. Default is `"png"`.}
 
-\item{save_path}{Directory for saving plots. If NULL, plots are not saved. Default is NULL.}
+\item{save_path}{Character string or `NULL`. Directory for saving plots.
+If `NULL`, plots are not saved. Default is `NULL`.}
 
-\item{index}{Index for multiple plots. Default is 1.}
+\item{index}{Integer. Index for multiple plots. Default is `1`.}
 }
 \value{
-Survival analysis results.
+A list containing:
+\describe{
+  \item{data}{Processed input data with group assignments}
+  \item{plots}{Combined survival plots}
+}
 }
 \description{
-Creates Kaplan-Meier survival plots for a given signature or gene, with automatic cutoff determination.
+Creates Kaplan-Meier survival plots for a given signature or gene, with
+automatic cutoff determination. Generates three types of plots: optimal
+cutoff (best cutoff), tertile-based (3 groups), and median split (2 groups).
 }
 \examples{
-data("tcga_stad_pdata", package = "IOBR")
+\donttest{
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_surv_plot(
-  input_pdata = tcga_stad_pdata, signature = "TMEscore_plus",
-  time = "time", status = "OS_status"
+  input_pdata = tcga_stad_pdata,
+  signature = "TMEscore_plus",
+  time = "time",
+  status = "OS_status"
 )
-
+}
 }
 \author{
 Dongqiang Zeng

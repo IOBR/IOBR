@@ -2,31 +2,46 @@
 % Please edit documentation in R/feature_manipulation.R
 \name{feature_manipulation}
 \alias{feature_manipulation}
-\title{Manipulate Features in a Matrix or Data Frame}
+\title{Feature Quality Control and Filtering}
 \usage{
-feature_manipulation(data, feature, is_matrix = FALSE, print_result = FALSE)
+feature_manipulation(
+  data,
+  feature = NULL,
+  is_matrix = FALSE,
+  print_result = FALSE
+)
 }
 \arguments{
-\item{data}{A matrix or data frame containing the features to be manipulated.}
+\item{data}{A matrix or data frame containing features to filter.}
 
-\item{feature}{A vector of feature names to manipulate. Ignored if `is_matrix` is TRUE.}
+\item{feature}{Character vector of feature names to check. If `is_matrix = TRUE`,
+features are extracted from row names of the matrix.}
 
-\item{is_matrix}{Logical indicating whether the input data is in matrix format. If TRUE, feature names are extracted from column names. Default is FALSE.}
+\item{is_matrix}{Logical indicating whether `data` is a gene expression matrix
+(features as rows, samples as columns). If `TRUE`, the matrix is transposed
+for processing. Default is `FALSE`.}
 
-\item{print_result}{Logical indicating whether to print the results of each manipulation step. Default is FALSE.}
+\item{print_result}{Logical indicating whether to print filtering statistics.
+Default is `FALSE`.}
 }
 \value{
-A vector of filtered feature names after removing problematic variables.
+Character vector of feature names that pass all quality checks.
 }
 \description{
-This function performs feature manipulation on a given matrix or data frame by removing variables
-with missing values, non-numeric variables, infinite values, and variables with zero standard deviation.
+Filters features (variables) in a matrix or data frame by removing those with
+missing values, non-numeric types, infinite values, or zero variance.
+This is useful for preparing data for downstream statistical analyses.
 }
 \examples{
-# Load example data
-data("eset_stad", package = "IOBR")
-# Filter features with NA or outliers
-feas <- feature_manipulation(data = eset_stad, feature = rownames(eset_stad), is_matrix = TRUE)
+\donttest{
+eset_stad <- load_data("eset_stad")
+feas <- feature_manipulation(
+  data = eset_stad,
+  feature = rownames(eset_stad),
+  is_matrix = TRUE,
+  print_result = TRUE
+)
+}
 }
 \author{
 Dongqiang Zeng

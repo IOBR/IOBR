@@ -4,28 +4,65 @@
 #' again is an adapted version of the original TIMER source code
 #' from http://cistrome.org/TIMER/download.html.
 #'
-#' The method is described in Li et al. Genome Biology 2016;17(1):174., PMID 27549193.
+#' The method is described in Li et al. Genome Biology 2016;17(1):174., PMID
+#' 27549193.
 
 
-#' Display Timed Information Messages
+#' Display Timer Information Messages
 #'
-#' This function formats and displays informational messages, primarily for timing or logging purposes. It is useful for tracking the progress or stages of execution within scripts, especially in long-running operations. The function outputs messages to the R console with a prefixed '##' to highlight them.
+#' @description
+#' Formats and displays informational messages for timing or logging purposes.
+#' Useful for tracking progress or stages of execution within scripts.
 #'
-#' @param string A character string representing the message to be displayed.
+#' @param string Character. Message to be displayed.
 #'
-#' @return None; the function is used for its side effect of printing a message.
+#' @return None; used for its side effect of printing a message.
+#'
 #' @export
 #' @author Bo Li
+#'
 #' @examples
-#' TimerINFO("Data processing started.")
-TimerINFO <- function(string) {
-  message(sprintf("## %s\n", string))
+#' timer_info("Data processing started.")
+timer_info <- function(string) {
+  cli::cli_alert_info(string)
 }
 
 
-#' TIMER signatures are cancer specific. This is the list of available cancer types.
+#' Display Timer Information Messages (Deprecated)
+#'
+#' @description
+#' This function is deprecated. Use [timer_info()] instead.
+#'
+#' @param string Character. Message to be displayed.
+#'
+#' @return None; used for its side effect of printing a message.
 #'
 #' @export
+#' @author Bo Li
+#'
+#' @examples
+#' TimerINFO("Data processing started.")
+TimerINFO <- function(string) {
+  .Deprecated("timer_info")
+  timer_info(string)
+}
+
+
+#' TIMER Available Cancer Types
+#'
+#' Character vector of cancer types supported by TIMER deconvolution.
+#' TIMER signatures are cancer-specific.
+#'
+#' @return Character vector of available cancer type abbreviations.
+#'
+#' @export
+#'
+#' @examples
+#' # List all available cancer types for TIMER
+#' timer_available_cancers
+#'
+#' # Check if a cancer type is supported
+#' "brca" %in% timer_available_cancers
 timer_available_cancers <- c(
   "kich", "blca", "brca", "cesc", "gbm", "hnsc", "kirp", "lgg",
   "lihc", "luad", "lusc", "prad", "sarc", "pcpg", "paad", "tgct",
@@ -34,25 +71,31 @@ timer_available_cancers <- c(
 )
 
 
-#' Remove batch effect of expression set
+#' Remove Batch Effect of Expression Set
 #'
-#' This function removes batch effects between two gene expression data sets, typically representing different sample types such as cancer cells and immune cells. The function aligns the gene names, combines the datasets, applies batch correction using ComBat from the sva package, and then separates the adjusted data sets. Additionally, it aggregates expression data for immune cell types by taking the median expression level across samples.
+#' @description
+#' Removes batch effects between two gene expression datasets, typically
+#' representing different sample types such as cancer cells and immune cells.
+#' Uses ComBat from the sva package for batch correction.
 #'
-#' @param cancer.exp A matrix or data frame of cancer cell expression data with genes as rows and samples as columns.
-#' @param immune.exp A matrix or data frame of immune cell expression data with genes as rows and samples as columns.
-#' @param immune.cellType A vector indicating the cell type for each column in `immune.exp`.
+#' @param cancer.exp Matrix or data frame. Cancer cell expression data with
+#'   genes as rows and samples as columns.
+#' @param immune.exp Matrix or data frame. Immune cell expression data with
+#'   genes as rows and samples as columns.
+#' @param immune.cellType Vector. Cell type for each column in `immune.exp`.
 #'
-#' @author Bo Li
-#'
-#' @return A list containing three elements:
-#'   - The first element is the batch effect corrected cancer expression data.
-#'   - The second element is the batch effect corrected immune expression data.
-#'   - The third element is the aggregated immune expression data, with median values calculated for each cell type.
+#' @return A list containing:
+#' \describe{
+#'   \item{1}{Batch effect corrected cancer expression data}
+#'   \item{2}{Batch effect corrected immune expression data}
+#'   \item{3}{Aggregated immune expression data (median per cell type)}
+#' }
 #'
 #' @export
+#' @author Bo Li
 #'
 #' @examples
-#' set.seed(123) # For reproducibility
+#' set.seed(123)
 #' gene_names <- paste0("Gene", 1:100)
 #' sample_names_cancer <- paste0("CancerSample", 1:10)
 #' cancer.exp <- matrix(runif(1000, 1, 1000),
@@ -60,46 +103,37 @@ timer_available_cancers <- c(
 #'   dimnames = list(gene_names, sample_names_cancer)
 #' )
 #'
-#' # Generate synthetic expression data for immune cells
 #' sample_names_immune <- paste0("ImmuneSample", 1:5)
 #' immune.exp <- matrix(runif(500, 1, 1000),
 #'   nrow = 100, ncol = 5,
 #'   dimnames = list(gene_names, sample_names_immune)
 #' )
 #'
-#' # Create a cell type vector for immune samples
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 #' names(immune.cellType) <- sample_names_immune
 #'
 #' result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
-  ## intersect the gene names of cancer.exp and immune.exp
   tmp.dd <- as.matrix(cancer.exp)
-  # tmp <- sapply(strsplit(rownames(cancer.exp), '\\|'),
-  #               function(x) x[[1]])
-  # rownames(tmp.dd) <- tmp
-  # tmp.dd <- as.matrix(tmp.dd[which(nchar(tmp)>1), ])
   tmp.ss <- intersect(rownames(tmp.dd), rownames(immune.exp))
 
-  ## bind cancer and immune expression data into one dataframe
   N1 <- ncol(tmp.dd)
-
   tmp.dd <- cbind(tmp.dd[tmp.ss, ], immune.exp[tmp.ss, ])
   tmp.dd <- as.matrix(tmp.dd)
   mode(tmp.dd) <- "numeric"
 
-  ## remove batch effects
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
-  rlang::check_installed(c("sva", "BiocParallel"))
-  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(), BPPARAM = BiocParallel::bpparam("SerialParam"))
 
-  ## separate cancer and immune expression data after batch effect removing
+  rlang::check_installed(c("sva", "BiocParallel"))
+  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
+    BPPARAM = BiocParallel::bpparam("SerialParam")
+  )
+
   dd.br <- tmp.dd0[, 1:N1]
   immune.exp.br <- tmp.dd0[, (N1 + 1):(N1 + N2)]
 
-  ## a immune category has multiple samples, use the median expression level for a gene
-  tmp0 <- c()
+  tmp0 <- NULL
   for (kk in unique(names(immune.cellType))) {
     tmp.vv <- which(names(immune.cellType) == kk)
 
@@ -109,7 +143,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
 
-    if (!exists("tmp0")) {
+    if (is.null(tmp0)) {
       tmp0 <- median_expression
     } else {
       tmp0 <- cbind(tmp0, median_expression)
@@ -118,117 +152,100 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 
   immune.exp.agg.br <- tmp0
   colnames(immune.exp.agg.br) <- unique(names(immune.cellType))
-  return(list(as.matrix(dd.br), immune.exp.br, immune.exp.agg.br))
+
+  list(as.matrix(dd.br), immune.exp.br, immune.exp.agg.br)
 }
 
 
 #' Process Batch Table and Validate Cancer Types
 #'
-#' This function processes input data containing cancer types and validates
-#' each category against a predefined list of supported cancer types
-#' (`timer_available_cancers`).
-#'
-#' The input can be provided in two ways:
-#' \itemize{
-#'   \item \strong{Batch mode}: A CSV file path specified in \code{args$batch}.
-#''         The file is expected to have at least two columns, where the
-#'         second column contains cancer categories.
-#'   \item \strong{Direct mode}: Vectors provided via \code{args$expression}
-#'         and \code{args$category}.
-#' }
-#'
-#' If any cancer category is not recognized, the function stops with an error.
+#' @description
+#' Processes input data containing cancer types and validates each category
+#' against a predefined list of supported cancer types (`timer_available_cancers`).
 #'
 #' @param args A list containing input parameters:
 #' \describe{
-#'   \item{batch}{Character string. Path to a CSV file (optional).}
-#'   \item{expression}{Character vector of expression identifiers (used if \code{batch} is NULL).}
-#'   \item{category}{Character vector of cancer types (used if \code{batch} is NULL).}
+#'   \item{batch}{Character. Path to a CSV file (optional).}
+#'   \item{expression}{Character vector of expression identifiers (used if
+#'     `batch` is NULL).}
+#'   \item{category}{Character vector of cancer types (used if `batch` is NULL).}
 #' }
 #'
 #' @return A character matrix with two columns:
-#' \itemize{
-#'   \item Column 1: expression identifiers
-#'   \item Column 2: cancer categories
+#' \describe{
+#'   \item{Column 1}{Expression identifiers}
+#'   \item{Column 2}{Cancer categories}
 #' }
-#' Each row corresponds to one record.
+#'
+#' @export
 #'
 #' @examples
-#' # ---- Batch mode example ----
+#' \donttest{
+#' # Batch mode
 #' tf <- tempfile(fileext = ".csv")
-#' write.table(
-#'   data.frame("exp1", "lung",
-#'              "exp2", "breast"),
-#'   file = tf,
-#'   sep = ",",
-#'   row.names = FALSE,
-#'   col.names = FALSE,
-#'   quote = FALSE
+#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
+#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
 #' )
-#'
 #' args <- list(batch = tf)
-#' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
 #'
-#' # ---- Direct input example ----
+#' # Direct input mode
 #' args <- list(
 #'   expression = c("exp1", "exp2"),
-#'   category   = c("lung", "breast"),
+#'   category = c("luad", "brca"),
 #'   batch = NULL
 #' )
-#'
-#' # timer_available_cancers <- c("lung", "breast")  # define for testing
 #' result <- check_cancer_types(args)
+#' }
 check_cancer_types <- function(args) {
-
   if (!is.null(args$batch)) {
-    TimerINFO("Enter batch mode\n")
+    timer_info("Enter batch mode")
     cancers <- as.matrix(read.table(args$batch, sep = ",", stringsAsFactors = FALSE))
   } else {
     if (length(args$expression) != length(args$category)) {
-      stop("expression and category must have the same length")
+      cli::cli_abort("expression and category must have the same length")
     }
     cancers <- cbind(args$expression, args$category)
   }
 
-  for (i in seq_len(nrow(cancers))) {
-    cancer.category <- cancers[i, 2]
-    if (!(cancer.category %in% timer_available_cancers)) {
-      stop(paste("unknown cancers:", cancer.category))
-    }
+  invalid_cancers <- setdiff(cancers[, 2], timer_available_cancers)
+  if (length(invalid_cancers) > 0) {
+    cli::cli_abort("Unknown cancer type(s): {.val {invalid_cancers}}")
   }
 
-  return(cancers)
+  cancers
 }
 
 
-#' Constrained regression method implemented in Abbas et al., 2009
+#' Constrained Regression Method (Abbas et al., 2009)
 #'
-#' This function implements a constrained regression approach described by Abbas et al. in their 2009 paper.
-#' It is designed to estimate the proportions of immune cell types within a mixed cancer tissue sample
-#' based on gene expression data. The method iteratively adjusts the regression coefficients to ensure
-#' they are non-negative, which corresponds to realistic proportions of cell types.
+#' @description
+#' Implements a constrained regression approach described by Abbas et al. (2009).
+#' Estimates proportions of immune cell types within mixed cancer tissue samples
+#' based on gene expression data. Iteratively adjusts regression coefficients
+#' to ensure non-negative values.
 #'
-#' @param XX Matrix representing immune expression data with genes as rows and cell types as columns.
-#' @param YY Vector representing cancer expression data with gene expression levels.
-#' @param w Optional vector of weights for the regression, default is NA which means no weights are applied.
+#' @param XX Matrix. Immune expression data with genes as rows and cell types
+#'   as columns.
+#' @param YY Vector. Cancer expression data with gene expression levels.
+#' @param w Vector or NA. Weights for regression. Default is NA (no weights).
 #'
-#' @return A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
+#' @return Vector with non-negative coefficients representing proportions of
+#'   each cell type.
+#'
 #' @export
 #'
 #' @examples
-#' # Generate some example data
 #' XX <- matrix(runif(100), nrow = 10, ncol = 10)
 #' colnames(XX) <- paste("CellType", 1:10, sep = "")
 #' YY <- runif(10)
-#'
-#' # Apply the Abbas constrained regression method
 #' results <- GetFractions.Abbas(XX, YY)
 #' print(results)
 GetFractions.Abbas <- function(XX, YY, w = NA) {
   ss.remove <- c()
   ss.names <- colnames(XX)
-  while (T) {
+
+  while (TRUE) {
     if (length(ss.remove) == 0) {
       tmp.XX <- XX
     } else {
@@ -237,85 +254,82 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
       }
       tmp.XX <- tmp.XX[, -ss.remove]
     }
+
     if (length(ss.remove) > 0) {
       ss.names <- ss.names[-ss.remove]
       if (length(ss.names) == 0) {
         return(rep(0, ncol(XX)))
       }
     }
-    if (is.na(w[1])) tmp <- lsfit(tmp.XX, YY, intercept = F) else tmp <- lsfit(tmp.XX, YY, w, intercept = F)
-    if (is.null(ncol(tmp.XX))) tmp.beta <- tmp$coefficients[1] else tmp.beta <- tmp$coefficients[1:(ncol(tmp.XX) + 0)]
-    if (min(tmp.beta > 0)) break
+
+    if (is.na(w[1])) {
+      tmp <- lsfit(tmp.XX, YY, intercept = FALSE)
+    } else {
+      tmp <- lsfit(tmp.XX, YY, w, intercept = FALSE)
+    }
+
+    if (is.null(ncol(tmp.XX))) {
+      tmp.beta <- tmp$coefficients[1]
+    } else {
+      tmp.beta <- tmp$coefficients[seq_len(ncol(tmp.XX))]
+    }
+
+    if (min(tmp.beta) > 0) break
     ss.remove <- which.min(tmp.beta)
   }
+
   tmp.F <- rep(0, ncol(XX))
   names(tmp.F) <- colnames(XX)
   tmp.F[ss.names] <- tmp.beta
-  return(tmp.F)
+  tmp.F
 }
 
 #' Convert Rowname To Loci
 #'
-#' This function processes a gene expression data matrix by modifying its row names.
-#' It extracts the gene identifier from the row names assuming they contain additional
-#' information separated by a '|'. The function is specifically designed to handle
-#' row names formatted as 'LOC389332|389332', and it will simplify these to 'LOC389332'.
+#' @description
+#' Processes a gene expression data matrix by modifying its row names.
+#' Extracts the gene identifier from row names formatted as 'GENE|ID',
+#' simplifying them to 'GENE'.
 #'
-#' @param cancerGeneExpression A matrix or data frame of cancer gene expression data
-#'        with row names in the format 'GENE|ID'. The function will modify these row names
-#'        to keep only the gene part before the '|'.
+#' @param cancerGeneExpression Matrix or data frame. Gene expression data with
+#'   row names in the format 'GENE|ID'.
 #'
-#' @return A matrix containing the modified gene expression data with updated row names.
-#'         Rows without a valid identifier (i.e., names not containing '|') are removed.
+#' @return Matrix with modified gene expression data with updated row names.
+#'   Rows without a valid identifier are removed.
 #'
 #' @export
 #'
 #' @examples
-#' # Assume `data` is your original gene expression matrix with compound row names
 #' example_data <- matrix(runif(20), ncol = 5)
 #' rownames(example_data) <- c("LOC101", "LOC102", "LOC103", "LOC104")
-#' # Process the data to convert row names
 #' processed_data <- ConvertRownameToLoci(example_data)
 #' print(processed_data)
 ConvertRownameToLoci <- function(cancerGeneExpression) {
-  ## Extract only the loci information for row name
-
-  ## Example of origin row name is 'LOC389332|389332'
-  ## Coverted row name is 'LOC389332'
-
-  ## Args:
-  ##   geneExpression: the orginal geneExpression load from .Rdata file
-  ##
-  ## Returns:
-  ##   Modified geneExpression
-
   tmp <- strsplit(rownames(cancerGeneExpression), "\\|")
   tmp <- sapply(tmp, function(x) x[[1]])
   tmp.vv <- which(nchar(tmp) > 1)
   rownames(cancerGeneExpression) <- tmp
   extracted <- as.matrix(cancerGeneExpression[tmp.vv, ])
   colnames(extracted) <- colnames(cancerGeneExpression)
-  return(extracted)
+  extracted
 }
 
 
 #' Parse Input Gene Expression Data
 #'
-#' This function reads gene expression data from a tab-delimited text file,
-#' using the first column as row names. The data are converted into a numeric
-#' matrix for downstream analysis.
+#' @description
+#' Reads gene expression data from a tab-delimited text file, using the first
+#' column as row names. Converts data into a numeric matrix for analysis.
 #'
-#' @param path Character string. Path to a tab-delimited gene expression file.
-#'   The first column should contain gene identifiers, and the remaining columns
-#'   should contain expression values for samples.
+#' @param path Character. Path to a tab-delimited gene expression file.
+#'   First column should contain gene identifiers.
 #'
-#' @return A numeric matrix of gene expression values, with genes as rows and
+#' @return Numeric matrix of gene expression values with genes as rows and
 #'   samples as columns.
 #'
 #' @export
 #'
 #' @examples
-#' # Create a temporary tab-delimited expression file
 #' tf <- tempfile(fileext = ".tsv")
 #' expr <- data.frame(
 #'   gene = c("GeneA", "GeneB", "GeneC"),
@@ -323,31 +337,26 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
 #'   Sample2 = c(15, 25, 35)
 #' )
 #' write.table(expr, tf, sep = "\t", row.names = FALSE, quote = FALSE)
-#'
-#' # Parse the gene expression data
 #' gene_expression_data <- ParseInputExpression(tf)
 #' print(gene_expression_data)
 ParseInputExpression <- function(path) {
   ret <- read.delim(path, row.names = 1, check.names = FALSE)
   ret <- as.matrix(ret)
   mode(ret) <- "numeric"
-  # ret <- ConvertRownameToLoci(ret)
-  return(ret)
+  ret
 }
 
 
 #' Draw QQ Plot Comparing Cancer and Immune Expression
 #'
-#' This function creates a quantile-quantile (QQ) plot to compare the gene expression
-#' distributions between cancer and immune samples. The QQ plot helps assess if the
-#' two distributions are similarly shaped by plotting their quantiles against each other.
-#' Points lining up along the diagonal line indicate similar distributions.
-#' The function also fits a linear model to the central portion of the data (excluding
-#' the lowest 40% and the highest 10% of data points) to highlight the trend.
+#' @description
+#' Creates a quantile-quantile (QQ) plot to compare gene expression
+#' distributions between cancer and immune samples. Points along the diagonal
+#' indicate similar distributions.
 #'
-#' @param cancer.exp A vector of gene expression data for cancer samples.
-#' @param immune.exp A vector of gene expression data for immune samples.
-#' @param name Optional parameter to add a subtitle with additional information.
+#' @param cancer.exp Vector. Gene expression data for cancer samples.
+#' @param immune.exp Vector. Gene expression data for immune samples.
+#' @param name Character. Optional subtitle with additional information.
 #'
 #' @return Generates a QQ plot.
 #'
@@ -355,44 +364,37 @@ ParseInputExpression <- function(path) {
 #'
 #' @examples
 #' cancer_exp <- rnorm(100, mean = 5, sd = 1.5)
-#'
 #' immune_exp <- rnorm(100, mean = 5, sd = 1.5)
-#'
-#' expression_data <- data.frame(
-#'   Cancer_Expression = cancer_exp,
-#'   Immune_Expression = immune_exp
-#' )
-#'
 #' DrawQQPlot(
-#'   cancer.exp = expression_data$Cancer_Expression,
-#'   immune.exp = expression_data$Immune_Expression,
+#'   cancer.exp = cancer_exp,
+#'   immune.exp = immune_exp,
 #'   name = "Comparison of Gene Expression"
 #' )
 DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
-  ## q-q plot by sample should look like a straight line.
-  ## Extreme values may saturate for Affy array data, but most of the data should align well.
   qq <- qqplot(cancer.exp, immune.exp,
     xlab = "Tumor Expression", ylab = "Ref Expression",
     main = "Sample-Sample Q-Q plot"
   )
   mtext(name, col = "gray11")
 
-  # get part of the points for fit linear, remove bottom 40%, and top 10%
-  start <- 0.4 * length(qq$x)
-  end <- 0.9 * length(qq$x)
+  start <- ceiling(0.4 * length(qq$x))
+  end <- floor(0.9 * length(qq$x))
   qq.sub <- list(x = qq$x[start:end], y = qq$y[start:end])
   fit <- lm(y ~ x, data = qq.sub)
   abline(fit, col = "blue")
+  invisible(qq)
 }
 
 #' Get Outlier Genes
 #'
-#' This function identifies outlier genes from multiple cancer datasets.
-#' It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
+#' @description
+#' Identifies outlier genes from multiple cancer datasets. Treats the top 5
+#' expressed genes in each sample as outliers and returns unique outlier genes.
 #'
-#' @param cancers A dataframe with one column containing paths to gene expression files.
+#' @param cancers Data frame. One column containing paths to gene expression files.
 #'
-#' @return A vector of unique gene names identified as outliers across all given samples.
+#' @return Vector of unique gene names identified as outliers.
+#'
 #' @export
 #'
 #' @examples
@@ -417,74 +419,84 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' cancers <- data.frame(ExpressionFiles = c(tf1, tf2))
 #' outlier_genes <- GetOutlierGenes(cancers)
 GetOutlierGenes <- function(cancers) {
-  ## Return a union of outlier genes.
-  ## The top 5 expressed genes in each sample is treated as outlier here.
   outlier.total <- c()
+
   for (i in seq_len(nrow(cancers))) {
     cancer.expFile <- as.character(cancers[i, 1])
     cancer.expression <- ParseInputExpression(cancer.expFile)
+
     for (j in seq_len(ncol(cancer.expression))) {
       outlier <- rownames(cancer.expression)[tail(order(cancer.expression[, j]), 5)]
       outlier.total <- c(outlier.total, outlier)
     }
   }
-  return(unique(outlier.total))
+
+  unique(outlier.total)
 }
 
 
 #' Deconvolute Tumor Microenvironment Using TIMER
 #'
-#' This function performs deconvolution of the tumor microenvironment using the TIMER algorithm. It processes multiple cancer datasets, removes batch effects, and estimates immune cell type abundances. The function relies on specific data and helper functions to manage the expression data and analyze the tumor microenvironment.
+#' @description
+#' Performs deconvolution of the tumor microenvironment using the TIMER
+#' algorithm. Processes multiple cancer datasets, removes batch effects,
+#' and estimates immune cell type abundances.
 #'
-#' @param args An environment or list containing parameters and file paths necessary for the function to execute. This should include `outdir` for output directory, `batch` for a file containing paths to expression data and cancer types.
+#' @param args List or environment containing parameters:
+#' \describe{
+#'   \item{outdir}{Character. Output directory path.}
+#'   \item{batch}{Character. File containing paths to expression data and
+#'     cancer types.}
+#' }
 #'
-#' @return Returns a matrix of abundance scores for different immune cell types across multiple cancer samples.
+#' @return Matrix of abundance scores for different immune cell types across
+#'   multiple cancer samples.
+#'
 #' @export
 #'
 #' @examples
-#' args <- list(
-#'   outdir = "path/to/output",
-#'   batch = "path/to/batch.csv"
+#' \dontrun{
+#' tf <- tempfile(fileext = ".csv")
+#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
+#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
 #' )
+#' outdir <- tempdir()
+#' args <- list(outdir = outdir, batch = tf)
 #' results <- deconvolute_timer.default(args)
+#' }
 deconvolute_timer.default <- function(args) {
-  # data("cancer_type_genes")
-  # data("immuneCuratedData")
-
   cancers <- check_cancer_types(args)
 
-  TimerINFO("Loading immune gene expression")
+  timer_info("Loading immune gene expression")
 
   immune <- immuneCuratedData
   immune.geneExpression <- immune$genes
   immune.cellTypes <- immune$celltypes
 
-  # message(immune$celltypes)
-
   outlier.genes <- sort(GetOutlierGenes(cancers))
-
-
-  print(paste("Outlier genes:", paste(outlier.genes, collapse = " ")))
+  cli::cli_alert_info("Outlier genes: {paste(outlier.genes, collapse = ' ')}")
 
   dir.create(args$outdir, showWarnings = FALSE, recursive = TRUE)
-  if (!dir.exists(paste(args$outdir, "/results", sep = ""))) {
-    dir.create(paste(args$outdir, "/results", sep = ""))
+  results_dir <- file.path(args$outdir, "results")
+  if (!dir.exists(results_dir)) {
+    dir.create(results_dir)
   }
 
   abundance.score.matrix <- c()
-  pdf(paste(args$outdir, "/results/output.pdf", sep = ""))
-  for (i in 1:nrow(cancers)) {
+  pdf(file.path(results_dir, "output.pdf"))
+
+  for (i in seq_len(nrow(cancers))) {
     cancer.expFile <- cancers[i, 1]
     cancer.category <- cancers[i, 2]
-    # gene.selected.marker.path <- system.file("extdata", "timer", "precalculated", paste0("genes_", cancer.category, ".RData"),
-    #                                          package = "IOBR", mustWork = TRUE)
+
     cancer.expression <- ParseInputExpression(cancer.expFile)
     index <- !(row.names(cancer.expression) %in% outlier.genes)
     cancer.expression <- cancer.expression[index, , drop = FALSE]
     cancer.colnames <- colnames(cancer.expression)
 
-    TimerINFO(paste("Removing the batch effect of", cancer.expFile))
-    for (j in 1:length(cancer.colnames)) {
+    timer_info(paste("Removing the batch effect of", cancer.expFile))
+
+    for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expression[, j], immune.geneExpression[, 1], name = cancer.colnames[j])
     }
 
@@ -492,7 +504,7 @@ deconvolute_timer.default <- function(args) {
     cancer.expNorm <- tmp[[1]]
     immune.expNormMedian <- tmp[[3]]
 
-    for (j in 1:length(cancer.colnames)) {
+    for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expNorm[, j], immune.expNormMedian[, 1],
         name = paste("After batch removing and aggregating for", cancer.colnames[j])
       )
@@ -500,15 +512,14 @@ deconvolute_timer.default <- function(args) {
 
     gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
-    XX <- immune.expNormMedian[gene.selected.marker, c(-4)]
+    XX <- immune.expNormMedian[gene.selected.marker, -4]
     YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
 
-    for (j in 1:length(cancer.colnames)) {
+    for (j in seq_along(cancer.colnames)) {
       fractions <- GetFractions.Abbas(XX, YY[, j])
-      # print (paste("Fractions for", cancer.expFile, cancer.colnames[j]))
-      # print (fractions)
       barplot(fractions,
-        cex.names = 0.8, names.arg = names(fractions), xlab = "cell type", ylab = "abundance",
+        cex.names = 0.8, names.arg = names(fractions),
+        xlab = "cell type", ylab = "abundance",
         main = paste("Abundance estimation for", cancer.colnames[j])
       )
       box()
@@ -519,9 +530,11 @@ deconvolute_timer.default <- function(args) {
   }
 
   dev.off()
-  write.table(abundance.score.matrix, paste(args$outdir, "/results/score_matrix.txt", sep = ""),
+
+  write.table(abundance.score.matrix,
+    file.path(results_dir, "score_matrix.txt"),
     sep = "\t", quote = FALSE, row.names = TRUE, col.names = NA
   )
 
-  return(abundance.score.matrix)
+  abundance.score.matrix
 }

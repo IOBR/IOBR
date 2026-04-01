@@ -2,14 +2,14 @@
 % Please edit documentation in R/CIBERSORT.R
 \name{CIBERSORT}
 \alias{CIBERSORT}
-\title{CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.}
+\title{CIBERSORT Deconvolution Algorithm}
 \usage{
 CIBERSORT(
-  sig_matrix = lm22,
+  sig_matrix = NULL,
   mixture_file,
   perm,
   QN = TRUE,
-  absolute,
+  absolute = FALSE,
   abs_method = "sig.score",
   parallel = FALSE,
   num_cores = 2,
@@ -17,29 +17,38 @@ CIBERSORT(
 )
 }
 \arguments{
-\item{sig_matrix}{Cell type GEP barcode matrix: row 1 = sample labels; column 1 = gene symbols; no missing values; default =LM22.txt download from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)}
+\item{sig_matrix}{Cell type GEP barcode matrix: row 1 = sample labels;
+column 1 = gene symbols; no missing values; default = LM22.txt download
+from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)}
 
-\item{mixture_file}{GEP matrix: row 1 = sample labels; column 1 = gene symbols; no missing values}
+\item{mixture_file}{GEP matrix: row 1 = sample labels; column 1 = gene
+symbols; no missing values}
 
-\item{perm}{Set permutations for statistical analysis (≥100 permutations recommended).}
+\item{perm}{Set permutations for statistical analysis
+(>=100 permutations recommended).}
 
 \item{QN}{Quantile normalization of input mixture (default = TRUE)}
 
 \item{absolute}{Run CIBERSORT in absolute mode (default = FALSE)
-- note that cell subsets will be scaled by their absolute levels and will not be represented as fractions
-(to derive the default output, normalize absolute levels such that they sum to 1 for each mixture sample)
-- the sum of all cell subsets in each mixture sample will be added to the ouput ('Absolute score').
-If LM22 is used, this score will capture total immune content.}
+- note that cell subsets will be scaled by their absolute levels and
+  will not be represented as fractions (to derive the default output,
+  normalize absolute levels such that they sum to 1 for each mixture sample)
+- the sum of all cell subsets in each mixture sample will be added to the
+  output ('Absolute score'). If LM22 is used, this score will capture
+  total immune content.}
 
-\item{abs_method}{if absolute is set to TRUE, choose method: 'no.sumto1' or 'sig.score'
+\item{abs_method}{If absolute is set to TRUE, choose method:
+'no.sumto1' or 'sig.score'
 - sig.score = for each mixture sample, define S as the median expression
-level of all genes in the signature matrix divided by the median expression
-level of all genes in the mixture. Multiple cell subset fractions by S.
+  level of all genes in the signature matrix divided by the median
+  expression level of all genes in the mixture. Multiple cell subset
+  fractions by S.
 - no.sumto1 = remove sum to 1 constraint}
 
 \item{parallel}{Logical. Enable parallel execution? (default = FALSE)}
 
-\item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE} (default = 2)}
+\item{num_cores}{Integer. Number of cores to use when \code{parallel = TRUE}
+(default = 2)}
 
 \item{seed}{Integer. Random seed for reproducible permutation testing.
 If \code{NULL} (default), uses current random state. Set to a specific
@@ -47,21 +56,31 @@ value (e.g., 123) for reproducible results across runs. Applies to both
 parallel and serial permutation.}
 }
 \value{
-A matrix object containing the estimated cibersort-cell fractions, p-values, correlation coefficients, and RMSE values.
+A matrix object containing the estimated cibersort-cell fractions,
+  p-values, correlation coefficients, and RMSE values.
 }
 \description{
-CIBERSORT is an analytical tool developed by Newman et al. to provide an estimation of the abundances of member cell types in a mixed cell population, using gene expression data.
+An analytical tool to estimate cell type abundances in mixed cell populations
+using gene expression data.
 }
 \examples{
-\dontrun{
-data("lm22", package = "IOBR")
-data("eset_gse62254", package = "IOBR")
-cibersort <- CIBERSORT(
+\donttest{
+# Create simulated data matching LM22 signature matrix gene names
+data(lm22)
+common_genes <- rownames(lm22)[1:500]
+sim_mixture <- as.data.frame(matrix(
+  rnorm(length(common_genes) * 10, mean = 5, sd = 2),
+  nrow = length(common_genes), ncol = 10
+))
+rownames(sim_mixture) <- common_genes
+colnames(sim_mixture) <- paste0("Sample", 1:10)
+result <- CIBERSORT(
   sig_matrix = lm22,
-  mixture_file = eset_gse62254, perm = 100,
-  QN = TRUE, absolute = FALSE
+  mixture_file = sim_mixture,
+  perm = 10, QN = FALSE, absolute = FALSE,
+  parallel = FALSE
 )
-head(cibersort)
+head(result)
 }
 }
 \author{

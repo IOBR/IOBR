@@ -2,42 +2,37 @@
 % Please edit documentation in R/BinomialModel.R
 \name{BinomialAUC}
 \alias{BinomialAUC}
-\title{Calculate Area Under the Curve (AUC) for Binomial Model}
+\title{Calculate AUC for Binomial Model}
 \usage{
 BinomialAUC(model, newx, s, acture.y)
 }
 \arguments{
-\item{model}{A model object fitted using a binomial distribution, from which predictions will be generated.}
+\item{model}{Fitted glmnet model object.}
 
-\item{newx}{A matrix or data frame of new data on which to make predictions. This should correspond
-to the predictors used in fitting the model.}
+\item{newx}{New data matrix for prediction.}
 
-\item{s}{A character vector indicating the specific regularization strengths ('lambda.min' or 'lambda.1se')
-at which predictions should be evaluated.}
+\item{s}{Lambda value for prediction (e.g., "lambda.min" or numeric).}
 
-\item{acture.y}{A vector containing the actual binary outcomes associated with `newx`.}
+\item{acture.y}{Actual binary outcomes (numeric 0/1 or factor).}
 }
 \value{
-A numeric value representing the AUC for the model's predictions against actual outcomes.
+Numeric AUC value between 0 and 1.
 }
 \description{
-This function computes the AUC for a binomial model's predictions on a given dataset.
-It uses the specified regularization strengths to generate predictions, which are then
-evaluated against actual outcomes to compute the AUC using the ROCR package. This function
-is typically used to assess model performance in classification tasks.
+Computes Area Under the ROC Curve (AUC) for model predictions using the
+ROCR package. Handles binary classification models from glmnet.
 }
 \examples{
-\dontrun{
-# Assuming 'model', 'newx', and 'actual.y' are predefined:
-fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-test_data <- matrix(rnorm(100 * 10), ncol = 10)
-  test_outcomes <- rbinom(100, 1, 0.5)
-auc_value <- BinomialAUC(
-  model = fitted_model,
-  newx = test_data,
-  s = "lambda.min",
-  acture.y = test_outcomes
-)
-print(auc_value)
+\donttest{
+if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+  set.seed(123)
+  train_data <- matrix(rnorm(100 * 5), ncol = 5)
+  train_outcome <- rbinom(100, 1, 0.5)
+  test_data <- matrix(rnorm(50 * 5), ncol = 5)
+  test_outcome <- rbinom(50, 1, 0.5)
+  fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+  auc_value <- BinomialAUC(fitted_model, test_data, fitted_model$lambda.min, test_outcome)
+  print(auc_value)
+}
 }
 }

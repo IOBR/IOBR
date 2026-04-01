@@ -10,7 +10,7 @@ sig_gsea(
   path = NULL,
   gene_symbol = "symbol",
   logfc = "log2FoldChange",
-  org = "hsa",
+  org = c("hsa", "mus"),
   msigdb = TRUE,
   category = "H",
   subcategory = NULL,
@@ -37,91 +37,88 @@ sig_gsea(
 \item{deg}{Data frame containing differential expression results with gene symbols
 and log fold changes.}
 
-\item{genesets}{List of custom gene sets for enrichment analysis. If \code{NULL},
-MSigDB gene sets are used based on \code{org} and \code{category}. Default is
-\code{NULL}.}
+\item{genesets}{List of custom gene sets for enrichment analysis. If `NULL`,
+MSigDB gene sets are used based on `org` and `category`. Default is `NULL`.}
 
 \item{path}{Character string specifying the directory path for saving results.
-Default is NULL.}
+Default is `NULL`.}
 
-\item{gene_symbol}{Character string specifying the column name in \code{deg}
-containing gene symbols. Default is \code{"symbol"}.}
+\item{gene_symbol}{Character string specifying the column name in `deg`
+containing gene symbols. Default is `"symbol"`.}
 
-\item{logfc}{Character string specifying the column name in \code{deg} containing
-log fold change values. Default is \code{"log2FoldChange"}.}
+\item{logfc}{Character string specifying the column name in `deg` containing
+log fold change values. Default is `"log2FoldChange"`.}
 
-\item{org}{Character string specifying the organism. Options are \code{"hsa"}
-(Homo sapiens) or \code{"mus"} (Mus musculus). Default is \code{"hsa"}.}
+\item{org}{Character string specifying the organism. Options are `"hsa"`
+(Homo sapiens) or `"mus"` (Mus musculus). Default is `"hsa"`.}
 
 \item{msigdb}{Logical indicating whether to use MSigDB gene sets. Default is
-\code{TRUE}.}
+`TRUE`.}
 
-\item{category}{Character string specifying the MSigDB category (e.g., \code{"H"}
-for Hallmark, \code{"C2"} for curated gene sets). Default is \code{"H"}.}
+\item{category}{Character string specifying the MSigDB category (e.g., `"H"`
+for Hallmark, `"C2"` for curated gene sets). Default is `"H"`.}
 
 \item{subcategory}{Character string specifying the MSigDB subcategory to filter
-gene sets. Default is \code{NULL}.}
+gene sets. Default is `NULL`.}
 
 \item{palette_bar}{Character string or integer specifying the color palette for
-bar plots. Default is \code{"jama"}.}
+bar plots. Default is `"jama"`.}
 
 \item{palette_gsea}{Integer specifying the color palette for GSEA plots. Default
-is 2.}
+is `2`.}
 
 \item{cols_gsea}{Character vector specifying custom colors for GSEA enrichment
-plots. If \code{NULL}, colors are automatically generated using \code{palette_gsea}.
-Default is \code{NULL}.}
+plots. If `NULL`, colors are automatically generated. Default is `NULL`.}
 
 \item{cols_bar}{Character vector specifying custom colors for the enrichment
-bar plot. If \code{NULL}, colors are automatically generated using \code{palette_bar}.
-Default is \code{NULL}.}
+bar plot. If `NULL`, colors are automatically generated. Default is `NULL`.}
 
 \item{show_bar}{Integer specifying the number of top enriched gene sets to display
-in the bar plot. Default is 10.}
+in the bar plot. Default is `10`.}
 
 \item{show_col}{Logical indicating whether to display color names in the bar plot.
-Default is \code{FALSE}.}
+Default is `FALSE`.}
 
 \item{show_plot}{Logical indicating whether to display GSEA enrichment plots.
-Default is \code{FALSE}.}
+Default is `FALSE`.}
 
 \item{show_gsea}{Integer specifying the number of top significant gene sets for
-which to generate GSEA plots. Default is 8.}
+which to generate GSEA plots. Default is `8`.}
 
 \item{show_path_n}{Integer specifying the number of pathways to display in GSEA
-plots. Default is 20.}
+plots. Default is `20`.}
 
 \item{plot_single_sig}{Logical indicating whether to generate separate plots for
-each significant gene set. Default is \code{TRUE}.}
+each significant gene set. Default is `TRUE`.}
 
 \item{project}{Character string specifying the project name for output files.
-Default is \code{"custom_sig"}.}
+Default is `"custom_sig"`.}
 
 \item{minGSSize}{Integer specifying the minimum gene set size for analysis.
-Default is 10.}
+Default is `10`.}
 
 \item{maxGSSize}{Integer specifying the maximum gene set size for analysis.
-Default is 500.}
+Default is `500`.}
 
 \item{verbose}{Logical indicating whether to display progress messages. Default
-is \code{TRUE}.}
+is `TRUE`.}
 
 \item{seed}{Logical indicating whether to set a random seed for reproducibility.
-Default is \code{FALSE}.}
+Default is `FALSE`.}
 
 \item{fig.type}{Character string specifying the file format for saving plots
-(e.g., \code{"pdf"}, \code{"png"}). Default is \code{"pdf"}.}
+(e.g., `"pdf"`, `"png"`). Default is `"pdf"`.}
 
 \item{print_bar}{Logical indicating whether to save and print the bar plot.
-Default is \code{TRUE}.}
+Default is `TRUE`.}
 }
 \value{
 List containing:
-\itemize{
-  \item \code{up}: Data frame of up-regulated enriched gene sets
-  \item \code{down}: Data frame of down-regulated enriched gene sets
-  \item \code{gsea_result}: Complete GSEA result object
-  \item \code{gsea_plots}: List of GSEA enrichment plots (if generated)
+\describe{
+  \item{up}{Data frame of up-regulated enriched gene sets}
+  \item{down}{Data frame of down-regulated enriched gene sets}
+  \item{all}{Complete GSEA results}
+  \item{plot_top}{GSEA enrichment plot for top gene sets}
 }
 }
 \description{
@@ -130,17 +127,17 @@ from differential gene expression data. Supports MSigDB gene sets or custom gene
 signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
-# Load example data
-data("eset_stad", package = "IOBR")
-data("stad_group", package = "IOBR")
-# Perform differential expression analysis
+\donttest{
+eset_stad <- load_data("eset_stad")
+stad_group <- load_data("stad_group")
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group, group_id = "subtype",
   pdata_id = "ID", array = FALSE, method = "DESeq2",
-  contrast = c("EBV", "GS"), path = "STAD"
+  contrast = c("EBV", "GS"), path = file.path(tempdir(), "STAD")
 )
-# Run GSEA with custom gene sets
-res <- sig_gsea(deg = deg, genesets = signature_tme)
+signature_tme <- load_data("signature_tme")
+res <- sig_gsea(deg = deg, genesets = signature_tme, path = tempdir())
+}
 }
 \author{
 Dongqiang Zeng

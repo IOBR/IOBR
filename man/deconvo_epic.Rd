@@ -4,30 +4,30 @@
 \alias{deconvo_epic}
 \title{Deconvolve Immune Microenvironment Using EPIC}
 \usage{
-deconvo_epic(eset, project = NULL, tumor)
+deconvo_epic(eset, project = NULL, tumor = TRUE)
 }
 \arguments{
-\item{eset}{A gene expression matrix with genes in rows and samples in columns.}
+\item{eset}{Gene expression matrix with genes as row names.}
 
-\item{project}{Optional project name to distinguish different datasets.}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{tumor}{Logical indicating whether the input samples are tumor (TRUE) or normal (FALSE).}
+\item{tumor}{Logical indicating tumor (`TRUE`) or normal (`FALSE`) samples.}
 }
 \value{
-A data frame containing EPIC immune cell fraction estimates with sample IDs.
+Data frame with EPIC cell fraction estimates. Columns suffixed with
+  `_EPIC`.
 }
 \description{
-This function estimates immune cell fractions in the tumor microenvironment using the EPIC algorithm,
-primarily designed for RNA-seq data.
+Estimates immune cell fractions using EPIC algorithm.
 }
 \examples{
-\dontrun{
-# Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
-data("TRef", package = "IOBR")
-data("BRef", package = "IOBR")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
+\donttest{
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:500, 1:5]
+epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
+head(epic_result)
 }
 }
 \author{

@@ -5,14 +5,14 @@
 \title{Design Custom Theme for ggplot2 Plots}
 \usage{
 design_mytheme(
-  theme = "light",
+  theme = c("light", "bw", "classic", "classic2"),
   plot_title_size = 2,
   axis_title_size = 2,
   axis_text_size = 12,
   axis_angle = 60,
   hjust = 1,
-  legend.position = NULL,
-  legend.direction = NULL,
+  legend.position = "bottom",
+  legend.direction = "horizontal",
   legend.size = 0.25,
   legend.key.height = 0.5,
   legend.key.width = 0.5,
@@ -21,37 +21,43 @@ design_mytheme(
 )
 }
 \arguments{
-\item{theme}{The base theme for the plot. Options include "light", "bw", "classic", and "classic2". Default is "light".}
+\item{theme}{Base theme: "light", "bw", "classic", "classic2".
+Default is "light".}
 
-\item{plot_title_size}{The relative size of the plot title. Default is 2.}
+\item{plot_title_size}{Relative size of plot title. Default is 2.}
 
-\item{axis_title_size}{The relative size of the axis titles. Default is 2.}
+\item{axis_title_size}{Relative size of axis titles. Default is 2.}
 
-\item{axis_text_size}{The size of the axis tick mark labels. Default is 12.}
+\item{axis_text_size}{Size of axis tick labels. Default is 12.}
 
-\item{axis_angle}{The angle of rotation for the x-axis tick mark labels. Default is 60.}
+\item{axis_angle}{Angle of x-axis tick labels. Default is 60.}
 
 \item{hjust}{Horizontal justification for x-axis text. Default is 1.}
 
-\item{legend.position}{The position of the legend in the plot. Options include "none", "left", "right", "bottom", and "top". Default is "bottom".}
+\item{legend.position}{Legend position: "none", "left", "right", "bottom",
+"top". Default is "bottom".}
 
-\item{legend.direction}{The direction of the legend items. Options include "horizontal" and "vertical". Default is "horizontal".}
+\item{legend.direction}{Direction of legend items: "horizontal" or "vertical".
+Default is "horizontal".}
 
-\item{legend.size}{The size of the legend key. Default is 0.25.}
+\item{legend.size}{Size of legend key. Default is 0.25.}
 
-\item{legend.key.height}{The height of the legend key in cm. Default is 0.5.}
+\item{legend.key.height}{Height of legend key in cm. Default is 0.5.}
 
-\item{legend.key.width}{The width of the legend key in cm. Default is 0.5.}
+\item{legend.key.width}{Width of legend key in cm. Default is 0.5.}
 
-\item{legend.size.text}{The size of the legend text labels. Default is 10.}
+\item{legend.size.text}{Size of legend text labels. Default is 10.}
 
-\item{legend.box}{The orientation of the legend box. Options include "horizontal" and "vertical". Default is "horizontal".}
+\item{legend.box}{Orientation of legend box: "horizontal" or "vertical".
+Default is "horizontal".}
 }
 \value{
-A ggplot2 theme object that can be added to a ggplot.
+A ggplot2 theme object.
 }
 \description{
-This function creates a customized ggplot2 theme based on user-specified parameters for plot elements such as title size, axis sizes, legend settings, and theme style. It supports various base themes and allows fine-tuning of visual aspects for publication-quality plots.
+Creates a customized ggplot2 theme based on user-specified parameters for
+plot elements such as title size, axis sizes, legend settings, and theme style.
+Supports various base themes and allows fine-tuning of visual aspects.
 }
 \examples{
 library(ggplot2)

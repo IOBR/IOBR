@@ -1,52 +1,60 @@
 #' Binomial Model Construction
 #'
-#' Constructs and evaluates binomial logistic regression models using Lasso and Ridge regularization.
-#' This function processes the input data, scales features if specified, splits the data into training
-#' and testing sets based on a provided ratio, and then fits both Lasso and Ridge models. It optionally
-#' generates AUC plots for model evaluation. The results, along with the training dataset, are returned.
+#' @description
+#' Constructs and evaluates binomial logistic regression models using Lasso and Ridge
+#' regularization. Processes input data, scales features if specified, splits data into
+#' training/testing sets, and fits both Lasso and Ridge models. Optionally generates
+#' AUC plots for model evaluation.
 #'
-#' @param x A data.frame containing the sample ID and features, the first column must be the sample ID.
-#' @param y A data.frame where the first column is the sample ID and the second column is the outcome
-#'          of each sample, which can be either numeric or a factor vector.
-#' @param seed An integer used to set the seed for random operations, default is 123456.
-#' @param scale A logical indicating whether the feature data `x` should be scaled, default is TRUE.
-#' @param train_ratio A numeric value between 0 and 1 specifying the proportion of the dataset to be
-#'                    used for training, e.g., 0.7 means 70 percent of the data is used for training.
-#' @param nfold The number of folds to use for cross-validation in model fitting, default is 10.
-#' @param plot A logical indicating whether to generate and display AUC plots, default is TRUE.
-#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
-#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
+#' @param x A data frame containing sample ID and features. First column must be sample ID.
+#' @param y A data frame where first column is sample ID and second column is outcome
+#'   (numeric or factor).
+#' @param seed Integer for random seed. Default is `123456`.
+#' @param scale Logical indicating whether to scale features. Default is `TRUE`.
+#' @param train_ratio Numeric between 0 and 1 for training proportion. Default is `0.7`.
+#' @param nfold Integer for cross-validation folds. Default is `10`.
+#' @param plot Logical indicating whether to generate AUC plots. Default is `TRUE`.
+#' @param cols Optional color vector for ROC curves. Default is `NULL`.
+#' @param palette Character string for color palette. Default is `"jama"`.
 #'
-#' @return A list containing the results of the Lasso and Ridge models, and the input training data.
-#'         The list includes elements 'lasso_result', 'ridge_result', and 'train.x'.
+#' @return List containing:
+#' \describe{
+#'   \item{lasso_result}{Lasso model results}
+#'   \item{ridge_result}{Ridge model results}
+#'   \item{train.x}{Training data with IDs}
+#' }
+#'
+#' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("imvigor210_sig", package = "IOBR")
-#' data("imvigor210_pdata", package = "IOBR")
+#' \donttest{
+#' imvigor210_sig <- load_data("imvigor210_sig")
+#' imvigor210_pdata <- load_data("imvigor210_pdata")
 #' pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
 #' pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
-#' BinomialModel(
-#'   x = imvigor210_sig,
-#'   y = pdata_group,
-#'   seed = 123456,
-#'   scale = TRUE,
-#'   train_ratio = 0.7,
-#'   nfold = 10,
-#'   plot = FALSE
+#' result <- BinomialModel(
+#'   x = imvigor210_sig, y = pdata_group,
+#'   seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
 #' )
-#' @export
-BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
+#' }
+BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
+                          nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
+  rlang::check_installed("glmnet")
+
   x <- as.data.frame(x)
   y <- as.data.frame(y)
-  print(message(paste0("\n", ">>> Processing data")))
+
+  cli::cli_alert_info("Processing data")
   processdat <- ProcessingData(x = x, y = y, scale = scale, type = "binomial")
   x_scale <- processdat$x_scale
   y <- processdat$y
   x_ID <- processdat$x_ID
-  print(message(paste0("\n", ">>> Spliting data into train and test data")))
+
+  cli::cli_alert_info("Splitting data into training and test sets")
   train_test <- SplitTrainTest(
-    x = x_scale, y = y, train_ratio = train_ratio, type = "binomial",
-    seed = seed
+    x = x_scale, y = y, train_ratio = train_ratio,
+    type = "binomial", seed = seed
   )
   train.x <- train_test$train.x
   train.y <- train_test$train.y
@@ -55,7 +63,7 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, 
   train_sample <- train_test$train_sample
   return.x <- data.frame(ID = x_ID[train_sample], train.x)
 
-  print(message(paste0("\n", ">>> Running ", "LASSO")))
+  cli::cli_alert_info("Running LASSO")
   set.seed(seed)
   lasso_model <- glmnet::cv.glmnet(
     x = train.x, y = train.y, family = "binomial",
@@ -65,17 +73,17 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, 
     train.x = train.x, train.y = train.y,
     test.x = test.x, test.y = test.y, model = lasso_model
   )
+
   if (plot) {
     p1 <- PlotAUC(
       train.x = train.x, train.y = train.y,
-      test.x = test.x, test.y = test.y, model = lasso_model, cols = cols, palette = palette,
-      modelname = "lasso_model"
+      test.x = test.x, test.y = test.y, model = lasso_model,
+      cols = cols, palette = palette, modelname = "lasso_model"
     )
     print(p1)
   }
 
-  print(message(paste0("\n", ">>> Running ", "RIDGE REGRESSION")))
-
+  cli::cli_alert_info("Running RIDGE REGRESSION")
   set.seed(seed)
   ridge_model <- glmnet::cv.glmnet(
     x = train.x, y = train.y, family = "binomial",
@@ -85,65 +93,78 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7, 
     train.x = train.x, train.y = train.y,
     test.x = test.x, test.y = test.y, model = ridge_model
   )
+
   if (plot) {
     p2 <- PlotAUC(
       train.x = train.x, train.y = train.y,
       test.x = test.x, test.y = test.y, model = ridge_model,
-      cols = cols, palette = palette,
-      modelname = "ridge_model"
+      cols = cols, palette = palette, modelname = "ridge_model"
     )
     print(p2)
   }
-  print(message(paste0("\n", ">>> Running ", "Elastic Network.")))
 
-  message(paste0("\n", ">>> Done !"))
-  return(list(
-    lasso_result = lasso_result, ridge_result = ridge_result,
-    train.x = return.x
-  ))
+  cli::cli_alert_success("Model fitting complete")
+
+  list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x)
 }
 
-
-#' Processing Data for Model construction
+#' Process Data for Model Construction
 #'
-#' This function preprocesses the data for binomial or survival analysis. It aligns and filters the data based on sample IDs,
-#' optionally scales the data, and makes sure the data types are appropriate for further modeling. It also handles survival data by filtering out
-#' entries where the time is non-positive and adjusts the data structure based on the type of analysis.
+#' @description
+#' Preprocesses data for binomial or survival analysis. Aligns and filters data
+#' based on sample IDs, optionally scales data, and ensures appropriate data types.
+#' Handles missing values by removing columns with NA values.
 #'
-#' @param x A data frame containing predictors with the first column being IDs.
-#' @param y A data frame containing the outcome variable with the first column being IDs. For survival analysis, it expects two additional columns for time and status.
-#' @param scale Logical, indicating whether the predictor variables should be scaled. When TRUE, predictors are centered and scaled.
-#' @param type Character string specifying the type of analysis. Possible values are "binomial" for binomial outcomes where y is a factor indicating group membership, or "survival" where y includes survival time and event status.
+#' @param x Data frame of predictors with first column as IDs.
+#' @param y Data frame of outcomes with first column as IDs. For survival,
+#'   expects two additional columns for time and status.
+#' @param scale Logical indicating whether to scale predictors.
+#' @param type Character string: `"binomial"` or `"survival"`.
 #'
-#' @return A list containing three elements:
-#'   - `x_scale`: The processed predictor matrix with optional scaling applied.
-#'   - `y`: The outcome variable, processed according to the specified analysis type.
-#'   - `x_ID`: The IDs of the samples included in the analysis.
+#' @return List containing:
+#' \describe{
+#'   \item{x_scale}{Processed predictor matrix}
+#'   \item{y}{Processed outcome variable}
+#'   \item{x_ID}{Sample IDs}
+#' }
+#'
+#' @export
 #'
 #' @examples
-#' # For binomial analysis
+#' \donttest{
 #' x <- data.frame(ID = 1:10, predictor1 = rnorm(10), predictor2 = rnorm(10))
 #' y <- data.frame(ID = 1:10, outcome = sample(c(0, 1), 10, replace = TRUE))
 #' result <- ProcessingData(x, y, scale = TRUE, type = "binomial")
-#'
-#' # For survival analysis
-#' y <- data.frame(ID = 1:10, time = runif(10, 0, 100), status = sample(c(0, 1), 10, replace = TRUE))
-#' result <- ProcessingData(x, y, scale = FALSE, type = "survival")
-#' @export
-ProcessingData <- function(x, y, scale, type = "binomial") {
+#' }
+ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
+  type <- rlang::arg_match(type)
+
+  if (!is.data.frame(x)) {
+    cli::cli_abort("{.arg x} must be a data frame")
+  }
+  if (!is.data.frame(y)) {
+    cli::cli_abort("{.arg y} must be a data frame")
+  }
+  if (ncol(x) < 2) {
+    cli::cli_abort("{.arg x} must have at least 2 columns (ID + predictors)")
+  }
+
   colnames(x)[1] <- "ID"
   colnames(y)[1] <- "ID"
   x$ID <- as.character(x$ID)
   y$ID <- as.character(y$ID)
 
   if (type == "survival") {
+    if (ncol(y) < 3) {
+      cli::cli_abort("{.arg y} must have at least 3 columns for survival analysis (ID, time, status)")
+    }
     colnames(y) <- c("ID", "time", "status")
-    y <- dplyr::filter(y, time > 0)
+    y <- dplyr::filter(y, .data$time > 0)
   }
 
   samples <- intersect(x$ID, y$ID)
   if (length(samples) == 0) {
-    stop("No matching sample ID found between input matrices x and y.")
+    cli::cli_abort("No matching sample IDs found between x and y")
   }
 
   x <- x[match(samples, x$ID), ]
@@ -151,127 +172,143 @@ ProcessingData <- function(x, y, scale, type = "binomial") {
 
   if (type == "binomial") {
     colnames(y) <- c("ID", "Group")
-    y <- dplyr::pull(y, Group)
+    y <- dplyr::pull(y, .data$Group)
     if (!is.factor(y)) {
-      warning("Outcome is not a factor, transforming it into a factor vector.")
+      cli::cli_warn("Converting outcome to factor")
       y <- as.factor(y)
     }
-  }
-
-  if (type == "survival") {
+  } else if (type == "survival") {
     y <- y[, c("time", "status")]
   }
 
-  if (scale) {
-    x_scale <- scale(x[, -1], center = TRUE, scale = TRUE)
+  x_scale <- if (scale) {
+    scale(x[, -1, drop = FALSE], center = TRUE, scale = TRUE)
   } else {
-    x_scale <- x[, -1]
+    as.matrix(x[, -1, drop = FALSE])
   }
 
   x_ID <- x[, "ID"]
-  ValueNA <- which(as.numeric(apply(x_scale, 2, function(z) sum(is.na(z)))) != 0)
-  if (length(ValueNA) > 0) {
-    x_scale <- x_scale[, -ValueNA]
+  na_cols <- which(colSums(is.na(x_scale)) > 0)
+  if (length(na_cols) > 0) {
+    cli::cli_warn("Removing {length(na_cols)} column(s) with NA values")
+    x_scale <- x_scale[, -na_cols, drop = FALSE]
   }
 
-  return(list(x_scale = x_scale, y = y, x_ID = x_ID))
+  list(x_scale = x_scale, y = y, x_ID = x_ID)
 }
-
 
 #' Regression Result Computation
 #'
-#' Computes the regression results for given training and testing datasets using a specified model.
-#' It calculates the coefficients at specified regularization strengths (lambda.min and lambda.1se) and
-#' evaluates the model's performance using Area Under the Curve (AUC) for binomial outcomes.
+#' @description
+#' Computes regression results with coefficients at lambda.min and lambda.1se,
+#' and evaluates AUC for binomial outcomes. Returns a comprehensive summary
+#' of model performance on both training and testing datasets.
 #'
-#' @param train.x A matrix or data frame of training predictors used to fit the model.
-#' @param train.y Training dataset outcomes, expected to be a binary vector indicating the presence or absence of an event.
-#' @param test.x A matrix or data frame of testing predictors used for evaluating the model.
-#' @param test.y Testing dataset outcomes, expected to be similar in format to train.y.
-#' @param model A model object from which coefficients will be extracted and used for evaluation.
+#' @param train.x Training predictors matrix.
+#' @param train.y Training outcomes (binary factor).
+#' @param test.x Testing predictors matrix.
+#' @param test.y Testing outcomes (binary factor).
+#' @param model Fitted cv.glmnet model object.
 #'
-#' @return A list containing the model object, a data frame of coefficients for different lambda values,
-#'         and a matrix of AUC values for both the training and testing sets, calculated at both lambda.min and lambda.1se.
+#' @return List containing:
+#' \describe{
+#'   \item{model}{The fitted cv.glmnet model}
+#'   \item{coefs}{Data frame with feature names and coefficients at lambda.min and lambda.1se}
+#'   \item{AUC}{Matrix of AUC values for train/test sets at both lambda values}
+#' }
+#'
+#' @export
 #'
 #' @examples
-#' # Assuming that `model` is already fitted using glmnet or a similar package:
-#' train_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' train_outcome <- rbinom(100, 1, 0.5)
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10)
-#' test_outcome <- rbinom(100, 1, 0.5)
-#' fitted_model <- glmnet(train_data, train_outcome, family = "binomial")
-#' results <- RegressionResult(
-#'   train.x = train_data, train.y = train_outcome,
-#'   test.x = test_data, test.y = test_outcome,
-#'   model = fitted_model
-#' )
-#' @export
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(100 * 10), ncol = 10)
+#'   train_outcome <- rbinom(100, 1, 0.5)
+#'   test_data <- matrix(rnorm(50 * 10), ncol = 10)
+#'   test_outcome <- rbinom(50, 1, 0.5)
+#'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+#'   results <- RegressionResult(
+#'     train.x = train_data, train.y = train_outcome,
+#'     test.x = test_data, test.y = test_outcome, model = fitted_model
+#'   )
+#' }
+#' }
 RegressionResult <- function(train.x, train.y, test.x, test.y, model) {
-  coefs <- cbind(coef(model, s = "lambda.min"), coef(model, s = "lambda.1se"))
-  coefs <- data.frame(feature = rownames(coefs), lambda.min = coefs[, 1], lambda.1se = coefs[, 2])
-  newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y <- list(train.y, train.y, test.y, test.y)
-  args <- list(newx, s, acture.y)
-  AUC <- args %>%
-    purrr::pmap_dbl(BinomialAUC, model = model) %>%
-    matrix(.,
-      ncol = 2, byrow = T,
-      dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se"))
-    )
-  resultreturn <- list(
-    model = model, coefs = coefs,
-    AUC = AUC
+  if (!is.matrix(train.x) || !is.matrix(test.x)) {
+    cli::cli_abort("train.x and test.x must be matrices")
+  }
+
+  coefs <- cbind(
+    stats::coef(model, s = model$lambda.min),
+    stats::coef(model, s = model$lambda.1se)
   )
+  coefs <- data.frame(
+    feature = rownames(coefs),
+    lambda.min = coefs[, 1],
+    lambda.1se = coefs[, 2]
+  )
+
+  datasets <- list(
+    list(data = train.x, outcome = train.y, lambda = model$lambda.min),
+    list(data = train.x, outcome = train.y, lambda = model$lambda.1se),
+    list(data = test.x, outcome = test.y, lambda = model$lambda.min),
+    list(data = test.x, outcome = test.y, lambda = model$lambda.1se)
+  )
+
+  aucs <- vapply(datasets, function(d) {
+    BinomialAUC(model, d$data, d$lambda, d$outcome)
+  }, numeric(1))
+
+  AUC <- matrix(aucs,
+    ncol = 2, byrow = TRUE,
+    dimnames = list(c("train", "test"), c("lambda.min", "lambda.1se"))
+  )
+
+  list(model = model, coefs = coefs, AUC = AUC)
 }
 
 #' Elastic Net Model Fitting
 #'
-#' Fits an elastic net model for binary classification using
-#' `glmnet::cv.glmnet`, allowing for both L1 (Lasso) and L2 (Ridge)
-#' regularization. The function uses cross-validation to identify the
-#' optimal alpha and lambda values. Alpha ranges from 0 (Ridge) to 1
-#' (Lasso), with lambda controlling the strength of the regularization.
+#' @description
+#' Fits elastic net model with cross-validation to find optimal alpha and lambda.
+#' Searches across a grid of alpha values (0 to 1) and lambda values to minimize
+#' cross-validation error.
 #'
-#' @param train.x A matrix or data frame containing training predictors.
-#' @param train.y A numeric vector containing the binary outcome (0/1)
-#'   for each sample in the training set.
-#' @param lambdamax The maximum value of lambda to consider in the
-#'   regularization path.
-#' @param nfold The number of folds to use for cross-validation.
+#' @param train.x Training predictors matrix.
+#' @param train.y Training binary outcomes (0/1 or factor).
+#' @param lambdamax Maximum lambda value for the grid search.
+#' @param nfold Number of CV folds. Default is `10`.
 #'
-#' @return A list with components `chose_alpha` and `chose_lambda`,
-#'   giving the selected elastic net mixing parameter and regularization
-#'   parameter, respectively.
+#' @return List containing:
+#' \describe{
+#'   \item{chose_alpha}{Optimal alpha value (0-1)}
+#'   \item{chose_lambda}{Optimal lambda value}
+#' }
+#'
+#' @export
 #'
 #' @examples
+#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- matrix(rnorm(50 * 5), ncol = 5)
 #'   train_outcome <- rbinom(50, 1, 0.5)
-#'
-#'   optimal_parameters <- Enet(
-#'     train.x = train_data,
-#'     train.y = train_outcome,
-#'     lambdamax = 1,
-#'     nfold = 5
-#'   )
-#'
-#'   print(optimal_parameters)
+#'   result <- Enet(train.x = train_data, train.y = train_outcome, lambdamax = 1, nfold = 5)
 #' }
-#' @export
+#' }
 Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
   train.x <- as.matrix(train.x)
   train.y <- as.numeric(train.y)
 
   if (nrow(train.x) != length(train.y)) {
-    stop("The number of rows in train.x must equal the length of train.y.")
+    cli::cli_abort("Number of rows in train.x ({nrow(train.x)}) must equal length of train.y ({length(train.y)})")
   }
   if (lambdamax <= 0) {
-    stop("lambdamax must be greater than 0.")
+    cli::cli_abort("{.arg lambdamax} must be greater than 0, got {lambdamax}")
   }
   if (nfold < 2) {
-    stop("nfold must be at least 2.")
+    cli::cli_abort("{.arg nfold} must be at least 2, got {nfold}")
   }
 
   alpha.grid <- seq(0, 1, by = 0.2)
@@ -279,259 +316,228 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 
   res <- lapply(alpha.grid, function(a) {
     fit <- glmnet::cv.glmnet(
-      x = train.x,
-      y = train.y,
-      family = "binomial",
-      alpha = a,
-      lambda = lambda.grid,
-      nfolds = nfold,
-      type.measure = "class"
+      x = train.x, y = train.y, family = "binomial",
+      alpha = a, lambda = lambda.grid, nfolds = nfold, type.measure = "class"
     )
-
-    data.frame(
-      alpha = a,
-      lambda = fit$lambda.min,
-      cv_error = min(fit$cvm)
-    )
+    data.frame(alpha = a, lambda = fit$lambda.min, cv_error = min(fit$cvm))
   })
 
   res <- do.call(rbind, res)
   best <- res[which.min(res$cv_error), ]
 
-  list(
-    chose_alpha = best$alpha,
-    chose_lambda = best$lambda
-  )
+  list(chose_alpha = best$alpha, chose_lambda = best$lambda)
 }
 
-
-#' Calculate Area Under the Curve (AUC) for Binomial Model
+#' Calculate AUC for Binomial Model
 #'
-#' This function computes the AUC for a binomial model's predictions on a given dataset.
-#' It uses the specified regularization strengths to generate predictions, which are then
-#' evaluated against actual outcomes to compute the AUC using the ROCR package. This function
-#' is typically used to assess model performance in classification tasks.
+#' @description
+#' Computes Area Under the ROC Curve (AUC) for model predictions using the
+#' ROCR package. Handles binary classification models from glmnet.
 #'
-#' @param model A model object fitted using a binomial distribution, from which predictions will be generated.
-#' @param newx A matrix or data frame of new data on which to make predictions. This should correspond
-#'        to the predictors used in fitting the model.
-#' @param s A character vector indicating the specific regularization strengths ('lambda.min' or 'lambda.1se')
-#'        at which predictions should be evaluated.
-#' @param acture.y A vector containing the actual binary outcomes associated with `newx`.
+#' @param model Fitted glmnet model object.
+#' @param newx New data matrix for prediction.
+#' @param s Lambda value for prediction (e.g., "lambda.min" or numeric).
+#' @param acture.y Actual binary outcomes (numeric 0/1 or factor).
 #'
-#' @return A numeric value representing the AUC for the model's predictions against actual outcomes.
+#' @return Numeric AUC value between 0 and 1.
+#'
+#' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming 'model', 'newx', and 'actual.y' are predefined:
-#' fitted_model <- glmnet::glmnet(train_data, train_outcome, family = "binomial")
-#' test_data <- matrix(rnorm(100 * 10), ncol = 10)
-#'   test_outcomes <- rbinom(100, 1, 0.5)
-#' auc_value <- BinomialAUC(
-#'   model = fitted_model,
-#'   newx = test_data,
-#'   s = "lambda.min",
-#'   acture.y = test_outcomes
-#' )
-#' print(auc_value)
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(100 * 5), ncol = 5)
+#'   train_outcome <- rbinom(100, 1, 0.5)
+#'   test_data <- matrix(rnorm(50 * 5), ncol = 5)
+#'   test_outcome <- rbinom(50, 1, 0.5)
+#'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+#'   auc_value <- BinomialAUC(fitted_model, test_data, fitted_model$lambda.min, test_outcome)
+#'   print(auc_value)
 #' }
-#' @export
-BinomialAUC <- function(model, newx, s, acture.y){
+#' }
+BinomialAUC <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
-  auc <- as.numeric(ROCR::performance(pred, "auc")@y.values)
-  return(auc)
+  as.numeric(ROCR::performance(pred, "auc")@y.values)
 }
 
 #' Plot AUC ROC Curves
 #'
-#' This function generates ROC (Receiver Operating Characteristic) curves to evaluate the performance of a binary classification model.
-#' It creates plots for both training and testing data sets, using specified lambda values for model evaluation. The function
-#' automatically handles the selection of color palettes and saves the resulting plots in a specified directory.
+#' @description
+#' Generates ROC curves for model evaluation comparing training and testing
+#' performance at both lambda.min and lambda.1se. Creates a ggplot visualization
+#' with AUC values in the legend.
 #'
-#' @param train.x A matrix or data frame containing the training predictors.
-#' @param train.y A numeric or binary vector indicating the outcomes for the training set.
-#' @param test.x A matrix or data frame containing the testing predictors.
-#' @param test.y A numeric or binary vector indicating the outcomes for the testing set.
-#' @param model A model object used to generate prediction probabilities for the ROC analysis.
-#' @param modelname A string representing the name of the model, used in the plot title and file name.
-#' @param cols Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.
-#' @param palette Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.
+#' @param train.x Training predictors matrix.
+#' @param train.y Training outcomes (binary factor).
+#' @param test.x Testing predictors matrix.
+#' @param test.y Testing outcomes (binary factor).
+#' @param model Fitted cv.glmnet model.
+#' @param modelname Character string for plot title.
+#' @param cols Optional color vector for ROC curves.
+#' @param palette Color palette name from IOBR palettes. Default is `"jama"`.
 #'
-#' @return A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
-#' @examples
-#' \dontrun{
-#' # Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
-#' PlotAUC(
-#'   train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
-#'   model = fitted_model, modelname = "MyModel"
-#' )
-#' }
+#' @return ggplot object of ROC curves.
+#'
 #' @export
-PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname, cols = NULL, palette = "jama") {
-  if (is.null(cols)) {
-    cols <- palettes(category = "box", palette = palette, show_message = FALSE, show_col = FALSE)
-  } else {
-    cols <- cols
-  }
-
-  newx <- list(train.x, train.x, test.x, test.x)
-  s <- list("lambda.min", "lambda.1se", "lambda.min", "lambda.1se")
-  acture.y <- list(train.y, train.y, test.y, test.y)
-  args <- list(newx, s, acture.y)
-  pref <- args %>% purrr::pmap(CalculatePref, model = model)
-  aucs <- args %>%
-    purrr::pmap_dbl(BinomialAUC, model = model) %>%
-    round(., 2)
-  legend.name <- paste(c(
-    "train_lambda.min", "train_lambda.1se",
-    "test_lambda.min", "test_lambda.1se"
-  ), "AUC", aucs, sep = " ")
-  names(pref) <- c(
-    "train_lambda.min", "train_lambda.1se",
-    "test_lambda.min", "test_lambda.1se"
+#'
+#' @examples
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#'   set.seed(123)
+#'   train_data <- matrix(rnorm(100 * 5), ncol = 5)
+#'   train_outcome <- rbinom(100, 1, 0.5)
+#'   test_data <- matrix(rnorm(50 * 5), ncol = 5)
+#'   test_outcome <- rbinom(50, 1, 0.5)
+#'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+#'   p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
+#'   print(p)
+#' }
+#' }
+PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
+                    cols = NULL, palette = "jama") {
+  cols <- cols %||% palettes(
+    category = "box", palette = palette,
+    show_message = FALSE, show_col = FALSE
   )
-  plotdat <- lapply(pref, function(z) {
-    data.frame(x = z@x.values[[1]], y = z@y.values[[1]])
-  }) %>% plyr::ldply(., .fun = "rbind", .id = "s")
-  plotdat$s <- factor(plotdat$s, levels = names(pref))
-  p <- ggplot2::ggplot(plotdat, aes(x = x, y = y)) +
-    geom_path(aes(color = s)) +
-    geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
-    xlab("False positive rate") +
-    ylab("True positive rate") +
-    theme_bw() +
-    scale_color_manual(
-      values = cols,
-      labels = legend.name
-    ) +
-    ggtitle(str_replace(modelname, "_", " ")) +
-    theme(legend.title = element_blank()) +
-    theme(
-      plot.title = element_text(size = rel(2), hjust = 0.5),
-      axis.text.x = element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
-      axis.text.y = element_text(face = "plain", angle = 30, hjust = 1, color = "black")
+
+  datasets <- list(
+    list(data = train.x, outcome = train.y, lambda = model$lambda.min),
+    list(data = train.x, outcome = train.y, lambda = model$lambda.1se),
+    list(data = test.x, outcome = test.y, lambda = model$lambda.min),
+    list(data = test.x, outcome = test.y, lambda = model$lambda.1se)
+  )
+
+  pref <- lapply(datasets, function(d) {
+    CalculatePref(model, d$data, d$lambda, d$outcome)
+  })
+
+  aucs <- round(vapply(datasets, function(d) {
+    BinomialAUC(model, d$data, d$lambda, d$outcome)
+  }, numeric(1)), 2)
+
+  legend.name <- paste(
+    c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se"),
+    "AUC", aucs,
+    sep = " "
+  )
+  names(pref) <- c("train_lambda.min", "train_lambda.1se", "test_lambda.min", "test_lambda.1se")
+
+  plotdat <- do.call(rbind, lapply(names(pref), function(nm) {
+    data.frame(
+      s = nm,
+      x = pref[[nm]]@x.values[[1]],
+      y = pref[[nm]]@y.values[[1]]
     )
+  }))
 
-  return(p)
+  plotdat$s <- factor(plotdat$s, levels = names(pref))
+
+  ggplot2::ggplot(plotdat, ggplot2::aes(x = .data$x, y = .data$y, color = .data$s)) +
+    ggplot2::geom_path(linewidth = 1) +
+    ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+    ggplot2::xlab("False positive rate") +
+    ggplot2::ylab("True positive rate") +
+    ggplot2::theme_bw() +
+    ggplot2::scale_color_manual(values = cols, labels = legend.name) +
+    ggplot2::ggtitle(stringr::str_replace(modelname, "_", " ")) +
+    ggplot2::theme(
+      legend.title = ggplot2::element_blank(),
+      plot.title = ggplot2::element_text(size = ggplot2::rel(2), hjust = 0.5),
+      axis.text.x = ggplot2::element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
+      axis.text.y = ggplot2::element_text(face = "plain", angle = 0, hjust = 1, color = "black")
+    )
 }
-
 
 #' Calculate Performance Metrics
 #'
-#' Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-#' This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
-#' assess the discriminative ability of the model under various regularization strengths specified by 's'.
+#' @description
+#' Computes True Positive Rate (TPR) and False Positive Rate (FPR) for ROC
+#' analysis using the ROCR package. Used internally for ROC curve generation.
 #'
-#' @param model A model object used to generate predictions.
-#' @param newx A matrix or data frame of new data on which the model will predict.
-#' @param s A character vector or single character string indicating the regularization strength at which
-#'          the model should be evaluated. Common values are 'lambda.min' and 'lambda.1se' for models fitted with
-#'          methods such as glmnet.
-#' @param acture.y A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.
+#' @param model Fitted glmnet model.
+#' @param newx New data matrix for prediction.
+#' @param s Lambda value for prediction.
+#' @param acture.y Actual binary outcomes.
 #'
-#' @return A performance object from the ROCR package, which includes true positive and false positive rates.
+#' @return ROCR performance object containing TPR and FPR values.
+#'
+#' @export
 #'
 #' @examples
-#' # 小型模拟数据示例
-#' set.seed(123)
-#'
-#' # 创建小规模数据
-#' n_train <- 50
-#' n_test <- 10
-#' p <- 3
-#'
-#' # 训练数据
-#' x_train <- matrix(rnorm(n_train * p), n_train, p)
-#' y_train <- sample(0:1, n_train, replace = TRUE)
-#'
-#' # 训练简单模型
-#' if (requireNamespace("glmnet", quietly = TRUE)) {
-#'   library(glmnet)
-#'   # 快速训练（使用较小的交叉验证折数）
-#'   fitted_model <- cv.glmnet(x_train, y_train, 
-#'                            family = "binomial",
-#'                            nfolds = 3)  # 减少折数以加快速度
-#'   
-#'   # 测试数据
-#'   new_data <- matrix(rnorm(n_test * p), n_test, p)
-#'   actual_outcomes <- sample(0:1, n_test, replace = TRUE)
-#'   
-#'   # 计算性能
-#'   perf_metrics <- CalculatePref(
-#'     model = fitted_model,
-#'     newx = new_data,
-#'     s = "lambda.min",
-#'     acture.y = actual_outcomes
-#'   )
-#'   
-#'   # 简要输出
-#'   print("Performance metrics calculated successfully")
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+#'   fitted_model <- glmnet::cv.glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), nfolds = 3)
+#'   perf <- CalculatePref(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
 #' }
-#' @export
-CalculatePref <- function(model, newx, s, acture.y){
+#' }
+CalculatePref <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
   prob <- stats::predict(model, newx = newx, s = s, type = "response")
   pred <- ROCR::prediction(prob, acture.y)
-  perf <- ROCR::performance(pred, "tpr", "fpr")
-  return(perf)
+  ROCR::performance(pred, "tpr", "fpr")
 }
-
 
 #' Split Data into Training and Testing Sets
 #'
-#' This function divides the dataset into training and testing sets based on a specified proportion. It is designed to work with both binomial and survival type data, ensuring appropriate handling of the dataset
-#' according to the specified data type.
+#' @description
+#' Divides dataset into training and testing sets using random sampling.
+#' Maintains data integrity for both binomial and survival analysis types.
 #'
-#' @param x A matrix or data frame containing the predictors or features.
-#' @param y A vector or matrix containing the outcomes associated with 'x'. The format can be either
-#'          a simple vector for binomial outcomes or a matrix for survival outcomes.
-#' @param train_ratio A numeric value between 0 and 1 indicating the proportion of the data to use for training.
-#'                    For example, a 'train_ratio' of 0.7 means 70 percent of the data will be used for training.
-#' @param type A character string indicating the type of analysis, accepts "binomial" for binary outcomes or
-#'             "survival" for survival analysis, which affects how 'y' data is handled during splitting.
-#' @param seed An integer used to set the seed for random sampling, ensuring reproducibility.
+#' @param x Predictor matrix or data frame.
+#' @param y Outcome vector (binomial) or matrix with time/status (survival).
+#' @param train_ratio Proportion for training (0-1). Default is `0.7`.
+#' @param type Analysis type: `"binomial"` or `"survival"`.
+#' @param seed Random seed for reproducibility.
 #'
-#' @return A list containing the training and testing subsets: 'train.x' and 'train.y' for training,
-#'         and 'test.x' and 'test.y' for testing. Also returns 'train_sample', which is a vector of indices
-#'         that were selected for the training set.
+#' @return List containing:
+#' \describe{
+#'   \item{train.x}{Training predictors matrix}
+#'   \item{train.y}{Training outcomes}
+#'   \item{test.x}{Testing predictors matrix}
+#'   \item{test.y}{Testing outcomes}
+#'   \item{train_sample}{Indices of training samples}
+#' }
+#'
+#' @export
 #'
 #' @examples
-#' # Example for binomial data
+#' \donttest{
 #' data_matrix <- matrix(rnorm(200), ncol = 2)
 #' outcome_vector <- rbinom(100, 1, 0.5)
 #' split_data <- SplitTrainTest(
-#'   x = data_matrix, y = outcome_vector,
-#'   train_ratio = 0.7, type = "binomial", seed = 123
+#'   data_matrix, outcome_vector,
+#'   train_ratio = 0.7,
+#'   type = "binomial", seed = 123
 #' )
-#' print(split_data)
-#'
-#' # Example for survival data
-#' survival_outcomes <- matrix(c(rep(1, 100), rep(0, 100)), ncol = 2)
-#' split_data_survival <- SplitTrainTest(
-#'   x = data_matrix, y = survival_outcomes,
-#'   train_ratio = 0.7, type = "survival", seed = 123
-#' )
-#' print(split_data_survival)
-#' @export
-SplitTrainTest <- function(x, y, train_ratio, type, seed) {
+#' }
+SplitTrainTest <- function(x, y, train_ratio, type = c("binomial", "survival"), seed) {
+  type <- rlang::arg_match(type)
+
+  if (train_ratio <= 0 || train_ratio >= 1) {
+    cli::cli_abort("{.arg train_ratio} must be between 0 and 1, got {train_ratio}")
+  }
+
   sizes <- round(nrow(x) * train_ratio)
   set.seed(seed)
-  train_sample <- sample(1:nrow(x), size = sizes, replace = F)
-  test_sample <- setdiff(1:nrow(x), train_sample)
-  train.x <- x[train_sample, ]
-  test.x <- x[test_sample, ]
+  train_sample <- sample(seq_len(nrow(x)), size = sizes, replace = FALSE)
+  test_sample <- setdiff(seq_len(nrow(x)), train_sample)
+
+  train.x <- x[train_sample, , drop = FALSE]
+  test.x <- x[test_sample, , drop = FALSE]
+
   if (type == "binomial") {
     train.y <- y[train_sample]
     test.y <- y[test_sample]
+  } else if (type == "survival") {
+    train.y <- y[train_sample, , drop = FALSE]
+    test.y <- y[test_sample, , drop = FALSE]
   }
-  if (type == "survival") {
-    train.y <- y[train_sample, ]
-    test.y <- y[test_sample, ]
-  }
-  return(list(
+
+  list(
     train.x = train.x, train.y = train.y, test.x = test.x, test.y = test.y,
     train_sample = train_sample
-  ))
+  )
 }

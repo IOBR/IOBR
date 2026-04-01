@@ -18,13 +18,13 @@ batch_surv(
 \item{variable}{Character vector specifying the names of predictor variables to analyze.}
 
 \item{time}{Character string specifying the column name containing follow-up time.
-Default is \code{"time"}.}
+Default is `"time"`.}
 
 \item{status}{Character string specifying the column name containing event status
-(1 = event occurred, 0 = censored). Default is \code{"status"}.}
+(1 = event occurred, 0 = censored). Default is `"status"`.}
 
 \item{best_cutoff}{Logical indicating whether to compute optimal cutoffs for
-continuous variables and analyze dichotomized versions. Default is \code{FALSE}.}
+continuous variables and analyze dichotomized versions. Default is `FALSE`.}
 }
 \value{
 Data frame containing hazard ratios (HR), 95% confidence intervals (CI),
@@ -36,13 +36,15 @@ Optionally determines optimal cutoffs to dichotomize continuous predictors befor
 modeling. Returns hazard ratios, confidence intervals, and p-values for each variable.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
-# Perform batch survival analysis
+\donttest{
+sig_stad <- load_data("sig_stad")
 batch_surv(
-  pdata = sig_stad, variable = colnames(sig_stad)[69:ncol(sig_stad)],
-  time = "OS_time", status = "OS_status"
+  pdata = sig_stad,
+  variable = colnames(sig_stad)[69:ncol(sig_stad)],
+  time = "OS_time",
+  status = "OS_status"
 )
+}
 }
 \author{
 Dongqiang Zeng

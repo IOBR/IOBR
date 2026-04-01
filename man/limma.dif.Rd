@@ -17,8 +17,10 @@ limma.dif(exprdata, pdata, contrastfml)
 Returns a dataframe from limma::topTable, which includes genes as rows and columns like genelist, logFC, AveExpr, etc.
 }
 \description{
-Performs differential expression analysis using the limma package on a given gene expression dataset.
-Constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes
+Performs differential expression analysis using the limma package on a
+given gene expression dataset.
+Constructs a design matrix from phenotype data, fits a linear model,
+applies contrasts, and computes
 statistics for differential expression.
 }
 \examples{

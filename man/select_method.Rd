@@ -4,28 +4,37 @@
 \alias{select_method}
 \title{Select a Signature Scoring Method Subset}
 \usage{
-select_method(data, method = "ssGSEA")
+select_method(data, method = c("ssGSEA", "PCA", "zscore"))
 }
 \arguments{
 \item{data}{Data frame or matrix. Integrated signature score matrix.}
 
-\item{method}{Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive). Default "ssGSEA".}
+\item{method}{Character. One of "PCA", "ssGSEA", or "zscore" (case-insensitive).
+Default is "ssGSEA".}
 }
 \value{
-Matrix/data frame containing only the selected method's scores.
+Matrix or data frame containing only the selected method's scores.
 }
 \description{
-Filters an integrated signature score matrix to retain results from a specified method (PCA, ssGSEA, or zscore) and strips method suffixes from column names.
+Filters an integrated signature score matrix to retain results from a
+specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
+column names.
 }
 \examples{
-data(eset_stad, package = "IOBR")
-data("signature_collection", package = "IOBR")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-eset <- scale_matrix(eset, manipulate = TRUE)
+\donttest{
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+hallmark <- load_data("hallmark")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:5000, 1:10]
 res <- calculate_sig_score(
   eset = eset,
-  signature = signature_collection[1:4],
+  signature = hallmark[1:4],
   method = "integration"
 )
 select_method(res, method = "PCA")
+}
+}
+\author{
+Dongqiang Zeng
 }

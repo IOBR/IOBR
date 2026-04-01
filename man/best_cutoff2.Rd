@@ -2,47 +2,58 @@
 % Please edit documentation in R/best_cutoff2.R
 \name{best_cutoff2}
 \alias{best_cutoff2}
-\title{Extract best cut-off and add new binary object to data frame}
+\title{Extract Best Cutoff and Add Binary Variable to Data Frame}
 \usage{
 best_cutoff2(
   pdata,
   variable,
   time = "time",
   status = "status",
-  PrintResult = T
+  print_result = TRUE
 )
 }
 \arguments{
-\item{pdata}{phenotype data with survival information and features}
+\item{pdata}{Data frame containing survival information and features.}
 
-\item{variable}{The name of the continuous variable in the input data for which the best cutoff needs to be determined.}
+\item{variable}{Character string specifying the continuous variable name.}
 
-\item{time}{The name of the column in the input data representing the time-to-event (survival time). The default value is "time".}
+\item{time}{Character string specifying the time-to-event column name.
+Default is `"time"`.}
 
-\item{status}{The name of the column in the input data representing the event status (censoring information). The default value is "status".}
+\item{status}{Character string specifying the event status column name.
+Default is `"status"`.}
 
-\item{PrintResult}{A logical value indicating whether to print the results. The default value is TRUE.}
+\item{print_result}{Logical indicating whether to print results.
+Default is `TRUE`.}
 }
 \value{
-pdata with binary variables and best cutoff
+List containing:
+\describe{
+  \item{pdata}{Data frame with binary variable added}
+  \item{best_cutoff}{Numeric cutoff value}
+  \item{cox_continuous_object}{Cox model summary for continuous variable}
+  \item{summary_binary_variable}{Summary of binary variable}
+  \item{cox_binary_object}{Cox model summary for binary variable}
+}
 }
 \description{
-The "best_cutoff" function is used to find the best cutoff point for a continuous variable in survival analysis. It takes input data ("pdata") containing a continuous variable ("variable") and survival information ("time" and "status"). It returns the modified input data with a new binary variable created based on the best cutoff point.
+Finds the best cutoff point for a continuous variable in survival analysis.
+Takes input data containing a continuous variable and survival information
+(time and status). Returns the modified input data with a new binary variable
+created based on the best cutoff point.
 }
 \examples{
-
-# Loading TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
-# Finding the best cutoff value of TMEscore for survival
-sig_stad2 <- best_cutoff2(
+\donttest{
+sig_stad <- load_data("sig_stad")
+result <- best_cutoff2(
   pdata = sig_stad,
   variable = "TMEscore_CIR",
   time = "OS_time",
   status = "OS_status",
-  PrintResult = TRUE
+  print_result = TRUE
 )
-sig_stad2$best_cutoff
-
+result$best_cutoff
+}
 }
 \author{
 Dongqiang Zeng

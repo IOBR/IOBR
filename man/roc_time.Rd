@@ -24,58 +24,61 @@ roc_time(
 )
 }
 \arguments{
-\item{input}{Data frame. Input data containing variables for analysis.}
+\item{input}{Data frame containing variables for analysis.}
 
 \item{vars}{Character vector. Variable(s) to be evaluated.}
 
-\item{time}{Character. Name of the time variable in the input data. Default is "time".}
+\item{time}{Character string. Name of the time variable. Default is `"time"`.}
 
-\item{status}{Character. Name of the status variable in the input data. Default is "status".}
+\item{status}{Character string. Name of the status variable. Default is `"status"`.}
 
-\item{time_point}{Integer or vector. Time point(s) for ROC analysis. Default is 12.}
+\item{time_point}{Integer or vector. Time point(s) for ROC analysis. Default is `12`.}
 
-\item{time_type}{Character. Time unit of the input survival time.
-The same unit will be used for ROC calculation and displayed in the plot
-(supported: "day" or "month"). Default is "month".}
+\item{time_type}{Character string. Time unit (`"day"` or `"month"`). Default is `"month"`.}
 
-\item{palette}{Character. Color palette for the plot(used when cols is "normal" or NULL). Default is "jama".}
+\item{palette}{Character string. Color palette for the plot. Default is `"jama"`.}
 
-\item{cols}{Character vector or string. Color specification. Three options:
-\itemize{
-  \item \code{"normal"}: Use default palette colors (default)
-  \item \code{"random"}: Use randomized/shuffled palette colors
-  \item Custom color vector: e.g., \code{c("#E64B35", "#4DBBD5", "#00A087")}
-        or \code{c("red", "blue", "green")}
-}}
+\item{cols}{Character vector or string. Color specification: `"normal"`, `"random"`,
+or custom color vector.}
 
-\item{seed}{Integer. Random seed for reproducibility. Default is 1234.}
+\item{seed}{Integer. Random seed for reproducibility. Default is `1234`.}
 
-\item{show_col}{Logical. Whether to display the color palette. Default is FALSE.}
+\item{show_col}{Logical indicating whether to display the color palette.
+Default is `FALSE`.}
 
-\item{path}{Character or NULL. Path to save the plot. Default is NULL.}
+\item{path}{Character string or `NULL`. Path to save the plot. Default is `NULL`.}
 
-\item{main}{Character. Main title of the plot. Default is "PFS".}
+\item{main}{Character string. Main title of the plot. Default is `"PFS"`.}
 
-\item{index}{Integer. Index for plot filename. Default is 1.}
+\item{index}{Integer. Index for plot filename. Default is `1`.}
 
-\item{fig.type}{Character. Output file type (e.g., "pdf", "png"). Default is "pdf".}
+\item{fig.type}{Character string. Output file type (e.g., `"pdf"`, `"png"`).
+Default is `"pdf"`.}
 
-\item{width}{Numeric. Width of the plot. Default is 5.}
+\item{width}{Numeric. Width of the plot. Default is `5`.}
 
-\item{height}{Numeric. Height of the plot. Default is 5.2.}
+\item{height}{Numeric. Height of the plot. Default is `5.2`.}
 }
 \value{
 A ggplot object representing the time-dependent ROC plot.
 }
 \description{
-Generates a time-dependent Receiver Operating Characteristic (ROC) plot to evaluate the predictive performance of one or more variables in survival analysis. Calculates the Area Under the Curve (AUC) for each specified time point and variable, and creates a multi-line ROC plot with annotated AUC values.
+Generates a time-dependent Receiver Operating Characteristic (ROC) plot to evaluate
+the predictive performance of one or more variables in survival analysis. Calculates
+the Area Under the Curve (AUC) for each specified time point and variable, and
+creates a multi-line ROC plot with annotated AUC values.
 }
 \examples{
-data("tcga_stad_sig", package = "IOBR")
-data("pdata_stad", package = "IOBR")
+\donttest{
+tcga_stad_sig <- load_data("tcga_stad_sig")
+pdata_stad <- load_data("pdata_stad")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
 roc_time(
   input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
-  time = "time", status = "OS_status", time_point = 12, path = "result", main = "OS"
+  time = "time", status = "OS_status", time_point = 12, path = NULL, main = "OS"
 )
+}
+}
+\author{
+Dongqiang Zeng
 }

@@ -9,7 +9,8 @@ A data frame with patients as rows and variables as columns:
 \describe{
   \item{ID}{Patient sample identifier}
   \item{BOR}{Best overall response (CR, PR, SD, PD, NA)}
-  \item{BOR_binary}{Binary response classification (R=responder, NR=non-responder)}
+  \item{BOR_binary}{Binary response classification (R=responder,
+  NR=non-responder)}
   \item{OS_days}{Overall survival time in days}
   \item{OS_status}{Overall survival status (0=alive, 1=dead)}
   \item{Mutation_Load}{Tumor mutation burden}

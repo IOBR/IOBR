@@ -1,75 +1,110 @@
 #' Identify Outlier Samples in Gene Expression Data
 #'
-#' Analyzes gene expression data to identify potential outlier samples using connectivity analysis via the WGCNA package. Calculates normalized adjacency and connectivity z-scores for each sample, generates connectivity plots, and optionally performs hierarchical clustering. Outlier samples are those with connectivity z-scores exceeding the specified threshold.
+#' @description
+#' Analyzes gene expression data to identify potential outlier samples using
+#' connectivity analysis via the WGCNA package. Calculates normalized
+#' adjacency and connectivity z-scores for each sample, generates connectivity
+#' plots, and optionally performs hierarchical clustering.
 #'
-#' @param eset Numeric matrix. Gene expression data with genes as rows and samples as columns.
-#' @param yinter Numeric. Y-intercept threshold for identifying outliers in the connectivity plot. Default is -3.
-#' @param project Character. Project name for output folder creation. Default is "find_outlier_eset".
-#' @param plot_hculst Logical. Whether to plot hierarchical clustering of samples. Default is FALSE.
-#' @param show_plot Logical. Whether to display the connectivity plot. Default is TRUE.
-#' @param index Integer or NULL. Index for output file naming. Default is NULL.
-#' @param save Logical. Whether to save plots to files. If FALSE, plots are displayed but not saved. Default is TRUE.
+#' @param eset Numeric matrix. Gene expression data with genes as rows and
+#'   samples as columns.
+#' @param yinter Numeric. Z-score threshold for identifying outliers.
+#'   Default is -3.
+#' @param project Character. Project name for output folder. Default is
+#'   `"find_outlier_eset"`.
+#' @param plot_hculst Logical. Whether to plot hierarchical clustering.
+#'   Default is `FALSE`.
+#' @param show_plot Logical. Whether to display the connectivity plot.
+#'   Default is `TRUE`.
+#' @param index Integer or `NULL`. Index for output file naming.
+#'   Default is `NULL`.
+#' @param save Logical. Whether to save plots to files. Default is `TRUE`.
 #'
-#' @return Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).
+#' @return Character vector of sample names identified as potential outliers.
+#'
 #' @export
 #' @author Dongqiang Zeng
+#'
 #' @examples
-#' # Load expression data
-#' data("eset_tme_stad", package = "IOBR")
-#' outs <- find_outlier_samples(eset = eset_tme_stad)
+#' \donttest{
+#' eset_tme_stad <- load_data("eset_tme_stad")
+#' outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 #' print(outs)
-find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset", plot_hculst = FALSE, show_plot = TRUE, index = NULL, save = TRUE) {
-  if (!requireNamespace("WGCNA", quietly = TRUE)) {
-    stop("Package 'WGCNA' is required but not installed.")
+#' }
+find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset",
+                                 plot_hculst = FALSE, show_plot = TRUE,
+                                 index = NULL, save = TRUE) {
+  rlang::check_installed("WGCNA")
+
+  if (!is.matrix(eset) && !is.data.frame(eset)) {
+    cli::cli_abort("{.arg eset} must be a matrix or data frame")
   }
-  if (save) {
-    path <- creat_folder(project)
-  } else {
-    path <- NULL
+  if (nrow(eset) < 2 || ncol(eset) < 2) {
+    cli::cli_abort("{.arg eset} must have at least 2 rows and 2 columns")
+  }
+  if (!is.numeric(yinter) || length(yinter) != 1) {
+    cli::cli_abort("{.arg yinter} must be a single numeric value")
   }
 
+  path <- if (save) creat_folder(project) else NULL
   if (is.null(index)) index <- 1
 
   if (save && plot_hculst) {
-    tree.combat <- eset %>%
-      t() %>%
-      dist() %>%
-      hclust(method = "average")
-    ##############################
-    pdf(paste0(path$abspath, index, "-1-clusteringplot.pdf"), width = 20, height = 10)
-    plot(tree.combat, main = paste0("1-", "Hierarchical Clustering Sammples"))
-    dev.off()
+    tree.combat <- eset |>
+      t() |>
+      stats::dist() |>
+      stats::hclust(method = "average")
+
+    grDevices::pdf(
+      paste0(path$abspath, index, "-1-clusteringplot.pdf"),
+      width = 20, height = 10
+    )
+    plot(tree.combat, main = paste0("1-", "Hierarchical Clustering Samples"))
+    grDevices::dev.off()
   }
-  ###############################
-  ###############################
+
   normalized.adjacency <- (0.5 + 0.5 * WGCNA::bicor(eset))^2
   network.summary <- WGCNA::fundamentalNetworkConcepts(normalized.adjacency)
   connectivity <- network.summary$Connectivity
-  connectivity.zscore <- (connectivity - mean(connectivity)) / sqrt(var(connectivity))
+  connectivity.zscore <- (connectivity - mean(connectivity)) / sqrt(stats::var(connectivity))
+
   connectivity.plot <- data.frame(
     Sample.Name = names(connectivity.zscore),
     Z.score = connectivity.zscore,
-    Sample.Num = 1:length(connectivity.zscore)
+    Sample.Num = seq_along(connectivity.zscore)
   )
-  ################################
 
-  p <- ggplot(connectivity.plot, aes(x = Sample.Num, y = Z.score, label = Sample.Name)) +
-    geom_text(size = 4, colour = "red")
-  p <- p + geom_hline(aes(yintercept = yinter))
-  p <- p + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  p <- p + xlab("Sample Number") + ylab("Z score") + ggtitle("Sample Connectivity")
-  p <- p + design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
+  p <- ggplot2::ggplot(
+    connectivity.plot,
+    ggplot2::aes(x = .data$Sample.Num, y = .data$Z.score, label = .data$Sample.Name)
+  ) +
+    ggplot2::geom_text(size = 4, colour = "red") +
+    ggplot2::geom_hline(ggplot2::aes(yintercept = yinter)) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    ) +
+    ggplot2::xlab("Sample Number") +
+    ggplot2::ylab("Z score") +
+    ggplot2::ggtitle("Sample Connectivity") +
+    design_mytheme(axis_angle = 0, axis_text_size = 12, axis_title_size = 2)
+
   if (show_plot) print(p)
 
   if (save) {
-    ggsave(p, filename = paste0(index, "-2-connectivityplot.pdf"), width = 8, height = 8, path = path$folder_name)
+    ggplot2::ggsave(
+      p,
+      filename = paste0(index, "-2-connectivityplot.pdf"),
+      width = 8, height = 8,
+      path = path$folder_name
+    )
   }
 
   names_eset_rmout <- colnames(eset)[abs(connectivity.zscore) > abs(yinter)]
 
-  message(paste0(">>>--- When yinter = ", yinter))
-  message(">>>--- Potential outliers: ")
-  print(names_eset_rmout)
+  cli::cli_alert_info("When yinter = {yinter}")
+  cli::cli_alert_info("Potential outliers: {.val {names_eset_rmout}}")
 
-  return(names_eset_rmout)
+  names_eset_rmout
 }

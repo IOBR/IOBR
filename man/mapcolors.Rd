@@ -2,23 +2,28 @@
 % Please edit documentation in R/IPS_helper.R
 \name{mapcolors}
 \alias{mapcolors}
-\title{Map Colors Based on Input Value}
+\title{Map Score to Color}
 \usage{
-mapcolors(x)
+mapcolors(x, my_palette = NULL)
 }
 \arguments{
-\item{x}{A numeric value to be mapped to a color.}
+\item{x}{Numeric value to be mapped to a color (typically between -3 and 3).}
+
+\item{my_palette}{Color palette vector (should have 1001 colors).
+Default uses blue-white-red gradient.}
 }
 \value{
-A color from the predefined palette corresponding to the input value.
+A color from the palette as a hex code.
 }
 \description{
-This function maps a numeric input value to a color from a predefined palette.
+Maps a numeric input value to a color from a blue-white-red gradient palette.
+Values are mapped to a 1001-color palette where -3 maps to blue, 0 maps to white,
+and +3 maps to red.
 }
 \examples{
-# Define a palette with 1001 colors
-my_palette <- colorRampPalette(c("blue", "white", "red"))(1001)
-# Map a value to a color
-color <- mapcolors(2)
-print(color)
+\donttest{
+my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
+color <- mapcolors(2, my_palette)
+color <- mapcolors(-2, my_palette)
+}
 }

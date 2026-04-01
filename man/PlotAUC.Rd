@@ -16,36 +16,41 @@ PlotAUC(
 )
 }
 \arguments{
-\item{train.x}{A matrix or data frame containing the training predictors.}
+\item{train.x}{Training predictors matrix.}
 
-\item{train.y}{A numeric or binary vector indicating the outcomes for the training set.}
+\item{train.y}{Training outcomes (binary factor).}
 
-\item{test.x}{A matrix or data frame containing the testing predictors.}
+\item{test.x}{Testing predictors matrix.}
 
-\item{test.y}{A numeric or binary vector indicating the outcomes for the testing set.}
+\item{test.y}{Testing outcomes (binary factor).}
 
-\item{model}{A model object used to generate prediction probabilities for the ROC analysis.}
+\item{model}{Fitted cv.glmnet model.}
 
-\item{modelname}{A string representing the name of the model, used in the plot title and file name.}
+\item{modelname}{Character string for plot title.}
 
-\item{cols}{Optional, a vector of colors for the ROC curves. If NULL, default color palettes are applied based on the 'palette' parameter.}
+\item{cols}{Optional color vector for ROC curves.}
 
-\item{palette}{Optional, a string specifying the color palette. Default is "jama", which is applied if 'cols' is NULL.}
+\item{palette}{Color palette name from IOBR palettes. Default is `"jama"`.}
 }
 \value{
-A ggplot object of the ROC curve plot, which is also saved as a PDF in the specified directory.
+ggplot object of ROC curves.
 }
 \description{
-This function generates ROC (Receiver Operating Characteristic) curves to evaluate the performance of a binary classification model.
-It creates plots for both training and testing data sets, using specified lambda values for model evaluation. The function
-automatically handles the selection of color palettes and saves the resulting plots in a specified directory.
+Generates ROC curves for model evaluation comparing training and testing
+performance at both lambda.min and lambda.1se. Creates a ggplot visualization
+with AUC values in the legend.
 }
 \examples{
-\dontrun{
-# Assuming 'train.x', 'train.y', 'test.x', 'test.y', and 'model' are predefined:
-PlotAUC(
-  train.x = train_data, train.y = train_outcomes, test.x = test_data, test.y = test_outcomes,
-  model = fitted_model, modelname = "MyModel"
-)
+\donttest{
+if (requireNamespace("glmnet", quietly = TRUE)) {
+  set.seed(123)
+  train_data <- matrix(rnorm(100 * 5), ncol = 5)
+  train_outcome <- rbinom(100, 1, 0.5)
+  test_data <- matrix(rnorm(50 * 5), ncol = 5)
+  test_outcome <- rbinom(50, 1, 0.5)
+  fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+  p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
+  print(p)
+}
 }
 }

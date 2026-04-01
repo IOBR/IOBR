@@ -2,22 +2,23 @@
 % Please edit documentation in R/xCell.R
 \name{rawEnrichmentAnalysis}
 \alias{rawEnrichmentAnalysis}
-\title{Calculated raw xCell enrichment scores}
+\title{Calculate Raw xCell Enrichment Scores}
 \usage{
 rawEnrichmentAnalysis(expr, signatures, genes, file.name = NULL)
 }
 \arguments{
-\item{expr}{the gene expression data set. A matrix with row names as symbols and columns as samples.}
+\item{expr}{Gene expression data matrix with row names as gene symbols.}
 
-\item{signatures}{a GMT object of signatures.}
+\item{signatures}{GMT object of signatures.}
 
-\item{genes}{list of genes to use in the analysis.}
+\item{genes}{Character vector of genes to use.}
 
-\item{file.name}{string for the file name for saving the scores. Default is NULL.}
+\item{file.name}{Character string for saving scores. Default is `NULL`.}
 }
 \value{
-the raw xCell scores
+Matrix of raw xCell scores.
 }
 \description{
-rawEnrichmentAnalysis Returns the raw xCell cell types enrichment scores.
+Returns the raw xCell cell types enrichment scores using ssGSEA.
 }
+\keyword{internal}

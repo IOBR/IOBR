@@ -14,17 +14,21 @@ tcga_rna_preps(
 )
 }
 \arguments{
-\item{eset}{RNA-seq gene expression matrix from TCGA.}
+\item{eset}{Matrix or data frame. RNA-seq gene expression matrix from TCGA.}
 
-\item{id_type}{Gene identifier type: "ensembl" or "symbol". Default is "ensembl".}
+\item{id_type}{Character. Gene identifier type: "ensembl" or "symbol".
+Default is "ensembl".}
 
-\item{input_type}{Input data type: "log2count" or "count". Default is "log2count".}
+\item{input_type}{Character. Input data type: "log2count" or "count".
+Default is "log2count".}
 
-\item{output}{Sample type: "tumor" or "tumor_normal". Default is "tumor".}
+\item{output}{Character. Sample type: "tumor" or "tumor_normal".
+Default is "tumor".}
 
-\item{output_type}{Output data type: "tpm", "log2tpm", or "count". Default is "tpm".}
+\item{output_type}{Character. Output data type: "tpm", "log2tpm", or "count".
+Default is "tpm".}
 
-\item{annotation}{Logical for gene annotation. Default is TRUE.}
+\item{annotation}{Logical. Whether to perform gene annotation. Default is TRUE.}
 }
 \value{
 Preprocessed gene expression matrix.
@@ -34,12 +38,11 @@ Preprocesses TCGA RNA-seq data by modifying sample types, transforming data,
 and annotating genes based on specified parameters.
 }
 \examples{
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
 eset <- tcga_rna_preps(
   eset = eset_stad, id_type = "ensembl", input_type = "count",
   output = "tumor", output_type = "tpm", annotation = TRUE
 )
-
 }
 \author{
 Dongqiang Zeng

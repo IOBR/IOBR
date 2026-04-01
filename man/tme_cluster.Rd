@@ -2,7 +2,7 @@
 % Please edit documentation in R/tme_cluster.R
 \name{tme_cluster}
 \alias{tme_cluster}
-\title{Identification of TME cluster}
+\title{Identification of TME Cluster}
 \usage{
 tme_cluster(
   input,
@@ -16,36 +16,42 @@ tme_cluster(
 )
 }
 \arguments{
-\item{input}{A data frame containing the input dataset for TME clustering analysis.}
+\item{input}{Data frame containing the input dataset.}
 
-\item{features}{A vector specifying the features (variables) to be used for clustering. Default is NULL, which uses all columns as features.}
+\item{features}{Vector of features to use for clustering. Default is NULL
+(uses all columns or pattern-selected columns).}
 
-\item{pattern}{A regular expression pattern for selecting features based on column names. Default is NULL.}
+\item{pattern}{Regular expression pattern for selecting features.
+Default is NULL.}
 
-\item{id}{A character string specifying the column in the input data frame to be used as identifiers. Default is NULL, which uses row names as identifiers.}
+\item{id}{Column name for identifiers. Default is NULL (uses row names).}
 
-\item{scale}{A logical value indicating whether to scale the selected features. Default is TRUE.}
+\item{scale}{Logical indicating whether to scale features. Default is TRUE.}
 
-\item{method}{A character string specifying the clustering method to use. Default is "kmeans".}
+\item{method}{Clustering method. Default is "kmeans".}
 
-\item{min_nc}{An integer specifying the minimum number of clusters to evaluate. Default is 2.}
+\item{min_nc}{Minimum number of clusters to evaluate. Default is 2.}
 
-\item{max.nc}{An integer specifying the maximum number of clusters to evaluate. Default is 6.}
+\item{max.nc}{Maximum number of clusters to evaluate. Default is 6.}
 }
 \value{
-A data frame with clusters appended as a new column.
+Data frame with cluster assignments appended.
 }
 \description{
-This function is designed to perform TME (Tumor Microenvironment) clustering analysis using the specified input dataset. The function allows for customization of various parameters to conduct clustering analysis, including the selection of features, scaling options, clustering method, and the range of cluster numbers to evaluate.
+Performs TME (Tumor Microenvironment) clustering analysis using various
+clustering methods. Supports feature selection, scaling, and automatic
+determination of optimal cluster number.
 }
 \examples{
-data("tcga_stad_sig", package = "IOBR")
+\donttest{
+tcga_stad_sig <- load_data("tcga_stad_sig")
 res <- tme_cluster(
   input = tcga_stad_sig,
-  features = NULL, pattern = "xCell", id = "ID",
-  method = "kmeans", min_nc = 2, max.nc = 6
+  pattern = "xCell",
+  id = "ID",
+  method = "kmeans"
 )
-sig_heatmap(input = res, features = colnames(res)[3:ncol(res)], group = "cluster")
+}
 }
 \author{
 Dongqiang Zeng

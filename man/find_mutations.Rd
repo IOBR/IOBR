@@ -75,19 +75,25 @@ find_mutations(
 A list containing statistical test results, oncoprint plots, and box plots.
 }
 \description{
-This function identifies mutations associated with a specific signature score, performs statistical tests
-for significance, and generates oncoprints and box plots to visualize relationships.
+This function identifies mutations associated with a specific signature
+score, performs statistical tests
+for significance, and generates oncoprints and box plots to visualize
+relationships.
 }
 \examples{
-# Load mutation and signature data
-mut_list <- make_mut_matrix(maf = "path_to_maf_file", isTCGA = TRUE, category = "multi")
-mut <- mut_list$snp
-results <- find_mutations(
-  mutation_matrix = mut, signature_matrix = tcga_stad_sig,
-  id_signature_matrix = "ID", signature = "CD_8_T_effector",
-  min_mut_freq = 0.01, plot = TRUE, method = "multi",
-  save_path = "path_to_save_results"
-)
+\dontrun{
+# This example requires a MAF file
+# mut_list <- make_mut_matrix(
+#   maf = "path_to_maf_file", isTCGA = TRUE,
+#   category = "multi"
+# )
+# mut <- mut_list$snp
+# results <- find_mutations(
+#   mutation_matrix = mut, signature_matrix = signature_data,
+#   id_signature_matrix = "ID", signature = "CD_8_T_effector",
+#   min_mut_freq = 0.01, plot = TRUE, method = "multi"
+# )
+}
 }
 \author{
 Dongqiang Zeng

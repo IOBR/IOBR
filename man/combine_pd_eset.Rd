@@ -11,53 +11,62 @@ combine_pd_eset(
   feas = NULL,
   feature_manipulation = TRUE,
   scale = TRUE,
-  choose_who_when_duplicate = "eset"
+  choose_who_when_duplicate = c("eset", "pdata")
 )
 }
 \arguments{
-\item{eset}{Expression matrix with genes/features in rows and samples in columns.}
+\item{eset}{Expression matrix with genes/features in rows and samples in
+columns.}
 
 \item{pdata}{Data frame containing phenotype/clinical data.}
 
-\item{id_pdata}{Character string specifying the column name in \code{pdata} containing
-sample identifiers. Default is \code{"ID"}.}
+\item{id_pdata}{Character string specifying the column name in `pdata`
+containing sample identifiers. Default is `"ID"`.}
 
-\item{feas}{Character vector specifying features to include from \code{eset}. If
-\code{NULL}, all features are used. Default is \code{NULL}.}
+\item{feas}{Character vector specifying features to include from `eset`.
+If `NULL`, all features are used. Default is `NULL`.}
 
-\item{feature_manipulation}{Logical indicating whether to apply feature manipulation
-to filter valid features. Default is \code{TRUE}.}
+\item{feature_manipulation}{Logical indicating whether to apply feature
+manipulation to filter valid features. Default is `TRUE`.}
 
-\item{scale}{Logical indicating whether to scale (standardize) expression data.
-Default is \code{TRUE}.}
+\item{scale}{Logical indicating whether to scale (standardize) expression
+data. Default is `TRUE`.}
 
-\item{choose_who_when_duplicate}{Character string specifying which data to prefer when
-duplicate columns exist. Options are \code{"eset"} or \code{"pdata"}. Default is
-\code{"eset"}.}
+\item{choose_who_when_duplicate}{Character string specifying which data to
+prefer when duplicate columns exist. Options are `"eset"` or `"pdata"`.
+Default is `"eset"`.}
 }
 \value{
-Data frame combining phenotype data and (transposed) expression data, with
-  samples in rows and features/phenotypes in columns.
+Data frame combining phenotype data and (transposed) expression data,
+  with samples in rows and features/phenotypes in columns.
 }
 \description{
-Merges phenotype data with an expression matrix by matching sample IDs. Optionally
-filters features, applies feature manipulation, and scales expression data before
-combining.
+Merges phenotype data with an expression matrix by matching sample IDs.
+Optionally filters features, applies feature manipulation, and scales
+expression data before combining.
 }
 \examples{
-# Load TCGA-STAD expression data
-data("eset_stad", package = "IOBR")
-# Convert to TPM
+\donttest{
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 colnames(eset) <- substring(colnames(eset), 1, 12)
-# Load phenotype data
-data("sig_stad", package = "IOBR")
-# Combine phenotype and expression data
-data("signature_collection", package = "IOBR")
+
+sig_stad <- load_data("sig_stad")
+
+# Example 1: Combine all features (no filtering)
 input <- combine_pd_eset(
-  eset = eset, pdata = sig_stad,
-  feas = unique(unlist(signature_collection))
+  eset = eset,
+  pdata = sig_stad
 )
+
+# Example 2: Combine with specific features
+# Note: features must match rownames of eset after ID conversion
+input2 <- combine_pd_eset(
+  eset = eset,
+  pdata = sig_stad,
+  feas = rownames(eset)[1:100] # Use first 100 genes as example
+)
+}
 }
 \author{
 Dongqiang Zeng

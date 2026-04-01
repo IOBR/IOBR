@@ -2,39 +2,53 @@
 % Please edit documentation in R/PrognosticModel.R
 \name{PrognosticResult}
 \alias{PrognosticResult}
-\title{Prognostic Results for Survival Models}
+\title{Compute Prognostic Results for Survival Models}
 \usage{
 PrognosticResult(model, train.x, train.y, test.x, test.y)
 }
 \arguments{
-\item{model}{A survival model object from which predictions and coefficients will be extracted.}
+\item{model}{A fitted survival model object (e.g., from `glmnet::cv.glmnet`).}
 
-\item{train.x}{Matrix or data frame of training predictors that were used to fit the model.}
+\item{train.x}{Matrix or data frame of training predictors.}
 
-\item{train.y}{Training dataset outcomes, including survival time and status.}
+\item{train.y}{Training dataset survival outcomes (time and status).}
 
-\item{test.x}{Matrix or data frame of testing predictors for evaluating the model.}
+\item{test.x}{Matrix or data frame of testing predictors.}
 
-\item{test.y}{Testing dataset outcomes, including survival time and status.}
+\item{test.y}{Testing dataset survival outcomes (time and status).}
 }
 \value{
-A list containing three elements:
-  - `model`: The model object passed to the function.
-  - `coefs`: A data frame of model coefficients extracted for `lambda.min` and `lambda.1se`.
-  - `AUC`: A data frame with the AUC values for training and testing datasets at both lambda values.
+A list containing:
+\describe{
+  \item{model}{The fitted model object}
+  \item{coefs}{Data frame of coefficients at `lambda.min` and `lambda.1se`}
+  \item{AUC}{Data frame with AUC values for train/test at both lambda values}
+}
 }
 \description{
-This function computes and compiles the prognostic results from a survival model, specifically designed for models
-like those created with `glmnet`. It calculates model coefficients at specific lambda values (`lambda.min` and `lambda.1se`)
-and computes Area Under the Curve (AUC) metrics for both training and testing datasets. The AUC calculations
-are performed at two regularization strengths for both train and test datasets.
+Computes and compiles prognostic results from a survival model fitted with `glmnet`.
+Extracts model coefficients at optimal lambda values (`lambda.min` and `lambda.1se`)
+and calculates time-dependent AUC metrics for both training and testing datasets.
 }
 \examples{
-# Assuming 'fit' is a Cox model fitted using `glmnet`
-train_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
-test_data <- list(x = matrix(rnorm(100 * 10), ncol = 10), y = Surv(rexp(100), rbinom(100, 1, 0.5)))
-results <- PrognosticResult(
-  model = fit, train.x = train_data$x, train.y = train_data$y,
-  test.x = test_data$x, test.y = test_data$y
-)
+\donttest{
+if (requireNamespace("glmnet", quietly = TRUE) &&
+  requireNamespace("survival", quietly = TRUE) &&
+  requireNamespace("timeROC", quietly = TRUE)) {
+  library(survival)
+  set.seed(123)
+  train_x <- matrix(rnorm(100 * 10), ncol = 10)
+  train_y <- data.frame(time = rexp(100), status = rbinom(100, 1, 0.5))
+  test_x <- matrix(rnorm(50 * 10), ncol = 10)
+  test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
+  fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
+  results <- PrognosticResult(
+    model = fit, train.x = train_x, train.y = train_y,
+    test.x = test_x, test.y = test_y
+  )
+}
+}
+}
+\author{
+Dongqiang Zeng
 }

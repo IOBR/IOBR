@@ -11,59 +11,60 @@ cell_bar_plot(
   features = NULL,
   pattern = NULL,
   legend.position = "bottom",
-  coord_filp = TRUE,
+  coord_flip = TRUE,
   palette = 3,
-  show_col = F,
+  show_col = FALSE,
   cols = NULL
 )
 }
 \arguments{
-\item{input}{Data frame containing deconvolution results (e.g., from CIBERSORT,
-quanTIseq, or EPIC).}
+\item{input}{Data frame containing deconvolution results.}
 
-\item{id}{Character string specifying the column name containing sample identifiers.
-Default is \code{"ID"}.}
+\item{id}{Character string specifying the column name containing sample
+identifiers. Default is "ID".}
 
-\item{title}{Character string specifying the plot title. Default is \code{"Cell Fraction"}.}
+\item{title}{Character string specifying the plot title.
+Default is "Cell Fraction".}
 
-\item{features}{Character vector specifying column names representing cell types to
-plot. If \code{NULL}, columns are selected based on \code{pattern}. Default is
-\code{NULL}.}
+\item{features}{Character vector specifying column names representing cell
+types to plot. If NULL, columns are selected based on `pattern`.
+Default is NULL.}
 
-\item{pattern}{Character string or regular expression to match column names for
-automatic feature selection. Used when \code{features} is \code{NULL}. Default is
-\code{NULL}.}
+\item{pattern}{Character string or regular expression to match column names
+for automatic feature selection. Used when `features` is NULL.
+Default is NULL.}
 
-\item{legend.position}{Character string specifying legend position (\code{"bottom"},
-\code{"top"}, \code{"left"}, \code{"right"}). Default is \code{"bottom"}.}
+\item{legend.position}{Character string specifying legend position
+("bottom", "top", "left", "right"). Default is "bottom".}
 
-\item{coord_filp}{Logical indicating whether to flip plot coordinates using
-\code{coord_flip()}. Default is \code{TRUE}.}
+\item{coord_flip}{Logical indicating whether to flip plot coordinates using
+`coord_flip()`. Default is TRUE.}
 
 \item{palette}{Integer specifying the color palette to use. Default is 3.}
 
-\item{show_col}{Logical indicating whether to display color information. Default is
-\code{FALSE}.}
+\item{show_col}{Logical indicating whether to display color information.
+Default is FALSE.}
 
-\item{cols}{Character vector of custom colors. If \code{NULL}, palette is used.
-Default is \code{NULL}.}
+\item{cols}{Character vector of custom colors. If NULL, palette is used.
+Default is NULL.}
 }
 \value{
-A ggplot2 object representing the stacked bar chart of cell fractions.
+A ggplot2 object representing the stacked bar chart.
 }
 \description{
-Creates stacked bar charts to visualize tumor microenvironment (TME) cell fractions.
-Supports batch visualization of deconvolution results from methods such as CIBERSORT,
-EPIC, and quanTIseq. Enables comparison of TME cell distributions across samples.
+Creates stacked bar charts to visualize tumor microenvironment (TME) cell
+fractions. Supports batch visualization of deconvolution results from
+methods such as CIBERSORT, EPIC, and quanTIseq.
 }
 \examples{
-# Load TCGA-STAD microenvironment data
-data("sig_stad", package = "IOBR")
-# Visualize TME cell proportions from CIBERSORT deconvolution
+\donttest{
+sig_stad <- load_data("sig_stad")
 cell_bar_plot(
-  input = sig_stad[1:20, ], id = "ID",
+  input = sig_stad[1:20, ],
+  id = "ID",
   features = colnames(sig_stad)[25:46]
 )
+}
 }
 \author{
 Dongqiang Zeng

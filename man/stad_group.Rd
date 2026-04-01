@@ -10,7 +10,8 @@ A data frame with patient samples as rows and clinical variables as columns:
   \item{ID}{Unique patient identifier (TCGA barcode format)}
   \item{stage}{AJCC pathological stage (Stage_II, Stage_III, Stage_IV)}
   \item{status}{Patient vital status (Alive, Dead, NA)}
-  \item{Lauren}{Lauren histological classification (Intestinal, Diffuse, Mixed)}
+  \item{Lauren}{Lauren histological classification (Intestinal, Diffuse,
+  Mixed)}
   \item{subtype}{Molecular subtype classification (EBV, GS)}
   \item{EBV}{Epstein-Barr virus status (Positive, Negative)}
   \item{time}{Overall survival time in months}

@@ -3,7 +3,11 @@
 \name{quantiseq_helper}
 \alias{quantiseq_helper}
 \title{Helper Functions for quanTIseq}
+\value{
+Internal functions return processed data for quanTIseq deconvolution.
+}
 \description{
-This package provides helper functions for quanTIseq deconvolution method.
+Helper functions for quanTIseq deconvolution method.
 Source code adapted from https://github.com/FFinotello/quanTIseq.
 }
+\keyword{internal}

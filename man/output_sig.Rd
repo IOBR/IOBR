@@ -4,23 +4,34 @@
 \alias{output_sig}
 \title{Save Signature Data to File}
 \usage{
-output_sig(signatures, format = "csv", file.name)
+output_sig(signatures, format = c("csv", "rdata"), file.name)
 }
 \arguments{
 \item{signatures}{Signature data: a list or single string of signatures.}
 
-\item{format}{Output format: "csv" or "rdata". Default is "csv".}
+\item{format}{Character. Output format: "csv" or "rdata". Default is "csv".}
 
-\item{file.name}{Name of the output file without extension.}
+\item{file.name}{Character. Name of the output file without extension.}
 }
 \value{
-A data frame containing the processed signature data, also saved to the specified file.
+Data frame containing the processed signature data, also saved to
+  the specified file.
 }
 \description{
-This function saves signature data to a specified file format, supporting CSV or RData.
-It handles single signatures or lists of signatures, converting them to a data frame for storage.
+Saves signature data to a specified file format, supporting CSV or RData.
+Handles single signatures or lists of signatures, converting them to a
+data frame for storage.
 }
 \examples{
-data("signature_collection", package = "IOBR")
-output_sig(signatures = signature_collection, format = "csv", file.name = "my_signatures")
+\donttest{
+signature_collection <- load_data("signature_collection")
+tmpfile <- tempfile(fileext = ".csv")
+output_sig(
+  signatures = signature_collection, format = "csv",
+  file.name = tools::file_path_sans_ext(tmpfile)
+)
+}
+}
+\author{
+Dongqiang Zeng
 }

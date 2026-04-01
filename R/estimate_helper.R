@@ -4,16 +4,20 @@
 ## -----------------------------------------------------------------------------
 #' estimateScore
 #'
-#' This function reads a gene expression dataset in GCT format, calculates enrichment scores
-#' for specific gene sets, and writes the computed scores to an output file. It supports multiple
+#' This function reads a gene expression dataset in GCT format, calculates
+#' enrichment scores
+#' for specific gene sets, and writes the computed scores to an output file.
+#' It supports multiple
 #' platform types and performs platform-specific calculations if necessary.
 #'
 #' @param input.ds A character string specifying the path to the input dataset file in GCT format.
-#'                 The file should have gene expression data with appropriate headers.
+#'                 The file should have gene expression data with appropriate
+#'                 headers.
 #' @param output.ds A character string specifying the path to the output dataset file, where
 #'                  the calculated scores will be written.
 #' @param platform A character vector indicating the platform type. Must be one of "affymetrix",
-#'                 "agilent", or "illumina". Platform-specific calculations are performed
+#'                 "agilent", or "illumina". Platform-specific calculations
+#'                 are performed
 #'                 based on this parameter.
 #'
 #' @return This function does not return a value but writes the computed scores to the specified
@@ -21,12 +25,19 @@
 #' @export
 #'
 #' @examples
-#' # Path to input and output files
-#' input_file <- "path/to/input.gct"
-#' output_file <- "path/to/output.gct"
-#'
-#' # Perform score estimation for Affymetrix platform
+#' \dontrun{
+#' eset_stad <- load_data("eset_stad")
+#' anno_grch38 <- load_data("anno_grch38")
+#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' eset <- tibble::rownames_to_column(eset, var = "symbol")
+#' input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
+#' output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
+#' writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
+#' utils::write.table(
+#' eset, 
+#' input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
 #' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+#' }
 estimateScore <- function(input.ds,
                           output.ds,
                           platform = c("affymetrix", "agilent", "illumina")) {
@@ -186,6 +197,7 @@ estimateScore <- function(input.ds,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Create a sample common_genes dataframe
 #' common_genes <- data.frame(
 #'   GeneSymbol = c("BRCA1", "TP53", "EGFR"),
@@ -199,11 +211,18 @@ estimateScore <- function(input.ds,
 #'   stringsAsFactors = FALSE
 #' )
 #'
-#' # Write the input data to input.txt file, including row names
-#' write.table(input_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
+#' # Write the input data to temporary file
+#' input_file <- tempfile(fileext = ".txt")
+#' output_file <- tempfile(fileext = ".txt")
+#' write.table(input_data,
+#'   file = input_file, sep = "\t", row.names = TRUE,
+#'   quote = FALSE
+#' )
 #'
-#' # Call the filterCommonGenes function using the sample input.txt file
-#' filterCommonGenes("input.txt", "output.txt", id = "GeneSymbol")
+#' # Call the filterCommonGenes function
+#' # Note: This example requires IOBR::common_genes data
+#' # filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+#' }
 filterCommonGenes <- function(input.f,
                               output.f,
                               id = c("GeneSymbol", "EntrezID")) {
@@ -245,6 +264,7 @@ filterCommonGenes <- function(input.f,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Create a sample input data frame
 #' sample_data <- data.frame(
 #'   Gene = c("BRCA1", "TP53", "EGFR"),
@@ -255,14 +275,10 @@ filterCommonGenes <- function(input.f,
 #' rownames(sample_data) <- sample_data$Gene
 #' sample_data <- sample_data[, -1]
 #'
-#' # Write the sample data to input.txt file
-#' write.table(sample_data, file = "input.txt", sep = "\t", row.names = TRUE, quote = FALSE)
-#'
-#' # Convert the input data frame to GCT format and save it to output.gct
-#' outputGCT(sample_data, "output.gct")
-#'
-#' # Convert the input.txt file to GCT format and save it to output.gct
-#' outputGCT("input.txt", "output.gct")
+#' # Convert the input data frame to GCT format and save to temporary file
+#' output_file <- tempfile(fileext = ".gct")
+#' outputGCT(sample_data, output_file)
+#' }
 outputGCT <- function(input.f,
                       output.f) {
   ## Check arguments
@@ -301,7 +317,8 @@ outputGCT <- function(input.f,
 
 #' plotPurity
 #'
-#' This function generates scatterplots of tumor purity based on ESTIMATE scores for given samples.
+#' This function generates scatterplots of tumor purity based on ESTIMATE
+#' scores for given samples.
 #'
 #' @param scores A character string specifying the path to the input file containing ESTIMATE scores. The file should be a tab-separated table with appropriate headers.
 #' @param samples A character vector specifying the sample names to plot. The default is "all_samples", which plots all samples in the input file.
@@ -312,23 +329,23 @@ outputGCT <- function(input.f,
 #' @export
 #'
 #' @examples
-#' # Create a sample scores file
+#' \donttest{
+#' # Create a sample ESTIMATE score matrix
 #' scores_data <- data.frame(
-#'   SampleID = c("Sample1", "Sample2", "Sample3"),
-#'   ESTIMATEScore = c(500, 450, 600),
-#'   TumorPurity = c(0.8, 0.7, 0.9),
-#'   Pred1 = c(0.75, 0.65, 0.85),
-#'   Pred2 = c(0.8, 0.7, 0.9),
-#'   Pred3 = c(0.85, 0.75, 0.95),
-#'   stringsAsFactors = FALSE
+#'   Sample1 = c(100, 200, 500, 0.80),
+#'   Sample2 = c(120, 220, 450, 0.70),
+#'   Sample3 = c(140, 240, 600, 0.90),
+#'   row.names = c(
+#'     "StromalScore", "ImmuneScore", "ESTIMATEScore",
+#'     "TumorPurity"
+#'   ),
+#'   check.names = FALSE
 #' )
-#' write.table(scores_data, file = "scores.txt", sep = "\t", row.names = FALSE, quote = FALSE)
 #'
-#' # Plot purity for all samples
-#' plotPurity("scores.txt", platform = "affymetrix")
-#'
-#' # Plot purity for specific samples
-#' plotPurity("scores.txt", samples = c("Sample1", "Sample3"), platform = "affymetrix")
+#' # Write to a temporary GCT file
+#' scores_file <- tempfile(fileext = ".gct")
+#' outputGCT(scores_data, scores_file)
+#' }
 plotPurity <- function(scores,
                        samples = "all_samples",
                        platform = c("affymetrix", "agilent", "illumina"),

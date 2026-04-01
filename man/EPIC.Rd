@@ -28,33 +28,29 @@ signature genes (except if \code{scaleExprs = FALSE} in which case it
 doesn't make any difference).}
 
 \item{reference}{(optional): A string or a list defining the reference cells.
-It can take multiple formats, either: \itemize{
-  \item\code{NULL}: to use the default reference profiles and genes
-    signature \code{\link{TRef}}.
-  \item a char: either \emph{"BRef"} or \emph{"TRef"}
-    to use the reference cells and genes signature of the corresponding
-    datasets (see \code{\link{BRef}} and \code{\link{TRef}}).
-  \item a list. When a list it should include: \describe{
-    \item{\code{$refProfiles}}{a matrix (\code{nGenes} x \code{nCellTypes})
-    of the reference cells genes expression (don't include a column of
-    the 'other cells' (representing usually the cancer cells for which
-    such a profile is usually not conserved between samples);
-    the rownames needs to be defined as well as the colnames giving the
-    names of each gene and reference cell types respectively.
-    It is advised to keep all genes in this \code{refProfiles} matrix
-    instead of a subset of signature genes;
-    }
-    \item{\code{$sigGenes}}{a character vector of the gene names to use as
-      signature - sigGenes can also be given as a direct input to EPIC
-      function;}
-    \item{\code{$refProfiles.var}}{(optional): a matrix (\code{nGenes} x
-    \code{nCellTypes}) of the variability of each gene expression for each
-    cell type, which is used to define weights on each gene for the
-    optimization (if this is absent, we assume an identical variability
-    for all genes in all cells) - it needs to have the same dimnames than
-    refProfiles;}
-    }
-}}
+It can take multiple formats:
+- `NULL`: to use the default reference profiles and genes signature
+\code{\link{TRef}}
+- A character: either \code{"BRef"} or \code{"TRef"} to use the
+reference cells and genes signature of the corresponding datasets (see
+\code{\link{BRef}} and \code{\link{TRef}})
+- A list containing:
+  - `$refProfiles`: a matrix (\code{nGenes} x \code{nCellTypes}) of the
+  reference cells genes expression (don't include a column of the 'other
+  cells' (representing usually the cancer cells for which such a profile
+  is usually not conserved between samples); the rownames needs to be
+  defined as well as the colnames giving the names of each gene and
+  reference cell types respectively. It is advised to keep all genes in
+  this \code{refProfiles} matrix instead of a subset of signature genes
+  - `$sigGenes`: a character vector of the gene names to use as
+  signature - sigGenes can also be given as a direct input to EPIC
+  function
+  - `$refProfiles.var` (optional): a matrix (\code{nGenes} x
+  \code{nCellTypes}) of the variability of each gene expression for each
+  cell type, which is used to define weights on each gene for the
+  optimization (if this is absent, we assume an identical variability
+  for all genes in all cells) - it needs to have the same dimnames than
+  refProfiles}
 
 \item{mRNA_cell}{(optional): A named numeric vector: tells (in arbitrary
 units) the amount of mRNA for each of the reference cells and of the
@@ -71,11 +67,11 @@ the cell fractions).
 To note: if data is in tpm, this mRNA per cell would ideally correspond
 to some number of transcripts per cell.}
 
-\item{mRNA_cell_sub}{(optional): This can be given instead of \code{mRNA_cell} (or
-in addition to it). It is also a named numeric vector, used to replace
-only the mRNA/cell values from some cell types (or to add values for new
-cell types). The values given in mRNA_cell_sub will overwrite the default
-values as well as those that might have been given by mRNA_cell.}
+\item{mRNA_cell_sub}{(optional): This can be given instead of
+\code{mRNA_cell} (or in addition to it). It is also a named numeric vector,
+used to replace only the mRNA/cell values from some cell types (or to add
+values for new cell types). The values given in mRNA_cell_sub will overwrite
+the default values as well as those that might have been given by mRNA_cell.}
 
 \item{sigGenes}{(optional): a character vector of the gene names to use as
 signature for the deconvolution. In principle this is given with the
@@ -111,19 +107,17 @@ error that the optimization tries to minimize is by how much
 the predicted gene expression is outside of this allowed range of values.}
 }
 \value{
-A list of 3 matrices:\describe{
- \item{\code{mRNAProportions}}{(\code{nSamples} x (\code{nCellTypes+1})) the
-   proportion of mRNA coming from all cell types with a ref profile + the
-   uncharacterized other cell.}
- \item{\code{cellFractions}}{(\code{nSamples} x (\code{nCellTypes+1})) this
-   gives the proportion of cells from each cell type after accounting for
-   the mRNA / cell value.}
- \item{\code{fit.gof}}{(\code{nSamples} x 12) a matrix telling the quality
-   for the fit of the signature genes in each sample. It tells if the
-   minimization converged, and other info about this fit comparing the
-   measured gene expression in the sigGenes vs predicted gene expression in
-   the sigGenes.}
-}
+A list of 3 matrices:
+- `mRNAProportions`: (\code{nSamples} x (\code{nCellTypes+1})) the
+proportion of mRNA coming from all cell types with a ref profile + the
+uncharacterized other cell
+- `cellFractions`: (\code{nSamples} x (\code{nCellTypes+1})) this gives the
+proportion of cells from each cell type after accounting for the mRNA /
+cell value
+- `fit.gof`: (\code{nSamples} x 12) a matrix telling the quality for the
+fit of the signature genes in each sample. It tells if the minimization
+converged, and other info about this fit comparing the measured gene
+expression in the sigGenes vs predicted gene expression in the sigGenes
 }
 \description{
 \code{EPIC} takes as input bulk gene expression data (RNA-seq) and returns
@@ -144,12 +138,17 @@ these cases differently, you can remove the duplicates before calling
 \emph{EPIC}.
 }
 \examples{
+melanoma_data <- load_data("melanoma_data")
+TRef <- load_data("TRef")
 res1 <- EPIC(melanoma_data$counts)
 res1$cellFractions
 res2 <- EPIC(melanoma_data$counts, TRef)
 res3 <- EPIC(bulk = melanoma_data$counts, reference = TRef)
 res4 <- EPIC(melanoma_data$counts, reference = "TRef")
-res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(Bcells = 1, otherCells = 5))
+res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(
+  Bcells = 1,
+  otherCells = 5
+))
 # Various possible ways of calling EPIC function. res 1 to 4 should
 # give exactly the same outputs, and the elements res1$cellFractions
 # should be equal to the example predictions found in

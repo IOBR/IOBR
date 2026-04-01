@@ -13,23 +13,28 @@ get_sig_sc(
 )
 }
 \arguments{
-\item{deg}{Data frame or matrix. Ranked marker statistics (e.g., p-value, log2FC, etc.).}
+\item{deg}{Data frame or matrix. Ranked marker statistics.}
 
-\item{cluster}{Character. Column name containing cluster identifiers. Default "cluster".}
+\item{cluster}{Character. Column name containing cluster identifiers.
+Default is `"cluster"`.}
 
-\item{gene}{Character. Column name containing gene identifiers. Default "gene".}
+\item{gene}{Character. Column name containing gene identifiers.
+Default is `"gene"`.}
 
-\item{avg_log2FC}{Character. Column name for average log2 fold change. Default "avg_log2FC".}
+\item{avg_log2FC}{Character. Column name for average log2 fold change.
+Default is `"avg_log2FC"`.}
 
-\item{n}{Integer. Number of top markers per cluster. Default 100.}
+\item{n}{Integer. Number of top markers per cluster. Default is 100.}
 }
 \value{
-List of character vectors; each element contains the top N genes for a cluster.
+List of character vectors; each element contains the top N genes
+  for a cluster.
 }
 \description{
-Selects the top N marker genes per cluster from a ranked differential expression result table.
+Selects the top N marker genes per cluster from a ranked differential
+expression result table.
 }
 \examples{
-data("deg", package = "IOBR")
+deg <- load_data("deg")
 get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
 }

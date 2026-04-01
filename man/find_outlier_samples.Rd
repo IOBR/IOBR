@@ -15,31 +15,41 @@ find_outlier_samples(
 )
 }
 \arguments{
-\item{eset}{Numeric matrix. Gene expression data with genes as rows and samples as columns.}
+\item{eset}{Numeric matrix. Gene expression data with genes as rows and
+samples as columns.}
 
-\item{yinter}{Numeric. Y-intercept threshold for identifying outliers in the connectivity plot. Default is -3.}
+\item{yinter}{Numeric. Z-score threshold for identifying outliers.
+Default is -3.}
 
-\item{project}{Character. Project name for output folder creation. Default is "find_outlier_eset".}
+\item{project}{Character. Project name for output folder. Default is
+`"find_outlier_eset"`.}
 
-\item{plot_hculst}{Logical. Whether to plot hierarchical clustering of samples. Default is FALSE.}
+\item{plot_hculst}{Logical. Whether to plot hierarchical clustering.
+Default is `FALSE`.}
 
-\item{show_plot}{Logical. Whether to display the connectivity plot. Default is TRUE.}
+\item{show_plot}{Logical. Whether to display the connectivity plot.
+Default is `TRUE`.}
 
-\item{index}{Integer or NULL. Index for output file naming. Default is NULL.}
+\item{index}{Integer or `NULL`. Index for output file naming.
+Default is `NULL`.}
 
-\item{save}{Logical. Whether to save plots to files. If FALSE, plots are displayed but not saved. Default is TRUE.}
+\item{save}{Logical. Whether to save plots to files. Default is `TRUE`.}
 }
 \value{
-Character vector of sample names identified as potential outliers (connectivity z-score > |yinter|).
+Character vector of sample names identified as potential outliers.
 }
 \description{
-Analyzes gene expression data to identify potential outlier samples using connectivity analysis via the WGCNA package. Calculates normalized adjacency and connectivity z-scores for each sample, generates connectivity plots, and optionally performs hierarchical clustering. Outlier samples are those with connectivity z-scores exceeding the specified threshold.
+Analyzes gene expression data to identify potential outlier samples using
+connectivity analysis via the WGCNA package. Calculates normalized
+adjacency and connectivity z-scores for each sample, generates connectivity
+plots, and optionally performs hierarchical clustering.
 }
 \examples{
-# Load expression data
-data("eset_tme_stad", package = "IOBR")
-outs <- find_outlier_samples(eset = eset_tme_stad)
+\donttest{
+eset_tme_stad <- load_data("eset_tme_stad")
+outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 print(outs)
+}
 }
 \author{
 Dongqiang Zeng

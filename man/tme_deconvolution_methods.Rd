@@ -3,19 +3,42 @@
 \docType{data}
 \name{tme_deconvolution_methods}
 \alias{tme_deconvolution_methods}
-\title{Collection of tumor microenvironment cell fraction deconvolution methods.}
+\title{TME Deconvolution Methods}
 \format{
-An object of class \code{character} of length 11.
+A named character vector where names are display names and values
+  are internal method names.
 }
 \usage{
 tme_deconvolution_methods
 }
+\value{
+Named character vector of available deconvolution methods.
+}
 \description{
-The methods currently supported are
-`mcpcounter`, `epic`, `xcell`, `cibersort`, `cibersort_abs`, `ips`, `estimate`, `svr`,`lsei`,`timer`,`quantiseq`
+A named vector of supported tumor microenvironment (TME) deconvolution
+methods in the IOBR package.
 }
 \details{
-The object is a named vector. The names correspond to the display name of the method,
-the values to the internal name.
+The methods currently supported are:
+\itemize{
+  \item `mcpcounter`: MCP-counter for immune and stromal cell populations
+  \item `epic`: EPIC for immune, stromal, and cancer cell fractions
+  \item `xcell`: xCell for 64 immune and stromal cell types
+  \item `cibersort`: CIBERSORT for 22 immune cell types
+  \item `cibersort_abs`: CIBERSORT in absolute mode
+  \item `ips`: Immunophenoscore calculation
+  \item `estimate`: ESTIMATE for stromal/immune/estimate scores
+  \item `svr`: Support Vector Regression (custom reference)
+  \item `lsei`: Least Squares with Equality/Inequality constraints
+  \item `timer`: TIMER for cancer-specific immune estimation
+  \item `quantiseq`: quanTIseq for RNA-seq immune deconvolution
+}
+}
+\examples{
+# List all available TME deconvolution methods
+tme_deconvolution_methods
+
+# Get internal method name for a specific method
+tme_deconvolution_methods["MCPcounter"]
 }
 \keyword{datasets}

@@ -2,28 +2,36 @@
 % Please edit documentation in R/eset_distribution.R
 \name{eset_distribution}
 \alias{eset_distribution}
-\title{Title eset_distribution}
+\title{Visualize Expression Set Distribution}
 \usage{
 eset_distribution(eset, quantile = 3, log = TRUE, project = NULL)
 }
 \arguments{
-\item{eset}{Expression set (matrix or data frame) containing gene expression data.}
+\item{eset}{Expression matrix or data frame with genes in rows and samples
+in columns.}
 
-\item{quantile}{Number of quantiles used for sampling columns in the eset matrix.}
+\item{quantile}{Integer specifying the divisor for sampling columns.
+Default is 3 (samples 1/3 of columns).}
 
-\item{log}{Logical value indicating whether to perform log2 transformation of the expression values.}
+\item{log}{Logical indicating whether to perform log2 transformation.
+Default is `TRUE`.}
 
-\item{project}{Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.}
+\item{project}{Optional project name for output files. Default is `NULL`
+(uses "ESET").}
 }
 \value{
-This function does not return a value but saves boxplots and density plots as PNG files in the specified or default directory.
+Invisibly returns `NULL`. Side effect: saves PNG files to disk.
 }
 \description{
-eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
+Generates boxplots and density plots to analyze the distribution of
+expression values in an expression set. Useful for quality control and
+assessing data normalization.
 }
 \examples{
-data("eset_stad", package = "IOBR")
-data("anno_rnaseq", package = "IOBR")
+\donttest{
+eset_stad <- load_data("eset_stad")
+anno_rnaseq <- load_data("anno_rnaseq")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-eset_distribution(eset)
+eset_distribution(eset, project = file.path(tempdir(), "ESET"))
+}
 }

@@ -7,14 +7,14 @@
 GetOutlierGenes(cancers)
 }
 \arguments{
-\item{cancers}{A dataframe with one column containing paths to gene expression files.}
+\item{cancers}{Data frame. One column containing paths to gene expression files.}
 }
 \value{
-A vector of unique gene names identified as outliers across all given samples.
+Vector of unique gene names identified as outliers.
 }
 \description{
-This function identifies outlier genes from multiple cancer datasets.
-It treats the top 5 expressed genes in each sample as outliers and returns a list of unique outlier genes across all samples.
+Identifies outlier genes from multiple cancer datasets. Treats the top 5
+expressed genes in each sample as outliers and returns unique outlier genes.
 }
 \examples{
 tf1 <- tempfile(fileext = ".tsv")

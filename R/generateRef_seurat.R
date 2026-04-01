@@ -1,133 +1,91 @@
-#' generateRef_seurat
+#' Generate Reference Matrix from Seurat Object
 #'
 #' @description
-#' The "generateRef_seurat" function takes a Seurat object "sce" and additional parameters to perform various operations for generating reference gene expression data. The function allows for specifying cell types, proportions, assays, preprocessing options, and statistical testing parameters.
+#' Generates reference gene expression data from a Seurat object by
+#' identifying marker genes for each cell type and aggregating expression
+#' data.
 #'
-#' @param sce  Seurat object containing single-cell RNA-seq data.
-#' @param proportion  (Optional) A numeric value specifying the proportion of cells to be randomly selected for analysis.
-#' @param celltype (Optional) A character vector specifying cell type for which marker genes will be identified.
-#' @param adjust_assay (Default = FALSE) A logical value specifying whether to adjust the assay.
-#' @param verbose  (Default = FALSE) A logical value specifying whether to print verbose messages.
-#' @param only.pos (Default = TRUE) A logical value specifying whether to consider only positive results.
-#' @param n_ref_genes  (Default = 50) An integer specifying the number of reference genes to be selected.
-#' @param logfc.threshold (Default = 0.15) A numeric value specifying the threshold for log-fold change.
-#' @param test.use  (Default = "wilcox") A character string specifying the statistical test to be used.
-#' @param assay_deg (Default = "RNA") A character string specifying the assay to be used for finding markers.
-#' @param slot_deg (Default = "data") A character string specifying the slot to be used for finding markers.
-#' @param assay_out  (Default = "RNA") A character string specifying the assay used in the output.
-#' @param slot_out  (Default = "data") A character string specifying the slot used in the output.
+#' @param sce Seurat object containing single-cell RNA-seq data.
+#' @param celltype Character. Cell type column name in metadata.
+#'   Default is `NULL` (uses default identity).
+#' @param proportion Numeric. Proportion of cells to randomly select for
+#'   analysis. Default is `NULL` (use all cells).
+#' @param assay_deg Character. Assay for finding markers. Default is `"RNA"`.
+#' @param slot_deg Character. Slot for finding markers. Default is `"data"`.
+#' @param adjust_assay Logical. Whether to adjust assay for SCT. Default is
+#'   `FALSE`.
+#' @param assay_out Character. Assay for output. Default is `"RNA"`.
+#' @param slot_out Character. Slot for output. Default is `"data"`.
+#' @param verbose Logical. Print verbose messages. Default is `FALSE`.
+#' @param only.pos Logical. Return only positive markers. Default is `TRUE`.
+#' @param n_ref_genes Integer. Number of reference genes per cell type.
+#'   Default is 50.
+#' @param logfc.threshold Numeric. Log fold change threshold. Default is 0.15.
+#' @param test.use Character. Statistical test for marker identification.
+#'   Default is `"wilcox"`.
 #'
-#' @author Dongqiang Zeng
-#' @return A matrix containing aggregated expression data for the reference genes.
+#' @return Matrix containing aggregated expression data for reference genes.
+#'
 #' @export
+#' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' # Load the PBMC dataset
-#' pbmc.data <- Read10X(
-#'   data.dir =
-#'     "E:/12-pkg-dev/IOBR-Project/8-IOBR2-Vignette/0-data/
-#'    pbmc/filtered_gene_bc_matrices/hg19"
-#' )
-#' # Initialize the Seurat object with the raw (non-normalized data).
-#' pbmc <- Seurat::CreateSeuratObject(
-#'   counts = pbmc.data,
-#'   project = "pbmc3k", min.cells = 3, min.features = 200
-#' )
-#' pbmc <- Seurat::FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
-#' pbmc <- Seurat::NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
-#' pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
-#' pbmc <- Seurat::RunPCA(pbmc, features = VariableFeatures(object = pbmc))
-#' pbmc <- Seurat::FindNeighbors(pbmc, dims = 1:10)
-#' pbmc <- Seurat::FindClusters(pbmc, resolution = 0.5)
-#' pbmc$celltype <- paste0("celltype_", pbmc$seurat_clusters)
-#'
-#' # generate reference matrix
-#' sm <- generateRef_seurat(sce = pbmc, celltype = "celltype", slot_out = "data")
-#'
-#' # load the bulk-seq data
-#' data(eset_stad, package = "IOBR")
-#' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#' svr <- deconvo_tme(
-#'   eset = eset,
-#'   reference = sm, method = "svr", arrays = FALSE,
-#'   absolute.mode = FALSE, perm = 100
-#' )
+#' \dontrun{
+#' if (requireNamespace("Seurat", quietly = TRUE)) {
+#'   pbmc <- SeuratObject::pbmc_small
+#'   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
 #' }
-#'
-generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_deg = "RNA", slot_deg = "data", adjust_assay = FALSE,
-                               assay_out = "RNA", slot_out = "data", verbose = FALSE, only.pos = TRUE, n_ref_genes = 50,
+#' }
+generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
+                               assay_deg = "RNA", slot_deg = "data",
+                               adjust_assay = FALSE, assay_out = "RNA",
+                               slot_out = "data", verbose = FALSE,
+                               only.pos = TRUE, n_ref_genes = 50,
                                logfc.threshold = 0.15, test.use = "wilcox") {
   rlang::check_installed("Seurat")
 
-  # if(!is.null(path)){
-  #   file_store<-path
-  # }else{
-  #   file_store<-paste0("generateRef-result")
-  # }
-  #
-  # path<-creat_folder(file_store)
+  if (!inherits(sce, "Seurat")) {
+    cli::cli_abort("{.arg sce} must be a Seurat object")
+  }
 
-  # if(!file.exists(file_store)) dir.create(file_store)
-  # abspath<-paste(getwd(),"/",file_store,"/",sep ="" )
-
-  # cat(crayon::green(">>>---Assay used to find markers: \n"))
-  cat("\033[32m>>> ---Assay used to find markers: \033[39m\n")
+  cli::cli_alert_info("Assay used to find markers: {assay_deg}")
 
   if (!is.null(assay_deg)) {
-    print(paste0(">>>>> ", assay_deg))
-  } else {
-    print(paste0(">>>>> ", Seurat::DefaultAssay(sce)))
     Seurat::DefaultAssay(sce) <- assay_deg
   }
 
-
-  # find marker genes of clusters------------------------------------------------------
   if (!is.null(celltype)) {
-    message(paste0(">>> Idents of Seurat object is: ", celltype))
+    cli::cli_alert_info("Idents of Seurat object is: {celltype}")
     Seurat::Idents(sce) <- celltype
     print(table(as.character(Seurat::Idents(sce))))
-    group2 <- celltype
   } else {
-    group2 <- "default"
-
-    cat("\033[32m>>> Idents of Seurat object is: Default... \033[39m\n")
-    # message(paste0(">>> Idents of Seurat object is: Default... \n"))
+    cli::cli_alert_info("Idents of Seurat object is: Default...")
     print(table(as.character(Seurat::Idents(sce))))
   }
 
+  if (tolower(assay_deg) == "sct" && adjust_assay) {
+    sce <- Seurat::PrepSCTFindMarkers(sce)
+  }
 
-  ##################################
-  # help("PrepSCTFindMarkers")
-
-  # if(tolower(assay)=="sct"&&adjust_assay) sce<- PrepSCTFindMarkers(sce)
-
-
-  ################################################
   if (!is.null(proportion)) {
-    input <- random_strata_cells(input = sce@meta.data, group = celltype, propotion = proportion)
+    input <- random_strata_cells(
+      input = sce@meta.data,
+      group = celltype,
+      propotion = proportion
+    )
     cell_input <- rownames(input)
 
-    message(paste0(">>> Subseting cells in each cluster randomly: ", proportion * 100, "%... "))
-    message(paste0(">>> Final training data: "))
+    cli::cli_alert_info(
+      "Subsetting cells in each cluster randomly: {proportion * 100}%..."
+    )
+    cli::cli_alert_info("Final training data:")
     print(table(as.factor(input[, celltype])))
 
-    # print(cell_input[1:10])
-    # subset cells
     sce <- subset(sce, cells = as.character(cell_input))
   }
-  ################################################
-  # remove features with large name
-  ##############################################
-  # help("PrepSCTFindMarkers")
 
-  if (tolower(assay_deg) == "sct" && adjust_assay) sce <- Seurat::PrepSCTFindMarkers(sce)
+  cli::cli_alert_info("Find markers of each celltype...")
 
-
-  ################################################
-  cat("\033[32m>>> Find markers of each celltype... \033[39m\n")
-  # help("FindAllMarkers")
-  ###################################
   sce.markers <- Seurat::FindAllMarkers(
     object = sce,
     slot = slot_deg,
@@ -142,21 +100,22 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
     fc.name = "avg_log2FC"
   )
 
-  # DT::datatable(sce.markers)
-  print(head(sce.markers))
-  ####################################
-  refgene <- sce.markers %>%
-    dplyr::group_by(cluster) %>%
-    dplyr::top_n(n_ref_genes, avg_log2FC)
+  print(utils::head(sce.markers))
+
+  refgene <- sce.markers |>
+    dplyr::group_by(.data$cluster) |>
+    dplyr::top_n(n_ref_genes, .data$avg_log2FC)
 
   print(refgene)
-  ####################################
 
+  cli::cli_alert_info("Aggregating scRNAseq data...")
 
-  cat("\033[32m>>>-- Aggreating scRNAseq data...\033[39m\n")
-  if (is.null(slot_out)) slot <- "counts"
+  if (is.null(slot_out)) slot_out <- "counts"
 
-  cat("\033[32m>>>-- orig.ident was set as group. User can define through parameter celltype ...\033[39m\n")
+  cli::cli_alert_info(
+    "orig.ident was set as group. User can define through parameter celltype..."
+  )
+
   bulk <- Seurat::AggregateExpression(
     object = sce,
     assays = assay_out,
@@ -165,8 +124,7 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL, assay_de
   )
   bulk <- bulk[[1]]
 
-  # print(bulk)
-  bulk <- bulk[rownames(bulk) %in% refgene$gene, ]
+  bulk <- bulk[rownames(bulk) %in% refgene$gene, , drop = FALSE]
 
-  return(bulk)
+  bulk
 }

@@ -2,28 +2,31 @@
 % Please edit documentation in R/deconvo_tme.R
 \name{deconvo_estimate}
 \alias{deconvo_estimate}
-\title{Calculation of stromal, immune, and ESTIMATE scores}
+\title{Calculate ESTIMATE Scores}
 \usage{
 deconvo_estimate(eset, project = NULL, platform = "affymetrix")
 }
 \arguments{
-\item{eset}{expression set with genes at row, sample ID at column}
+\item{eset}{Gene expression matrix with gene symbols.}
 
-\item{project}{project name used to distinguish different data sets}
+\item{project}{Optional project name. Default is `NULL`.}
 
-\item{platform}{character string indicating platform type. Defaults to "affymetrix"}
+\item{platform}{Platform type: `"affymetrix"` or `"illumina"`.
+Default is `"affymetrix"`.}
 }
 \value{
-A data frame with the calculated stromal, immune, and ESTIMATE scores.
+Data frame with ESTIMATE scores. Columns suffixed with `_estimate`.
 }
 \description{
-Calculation of stromal, immune, and ESTIMATE scores
+Calculates stromal, immune, and ESTIMATE scores from gene expression.
 }
 \examples{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data(eset_stad, package = "IOBR")
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-deconvo_estimate(eset)
+\donttest{
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+}
 }
 \author{
 Dongqiang Zeng

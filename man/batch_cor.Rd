@@ -4,7 +4,7 @@
 \alias{batch_cor}
 \title{Batch Correlation Analysis}
 \usage{
-batch_cor(data, target, feature, method = "spearman")
+batch_cor(data, target, feature, method = c("spearman", "pearson", "kendall"))
 }
 \arguments{
 \item{data}{Data frame containing the target and feature variables.}
@@ -15,33 +15,38 @@ batch_cor(data, target, feature, method = "spearman")
 correlate with the target.}
 
 \item{method}{Character string specifying the correlation method. Options are
-\code{"spearman"}, \code{"pearson"}, or \code{"kendall"}. Default is
-\code{"spearman"}.}
+`"spearman"`, `"pearson"`, or `"kendall"`. Default is `"spearman"`.}
 }
 \value{
 Tibble containing the following columns for each feature:
-\itemize{
-  \item \code{sig_names}: Feature name
-  \item \code{p.value}: Raw p-value
-  \item \code{statistic}: Correlation coefficient
-  \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
-  \item \code{log10pvalue}: Negative log10-transformed p-value
-  \item \code{stars}: Significance stars based on p-value thresholds
+\describe{
+  \item{sig_names}{Feature name}
+  \item{p.value}{Raw p-value}
+  \item{statistic}{Correlation coefficient}
+  \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+  \item{log10pvalue}{Negative log10-transformed p-value}
+  \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+    ** p<0.01, * p<0.05, + p<0.5}
 }
 }
 \description{
 Performs correlation analysis between a target variable and multiple feature
-variables. Computes correlation coefficients, p-values, and adjusts for multiple
-testing using the Benjamini-Hochberg method.
+variables. Computes correlation coefficients, p-values, and adjusts for
+multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
-# Perform batch correlation analysis
+\donttest{
+# Load TCGA-STAD signature data
+sig_stad <- load_data("sig_stad")
+
+# Perform batch correlation
 results <- batch_cor(
-  data = sig_stad, target = "CD_8_T_effector",
+  data = sig_stad,
+  target = "CD_8_T_effector",
   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 )
+head(results)
+}
 }
 \author{
 Dongqiang Zeng

@@ -1,7 +1,9 @@
 #' Principal Component Analysis (PCA) Visualization
 #'
-#' This function performs Principal Component Analysis (PCA) on gene expression data,
-#' reduces dimensionality while preserving variance, and generates a scatter plot visualization.
+#' This function performs Principal Component Analysis (PCA) on gene
+#' expression data,
+#' reduces dimensionality while preserving variance, and generates a scatter
+#' plot visualization.
 #'
 #' @param data Input data for PCA: matrix or data frame.
 #' @param is.matrix Logical indicating if input is a matrix. Default is TRUE.
@@ -23,9 +25,9 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' data("eset_stad", package = "IOBR")
+#' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad)
-#' data("stad_group", package = "IOBR")
+#' stad_group <- load_data("stad_group")
 #' iobr_pca(eset,
 #'   is.matrix = TRUE, scale = TRUE,
 #'   is.log = TRUE, pdata = stad_group,

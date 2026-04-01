@@ -1,6 +1,8 @@
 #' Feature Selection via Correlation or Differential Expression
 #'
-#' Selects informative features using either correlation with a quantitative response or differential expression (limma) for binary/continuous responses.
+#' Selects informative features using either correlation with a quantitative
+#' response or differential expression (limma) for binary/continuous
+#' responses.
 #'
 #' @param x Numeric matrix. Features (rows) by samples (columns).
 #' @param y Numeric or factor. Response vector (quantitative or binary).
@@ -20,7 +22,7 @@
 #' @export
 #'
 #' @examples
-#' data("imvigor210_eset", package = "IOBR")
+#' imvigor210_eset <- load_data("imvigor210_eset")
 #' mad <- apply(imvigor210_eset, 1, mad)
 #' imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
 #' pd1 <- as.numeric(imvigor210_eset["PDCD1", ])
@@ -103,8 +105,10 @@ feature_select <- function(x, y, method = c("cor", "dif"),
 
 #' Differential Expression Analysis Using Limma
 #'
-#' Performs differential expression analysis using the limma package on a given gene expression dataset.
-#' Constructs a design matrix from phenotype data, fits a linear model, applies contrasts, and computes
+#' Performs differential expression analysis using the limma package on a
+#' given gene expression dataset.
+#' Constructs a design matrix from phenotype data, fits a linear model,
+#' applies contrasts, and computes
 #' statistics for differential expression.
 #'
 #' @param exprdata A matrix with rownames as features like gene symbols or cgi, and colnames as samples.

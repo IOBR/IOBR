@@ -24,14 +24,15 @@ Description: This package offers six modules for TME analysis based on
     provide a comprehensive description of the complex TME, offering
     insights into tumour-immune interactions.
 License: GPL-3 + file LICENSE
-URL: https://doi.org/10.3389/fimmu.2021.687975 (paper) ,
-    https://iobr.github.io/book/ (docs)
+URL: https://doi.org/10.3389/fimmu.2021.687975 (paper),
+    https://iobr.github.io/book/ (docs), https://iobr.github.io/IOBR/
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
-    R (>= 3.6.0)
-Imports: 
+    R (>= 4.1.0)
+Imports:
     biomaRt,
     circlize,
+    cli,
     clusterProfiler,
     ComplexHeatmap,
     dplyr,
@@ -41,7 +42,6 @@ Imports:
     GSVA,
     limSolve,
     methods,
-    plyr,
     preprocessCore,
     purrr,
     RColorBrewer,
@@ -67,6 +67,7 @@ Suggests:
     factoextra,
     FactoMineR,
     foreach,
+    ggdensity,
     ggpubr,
     ggsci,
     gridExtra,
@@ -86,14 +87,13 @@ Suggests:
     pROC,
     psych,
     rmarkdown,
+    ROCR,
     Seurat,
     SeuratObject,
     testthat (>= 3.0.0),
     webr,
     WGCNA,
-    xCell,
-    ggdensity,
-    ROCR
+    xCell
 VignetteBuilder: 
     knitr
 Remotes:

@@ -15,7 +15,7 @@ iobr_cor_plot(
   padj_cutoff = 1,
   index = 1,
   category = "signature",
-  signature_group = sig_group,
+  signature_group = NULL,
   ProjectID = "TCGA",
   palette_box = "nrc",
   cols_box = NULL,
@@ -36,76 +36,77 @@ iobr_cor_plot(
 \arguments{
 \item{pdata_group}{Data frame containing phenotype data with an identifier column.}
 
-\item{id1}{Character string specifying the column name in \code{pdata_group} serving
-as the sample identifier.}
+\item{id1}{Character string specifying the column name in `pdata_group` serving
+as the sample identifier. Default is `"ID"`.}
 
 \item{feature_data}{Data frame containing feature data with corresponding identifiers.}
 
-\item{id2}{Character string specifying the column name in \code{feature_data} serving
-as the sample identifier.}
+\item{id2}{Character string specifying the column name in `feature_data` serving
+as the sample identifier. Default is `"ID"`.}
 
 \item{target}{Character string specifying the target variable column name for
-continuous analysis. Default is \code{NULL}.}
+continuous analysis. Default is `NULL`.}
 
 \item{group}{Character string specifying the grouping variable name for categorical
-analysis. Default is \code{"group3"}.}
+analysis. Default is `"group3"`.}
 
 \item{is_target_continuous}{Logical indicating whether the target variable is
-continuous, which affects grouping strategy. Default is \code{TRUE}.}
+continuous, which affects grouping strategy. Default is `TRUE`.}
 
 \item{padj_cutoff}{Numeric value specifying the adjusted p-value cutoff for filtering
-features. Default is 1.}
+features. Default is `1`.}
 
-\item{index}{Numeric index used for ordering output file names. Default is 1.}
+\item{index}{Numeric index used for ordering output file names. Default is `1`.}
 
-\item{category}{Character string specifying the data category: \code{"signature"}
-or \code{"gene"}.}
+\item{category}{Character string specifying the data category: `"signature"`
+or `"gene"`.}
 
-\item{signature_group}{Character string specifying the grouping variable for
-signatures. Options include \code{"sig_group"} for signature grouping or
-\code{"signature_collection"}/\code{"signature_tme"} for gene grouping.}
+\item{signature_group}{List specifying the grouping variable for signatures.
+Options include `"sig_group"` for signature grouping or
+`"signature_collection"`/`"signature_tme"` for gene grouping.}
 
 \item{ProjectID}{Character string specifying the project identifier for file naming.}
 
 \item{palette_box}{Character string or integer specifying the color palette for
-box plots.}
+box plots. Default is `"nrc"`.}
 
 \item{cols_box}{Character vector of specific colors for box plots. Default is
-\code{NULL}.}
+`NULL`.}
 
 \item{palette_corplot}{Character string or integer specifying the color palette for
-correlation plots.}
+correlation plots. Default is `"pheatmap"`.}
 
-\item{palette_heatmap}{Integer specifying the color palette index for heatmaps.}
+\item{palette_heatmap}{Integer specifying the color palette index for heatmaps.
+Default is `2`.}
 
 \item{feature_limit}{Integer specifying the maximum number of features to display.
-Default is 26.}
+Default is `26`.}
 
 \item{character_limit}{Integer specifying the maximum number of characters for
-variable labels. Default is 60.}
+variable labels. Default is `60`.}
 
 \item{show_heatmap_col_name}{Logical indicating whether to display column names on
-heatmaps. Default is \code{TRUE}.}
+heatmaps. Default is `FALSE`.}
 
 \item{show_col}{Logical indicating whether to display color codes for palettes.
-Default is \code{FALSE}.}
+Default is `FALSE`.}
 
-\item{show_plot}{Logical indicating whether to display plots. Default is \code{TRUE}.}
+\item{show_plot}{Logical indicating whether to display plots. Default is `FALSE`.}
 
 \item{path}{Character string specifying the directory path for saving output files.
-Default is \code{NULL}.}
+Default is `NULL`.}
 
 \item{discrete_x}{Numeric threshold for character length beyond which labels are
-discretized. Default is 25.}
+discretized. Default is `20`.}
 
 \item{discrete_width}{Numeric value specifying the width for label wrapping in plots.
-Default is 25.}
+Default is `20`.}
 
 \item{show_palettes}{Logical indicating whether to display color palettes. Default
-is \code{FALSE}.}
+is `FALSE`.}
 
-\item{fig.type}{Character string specifying the format for saving figures (\code{"pdf"},
-\code{"png"}, etc.). Default is \code{"pdf"}.}
+\item{fig.type}{Character string specifying the format for saving figures (`"pdf"`,
+`"png"`, etc.). Default is `"pdf"`.}
 }
 \value{
 Depending on configuration, returns ggplot2 objects (box plots, heatmaps,
@@ -118,24 +119,40 @@ statistical significance and generates publication-ready visualizations includin
 box plots, heatmaps, and correlation plots.
 }
 \examples{
-# Create example phenotype and feature data
+\donttest{
+set.seed(123)
+
 pdata_group <- data.frame(
   ID = 1:100,
-  phenotype = sample(c("Type1", "Type2"), 100, replace = TRUE)
+  phenotype_score = rnorm(100)
 )
+
 feature_data <- data.frame(
   ID = 1:100,
   Feature1 = rnorm(100),
-  Feature2 = rnorm(100)
+  Feature2 = rnorm(100),
+  Feature3 = rnorm(100)
 )
-# Perform correlation analysis
-data("sig_group", package = "IOBR")
+
+sig_group_example <- list(
+  signature = c("Feature1", "Feature2", "Feature3")
+)
+
 results <- iobr_cor_plot(
-  pdata_group = pdata_group, feature_data = feature_data,
-  id1 = "ID", id2 = "ID", target = "Feature1", is_target_continuous = TRUE,
-  show_plot = TRUE, path = "path/to/save/results"
+  pdata_group = pdata_group,
+  feature_data = feature_data,
+  id1 = "ID",
+  id2 = "ID",
+  target = "phenotype_score",
+  is_target_continuous = TRUE,
+  category = "signature",
+  signature_group = sig_group_example,
+  show_plot = FALSE,
+  path = tempdir()
 )
+
 print(results)
+}
 }
 \author{
 Dongqiang Zeng

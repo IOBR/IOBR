@@ -16,3 +16,6 @@ TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf
 ..Rcheck/
 *.tar.gz
 *.zip
+R_backup/
+IOBR.Rcheck/
+docs

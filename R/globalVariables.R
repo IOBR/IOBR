@@ -1,8 +1,25 @@
-# 文件：R/zzz-globalVariables.R
-# 作用：静默 R CMD check 的 “no visible binding for global variable” NOTE
-# 用法：直接放在 R/ 目录下，无需额外 source，也无需 @export
+# R/globalVariables.R
+# Purpose: Suppress "no visible binding for global variable" NOTES from R CMD check
+# Usage: Place in R/ directory; automatically sourced, no @export needed
+
+#' Global Variables Declaration
+#'
+#' @description
+#' This file declares global variables used in the IOBR package to suppress
+#' R CMD check NOTES about "no visible binding for global variable". These
+#' variables are primarily used in tidyverse/dplyr pipelines and data.table
+#' operations where non-standard evaluation (NSE) makes static analysis difficult.
+#'
+#' @details
+#' The variables listed here fall into several categories:
+#' - tidyverse NSE variables: column names used in dplyr/data.table pipelines
+#' - Internal data: package datasets referenced in functions
+#' - Cross-package S3 methods: generic functions from suggested packages
+#'
+#' @keywords internal
+#' @noRd
 utils::globalVariables(c(
-  # ---------- 管道 / data.table / tidyverse 内部变量 ----------
+  # ---------- tidyverse / data.table internal variables ----------
   ".", "..p.format..", "value", "x", "y", "p.value", "p.adj", "padj",
   "label", "group1", "group2", "mean_group1", "mean_group2",
   "Estimate", "logFC", "adj.P.Val", "auc", "freq", "Freq",
@@ -18,14 +35,17 @@ utils::globalVariables(c(
   "quantiseq_data", "xCell.data", "null_models", "common_genes",
   "avg_log2FC", "mus_human_gene_symbol", "PurityDataAffy",
   "my_palette", "my_palette2", "Group", "ENTREZID", "logfc", "p",
-  "FPR", "TPR", "variable", "itor",
+  "FPR", "TPR", "variable", "itor", "s",
 
-  # ---------- 跨包函数 / S3 方法 ----------
-  # 以下名字在代码里通过 :: 或 get() 调用，但仍被 codetools 报 undefined
+  # ---------- Cross-package functions / S3 methods ----------
+  # Names called via :: or get() but still flagged by codetools
   "DefaultAssay<-", "check_installed", "geom_hdr_lines",
   "ggboxplot", "grid.arrange", "rlm", "lsei", "DESeq", "results",
   "counts", "makeContrasts", "eBayes", "lmFit", "contrasts.fit",
   "topTable", "stat_compare_means", "compare_means",
   "listDatasets", "useMart", "getLDS", "random_strata_cells",
-  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count"
+  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count",
+
+  # ---------- Variables added during code quality improvements ----------
+  "main", "p.format", ".break_month", "draw", "coef", "Mode"
 ))

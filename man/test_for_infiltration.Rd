@@ -4,21 +4,30 @@
 \alias{test_for_infiltration}
 \title{Test for Cell Population Infiltration}
 \usage{
-test_for_infiltration(
-  MCPcounterMatrix,
-  platform = c("133P2", "133A", "HG1")[1]
-)
+test_for_infiltration(MCPcounterMatrix, platform = c("133P2", "133A", "HG1"))
 }
 \arguments{
-\item{MCPcounterMatrix}{A matrix, usually a return from the MCPcounter.estimate method.}
+\item{MCPcounterMatrix}{Matrix, usually output from MCPcounter.estimate.}
 
-\item{platform}{Expression platform used to produce the data. Supported are "133P2" (Affymetrix Human Genome 133 Plus 2.0), "133A" (Affymetrix Human Genome 133A), "HG1" (Affymetrix Human Gene 1.0ST). Other platforms are not supported. Data should ideally be log2-transformed and normalized with the fRMA bioconductor package. MCP-counter estimates from Affymetrix Human Genome 133 Plus 2.0 and 133A arrays should be computed using "affy_133P2_probesets" as identifiers, and "HUGO_symbols" or "ENTREZ_ID" for Affymetrix Human Gene 1.0ST.}
+\item{platform}{Expression platform: "133P2", "133A", or "HG1".
+Default is "133P2".}
 }
 \value{
-Matrix with samples in rows and cell populations in columns. Elements are p-values.
+Matrix with samples in rows and cell populations in columns.
+  Elements are p-values.
 }
 \description{
-Returns a matrix whose elements are p-values corresponding to the null hypothesis that samples are not infiltrated by the corresponding cell population.
+Returns p-values for the null hypothesis that samples are not infiltrated
+by the corresponding cell population.
+}
+\examples{
+\donttest{
+# This function requires null_models data which is loaded internally
+# Create example data
+scores <- matrix(runif(30), nrow = 3, ncol = 10)
+rownames(scores) <- c("T cells", "B cells", "NK cells")
+pvals <- test_for_infiltration(scores, platform = "133P2")
+}
 }
 \author{
 Etienne Becht

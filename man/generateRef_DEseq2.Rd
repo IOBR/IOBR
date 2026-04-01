@@ -7,28 +7,30 @@
 generateRef_DEseq2(dds, pheno, FDR = 0.05, dat)
 }
 \arguments{
-\item{dds}{Raw count data from RNA-seq (matrix).}
+\item{dds}{Matrix. Raw count data from RNA-seq.}
 
-\item{pheno}{Character vector of cell type classes for samples.}
+\item{pheno}{Character vector. Cell type classes for samples.}
 
-\item{FDR}{Numeric threshold for adjusted p-values to consider genes significant. Default is 0.05.}
+\item{FDR}{Numeric. Threshold for adjusted p-values. Default is 0.05.}
 
-\item{dat}{Normalized expression data (e.g., FPKM, TPM) for calculating median expression.}
+\item{dat}{Matrix. Normalized expression data (e.g., FPKM, TPM) for
+calculating median expression.}
 }
 \value{
-A list containing:
-  - `reference_matrix`: Data frame of median expression for significant genes across cell types.
+List containing:
+  - `reference_matrix`: Data frame of median expression for significant
+    genes across cell types.
   - `G`: Optimal number of probes minimizing condition number.
   - `condition_number`: Minimum condition number.
   - `whole_matrix`: Full median expression matrix.
 }
 \description{
-This function uses DESeq2 to perform differential expression analysis across cell types,
-identifies significantly expressed genes, and creates a reference signature matrix from median expression levels.
+Uses DESeq2 to perform differential expression analysis across cell types,
+identifies significantly expressed genes, and creates a reference signature
+matrix from median expression levels.
 }
 \examples{
-\dontrun{
-# Example assuming 'dds' is raw counts and 'dat' is normalized data
+\donttest{
 dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 colnames(dds) <- paste("Sample", 1:20, sep = "_")
 rownames(dds) <- paste("Gene", 1:100, sep = "_")

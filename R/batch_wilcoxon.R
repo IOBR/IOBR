@@ -1,89 +1,188 @@
 #' Batch Wilcoxon Rank-Sum Test Between Two Groups
 #'
-#' Performs Wilcoxon rank-sum tests on a dataset to compare the distribution of specified features between two groups. Computes p-values, adjusts for multiple testing, and ranks features by significance. Returns a data frame with feature names, p-values, adjusted p-values, log-transformed p-values, and significance stars.
+#' @description
+#' Performs Wilcoxon rank-sum tests (Mann-Whitney U tests) to compare the
+#' distribution of specified features between two groups. Computes p-values,
+#' adjusts for multiple testing, and ranks features by significance.
 #'
-#' @param data Data frame. Input data for analysis.
-#' @param target Character. Name of the column representing group labels. Default is "group".
-#' @param feature Character vector or NULL. Names of features to analyze. If NULL, all continuous features are used. Default is NULL.
-#' @param feature_manipulation Logical. Whether to apply custom feature manipulation. Default is FALSE.
+#' @param data Data frame containing the dataset for analysis.
+#' @param target Character string specifying the column name of the grouping
+#'   variable. Default is `"group"`.
+#' @param feature Character vector specifying feature names to analyze. If
+#'   `NULL`, prompts for selection (interactive mode only). Default is `NULL`.
+#' @param feature_manipulation Logical indicating whether to apply feature
+#'   manipulation filtering. Default is `FALSE`.
 #'
-#' @return Data frame with statistical results for each feature (p-value, adjusted p-value, log p-value, significance stars).
-#' @export
-#' @import dplyr
-#' @import tibble
+#' @return Tibble with columns:
+#' \describe{
+#'   \item{sig_names}{Feature name}
+#'   \item{p.value}{Raw p-value}
+#'   \item{statistic}{Difference in means between groups}
+#'   \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+#'   \item{log10pvalue}{Negative log10-transformed p-value}
+#'   \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+#'     ** p<0.01, * p<0.05, + p<0.5}
+#'   \item{group1, group2}{Mean values for each group}
+#' }
+#'
 #' @author Dongqiang Zeng
+#' @export
+#'
 #' @examples
-#' # Load TCGA-STAD microenvironment signature data
-#' data("sig_stad", package = "IOBR")
-#' # Find microenvironmental scores associated with Gender
-#' batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
-batch_wilcoxon <- function(data, target = "group", feature = NULL, feature_manipulation = FALSE) {
+#' \donttest{
+#' # Load TCGA-STAD signature data
+#' sig_stad <- load_data("sig_stad")
+#'
+#' # Compare features by gender
+#' res <- batch_wilcoxon(
+#'   data = sig_stad,
+#'   target = "Gender",
+#'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
+#' )
+#' head(res)
+#' }
+batch_wilcoxon <- function(data,
+                           target = "group",
+                           feature = NULL,
+                           feature_manipulation = FALSE) {
+  # Input validation
+  if (is.null(data) || !is.data.frame(data)) {
+    cli::cli_abort("{.arg data} must be a non-null data frame.")
+  }
+  if (!target %in% colnames(data)) {
+    cli::cli_abort("Target variable {.val {target}} not found in data.")
+  }
+
   data <- as.data.frame(data)
-  # change-name-of-group
-  colnames(data)[which(colnames(data) == target)] <- "group"
 
-  data <- data[!is.na(data$group), ]
-  data <- data[!data$group == "", ]
+  # Rename target column
+  colnames(data)[colnames(data) == target] <- "group"
+
+  # Clean group data
+  data <- data[!is.na(data$group) & data$group != "", , drop = FALSE]
   data$group <- as.character(data$group)
+
   group_names <- unique(data$group)
+  if (length(group_names) != 2) {
+    cli::cli_abort(c(
+      "Wilcoxon test requires exactly 2 groups.",
+      "i" = "Found {length(group_names)} group{?s}: {.val {group_names}}"
+    ))
+  }
 
+  # Feature selection
   if (is.null(feature)) {
-    message(">>>-- `feature` must be specified, or all continuous features will be estimated...")
-
-    index <- menu(c("all continuous features", "selected features "), title = " >>>-- Choose features:")
+    if (!interactive()) {
+      cli::cli_abort(paste(
+        "{.arg feature} must be specified in",
+        "non-interactive mode."
+      ))
+    }
+    cli::cli_alert_info("Select features for analysis")
+    index <- utils::menu(
+      c("All continuous features", "Specify manually"),
+      title = "Feature selection:"
+    )
     if (index == 1) {
-      feature <- colnames(data)
-      feature <- feature[sapply(data, is.numeric)]
+      feature <- colnames(data)[vapply(data, is.numeric, logical(1))]
     } else {
-      stop(">>>-- Please specify the features that you want to proceed...")
+      cli::cli_abort("Please specify features via the {.arg feature} parameter")
     }
   }
-  feature <- feature[feature %in% colnames(data)]
-  if (feature_manipulation) feature <- feature_manipulation(data = data, feature = feature, print_result = F)
 
-  # if(!identical(group_names,c("High","Low"))) message(">>>--- `group_names` should be specified...")
-
-  message(">>>-- Grouping information: ")
-  print(table(data$group))
-  ###########################################
-  if (length(group_names) > 2) {
-    print(table(data$group))
-    stop("Variable has more than two levels...")
+  if (!is.character(feature) || length(feature) == 0) {
+    cli::cli_abort("{.arg feature} must be a non-empty character vector.")
   }
 
-  data <- data[, c("group", feature)]
-  aa <- lapply(data[, feature], function(x) wilcox.test(x ~ data[, "group"], var.equal = F))
-  result_mean <- data %>%
-    dplyr::group_by(.$group) %>%
-    dplyr::summarise_if(is.numeric, mean)
+  # Filter valid features
+  valid_features <- feature[feature %in% colnames(data)]
+  invalid_features <- setdiff(feature, colnames(data))
 
-  rownames(result_mean) <- NULL
-  result_mean <- result_mean %>%
-    tibble::column_to_rownames(., var = ".$group") %>%
-    base::as.data.frame() %>%
-    t() %>%
-    base::as.data.frame() %>%
-    tibble::rownames_to_column(., var = "sig_names")
+  if (length(invalid_features) > 0) {
+    cli::cli_alert_warning(paste(
+      "Ignoring {length(invalid_features)} invalid feature{?s}:",
+      "{.val {invalid_features}}"
+    ))
+  }
 
-  result_mean <- as.data.frame(result_mean)
-  group_names <- group_names[order(group_names)]
-  colnames(result_mean)[2:3] <- group_names
-  result_mean$statistic <- result_mean[, 2] - result_mean[, 3]
+  if (length(valid_features) == 0) {
+    cli::cli_abort("No valid features found in data.")
+  }
 
+  # Apply feature manipulation if requested
+  if (feature_manipulation) {
+    valid_features <- IOBR::feature_manipulation(
+      data = data,
+      feature = valid_features,
+      print_result = FALSE
+    )
+  }
+
+  cli::cli_alert_info("Groups: {.val {group_names}}")
+  cli::cli_alert_info("Features: {length(valid_features)}")
+
+  # Subset data
+  data <- data[, c("group", valid_features), drop = FALSE]
+
+  # Perform Wilcoxon tests
+  test_results <- lapply(valid_features, function(feat) {
+    stats::wilcox.test(data[[feat]] ~ data$group, exact = FALSE)
+  })
+  names(test_results) <- valid_features
+
+  # Calculate group means - vectorized approach
+  result_mean <- data |>
+    dplyr::group_by(.data$group) |>
+    dplyr::summarise(
+      dplyr::across(
+        dplyr::all_of(valid_features), \(.x) mean(.x, na.rm = TRUE)
+      ),
+      .groups = "drop"
+    )
+
+  # Convert to wide format with groups as columns
+  result_mean <- tidyr::pivot_wider(
+    result_mean,
+    names_from = "group",
+    values_from = dplyr::all_of(valid_features),
+    names_glue = "{group}_{.value}"
+  ) |>
+    as.data.frame()
+
+  # The result should have 1 row per feature after proper pivot
+  # Transpose to get features as rows
+  result_mean <- t(result_mean) |>
+    as.data.frame()
+  colnames(result_mean) <- group_names[1:ncol(result_mean)]
+  result_mean$sig_names <- rownames(result_mean)
+
+  # Calculate statistic (difference between groups)
+  if (ncol(result_mean) >= 3) { # 2 groups + sig_names column
+    result_mean$statistic <- result_mean[[1]] - result_mean[[2]]
+  } else {
+    result_mean$statistic <- NA_real_
+  }
+
+  # Build results
   cc <- data.frame(
-    sig_names = feature,
-    p.value = sapply(aa, getElement, name = "p.value")
+    sig_names = valid_features,
+    p.value = vapply(test_results, function(x) x$p.value, numeric(1)),
+    stringsAsFactors = FALSE,
+    row.names = NULL
   )
 
-  cc <- cc %>%
-    full_join(result_mean, by = "sig_names") %>%
-    dplyr::arrange(p.value) %>%
-    dplyr::mutate(p.adj = p.adjust(.$p.value, method = "BH")) %>%
-    dplyr::mutate(log10pvalue = log10(.$p.value) * -1) %>%
-    dplyr::mutate(stars = cut(.$p.value,
-      breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
-      label = c("****", "***", "**", "*", "+", "")
-    ))
-  cc <- tibble::as_tibble(cc)
-  return(cc)
+  cc <- dplyr::left_join(cc, result_mean, by = "sig_names") |>
+    dplyr::arrange(.data$p.value) |>
+    dplyr::mutate(
+      p.adj = stats::p.adjust(.data$p.value, method = "BH"),
+      log10pvalue = -log10(.data$p.value),
+      stars = cut(.data$p.value,
+        breaks = c(-Inf, 0.0001, 0.001, 0.01, 0.05, 0.5, Inf),
+        labels = c("****", "***", "**", "*", "+", "")
+      )
+    )
+
+  cli::cli_alert_success("Wilcoxon test complete")
+
+  tibble::as_tibble(cc)
 }

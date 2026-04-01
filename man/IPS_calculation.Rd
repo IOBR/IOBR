@@ -2,24 +2,50 @@
 % Please edit documentation in R/IPS_calculation.R
 \name{IPS_calculation}
 \alias{IPS_calculation}
-\title{This R-script can be used to calculate Immunophenoscore (IPS)}
+\title{Calculate Immunophenoscore (IPS)}
 \usage{
 IPS_calculation(project = NULL, eset, plot = FALSE)
 }
 \arguments{
-\item{project}{default is NULL}
+\item{project}{Character string for project identifier. Default is NULL.}
 
-\item{eset}{expression data from tab-delimited text file, with official human gene symbols (HGNC) in the rowname;
-expression values (i.e. log2(TPM+1) for each sample in columns}
+\item{eset}{Gene expression matrix with official human gene symbols (HGNC)
+as rownames. Expression values should be log2(TPM+1) or will be transformed
+if max value > 100.}
 
-\item{plot}{default = FALSE;Needs packages ggplot2, grid, gridExtra}
+\item{plot}{Logical. Whether to generate immunophenogram plots. Default is FALSE.}
 }
 \value{
-IPS score data frame
+Data frame containing:
+\describe{
+  \item{MHC}{MHC molecules score}
+  \item{EC}{Effector cells score}
+  \item{SC}{Suppressor cells score}
+  \item{CP}{Checkpoints/Immunomodulators score}
+  \item{AZ}{Aggregate score (sum of MHC, CP, EC, SC)}
+  \item{IPS}{Immunophenoscore (0-10 scale)}
+}
 }
 \description{
-This R-script can be used to calculate Immunophenoscore (IPS)
+Calculates Immunophenoscore (IPS) from gene expression data. IPS is a
+composite score measuring immunophenotype based on four major categories:
+MHC molecules, immunomodulators, effector cells, and suppressor cells.
 }
 \examples{
-首先构建图的储存文件夹
+\donttest{
+# IPS requires gene symbols as rownames
+# Create a simple example with gene symbols
+example_genes <- c(
+  "HLA-A", "HLA-B", "HLA-C", "CD274", "PDCD1", "CTLA4",
+  "CD8A", "CD8B", "GZMB", "PRF1", "FOXP3", "IL10"
+)
+sim_eset <- as.data.frame(matrix(
+  rnorm(length(example_genes) * 10, mean = 5, sd = 2),
+  nrow = length(example_genes), ncol = 10
+))
+rownames(sim_eset) <- example_genes
+colnames(sim_eset) <- paste0("Sample", 1:10)
+ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
+head(ips_result)
+}
 }

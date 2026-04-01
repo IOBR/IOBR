@@ -2,49 +2,46 @@
 % Please edit documentation in R/calculate_sig_score.R
 \name{calculate_sig_score_ssgsea}
 \alias{calculate_sig_score_ssgsea}
-\title{Calculating signature score using ssGSEA method}
+\title{Calculate Signature Score Using ssGSEA Method}
 \usage{
 calculate_sig_score_ssgsea(
   pdata = NULL,
   eset,
   signature,
-  mini_gene_count = 3,
+  mini_gene_count = 5,
   column_of_sample = "ID",
   adjust_eset = FALSE,
   parallel.size = 1L
 )
 }
 \arguments{
-\item{pdata}{phenotype data of input sample;
-if phenotype data is NULL, create a data frame with `Index` and `ID` contain column names of eset}
+\item{pdata}{Data frame with phenotype data. If `NULL`, created from
+`eset` column names.}
 
-\item{eset}{normalizated  transcriptomic data: normalized (CPM, TPM, RPKM, FPKM, etc.)}
+\item{eset}{Expression matrix (genes as rows, samples as columns).}
 
-\item{signature}{List of gene signatures}
+\item{signature}{List of gene signatures.}
 
-\item{mini_gene_count}{filter out signatures with genes less than minimal gene in expression set; default is 5;
-the minimal gene count for ssGSEA methods should larger than 5 for the robustness of the calculation}
+\item{mini_gene_count}{Minimum genes required per signature. Default is 3.}
 
-\item{column_of_sample}{Defines in which column of pdata the sample identifier can be found.}
+\item{column_of_sample}{Column in `pdata` with sample IDs. Default is `"ID"`.}
 
-\item{adjust_eset}{remove variables with missing value, sd =0, and Inf value}
+\item{adjust_eset}{Logical: remove problematic features. Default is `FALSE`.}
 
-\item{parallel.size}{default is 1}
+\item{parallel.size}{Number of parallel workers. Default is 1.}
 }
 \value{
-data frame with pdata and signature scores for gene sets; signatures in columns, samples in rows
+Tibble with signature scores.
 }
 \description{
-Calculating signature score using ssGSEA method
+Computes signature scores using single-sample Gene Set Enrichment Analysis.
 }
 \examples{
-\dontrun{
-# Loading TCGA-STAD expresion data(raw count matrix)
-data("eset_stad", package = "IOBR")
-# transform count data to tpm
+\donttest{
+eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
-# signature score estimation using ssgsea method
-calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
+signature_tme <- load_data("signature_tme")
+result <- calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
 }
 }
 \author{

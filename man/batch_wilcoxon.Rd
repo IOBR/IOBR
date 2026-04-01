@@ -12,25 +12,48 @@ batch_wilcoxon(
 )
 }
 \arguments{
-\item{data}{Data frame. Input data for analysis.}
+\item{data}{Data frame containing the dataset for analysis.}
 
-\item{target}{Character. Name of the column representing group labels. Default is "group".}
+\item{target}{Character string specifying the column name of the grouping
+variable. Default is `"group"`.}
 
-\item{feature}{Character vector or NULL. Names of features to analyze. If NULL, all continuous features are used. Default is NULL.}
+\item{feature}{Character vector specifying feature names to analyze. If
+`NULL`, prompts for selection (interactive mode only). Default is `NULL`.}
 
-\item{feature_manipulation}{Logical. Whether to apply custom feature manipulation. Default is FALSE.}
+\item{feature_manipulation}{Logical indicating whether to apply feature
+manipulation filtering. Default is `FALSE`.}
 }
 \value{
-Data frame with statistical results for each feature (p-value, adjusted p-value, log p-value, significance stars).
+Tibble with columns:
+\describe{
+  \item{sig_names}{Feature name}
+  \item{p.value}{Raw p-value}
+  \item{statistic}{Difference in means between groups}
+  \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+  \item{log10pvalue}{Negative log10-transformed p-value}
+  \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+    ** p<0.01, * p<0.05, + p<0.5}
+  \item{group1, group2}{Mean values for each group}
+}
 }
 \description{
-Performs Wilcoxon rank-sum tests on a dataset to compare the distribution of specified features between two groups. Computes p-values, adjusts for multiple testing, and ranks features by significance. Returns a data frame with feature names, p-values, adjusted p-values, log-transformed p-values, and significance stars.
+Performs Wilcoxon rank-sum tests (Mann-Whitney U tests) to compare the
+distribution of specified features between two groups. Computes p-values,
+adjusts for multiple testing, and ranks features by significance.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
-# Find microenvironmental scores associated with Gender
-batch_wilcoxon(data = sig_stad, target = "Gender", feature = colnames(sig_stad)[69:ncol(sig_stad)])
+\donttest{
+# Load TCGA-STAD signature data
+sig_stad <- load_data("sig_stad")
+
+# Compare features by gender
+res <- batch_wilcoxon(
+  data = sig_stad,
+  target = "Gender",
+  feature = colnames(sig_stad)[69:ncol(sig_stad)]
+)
+head(res)
+}
 }
 \author{
 Dongqiang Zeng

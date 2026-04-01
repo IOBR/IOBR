@@ -13,50 +13,62 @@ anno_eset(
 )
 }
 \arguments{
-\item{eset}{Expression matrix or ExpressionSet object containing gene expression data.}
+\item{eset}{Expression matrix or ExpressionSet object containing gene
+expression data.}
 
-\item{annotation}{Data frame containing annotation information for probes. Built-in
-options include \code{anno_hug133plus2}, \code{anno_rnaseq}, and \code{anno_illumina}.}
+\item{annotation}{Data frame containing annotation information for probes.
+Built-in options include `anno_hug133plus2`, `anno_rnaseq`, and
+`anno_illumina`.}
 
-\item{symbol}{Character string specifying the column name in \code{annotation} that
-represents gene symbols. Default is \code{"symbol"}.}
+\item{symbol}{Character string specifying the column name in `annotation`
+that represents gene symbols. Default is `"symbol"`.}
 
-\item{probe}{Character string specifying the column name in \code{annotation} that
-represents probe identifiers. Default is \code{"probe_id"}.}
+\item{probe}{Character string specifying the column name in `annotation`
+that represents probe identifiers. Default is `"probe_id"`.}
 
-\item{method}{Character string specifying the aggregation method for duplicate gene
-symbols. Options are \code{"mean"}, \code{"sum"}, or \code{"sd"}. Default is
-\code{"mean"}.}
+\item{method}{Character string specifying the aggregation method for
+duplicate gene symbols. Options are `"mean"`, `"sum"`, or `"sd"`.
+Default is `"mean"`.}
 }
 \value{
-Annotated and cleaned gene expression matrix with gene symbols as row names.
+Annotated and cleaned gene expression matrix with gene symbols as
+  row names.
 }
 \description{
-Annotates an expression matrix with gene symbols using provided annotation data,
+Annotates an expression matrix with gene symbols using provided annotation
+data,
 filters out missing or invalid symbols, handles duplicate gene entries, and
-removes uninformative rows. The function supports multiple aggregation methods
+removes uninformative rows. The function supports multiple aggregation
+methods
 for resolving duplicate gene symbols.
 }
 \details{
 The function performs the following operations:
-\itemize{
-  \item Filters probes with missing symbols or labeled as "NA_NA"
+\enumerate{
+  \item Filters probes with missing symbols or labeled as `"NA_NA"`
   \item Matches probes between expression set and annotation data
   \item Merges annotation with expression data
   \item Handles duplicate gene symbols using specified aggregation method
-  \item Removes rows with all zeros, all NAs, or missing values in the first column
+  \item Removes rows with all zeros, all NAs, or missing values in the first
+    column
 }
 }
 \examples{
+\donttest{
 # Annotate Affymetrix microarray data
-data(eset_gse62254, package = "IOBR")
-data("anno_hug133plus2", package = "IOBR")
+eset_gse62254 <- load_data("eset_gse62254")
+anno_hug133plus2 <- load_data("anno_hug133plus2")
 eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
+head(eset)
+}
 
+\donttest{
 # Annotate RNA-seq data with Ensembl IDs
-data(eset_stad, package = "IOBR")
-data("anno_grch38", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+head(eset)
+}
 }
 \author{
 Dongqiang Zeng

@@ -2,33 +2,32 @@
 % Please edit documentation in R/timer.R
 \name{GetFractions.Abbas}
 \alias{GetFractions.Abbas}
-\title{Constrained regression method implemented in Abbas et al., 2009}
+\title{Constrained Regression Method (Abbas et al., 2009)}
 \usage{
 GetFractions.Abbas(XX, YY, w = NA)
 }
 \arguments{
-\item{XX}{Matrix representing immune expression data with genes as rows and cell types as columns.}
+\item{XX}{Matrix. Immune expression data with genes as rows and cell types
+as columns.}
 
-\item{YY}{Vector representing cancer expression data with gene expression levels.}
+\item{YY}{Vector. Cancer expression data with gene expression levels.}
 
-\item{w}{Optional vector of weights for the regression, default is NA which means no weights are applied.}
+\item{w}{Vector or NA. Weights for regression. Default is NA (no weights).}
 }
 \value{
-A vector with non-negative coefficients representing the proportions of each cell type in the input expression data.
+Vector with non-negative coefficients representing proportions of
+  each cell type.
 }
 \description{
-This function implements a constrained regression approach described by Abbas et al. in their 2009 paper.
-It is designed to estimate the proportions of immune cell types within a mixed cancer tissue sample
-based on gene expression data. The method iteratively adjusts the regression coefficients to ensure
-they are non-negative, which corresponds to realistic proportions of cell types.
+Implements a constrained regression approach described by Abbas et al. (2009).
+Estimates proportions of immune cell types within mixed cancer tissue samples
+based on gene expression data. Iteratively adjusts regression coefficients
+to ensure non-negative values.
 }
 \examples{
-# Generate some example data
 XX <- matrix(runif(100), nrow = 10, ncol = 10)
 colnames(XX) <- paste("CellType", 1:10, sep = "")
 YY <- runif(10)
-
-# Apply the Abbas constrained regression method
 results <- GetFractions.Abbas(XX, YY)
 print(results)
 }

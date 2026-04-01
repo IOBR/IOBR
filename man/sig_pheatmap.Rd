@@ -35,68 +35,83 @@ sig_pheatmap(
 \arguments{
 \item{input}{Data frame with variables in columns.}
 
-\item{feas}{Vector of feature names (columns) to include in heatmap.}
+\item{feas}{Character vector. Feature names (columns) to include in heatmap.}
 
-\item{group}{Column name for primary grouping variable.}
+\item{group}{Character string. Column name for primary grouping variable.}
 
-\item{group2}{Optional secondary grouping variable.}
+\item{group2}{Character string or `NULL`. Optional secondary grouping variable.}
 
-\item{group3}{Optional tertiary grouping variable.}
+\item{group3}{Character string or `NULL`. Optional tertiary grouping variable.}
 
-\item{ID}{Column name for sample identifiers. Default is "ID".}
+\item{ID}{Character string. Column name for sample identifiers. Default is `"ID"`.}
 
-\item{path}{Directory to save output files. Default creates "Marker-heatmap-average".}
+\item{path}{Character string or `NULL`. Directory to save output files.
+Default creates `"Marker-heatmap-average"`.}
 
-\item{cols1}{Colors for primary group. Default is "random".}
+\item{cols1}{Character vector or `"random"` or `"normal"`. Colors for primary group.
+Default is `"random"`.}
 
-\item{cols2}{Colors for secondary group. Default is "random".}
+\item{cols2}{Character vector or `"random"` or `"normal"`. Colors for secondary group.
+Default is `"random"`.}
 
-\item{cols3}{Colors for tertiary group. Default is "random".}
+\item{cols3}{Character vector or `"random"` or `"normal"`. Colors for tertiary group.
+Default is `"random"`.}
 
-\item{seed}{Random seed for color generation. Default is 54321.}
+\item{seed}{Integer. Random seed for color generation. Default is `54321`.}
 
-\item{show_col}{Logical indicating whether to display colors. Default is FALSE.}
+\item{show_col}{Logical indicating whether to display colors. Default is `FALSE`.}
 
-\item{palette1}{Palette for primary group. Default is 1.}
+\item{palette1}{Integer. Palette for primary group. Default is `1`.}
 
-\item{palette2}{Palette for secondary group. Default is 2.}
+\item{palette2}{Integer. Palette for secondary group. Default is `2`.}
 
-\item{palette3}{Palette for tertiary group. Default is 3.}
+\item{palette3}{Integer. Palette for tertiary group. Default is `3`.}
 
-\item{cluster_cols}{Logical indicating whether to cluster columns. Default is TRUE.}
+\item{cluster_cols}{Logical indicating whether to cluster columns. Default is `TRUE`.}
 
-\item{palette_for_heatmape}{Palette number for heatmap. Default is 6.}
+\item{palette_for_heatmape}{Integer. Palette number for heatmap. Default is `6`.}
 
-\item{scale.matrix}{Logical indicating whether to scale the matrix. Default is TRUE.}
+\item{scale.matrix}{Logical indicating whether to scale the matrix. Default is `TRUE`.}
 
-\item{cellwidth}{Width of each cell in points. Default is 1.}
+\item{cellwidth}{Numeric. Width of each cell in points. Default is `1`.}
 
-\item{cellheight}{Height of each cell in points. Default is 9.}
+\item{cellheight}{Numeric. Height of each cell in points. Default is `9`.}
 
-\item{show_colnames}{Logical indicating whether to show column names. Default is FALSE.}
+\item{show_colnames}{Logical indicating whether to show column names. Default is `FALSE`.}
 
-\item{fig.type}{File format for saving. Default is "pdf".}
+\item{fig.type}{Character string. File format for saving. Default is `"pdf"`.}
 
-\item{width}{Width of saved figure in inches. Default is 6.}
+\item{width}{Numeric. Width of saved figure in inches. Default is `6`.}
 
-\item{height}{Height of saved figure in inches. Calculated if NULL.}
+\item{height}{Numeric or `NULL`. Height of saved figure in inches. Calculated if `NULL`.}
 
-\item{file_name_prefix}{Prefix for saved file name. Default is 1.}
+\item{file_name_prefix}{Character or numeric. Prefix for saved file name. Default is `1`.}
 }
 \value{
-A list with annotation data, cluster colors, plot object, and transformed matrix.
+A list containing:
+\describe{
+  \item{p_anno}{Annotation data frame}
+  \item{p_cols}{List of cluster colors}
+  \item{plot}{ComplexHeatmap object}
+  \item{eset}{Transformed expression matrix}
+}
 }
 \description{
-This function creates a heatmap from signature data with grouping variables,
-offering flexible options for colors, clustering, and output formats.
+Creates a heatmap from signature data with grouping variables, offering
+flexible options for colors, clustering, and output formats using
+ComplexHeatmap.
 }
 \examples{
-data("tcga_stad_sig", package = "IOBR")
-data("tcga_stad_pdata", package = "IOBR")
+\donttest{
+tcga_stad_sig <- load_data("tcga_stad_sig")
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-feas <- colnames(input)[grep("MCPcounter", colnames(input))]
-sig_pheatmap(input = input, feas = feas, group = "subtype", scale.matrix = TRUE)
-
+feas <- grep("MCPcounter", colnames(input), value = TRUE)
+sig_pheatmap(
+  input = input, feas = feas, group = "subtype",
+  scale.matrix = TRUE, path = tempdir()
+)
+}
 }
 \author{
 Dongqiang Zeng

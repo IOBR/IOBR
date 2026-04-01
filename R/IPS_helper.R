@@ -1,84 +1,100 @@
-#' calculate Immunophenoscore
-#' Title
+#' Map Score to Immunophenoscore
 #'
-#' @param x A numeric value representing the input score.
+#' @description
+#' Maps input score to Immunophenoscore (IPS) on a 0-10 scale. Scores ≤0 map to 0,
+#' scores ≥3 map to 10, and intermediate scores are linearly scaled.
 #'
-#' @return A numeric value representing the Immunophenoscore (IPS), scaled between 0 and 10.
+#' @param x Numeric value representing the aggregate z-score.
+#'
+#' @return Integer value between 0 and 10 representing the Immunophenoscore.
+#'
 #' @export
 #'
 #' @examples
-#' score <- 2.5
-#' ips <- ipsmap(score)
-#' print(ips)
+#' ips <- ipsmap(2.5)
+#' ips <- ipsmap(-1)
+#' ips <- ipsmap(5)
 ipsmap <- function(x) {
-  # if(is.na(x)) x<-0
-  if (x <= 0) {
-    ips <- 0
+  if (is.na(x) || x <= 0) {
+    0L
+  } else if (x >= 3) {
+    10L
   } else {
-    if (x >= 3) {
-      ips <- 10
-    } else {
-      ips <- round(x * 10 / 3, digits = 0)
-    }
+    as.integer(round(x * 10 / 3, digits = 0))
   }
-  return(ips)
 }
 
 
-#' Map Colors Based on Input Value
+#' Map Score to Color
 #'
-#' This function maps a numeric input value to a color from a predefined palette.
+#' @description
+#' Maps a numeric input value to a color from a blue-white-red gradient palette.
+#' Values are mapped to a 1001-color palette where -3 maps to blue, 0 maps to white,
+#' and +3 maps to red.
 #'
-#' @param x A numeric value to be mapped to a color.
+#' @param x Numeric value to be mapped to a color (typically between -3 and 3).
+#' @param my_palette Color palette vector (should have 1001 colors).
+#'   Default uses blue-white-red gradient.
 #'
-#' @return A color from the predefined palette corresponding to the input value.
+#' @return A color from the palette as a hex code.
+#'
 #' @export
 #'
 #' @examples
-#' # Define a palette with 1001 colors
-#' my_palette <- colorRampPalette(c("blue", "white", "red"))(1001)
-#' # Map a value to a color
-#' color <- mapcolors(2)
-#' print(color)
-mapcolors <- function(x) {
-  za <- NULL
-  if (x >= 3) {
-    za <- 1000
-  } else {
-    if (x <= -3) {
-      za <- 1
-    } else {
-      za <- round(166.5 * x + 500.5, digits = 0)
-    }
+#' \donttest{
+#' my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
+#' color <- mapcolors(2, my_palette)
+#' color <- mapcolors(-2, my_palette)
+#' }
+mapcolors <- function(x, my_palette = NULL) {
+  if (is.null(my_palette)) {
+    my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
   }
-  return(my_palette[za])
+
+  za <- if (x >= 3) {
+    1000L
+  } else if (x <= -3) {
+    1L
+  } else {
+    as.integer(round(166.5 * x + 500.5, digits = 0))
+  }
+
+  my_palette[za]
 }
 
-#' Map Black and White Colors Based on Input Value
+
+#' Map Score to Black and White Color
 #'
-#' This function maps a numeric input value to a color from a predefined black and white palette.
+#' @description
+#' Maps a numeric input value to a color from a black-white gradient palette.
+#' Values are mapped to a 1001-color palette where -2 maps to black and +2 maps to white.
 #'
-#' @param x A numeric value to be mapped to a color.
+#' @param x Numeric value to be mapped to a color (typically between -2 and 2).
+#' @param my_palette2 Color palette vector (should have 1001 colors).
+#'   Default uses black-white gradient.
 #'
-#' @return A color from the predefined black and white palette corresponding to the input value.
+#' @return A color from the black-white palette as a hex code.
+#'
 #' @export
 #'
 #' @examples
-#' # Define a black and white palette with 1001 colors
-#' my_palette2 <- colorRampPalette(c("black", "white"))(1001)
-#' # Map a value to a color
-#' color <- mapbw(1.5)
-#' print(color)
-mapbw <- function(x) {
-  za2 <- NULL
-  if (x >= 2) {
-    za2 <- 1000
-  } else {
-    if (x <= -2) {
-      za2 <- 1
-    } else {
-      za2 <- round(249.75 * x + 500.5, digits = 0)
-    }
+#' \donttest{
+#' my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)
+#' color <- mapbw(1.5, my_palette2)
+#' color <- mapbw(-1, my_palette2)
+#' }
+mapbw <- function(x, my_palette2 = NULL) {
+  if (is.null(my_palette2)) {
+    my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)
   }
-  return(my_palette2[za2])
+
+  za2 <- if (x >= 2) {
+    1000L
+  } else if (x <= -2) {
+    1L
+  } else {
+    as.integer(round(249.75 * x + 500.5, digits = 0))
+  }
+
+  my_palette2[za2]
 }

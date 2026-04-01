@@ -30,17 +30,21 @@ iobr_deconvo_pipeline(
 Data frame integrating cell fractions and signature scores (also writes intermediate outputs to disk).
 }
 \description{
-Executes an integrated TME analysis on a gene expression matrix: performs immune/stromal cell deconvolution using multiple algorithms, computes signature scores, and aggregates results. Designed for exploratory immunogenomic profiling.
+Executes an integrated TME analysis on a gene expression matrix: performs
+immune/stromal cell deconvolution using multiple algorithms, computes
+signature scores, and aggregates results. Designed for exploratory
+immunogenomic profiling.
 }
 \examples{
 \dontrun{
-data("eset_stad", package = "IOBR")
-eset <- count2tpm(eset_stad)
-data("lm22", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:500, 1:5]
 res <- iobr_deconvo_pipeline(
   eset = eset, project = "STAD",
   array = FALSE, tumor_type = "stad",
-  path = "1-TME", permutation = 1000
+  path = tempdir(), permutation = 10
 )
 }
 }

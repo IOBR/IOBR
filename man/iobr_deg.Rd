@@ -12,7 +12,7 @@ iobr_deg(
   group_id = "group",
   pdata_id = "ID",
   array = FALSE,
-  method = "DESeq2",
+  method = c("DESeq2", "limma"),
   contrast = c("High", "Low"),
   path = NULL,
   padj_cutoff = 0.01,
@@ -25,58 +25,71 @@ iobr_deg(
 )
 }
 \arguments{
-\item{eset}{A matrix of gene expression data where rows represent genes and columns represent samples.}
+\item{eset}{A matrix of gene expression data where rows represent genes and
+columns represent samples.}
 
-\item{annotation}{(Optional) An object for mapping gene IDs to gene names, defaults to NULL.}
+\item{annotation}{Optional data frame for mapping gene IDs to gene names.
+Default is `NULL`.}
 
-\item{id_anno}{An optional parameter that specifies the identifier used to match the annotation data to the row names of `eset`.}
+\item{id_anno}{Character string specifying the identifier column in annotation.
+Default is `NULL`.}
 
-\item{pdata}{A DataFrame containing sample information and grouping labels necessary for differential analysis.}
+\item{pdata}{A data frame containing sample information and grouping labels.}
 
-\item{group_id}{The name of the column in `pdata` that contains the grouping labels, defaults to 'group'.}
+\item{group_id}{Character string specifying the column name in `pdata` containing
+grouping labels. Default is `"group"`.}
 
-\item{pdata_id}{The name of the column in `pdata` that specifies the sample IDs, defaults to 'ID'.}
+\item{pdata_id}{Character string specifying the column name in `pdata` for sample IDs.
+Default is `"ID"`.}
 
-\item{array}{A logical indicating whether to perform quantile normalization on the expression data, defaults to TRUE.}
+\item{array}{Logical indicating whether to perform quantile normalization.
+Default is `FALSE`.}
 
-\item{method}{The method used for differential expression analysis, with options 'DESeq2' or 'limma', default is 'DESeq2'.}
+\item{method}{Character string specifying the method: `"DESeq2"` or `"limma"`.
+Default is `"DESeq2"`.}
 
-\item{contrast}{Specifies the contrast groups for comparison, default is c("High", "Low").}
+\item{contrast}{Character vector of length 2 specifying contrast groups.
+Default is `c("High", "Low")`.}
 
-\item{path}{The directory path where the results should be saved, if NULL, it defaults to creating a 'Result-of-DEGs' folder.}
+\item{path}{Character string for output directory. Default is `NULL`.}
 
-\item{padj_cutoff}{The cutoff for adjusted p-values to determine significant changes, default is 0.01.}
+\item{padj_cutoff}{Numeric cutoff for adjusted p-values. Default is `0.01`.}
 
-\item{logfc_cutoff}{The log2 fold change cutoff for significance, default is 0.5.}
+\item{logfc_cutoff}{Numeric log2 fold change cutoff. Default is `0.5`.}
 
-\item{volcano_plot}{A logical indicating if a volcano plot should be generated, default is FALSE.}
+\item{volcano_plot}{Logical indicating whether to generate a volcano plot.
+Default is `FALSE`.}
 
-\item{col_volcano}{Specifies the color index for the volcano plot, default is 1.}
+\item{col_volcano}{Integer specifying color index for volcano plot. Default is `1`.}
 
-\item{heatmap}{A logical indicating if a heatmap should be generated, default is TRUE.}
+\item{heatmap}{Logical indicating whether to generate a heatmap. Default is `TRUE`.}
 
-\item{col_heatmap}{Specifies the color index for the heatmap, default is 1.}
+\item{col_heatmap}{Integer specifying color index for heatmap. Default is `1`.}
 
-\item{parallel}{A logical value indicating if the DESeq2 or limma should run in parallel, default is FALSE.}
+\item{parallel}{Logical indicating whether to run in parallel. Default is `FALSE`.}
 }
 \value{
-Returns an object containing the differentially expressed genes with additional statistics like log2 fold changes and adjusted p-values.
+Data frame containing differentially expressed genes with statistics
+  including log2 fold changes and adjusted p-values.
 }
 \description{
-Performs differential expression analysis on gene expression data using either the DESeq2 or limma method.
-It includes pre-processing steps like filtering low count data, and calculates fold changes and adjusted p-values.
-Optionally, it generates visualization outputs such as volcano plots and heatmaps. The results are saved in both
-RData and Excel file formats.
+Performs differential expression analysis on gene expression data using either
+DESeq2 or limma. Includes pre-processing steps like filtering low count data,
+and calculates fold changes and adjusted p-values. Optionally generates
+volcano plots and heatmaps.
 }
 \examples{
-utils::data("eset_stad", package = "IOBR", envir = environment())
-utils::data("stad_group", package = "IOBR", envir = environment())
-library(DESeq2)
+\donttest{
+eset_stad <- load_data("eset_stad")
+stad_group <- load_data("stad_group")
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group,
   group_id = "subtype", pdata_id = "ID", array = FALSE,
-  method = "DESeq2", contrast = c("EBV", "GS"), path = "STAD"
+  method = "DESeq2", contrast = c("EBV", "GS"),
+  path = file.path(tempdir(), "STAD")
 )
+head(deg)
+}
 }
 \author{
 Dongqiang Zeng

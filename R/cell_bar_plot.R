@@ -1,127 +1,124 @@
 #' Visualize Cell Fractions as Stacked Bar Chart
 #'
 #' @description
-#' Creates stacked bar charts to visualize tumor microenvironment (TME) cell fractions.
-#' Supports batch visualization of deconvolution results from methods such as CIBERSORT,
-#' EPIC, and quanTIseq. Enables comparison of TME cell distributions across samples.
+#' Creates stacked bar charts to visualize tumor microenvironment (TME) cell
+#' fractions. Supports batch visualization of deconvolution results from
+#' methods such as CIBERSORT, EPIC, and quanTIseq.
 #'
-#' @param input Data frame containing deconvolution results (e.g., from CIBERSORT,
-#'   quanTIseq, or EPIC).
-#' @param id Character string specifying the column name containing sample identifiers.
-#'   Default is \code{"ID"}.
-#' @param title Character string specifying the plot title. Default is \code{"Cell Fraction"}.
-#' @param features Character vector specifying column names representing cell types to
-#'   plot. If \code{NULL}, columns are selected based on \code{pattern}. Default is
-#'   \code{NULL}.
-#' @param pattern Character string or regular expression to match column names for
-#'   automatic feature selection. Used when \code{features} is \code{NULL}. Default is
-#'   \code{NULL}.
-#' @param legend.position Character string specifying legend position (\code{"bottom"},
-#'   \code{"top"}, \code{"left"}, \code{"right"}). Default is \code{"bottom"}.
-#' @param coord_filp Logical indicating whether to flip plot coordinates using
-#'   \code{coord_flip()}. Default is \code{TRUE}.
+#' @param input Data frame containing deconvolution results.
+#' @param id Character string specifying the column name containing sample
+#'   identifiers. Default is "ID".
+#' @param title Character string specifying the plot title.
+#'   Default is "Cell Fraction".
+#' @param features Character vector specifying column names representing cell
+#'   types to plot. If NULL, columns are selected based on `pattern`.
+#'   Default is NULL.
+#' @param pattern Character string or regular expression to match column names
+#'   for automatic feature selection. Used when `features` is NULL.
+#'   Default is NULL.
+#' @param legend.position Character string specifying legend position
+#'   ("bottom", "top", "left", "right"). Default is "bottom".
+#' @param coord_flip Logical indicating whether to flip plot coordinates using
+#'   `coord_flip()`. Default is TRUE.
 #' @param palette Integer specifying the color palette to use. Default is 3.
-#' @param show_col Logical indicating whether to display color information. Default is
-#'   \code{FALSE}.
-#' @param cols Character vector of custom colors. If \code{NULL}, palette is used.
-#'   Default is \code{NULL}.
+#' @param show_col Logical indicating whether to display color information.
+#'   Default is FALSE.
+#' @param cols Character vector of custom colors. If NULL, palette is used.
+#'   Default is NULL.
 #'
-#' @return A ggplot2 object representing the stacked bar chart of cell fractions.
+#' @return A ggplot2 object representing the stacked bar chart.
 #'
 #' @author Dongqiang Zeng
 #' @export
+#'
 #' @examples
-#' # Load TCGA-STAD microenvironment data
-#' data("sig_stad", package = "IOBR")
-#' # Visualize TME cell proportions from CIBERSORT deconvolution
+#' \donttest{
+#' sig_stad <- load_data("sig_stad")
 #' cell_bar_plot(
-#'   input = sig_stad[1:20, ], id = "ID",
+#'   input = sig_stad[1:20, ],
+#'   id = "ID",
 #'   features = colnames(sig_stad)[25:46]
 #' )
-cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction", features = NULL, pattern = NULL, legend.position = "bottom",
-                          coord_filp = TRUE, palette = 3, show_col = F, cols = NULL) {
+#' }
+cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
+                          features = NULL, pattern = NULL,
+                          legend.position = "bottom", coord_flip = TRUE,
+                          palette = 3, show_col = FALSE, cols = NULL) {
+  if (!is.data.frame(input)) {
+    cli::cli_abort("{.arg input} must be a data frame")
+  }
+  if (nrow(input) == 0) {
+    cli::cli_abort("{.arg input} has no rows")
+  }
+  if (!id %in% colnames(input)) {
+    cli::cli_abort("ID column {.val {id}} not found in input")
+  }
+
   input <- as.data.frame(input)
-  colnames(input)[which(colnames(input) == id)] <- "ID"
+  colnames(input)[colnames(input) == id] <- "ID"
 
   if (is.null(features)) {
-    if (is.null(pattern)) stop(">>>=== The 'pattern' parameter must be defined...")
-    feas <- colnames(input)[str_detect(colnames(input), pattern = pattern)]
+    if (is.null(pattern)) {
+      cli::cli_abort("{.arg pattern} must be provided when {.arg features} is NULL")
+    }
+    feas <- colnames(input)[stringr::str_detect(colnames(input), pattern)]
+    if (length(feas) == 0) {
+      cli::cli_abort("No columns match pattern {.val {pattern}}")
+    }
   } else {
-    feas <- features
-  }
-
-  input <- input[, c("ID", feas)]
-
-  input <- remove_names(input_df = input, variable = "colnames", patterns_to_na = patterns_to_na, patterns_space = "_")
-  ##################
-  if (legend.position == "top" | legend.position == "bottom") {
-    legend.direction <- "horizontal"
-  } else {
-    legend.direction <- "vertical"
-  }
-
-
-  if (!is.null(cols)) {
-    cols <- cols
-  } else {
-    if (is.null(palette)) {
-      cols <- palettes(category = "random", palette = 4, show_col = show_col, show_message = T)
-    } else {
-      cols <- palettes(category = "random", palette = palette, show_col = show_col, show_message = T)
+    feas <- features[features %in% colnames(input)]
+    if (length(feas) == 0) {
+      cli::cli_abort("None of the specified features found in input")
     }
   }
 
+  input <- input[, c("ID", feas), drop = FALSE]
 
-  if (coord_filp) {
-    pp <- input %>%
-      tidyr::gather(cell_type, fraction, -ID) %>%
-      # plot as stacked bar chart
-      ggplot(aes(x = ID, y = fraction, fill = cell_type)) +
-      geom_bar(stat = "identity") +
-      coord_flip() +
-      theme_light() +
-      scale_fill_manual(values = cols) +
-      scale_x_discrete(limits = rev(levels(input))) +
-      ggtitle(paste0(title)) +
-      theme(
-        plot.title = element_text(size = rel(2), hjust = 0.5),
-        axis.text.x = element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
-        axis.text.y = element_text(face = "plain", angle = 30, hjust = 1, color = "black")
-      ) +
-      theme(
-        legend.title = element_blank(),
-        legend.position = legend.position,
-        legend.direction = legend.direction,
-        legend.justification = c(.5, .5),
-        legend.box = "horizontal",
-        legend.box.just = "top"
-      )
+  legend.direction <- if (legend.position %in% c("top", "bottom")) {
+    "horizontal"
   } else {
-    pp <- input %>%
-      tidyr::gather(cell_type, fraction, -ID) %>%
-      # plot as stacked bar chart
-      ggplot(aes(x = ID, y = fraction, fill = cell_type)) +
-      geom_bar(stat = "identity") +
-      # coord_flip() +
-      theme_light() +
-      scale_fill_manual(values = cols) +
-      scale_x_discrete(limits = rev(levels(input))) +
-      ggtitle(paste0(title)) +
-      theme(
-        plot.title = element_text(size = rel(2), hjust = 0.5),
-        axis.text.x = element_text(face = "plain", angle = 0, hjust = 1, color = "black"),
-        axis.text.y = element_text(face = "plain", angle = 30, hjust = 1, color = "black")
-      ) +
-      theme(
-        legend.title = element_blank(),
-        legend.position = legend.position,
-        legend.direction = legend.direction,
-        legend.justification = c(.5, .5),
-        legend.box = "horizontal",
-        legend.box.just = "top"
-      )
+    "vertical"
   }
 
-  print(pp)
-  return(pp)
+  if (is.null(cols)) {
+    cols <- palettes(
+      category = "random",
+      palette = palette %||% 4,
+      show_col = show_col,
+      show_message = TRUE
+    )
+  }
+
+  plot_data <- tidyr::gather(input, "cell_type", "fraction", -.data$ID)
+
+  p <- ggplot2::ggplot(plot_data, ggplot2::aes(
+    x = .data$ID, y = .data$fraction, fill = .data$cell_type
+  )) +
+    ggplot2::geom_bar(stat = "identity") +
+    ggplot2::theme_light() +
+    ggplot2::scale_fill_manual(values = cols) +
+    ggplot2::scale_x_discrete(limits = rev(levels(input$ID))) +
+    ggplot2::ggtitle(title) +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(size = ggplot2::rel(2), hjust = 0.5),
+      axis.text.x = ggplot2::element_text(
+        face = "plain", angle = 0, hjust = 1, color = "black"
+      ),
+      axis.text.y = ggplot2::element_text(
+        face = "plain", angle = 30, hjust = 1, color = "black"
+      ),
+      legend.title = ggplot2::element_blank(),
+      legend.position = legend.position,
+      legend.direction = legend.direction,
+      legend.justification = c(0.5, 0.5),
+      legend.box = "horizontal",
+      legend.box.just = "top"
+    )
+
+  if (coord_flip) {
+    p <- p + ggplot2::coord_flip()
+  }
+
+  print(p)
+  p
 }

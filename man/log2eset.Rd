@@ -4,21 +4,31 @@
 \alias{log2eset}
 \title{Log2 Transformation of Gene Expression Matrix}
 \usage{
-log2eset(eset = NULL)
+log2eset(eset)
 }
 \arguments{
-\item{eset}{Numeric matrix. Gene expression data with genes as rows and samples as columns.}
+\item{eset}{Numeric matrix. Gene expression data with genes as rows and
+samples in columns.}
 }
 \value{
-Numeric matrix. Log2-transformed gene expression data (if transformation was needed).
+Numeric matrix. Log2-transformed gene expression data (if
+  transformation was needed), or the original data otherwise.
 }
 \description{
-Determines whether a gene expression matrix requires log2 transformation and applies it if necessary.
+Determines whether a gene expression matrix requires log2 transformation
+based on the distribution of values, and applies it if necessary. This is
+useful for automatically detecting raw counts or linear-scale data that
+should be log-transformed for downstream analysis.
 }
 \examples{
+\donttest{
 # Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
+eset_stad <- load_data("eset_stad")
+
 # Transform count data to TPM
 eset <- count2tpm(eset_stad, idType = "ensembl")
+
+# Apply log2 transformation if needed
 eset <- log2eset(eset)
+}
 }

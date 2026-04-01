@@ -6,7 +6,7 @@
 \usage{
 add_riskscore(
   input,
-  family = "cox",
+  family = c("cox", "binary"),
   target = NULL,
   time = NULL,
   status = NULL,
@@ -17,42 +17,45 @@ add_riskscore(
 \arguments{
 \item{input}{Data frame containing the variables for analysis.}
 
-\item{family}{Character string specifying the model family: \code{"cox"} for Cox
-proportional hazards regression or \code{"binary"} for logistic regression.
-Default is \code{"cox"}.}
+\item{family}{Character string specifying the model family: `"cox"` for Cox
+proportional hazards regression or `"binary"` for logistic regression.
+Default is `"cox"`.}
 
-\item{target}{Character string specifying the target variable name. Required when
-\code{family = "binary"}.}
+\item{target}{Character string specifying the target variable name. Required
+when `family = "binary"`.}
 
-\item{time}{Character string specifying the time-to-event variable name. Required
-when \code{family = "cox"}.}
+\item{time}{Character string specifying the time-to-event variable name.
+Required when `family = "cox"`.}
 
-\item{status}{Character string specifying the event status variable name. Required
-when \code{family = "cox"}.}
+\item{status}{Character string specifying the event status variable name.
+Required when `family = "cox"`.}
 
 \item{vars}{Character vector of variable names to include in the model.}
 
-\item{new_var_name}{Character string specifying the name for the new risk score
-column. Default is \code{"riskscore"}.}
+\item{new_var_name}{Character string specifying the name for the new risk
+score column. Default is `"riskscore"`.}
 }
 \value{
-Data frame identical to \code{input} with an additional column containing
-  risk scores (linear predictors for Cox models or predicted probabilities for
-  logistic models).
+Data frame identical to `input` with an additional column containing
+  risk scores (linear predictors for Cox models or predicted probabilities
+  for logistic models).
 }
 \description{
 Computes a risk score for each observation based on Cox proportional hazards
-regression or binary logistic regression. The function fits the specified model
-and returns the dataset with an added risk score column.
+regression or binary logistic regression. The function fits the specified
+model and returns the dataset with an added risk score column.
 }
 \examples{
+\donttest{
 if (requireNamespace("survival", quietly = TRUE)) {
   lung <- survival::lung
-  lung$rscore <- add_riskscore(
+  result <- add_riskscore(
     lung,
     time = "time", status = "status",
     vars = c("age", "sex")
   )
+  head(result)
+}
 }
 }
 \author{

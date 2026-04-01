@@ -2,23 +2,22 @@
 % Please edit documentation in R/IPS_helper.R
 \name{ipsmap}
 \alias{ipsmap}
-\title{calculate Immunophenoscore
-Title}
+\title{Map Score to Immunophenoscore}
 \usage{
 ipsmap(x)
 }
 \arguments{
-\item{x}{A numeric value representing the input score.}
+\item{x}{Numeric value representing the aggregate z-score.}
 }
 \value{
-A numeric value representing the Immunophenoscore (IPS), scaled between 0 and 10.
+Integer value between 0 and 10 representing the Immunophenoscore.
 }
 \description{
-calculate Immunophenoscore
-Title
+Maps input score to Immunophenoscore (IPS) on a 0-10 scale. Scores ≤0 map to 0,
+scores ≥3 map to 10, and intermediate scores are linearly scaled.
 }
 \examples{
-score <- 2.5
-ips <- ipsmap(score)
-print(ips)
+ips <- ipsmap(2.5)
+ips <- ipsmap(-1)
+ips <- ipsmap(5)
 }

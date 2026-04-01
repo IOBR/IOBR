@@ -11,21 +11,24 @@ batch_kruskal(data, group, feature = NULL, feature_manipulation = FALSE)
 
 \item{group}{Character string specifying the name of the grouping variable.}
 
-\item{feature}{Character vector specifying the names of feature variables to test.
-If \code{NULL}, the user is prompted to select all continuous features or specify
-features manually. Default is \code{NULL}.}
+\item{feature}{Character vector specifying the names of feature variables to
+test. If `NULL`, the user is prompted to select features (interactive mode
+only). Default is `NULL`.}
 
-\item{feature_manipulation}{Logical indicating whether to apply feature manipulation
-to filter valid features. Default is \code{FALSE}.}
+\item{feature_manipulation}{Logical indicating whether to apply feature
+manipulation to filter valid features. Default is `FALSE`.}
 }
 \value{
-Tibble containing the following columns for each feature:
-\itemize{
-  \item \code{sig_names}: Feature name
-  \item \code{p.value}: Raw p-value from Kruskal-Wallis test
-  \item \code{p.adj}: Adjusted p-value (Benjamini-Hochberg method)
-  \item \code{log10pvalue}: Negative log10-transformed p-value
-  \item \code{stars}: Significance stars based on p-value thresholds
+Tibble containing:
+\describe{
+  \item{sig_names}{Feature name}
+  \item{p.value}{Raw p-value from Kruskal-Wallis test}
+  \item{statistic}{Test statistic (chi-squared)}
+  \item{p.adj}{Adjusted p-value (Benjamini-Hochberg)}
+  \item{log10pvalue}{Negative log10-transformed p-value}
+  \item{stars}{Significance stars: **** p<0.0001, *** p<0.001,
+    ** p<0.01, * p<0.05, + p<0.5}
+  \item{group columns}{Mean-centered values for each group}
 }
 }
 \description{
@@ -34,13 +37,20 @@ different groups. Computes p-values, adjusts for multiple testing, and ranks
 features by significance.
 }
 \examples{
-# Load TCGA-STAD microenvironment signature data
-data("sig_stad", package = "IOBR")
-# Test features associated with TCGA molecular subtype
-batch_kruskal(
-  data = sig_stad, group = "Subtype",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
-)
+\donttest{
+# Load TCGA-STAD signature data
+sig_stad <- load_data("sig_stad")
+
+# Test features by gender (if available in your dataset)
+if ("Gender" \%in\% colnames(sig_stad)) {
+  res <- batch_kruskal(
+    data = sig_stad,
+    group = "Gender",
+    feature = colnames(sig_stad)[69:ncol(sig_stad)]
+  )
+  head(res)
+}
+}
 }
 \author{
 Dongqiang Zeng

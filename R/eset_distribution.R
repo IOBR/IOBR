@@ -1,34 +1,60 @@
-#' Title eset_distribution
+#' Visualize Expression Set Distribution
 #'
-#' @description eset_distribution generates boxplots and density plots to analyze the distribution of expression values in an expression set (eset).
-#' @param eset Expression set (matrix or data frame) containing gene expression data.
-#' @param quantile Number of quantiles used for sampling columns in the eset matrix.
-#' @param log Logical value indicating whether to perform log2 transformation of the expression values.
-#' @param project Optional string specifying the name of the project. If not provided, a default name ('ESET') is used.
+#' @description
+#' Generates boxplots and density plots to analyze the distribution of
+#' expression values in an expression set. Useful for quality control and
+#' assessing data normalization.
 #'
-#' @return This function does not return a value but saves boxplots and density plots as PNG files in the specified or default directory.
+#' @param eset Expression matrix or data frame with genes in rows and samples
+#'   in columns.
+#' @param quantile Integer specifying the divisor for sampling columns.
+#'   Default is 3 (samples 1/3 of columns).
+#' @param log Logical indicating whether to perform log2 transformation.
+#'   Default is `TRUE`.
+#' @param project Optional project name for output files. Default is `NULL`
+#'   (uses "ESET").
+#'
+#' @return Invisibly returns `NULL`. Side effect: saves PNG files to disk.
+#'
 #' @export
 #'
 #' @examples
-#' data("eset_stad", package = "IOBR")
-#' data("anno_rnaseq", package = "IOBR")
+#' \donttest{
+#' eset_stad <- load_data("eset_stad")
+#' anno_rnaseq <- load_data("anno_rnaseq")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-#' eset_distribution(eset)
+#' eset_distribution(eset, project = file.path(tempdir(), "ESET"))
+#' }
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
+  if (!is.matrix(eset) && !is.data.frame(eset)) {
+    cli::cli_abort("{.arg eset} must be a matrix or data frame")
+  }
+  if (nrow(eset) == 0 || ncol(eset) == 0) {
+    cli::cli_abort("{.arg eset} must have at least one row and one column")
+  }
+  if (!is.numeric(quantile) || quantile <= 0) {
+    cli::cli_abort("{.arg quantile} must be a positive number")
+  }
+
   feas <- feature_manipulation(data = eset, feature = rownames(eset), is_matrix = TRUE)
-  eset <- eset[rownames(eset) %in% feas, ]
+  eset <- eset[rownames(eset) %in% feas, , drop = FALSE]
 
-  index <- colnames(eset)[sample(1:ncol(eset), round(dim(eset)[2] / quantile, 0))]
-  eset1 <- eset[, index]
-  eset1 <- log2eset(eset1)
+  n_samples <- ncol(eset)
+  n_select <- max(1, round(n_samples / quantile))
+  index <- sample(seq_len(n_samples), min(n_select, n_samples))
+  eset1 <- eset[, index, drop = FALSE]
 
-  eset1 <- eset1 %>%
-    t() %>%
-    data.frame(Sample.Name = colnames(eset1))
-  eset.melt <- reshape2::melt(eset1, id = c("Sample.Name"))
-  head(eset.melt)
+  if (log) {
+    eset1 <- log2eset(eset1)
+  }
+
+  eset1 <- t(eset1)
+  eset1 <- as.data.frame(eset1)
+  eset1$Sample.Name <- rownames(eset1)
+
+  eset.melt <- reshape2::melt(eset1, id.vars = "Sample.Name")
   colnames(eset.melt)[2:3] <- c("Symbol", "Intensity")
-  ######################################
+
   if (is.null(project)) {
     path <- creat_folder("result")
     project <- "ESET"
@@ -36,39 +62,54 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
     path <- creat_folder(project)
   }
 
-  p <- ggplot(eset.melt, aes(x = Sample.Name, y = Intensity)) +
-    geom_boxplot() +
-    theme_bw() +
-    theme(plot.title = element_text(size = 23))
-  p <- p + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1.0))
-  p <- p + ggtitle(
-    "Normalized signal intensity",
-    paste0(
-      "Patient No. is:  ", dim(eset)[2], "; ",
-      "Number of features is: ", dim(eset)[1], ";  ",
-      "Maximum is: ", round(max(eset), 2)
+  p <- ggplot2::ggplot(eset.melt, ggplot2::aes(x = .data$Sample.Name, y = .data$Intensity)) +
+    ggplot2::geom_boxplot() +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(size = 23),
+      axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 1.0)
+    ) +
+    ggplot2::ggtitle(
+      "Normalized signal intensity",
+      paste0(
+        "Patient No. is: ", n_samples, "; ",
+        "Number of features is: ", nrow(eset), ";  ",
+        "Maximum is: ", round(max(eset, na.rm = TRUE), 2)
+      )
+    ) +
+    ggplot2::ylab("Intensity") +
+    ggplot2::xlab("Sample") +
+    ggplot2::theme(
+      legend.position = "none",
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      plot.subtitle = ggplot2::element_text(size = 18, hjust = 0.1, face = "italic", color = "black")
     )
-  ) +
-    ylab("Intensity") + xlab("Sample")
-  p <- p + theme(
-    legend.position = "none", panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
-  ) +
-    theme(plot.subtitle = element_text(size = 18, hjust = 0.1, face = "italic", color = "black"))
-  ###################################
-  ggsave(
-    filename = paste0("1-", project, "-boxplot.png"), plot = p,
-    width = 15, height = 8, path = path$folder_name
-  )
-  ####################################
 
-  p <- ggplot(eset.melt, aes(Intensity, group = Sample.Name)) +
-    geom_density() +
-    theme_bw()
-  p <- p + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  p <- p + ggtitle("Histogram of Log2 Expression") + ylab("Density") + xlab("Log2 Expression")
-  ggsave(
-    filename = paste0("2-", project, "-Densityplot.png"), plot = p,
-    width = 9, height = 6, path = path$folder_name
+  ggplot2::ggsave(
+    filename = paste0("1-", project, "-boxplot.png"),
+    plot = p,
+    width = 15, height = 8,
+    path = path$folder_name
   )
+
+  p2 <- ggplot2::ggplot(eset.melt, ggplot2::aes(.data$Intensity, group = .data$Sample.Name)) +
+    ggplot2::geom_density() +
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank()
+    ) +
+    ggplot2::ggtitle("Histogram of Log2 Expression") +
+    ggplot2::ylab("Density") +
+    ggplot2::xlab("Log2 Expression")
+
+  ggplot2::ggsave(
+    filename = paste0("2-", project, "-Densityplot.png"),
+    plot = p2,
+    width = 9, height = 6,
+    path = path$folder_name
+  )
+
+  invisible(NULL)
 }

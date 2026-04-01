@@ -1,3 +1,10 @@
+#' NULL Model Coefficients for MCPcounter
+#'
+#' @format A `data.frame` with cell types in rows and coefficients in columns.
+#' @usage data(null_models)
+#' @keywords datasets
+"null_models"
+
 #' Toy STAD expression matrix
 #'
 #' A subset of TCGA-STAD RNA-seq count data used in the IOBR vignette and unit
@@ -33,7 +40,8 @@
 #'   \code{"GS"}, \code{"MSI"}).}
 #'   \item{EBV}{Factor. EBV status of the tumour (\code{"Positive"} or
 #'   \code{"Negative"}).}
-#'   \item{time}{Numeric. Overall survival or follow-up time, typically measured in months.}
+#'   \item{time}{Numeric. Overall survival or follow-up time, typically
+#'   measured in months.}
 #'   \item{OS_status}{Integer/binary. Overall survival status indicator.
 #'   (\code{1} = death, \code{0} = censored)}
 #' }
@@ -84,7 +92,8 @@
 #'   \describe{
 #'     \item{tumor_signature}{Signatures related to intrinsic tumour biology
 #'       such as cell cycle, DNA damage repair and histone regulation.}
-#'     \item{EMT}{Epithelial–mesenchymal transition (EMT)–associated signatures.}
+#'     \item{EMT}{Epithelial–mesenchymal transition (EMT)–associated
+#'     signatures.}
 #'     \item{io_biomarkers}{Immuno-oncology biomarker–related signatures.}
 #'     \item{immu_microenvironment}{Immune microenvironment–related signatures.}
 #'     \item{immu_suppression}{Immune suppression–related signatures.}
@@ -168,7 +177,8 @@
 #'   \item{\code{sigGenes}}{
 #'     A character vector listing the signature genes used by EPIC for
 #'     B-cell deconvolution. Only these genes are included in the fitting
-#'     procedure to improve the robustness and biological specificity of the model.
+#'     procedure to improve the robustness and biological specificity of the
+#'     model.
 #'   }
 #' }
 #'
@@ -189,7 +199,8 @@
 #'
 #' \code{lm22} is a gene expression signature matrix used in the EPIC and IOBR
 #' packages for estimating the proportions of different immune cell types from
-#' bulk RNA-seq data. It contains reference profiles for multiple immune cell types,
+#' bulk RNA-seq data. It contains reference profiles for multiple immune cell
+#' types,
 #' including various B cell and T cell subsets, as well as plasma cells and
 #' other immune cell types.
 #'
@@ -197,9 +208,12 @@
 #' A list of length 2:
 #' \describe{
 #'   \item{\code{refProfiles}}{
-#'     A numeric matrix where rows represent genes and columns represent different
-#'     immune cell types. The matrix provides gene expression profiles used as references
-#'     for deconvolution in the EPIC model. The number of columns may vary depending on the
+#'     A numeric matrix where rows represent genes and columns represent
+#'     different
+#'     immune cell types. The matrix provides gene expression profiles used as
+#'     references
+#'     for deconvolution in the EPIC model. The number of columns may vary
+#'     depending on the
 #'     number of immune cell types included in the reference profiles.
 #'   }
 #'   \item{\code{cellTypes}}{
@@ -308,7 +322,8 @@
 #'   \item OS_status – 0 = alive, 1 = dead
 #'   \item ARID1A, PIK3CA – driver-gene mutation status
 #'   \item MALAT1 – lncRNA expression
-#'   \item remaining columns – gene-expression values and additional clinical/molecular annotations
+#'   \item remaining columns – gene-expression values and additional
+#'   clinical/molecular annotations
 #' }
 #'
 #'
@@ -335,7 +350,8 @@
 #' \describe{
 #'   \item{ID}{Patient sample identifier}
 #'   \item{BOR}{Best overall response (CR, PR, SD, PD, NA)}
-#'   \item{BOR_binary}{Binary response classification (R=responder, NR=non-responder)}
+#'   \item{BOR_binary}{Binary response classification (R=responder,
+#'   NR=non-responder)}
 #'   \item{OS_days}{Overall survival time in days}
 #'   \item{OS_status}{Overall survival status (0=alive, 1=dead)}
 #'   \item{Mutation_Load}{Tumor mutation burden}
@@ -364,7 +380,8 @@
 #'
 #' A comprehensive dataset containing clinical, pathological, and molecular data
 #' from The Cancer Genome Atlas (TCGA) Stomach Adenocarcinoma (STAD) project.
-#' Includes RNA-seq expression data, survival outcomes, and pathological features
+#' Includes RNA-seq expression data, survival outcomes, and pathological
+#' features
 #' for gastric cancer patients.
 #'
 #' @format A data frame with 374 rows (patients) and 323 variables:
@@ -386,7 +403,8 @@
 #' \url{https://www.cancer.gov/tcga}
 #'
 #' @references
-#' Cancer Genome Atlas Research Network. Comprehensive molecular characterization
+#' Cancer Genome Atlas Research Network. Comprehensive molecular
+#' characterization
 #' of gastric adenocarcinoma. Nature 513, 202-209 (2014).
 #' doi:10.1038/nature13480
 #'
@@ -402,7 +420,8 @@
 #'
 #' A comprehensive dataset containing immune cell infiltration scores derived
 #' from CIBERSORT analysis of TCGA Stomach Adenocarcinoma (STAD) RNA-seq data.
-#' Includes detailed immune cell subtype proportions for each gastric cancer sample.
+#' Includes detailed immune cell subtype proportions for each gastric cancer
+#' sample.
 #'
 #' @format A data frame with 375 rows (samples) and 464 variables:
 #' \itemize{
@@ -419,7 +438,8 @@
 #' \url{https://cibersort.stanford.edu/}
 #'
 #' @references
-#' Newman AM et al. Robust enumeration of cell subsets from tissue expression profiles.
+#' Newman AM et al. Robust enumeration of cell subsets from tissue expression
+#' profiles.
 #' Nature Methods 12, 453-457 (2015).
 #' doi:10.1038/nmeth.3337
 #'
@@ -427,7 +447,8 @@
 #' Immunity 48, 812-830 (2018).
 #' doi:10.1016/j.immuni.2018.03.023
 #'
-#' Cancer Genome Atlas Research Network. Comprehensive molecular characterization
+#' Cancer Genome Atlas Research Network. Comprehensive molecular
+#' characterization
 #' of gastric adenocarcinoma. Nature 513, 202-209 (2014).
 #' doi:10.1038/nature13480
 #'
@@ -439,8 +460,10 @@
 #' IMvigor210 Bladder Cancer Cohort Multi-omics Signatures
 #'
 #' Comprehensive multi-omics dataset from the IMvigor210 phase II clinical trial
-#' of metastatic urothelial cancer patients treated with atezolizumab (anti-PD-L1).
-#' This dataset includes CIBERSORT immune cell deconvolution scores, gene expression
+#' of metastatic urothelial cancer patients treated with atezolizumab
+#' (anti-PD-L1).
+#' This dataset includes CIBERSORT immune cell deconvolution scores, gene
+#' expression
 #' values, and various immune-related molecular signatures.
 #'
 #' @format A data frame with 348 rows (patients) and 456 variables:
@@ -469,7 +492,8 @@
 #' platinum-based chemotherapy: a single-arm, multicentre, phase 2 trial.
 #' Lancet 387, 1909-1920 (2016). doi:10.1016/S0140-6736(16)00561-4
 #'
-#' Newman AM et al. Robust enumeration of cell subsets from tissue expression profiles.
+#' Newman AM et al. Robust enumeration of cell subsets from tissue expression
+#' profiles.
 #' Nature Methods 12, 453-457 (2015). doi:10.1038/nmeth.3337
 #'
 #' @keywords datasets
@@ -481,7 +505,8 @@
 #'
 #' Example dataset containing differential expression analysis results
 #' from single-cell RNA sequencing (scRNA-seq) analysis.
-#' This dataset serves as input for signature analysis functions in the IOBR package,
+#' This dataset serves as input for signature analysis functions in the IOBR
+#' package,
 #' particularly \code{\link{get_sig_sc}} and \code{\link{sig_gsea}}.
 #'
 #' @format A data frame with 3,212 rows (genes) and 7 columns (statistics):
@@ -491,7 +516,8 @@
 #'   \item{pct.1}{Percentage of cells expressing the gene in cluster 1}
 #'   \item{pct.2}{Percentage of cells expressing the gene in cluster 2}
 #'   \item{p_val_adj}{Adjusted p-value (e.g., Bonferroni, BH FDR correction)}
-#'   \item{cluster}{Cell cluster or cell type identifier (e.g., "Epithelial cells 2")}
+#'   \item{cluster}{Cell cluster or cell type identifier (e.g., "Epithelial
+#'   cells 2")}
 #'   \item{gene}{Gene symbol (e.g., "IGFBP3", "PCDH7")}
 #' }
 #'
@@ -535,7 +561,8 @@
 #'   \item{ID}{Unique patient identifier (TCGA barcode format)}
 #'   \item{stage}{AJCC pathological stage (Stage_II, Stage_III, Stage_IV)}
 #'   \item{status}{Patient vital status (Alive, Dead, NA)}
-#'   \item{Lauren}{Lauren histological classification (Intestinal, Diffuse, Mixed)}
+#'   \item{Lauren}{Lauren histological classification (Intestinal, Diffuse,
+#'   Mixed)}
 #'   \item{subtype}{Molecular subtype classification (EBV, GS)}
 #'   \item{EBV}{Epstein-Barr virus status (Positive, Negative)}
 #'   \item{time}{Overall survival time in months}
@@ -590,7 +617,8 @@
 #'   \item{gc}{GC content proportion (0-1 range).}
 #'   \item{symbol}{Official gene symbol.}
 #'   \item{mgi_id}{Mouse Genome Informatics identifier.}
-#'   \item{gene_type}{Gene type classification (e.g., "protein_coding", "lncRNA").}
+#'   \item{gene_type}{Gene type classification (e.g., "protein_coding",
+#'   "lncRNA").}
 #'   \item{start}{Genomic start position.}
 #'   \item{end}{Genomic end position.}
 #'   \item{transcript_id}{Transcript identifier (mostly NA in this dataset).}

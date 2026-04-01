@@ -2,7 +2,7 @@
 % Please edit documentation in R/xCell.R
 \name{xCellAnalysis}
 \alias{xCellAnalysis}
-\title{The xCell analysis pipeline}
+\title{The xCell Analysis Pipeline}
 \usage{
 xCellAnalysis(
   expr,
@@ -18,31 +18,36 @@ xCellAnalysis(
 )
 }
 \arguments{
-\item{expr}{the gene expression data set. A matrix with row names as symbols and columns as samples.}
+\item{expr}{Gene expression data matrix with row names as gene symbols and
+columns as samples.}
 
-\item{signatures}{a GMT object of signatures.}
+\item{signatures}{GMT object of signatures. If `NULL`, uses xCell defaults.}
 
-\item{genes}{list of genes to use in the analysis.}
+\item{genes}{Character vector of genes to use in the analysis. If `NULL`,
+uses xCell defaults.}
 
-\item{spill}{the Spillover object for adjusting the scores.}
+\item{spill}{Spillover object for adjusting scores. If `NULL`, uses xCell defaults.}
 
-\item{rnaseq}{if true than use RNAseq spillover and calibration paramters, else use array parameters.}
+\item{rnaseq}{Logical indicating whether to use RNA-seq (TRUE) or array
+(FALSE) spillover parameters. Default is `TRUE`.}
 
-\item{file.name}{string for the file name for saving the scores. Default is NULL.}
+\item{file.name}{Character string for saving scores. Default is `NULL`.}
 
-\item{scale}{if TRUE, uses scaling to trnasform scores using fit.vals}
+\item{scale}{Logical indicating whether to use scaling. Default is `TRUE`.}
 
-\item{alpha}{a value to override the spillover alpha parameter. Deafult = 0.5}
+\item{alpha}{Numeric value to override spillover alpha parameter. Default is `0.5`.}
 
-\item{save.raw}{TRUE to save a raw}
+\item{save.raw}{Logical indicating whether to save raw scores. Default is `FALSE`.}
 
-\item{cell.types.use}{a character list of the cell types to use in the analysis. If NULL runs xCell with all cell types.
-The spillover compensation step may over compensate, thus it is always better to run xCell with a list of cell types that are expected
-to be in the mixture. The names of cell types in this list must be a subset of the cell types that are inferred by xCell.}
+\item{cell.types.use}{Character vector of cell types to use. If `NULL`, uses
+all available cell types. Default is `NULL`.}
 }
 \value{
-the adjusted xCell scores
+A matrix of adjusted xCell scores.
 }
 \description{
-The xCell analysis pipeline
+Returns the xCell cell types enrichment scores for tumor microenvironment
+deconvolution. Uses ssGSEA-based enrichment analysis with spillover
+compensation to estimate cell type proportions from gene expression data.
 }
+\keyword{internal}

@@ -1,21 +1,27 @@
 #' Generate Reference Signature Matrix Using DESeq2
 #'
-#' This function uses DESeq2 to perform differential expression analysis across cell types,
-#' identifies significantly expressed genes, and creates a reference signature matrix from median expression levels.
+#' @description
+#' Uses DESeq2 to perform differential expression analysis across cell types,
+#' identifies significantly expressed genes, and creates a reference signature
+#' matrix from median expression levels.
 #'
-#' @param dds Raw count data from RNA-seq (matrix).
-#' @param pheno Character vector of cell type classes for samples.
-#' @param FDR Numeric threshold for adjusted p-values to consider genes significant. Default is 0.05.
-#' @param dat Normalized expression data (e.g., FPKM, TPM) for calculating median expression.
-#' @return A list containing:
-#'   - `reference_matrix`: Data frame of median expression for significant genes across cell types.
+#' @param dds Matrix. Raw count data from RNA-seq.
+#' @param pheno Character vector. Cell type classes for samples.
+#' @param FDR Numeric. Threshold for adjusted p-values. Default is 0.05.
+#' @param dat Matrix. Normalized expression data (e.g., FPKM, TPM) for
+#'   calculating median expression.
+#'
+#' @return List containing:
+#'   - `reference_matrix`: Data frame of median expression for significant
+#'     genes across cell types.
 #'   - `G`: Optimal number of probes minimizing condition number.
 #'   - `condition_number`: Minimum condition number.
 #'   - `whole_matrix`: Full median expression matrix.
+#'
 #' @export
+#'
 #' @examples
-#' \dontrun{
-#' # Example assuming 'dds' is raw counts and 'dat' is normalized data
+#' \donttest{
 #' dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 #' colnames(dds) <- paste("Sample", 1:20, sep = "_")
 #' rownames(dds) <- paste("Gene", 1:100, sep = "_")
@@ -28,21 +34,31 @@
 #' }
 generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
   rlang::check_installed("DESeq2")
-  if (!all(colnames(dds) == colnames(dat))) {
-    stop("The sample order of dds and dat much be identical")
+
+  if (!is.matrix(dds) && !is.data.frame(dds)) {
+    cli::cli_abort("{.arg dds} must be a matrix or data frame")
   }
+  if (!all(colnames(dds) == colnames(dat))) {
+    cli::cli_abort("Sample order of {.arg dds} and {.arg dat} must be identical")
+  }
+  if (length(pheno) != ncol(dds)) {
+    cli::cli_abort("Length of {.arg pheno} must match number of columns in {.arg dds}")
+  }
+
   dds <- round(dds, 0)
   keep <- rowSums(dds) >= 0.05 * ncol(dds)
   dds <- dds[keep, ]
-  dds <- na.omit(dds)
+  dds <- stats::na.omit(dds)
+
   samples <- data.frame(row.names = colnames(dds), cell = pheno)
   ncells <- unique(pheno)
-  res <- list()
-  for (i in 1:length(ncells)) {
+  res <- vector("list", length(ncells))
+
+  for (i in seq_along(ncells)) {
     cellA <- ncells[i]
-    samples$group <- NA
     samples$group <- ifelse(samples$cell == cellA, cellA, "others")
-    dds2 <- DESeq2::DESeqDataSetFromMatrix(dds,
+    dds2 <- DESeq2::DESeqDataSetFromMatrix(
+      dds,
       colData = samples,
       design = ~group
     )
@@ -54,67 +70,71 @@ generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
     tmp <- as.data.frame(x[order(x$padj), ])
     tmp <- data.frame(probe = rownames(tmp), tmp)
     tmp <- tmp[tmp$padj < FDR, ]
-    return(tmp)
+    tmp
   })
-  median_value <- t(dat) %>%
-    as.data.frame() %>%
-    split(., pheno) %>%
-    purrr::map(function(x) apply(as.matrix(x), 2, median, na.rm = TRUE))
+
+  median_value <- t(dat) |>
+    as.data.frame() |>
+    split(pheno) |>
+    purrr::map(function(x) apply(as.matrix(x), 2, stats::median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
-  con_nums <- c()
+  con_nums <- numeric(151)
   for (i in 50:200) {
-    probes <- resData %>%
-      purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
-      unlist() %>%
+    probes <- resData |>
+      purrr::map(function(x) Top_probe(dat = x, i = i)) |>
+      unlist() |>
       unique()
-    tmpdat <- median_value[probes, ]
-    # condition number
-    con_num <- kappa(tmpdat)
-    con_nums <- c(con_nums, con_num)
+    tmpdat <- median_value[probes, , drop = FALSE]
+    con_nums[i - 49] <- kappa(tmpdat)
   }
-  i <- c(50:200)[which.min(con_nums)]
-  probes <- resData %>%
-    purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
-    unlist() %>%
+
+  i <- 49 + which.min(con_nums)
+  probes <- resData |>
+    purrr::map(function(x) Top_probe(dat = x, i = i)) |>
+    unlist() |>
     unique()
-  reference <- median_value[probes, ]
+  reference <- median_value[probes, , drop = FALSE]
   reference <- data.frame(NAME = rownames(reference), reference)
   G <- i
   condition_number <- min(con_nums)
-  return(list(
-    reference_matrix = reference, G = G, condition_number = condition_number,
+
+  list(
+    reference_matrix = reference,
+    G = G,
+    condition_number = condition_number,
     whole_matrix = median_value
-  ))
+  )
 }
 
 
 #' Top Probe Selector
 #'
-#' This function extracts the top `i` probes based on their ordering in the provided data frame.
-#' If the number of rows in the data frame is less than or equal to `i`, it returns all probes.
+#' @description
+#' Extracts the top `i` probes based on their ordering in the provided data
+#' frame. If the number of rows is less than or equal to `i`, returns all
+#' probes.
 #'
-#' @param dat A data frame containing a column named "probe" among other data.
-#' @param i An integer indicating the number of top probes to return from the dataset.
+#' @param dat Data frame containing a column named "probe".
+#' @param i Integer. Number of top probes to return.
 #'
-#' @return A character vector containing the names of the top `i` probes.
+#' @return Character vector containing the names of the top `i` probes.
+#'
 #' @export
 #'
 #' @examples
-#' # Assuming 'dat' is a data frame with at least one column named "probe"
 #' dat <- data.frame(
 #'   probe = c("Probe1", "Probe2", "Probe3", "Probe4", "Probe5"),
 #'   value = c(5, 3, 2, 4, 1)
 #' )
-#' # Get the top 3 probes
 #' top_probes <- Top_probe(dat, 3)
 #' print(top_probes)
 Top_probe <- function(dat, i) {
   if (nrow(dat) <= i) {
-    probe <- dat[, "probe"] %>% as.character()
+    probe <- as.character(dat[, "probe"])
   } else {
-    probe <- dat[1:i, "probe"] %>% as.character()
+    probe <- as.character(dat[seq_len(i), "probe"])
   }
   probe
 }

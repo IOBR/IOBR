@@ -2,26 +2,43 @@
 % Please edit documentation in R/sigScore.R
 \name{sigScore}
 \alias{sigScore}
-\title{Calculate Signature Score Using PCA or Mean Methods}
+\title{Calculate Signature Score Using PCA, Mean, or Z-score Methods}
 \usage{
-sigScore(eset, methods = "PCA")
+sigScore(eset, methods = c("PCA", "mean", "zscore"))
 }
 \arguments{
-\item{eset}{Normalized count matrix; rows are genes in the signature to be summarized into one score; columns are samples.}
+\item{eset}{Normalized expression matrix with genes (signature) as rows and
+samples as columns.}
 
-\item{methods}{Character vector defining whether signature scores shall be based on principal component 1 ("PCA", default) or mean values (any other value).}
+\item{methods}{Scoring method: `"PCA"` (default) for principal component 1,
+`"mean"` for mean expression, or `"zscore"` for z-score normalized mean.}
 }
 \value{
-Numeric vector of length ncol(eset); a score summarizing the rows of eset.
+Numeric vector of length `ncol(eset)`; a score summarizing the rows
+  of `eset`.
 }
 \description{
-Computes signature scores from gene expression data using either Principal Component Analysis (PCA) or mean-based approaches.
+Computes signature scores from gene expression data using Principal
+Component Analysis (PCA), mean-based, or z-score approaches.
 }
 \examples{
-# Example usage with PCA method
-sigScore(eset = expression_matrix, methods = "PCA")
-# Example usage with mean method
-sigScore(eset = expression_matrix, methods = "mean")
+\donttest{
+# Load example data
+eset_stad <- load_data("eset_stad")
+eset <- count2tpm(eset_stad, idType = "ensembl")
+
+# Get signature genes
+signature_tme <- load_data("signature_tme")
+genes <- signature_tme[["CD_8_T_effector"]]
+genes <- genes[genes \%in\% rownames(eset)]
+
+# Calculate scores (only if enough genes are available)
+if (length(genes) >= 2) {
+  score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
+  score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
+  score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
+}
+}
 }
 \author{
 Dorothee Nickles, Dongqiang Zeng

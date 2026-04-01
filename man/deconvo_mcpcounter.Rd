@@ -7,30 +7,24 @@
 deconvo_mcpcounter(eset, project = NULL)
 }
 \arguments{
-\item{eset}{Gene expression matrix with genes (HUGO symbols) in rows and samples in
-columns.}
+\item{eset}{Gene expression matrix with HGNC symbols as row names.}
 
-\item{project}{Character string specifying an optional project name to distinguish
-different datasets. If provided, a \code{ProjectID} column is added. Default is
-\code{NULL}.}
+\item{project}{Optional project name. Default is `NULL`.}
 }
 \value{
-Data frame containing MCP-counter immune cell abundance estimates with sample
-  IDs in the first column. Cell population columns are suffixed with \code{_MCPcounter}.
+Data frame with MCP-counter scores. Columns suffixed with
+  `_MCPcounter`.
 }
 \description{
-Estimates immune cell abundances in the tumor microenvironment using the MCP-counter
-(Microenvironment Cell Populations-counter) algorithm. Quantifies multiple immune and
-stromal cell populations from bulk gene expression data.
+Estimates immune cell abundances using MCP-counter.
 }
 \examples{
-# Load TCGA-STAD expression data (raw count matrix)
-data("eset_stad", package = "IOBR")
-# Convert to TPM
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-# Run MCP-counter deconvolution
+\dontrun{
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
-
+}
 }
 \author{
 Dongqiang Zeng

@@ -8,9 +8,12 @@
 A list of length 2:
 \describe{
   \item{\code{refProfiles}}{
-    A numeric matrix where rows represent genes and columns represent different
-    immune cell types. The matrix provides gene expression profiles used as references
-    for deconvolution in the EPIC model. The number of columns may vary depending on the
+    A numeric matrix where rows represent genes and columns represent
+    different
+    immune cell types. The matrix provides gene expression profiles used as
+    references
+    for deconvolution in the EPIC model. The number of columns may vary
+    depending on the
     number of immune cell types included in the reference profiles.
   }
   \item{\code{cellTypes}}{
@@ -25,7 +28,8 @@ data(lm22)
 \description{
 \code{lm22} is a gene expression signature matrix used in the EPIC and IOBR
 packages for estimating the proportions of different immune cell types from
-bulk RNA-seq data. It contains reference profiles for multiple immune cell types,
+bulk RNA-seq data. It contains reference profiles for multiple immune cell
+types,
 including various B cell and T cell subsets, as well as plasma cells and
 other immune cell types.
 }

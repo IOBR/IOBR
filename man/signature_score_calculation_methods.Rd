@@ -3,22 +3,20 @@
 \docType{data}
 \name{signature_score_calculation_methods}
 \alias{signature_score_calculation_methods}
-\title{List of Supported Signature Score Calculation Methods}
+\title{Signature Score Calculation Methods}
 \format{
-Named character vector with the following elements:
+Named character vector:
 \describe{
-  \item{PCA}{Principal Component Analysis method (internal: "pca")}
-  \item{ssGSEA}{Single-sample Gene Set Enrichment Analysis (internal: "ssgsea")}
-  \item{z-score}{Z-score transformation method (internal: "zscore")}
-  \item{Integration}{Integration method (internal: "integration")}
+  \item{PCA}{Principal Component Analysis method ("pca")}
+  \item{ssGSEA}{Single-sample Gene Set Enrichment Analysis ("ssgsea")}
+  \item{z-score}{Z-score transformation method ("zscore")}
+  \item{Integration}{Integration of multiple methods ("integration")}
 }
 }
 \usage{
 signature_score_calculation_methods
 }
 \description{
-A named vector containing the supported methods for calculating signature scores.
-Methods include PCA, ssGSEA, z-score, and Integration. The names represent display
-names while values represent internal method identifiers.
+A named vector of supported methods for calculating signature scores.
 }
 \keyword{datasets}

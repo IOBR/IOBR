@@ -7,58 +7,26 @@
 CalculatePref(model, newx, s, acture.y)
 }
 \arguments{
-\item{model}{A model object used to generate predictions.}
+\item{model}{Fitted glmnet model.}
 
-\item{newx}{A matrix or data frame of new data on which the model will predict.}
+\item{newx}{New data matrix for prediction.}
 
-\item{s}{A character vector or single character string indicating the regularization strength at which
-the model should be evaluated. Common values are 'lambda.min' and 'lambda.1se' for models fitted with
-methods such as glmnet.}
+\item{s}{Lambda value for prediction.}
 
-\item{acture.y}{A vector containing the actual binary outcomes (0 or 1) corresponding to `newx`.}
+\item{acture.y}{Actual binary outcomes.}
 }
 \value{
-A performance object from the ROCR package, which includes true positive and false positive rates.
+ROCR performance object containing TPR and FPR values.
 }
 \description{
-Computes performance metrics such as true positive rate (TPR) and false positive rate (FPR) for model predictions.
-This function uses the ROCR package to evaluate model effectiveness at different thresholds, helping to
-assess the discriminative ability of the model under various regularization strengths specified by 's'.
+Computes True Positive Rate (TPR) and False Positive Rate (FPR) for ROC
+analysis using the ROCR package. Used internally for ROC curve generation.
 }
 \examples{
-# 小型模拟数据示例
-set.seed(123)
-
-# 创建小规模数据
-n_train <- 50
-n_test <- 10
-p <- 3
-
-# 训练数据
-x_train <- matrix(rnorm(n_train * p), n_train, p)
-y_train <- sample(0:1, n_train, replace = TRUE)
-
-# 训练简单模型
-if (requireNamespace("glmnet", quietly = TRUE)) {
-  library(glmnet)
-  # 快速训练（使用较小的交叉验证折数）
-  fitted_model <- cv.glmnet(x_train, y_train, 
-                           family = "binomial",
-                           nfolds = 3)  # 减少折数以加快速度
-  
-  # 测试数据
-  new_data <- matrix(rnorm(n_test * p), n_test, p)
-  actual_outcomes <- sample(0:1, n_test, replace = TRUE)
-  
-  # 计算性能
-  perf_metrics <- CalculatePref(
-    model = fitted_model,
-    newx = new_data,
-    s = "lambda.min",
-    acture.y = actual_outcomes
-  )
-  
-  # 简要输出
-  print("Performance metrics calculated successfully")
+\donttest{
+if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+  fitted_model <- glmnet::cv.glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), nfolds = 3)
+  perf <- CalculatePref(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
+}
 }
 }

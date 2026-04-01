@@ -15,28 +15,34 @@ subgroup_survival(
 \arguments{
 \item{pdata}{Data frame containing variables, follow-up time, and outcome.}
 
-\item{time_name}{Character. Column name of follow-up time. Default is "time".}
+\item{time_name}{Character. Column name of follow-up time. Default is `"time"`.}
 
-\item{status_name}{Character. Column name of event status (1/0). Default is "status".}
+\item{status_name}{Character. Column name of event status (1/0).
+Default is `"status"`.}
 
-\item{variables}{Character vector. Subgrouping variables (each processed independently).}
+\item{variables}{Character vector. Subgrouping variables (each processed
+independently).}
 
-\item{object}{Character. Variable of interest used in Cox model. If it has levels "High" and "Low", recode "High" to 0 and "Low" to 1 before calling.}
+\item{object}{Character. Variable of interest used in Cox model. If it has
+levels "High" and "Low", recode "High" to 0 and "Low" to 1 before calling.}
 }
 \value{
 Data frame summarizing subgroup Cox results (HR, CI, p-value).
 }
 \description{
-Extracts hazard ratios (HR) and 95% confidence intervals from Cox proportional hazards models across specified subgroups.
+Extracts hazard ratios (HR) and 95% confidence intervals from Cox
+proportional hazards models across specified subgroups.
 }
 \examples{
-data(subgroup_data)
+subgroup_data <- load_data("subgroup_data")
 input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
+
 # Binary variable example
 res_bin <- subgroup_survival(
   pdata = input, time_name = "time", status_name = "status",
   variables = c("ProjectID", "AJCC_stage"), object = "score_binary"
 )
+
 # Continuous variable example
 res_cont <- subgroup_survival(
   pdata = input, time_name = "time", status_name = "status",

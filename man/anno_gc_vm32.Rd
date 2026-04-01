@@ -12,7 +12,8 @@ A data frame with columns:
   \item{gc}{GC content proportion (0-1 range).}
   \item{symbol}{Official gene symbol.}
   \item{mgi_id}{Mouse Genome Informatics identifier.}
-  \item{gene_type}{Gene type classification (e.g., "protein_coding", "lncRNA").}
+  \item{gene_type}{Gene type classification (e.g., "protein_coding",
+  "lncRNA").}
   \item{start}{Genomic start position.}
   \item{end}{Genomic end position.}
   \item{transcript_id}{Transcript identifier (mostly NA in this dataset).}

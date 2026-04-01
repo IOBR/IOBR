@@ -8,89 +8,95 @@ sig_box(
   data,
   signature,
   variable,
-  angle_x_text = 0,
-  hjust = 0.5,
   palette = "nrc",
   cols = NULL,
   jitter = FALSE,
   point_size = 5,
-  size_of_font = 10,
-  size_of_pvalue = 6,
+  angle_x_text = 0,
+  hjust = 0.5,
   show_pairwise_p = TRUE,
   show_overall_p = FALSE,
   return_stat_res = FALSE,
+  size_of_pvalue = 6,
+  size_of_font = 10,
   assay = NULL,
   slot = "scale.data",
   scale = FALSE
 )
 }
 \arguments{
-\item{data}{Data frame or Seurat object containing the signature and grouping variable.}
+\item{data}{Data frame or Seurat object containing the signature and
+grouping variable.}
 
-\item{signature}{Character string specifying the column name (or feature name in
-Seurat) for the signature values to plot on the y-axis.}
+\item{signature}{Character string specifying the column name (or feature name
+in Seurat) for the signature values to plot on the y-axis.}
 
-\item{variable}{Character string specifying the grouping variable column name for
-the x-axis.}
+\item{variable}{Character string specifying the grouping variable column name
+for the x-axis.}
 
-\item{angle_x_text}{Numeric value specifying the rotation angle for x-axis labels
-(in degrees). Default is 0.}
+\item{palette}{Character string specifying the color palette name.
+Default is `"nrc"`.}
 
-\item{hjust}{Numeric value specifying the horizontal justification of x-axis labels.
-Default is 0.5.}
+\item{cols}{Character vector of custom fill colors. If `NULL`, palette is
+used. Default is `NULL`.}
 
-\item{palette}{Character string specifying the color palette name. Default is
-\code{"nrc"}.}
+\item{jitter}{Logical indicating whether to add jittered points to the box
+plot. Default is `FALSE`.}
 
-\item{cols}{Character vector of custom fill colors. If \code{NULL}, palette is used.
-Default is \code{NULL}.}
+\item{point_size}{Numeric value specifying the size of jittered points.
+Default is 5.}
 
-\item{jitter}{Logical indicating whether to add jittered points to the box plot.
-Default is \code{FALSE}.}
+\item{angle_x_text}{Numeric value specifying the rotation angle for x-axis
+labels (in degrees). Default is 0.}
 
-\item{point_size}{Numeric value specifying the size of jittered points. Default is 5.}
+\item{hjust}{Numeric value specifying the horizontal justification of x-axis
+labels. Default is 0.5.}
 
-\item{size_of_font}{Numeric value specifying the base font size. Default is 10.}
+\item{show_pairwise_p}{Logical indicating whether to display pairwise
+comparison p-values between groups. Default is `TRUE`.}
 
-\item{size_of_pvalue}{Numeric value specifying the font size for p-values. Default
-is 6.}
+\item{show_overall_p}{Logical indicating whether to display the overall
+group difference p-value. Default is `FALSE`.}
 
-\item{show_pairwise_p}{Logical indicating whether to display pairwise comparison
-p-values between groups. Default is \code{TRUE}.}
+\item{return_stat_res}{Logical indicating whether to return statistical test
+results instead of the plot. Default is `FALSE`.}
 
-\item{show_overall_p}{Logical indicating whether to display the overall group
-difference p-value. Default is \code{FALSE}.}
+\item{size_of_pvalue}{Numeric value specifying the font size for p-values.
+Default is 6.}
 
-\item{return_stat_res}{Logical indicating whether to return statistical test results
-instead of the plot. Default is \code{FALSE}.}
+\item{size_of_font}{Numeric value specifying the base font size.
+Default is 10.}
 
-\item{assay}{Character string specifying the assay name (for Seurat objects). Default
-is \code{NULL}.}
+\item{assay}{Character string specifying the assay name (for Seurat objects).
+Default is `NULL`.}
 
-\item{slot}{Character string specifying the slot name (for Seurat objects). Default
-is \code{"scale.data"}.}
+\item{slot}{Character string specifying the slot name (for Seurat objects).
+Default is `"scale.data"`.}
 
 \item{scale}{Logical indicating whether to scale signature values (z-score
-transformation). Default is \code{FALSE}.}
+transformation). Default is `FALSE`.}
 }
 \value{
-If \code{return_stat_res = FALSE}, returns a ggplot2 object. If
-  \code{return_stat_res = TRUE}, returns a data frame containing statistical test
+If `return_stat_res = FALSE`, returns a ggplot2 object. If
+  `return_stat_res = TRUE`, returns a data frame containing statistical test
   results.
 }
 \description{
-Creates box plots to visualize signature distributions across groups with optional
-statistical pairwise comparisons. Supports both data frames and Seurat objects for
-single-cell data visualization.
+Creates box plots to visualize signature distributions across groups with
+optional statistical pairwise comparisons. Supports both data frames and
+Seurat objects for single-cell data visualization.
 }
 \examples{
-# Load example data
-data("tcga_stad_pdata", package = "IOBR")
-# Create box plot with statistical comparisons
+\donttest{
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box(
-  data = tcga_stad_pdata, signature = "TMEscore_plus",
-  variable = "subtype", jitter = TRUE, palette = "jco"
+  data = tcga_stad_pdata,
+  signature = "TMEscore_plus",
+  variable = "subtype",
+  jitter = TRUE,
+  palette = "jco"
 )
+}
 }
 \author{
 Dongqiang Zeng

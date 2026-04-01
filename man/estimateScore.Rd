@@ -12,13 +12,15 @@ estimateScore(
 }
 \arguments{
 \item{input.ds}{A character string specifying the path to the input dataset file in GCT format.
-The file should have gene expression data with appropriate headers.}
+The file should have gene expression data with appropriate
+headers.}
 
 \item{output.ds}{A character string specifying the path to the output dataset file, where
 the calculated scores will be written.}
 
 \item{platform}{A character vector indicating the platform type. Must be one of "affymetrix",
-"agilent", or "illumina". Platform-specific calculations are performed
+"agilent", or "illumina". Platform-specific calculations
+are performed
 based on this parameter.}
 }
 \value{
@@ -26,15 +28,24 @@ This function does not return a value but writes the computed scores to the spec
         output file in GCT format.
 }
 \description{
-This function reads a gene expression dataset in GCT format, calculates enrichment scores
-for specific gene sets, and writes the computed scores to an output file. It supports multiple
+This function reads a gene expression dataset in GCT format, calculates
+enrichment scores
+for specific gene sets, and writes the computed scores to an output file.
+It supports multiple
 platform types and performs platform-specific calculations if necessary.
 }
 \examples{
-# Path to input and output files
-input_file <- "path/to/input.gct"
-output_file <- "path/to/output.gct"
-
-# Perform score estimation for Affymetrix platform
+\dontrun{
+eset_stad <- load_data("eset_stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- tibble::rownames_to_column(eset, var = "symbol")
+input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
+output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
+writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
+utils::write.table(
+eset, 
+input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+}
 }

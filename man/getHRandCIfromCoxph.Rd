@@ -7,26 +7,24 @@
 getHRandCIfromCoxph(coxphData)
 }
 \arguments{
-\item{coxphData}{A fitted Cox model object from `coxph()`.}
+\item{coxphData}{Fitted Cox model object from `survival::coxph()`.}
 }
 \value{
-A data frame with p-values, HR, and confidence intervals.
+Data frame with p-values, HR, and confidence intervals.
 }
 \description{
-This function extracts hazard ratio (HR) and 95% confidence intervals from a fitted Cox proportional hazards model.
+Extracts hazard ratio (HR) and 95% confidence intervals from a fitted
+Cox proportional hazards model.
 }
 \examples{
 library(survival)
-# Create example data
 set.seed(123)
 df <- data.frame(
   TTE = rexp(200, rate = 0.1),
   Cens = rbinom(200, size = 1, prob = 0.7),
   group = sample(c("Treatment", "Control"), 200, replace = TRUE)
 )
-# Fit Cox model
-coxphData <- coxph(Surv(TTE, Cens) ~ group, data = df)
-# Extract HR and CI
+coxphData <- survival::coxph(survival::Surv(TTE, Cens) ~ group, data = df)
 results <- getHRandCIfromCoxph(coxphData)
 print(results)
 }
