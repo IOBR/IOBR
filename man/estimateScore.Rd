@@ -44,8 +44,10 @@ input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
 output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
 writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
 utils::write.table(
-eset, 
-input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
+  eset,
+  input_file,
+  sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
+)
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
 }
 }

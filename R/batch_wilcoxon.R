@@ -141,37 +141,28 @@ batch_wilcoxon <- function(data,
     )
 
   # Convert to wide format with groups as columns
-  result_mean <- tidyr::pivot_wider(
-    result_mean,
-    names_from = "group",
-    values_from = dplyr::all_of(valid_features),
-    names_glue = "{group}_{.value}"
-  ) |>
-    as.data.frame()
-
-  # The result should have 1 row per feature after proper pivot
-  # Transpose to get features as rows
-  result_mean <- t(result_mean) |>
-    as.data.frame()
-  colnames(result_mean) <- group_names[1:ncol(result_mean)]
-  result_mean$sig_names <- rownames(result_mean)
+  result_mean <- tidyr::pivot_longer(result_mean,
+    cols = valid_features
+  ) |> tidyr::pivot_wider(
+    id_cols = "name", names_from = "group"
+  )
 
   # Calculate statistic (difference between groups)
-  if (ncol(result_mean) >= 3) { # 2 groups + sig_names column
-    result_mean$statistic <- result_mean[[1]] - result_mean[[2]]
+  if (ncol(result_mean) >= 3) { # name + 2 groups column
+    result_mean$statistic <- result_mean[[2]] - result_mean[[3]]
   } else {
     result_mean$statistic <- NA_real_
   }
 
   # Build results
   cc <- data.frame(
-    sig_names = valid_features,
+    name = valid_features,
     p.value = vapply(test_results, function(x) x$p.value, numeric(1)),
     stringsAsFactors = FALSE,
     row.names = NULL
   )
 
-  cc <- dplyr::left_join(cc, result_mean, by = "sig_names") |>
+  cc <- dplyr::left_join(cc, result_mean, by = "name") |>
     dplyr::arrange(.data$p.value) |>
     dplyr::mutate(
       p.adj = stats::p.adjust(.data$p.value, method = "BH"),
@@ -181,6 +172,7 @@ batch_wilcoxon <- function(data,
         labels = c("****", "***", "**", "*", "+", "")
       )
     )
+  colnames(cc)[1] <- "sig_names"
 
   cli::cli_alert_success("Wilcoxon test complete")
 
