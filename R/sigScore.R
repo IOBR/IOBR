@@ -1,13 +1,13 @@
-#' Calculate Signature Score Using PCA or Mean Methods
+#' Calculate Signature Score Using PCA, Mean, or Z-score Methods
 #'
 #' @description
-#' Computes signature scores from gene expression data using either Principal
-#' Component Analysis (PCA) or mean-based approaches.
+#' Computes signature scores from gene expression data using Principal
+#' Component Analysis (PCA), mean-based, or z-score approaches.
 #'
 #' @param eset Normalized expression matrix with genes (signature) as rows and
 #'   samples as columns.
 #' @param methods Scoring method: `"PCA"` (default) for principal component 1,
-#'   or `"mean"` for mean expression.
+#'   `"mean"` for mean expression, or `"zscore"` for z-score normalized mean.
 #'
 #' @return Numeric vector of length `ncol(eset)`; a score summarizing the rows
 #'   of `eset`.
@@ -30,15 +30,14 @@
 #' if (length(genes) >= 2) {
 #'   score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
 #'   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
+#'   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
 #' }
 #' }
-sigScore <- function(eset, methods = c("PCA", "mean")) {
+sigScore <- function(eset, methods = c("PCA", "mean", "zscore")) {
   methods <- rlang::arg_match(methods)
 
-  # Ensure numeric matrix
   eset <- as.matrix(eset)
 
-  # Check for empty matrix
   if (nrow(eset) == 0 || ncol(eset) == 0) {
     cli::cli_abort(c(
       "Expression matrix is empty.",
@@ -47,7 +46,6 @@ sigScore <- function(eset, methods = c("PCA", "mean")) {
     ))
   }
 
-  # Check for sufficient genes
   if (nrow(eset) < 2) {
     cli::cli_abort(c(
       "At least 2 genes are required for PCA method.",
@@ -55,19 +53,20 @@ sigScore <- function(eset, methods = c("PCA", "mean")) {
     ))
   }
 
-  # Check for samples with zero variance
   col_vars <- apply(eset, 2, stats::var, na.rm = TRUE)
   if (all(col_vars == 0, na.rm = TRUE)) {
     cli::cli_abort("All samples have zero variance.")
   }
 
   if (methods == "PCA") {
-    # PCA-based score: PC1 weighted by correlation with mean expression
     pc <- stats::prcomp(t(eset), scale. = TRUE)
     sigs <- pc$x[, 1] *
       sign(stats::cor(pc$x[, 1], colMeans(eset, na.rm = TRUE)))
+  } else if (methods == "zscore") {
+    eset_z <- t(scale(t(eset)))
+    eset_z[is.na(eset_z)] <- 0
+    sigs <- colMeans(eset_z, na.rm = TRUE)
   } else {
-    # Mean-based score
     sigs <- colMeans(eset, na.rm = TRUE)
   }
 

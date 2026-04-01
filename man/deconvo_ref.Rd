@@ -42,11 +42,16 @@ Data frame with cell fractions. Columns suffixed with `_CIBERSORT`.
 Cell fraction estimation using SVR or lsei methods with custom reference.
 }
 \examples{
-\dontrun{
-eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
+\donttest{
 lm22 <- load_data("lm22")
-deconvo_ref(eset = eset, reference = lm22, method = "svr")
+common_genes <- rownames(lm22)[1:500]
+sim_eset <- as.data.frame(matrix(
+  rnorm(length(common_genes) * 5, mean = 5, sd = 2),
+  nrow = length(common_genes), ncol = 5
+))
+rownames(sim_eset) <- common_genes
+colnames(sim_eset) <- paste0("Sample", 1:5)
+deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
 }
 }
 \author{

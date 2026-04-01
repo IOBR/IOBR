@@ -37,7 +37,7 @@ Tibble with signature scores.
 Computes signature scores using single-sample Gene Set Enrichment Analysis.
 }
 \examples{
-\dontrun{
+\donttest{
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 signature_tme <- load_data("signature_tme")

@@ -23,10 +23,7 @@
 #' eset_stad <- load_data("eset_stad")
 #' anno_rnaseq <- load_data("anno_rnaseq")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-#' oldwd <- getwd()
-#' on.exit(setwd(oldwd))
-#' setwd(tempdir())
-#' eset_distribution(eset)
+#' eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 #' }
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
   if (!is.matrix(eset) && !is.data.frame(eset)) {

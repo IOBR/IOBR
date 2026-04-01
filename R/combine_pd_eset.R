@@ -27,7 +27,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' colnames(eset) <- substring(colnames(eset), 1, 12)

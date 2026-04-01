@@ -28,8 +28,9 @@ expression data.
 \examples{
 \dontrun{
 eset_stad <- load_data("eset_stad")
-# xCell requires GeneSymbol input
-xcell_result <- deconvo_xcell(eset = eset_stad, project = "TCGA-STAD")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD")
 head(xcell_result)
 }
 }

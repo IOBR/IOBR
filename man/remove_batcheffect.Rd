@@ -59,10 +59,11 @@ microarray/TPM data) or sva::ComBat_seq (for RNA-seq count data). Generates
 PCA plots to visualize data before and after correction.
 }
 \examples{
-\dontrun{
-# Remove batch effect from two expression sets
+\donttest{
+eset_stad <- load_data("eset_stad")
+eset_blca <- load_data("eset_blca")
 eset_corrected <- remove_batcheffect(
-  eset_stad, eset_blca,
+  eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
   id_type = "ensembl",
   data_type = "count"
 )

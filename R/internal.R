@@ -66,7 +66,7 @@ gsva_use_new_api <- function() {
 #' colors <- load_data("palette1")
 #'
 #' # Error handling with suggestions for similar names
-#' \dontrun{
+#' \donttest{
 #' try(load_data("sign_tme")) # Will suggest "signature_tme"
 #' }
 load_data <- function(name) {

@@ -5,7 +5,14 @@
 #' Used in [remove_names()] and other helper functions.
 #'
 #' @format A character vector of length 12.
+#'
+#' @return Character vector of patterns to remove.
+#'
 #' @export
+#'
+#' @examples
+#' # View default patterns
+#' patterns_to_na
 patterns_to_na <- c(
   "_cibersort", "xCell", "_EPIC", "_TIMER", "_quantiseq", "_MCP",
   "HALLMARK_", "_CIBERSORT", "xcell", "_timer", "_mcp", "_epic"
@@ -39,24 +46,23 @@ patterns_to_na <- c(
 #'   patterns_to_na = patterns_to_na,
 #'   patterns_space = NULL
 #' )
-remove_names <- function(input_df, 
-                         variable = "colnames", 
-                         patterns_to_na = patterns_to_na, 
+remove_names <- function(input_df,
+                         variable = "colnames",
+                         patterns_to_na = patterns_to_na,
                          patterns_space = NULL) {
-  
   if (!is.data.frame(input_df)) {
     cli::cli_abort("{.arg input_df} must be a data frame.")
   }
-  
+
   if (variable != "colnames" && !variable %in% colnames(input_df)) {
     cli::cli_abort("Column {.val {variable}} not found in {.arg input_df}.")
   }
-  
+
   if (variable == "colnames") {
     for (pattern in patterns_to_na) {
       colnames(input_df) <- gsub(colnames(input_df), pattern = pattern, replacement = "")
     }
-    
+
     if (!is.null(patterns_space)) {
       for (pattern in patterns_space) {
         colnames(input_df) <- gsub(colnames(input_df), pattern = pattern, replacement = " ")
@@ -66,13 +72,13 @@ remove_names <- function(input_df,
     for (pattern in patterns_to_na) {
       input_df[[variable]] <- gsub(input_df[[variable]], pattern = pattern, replacement = "")
     }
-    
+
     if (!is.null(patterns_space)) {
       for (pattern in patterns_space) {
         input_df[[variable]] <- gsub(input_df[[variable]], pattern = pattern, replacement = " ")
       }
     }
   }
-  
+
   input_df
 }

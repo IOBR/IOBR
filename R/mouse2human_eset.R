@@ -41,13 +41,12 @@ mouse2human_eset <- function(eset,
                              is_matrix = TRUE,
                              column_of_symbol = NULL,
                              verbose = FALSE) {
-  
   source <- rlang::arg_match(source)
-  
+
   if (!is.matrix(eset) && !is.data.frame(eset)) {
     cli::cli_abort("{.arg eset} must be a matrix or data frame.")
   }
-  
+
   if (is_matrix) {
     if (is.null(rownames(eset))) {
       cli::cli_abort("{.arg eset} must have row names when {.code is_matrix = TRUE}.")
@@ -63,42 +62,45 @@ mouse2human_eset <- function(eset,
     eset <- remove_duplicate_genes(eset = eset, column_of_symbol = column_of_symbol)
     genes <- rownames(eset)
   }
-  
+
   if (source == "ensembl") {
-    probe_data <- tryCatch({
-      ensembl <- biomaRt::useEnsembl(biomart = "ensembl")
-      if (verbose) {
-        datasets <- biomaRt::listDatasets(ensembl)
-        print(head(datasets))
+    probe_data <- tryCatch(
+      {
+        ensembl <- biomaRt::useEnsembl(biomart = "ensembl")
+        if (verbose) {
+          datasets <- biomaRt::listDatasets(ensembl)
+          print(head(datasets))
+        }
+
+        human <- biomaRt::useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+        mouse <- biomaRt::useMart("ensembl", dataset = "mmusculus_gene_ensembl")
+
+        probe_data <- biomaRt::getLDS(
+          attributes = c("mgi_symbol"),
+          filters = "mgi_symbol",
+          values = genes,
+          mart = mouse,
+          attributesL = c("hgnc_symbol"),
+          martL = human,
+          uniqueRows = TRUE
+        )
+        colnames(probe_data) <- c("gene_symbol_mus", "gene_symbol_human")
+        probe_data
+      },
+      error = function(e) {
+        cli::cli_warn("Failed to connect to Ensembl: {e$message}")
+        cli::cli_alert_info("Falling back to local database.")
+        mus_human_gene_symbol
       }
-      
-      human <- biomaRt::useMart("ensembl", dataset = "hsapiens_gene_ensembl")
-      mouse <- biomaRt::useMart("ensembl", dataset = "mmusculus_gene_ensembl")
-      
-      probe_data <- biomaRt::getLDS(
-        attributes = c("mgi_symbol"),
-        filters = "mgi_symbol",
-        values = genes,
-        mart = mouse,
-        attributesL = c("hgnc_symbol"),
-        martL = human,
-        uniqueRows = TRUE
-      )
-      colnames(probe_data) <- c("gene_symbol_mus", "gene_symbol_human")
-      probe_data
-    }, error = function(e) {
-      cli::cli_warn("Failed to connect to Ensembl: {e$message}")
-      cli::cli_alert_info("Falling back to local database.")
-      mus_human_gene_symbol
-    })
+    )
   } else {
     probe_data <- mus_human_gene_symbol
   }
-  
+
   if (nrow(probe_data) == 0) {
     cli::cli_abort("No gene mappings found for the provided genes.")
   }
-  
+
   eset <- anno_eset(
     eset = eset,
     annotation = probe_data,
@@ -106,6 +108,6 @@ mouse2human_eset <- function(eset,
     probe = "gene_symbol_mus",
     method = "mean"
   )
-  
+
   eset
 }

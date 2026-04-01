@@ -32,10 +32,21 @@
 #' @import grid
 #'
 #' @examples
-#' \dontrun{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' ips_result <- IPS_calculation(eset = eset, project = "TCGA-STAD", plot = FALSE)
+#' \donttest{
+#' # IPS requires gene symbols as rownames
+#' # Create a simple example with gene symbols
+#' example_genes <- c(
+#'   "HLA-A", "HLA-B", "HLA-C", "CD274", "PDCD1", "CTLA4",
+#'   "CD8A", "CD8B", "GZMB", "PRF1", "FOXP3", "IL10"
+#' )
+#' sim_eset <- as.data.frame(matrix(
+#'   rnorm(length(example_genes) * 10, mean = 5, sd = 2),
+#'   nrow = length(example_genes), ncol = 10
+#' ))
+#' rownames(sim_eset) <- example_genes
+#' colnames(sim_eset) <- paste0("Sample", 1:10)
+#' ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
+#' head(ips_result)
 #' }
 IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
   if (!is.matrix(eset) && !is.data.frame(eset)) {

@@ -26,15 +26,15 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Path to input and output files
-#' input_file <- "path/to/input.gct"
-#' output_file <- "path/to/output.gct"
-#'
-#' # Perform score estimation for Affymetrix platform
-#' estimateScore(
-#'   input.ds = input_file, output.ds = output_file, platform =
-#'     "affymetrix"
-#' )
+#' eset_stad <- load_data("eset_stad")
+#' anno_grch38 <- load_data("anno_grch38")
+#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' eset <- tibble::rownames_to_column(eset, var = "symbol")
+#' input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
+#' output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
+#' writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
+#' utils::write.table(eset, input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
+#' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
 #' }
 estimateScore <- function(input.ds,
                           output.ds,

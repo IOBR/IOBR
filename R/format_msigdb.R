@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' tf <- tempfile(fileext = ".gmt")
 #' writeLines(
 #'   c(

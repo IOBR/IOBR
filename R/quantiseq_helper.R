@@ -5,6 +5,10 @@
 #' Source code adapted from https://github.com/FFinotello/quanTIseq.
 #'
 #' @name quantiseq_helper
+#'
+#' @return Internal functions return processed data for quanTIseq deconvolution.
+#'
+#' @keywords internal
 NULL
 
 #' Fix Expression Mixture Matrix

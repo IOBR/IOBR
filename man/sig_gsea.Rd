@@ -128,20 +128,15 @@ signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
 \donttest{
-# Load example data
 eset_stad <- load_data("eset_stad")
 stad_group <- load_data("stad_group")
-oldwd <- getwd()
-on.exit(setwd(oldwd))
-setwd(tempdir())
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group, group_id = "subtype",
   pdata_id = "ID", array = FALSE, method = "DESeq2",
-  contrast = c("EBV", "GS"), path = "STAD"
+  contrast = c("EBV", "GS"), path = file.path(tempdir(), "STAD")
 )
-# Run GSEA with custom gene sets
 signature_tme <- load_data("signature_tme")
-res <- sig_gsea(deg = deg, genesets = signature_tme)
+res <- sig_gsea(deg = deg, genesets = signature_tme, path = tempdir())
 }
 }
 \author{

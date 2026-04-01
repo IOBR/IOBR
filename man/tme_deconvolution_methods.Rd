@@ -11,6 +11,9 @@ A named character vector where names are display names and values
 \usage{
 tme_deconvolution_methods
 }
+\value{
+Named character vector of available deconvolution methods.
+}
 \description{
 A named vector of supported tumor microenvironment (TME) deconvolution
 methods in the IOBR package.
@@ -30,5 +33,12 @@ The methods currently supported are:
   \item `timer`: TIMER for cancer-specific immune estimation
   \item `quantiseq`: quanTIseq for RNA-seq immune deconvolution
 }
+}
+\examples{
+# List all available TME deconvolution methods
+tme_deconvolution_methods
+
+# Get internal method name for a specific method
+tme_deconvolution_methods["MCPcounter"]
 }
 \keyword{datasets}

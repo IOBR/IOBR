@@ -34,7 +34,7 @@ of correlation coefficients for p-value calculation in CIBERSORT analysis.
 Randomly samples from the mixture data to create null distributions.
 }
 \examples{
-\dontrun{
+\donttest{
 X <- matrix(rnorm(100), nrow = 10)
 Y <- rnorm(10)
 result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")

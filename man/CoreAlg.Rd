@@ -32,7 +32,7 @@ cell type proportions. This is the core computational engine of CIBERSORT,
 using nu-SVR with linear kernel to decompose mixed gene expression signals.
 }
 \examples{
-\dontrun{
+\donttest{
 X <- matrix(rnorm(100), nrow = 10)
 y <- rnorm(10)
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")

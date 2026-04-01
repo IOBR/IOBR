@@ -2,24 +2,24 @@
 % Please edit documentation in R/sigScore.R
 \name{sigScore}
 \alias{sigScore}
-\title{Calculate Signature Score Using PCA or Mean Methods}
+\title{Calculate Signature Score Using PCA, Mean, or Z-score Methods}
 \usage{
-sigScore(eset, methods = c("PCA", "mean"))
+sigScore(eset, methods = c("PCA", "mean", "zscore"))
 }
 \arguments{
 \item{eset}{Normalized expression matrix with genes (signature) as rows and
 samples as columns.}
 
 \item{methods}{Scoring method: `"PCA"` (default) for principal component 1,
-or `"mean"` for mean expression.}
+`"mean"` for mean expression, or `"zscore"` for z-score normalized mean.}
 }
 \value{
 Numeric vector of length `ncol(eset)`; a score summarizing the rows
   of `eset`.
 }
 \description{
-Computes signature scores from gene expression data using either Principal
-Component Analysis (PCA) or mean-based approaches.
+Computes signature scores from gene expression data using Principal
+Component Analysis (PCA), mean-based, or z-score approaches.
 }
 \examples{
 \donttest{
@@ -36,6 +36,7 @@ genes <- genes[genes \%in\% rownames(eset)]
 if (length(genes) >= 2) {
   score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
+  score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
 }
 }
 }

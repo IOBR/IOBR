@@ -31,46 +31,45 @@
 #' @examples
 #' # See maftools and TCGAbiolinks documentation for obtaining MAF input
 #' # mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
-make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE, 
+make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
                             category = c("multi", "all", "snp", "indel", "frameshift"),
-                            Tumor_Sample_Barcode = "Tumor_Sample_Barcode", 
-                            Hugo_Symbol = "Hugo_Symbol", 
-                            Variant_Classification = "Variant_Classification", 
+                            Tumor_Sample_Barcode = "Tumor_Sample_Barcode",
+                            Hugo_Symbol = "Hugo_Symbol",
+                            Variant_Classification = "Variant_Classification",
                             Variant_Type = "Variant_Type") {
-  
   category <- rlang::arg_match(category)
-  
+
   if (is.null(maf) && is.null(mut_data)) {
     cli::cli_abort("Either {.arg maf} or {.arg mut_data} must be provided.")
   }
-  
+
   if (!is.null(maf)) {
     mut_maf <- maftools::read.maf(maf = maf, useAll = TRUE, isTCGA = isTCGA)
-    
+
     cli::cli_alert_info("Variant Classification summary:")
     print(summary(mut_maf@data$Variant_Classification))
     cli::cli_alert_info("Variant Type summary:")
     print(summary(mut_maf@data$Variant_Type))
-    
+
     mut <- mut_maf@data
   } else {
     mut <- as.data.frame(mut_data)
-    
+
     required_cols <- c(Tumor_Sample_Barcode, Hugo_Symbol, Variant_Classification)
     missing_cols <- setdiff(required_cols, colnames(mut))
     if (length(missing_cols) > 0) {
       cli::cli_abort("Missing required column(s): {.val {missing_cols}}")
     }
-    
+
     colnames(mut)[colnames(mut) == Tumor_Sample_Barcode] <- "Tumor_Sample_Barcode"
     colnames(mut)[colnames(mut) == Hugo_Symbol] <- "Hugo_Symbol"
     colnames(mut)[colnames(mut) == Variant_Classification] <- "Variant_Classification"
-    
+
     if (!Variant_Type %in% colnames(mut)) {
       if ("filter" %in% colnames(mut)) mut <- mut[mut$filter == "PASS", ]
       mut$Variant_Type <- mut$Variant_Classification
       mut <- mut[!grepl("synonymous", mut$Variant_Type, ignore.case = TRUE), ]
-      
+
       mut$Variant_Type <- dplyr::case_when(
         stringr::str_detect(tolower(mut$Variant_Type), "missense") ~ "SNP",
         stringr::str_detect(tolower(mut$Variant_Type), "frameshift") ~ "Frame_Shift",
@@ -78,17 +77,17 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
         stringr::str_detect(tolower(mut$Variant_Type), "delet") ~ "DEL",
         TRUE ~ mut$Variant_Type
       )
-      
+
       mut <- mut[mut$Variant_Type %in% c("SNP", "INS", "DEL", "Frame_Shift"), ]
     } else {
       colnames(mut)[colnames(mut) == Variant_Type] <- "Variant_Type"
     }
   }
-  
+
   mut <- mut[, c("Tumor_Sample_Barcode", "Hugo_Symbol", "Variant_Classification", "Variant_Type")]
-  
+
   mut_list <- .build_mut_matrices(mut, category)
-  
+
   return(mut_list)
 }
 
@@ -106,11 +105,11 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
     mut_snp <- .create_mut_matrix(mut[mut$Variant_Type == "SNP", ])
     mut_indel <- .create_mut_matrix(mut[mut$Variant_Type %in% c("DEL", "INS"), ])
     mut_frameshift <- .create_mut_matrix(mut[grepl("frame", tolower(mut$Variant_Classification)), ])
-    
+
     mut_list <- list(
-      all = t(mut_all), 
-      snp = t(mut_snp), 
-      indel = t(mut_indel), 
+      all = t(mut_all),
+      snp = t(mut_snp),
+      indel = t(mut_indel),
       frameshift = t(mut_frameshift)
     )
     mut_list <- ComplexHeatmap::unify_mat_list(mut_list)
@@ -118,7 +117,7 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
     mut_all <- .create_mut_matrix(mut)
     mut_list <- list(all = t(mut_all))
   }
-  
+
   mut_list
 }
 
@@ -134,12 +133,15 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
     cli::cli_warn("No mutations found for the specified category.")
     return(matrix(nrow = 0, ncol = 0))
   }
-  
-  mut_mat <- reshape2::dcast(mut, Hugo_Symbol ~ Tumor_Sample_Barcode, 
-                              value.var = "Variant_Classification")
+
+  mut_mat <- reshape2::dcast(mut, Hugo_Symbol ~ Tumor_Sample_Barcode,
+    value.var = "Variant_Classification"
+  )
   mut_mat <- tibble::column_to_rownames(mut_mat, var = "Hugo_Symbol")
   mut_mat <- as.matrix(mut_mat)
-  mut_mat <- matrix(as.numeric(mut_mat), nrow = nrow(mut_mat), ncol = ncol(mut_mat),
-                    dimnames = dimnames(mut_mat))
+  mut_mat <- matrix(as.numeric(mut_mat),
+    nrow = nrow(mut_mat), ncol = ncol(mut_mat),
+    dimnames = dimnames(mut_mat)
+  )
   mut_mat
 }

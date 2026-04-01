@@ -10,8 +10,18 @@ An object of class \code{character} of length 32.
 \usage{
 timer_available_cancers
 }
+\value{
+Character vector of available cancer type abbreviations.
+}
 \description{
 Character vector of cancer types supported by TIMER deconvolution.
 TIMER signatures are cancer-specific.
+}
+\examples{
+# List all available cancer types for TIMER
+timer_available_cancers
+
+# Check if a cancer type is supported
+"brca" \%in\% timer_available_cancers
 }
 \keyword{datasets}

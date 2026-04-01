@@ -19,38 +19,34 @@
 #'
 #' @examples
 #' \donttest{
-#' # Create single folder (in temp directory for examples)
-#' oldwd <- getwd()
-#' on.exit(setwd(oldwd))
-#' setwd(tempdir())
-#' creat_folder("1-result")
+#' # Create single folder
+#' creat_folder(file.path(tempdir(), "1-result"))
 #'
 #' # Create nested folders
-#' creat_folder("1-result", "figures", "correlation")
+#' creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
 #' }
 creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {
-  # Validate inputs
   if (!is.character(f1) || length(f1) != 1 || nchar(f1) == 0) {
     cli::cli_abort("{.arg f1} must be a non-empty character string")
   }
 
-  # Build path components
   components <- c(f1, f2, f3)
   components <- components[!vapply(components, is.null, logical(1))]
 
-  # Create full path
-  path <- do.call(file.path, c(list(getwd()), components))
+  if (startsWith(f1, "/") || startsWith(f1, "~") ||
+    (nchar(f1) > 1 && substr(f1, 2, 2) == ":")) {
+    path <- do.call(file.path, as.list(components))
+  } else {
+    path <- do.call(file.path, c(list(getwd()), components))
+  }
 
-  # Create directory if it doesn't exist
   if (!dir.exists(path)) {
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
   }
 
-  # Build return values
   folder_name <- paste(components, collapse = "/")
-  abspath <- paste0(path, "/")
+  abspath <- paste0(normalizePath(path, mustWork = FALSE), "/")
 
-  # Handle deprecated 'return' parameter
   if (!is.null(return)) {
     cli::cli_warn("{.arg return} parameter is deprecated and will be ignored")
   }

@@ -99,15 +99,13 @@ to the specified directory or a default folder.
 \examples{
 \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
-oldwd <- getwd()
-on.exit(setwd(oldwd))
-setwd(tempdir())
 sig_box_batch(
   input = tcga_stad_pdata,
   vars = c("TMEscore_plus", "GZMB"),
   groups = "subtype",
   jitter = TRUE,
-  palette = "jco"
+  palette = "jco",
+  path = tempdir()
 )
 }
 }

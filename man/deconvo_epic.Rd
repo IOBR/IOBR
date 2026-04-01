@@ -21,10 +21,13 @@ Data frame with EPIC cell fraction estimates. Columns suffixed with
 Estimates immune cell fractions using EPIC algorithm.
 }
 \examples{
-\dontrun{
+\donttest{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-epic_result <- deconvo_epic(eset = eset, project = "TCGA-STAD", tumor = TRUE)
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:500, 1:5]
+epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
+head(epic_result)
 }
 }
 \author{

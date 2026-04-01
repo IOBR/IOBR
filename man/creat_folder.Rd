@@ -28,13 +28,10 @@ working directory and returns their names and absolute paths.
 }
 \examples{
 \donttest{
-# Create single folder (in temp directory for examples)
-oldwd <- getwd()
-on.exit(setwd(oldwd))
-setwd(tempdir())
-creat_folder("1-result")
+# Create single folder
+creat_folder(file.path(tempdir(), "1-result"))
 
 # Create nested folders
-creat_folder("1-result", "figures", "correlation")
+creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
 }
 }

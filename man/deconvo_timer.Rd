@@ -23,8 +23,10 @@ TIMER deconvolution for cancer-specific immune estimation.
 \examples{
 \dontrun{
 eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-res <- deconvo_timer(eset = eset, project = "stad", indications = "stad")
+anno_grch38 <- load_data("anno_grch38")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:500, 1:3]
+res <- deconvo_timer(eset = eset, project = "stad", indications = rep("stad", ncol(eset)))
 }
 }
 \author{

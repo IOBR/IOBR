@@ -45,7 +45,7 @@ rawCountData <- matrix(sample(1:100, 1000 * 4, replace = TRUE), ncol = 4)
 rownames(rawCountData) <- paste("Gene", 1:1000, sep = "_")
 colnames(rawCountData) <- paste("Sample", 1:4, sep = "_")
 
-\dontrun{
+\donttest{
 result <- generateRef(
   dds = rawCountData, pheno = phenotype,
   FDR = 0.05, dat = expressionData, method = "DESeq2"

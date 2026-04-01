@@ -44,7 +44,7 @@
 #' @import survival
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' sig_stad <- as.data.frame(sig_stad)
 #' result <- batch_sig_surv_plot(
@@ -66,21 +66,22 @@
 #' )
 #' }
 batch_sig_surv_plot <- function(
-    input_pdata,
-    signature,
-    id = "ID",
-    column_of_project = "ProjectID",
-    project = NULL,
-    time = "time",
-    status = "status",
-    time_type = "day",
-    break_month = "auto",
-    palette = "jama",
-    cols = NULL,
-    mini_sig = "score",
-    save_path = "Multiple-KM-plot",
-    show_col = TRUE,
-    fig_type = "pdf") {
+  input_pdata,
+  signature,
+  id = "ID",
+  column_of_project = "ProjectID",
+  project = NULL,
+  time = "time",
+  status = "status",
+  time_type = "day",
+  break_month = "auto",
+  palette = "jama",
+  cols = NULL,
+  mini_sig = "score",
+  save_path = "Multiple-KM-plot",
+  show_col = TRUE,
+  fig_type = "pdf"
+) {
   if (!is.data.frame(input_pdata)) {
     cli::cli_abort("{.arg input_pdata} must be a data frame")
   }

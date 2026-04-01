@@ -51,17 +51,23 @@ cross-validation and optionally generates time-dependent ROC curves for visual
 assessment of predictive accuracy.
 }
 \examples{
-\dontrun{
-imvigor210_sig <- load_data("imvigor210_sig")
-imvigor210_pdata <- load_data("imvigor210_pdata")
-pdata_prog <- imvigor210_pdata \%>\%
-  dplyr::select(ID, OS_days, OS_status) \%>\%
-  dplyr::mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
-prognostic_result <- PrognosticModel(
-  x = imvigor210_sig, y = pdata_prog,
-  scale = TRUE, seed = 123456,
-  train_ratio = 0.7, nfold = 10, plot = TRUE
-)
+\donttest{
+if (requireNamespace("glmnet", quietly = TRUE) &&
+  requireNamespace("survival", quietly = TRUE)) {
+  library(survival)
+  imvigor210_sig <- load_data("imvigor210_sig")
+  imvigor210_pdata <- load_data("imvigor210_pdata")
+  pdata_prog <- data.frame(
+    ID = imvigor210_pdata$ID,
+    OS_days = as.numeric(imvigor210_pdata$OS_days),
+    OS_status = as.numeric(imvigor210_pdata$OS_status)
+  )
+  prognostic_result <- PrognosticModel(
+    x = imvigor210_sig, y = pdata_prog,
+    scale = TRUE, seed = 123456,
+    train_ratio = 0.7, nfold = 10, plot = FALSE
+  )
+}
 }
 }
 \author{

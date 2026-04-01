@@ -53,7 +53,16 @@ TimerINFO <- function(string) {
 #' Character vector of cancer types supported by TIMER deconvolution.
 #' TIMER signatures are cancer-specific.
 #'
+#' @return Character vector of available cancer type abbreviations.
+#'
 #' @export
+#'
+#' @examples
+#' # List all available cancer types for TIMER
+#' timer_available_cancers
+#'
+#' # Check if a cancer type is supported
+#' "brca" %in% timer_available_cancers
 timer_available_cancers <- c(
   "kich", "blca", "brca", "cesc", "gbm", "hnsc", "kirp", "lgg",
   "lihc", "luad", "lusc", "prad", "sarc", "pcpg", "paad", "tgct",
@@ -89,12 +98,16 @@ timer_available_cancers <- c(
 #' set.seed(123)
 #' gene_names <- paste0("Gene", 1:100)
 #' sample_names_cancer <- paste0("CancerSample", 1:10)
-#' cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
-#'   dimnames = list(gene_names, sample_names_cancer))
+#' cancer.exp <- matrix(runif(1000, 1, 1000),
+#'   nrow = 100, ncol = 10,
+#'   dimnames = list(gene_names, sample_names_cancer)
+#' )
 #'
 #' sample_names_immune <- paste0("ImmuneSample", 1:5)
-#' immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
-#'   dimnames = list(gene_names, sample_names_immune))
+#' immune.exp <- matrix(runif(500, 1, 1000),
+#'   nrow = 100, ncol = 5,
+#'   dimnames = list(gene_names, sample_names_immune)
+#' )
 #'
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 #' names(immune.cellType) <- sample_names_immune
@@ -103,43 +116,43 @@ timer_available_cancers <- c(
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   tmp.dd <- as.matrix(cancer.exp)
   tmp.ss <- intersect(rownames(tmp.dd), rownames(immune.exp))
-  
+
   N1 <- ncol(tmp.dd)
   tmp.dd <- cbind(tmp.dd[tmp.ss, ], immune.exp[tmp.ss, ])
   tmp.dd <- as.matrix(tmp.dd)
   mode(tmp.dd) <- "numeric"
-  
+
   N2 <- ncol(immune.exp)
   tmp.batch <- c(rep(1, N1), rep(2, N2))
-  
+
   rlang::check_installed(c("sva", "BiocParallel"))
   tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
     BPPARAM = BiocParallel::bpparam("SerialParam")
   )
-  
+
   dd.br <- tmp.dd0[, 1:N1]
   immune.exp.br <- tmp.dd0[, (N1 + 1):(N1 + N2)]
-  
+
   tmp0 <- NULL
   for (kk in unique(names(immune.cellType))) {
     tmp.vv <- which(names(immune.cellType) == kk)
-    
+
     if (length(tmp.vv) == 1) {
       median_expression <- apply(immune.exp.br[, tmp.vv, drop = FALSE], 1, median, na.rm = TRUE)
     } else {
       median_expression <- apply(immune.exp.br[, tmp.vv], 1, median, na.rm = TRUE)
     }
-    
+
     if (is.null(tmp0)) {
       tmp0 <- median_expression
     } else {
       tmp0 <- cbind(tmp0, median_expression)
     }
   }
-  
+
   immune.exp.agg.br <- tmp0
   colnames(immune.exp.agg.br) <- unique(names(immune.cellType))
-  
+
   list(as.matrix(dd.br), immune.exp.br, immune.exp.agg.br)
 }
 
@@ -167,11 +180,12 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Batch mode
 #' tf <- tempfile(fileext = ".csv")
-#' write.table(data.frame("exp1", "lung", "exp2", "breast"),
-#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE)
+#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
+#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
+#' )
 #' args <- list(batch = tf)
 #' result <- check_cancer_types(args)
 #'
@@ -193,12 +207,12 @@ check_cancer_types <- function(args) {
     }
     cancers <- cbind(args$expression, args$category)
   }
-  
+
   invalid_cancers <- setdiff(cancers[, 2], timer_available_cancers)
   if (length(invalid_cancers) > 0) {
     cli::cli_abort("Unknown cancer type(s): {.val {invalid_cancers}}")
   }
-  
+
   cancers
 }
 
@@ -230,7 +244,7 @@ check_cancer_types <- function(args) {
 GetFractions.Abbas <- function(XX, YY, w = NA) {
   ss.remove <- c()
   ss.names <- colnames(XX)
-  
+
   while (TRUE) {
     if (length(ss.remove) == 0) {
       tmp.XX <- XX
@@ -240,30 +254,30 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
       }
       tmp.XX <- tmp.XX[, -ss.remove]
     }
-    
+
     if (length(ss.remove) > 0) {
       ss.names <- ss.names[-ss.remove]
       if (length(ss.names) == 0) {
         return(rep(0, ncol(XX)))
       }
     }
-    
+
     if (is.na(w[1])) {
       tmp <- lsfit(tmp.XX, YY, intercept = FALSE)
     } else {
       tmp <- lsfit(tmp.XX, YY, w, intercept = FALSE)
     }
-    
+
     if (is.null(ncol(tmp.XX))) {
       tmp.beta <- tmp$coefficients[1]
     } else {
       tmp.beta <- tmp$coefficients[seq_len(ncol(tmp.XX))]
     }
-    
+
     if (min(tmp.beta) > 0) break
     ss.remove <- which.min(tmp.beta)
   }
-  
+
   tmp.F <- rep(0, ncol(XX))
   names(tmp.F) <- colnames(XX)
   tmp.F[ss.names] <- tmp.beta
@@ -362,7 +376,7 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
     main = "Sample-Sample Q-Q plot"
   )
   mtext(name, col = "gray11")
-  
+
   start <- ceiling(0.4 * length(qq$x))
   end <- floor(0.9 * length(qq$x))
   qq.sub <- list(x = qq$x[start:end], y = qq$y[start:end])
@@ -406,17 +420,17 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' outlier_genes <- GetOutlierGenes(cancers)
 GetOutlierGenes <- function(cancers) {
   outlier.total <- c()
-  
+
   for (i in seq_len(nrow(cancers))) {
     cancer.expFile <- as.character(cancers[i, 1])
     cancer.expression <- ParseInputExpression(cancer.expFile)
-    
+
     for (j in seq_len(ncol(cancer.expression))) {
       outlier <- rownames(cancer.expression)[tail(order(cancer.expression[, j]), 5)]
       outlier.total <- c(outlier.total, outlier)
     }
   }
-  
+
   unique(outlier.total)
 }
 
@@ -442,63 +456,65 @@ GetOutlierGenes <- function(cancers) {
 #'
 #' @examples
 #' \dontrun{
-#' args <- list(
-#'   outdir = "path/to/output",
-#'   batch = "path/to/batch.csv"
+#' tf <- tempfile(fileext = ".csv")
+#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
+#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
 #' )
+#' outdir <- tempdir()
+#' args <- list(outdir = outdir, batch = tf)
 #' results <- deconvolute_timer.default(args)
 #' }
 deconvolute_timer.default <- function(args) {
   cancers <- check_cancer_types(args)
-  
+
   timer_info("Loading immune gene expression")
-  
+
   immune <- immuneCuratedData
   immune.geneExpression <- immune$genes
   immune.cellTypes <- immune$celltypes
-  
+
   outlier.genes <- sort(GetOutlierGenes(cancers))
   cli::cli_alert_info("Outlier genes: {paste(outlier.genes, collapse = ' ')}")
-  
+
   dir.create(args$outdir, showWarnings = FALSE, recursive = TRUE)
   results_dir <- file.path(args$outdir, "results")
   if (!dir.exists(results_dir)) {
     dir.create(results_dir)
   }
-  
+
   abundance.score.matrix <- c()
   pdf(file.path(results_dir, "output.pdf"))
-  
+
   for (i in seq_len(nrow(cancers))) {
     cancer.expFile <- cancers[i, 1]
     cancer.category <- cancers[i, 2]
-    
+
     cancer.expression <- ParseInputExpression(cancer.expFile)
     index <- !(row.names(cancer.expression) %in% outlier.genes)
     cancer.expression <- cancer.expression[index, , drop = FALSE]
     cancer.colnames <- colnames(cancer.expression)
-    
+
     timer_info(paste("Removing the batch effect of", cancer.expFile))
-    
+
     for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expression[, j], immune.geneExpression[, 1], name = cancer.colnames[j])
     }
-    
+
     tmp <- RemoveBatchEffect(cancer.expression, immune.geneExpression, immune.cellTypes)
     cancer.expNorm <- tmp[[1]]
     immune.expNormMedian <- tmp[[3]]
-    
+
     for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expNorm[, j], immune.expNormMedian[, 1],
         name = paste("After batch removing and aggregating for", cancer.colnames[j])
       )
     }
-    
+
     gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
     XX <- immune.expNormMedian[gene.selected.marker, -4]
     YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
-    
+
     for (j in seq_along(cancer.colnames)) {
       fractions <- GetFractions.Abbas(XX, YY[, j])
       barplot(fractions,
@@ -507,18 +523,18 @@ deconvolute_timer.default <- function(args) {
         main = paste("Abundance estimation for", cancer.colnames[j])
       )
       box()
-      
+
       abundance.score.matrix <- cbind(abundance.score.matrix, fractions)
       colnames(abundance.score.matrix)[ncol(abundance.score.matrix)] <- cancer.colnames[j]
     }
   }
-  
+
   dev.off()
-  
+
   write.table(abundance.score.matrix,
     file.path(results_dir, "score_matrix.txt"),
     sep = "\t", quote = FALSE, row.names = TRUE, col.names = NA
   )
-  
+
   abundance.score.matrix
 }

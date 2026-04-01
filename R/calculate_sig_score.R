@@ -257,7 +257,7 @@ calculate_sig_score_zscore <- function(pdata = NULL,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
 #' signature_tme <- load_data("signature_tme")
@@ -378,11 +378,12 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
-#' # Use original eset with GeneSymbol (signature_tme uses GeneSymbol)
-#' signature_tme <- load_data("signature_tme")
-#' result <- calculate_sig_score_integration(eset = eset_stad, signature = signature_tme)
+#' anno_grch38 <- load_data("anno_grch38")
+#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' signature_collection <- load_data("signature_collection")
+#' result <- calculate_sig_score_integration(eset = eset, signature = signature_collection[1:4])
 #' }
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
@@ -525,7 +526,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' # Use original eset with GeneSymbol to match signature_tme
 #' signature_tme <- load_data("signature_tme")

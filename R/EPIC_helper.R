@@ -212,7 +212,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
     in_type = "reference profiles"
   )
   if (with_w) {
-    refProfiles.var <- merge_duplicates(reference$refProfiles.var, warn = F)
+    refProfiles.var <- merge_duplicates(reference$refProfiles.var, warn = FALSE)
     # Don't warn here as we're already warning for refProfile and they had same
     # dim names.
   } else {

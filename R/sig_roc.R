@@ -55,47 +55,46 @@ sig_roc <- function(data,
                     smooth = TRUE,
                     compare_method = "bootstrap",
                     boot.n = 100) {
-  
   options(pROCProgress = list(name = "none"))
-  
+
   if (!is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a data frame.")
   }
-  
+
   if (!response %in% colnames(data)) {
     cli::cli_abort("Response column {.val {response}} not found in data.")
   }
-  
+
   data <- as.data.frame(data)
   data[[response]] <- as.factor(data[[response]])
-  
+
   if (length(levels(data[[response]])) != 2) {
     cli::cli_abort("Response variable must have exactly two levels.")
   }
-  
+
   data <- data[!is.na(data[[response]]), ]
   variables <- variables[variables %in% colnames(data)]
-  
+
   if (length(variables) == 0) {
     cli::cli_abort("No valid variables found in data.")
   }
-  
+
   input <- as.data.frame(data[, c(response, variables)])
-  
+
   cli::cli_alert_info("Input data preview:")
   print(head(input))
-  
+
   var_counts <- length(variables)
-  
+
   if (is.null(cols)) {
     cols <- palettes(palette = palette, alpha = alpha, show_col = FALSE, show_message = FALSE)
     if (var_counts > length(cols)) {
       cols <- palettes(category = "random", alpha = alpha, show_col = FALSE, show_message = FALSE)
     }
   }
-  
+
   auc.out <- c()
-  
+
   if (!is.null(fig.path)) {
     if (is.null(file.name)) file.name <- "0-ROC of multiple variables"
     outfile <- file.path(fig.path, paste0(file.name, ".pdf"))
@@ -105,7 +104,7 @@ sig_roc <- function(data,
     pdf(file = outfile, width = 5, height = 5)
     on.exit(dev.off(), add = FALSE)
   }
-  
+
   x <- pROC::plot.roc(input[, 1], input[, 2],
     ylim = c(0, 1),
     xlim = c(1, 0),
@@ -118,13 +117,13 @@ sig_roc <- function(data,
     xlab = "False Positive Rate",
     ylab = "True Positive Rate"
   )
-  
+
   ci.lower <- round(as.numeric(x$ci[1]), 3)
   ci.upper <- round(as.numeric(x$ci[3]), 3)
-  
+
   auc.ci <- c(colnames(input)[2], round(as.numeric(x$auc), 3), paste(ci.lower, ci.upper, sep = "-"))
   auc.out <- rbind(auc.out, auc.ci)
-  
+
   for (i in seq(3, ncol(input))) {
     x <- pROC::plot.roc(input[, 1], input[, i],
       add = TRUE,
@@ -136,16 +135,16 @@ sig_roc <- function(data,
       xlab = "False Positive Rate",
       ylab = "True Positive Rate"
     )
-    
+
     ci.lower <- round(as.numeric(x$ci[1]), 3)
     ci.upper <- round(as.numeric(x$ci[3]), 3)
     auc.ci <- c(colnames(input)[i], round(as.numeric(x$auc), 3), paste(ci.lower, ci.upper, sep = "-"))
     auc.out <- rbind(auc.out, auc.ci)
   }
-  
+
   auc.out <- as.data.frame(auc.out)
   colnames(auc.out) <- c("Name", "AUC", "AUC CI")
-  
+
   legend.name <- paste(colnames(input)[seq(2, ncol(input))], " AUC = ", auc.out$AUC, sep = " ")
   par(xpd = TRUE)
   legend("bottomright",
@@ -154,7 +153,7 @@ sig_roc <- function(data,
     lwd = 2,
     bty = "n"
   )
-  
+
   if (compare) {
     p.out <- c()
     for (i in seq(2, ncol(input) - 1)) {

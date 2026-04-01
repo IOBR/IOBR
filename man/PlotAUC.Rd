@@ -41,7 +41,7 @@ performance at both lambda.min and lambda.1se. Creates a ggplot visualization
 with AUC values in the legend.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 5), ncol = 5)

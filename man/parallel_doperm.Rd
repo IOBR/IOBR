@@ -53,7 +53,7 @@ Note: Windows users may experience slower performance due to socket-based
 parallelization (PSOCK) versus forking on Unix systems.
 }
 \examples{
-\dontrun{
+\donttest{
 X <- matrix(rnorm(1000), nrow = 100)
 Y <- matrix(rnorm(500), nrow = 100)
 rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)

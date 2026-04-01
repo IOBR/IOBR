@@ -64,15 +64,23 @@ An analytical tool to estimate cell type abundances in mixed cell populations
 using gene expression data.
 }
 \examples{
-\dontrun{
-lm22 <- load_data("lm22")
-eset_gse62254 <- load_data("eset_gse62254")
-cibersort <- CIBERSORT(
+\donttest{
+# Create simulated data matching LM22 signature matrix gene names
+data(lm22)
+common_genes <- rownames(lm22)[1:500]
+sim_mixture <- as.data.frame(matrix(
+  rnorm(length(common_genes) * 10, mean = 5, sd = 2),
+  nrow = length(common_genes), ncol = 10
+))
+rownames(sim_mixture) <- common_genes
+colnames(sim_mixture) <- paste0("Sample", 1:10)
+result <- CIBERSORT(
   sig_matrix = lm22,
-  mixture_file = eset_gse62254, perm = 100,
-  QN = TRUE, absolute = FALSE
+  mixture_file = sim_mixture,
+  perm = 10, QN = FALSE, absolute = FALSE,
+  parallel = FALSE
 )
-head(cibersort)
+head(result)
 }
 }
 \author{

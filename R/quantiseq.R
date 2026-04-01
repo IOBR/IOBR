@@ -37,8 +37,15 @@
 #' @author Finotello F, et al. (adapted for IOBR)
 #'
 #' @examples
-#' \dontrun{
-#' # Example usage with TPM data
+#' \donttest{
+#' lm22 <- load_data("lm22")
+#' common_genes <- rownames(lm22)[1:500]
+#' tpm_matrix <- as.data.frame(matrix(
+#'   rnorm(length(common_genes) * 5, mean = 5, sd = 2),
+#'   nrow = length(common_genes), ncol = 5
+#' ))
+#' rownames(tpm_matrix) <- common_genes
+#' colnames(tpm_matrix) <- paste0("Sample", 1:5)
 #' results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
 #' }
 deconvolute_quantiseq.default <- function(mix.mat,
@@ -48,23 +55,22 @@ deconvolute_quantiseq.default <- function(mix.mat,
                                           mRNAscale = TRUE,
                                           method = c("lsei", "hampel", "huber", "bisquare"),
                                           rmgenes = "unassigned") {
-  
   method <- rlang::arg_match(method)
-  
+
   if (is.null(mix.mat) || nrow(mix.mat) == 0) {
     cli::cli_abort("{.arg mix.mat} cannot be NULL or empty.")
   }
-  
+
   cli::cli_alert_info("Running quanTIseq deconvolution module")
-  
+
   if (rmgenes == "unassigned" && arrays) {
     rmgenes <- "none"
   } else if (rmgenes == "unassigned" && !arrays) {
     rmgenes <- "default"
   }
-  
+
   listsig <- c("TIL10")
-  
+
   if (signame %in% listsig) {
     sig.mat <- quantiseq_data$TIL10_signature
     mRNA <- quantiseq_data$TIL10_mRNA_scaling
@@ -72,28 +78,28 @@ deconvolute_quantiseq.default <- function(mix.mat,
   } else {
     sig.mat.file <- paste0(signame, "_signature.txt")
     sig.mat <- read.table(sig.mat.file, header = TRUE, sep = "\t", row.names = 1)
-    
+
     mRNA.file <- paste0(signame, "_mRNA_scaling.txt")
     mRNA <- read.table(mRNA.file, sep = "\t", header = FALSE, stringsAsFactors = FALSE)
   }
-  
+
   if (!is.numeric(mix.mat[[1, 1]])) {
     cli::cli_abort(c(
       "Wrong input format for the mixture matrix!",
       "i" = "Please follow the instructions in the documentation."
     ))
   }
-  
+
   if (mRNAscale) {
     colnames(mRNA) <- c("celltype", "scaling")
     mRNA <- as.vector(as.matrix(mRNA$scaling[match(colnames(sig.mat), mRNA$celltype)]))
   } else {
     mRNA <- rep(1, ncol(sig.mat))
   }
-  
+
   cli::cli_alert_info("Gene expression normalization and re-annotation (arrays: {arrays})")
   mix.mat <- fixMixture(mix.mat, arrays = arrays)
-  
+
   if (rmgenes != "none") {
     if (signame %in% listsig) {
       n1 <- nrow(sig.mat)
@@ -102,7 +108,7 @@ deconvolute_quantiseq.default <- function(mix.mat,
       cli::cli_alert_info("Removing {n1 - n2} noisy genes")
     }
   }
-  
+
   if (tumor) {
     if (signame %in% listsig) {
       abgenes <- quantiseq_data$TIL10_TCGA_aberrant_immune_genes
@@ -112,21 +118,21 @@ deconvolute_quantiseq.default <- function(mix.mat,
       cli::cli_alert_info("Removing {n1 - n2} genes with high expression in tumors")
     }
   }
-  
+
   ns <- nrow(sig.mat)
   us <- length(intersect(rownames(sig.mat), rownames(mix.mat)))
   perc <- round(us * 100 / ns, digits = 2)
   cli::cli_alert_info("Signature genes found in data set: {us}/{ns} ({perc}%)")
-  
+
   cli::cli_alert_info("Mixture deconvolution (method: {method})")
   results1 <- quanTIseq(sig.mat, mix.mat, scaling = mRNA, method = method)
-  
+
   if ("Tregs" %in% colnames(sig.mat) && "T.cells.CD4" %in% colnames(sig.mat) &&
-      method == "lsei") {
+    method == "lsei") {
     minTregs <- 0.02
     i <- which(colnames(sig.mat) == "T.cells.CD4")
     results2 <- quanTIseq(sig.mat[, -i], mix.mat, scaling = mRNA[-i], method = method)
-    
+
     ind <- which(results1[, "Tregs"] < minTregs)
     if (length(ind) > 0) {
       results1[ind, "Tregs"] <- (results2[ind, "Tregs"] + results1[ind, "Tregs"]) / 2
@@ -135,15 +141,15 @@ deconvolute_quantiseq.default <- function(mix.mat,
       )
     }
   }
-  
+
   results <- results1
   results <- results / apply(results, 1, sum)
-  
+
   cli::cli_alert_success("Deconvolution successful!")
-  
+
   results <- data.frame(results)
   results <- cbind(rownames(results), results)
   colnames(results)[1] <- "Sample"
-  
+
   results
 }

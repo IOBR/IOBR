@@ -32,12 +32,16 @@ Uses ComBat from the sva package for batch correction.
 set.seed(123)
 gene_names <- paste0("Gene", 1:100)
 sample_names_cancer <- paste0("CancerSample", 1:10)
-cancer.exp <- matrix(runif(1000, 1, 1000), nrow = 100, ncol = 10,
-  dimnames = list(gene_names, sample_names_cancer))
+cancer.exp <- matrix(runif(1000, 1, 1000),
+  nrow = 100, ncol = 10,
+  dimnames = list(gene_names, sample_names_cancer)
+)
 
 sample_names_immune <- paste0("ImmuneSample", 1:5)
-immune.exp <- matrix(runif(500, 1, 1000), nrow = 100, ncol = 5,
-  dimnames = list(gene_names, sample_names_immune))
+immune.exp <- matrix(runif(500, 1, 1000),
+  nrow = 100, ncol = 5,
+  dimnames = list(gene_names, sample_names_immune)
+)
 
 immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 names(immune.cellType) <- sample_names_immune

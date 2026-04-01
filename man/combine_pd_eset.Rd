@@ -46,7 +46,7 @@ Optionally filters features, applies feature manipulation, and scales
 expression data before combining.
 }
 \examples{
-\dontrun{
+\donttest{
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 colnames(eset) <- substring(colnames(eset), 1, 12)

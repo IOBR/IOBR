@@ -32,10 +32,22 @@ bulk gene expression data using the easier package. This function processes
 raw counts or TPM data and computes interaction scores for each sample.
 }
 \examples{
-\dontrun{
-eset_stad <- load_data("eset_stad")
+\donttest{
+# LR_cal requires HGNC gene symbols as rownames
+# Create a simple example with gene symbols
+example_genes <- c(
+  "TGFB1", "EGFR", "VEGFA", "PDGFB", "FGF2", "CXCL12",
+  "CXCR4", "IL6", "IL6R", "TNF", "TNFRSF1A", "IFNG"
+)
+sim_eset <- as.data.frame(matrix(
+  rnorm(length(example_genes) * 10, mean = 5, sd = 2),
+  nrow = length(example_genes), ncol = 10
+))
+rownames(sim_eset) <- example_genes
+colnames(sim_eset) <- paste0("Sample", 1:10)
 if (requireNamespace("easier", quietly = TRUE)) {
-  lr <- LR_cal(eset = eset_stad, data_type = "count", id_type = "ensembl")
+  lr <- LR_cal(eset = sim_eset, data_type = "tpm")
+  head(lr)
 }
 }
 }

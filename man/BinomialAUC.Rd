@@ -23,18 +23,16 @@ Computes Area Under the ROC Curve (AUC) for model predictions using the
 ROCR package. Handles binary classification models from glmnet.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
-  fitted_model <- glmnet::glmnet(
-    matrix(rnorm(100), ncol = 2),
-    rbinom(50, 1, 0.5),
-    family = "binomial"
-  )
-  auc_value <- BinomialAUC(
-    fitted_model,
-    matrix(rnorm(20), ncol = 2),
-    "lambda.min", rbinom(10, 1, 0.5)
-  )
+  set.seed(123)
+  train_data <- matrix(rnorm(100 * 5), ncol = 5)
+  train_outcome <- rbinom(100, 1, 0.5)
+  test_data <- matrix(rnorm(50 * 5), ncol = 5)
+  test_outcome <- rbinom(50, 1, 0.5)
+  fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
+  auc_value <- BinomialAUC(fitted_model, test_data, fitted_model$lambda.min, test_outcome)
+  print(auc_value)
 }
 }
 }

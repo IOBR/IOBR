@@ -40,15 +40,17 @@ Generates time-dependent ROC curves for evaluating prognostic accuracy of surviv
 Plots training and testing ROC curves at the 90th percentile survival time.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
-    requireNamespace("survival", quietly = TRUE)) {
+  requireNamespace("survival", quietly = TRUE) &&
+  requireNamespace("timeROC", quietly = TRUE)) {
+  library(survival)
   set.seed(123)
   train_x <- matrix(rnorm(100 * 5), ncol = 5)
   train_y <- data.frame(time = rexp(100), status = rbinom(100, 1, 0.5))
   test_x <- matrix(rnorm(50 * 5), ncol = 5)
   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
-  fit <- glmnet::cv.glmnet(train_x, survival::Surv(train_y$time, train_y$status), family = "cox")
+  fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
 }
 }

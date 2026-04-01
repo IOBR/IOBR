@@ -23,21 +23,20 @@
 #' data3 <- data.frame(A = 11:15, B = letters[11:15])
 #' combined_data <- rbind_iobr(data1, data2, data3)
 rbind_iobr <- function(data1, data2, data3 = NULL) {
-  
   if (is.null(data1) || is.null(data2)) {
     cli::cli_abort("{.arg data1} and {.arg data2} must not be NULL.")
   }
-  
+
   if (!is.data.frame(data1) && !is.matrix(data1)) {
     cli::cli_abort("{.arg data1} must be a data frame or matrix.")
   }
   if (!is.data.frame(data2) && !is.matrix(data2)) {
     cli::cli_abort("{.arg data2} must be a data frame or matrix.")
   }
-  
+
   data2 <- assimilate_data(data_a = data1, data_b = data2)
   data.com <- rbind(data1, data2)
-  
+
   if (!is.null(data3)) {
     if (!is.data.frame(data3) && !is.matrix(data3)) {
       cli::cli_abort("{.arg data3} must be a data frame, matrix, or NULL.")
@@ -45,6 +44,6 @@ rbind_iobr <- function(data1, data2, data3 = NULL) {
     data3 <- assimilate_data(data_a = data.com, data_b = data3)
     data.com <- rbind(data.com, data3)
   }
-  
+
   data.com
 }

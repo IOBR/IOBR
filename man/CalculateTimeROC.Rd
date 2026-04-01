@@ -27,13 +27,15 @@ Computes time-dependent ROC curve for survival models using the `timeROC` packag
 Evaluates predictive accuracy at a specified time quantile.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
-  requireNamespace("survival", quietly = TRUE)) {
-  dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
+  requireNamespace("survival", quietly = TRUE) &&
+  requireNamespace("timeROC", quietly = TRUE)) {
+  library(survival)
+  dat <- na.omit(lung[, c("time", "status", "age", "sex", "ph.ecog")])
   dat$status <- dat$status - 1
   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
-  y <- survival::Surv(dat$time, dat$status)
+  y <- Surv(dat$time, dat$status)
   fit <- glmnet::glmnet(x, y, family = "cox")
   actual_outcome <- data.frame(time = dat$time, status = dat$status)
   roc_info <- CalculateTimeROC(

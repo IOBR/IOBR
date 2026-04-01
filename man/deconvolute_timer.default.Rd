@@ -25,10 +25,12 @@ and estimates immune cell type abundances.
 }
 \examples{
 \dontrun{
-args <- list(
-  outdir = "path/to/output",
-  batch = "path/to/batch.csv"
+tf <- tempfile(fileext = ".csv")
+write.table(data.frame("exp1", "luad", "exp2", "brca"),
+  file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
 )
+outdir <- tempdir()
+args <- list(outdir = outdir, batch = tf)
 results <- deconvolute_timer.default(args)
 }
 }

@@ -30,7 +30,7 @@ identifies significantly expressed genes, and creates a reference signature
 matrix from median expression levels.
 }
 \examples{
-\dontrun{
+\donttest{
 dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 colnames(dds) <- paste("Sample", 1:20, sep = "_")
 rownames(dds) <- paste("Gene", 1:100, sep = "_")

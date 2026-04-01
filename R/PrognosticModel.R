@@ -28,17 +28,23 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' imvigor210_sig <- load_data("imvigor210_sig")
-#' imvigor210_pdata <- load_data("imvigor210_pdata")
-#' pdata_prog <- imvigor210_pdata %>%
-#'   dplyr::select(ID, OS_days, OS_status) %>%
-#'   dplyr::mutate(OS_days = as.numeric(OS_days), OS_status = as.numeric(OS_status))
-#' prognostic_result <- PrognosticModel(
-#'   x = imvigor210_sig, y = pdata_prog,
-#'   scale = TRUE, seed = 123456,
-#'   train_ratio = 0.7, nfold = 10, plot = TRUE
-#' )
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'   requireNamespace("survival", quietly = TRUE)) {
+#'   library(survival)
+#'   imvigor210_sig <- load_data("imvigor210_sig")
+#'   imvigor210_pdata <- load_data("imvigor210_pdata")
+#'   pdata_prog <- data.frame(
+#'     ID = imvigor210_pdata$ID,
+#'     OS_days = as.numeric(imvigor210_pdata$OS_days),
+#'     OS_status = as.numeric(imvigor210_pdata$OS_status)
+#'   )
+#'   prognostic_result <- PrognosticModel(
+#'     x = imvigor210_sig, y = pdata_prog,
+#'     scale = TRUE, seed = 123456,
+#'     train_ratio = 0.7, nfold = 10, plot = FALSE
+#'   )
+#' }
 #' }
 PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7,
                             nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
@@ -131,21 +137,20 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'   requireNamespace("survival", quietly = TRUE) &&
+#'   requireNamespace("timeROC", quietly = TRUE)) {
+#'   library(survival)
 #'   set.seed(123)
-#'   train_data <- list(
-#'     x = matrix(rnorm(100 * 10), ncol = 10),
-#'     y = survival::Surv(rexp(100), rbinom(100, 1, 0.5))
-#'   )
-#'   test_data <- list(
-#'     x = matrix(rnorm(50 * 10), ncol = 10),
-#'     y = survival::Surv(rexp(50), rbinom(50, 1, 0.5))
-#'   )
-#'   fit <- glmnet::cv.glmnet(train_data$x, train_data$y, family = "cox")
+#'   train_x <- matrix(rnorm(100 * 10), ncol = 10)
+#'   train_y <- data.frame(time = rexp(100), status = rbinom(100, 1, 0.5))
+#'   test_x <- matrix(rnorm(50 * 10), ncol = 10)
+#'   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
+#'   fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
 #'   results <- PrognosticResult(
-#'     model = fit, train.x = train_data$x, train.y = train_data$y,
-#'     test.x = test_data$x, test.y = test_data$y
+#'     model = fit, train.x = train_x, train.y = train_y,
+#'     test.x = test_x, test.y = test_y
 #'   )
 #' }
 #' }
@@ -199,11 +204,14 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' if (requireNamespace("glmnet", quietly = TRUE)) {
+#' \donttest{
+#' if (requireNamespace("glmnet", quietly = TRUE) &&
+#'   requireNamespace("survival", quietly = TRUE) &&
+#'   requireNamespace("timeROC", quietly = TRUE)) {
+#'   library(survival)
 #'   set.seed(123)
 #'   x <- matrix(rnorm(100 * 5), ncol = 5)
-#'   y <- survival::Surv(rexp(100), rbinom(100, 1, 0.5))
+#'   y <- Surv(rexp(100), rbinom(100, 1, 0.5))
 #'   fit <- glmnet::cv.glmnet(x, y, family = "cox")
 #'   acture_y <- data.frame(time = y[, 1], status = y[, 2])
 #'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
@@ -247,13 +255,15 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
-#'   requireNamespace("survival", quietly = TRUE)) {
-#'   dat <- na.omit(survival::lung[, c("time", "status", "age", "sex", "ph.ecog")])
+#'   requireNamespace("survival", quietly = TRUE) &&
+#'   requireNamespace("timeROC", quietly = TRUE)) {
+#'   library(survival)
+#'   dat <- na.omit(lung[, c("time", "status", "age", "sex", "ph.ecog")])
 #'   dat$status <- dat$status - 1
 #'   x <- as.matrix(dat[, c("age", "sex", "ph.ecog")])
-#'   y <- survival::Surv(dat$time, dat$status)
+#'   y <- Surv(dat$time, dat$status)
 #'   fit <- glmnet::glmnet(x, y, family = "cox")
 #'   actual_outcome <- data.frame(time = dat$time, status = dat$status)
 #'   roc_info <- CalculateTimeROC(
@@ -303,15 +313,17 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
-#'     requireNamespace("survival", quietly = TRUE)) {
+#'   requireNamespace("survival", quietly = TRUE) &&
+#'   requireNamespace("timeROC", quietly = TRUE)) {
+#'   library(survival)
 #'   set.seed(123)
 #'   train_x <- matrix(rnorm(100 * 5), ncol = 5)
 #'   train_y <- data.frame(time = rexp(100), status = rbinom(100, 1, 0.5))
 #'   test_x <- matrix(rnorm(50 * 5), ncol = 5)
 #'   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
-#'   fit <- glmnet::cv.glmnet(train_x, survival::Surv(train_y$time, train_y$status), family = "cox")
+#'   fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
 #'   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
 #' }
 #' }

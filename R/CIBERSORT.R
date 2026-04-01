@@ -31,7 +31,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
@@ -51,9 +51,9 @@ CoreAlg <- function(X, y, absolute, abs_method) {
   }
 
   if (Sys.info()["sysname"] == "Windows") {
-    out <- mclapply(1:svn_itor, res, mc.cores = 1)
+    out <- parallel::mclapply(1:svn_itor, res, mc.cores = 1)
   } else {
-    out <- mclapply(1:svn_itor, res, mc.cores = svn_itor)
+    out <- parallel::mclapply(1:svn_itor, res, mc.cores = 1)
   }
 
   nusvm <- numeric(svn_itor)
@@ -109,7 +109,7 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' Y <- rnorm(10)
 #' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
@@ -173,7 +173,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' X <- matrix(rnorm(1000), nrow = 100)
 #' Y <- matrix(rnorm(500), nrow = 100)
 #' rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
@@ -278,15 +278,23 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #' @import purrr
 #' @import stringr
 #' @examples
-#' \dontrun{
-#' lm22 <- load_data("lm22")
-#' eset_gse62254 <- load_data("eset_gse62254")
-#' cibersort <- CIBERSORT(
+#' \donttest{
+#' # Create simulated data matching LM22 signature matrix gene names
+#' data(lm22)
+#' common_genes <- rownames(lm22)[1:500]
+#' sim_mixture <- as.data.frame(matrix(
+#'   rnorm(length(common_genes) * 10, mean = 5, sd = 2),
+#'   nrow = length(common_genes), ncol = 10
+#' ))
+#' rownames(sim_mixture) <- common_genes
+#' colnames(sim_mixture) <- paste0("Sample", 1:10)
+#' result <- CIBERSORT(
 #'   sig_matrix = lm22,
-#'   mixture_file = eset_gse62254, perm = 100,
-#'   QN = TRUE, absolute = FALSE
+#'   mixture_file = sim_mixture,
+#'   perm = 10, QN = FALSE, absolute = FALSE,
+#'   parallel = FALSE
 #' )
-#' head(cibersort)
+#' head(result)
 #' }
 CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE,
                       absolute = FALSE, abs_method = "sig.score",

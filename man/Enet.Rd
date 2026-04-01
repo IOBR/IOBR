@@ -28,7 +28,7 @@ Searches across a grid of alpha values (0 to 1) and lambda values to minimize
 cross-validation error.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(50 * 5), ncol = 5)

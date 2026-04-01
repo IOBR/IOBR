@@ -62,8 +62,8 @@ data.
 }
 \examples{
 \dontrun{
-if (requireNamespace("Seurat", quietly = TRUE)) {
-  pbmc <- load_data("pbmc_small")
+if (requireNamespace("Seurat", quietly = TRUE) && requireNamespace("SeuratObject", quietly = TRUE)) {
+  pbmc <- SeuratObject::pbmc_small
   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
 }
 }

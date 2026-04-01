@@ -10,8 +10,15 @@ A character vector of length 12.
 \usage{
 patterns_to_na
 }
+\value{
+Character vector of patterns to remove.
+}
 \description{
 A character vector of common substrings to remove from feature names.
 Used in [remove_names()] and other helper functions.
+}
+\examples{
+# View default patterns
+patterns_to_na
 }
 \keyword{datasets}

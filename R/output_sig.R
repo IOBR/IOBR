@@ -25,28 +25,27 @@
 #' )
 #' }
 output_sig <- function(signatures, format = c("csv", "rdata"), file.name) {
-  
   format <- rlang::arg_match(format)
-  
+
   if (missing(file.name)) {
     cli::cli_abort("{.arg file.name} must be provided.")
   }
-  
+
   if (is.null(signatures) || length(signatures) == 0) {
     cli::cli_abort("{.arg signatures} cannot be NULL or empty.")
   }
-  
+
   if (length(signatures) == 1) {
     signatures <- as.data.frame(signatures)
     colnames(signatures) <- "signature genes"
   } else {
     signatures <- as.data.frame(t(do.call("rbind", signatures)))
-    
+
     for (i in seq_len(ncol(signatures))) {
       signatures[duplicated(signatures[, i]), i] <- NA
     }
   }
-  
+
   if (format == "csv") {
     write.csv(signatures, file = paste0(file.name, ".csv"), row.names = FALSE)
     cli::cli_alert_success("Signature data saved to {.file {file.name}.csv}")
@@ -54,6 +53,6 @@ output_sig <- function(signatures, format = c("csv", "rdata"), file.name) {
     save(signatures, file = paste0(file.name, ".RData"))
     cli::cli_alert_success("Signature data saved to {.file {file.name}.RData}")
   }
-  
+
   signatures
 }

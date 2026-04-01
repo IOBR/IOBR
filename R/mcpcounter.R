@@ -20,10 +20,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # Create example expression data
 #' expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 #' rownames(expr) <- paste0("Gene", 1:100)
-#' # Estimate with HUGO symbols (requires internet connection)
 #' estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
 #' }
 MCPcounter.estimate <- function(
@@ -158,7 +156,7 @@ MCPcounter.estimate <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # This function requires null_models data which is loaded internally
 #' # Create example data
 #' scores <- matrix(runif(30), nrow = 3, ncol = 10)

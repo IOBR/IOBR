@@ -55,7 +55,7 @@ Main interface for calculating signature scores from gene expression data.
 Supports PCA, z-score, ssGSEA, and integration methods.
 }
 \examples{
-\dontrun{
+\donttest{
 eset_stad <- load_data("eset_stad")
 # Use original eset with GeneSymbol to match signature_tme
 signature_tme <- load_data("signature_tme")

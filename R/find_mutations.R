@@ -32,18 +32,17 @@
 #' @author Dongqiang Zeng
 #' @examples
 #' \dontrun{
-#' # Load mutation and signature data
-#' mut_list <- make_mut_matrix(
-#'   maf = "path_to_maf_file", isTCGA = TRUE,
-#'   category = "multi"
-#' )
-#' mut <- mut_list$snp
-#' results <- find_mutations(
-#'   mutation_matrix = mut, signature_matrix = tcga_stad_sig,
-#'   id_signature_matrix = "ID", signature = "CD_8_T_effector",
-#'   min_mut_freq = 0.01, plot = TRUE, method = "multi",
-#'   save_path = "path_to_save_results"
-#' )
+#' # This example requires a MAF file
+#' # mut_list <- make_mut_matrix(
+#' #   maf = "path_to_maf_file", isTCGA = TRUE,
+#' #   category = "multi"
+#' # )
+#' # mut <- mut_list$snp
+#' # results <- find_mutations(
+#' #   mutation_matrix = mut, signature_matrix = signature_data,
+#' #   id_signature_matrix = "ID", signature = "CD_8_T_effector",
+#' #   min_mut_freq = 0.01, plot = TRUE, method = "multi"
+#' # )
 #' }
 find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matrix = "ID", signature,
                            min_mut_freq = 0.05, plot = TRUE, method = "multi", point_alpha = 0.1,
@@ -73,11 +72,11 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   mut_onco <- mut2
 
   if (is.null(genes)) {
-    mutfreq <- data.frame(head(sort(colSums(mut2), decreasing = T), 500))
+    mutfreq <- data.frame(head(sort(colSums(mut2), decreasing = TRUE), 500))
     colnames(mutfreq) <- "Freq"
     index <- which(mutfreq$Freq >= dim(mut2)[1] * min_mut_freq)
     index <- max(index)
-    input_genes <- names(head(sort(colSums(mut2), decreasing = T), index))
+    input_genes <- names(head(sort(colSums(mut2), decreasing = TRUE), index))
     input_genes <- unique(input_genes)
     input_genes <- input_genes[!is.na(input_genes)]
   } else {
@@ -93,7 +92,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   mutation_matrix <- tibble::rownames_to_column(mutation_matrix, var = "ID")
 
 
-  sig_mut <- merge(signature_matrix, mutation_matrix, by = "ID", all = F)
+  sig_mut <- merge(signature_matrix, mutation_matrix, by = "ID", all = FALSE)
   sig_mut <- tibble::column_to_rownames(sig_mut, var = "ID")
 
 
@@ -143,7 +142,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     )
     res1$adjust_pvalue <- stats::p.adjust(res1$p.value, method = "BH", n = length(res1$p.value))
     print(">>>> Result of Cuzick Test")
-    res1 <- res1[order(res1$p.value, decreasing = F), ]
+    res1 <- res1[order(res1$p.value, decreasing = FALSE), ]
     print(res1[1:10, ])
 
     # write.csv(res1, paste0(abspath, "1-cuzickTest-test-relevant-mutations.csv"))
@@ -179,7 +178,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           ggplot2::theme(legend.position = "none") +
           ggplot2::ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
+          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = FALSE), size = 6)
 
         if (jitter) {
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
@@ -222,7 +221,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
 
     res2$adjust_pvalue <- stats::p.adjust(res2$p.value, method = "BH", n = length(res2$p.value))
 
-    res2 <- res2[order(res2$p.value, decreasing = F), ]
+    res2 <- res2[order(res2$p.value, decreasing = FALSE), ]
     print(">>> Result of Wilcoxon test (top 10)")
     print(res2[1:10, ])
     write.csv(res2, paste0(abspath, "2-Wilcoxon-test-relevant-mutations.csv"))
@@ -262,7 +261,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           ggplot2::theme(legend.position = "none") +
           ggplot2::ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
+          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = FALSE), size = 6)
         if (jitter) {
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
@@ -315,7 +314,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
 
     res$adjust_pvalue <- stats::p.adjust(res$p.value, method = "BH", n = length(res$p.value))
 
-    res <- res[order(res$p.value, decreasing = F), ]
+    res <- res[order(res$p.value, decreasing = FALSE), ]
 
     print(">>> Result of Wilcoxon test (top 10): ")
     print(res[1:10, ])
@@ -354,7 +353,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           ggplot2::theme(legend.position = "none") +
           ggplot2::ggtitle(paste0(top10_genes[i])) +
           mytheme +
-          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = F), size = 6)
+          ggpubr::stat_compare_means(comparisons = utils::combn(as.character(unique(dd[, "mutation"])), 2, simplify = FALSE), size = 6)
 
         if (jitter) {
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")

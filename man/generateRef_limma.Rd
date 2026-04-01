@@ -33,7 +33,7 @@ dat <- matrix(rnorm(2000), nrow = 100)
 rownames(dat) <- paste("Gene", 1:100, sep = "_")
 colnames(dat) <- paste("Sample", 1:20, sep = "_")
 pheno <- sample(c("Type1", "Type2", "Type3"), 20, replace = TRUE)
-\dontrun{
+\donttest{
 results <- generateRef_limma(dat, pheno)
 print(results)
 }

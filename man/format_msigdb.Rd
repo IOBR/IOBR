@@ -24,7 +24,7 @@ Reads a GMT file from MSigDB and converts it into a named list of gene sets
 suitable for IOBR functions.
 }
 \examples{
-\dontrun{
+\donttest{
 tf <- tempfile(fileext = ".gmt")
 writeLines(
   c(

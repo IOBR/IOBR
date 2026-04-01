@@ -21,13 +21,15 @@ specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
 column names.
 }
 \examples{
-\dontrun{
+\donttest{
 eset_stad <- load_data("eset_stad")
-signature_collection <- load_data("signature_collection")
-eset <- scale_matrix(eset_stad, manipulate = TRUE)
+anno_grch38 <- load_data("anno_grch38")
+hallmark <- load_data("hallmark")
+eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+eset <- eset[1:5000, 1:10]
 res <- calculate_sig_score(
   eset = eset,
-  signature = signature_collection[1:4],
+  signature = hallmark[1:4],
   method = "integration"
 )
 select_method(res, method = "PCA")
