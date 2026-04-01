@@ -50,7 +50,6 @@ if ("Gender" \%in\% colnames(sig_stad)) {
   )
   head(res)
 }
-head(res)
 }
 }
 \author{

@@ -36,7 +36,7 @@ integration.
 }
 \examples{
 \dontrun{
-if (requireNamespace("Seurat", quietly = TRUE) && requireNamespace("SeuratObject", quietly = TRUE)) {
+if (requireNamespace("Seurat", quietly = TRUE)) {
   pbmc <- SeuratObject::pbmc_small
   vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3")
   eset <- extract_sc_data(sce = pbmc, vars = vars, assay = "RNA")

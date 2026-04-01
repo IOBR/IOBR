@@ -42,7 +42,6 @@
 #'   )
 #'   head(res)
 #' }
-#' head(res)
 #' }
 batch_kruskal <- function(data,
                           group,
