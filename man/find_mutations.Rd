@@ -81,17 +81,19 @@ for significance, and generates oncoprints and box plots to visualize
 relationships.
 }
 \examples{
+\dontrun{
 # This example requires a MAF file
-# mut_list <- make_mut_matrix(
-#   maf = "path_to_maf_file", isTCGA = TRUE,
-#   category = "multi"
-# )
-# mut <- mut_list$snp
-# results <- find_mutations(
-#   mutation_matrix = mut, signature_matrix = signature_data,
-#   id_signature_matrix = "ID", signature = "CD_8_T_effector",
-#   min_mut_freq = 0.01, plot = TRUE, method = "multi"
-# )
+mut_list <- make_mut_matrix(
+  maf = "path_to_maf_file", isTCGA = TRUE,
+  category = "multi"
+)
+mut <- mut_list$snp
+results <- find_mutations(
+  mutation_matrix = mut, signature_matrix = signature_data,
+  id_signature_matrix = "ID", signature = "CD_8_T_effector",
+  min_mut_freq = 0.01, plot = TRUE, method = "multi"
+)
+}
 }
 \author{
 Dongqiang Zeng

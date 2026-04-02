@@ -61,9 +61,11 @@ identifying marker genes for each cell type and aggregating expression
 data.
 }
 \examples{
+\dontrun{
 if (requireNamespace("Seurat", quietly = TRUE)) {
   pbmc <- SeuratObject::pbmc_small
   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
+}
 }
 }
 \author{

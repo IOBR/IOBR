@@ -60,6 +60,7 @@ p <- enrichment_barplot(
   down_terms = down_terms,
   title = "Custom Enrichment Plot"
 )
+p
 }
 \author{
 Dongqiang Zeng

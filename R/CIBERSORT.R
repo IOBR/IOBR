@@ -169,6 +169,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' X <- matrix(rnorm(1000), nrow = 100)
 #' Y <- matrix(rnorm(500), nrow = 100)
 #' rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
@@ -178,6 +179,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #'   absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 2
 #' )
 #' str(result$dist)
+#' }
 parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
                             num_cores1 = 2, seed = NULL) {
   rlang::check_installed("foreach", reason = "for parallel permutation")
@@ -272,6 +274,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #' @import purrr
 #' @import stringr
 #' @examples
+#' \donttest{
 #' data(lm22)
 #' common_genes <- rownames(lm22)[1:500]
 #' sim_mixture <- as.data.frame(matrix(
@@ -287,6 +290,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #'   parallel = FALSE
 #' )
 #' head(result)
+#' }
 CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE,
                       absolute = FALSE, abs_method = "sig.score",
                       parallel = FALSE, num_cores = 2, seed = NULL) {

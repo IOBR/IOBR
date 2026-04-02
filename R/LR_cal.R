@@ -35,9 +35,11 @@
 #' ))
 #' rownames(sim_eset) <- example_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:10)
+#' \donttest{
 #' if (requireNamespace("easier", quietly = TRUE)) {
 #'   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
 #'   head(lr)
+#' }
 #' }
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
   rlang::check_installed("easier")

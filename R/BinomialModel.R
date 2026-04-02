@@ -175,7 +175,7 @@ ProcessingData <- function(x, y, scale, type = c("binomial", "survival")) {
     colnames(y) <- c("ID", "Group")
     y <- dplyr::pull(y, .data$Group)
     if (!is.factor(y)) {
-      cli::cli_warn("Converting outcome to factor")
+      cli::cli_alert_info("Converting outcome to factor")
       y <- as.factor(y)
     }
   } else if (type == "survival") {

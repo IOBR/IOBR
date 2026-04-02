@@ -30,7 +30,7 @@
 #'
 #' @export
 #' @author Dongqiang Zeng
-#' @rawNamespace import(survival, except = c(offset, compact))
+#' @import survival
 #'
 #' @examples
 #' tcga_stad_sig <- load_data("tcga_stad_sig")

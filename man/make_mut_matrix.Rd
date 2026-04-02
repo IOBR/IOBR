@@ -51,8 +51,10 @@ Please ensure your MAF or merged data frame uses consistent column types
 (e.g. convert allele columns to character before input).
 }
 \examples{
-# See maftools and TCGAbiolinks documentation for obtaining MAF input
-# mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
+\dontrun{
+# See maftools or TCGAbiolinks documentation for obtaining MAF input
+mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
+}
 }
 \author{
 Dongqian Zeng

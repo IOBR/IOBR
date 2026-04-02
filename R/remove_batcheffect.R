@@ -58,6 +58,10 @@ remove_batcheffect <- function(eset1,
                                adjust_eset = TRUE,
                                repel = FALSE,
                                path = NULL) {
+  # TODO
+  # Ignoring unknown labels:
+  # linetype : "batch"
+
   # Validate data_type
   data_type <- rlang::arg_match(data_type)
 

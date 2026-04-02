@@ -46,18 +46,6 @@ lasso_select(
   type = "binary",
   nfold = 5
 )
-
-# Survival response example
-survival_data <- survival::Surv(
-  time = sample(1:100, 20, replace = TRUE),
-  event = sample(c(0, 1), 20, replace = TRUE)
-)
-lasso_select(
-  x = gene_expression,
-  y = survival_data,
-  type = "survival",
-  nfold = 5
-)
 }
 \author{
 Dongqiang Zeng

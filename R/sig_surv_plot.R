@@ -58,6 +58,11 @@ sig_surv_plot <- function(input_pdata,
                           index = 1) {
   rlang::check_installed("survminer")
 
+  # TODO
+  # Ignoring unknown labels:
+  # colour : "Strata"
+
+
   # Input validation
   if (!signature %in% colnames(input_pdata)) {
     cli::cli_abort("Signature {.val {signature}} not found in input_pdata")
@@ -353,3 +358,4 @@ calculate_break_month <- function(input, block = 6) {
   break_month_val <- ceiling(break_month_val)
   break_month_val
 }
+# TODO: a same exported function in surv_group.R

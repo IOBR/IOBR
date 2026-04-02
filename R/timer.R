@@ -424,6 +424,8 @@ GetOutlierGenes <- function(cancers) {
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # file
 #' tf <- tempfile(fileext = ".csv")
 #' write.table(data.frame("exp1", "luad", "exp2", "brca"),
 #'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
@@ -431,6 +433,7 @@ GetOutlierGenes <- function(cancers) {
 #' outdir <- tempdir()
 #' args <- list(outdir = outdir, batch = tf)
 #' results <- deconvolute_timer.default(args)
+#' }
 deconvolute_timer.default <- function(args) {
   cancers <- check_cancer_types(args)
 

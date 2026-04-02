@@ -28,6 +28,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("survival", quietly = TRUE)) {
 #'   library(survival)
@@ -43,6 +44,7 @@
 #'     scale = TRUE, seed = 123456,
 #'     train_ratio = 0.7, nfold = 10, plot = FALSE
 #'   )
+#' }
 #' }
 PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.7,
                             nfold = 10, plot = TRUE, palette = "jama", cols = NULL) {
@@ -316,6 +318,7 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #'   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
 #'   fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
 #'   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
+#'   print(p)
 #' }
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
                         cols = NULL, palette = "jama") {

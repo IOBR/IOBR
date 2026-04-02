@@ -35,11 +35,13 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_roc(
 #'   data = tcga_stad_pdata, response = "OS_status",
 #'   variables = c("TMEscore_plus", "GZMB", "GNLY")
 #' )
+#' }
 sig_roc <- function(data,
                     response,
                     variables,

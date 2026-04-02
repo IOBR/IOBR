@@ -35,6 +35,7 @@
 #'   down_terms = down_terms,
 #'   title = "Custom Enrichment Plot"
 #' )
+#' p
 enrichment_barplot <- function(up_terms, down_terms,
                                terms = "Description",
                                pvalue = "pvalue",

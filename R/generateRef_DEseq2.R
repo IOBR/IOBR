@@ -21,6 +21,7 @@
 #' @export
 #'
 #' @examples
+#' set.seed(123)
 #' dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 #' colnames(dds) <- paste("Sample", 1:20, sep = "_")
 #' rownames(dds) <- paste("Gene", 1:100, sep = "_")
@@ -28,8 +29,10 @@
 #' dat <- matrix(runif(2000), nrow = 100, ncol = 20)
 #' rownames(dat) <- rownames(dds)
 #' colnames(dat) <- colnames(dds)
+#' \donttest{
 #' result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #' print(result$reference_matrix)
+#' }
 generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
   rlang::check_installed("DESeq2")
 

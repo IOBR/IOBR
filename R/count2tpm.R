@@ -106,6 +106,12 @@ count2tpm <- function(countMat,
   as.data.frame(TPM)
 }
 
+
+# TODO
+# Warning message:
+# In counts/(lengths/1000) :
+#   longer object length is not a multiple of shorter object length
+
 # Helper: Calculate TPM values
 .calculate_tpm <- function(counts, lengths) {
   # RPK: reads per kilobase

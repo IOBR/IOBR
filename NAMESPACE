@@ -147,8 +147,6 @@ import(preprocessCore)
 import(purrr)
 import(stringr)
 import(survival)
-import(survival, except = c(offset, compact))
-
 import(tibble)
 import(tidyr)
 importFrom(grDevices,colorRampPalette)

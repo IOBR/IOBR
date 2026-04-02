@@ -59,7 +59,7 @@ feature_select <- function(x, y, method = c("cor", "dif"),
       stop("Correlation between x and y, y must be quantitative")
     }
     Gene <- rownames(x)
-    x <- as.tibble(t(x))
+    x <- tibble::as_tibble(t(x))
     tmp <- x %>%
       map(cor.test, y, method = family)
     pvalue <- tmp %>% map_dbl("p.value")

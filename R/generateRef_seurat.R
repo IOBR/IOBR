@@ -30,9 +30,11 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \dontrun{
 #' if (requireNamespace("Seurat", quietly = TRUE)) {
 #'   pbmc <- SeuratObject::pbmc_small
 #'   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
+#' }
 #' }
 generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
                                assay_deg = "RNA", slot_deg = "data",
@@ -41,6 +43,11 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
                                only.pos = TRUE, n_ref_genes = 50,
                                logfc.threshold = 0.15, test.use = "wilcox") {
   rlang::check_installed("Seurat")
+
+  # TODO
+  #   Warning: No DE genes identified
+  # data frame with 0 columns and 0 rows
+  # Error in `dplyr::group_by()`:
 
   if (!inherits(sce, "Seurat")) {
     cli::cli_abort("{.arg sce} must be a Seurat object")

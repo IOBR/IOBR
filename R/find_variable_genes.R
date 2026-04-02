@@ -1,5 +1,5 @@
-" Identify Variable Genes in Expression Data
-#"
+#' Identify Variable Genes in Expression Data
+#'
 #' @description
 #' Identifies variable genes from a gene expression dataset using specified
 #' selection criteria. Supports multiple methods, including expression
@@ -7,17 +7,17 @@
 #'
 #' @param eset Numeric matrix. Gene expression data (genes as rows,
 #'   samples as columns).
-#' @param data_type Character. Type of data: "count" or "normalized".
-#'   Default is "count".
-#' @param methods Character vector. Methods for gene selection: "low", "mad".
-#'   Default is c("low", "mad").
+#' @param data_type Character. Type of data: `"count"` or `"normalized"`.
+#'   Default is `"count"`.
+#' @param methods Character vector. Methods for gene selection: `"low"`,
+#'   `"mad"`. Default is `c("low", "mad")`.
 #' @param prop Numeric. Proportion of samples in which a gene must be expressed.
 #'   Default is 0.7.
 #' @param quantile Numeric. Quantile threshold for minimum MAD (0.25, 0.5, 0.75).
 #'   Default is 0.75.
 #' @param min.mad Numeric. Minimum allowable MAD value. Default is 0.1.
-#' @param feas Character vector or NULL. Additional features to include.
-#'   Default is NULL.
+#' @param feas Character vector or `NULL`. Additional features to include.
+#'   Default is `NULL`.
 #'
 #' @return Matrix subset of `eset` containing variable genes.
 #'
@@ -48,7 +48,6 @@ find_variable_genes <- function(eset,
   feas0 <- feature_manipulation(data = eset, is_matrix = TRUE)
   eset <- eset[feas0, , drop = FALSE]
 
-  # Low expression filtering
   feas1 <- NULL
   if (data_type == "count" && "low" %in% methods) {
     cli::cli_alert_info(
@@ -59,7 +58,6 @@ find_variable_genes <- function(eset,
     feas1 <- rownames(eset)[keep]
   }
 
-  # MAD-based filtering
   feas2 <- NULL
   if ("mad" %in% methods) {
     eset_log <- log2eset(eset)
@@ -67,7 +65,6 @@ find_variable_genes <- function(eset,
     m.mad <- apply(eset_log, 1, stats::mad)
     cli::cli_alert_info("Range of MAD: {paste(round(range(m.mad), 2), collapse = ' to ')}")
 
-    # Map quantile to index
     index <- switch(as.character(quantile),
       "0.75" = 4,
       "0.5" = 3,
