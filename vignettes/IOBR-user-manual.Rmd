@@ -60,9 +60,9 @@ IOBR integrates eight open-source deconvolution methodologies: __*CIBERSORT*__ ,
 
 IOBR integrates visualization function, including __*boxplots*__ , __*heatmaps*__ , __*percentage bar charts*__ , __*scatter plots*__ , __*KM plot*__ , __*PCA plot*__ etc.
 
-# Vignette
+# Tutorial
 
-Please go to <https://iobr.github.io/book/> for the full vignette.
+Please go to <https://iobr.github.io/book/> for the full tutorial.
 
 # Citation
 

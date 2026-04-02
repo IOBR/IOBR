@@ -294,7 +294,6 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
   cli::cli_alert_info("Running IPS calculation")
 
   res <- IPS_calculation(project = project, eset = eset, plot = plot)
-  colnames(res) <- paste0(colnames(res), "_IPS")
 
   .format_deconv_result(res, project, "IPS")
 }
@@ -321,6 +320,9 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
 #' estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
 deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   cli::cli_alert_info("Running ESTIMATE")
+
+  # Save original sample IDs for later restoration
+  original_sample_ids <- colnames(eset)
 
   eset <- as.data.frame(eset)
   eset <- tibble::rownames_to_column(eset, var = "symbol")
@@ -355,7 +357,9 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   )
   rownames(scores) <- scores[, 1]
   scores <- t(scores[, 3:ncol(scores), drop = FALSE])
-  colnames(scores) <- paste0(colnames(scores), "_estimate")
+
+  # Restore original sample IDs (R's read.table converts - to . in column names)
+  rownames(scores) <- original_sample_ids
 
   .format_deconv_result(as.data.frame(scores), project, "estimate")
 }
@@ -434,9 +438,9 @@ deconvo_ref <- function(eset,
       eset <- preprocessCore::normalize.quantiles(eset)
     }
 
-    # Scale reference
+    # Scale reference (global scaling for backward compatibility)
     if (scale_reference) {
-      reference <- scale(reference)
+      reference <- (reference - mean(reference)) / sd(as.vector(reference))
     }
 
     # Find common genes
@@ -640,9 +644,9 @@ deconvo_tme <- function(eset,
                         tumor = TRUE,
                         perm = 1000,
                         reference,
-                        scale_reference,
+                        scale_reference = TRUE,
                         plot = FALSE,
-                        scale_mrna,
+                        scale_mrna = TRUE,
                         group_list = NULL,
                         platform = "affymetrix",
                         absolute.mode = FALSE,

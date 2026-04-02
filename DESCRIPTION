@@ -2,9 +2,8 @@ Package: IOBR
 Title: Immune Oncology Biological Research
 Version: 0.99.99
 Authors@R: c(
-    person("Dongqiang", "Zeng", , "xx@qq.com", role = "aut"),
-    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-9855-7357")),
+    person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
+    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre")),
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = "aut",
            comment = c(ORCID = "0000-0001-9855-7357")),
     person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),

@@ -8,10 +8,17 @@ home:
 
 template:
   bootstrap: 5
+  light-switch: true
   bslib:
     primary: "#0054AD"
+    secondary: "#6c757d"
+    success: "#2E8B57"
+    info: "#0d9488"
     border-radius: 0.5rem
     btn-border-radius: 0.25rem
+    base_font: {google: "Source Sans Pro"}
+    heading_font: {google: "Nunito Sans"}
+    code_font: {google: "JetBrains Mono"}
 
 repo:
   url:
@@ -34,8 +41,15 @@ authors:
 
 navbar:
   structure:
-    left:  [intro, reference, articles]
+    left:  [intro, reference, articles, book]
     right: [search, github]
+  components:
+    articles:
+      text: Vignette
+      href: articles/IOBR-user-manual.html
+    book:
+      text: Book
+      href: https://iobr.github.io/book/
 
 reference:
   - title: "Data Input & Validation"
