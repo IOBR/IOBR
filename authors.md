@@ -2,21 +2,22 @@
 
 ## Authors
 
-- **Dongqiang Zeng**. Author.
+- **[Dongqiang Zeng](https://github.com/IOBR)**. Author.
 
-- **Yiran Fang**. Author, maintainer.
+- **[Yiran Fang](https://orcid.org/0000-0001-9855-7357)**. Author,
+  maintainer. [](https://orcid.org/0000-0001-9855-7357)
+
+- **[Shixiang Wang](https://orcid.org/0000-0001-9855-7357)**. Author.
   [](https://orcid.org/0000-0001-9855-7357)
 
-- **Shixiang Wang**. Author. [](https://orcid.org/0000-0001-9855-7357)
+- **[Qingcong Luo](https://github.com/IOBR)**. Author.
 
-- **Qingcong Luo**. Author.
-
-- **Hongqian Qian**. Author.
+- **[Hongqian Qian](https://github.com/IOBR)**. Author.
 
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/IOBR/IOBR/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/IOBR/IOBR/blob/main/inst/CITATION)
 
 Zeng D, Fang Y, Luo P, Qiu W, Wang S, Shen R, Gu W, Huang X, Mao Q, Lai
 Y, Xu X, Shi M, Yu G, Liao W (2024). “IOBR2: Multidimensional Decoding

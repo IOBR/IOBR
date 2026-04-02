@@ -5,14 +5,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Immune Oncology Biological Research • IOBR</title>
+<title>Immune Oncology Biological Research in R • IOBR</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Immune Oncology Biological Research">
-<meta name="description" content="This package offers six modules for TME analysis based on multi-omics data. These modules cover data preprocessing, TME estimation, TME infiltrating patterns, cellular interactions, genome and TME interaction, and visualization for TME relevant features, as well as modelling based on key features. It integrates multiple vital microenvironmental analysis algorithms and signature estimation methods, simplifying the analysis and downstream visualization of the TME. In addition to providing a quick and easy way to construct gene signatures from scRNA-seq data, It also provides a way to construct a reference matrix for TME deconvolution from scRNA-seq data. The analysis pipeline and feature visualization are user-friendly and provide a comprehensive description of the complex TME, offering insights into tumour-immune interactions.">
-<meta property="og:description" content="This package offers six modules for TME analysis based on multi-omics data. These modules cover data preprocessing, TME estimation, TME infiltrating patterns, cellular interactions, genome and TME interaction, and visualization for TME relevant features, as well as modelling based on key features. It integrates multiple vital microenvironmental analysis algorithms and signature estimation methods, simplifying the analysis and downstream visualization of the TME. In addition to providing a quick and easy way to construct gene signatures from scRNA-seq data, It also provides a way to construct a reference matrix for TME deconvolution from scRNA-seq data. The analysis pipeline and feature visualization are user-friendly and provide a comprehensive description of the complex TME, offering insights into tumour-immune interactions.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Immune Oncology Biological Research in R">
+<meta name="description" content="Comprehensive toolkit for tumor microenvironment (TME) analysis, integrating deconvolution, signature scoring, and visualization.
+">
+<meta property="og:description" content="Comprehensive toolkit for tumor microenvironment (TME) analysis, integrating deconvolution, signature scoring, and visualization.
+">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -43,7 +45,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IOBR/IOBR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/IOBR/IOBR" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -505,7 +507,7 @@ IOBR Package
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/IOBR/IOBR/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/IOBR/IOBR" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/IOBR/IOBR/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
@@ -530,11 +532,16 @@ IOBR Package
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Dongqiang Zeng <br><small class="roles"> Author </small>   </li>
-<li>Yiran Fang <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li>Shixiang Wang <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li>Qingcong Luo <br><small class="roles"> Author </small>   </li>
-<li>Hongqian Qian <br><small class="roles"> Author </small>   </li>
+<li>
+<a href="https://github.com/IOBR" class="external-link">Dongqiang Zeng</a> <br><small class="roles"> Author </small>   </li>
+<li>
+<a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Yiran Fang</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>
+<a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9855-7357" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>
+<a href="https://github.com/IOBR" class="external-link">Qingcong Luo</a> <br><small class="roles"> Author </small>   </li>
+<li>
+<a href="https://github.com/IOBR" class="external-link">Hongqian Qian</a> <br><small class="roles"> Author </small>   </li>
 </ul>
 </div>
 
@@ -545,7 +552,7 @@ IOBR Package
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Dongqiang Zeng, Yiran Fang, Shixiang Wang, Qingcong Luo, Hongqian Qian.</p>
+  <p>Developed by <a href="https://github.com/IOBR" class="external-link">Dongqiang Zeng</a>, <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Yiran Fang</a>, <a href="https://orcid.org/0000-0001-9855-7357" class="external-link">Shixiang Wang</a>, <a href="https://github.com/IOBR" class="external-link">Qingcong Luo</a>, <a href="https://github.com/IOBR" class="external-link">Hongqian Qian</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
