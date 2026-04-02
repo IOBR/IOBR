@@ -129,7 +129,7 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 
   # Run xCell
   rnaseq <- !arrays
-  res <- xCell::xCellAnalysis(eset, rnaseq = rnaseq)
+  res <- xCellAnalysis(eset, rnaseq = rnaseq)
   res <- as.data.frame(t(res))
 
   .format_deconv_result(res, project, "xCell")

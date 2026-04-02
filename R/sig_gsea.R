@@ -71,11 +71,13 @@
 #'
 #' @examples
 #' set.seed(123)
-#' genes <- c("TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
-#'            "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
-#'            "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3",
-#'            "ARF1", "ARF3", "ARF4", "ARF5", "ARF6", "GSK3B", "AKT1", "AKT2",
-#'            "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3")
+#' genes <- c(
+#'   "TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
+#'   "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
+#'   "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3",
+#'   "ARF1", "ARF3", "ARF4", "ARF5", "ARF6", "GSK3B", "AKT1", "AKT2",
+#'   "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
+#' )
 #' deg <- data.frame(
 #'   symbol = genes,
 #'   log2FoldChange = rnorm(length(genes), mean = 0, sd = 2),

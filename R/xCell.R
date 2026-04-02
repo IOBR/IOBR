@@ -47,15 +47,13 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
     cli::cli_abort("{.arg alpha} must be a numeric value between 0 and 1")
   }
 
-  rlang::check_installed("xCell")
-
   # Load default data if not provided
-  signatures <- signatures %||% xCell::xCell.data$signatures
-  genes <- genes %||% xCell::xCell.data$genes
+  signatures <- signatures %||% xCell.data$signatures
+  genes <- genes %||% xCell.data$genes
   spill <- spill %||% if (rnaseq) {
-    xCell::xCell.data$spill
+    xCell.data$spill
   } else {
-    xCell::xCell.data$spill.array
+    xCell.data$spill.array
   }
 
   # Validate cell types if specified
@@ -118,21 +116,19 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   expr <- expr[shared.genes, ]
   expr <- apply(expr, 2, rank)
 
-  # Run ssGSEA analysis
-  gsva_info <- gsva_use_new_api()
-  use_new_api <- gsva_info$use_new_api
+  # Check the formal argument of GSVA::gsva
+  FA <- formals(GSVA::gsva)
 
-  if (use_new_api) {
-    params <- GSVA::ssgseaParam(
+  # Run ssGSEA analysis for the ranked gene expression dataset
+  if (is.null(FA[["method"]])) {
+    params <- GSVA::gsvaParam(
       exprData = as.matrix(expr),
       geneSets = signatures,
       minSize = 1,
       maxSize = Inf,
-      kcdf = "Gaussian",
       tau = 1,
       maxDiff = TRUE,
-      absRanking = FALSE,
-      normalize = FALSE
+      absRanking = FALSE
     )
 
     rlang::check_installed("BiocParallel")
@@ -220,37 +216,61 @@ transformScores <- function(scores, fit.vals, scale = TRUE, fn = NULL) {
 #'
 #' @keywords internal
 spillOver <- function(transformedScores, K, alpha = 0.5, file.name = NULL) {
+  rlang::check_installed("pracma")
+
   K <- K * alpha
   diag(K) <- 1
-  rows <- rownames(transformedScores)[rownames(transformedScores) %in% rownames(K)]
-
-  rlang::check_installed("limSolve")
-
-  scores <- apply(transformedScores[rows, , drop = FALSE], 2, function(x) {
-    G <- diag(nrow(K[rows, rows]))
-    H <- rep(0, nrow(G))
-    res <- limSolve::lsei(
-      A = K[rows, rows],
-      B = x,
-      G = G,
-      H = H,
-      verbose = FALSE
-    )
-    pmax(res$X, 0)
+  rows <- rownames(transformedScores)[rownames(transformedScores) %in%
+    rownames(K)]
+  scores <- apply(transformedScores[rows, ], 2, function(x) {
+    pracma::lsqlincon(K[
+      rows,
+      rows
+    ], x, lb = 0)
   })
-
   scores[scores < 0] <- 0
   rownames(scores) <- rows
-
   if (!is.null(file.name)) {
-    scores <- round(scores * 10000) / 10000
-    utils::write.table(scores,
-      file = file.name, sep = "\t",
-      col.names = NA, quote = FALSE
+    scores <- round(scores * 10000)
+    scores <- scores / 10000
+    write.table(scores,
+      file = file.name, sep = "\t", col.names = NA,
+      quote = FALSE
     )
   }
+  return(scores)
 
-  scores
+  # K <- K * alpha
+  # diag(K) <- 1
+  # rows <- rownames(transformedScores)[rownames(transformedScores) %in% rownames(K)]
+
+  # rlang::check_installed("limSolve")
+
+  # scores <- apply(transformedScores[rows, , drop = FALSE], 2, function(x) {
+  #   G <- diag(nrow(K[rows, rows]))
+  #   H <- rep(0, nrow(G))
+  #   res <- limSolve::lsei(
+  #     A = K[rows, rows],
+  #     B = x,
+  #     G = G,
+  #     H = H,
+  #     verbose = FALSE
+  #   )
+  #   pmax(res$X, 0)
+  # })
+
+  # scores[scores < 0] <- 0
+  # rownames(scores) <- rows
+
+  # if (!is.null(file.name)) {
+  #   scores <- round(scores * 10000) / 10000
+  #   utils::write.table(scores,
+  #     file = file.name, sep = "\t",
+  #     col.names = NA, quote = FALSE
+  #   )
+  # }
+
+  # scores
 }
 
 #' Calculate Microenvironment Scores
@@ -297,16 +317,14 @@ microenvironmentScores <- function(adjustedScores) {
 #' @keywords internal
 xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
                                      file.name = NULL) {
-  rlang::check_installed("xCell")
-
   beta_params <- beta_params %||% if (rnaseq) {
-    xCell::xCell.data$spill$beta_params
+    xCell.data$spill$beta_params
   } else {
-    xCell::xCell.data$spill.array$beta_params
+    xCell.data$spill.array$beta_params
   }
 
   scores <- scores[rownames(scores) %in%
-    colnames(xCell::xCell.data$spill$beta_params[[1]]), ]
+    colnames(xCell.data$spill$beta_params[[1]]), ]
   pvals <- matrix(0, nrow(scores), ncol(scores))
   rownames(pvals) <- rownames(scores)
   eps <- 1e-3
@@ -356,8 +374,6 @@ xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
 #' @keywords internal
 xCellSignifcanceRandomMatrix <- function(scores, expr, spill, alpha = 0.5,
                                          nperm = 250, file.name = NULL) {
-  rlang::check_installed("xCell")
-
   shuff_expr <- mapply(seq_len(nperm),
     FUN = function(x) sample(nrow(expr), nrow(expr))
   )
