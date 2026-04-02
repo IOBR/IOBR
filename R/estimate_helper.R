@@ -28,6 +28,7 @@
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' eset <- as.data.frame(eset)
 #' eset <- tibble::rownames_to_column(eset, var = "symbol")
 #' input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
 #' output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
