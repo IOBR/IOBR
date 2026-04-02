@@ -106,8 +106,10 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   tmp.batch <- c(rep(1, N1), rep(2, N2))
 
   rlang::check_installed(c("sva", "BiocParallel"))
-  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
-    BPPARAM = BiocParallel::bpparam("SerialParam")
+  suppressMessages(
+    tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
+      BPPARAM = BiocParallel::bpparam("SerialParam")
+    )
   )
 
   dd.br <- tmp.dd0[, 1:N1]
@@ -464,7 +466,7 @@ deconvolute_timer.default <- function(args) {
     cancer.expression <- cancer.expression[index, , drop = FALSE]
     cancer.colnames <- colnames(cancer.expression)
 
-    timer_info(paste("Removing the batch effect of", cancer.expFile))
+    timer_info(paste("Removing batch effects for", cancer.category))
 
     for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expression[, j], immune.geneExpression[, 1], name = cancer.colnames[j])
@@ -482,6 +484,17 @@ deconvolute_timer.default <- function(args) {
 
     gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
+    
+    if (length(gene.selected.marker) < 6) {
+      cli::cli_abort(c(
+        "Insufficient marker genes for TIMER deconvolution.",
+        "i" = "Cancer type '{cancer.category}' requires at least 6 marker genes.",
+        "i" = "Found only {length(gene.selected.marker)} marker genes in the input data.",
+        "*" = "Use the full expression matrix instead of a subset (e.g., eset[1:500, ]).",
+        "*" = "TIMER requires cancer-specific gene markers that may not be in top-expressed genes."
+      ))
+    }
+    
     XX <- immune.expNormMedian[gene.selected.marker, -4]
     YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
 

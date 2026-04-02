@@ -489,12 +489,13 @@ deconvo_ref <- function(eset,
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:3]
+#' \donttest{
 #' res <- deconvo_timer(
 #'   eset = eset, project = "stad",
 #'   indications = rep("stad", ncol(eset))
 #' )
 #' head(res)
+#' }
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   cli::cli_alert_info("Running TIMER deconvolution")
 
@@ -528,9 +529,7 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   }
 
   # Run TIMER
-  results <- deconvolute_timer.default(args)[, make.names(colnames(eset)),
-    drop = FALSE
-  ]
+  results <- deconvolute_timer.default(args)[, colnames(eset), drop = FALSE]
   colnames(results) <- colnames(eset)
   results <- as.data.frame(t(results))
 
