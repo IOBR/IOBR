@@ -88,8 +88,6 @@ tme_deconvolution_methods <- c(
 #' xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #' head(xcell_result)[, 1:5]
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
-  rlang::check_installed("xCell", reason = "to run xCell deconvolution")
-
   cli::cli_alert_info("Running xCell deconvolution")
 
   # Validate row names
