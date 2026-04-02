@@ -25,17 +25,14 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
-#' sig_stad2 <- best_cutoff(
-#'   pdata = sig_stad,
-#'   variable = "TMEscore_CIR",
-#'   time = "OS_time",
-#'   status = "OS_status",
-#'   print_result = TRUE
+#' set.seed(123)
+#' pdata <- data.frame(
+#'   time = rexp(100),
+#'   status = rbinom(100, 1, 0.5),
+#'   score = rnorm(100, mean = 50, sd = 10)
 #' )
-#' table(sig_stad2$TMEscore_CIR_binary)
-#' }
+#' result <- best_cutoff(pdata, variable = "score", print_result = FALSE)
+#' table(result$score_binary)
 best_cutoff <- function(pdata, variable, time = "time",
                         status = "status", print_result = TRUE) {
   # Input validation

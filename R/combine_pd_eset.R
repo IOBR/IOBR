@@ -27,27 +27,17 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' colnames(eset) <- substring(colnames(eset), 1, 12)
-#'
-#' sig_stad <- load_data("sig_stad")
-#'
-#' # Example 1: Combine all features (no filtering)
-#' input <- combine_pd_eset(
-#'   eset = eset,
-#'   pdata = sig_stad
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' pdata <- data.frame(
+#'   ID = colnames(eset),
+#'   group = rep(c("A", "B"), each = 5),
+#'   age = rnorm(10, 50, 10)
 #' )
-#'
-#' # Example 2: Combine with specific features
-#' # Note: features must match rownames of eset after ID conversion
-#' input2 <- combine_pd_eset(
-#'   eset = eset,
-#'   pdata = sig_stad,
-#'   feas = rownames(eset)[1:100] # Use first 100 genes as example
-#' )
-#' }
+#' result <- combine_pd_eset(eset = eset, pdata = pdata, scale = FALSE)
+#' dim(result)
 combine_pd_eset <- function(eset,
                             pdata,
                             id_pdata = "ID",

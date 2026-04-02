@@ -27,6 +27,10 @@ from CIBERSORT analysis of TCGA Stomach Adenocarcinoma (STAD) RNA-seq data.
 Includes detailed immune cell subtype proportions for each gastric cancer
 sample.
 }
+\examples{
+data(tcga_stad_sig)
+head(tcga_stad_sig)
+}
 \references{
 Newman AM et al. Robust enumeration of cell subsets from tissue expression
 profiles.

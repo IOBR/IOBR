@@ -137,7 +137,6 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("survival", quietly = TRUE) &&
 #'   requireNamespace("timeROC", quietly = TRUE)) {
@@ -152,7 +151,6 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 #'     model = fit, train.x = train_x, train.y = train_y,
 #'     test.x = test_x, test.y = test_y
 #'   )
-#' }
 #' }
 PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
   coefs <- cbind(
@@ -204,7 +202,6 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("survival", quietly = TRUE) &&
 #'   requireNamespace("timeROC", quietly = TRUE)) {
@@ -215,7 +212,6 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #'   fit <- glmnet::cv.glmnet(x, y, family = "cox")
 #'   acture_y <- data.frame(time = y[, 1], status = y[, 2])
 #'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
-#' }
 #' }
 PrognosticAUC <- function(model, newx, s, acture.y) {
   riskscore <- stats::predict(model, newx = newx, s = s)
@@ -255,7 +251,6 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("survival", quietly = TRUE) &&
 #'   requireNamespace("timeROC", quietly = TRUE)) {
@@ -271,7 +266,6 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #'     modelname = "glmnet Cox Model", time_prob = 0.5
 #'   )
 #'   print(roc_info$AUC)
-#' }
 #' }
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
   riskscore <- stats::predict(model, newx = newx, s = s)
@@ -313,7 +307,6 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("survival", quietly = TRUE) &&
 #'   requireNamespace("timeROC", quietly = TRUE)) {
@@ -325,7 +318,7 @@ CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.
 #'   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
 #'   fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
 #'   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
-#' }
+#'   print(p)
 #' }
 PlotTimeROC <- function(train.x, train.y, test.x, test.y, model, modelname,
                         cols = NULL, palette = "jama") {

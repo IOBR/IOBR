@@ -65,7 +65,6 @@ using gene expression data.
 }
 \examples{
 \donttest{
-# Create simulated data matching LM22 signature matrix gene names
 data(lm22)
 common_genes <- rownames(lm22)[1:500]
 sim_mixture <- as.data.frame(matrix(

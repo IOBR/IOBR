@@ -32,7 +32,6 @@ composite score measuring immunophenotype based on four major categories:
 MHC molecules, immunomodulators, effector cells, and suppressor cells.
 }
 \examples{
-\donttest{
 # IPS requires gene symbols as rownames
 # Create a simple example with gene symbols
 example_genes <- c(
@@ -47,5 +46,4 @@ rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
 ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
 head(ips_result)
-}
 }

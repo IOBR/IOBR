@@ -31,7 +31,6 @@ and evaluates AUC for binomial outcomes. Returns a comprehensive summary
 of model performance on both training and testing datasets.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 10), ncol = 10)
@@ -43,6 +42,5 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
     train.x = train_data, train.y = train_outcome,
     test.x = test_data, test.y = test_outcome, model = fitted_model
   )
-}
 }
 }

@@ -22,6 +22,10 @@ data(eset_blca)
 Gene expression data from bladder cancer patients in TCGA-BLCA.
 Contains raw count matrix suitable for differential expression analysis.
 }
+\examples{
+data(eset_blca)
+head(eset_blca)
+}
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular
 characterization of urothelial bladder carcinoma. Nature 507, 315-322 (2014).

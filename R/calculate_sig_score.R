@@ -12,6 +12,10 @@
 #' }
 #'
 #' @export
+#'
+#' @examples
+#' signature_score_calculation_methods
+#' signature_score_calculation_methods["PCA"]
 signature_score_calculation_methods <- c(
   "PCA"         = "pca",
   "ssGSEA"      = "ssgsea",
@@ -106,12 +110,15 @@ signature_score_calculation_methods <- c(
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' signature_tme <- load_data("signature_tme")
-#' result <- calculate_sig_score_pca(eset = eset, signature = signature_tme)
-#' }
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' signature <- list(
+#'   Signature1 = paste0("Gene", 1:10),
+#'   Signature2 = paste0("Gene", 11:20)
+#' )
+#' result <- calculate_sig_score_pca(eset = eset, signature = signature)
 calculate_sig_score_pca <- function(pdata = NULL,
                                     eset,
                                     signature,
@@ -184,12 +191,15 @@ calculate_sig_score_pca <- function(pdata = NULL,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' signature_tme <- load_data("signature_tme")
-#' result <- calculate_sig_score_zscore(eset = eset, signature = signature_tme)
-#' }
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' signature <- list(
+#'   Signature1 = paste0("Gene", 1:10),
+#'   Signature2 = paste0("Gene", 11:20)
+#' )
+#' result <- calculate_sig_score_zscore(eset = eset, signature = signature)
 calculate_sig_score_zscore <- function(pdata = NULL,
                                        eset,
                                        signature,
@@ -257,12 +267,15 @@ calculate_sig_score_zscore <- function(pdata = NULL,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
-#' signature_tme <- load_data("signature_tme")
-#' result <- calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
-#' }
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' signature <- list(
+#'   Signature1 = paste0("Gene", 1:15),
+#'   Signature2 = paste0("Gene", 16:30)
+#' )
+#' result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
 calculate_sig_score_ssgsea <- function(pdata = NULL,
                                        eset,
                                        signature,
@@ -323,21 +336,13 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       BiocParallel::SerialParam(progressbar = TRUE)
     }
 
-    # Build parameters
-    args <- list(
-      as.matrix(eset),
-      signature,
+    param <- GSVA::ssgseaParam(
+      exprData = as.matrix(eset),
+      geneSets = signature,
       minSize = min_genes,
       maxSize = Inf,
-      kcdf = "Gaussian",
-      tau = 1,
-      maxDiff = TRUE,
-      absRanking = FALSE,
-      ssgsea.norm = TRUE
+      normalize = TRUE
     )
-    args <- args[names(args) %in% names(formals(GSVA::ssgseaParam))]
-
-    param <- do.call(GSVA::ssgseaParam, args)
     res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = bp)
   } else {
     res <- GSVA::gsva(
@@ -378,13 +383,15 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' signature_collection <- load_data("signature_collection")
-#' result <- calculate_sig_score_integration(eset = eset, signature = signature_collection[1:4])
-#' }
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' signature <- list(
+#'   Signature1 = paste0("Gene", 1:15),
+#'   Signature2 = paste0("Gene", 16:30)
+#' )
+#' result <- calculate_sig_score_integration(eset = eset, signature = signature)
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
                                             signature,
@@ -453,15 +460,12 @@ calculate_sig_score_integration <- function(pdata = NULL,
 
     if (gsva_info$use_new_api) {
       rlang::check_installed("BiocParallel")
-      param <- GSVA::gsvaParam(
-        as.matrix(eset),
-        sig_ssgsea,
+      param <- GSVA::ssgseaParam(
+        exprData = as.matrix(eset),
+        geneSets = sig_ssgsea,
         minSize = ssgsea_min,
         maxSize = Inf,
-        kcdf = "Gaussian",
-        tau = 1,
-        maxDiff = TRUE,
-        absRanking = FALSE
+        normalize = TRUE
       )
       res <- GSVA::gsva(param,
         verbose = TRUE,
@@ -526,23 +530,15 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' }
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' # Use original eset with GeneSymbol to match signature_tme
-#' signature_tme <- load_data("signature_tme")
-#'
-#' # PCA method (fastest)
-#' result_pca <- calculate_sig_score(
-#'   eset = eset_stad, signature = signature_tme,
-#'   method = "pca"
+#' set.seed(123)
+#' eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+#' rownames(eset) <- paste0("Gene", 1:100)
+#' colnames(eset) <- paste0("Sample", 1:10)
+#' signature <- list(
+#'   Signature1 = paste0("Gene", 1:10),
+#'   Signature2 = paste0("Gene", 11:20)
 #' )
-#'
-#' # ssGSEA method (most robust)
-#' result_ssgsea <- calculate_sig_score(
-#'   eset = eset_stad, signature = signature_tme,
-#'   method = "ssgsea"
-#' )
-#' }
+#' result <- calculate_sig_score(eset = eset, signature = signature, method = "pca")
 calculate_sig_score <- function(pdata = NULL,
                                 eset,
                                 signature = NULL,

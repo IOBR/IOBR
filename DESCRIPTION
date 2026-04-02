@@ -41,6 +41,7 @@ Imports:
     glmnet,
     GSVA,
     limSolve,
+    pracma,
     methods,
     preprocessCore,
     purrr,
@@ -92,12 +93,9 @@ Suggests:
     SeuratObject,
     testthat (>= 3.0.0),
     webr,
-    WGCNA,
-    xCell
+    WGCNA
 VignetteBuilder: 
     knitr
-Remotes:
-    dviraran/xCell
 BiocType: Software
 biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization

@@ -29,8 +29,10 @@
 #' @author Shixiang Huang
 #'
 #' @examples
-#' # See maftools and TCGAbiolinks documentation for obtaining MAF input
-#' # mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
+#' \dontrun{
+#' # See maftools or TCGAbiolinks documentation for obtaining MAF input
+#' mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
+#' }
 make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
                             category = c("multi", "all", "snp", "indel", "frameshift"),
                             Tumor_Sample_Barcode = "Tumor_Sample_Barcode",

@@ -21,14 +21,9 @@ useful for automatically detecting raw counts or linear-scale data that
 should be log-transformed for downstream analysis.
 }
 \examples{
-\donttest{
-# Load TCGA-STAD expression data (raw count matrix)
-eset_stad <- load_data("eset_stad")
-
-# Transform count data to TPM
-eset <- count2tpm(eset_stad, idType = "ensembl")
-
-# Apply log2 transformation if needed
-eset <- log2eset(eset)
-}
+set.seed(123)
+eset <- matrix(rnorm(1000, mean = 10, sd = 2), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+eset_transformed <- log2eset(eset)
 }

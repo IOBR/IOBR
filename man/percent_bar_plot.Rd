@@ -67,13 +67,11 @@ Generates a bar plot visualizing the percentage distribution of a variable
 grouped by another variable.
 }
 \examples{
-\donttest{
 sig_stad <- load_data("sig_stad")
 percent_bar_plot(
   input = sig_stad, x = "Subtype", y = "Lauren",
   axis_angle = 60
 )
-}
 }
 \author{
 Dongqiang Zeng

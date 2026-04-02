@@ -37,13 +37,15 @@ Tibble with signature scores from all three methods.
 Computes signature scores using PCA, z-score, and ssGSEA methods combined.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-signature_collection <- load_data("signature_collection")
-result <- calculate_sig_score_integration(eset = eset, signature = signature_collection[1:4])
-}
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+signature <- list(
+  Signature1 = paste0("Gene", 1:15),
+  Signature2 = paste0("Gene", 16:30)
+)
+result <- calculate_sig_score_integration(eset = eset, signature = signature)
 }
 \author{
 Dongqiang Zeng

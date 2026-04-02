@@ -26,17 +26,11 @@ infinite values, and features with zero variance. Issues warnings when
 potential problems are detected that may affect downstream analyses.
 }
 \examples{
-# Load TCGA-STAD expression data
-eset_stad <- load_data("eset_stad")
-
-# Convert counts to TPM
-eset <- count2tpm(eset_stad, idType = "ensembl")
-
-# Check expression set integrity
-check_eset(eset)
-
-# Check with detailed output
-check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+check_eset(eset, print_result = TRUE)
 }
 \author{
 Dongqiang Zeng

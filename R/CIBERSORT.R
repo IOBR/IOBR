@@ -31,11 +31,9 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' y <- rnorm(10)
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
-#' }
 CoreAlg <- function(X, y, absolute, abs_method) {
   rlang::check_installed("e1071")
 
@@ -109,11 +107,9 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' X <- matrix(rnorm(100), nrow = 10)
 #' Y <- rnorm(10)
-#' result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
-#' }
+#' result <- doPerm(100, X, Y, absolute = FALSE, abs_method = "sig.score")
 doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
 
@@ -279,7 +275,6 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #' @import stringr
 #' @examples
 #' \donttest{
-#' # Create simulated data matching LM22 signature matrix gene names
 #' data(lm22)
 #' common_genes <- rownames(lm22)[1:500]
 #' sim_mixture <- as.data.frame(matrix(

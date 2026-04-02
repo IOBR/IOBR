@@ -33,14 +33,12 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # Load TCGA count data
 #' eset_stad <- load_data("eset_stad")
 #'
 #' # Transform to TPM using local gene annotation
 #' eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
 #' head(eset)
-#' }
 count2tpm <- function(countMat,
                       idType = "Ensembl",
                       org = c("hsa", "mmus"),
@@ -107,6 +105,12 @@ count2tpm <- function(countMat,
 
   as.data.frame(TPM)
 }
+
+
+# TODO
+# Warning message:
+# In counts/(lengths/1000) :
+#   longer object length is not a multiple of shorter object length
 
 # Helper: Calculate TPM values
 .calculate_tpm <- function(counts, lengths) {

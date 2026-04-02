@@ -19,3 +19,7 @@ TCGA.STAD.mutect.c06465a3-50e7-46f7-b2dd-7bd654ca206b.DR-10.0.somatic.maf
 R_backup/
 IOBR.Rcheck/
 docs
+test_timer_bug.R
+test_timer_debug.R
+Rplots.pdf
+DOCUMENTATION_OPTIMIZATION_SUMMARY.md

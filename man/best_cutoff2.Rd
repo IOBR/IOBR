@@ -43,17 +43,14 @@ Takes input data containing a continuous variable and survival information
 created based on the best cutoff point.
 }
 \examples{
-\donttest{
-sig_stad <- load_data("sig_stad")
-result <- best_cutoff2(
-  pdata = sig_stad,
-  variable = "TMEscore_CIR",
-  time = "OS_time",
-  status = "OS_status",
-  print_result = TRUE
+set.seed(123)
+pdata <- data.frame(
+  time = rexp(100),
+  status = rbinom(100, 1, 0.5),
+  score = rnorm(100, mean = 50, sd = 10)
 )
+result <- best_cutoff2(pdata, variable = "score", print_result = FALSE)
 result$best_cutoff
-}
 }
 \author{
 Dongqiang Zeng

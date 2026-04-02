@@ -36,7 +36,5 @@ eset <- load_data("eset_stad")
 colors <- load_data("palette1")
 
 # Error handling with suggestions for similar names
-\donttest{
 try(load_data("sign_tme")) # Will suggest "signature_tme"
-}
 }

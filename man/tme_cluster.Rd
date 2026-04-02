@@ -43,15 +43,21 @@ clustering methods. Supports feature selection, scaling, and automatic
 determination of optimal cluster number.
 }
 \examples{
-\donttest{
-tcga_stad_sig <- load_data("tcga_stad_sig")
-res <- tme_cluster(
-  input = tcga_stad_sig,
+set.seed(123)
+input_data <- data.frame(
+  ID = paste0("Sample", 1:20),
+  xCell_Tcells = rnorm(20),
+  xCell_Bcells = rnorm(20),
+  xCell_Macrophages = rnorm(20),
+  Other_feature = rnorm(20)
+)
+result <- tme_cluster(
+  input = input_data,
   pattern = "xCell",
   id = "ID",
   method = "kmeans"
 )
-}
+table(result$cluster)
 }
 \author{
 Dongqiang Zeng

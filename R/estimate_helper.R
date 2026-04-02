@@ -25,7 +25,6 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -34,10 +33,11 @@
 #' output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
 #' writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
 #' utils::write.table(
-#' eset, 
-#' input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
+#'   eset,
+#'   input_file,
+#'   sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
+#' )
 #' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
-#' }
 estimateScore <- function(input.ds,
                           output.ds,
                           platform = c("affymetrix", "agilent", "illumina")) {
@@ -197,7 +197,6 @@ estimateScore <- function(input.ds,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # Create a sample common_genes dataframe
 #' common_genes <- data.frame(
 #'   GeneSymbol = c("BRCA1", "TP53", "EGFR"),
@@ -222,7 +221,6 @@ estimateScore <- function(input.ds,
 #' # Call the filterCommonGenes function
 #' # Note: This example requires IOBR::common_genes data
 #' # filterCommonGenes(input_file, output_file, id = "GeneSymbol")
-#' }
 filterCommonGenes <- function(input.f,
                               output.f,
                               id = c("GeneSymbol", "EntrezID")) {
@@ -264,7 +262,6 @@ filterCommonGenes <- function(input.f,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # Create a sample input data frame
 #' sample_data <- data.frame(
 #'   Gene = c("BRCA1", "TP53", "EGFR"),
@@ -278,7 +275,6 @@ filterCommonGenes <- function(input.f,
 #' # Convert the input data frame to GCT format and save to temporary file
 #' output_file <- tempfile(fileext = ".gct")
 #' outputGCT(sample_data, output_file)
-#' }
 outputGCT <- function(input.f,
                       output.f) {
   ## Check arguments
@@ -329,7 +325,6 @@ outputGCT <- function(input.f,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # Create a sample ESTIMATE score matrix
 #' scores_data <- data.frame(
 #'   Sample1 = c(100, 200, 500, 0.80),
@@ -345,7 +340,6 @@ outputGCT <- function(input.f,
 #' # Write to a temporary GCT file
 #' scores_file <- tempfile(fileext = ".gct")
 #' outputGCT(scores_data, scores_file)
-#' }
 plotPurity <- function(scores,
                        samples = "all_samples",
                        platform = c("affymetrix", "agilent", "illumina"),

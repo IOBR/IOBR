@@ -22,6 +22,10 @@ data(eset_gse62254)
 Gene expression data from gastric cancer patients in the GSE62254 dataset.
 Contains raw count matrix from RNA-seq or microarray experiments.
 }
+\examples{
+data(eset_gse62254)
+head(eset_gse62254)
+}
 \references{
 Cristescu R et al. (2015) Molecular analysis of gastric cancer identifies
 subtypes associated with distinct clinical outcomes. Nat Med 21:449-456.

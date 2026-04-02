@@ -34,6 +34,10 @@ Clinical, molecular, and signature score data for TCGA stomach adenocarcinoma
 (STAD) samples. Includes patient demographics, tumor characteristics,
 molecular subtypes, and pre-computed signature scores.
 }
+\examples{
+data(tcga_stad_pdata)
+head(tcga_stad_pdata)
+}
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular
 characterization of gastric adenocarcinoma. Nature 513, 202-209 (2014).

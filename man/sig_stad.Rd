@@ -31,6 +31,10 @@ Includes RNA-seq expression data, survival outcomes, and pathological
 features
 for gastric cancer patients.
 }
+\examples{
+data(sig_stad)
+head(sig_stad)
+}
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular
 characterization

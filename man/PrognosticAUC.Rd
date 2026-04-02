@@ -24,7 +24,6 @@ at the 30th and 90th percentiles of survival time. These thresholds assess
 short-term and long-term predictive accuracy.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -35,7 +34,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
   fit <- glmnet::cv.glmnet(x, y, family = "cox")
   acture_y <- data.frame(time = y[, 1], status = y[, 2])
   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
-}
 }
 }
 \author{

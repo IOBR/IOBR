@@ -23,7 +23,6 @@ Merges two or three expression sets (matrices or data frames) by row names
 across all input expression sets are retained.
 }
 \examples{
-\donttest{
 # Load example data
 eset_stad <- load_data("eset_stad")
 
@@ -41,7 +40,6 @@ eset2 <- matrix(rnorm(16),
 # Merge two expression sets
 merged_eset <- merge_eset(eset1, eset2)
 print(dim(merged_eset))
-}
 }
 \author{
 Dongqiang Zeng

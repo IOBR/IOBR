@@ -31,4 +31,8 @@ Mouse gene annotation dataset for genome assembly GRCm38/mm10,
 containing gene features including GC content and gene length information.
 Used for mouse transcriptomic data analysis.
 }
+\examples{
+data(anno_gc_vm32)
+head(anno_gc_vm32)
+}
 \keyword{datasets}

@@ -23,6 +23,10 @@ Pre-calculated tumor microenvironment (TME) signature scores for TCGA
 stomach adenocarcinoma (STAD) samples. Contains expression levels of
 key TME-related genes and potentially immune/stomal signature scores.
 }
+\examples{
+data(eset_tme_stad)
+head(eset_tme_stad)
+}
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular
 characterization of gastric adenocarcinoma. Nature. 2014;513:202-209.

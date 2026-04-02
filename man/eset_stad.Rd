@@ -15,4 +15,8 @@ A subset of TCGA-STAD RNA-seq count data used in the IOBR vignette and unit
 tests. Rows correspond to Ensembl gene IDs and columns correspond to TCGA
 sample barcodes. Values are raw (unnormalized) read counts.
 }
+\examples{
+data(eset_stad)
+head(eset_stad)
+}
 \keyword{datasets}

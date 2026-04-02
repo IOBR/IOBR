@@ -20,12 +20,10 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \dontrun{
 #' if (requireNamespace("Seurat", quietly = TRUE)) {
 #'   pbmc <- SeuratObject::pbmc_small
 #'   vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3")
 #'   eset <- extract_sc_data(sce = pbmc, vars = vars, assay = "RNA")
-#' }
 #' }
 extract_sc_data <- function(sce, vars = NULL, assay, slot = "scale.data", combine_meta_data = TRUE) {
   rlang::check_installed(c("Seurat", "SeuratObject"))
@@ -51,7 +49,12 @@ extract_sc_data <- function(sce, vars = NULL, assay, slot = "scale.data", combin
     method <- assay[i]
     Seurat::DefaultAssay(sce) <- method
 
-    eset <- SeuratObject::GetAssayData(sce, assay = method, slot = slot)
+    if (packageVersion("SeuratObject") < "5.0.0") {
+      eset <- SeuratObject::GetAssayData(sce, assay = method, slot = slot)
+    } else {
+      eset <- SeuratObject::GetAssayData(sce, assay = method, layer = slot)
+    }
+
 
     if (!is.null(vars)) {
       feas <- rownames(eset)[rownames(eset) %in% unique(vars)]

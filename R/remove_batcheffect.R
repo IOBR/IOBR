@@ -39,7 +39,6 @@
 #' 2012;28(6):882-883.
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' eset_blca <- load_data("eset_blca")
 #' eset_corrected <- remove_batcheffect(
@@ -47,7 +46,6 @@
 #'   id_type = "ensembl",
 #'   data_type = "count"
 #' )
-#' }
 remove_batcheffect <- function(eset1,
                                eset2,
                                eset3 = NULL,
@@ -60,6 +58,10 @@ remove_batcheffect <- function(eset1,
                                adjust_eset = TRUE,
                                repel = FALSE,
                                path = NULL) {
+  # TODO
+  # Ignoring unknown labels:
+  # linetype : "batch"
+
   # Validate data_type
   data_type <- rlang::arg_match(data_type)
 

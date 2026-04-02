@@ -77,7 +77,6 @@ on signature scores. Automatically determines optimal cutpoints for signature
 stratification and creates publication-ready survival curves.
 }
 \examples{
-\donttest{
 sig_stad <- load_data("sig_stad")
 result <- batch_sig_surv_plot(
   input_pdata = sig_stad,
@@ -95,7 +94,6 @@ result <- batch_sig_surv_plot(
   show_col = TRUE,
   fig_type = "pdf"
 )
-}
 }
 \author{
 Dongqiang Zeng

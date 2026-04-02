@@ -25,7 +25,6 @@ Data frame with quanTIseq cell fractions. Columns suffixed with
 quanTIseq deconvolution for RNA-seq immune cell fractions.
 }
 \examples{
-\dontrun{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -34,7 +33,7 @@ res <- deconvo_quantiseq(
   eset = eset, project = "stad", tumor = TRUE,
   arrays = FALSE, scale_mrna = FALSE
 )
-}
+head(res)
 }
 \author{
 Dongqiang Zeng

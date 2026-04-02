@@ -32,14 +32,14 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
-#' cell_bar_plot(
-#'   input = sig_stad[1:20, ],
-#'   id = "ID",
-#'   features = colnames(sig_stad)[25:46]
+#' set.seed(123)
+#' input_data <- data.frame(
+#'   ID = paste0("Sample", 1:10),
+#'   Cell_A = runif(10, 0, 0.4),
+#'   Cell_B = runif(10, 0, 0.3),
+#'   Cell_C = runif(10, 0, 0.3)
 #' )
-#' }
+#' cell_bar_plot(input = input_data, id = "ID", features = c("Cell_A", "Cell_B", "Cell_C"))
 cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
                           features = NULL, pattern = NULL,
                           legend.position = "bottom", coord_flip = TRUE,
@@ -91,13 +91,19 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
 
   plot_data <- tidyr::gather(input, "cell_type", "fraction", -.data$ID)
 
+  lms <- rev(levels(input$ID))
+  if (!all(lms %in% plot_data$ID)) {
+    cli::cli_alert_warning("ID column is not a factor or has levels not present in data. Using unique IDs from data.")
+    lms <- sort(unique(plot_data$ID))
+  }
+
   p <- ggplot2::ggplot(plot_data, ggplot2::aes(
     x = .data$ID, y = .data$fraction, fill = .data$cell_type
   )) +
     ggplot2::geom_bar(stat = "identity") +
     ggplot2::theme_light() +
     ggplot2::scale_fill_manual(values = cols) +
-    ggplot2::scale_x_discrete(limits = rev(levels(input$ID))) +
+    ggplot2::scale_x_discrete(limits = lms) +
     ggplot2::ggtitle(title) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(size = ggplot2::rel(2), hjust = 0.5),
@@ -119,6 +125,5 @@ cell_bar_plot <- function(input, id = "ID", title = "Cell Fraction",
     p <- p + ggplot2::coord_flip()
   }
 
-  print(p)
   p
 }

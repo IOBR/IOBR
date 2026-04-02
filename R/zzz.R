@@ -21,22 +21,22 @@
 #' @importFrom utils packageDescription
 
 .onLoad <- function(libname, pkgname) {
-  # Check that suggested packages are available (silently)
-  # These are optional dependencies used by various functions
-  suggested_pkgs <- c(
-    "ComplexHeatmap", "tidyHeatmap", "clusterProfiler", "tibble",
-    "tidyverse", "survival", "survminer", "ggplot2",
-    "ggpubr", "limma", "limSolve", "preprocessCore", "e1071", "GSVA"
-  )
+  # # Check that suggested packages are available (silently)
+  # # These are optional dependencies used by various functions
+  # suggested_pkgs <- c(
+  #   "ComplexHeatmap", "tidyHeatmap", "clusterProfiler", "tibble",
+  #   "tidyverse", "survival", "survminer", "ggplot2",
+  #   "ggpubr", "limma", "limSolve", "preprocessCore", "e1071", "GSVA"
+  # )
 
-  invisible(suppressPackageStartupMessages(
-    vapply(
-      suggested_pkgs,
-      requireNamespace,
-      logical(1),
-      quietly = TRUE
-    )
-  ))
+  # invisible(suppressPackageStartupMessages(
+  #   vapply(
+  #     suggested_pkgs,
+  #     requireNamespace,
+  #     logical(1),
+  #     quietly = TRUE
+  #   )
+  # ))
 }
 
 
@@ -46,6 +46,7 @@
   msg <- paste0(
     "==========================================================================\n",
     "  ", pkgname, " v", pkgVersion, "  Immuno-Oncology Biological Research ", "\n",
+    "  For Documentation: https://iobr.github.io/IOBR/", "\n",
     "  For Tutorial: https://iobr.github.io/book/", "\n",
     "  For Help: https://github.com/IOBR/IOBR/issues", "\n\n"
   )

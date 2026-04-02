@@ -27,4 +27,8 @@ This dataset serves as input for signature analysis functions in the IOBR
 package,
 particularly \code{\link{get_sig_sc}} and \code{\link{sig_gsea}}.
 }
+\examples{
+data(deg)
+head(deg)
+}
 \keyword{datasets}

@@ -33,4 +33,8 @@ types,
 including various B cell and T cell subsets, as well as plasma cells and
 other immune cell types.
 }
+\examples{
+data(lm22)
+head(lm22)
+}
 \keyword{datasets}

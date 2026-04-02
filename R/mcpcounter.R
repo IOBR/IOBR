@@ -19,7 +19,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 #' rownames(expr) <- paste0("Gene", 1:100)
 #' estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
@@ -156,13 +156,11 @@ MCPcounter.estimate <- function(
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # This function requires null_models data which is loaded internally
 #' # Create example data
 #' scores <- matrix(runif(30), nrow = 3, ncol = 10)
 #' rownames(scores) <- c("T cells", "B cells", "NK cells")
 #' pvals <- test_for_infiltration(scores, platform = "133P2")
-#' }
 test_for_infiltration <- function(MCPcounterMatrix,
                                   platform = c("133P2", "133A", "HG1")) {
   platform <- rlang::arg_match(platform)

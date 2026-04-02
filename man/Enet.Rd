@@ -28,12 +28,10 @@ Searches across a grid of alpha values (0 to 1) and lambda values to minimize
 cross-validation error.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(50 * 5), ncol = 5)
   train_outcome <- rbinom(50, 1, 0.5)
   result <- Enet(train.x = train_data, train.y = train_outcome, lambdamax = 1, nfold = 5)
-}
 }
 }

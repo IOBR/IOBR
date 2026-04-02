@@ -30,10 +30,9 @@
 #'
 #' @export
 #' @author Dongqiang Zeng
-#' @rawNamespace import(survival, except = c(offset, compact))
+#' @import survival
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_sig <- load_data("tcga_stad_sig")
 #' pdata_stad <- load_data("pdata_stad")
 #' input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
@@ -41,7 +40,6 @@
 #'   input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
 #'   time = "time", status = "OS_status", time_point = 12, path = NULL, main = "OS"
 #' )
-#' }
 roc_time <- function(input, vars, time = "time", status = "status", time_point = 12,
                      time_type = "month", palette = "jama", cols = "normal",
                      seed = 1234, show_col = FALSE, path = NULL, main = "PFS",

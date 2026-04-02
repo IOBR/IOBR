@@ -35,7 +35,6 @@ It supports multiple
 platform types and performs platform-specific calculations if necessary.
 }
 \examples{
-\dontrun{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -44,8 +43,9 @@ input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
 output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
 writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
 utils::write.table(
-eset, 
-input_file, sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE)
+  eset,
+  input_file,
+  sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
+)
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
-}
 }

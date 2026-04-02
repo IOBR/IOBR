@@ -44,6 +44,11 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
                                logfc.threshold = 0.15, test.use = "wilcox") {
   rlang::check_installed("Seurat")
 
+  # TODO
+  #   Warning: No DE genes identified
+  # data frame with 0 columns and 0 rows
+  # Error in `dplyr::group_by()`:
+
   if (!inherits(sce, "Seurat")) {
     cli::cli_abort("{.arg sce} must be a Seurat object")
   }

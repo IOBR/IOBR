@@ -36,4 +36,8 @@ immune-related processes, stromal activity, TME characteristics and
 immuno-oncology biomarkers. These groups are used in IOBR to conveniently
 select sets of signatures for scoring and visualization.
 }
+\examples{
+data(sig_group)
+head(sig_group)
+}
 \keyword{datasets}

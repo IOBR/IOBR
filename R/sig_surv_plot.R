@@ -34,7 +34,6 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_surv_plot(
 #'   input_pdata = tcga_stad_pdata,
@@ -42,7 +41,6 @@
 #'   time = "time",
 #'   status = "OS_status"
 #' )
-#' }
 sig_surv_plot <- function(input_pdata,
                           signature,
                           project = "KM",
@@ -59,6 +57,11 @@ sig_surv_plot <- function(input_pdata,
                           save_path = NULL,
                           index = 1) {
   rlang::check_installed("survminer")
+
+  # TODO
+  # Ignoring unknown labels:
+  # colour : "Strata"
+
 
   # Input validation
   if (!signature %in% colnames(input_pdata)) {
@@ -355,3 +358,4 @@ calculate_break_month <- function(input, block = 6) {
   break_month_val <- ceiling(break_month_val)
   break_month_val
 }
+# TODO: a same exported function in surv_group.R

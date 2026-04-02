@@ -23,7 +23,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # LR_cal requires HGNC gene symbols as rownames
 #' # Create a simple example with gene symbols
 #' example_genes <- c(
@@ -36,6 +35,7 @@
 #' ))
 #' rownames(sim_eset) <- example_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:10)
+#' \donttest{
 #' if (requireNamespace("easier", quietly = TRUE)) {
 #'   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
 #'   head(lr)

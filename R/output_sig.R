@@ -16,14 +16,12 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' signature_collection <- load_data("signature_collection")
 #' tmpfile <- tempfile(fileext = ".csv")
 #' output_sig(
 #'   signatures = signature_collection, format = "csv",
 #'   file.name = tools::file_path_sans_ext(tmpfile)
 #' )
-#' }
 output_sig <- function(signatures, format = c("csv", "rdata"), file.name) {
   format <- rlang::arg_match(format)
 

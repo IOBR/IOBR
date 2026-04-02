@@ -20,12 +20,10 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' colors <- palettes(category = "box", palette = "nrc", show_message = TRUE)
+#' colors <- palettes(category = "box", palette = "nrc", show_col = FALSE)
 #' heatmap_colors <- palettes(
-#'   category = "heatmap", palette = 1, counts = 100, show_col = TRUE
+#'   category = "heatmap", palette = 1, counts = 10, show_col = FALSE
 #' )
-#' }
 palettes <- function(category = "box", palette = "nrc", alpha = 1,
                      counts = 50, show_col = TRUE, show_message = FALSE) {
   rlang::check_installed("ggsci")

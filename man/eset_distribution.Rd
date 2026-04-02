@@ -28,10 +28,8 @@ expression values in an expression set. Useful for quality control and
 assessing data normalization.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 eset_distribution(eset, project = file.path(tempdir(), "ESET"))
-}
 }

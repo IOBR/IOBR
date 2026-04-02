@@ -41,11 +41,9 @@ ipsmap <- function(x) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
 #' color <- mapcolors(2, my_palette)
 #' color <- mapcolors(-2, my_palette)
-#' }
 mapcolors <- function(x, my_palette = NULL) {
   if (is.null(my_palette)) {
     my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
@@ -78,11 +76,9 @@ mapcolors <- function(x, my_palette = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)
 #' color <- mapbw(1.5, my_palette2)
 #' color <- mapbw(-1, my_palette2)
-#' }
 mapbw <- function(x, my_palette2 = NULL) {
   if (is.null(my_palette2)) {
     my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)

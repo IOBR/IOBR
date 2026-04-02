@@ -28,4 +28,8 @@ microenvironment (TME) characterization. Each element corresponds to a
 predefined biological signature and contains a character vector of HGNC
 gene symbols.
 }
+\examples{
+data(signature_collection)
+head(signature_collection)
+}
 \keyword{datasets}

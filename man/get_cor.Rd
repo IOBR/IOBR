@@ -117,7 +117,6 @@ Calculates and visualizes the correlation between two variables with options
 for scaling, handling missing values, and incorporating grouping data.
 }
 \examples{
-\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 get_cor(
   eset = eset_tme_stad,
@@ -125,7 +124,6 @@ get_cor(
   var1 = "GZMB",
   var2 = "CD274"
 )
-}
 }
 \author{
 Dongqiang Zeng

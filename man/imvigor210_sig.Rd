@@ -31,6 +31,10 @@ This dataset includes CIBERSORT immune cell deconvolution scores, gene
 expression
 values, and various immune-related molecular signatures.
 }
+\examples{
+data(imvigor210_sig)
+head(imvigor210_sig)
+}
 \references{
 Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
 by contributing to exclusion of T cells. Nature 554, 544-548 (2018).

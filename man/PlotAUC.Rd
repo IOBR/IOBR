@@ -41,7 +41,6 @@ performance at both lambda.min and lambda.1se. Creates a ggplot visualization
 with AUC values in the legend.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 5), ncol = 5)
@@ -51,6 +50,5 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
   p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
   print(p)
-}
 }
 }

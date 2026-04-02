@@ -29,7 +29,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # Load TCGA-STAD signature data
 #' sig_stad <- load_data("sig_stad")
 #'
@@ -41,7 +40,6 @@
 #'     feature = colnames(sig_stad)[69:ncol(sig_stad)]
 #'   )
 #'   head(res)
-#' }
 #' }
 batch_kruskal <- function(data,
                           group,

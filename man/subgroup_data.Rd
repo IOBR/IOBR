@@ -24,4 +24,8 @@ An example dataset demonstrating the data structure required for subgroup
 survival analysis using the \code{\link{subgroup_survival}} function.
 Contains simulated clinical and biomarker data with survival outcomes.
 }
+\examples{
+data(subgroup_data)
+head(subgroup_data)
+}
 \keyword{datasets}

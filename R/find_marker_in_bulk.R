@@ -24,6 +24,7 @@
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
 #' pdata_sig_tme <- load_data("pdata_sig_tme")
+#' \donttest{
 #' res <- find_markers_in_bulk(
 #'   pdata = pdata_sig_tme, eset = eset_tme_stad,
 #'   group = "TMEcluster"
@@ -32,7 +33,7 @@
 #' top15 <- res$top_markers |>
 #'   dplyr::group_by(cluster) |>
 #'   dplyr::top_n(15, avg_log2FC)
-#'
+#' }
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {
   # Check required packages
   rlang::check_installed(c("Seurat", "Matrix"))

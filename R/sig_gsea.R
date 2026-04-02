@@ -70,17 +70,44 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' stad_group <- load_data("stad_group")
-#' deg <- iobr_deg(
-#'   eset = eset_stad, pdata = stad_group, group_id = "subtype",
-#'   pdata_id = "ID", array = FALSE, method = "DESeq2",
-#'   contrast = c("EBV", "GS"), path = file.path(tempdir(), "STAD")
+#' set.seed(123)
+#' genes <- c(
+#'   "TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
+#'   "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
+#'   "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3",
+#'   "ARF1", "ARF3", "ARF4", "ARF5", "ARF6", "GSK3B", "AKT1", "AKT2",
+#'   "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
 #' )
-#' signature_tme <- load_data("signature_tme")
-#' res <- sig_gsea(deg = deg, genesets = signature_tme, path = tempdir())
-#' }
+#' deg <- data.frame(
+#'   symbol = genes,
+#'   log2FoldChange = rnorm(length(genes), mean = 0, sd = 2),
+#'   padj = runif(length(genes), 0, 0.1)
+#' )
+#' signature <- list(
+#'   DNA_Repair = c(
+#'     "TP53", "BRCA1", "ATM",
+#'     "ATR", "CHEK2", "PALB2", "RAD51"
+#'   ),
+#'   Cell_Cycle = c(
+#'     "TP53", "MYC",
+#'     "RB1", "CDKN2A", "CDK4",
+#'     "CDK6", "CCND1", "CCNE1",
+#'     "CDK2", "E2F1", "E2F2", "E2F3"
+#'   ),
+#'   PI3K_AKT = c(
+#'     "AKT1", "AKT2",
+#'     "PIK3CA", "PIK3CB", "PIK3CD",
+#'     "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
+#'   )
+#' )
+#' res <- sig_gsea(
+#'   deg = deg,
+#'   genesets = signature,
+#'   path = tempdir(),
+#'   show_plot = FALSE,
+#'   print_bar = FALSE
+#' )
+#' print(names(res))
 sig_gsea <- function(deg,
                      genesets = NULL,
                      path = NULL,
@@ -189,8 +216,8 @@ sig_gsea <- function(deg,
   )
 
   # Convert to readable format
-  rlang::check_installed("DOSE")
-  hall_gsea <- DOSE::setReadable(hall_gsea, OrgDb = database, keyType = "ENTREZID")
+  rlang::check_installed("clusterProfiler")
+  hall_gsea <- clusterProfiler::setReadable(hall_gsea, OrgDb = database, keyType = "ENTREZID")
 
   # Save results
   if (save_results) {

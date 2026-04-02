@@ -28,26 +28,6 @@ timer_info <- function(string) {
 }
 
 
-#' Display Timer Information Messages (Deprecated)
-#'
-#' @description
-#' This function is deprecated. Use [timer_info()] instead.
-#'
-#' @param string Character. Message to be displayed.
-#'
-#' @return None; used for its side effect of printing a message.
-#'
-#' @export
-#' @author Bo Li
-#'
-#' @examples
-#' TimerINFO("Data processing started.")
-TimerINFO <- function(string) {
-  .Deprecated("timer_info")
-  timer_info(string)
-}
-
-
 #' TIMER Available Cancer Types
 #'
 #' Character vector of cancer types supported by TIMER deconvolution.
@@ -126,8 +106,10 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
   tmp.batch <- c(rep(1, N1), rep(2, N2))
 
   rlang::check_installed(c("sva", "BiocParallel"))
-  tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
-    BPPARAM = BiocParallel::bpparam("SerialParam")
+  suppressMessages(
+    tmp.dd0 <- sva::ComBat(tmp.dd, tmp.batch, c(),
+      BPPARAM = BiocParallel::bpparam("SerialParam")
+    )
   )
 
   dd.br <- tmp.dd0[, 1:N1]
@@ -180,23 +162,12 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Batch mode
-#' tf <- tempfile(fileext = ".csv")
-#' write.table(data.frame("exp1", "luad", "exp2", "brca"),
-#'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
-#' )
-#' args <- list(batch = tf)
-#' result <- check_cancer_types(args)
-#'
-#' # Direct input mode
 #' args <- list(
 #'   expression = c("exp1", "exp2"),
 #'   category = c("luad", "brca"),
 #'   batch = NULL
 #' )
 #' result <- check_cancer_types(args)
-#' }
 check_cancer_types <- function(args) {
   if (!is.null(args$batch)) {
     timer_info("Enter batch mode")
@@ -456,6 +427,7 @@ GetOutlierGenes <- function(cancers) {
 #'
 #' @examples
 #' \dontrun{
+#' # file
 #' tf <- tempfile(fileext = ".csv")
 #' write.table(data.frame("exp1", "luad", "exp2", "brca"),
 #'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
@@ -494,7 +466,7 @@ deconvolute_timer.default <- function(args) {
     cancer.expression <- cancer.expression[index, , drop = FALSE]
     cancer.colnames <- colnames(cancer.expression)
 
-    timer_info(paste("Removing the batch effect of", cancer.expFile))
+    timer_info(paste("Removing batch effects for", cancer.category))
 
     for (j in seq_along(cancer.colnames)) {
       DrawQQPlot(cancer.expression[, j], immune.geneExpression[, 1], name = cancer.colnames[j])
@@ -512,6 +484,17 @@ deconvolute_timer.default <- function(args) {
 
     gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
+    
+    if (length(gene.selected.marker) < 6) {
+      cli::cli_abort(c(
+        "Insufficient marker genes for TIMER deconvolution.",
+        "i" = "Cancer type '{cancer.category}' requires at least 6 marker genes.",
+        "i" = "Found only {length(gene.selected.marker)} marker genes in the input data.",
+        "*" = "Use the full expression matrix instead of a subset (e.g., eset[1:500, ]).",
+        "*" = "TIMER requires cancer-specific gene markers that may not be in top-expressed genes."
+      ))
+    }
+    
     XX <- immune.expNormMedian[gene.selected.marker, -4]
     YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
 

@@ -27,7 +27,6 @@ Computes time-dependent ROC curve for survival models using the `timeROC` packag
 Evaluates predictive accuracy at a specified time quantile.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -43,7 +42,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
     modelname = "glmnet Cox Model", time_prob = 0.5
   )
   print(roc_info$AUC)
-}
 }
 }
 \author{

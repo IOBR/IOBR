@@ -32,7 +32,6 @@
 #' @import grid
 #'
 #' @examples
-#' \donttest{
 #' # IPS requires gene symbols as rownames
 #' # Create a simple example with gene symbols
 #' example_genes <- c(
@@ -47,7 +46,6 @@
 #' colnames(sim_eset) <- paste0("Sample", 1:10)
 #' ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
 #' head(ips_result)
-#' }
 IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
   if (!is.matrix(eset) && !is.data.frame(eset)) {
     cli::cli_abort("{.arg eset} must be a matrix or data frame")

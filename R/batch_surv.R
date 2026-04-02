@@ -21,7 +21,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' batch_surv(
 #'   pdata = sig_stad,
@@ -29,7 +28,6 @@
 #'   time = "OS_time",
 #'   status = "OS_status"
 #' )
-#' }
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
   if (!is.data.frame(pdata)) {
     cli::cli_abort("{.arg pdata} must be a data frame")

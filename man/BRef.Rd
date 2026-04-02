@@ -50,4 +50,8 @@ This reference dataset includes the following components:
   }
 }
 }
+\examples{
+data(BRef)
+head(BRef)
+}
 \keyword{datasets}

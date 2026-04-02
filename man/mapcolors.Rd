@@ -21,9 +21,7 @@ Values are mapped to a 1001-color palette where -3 maps to blue, 0 maps to white
 and +3 maps to red.
 }
 \examples{
-\donttest{
 my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
 color <- mapcolors(2, my_palette)
 color <- mapcolors(-2, my_palette)
-}
 }

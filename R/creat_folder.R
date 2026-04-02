@@ -18,13 +18,8 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Create single folder
 #' creat_folder(file.path(tempdir(), "1-result"))
-#'
-#' # Create nested folders
 #' creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
-#' }
 creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {
   if (!is.character(f1) || length(f1) != 1 || nchar(f1) == 0) {
     cli::cli_abort("{.arg f1} must be a non-empty character string")

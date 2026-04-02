@@ -32,7 +32,6 @@ Divides dataset into training and testing sets using random sampling.
 Maintains data integrity for both binomial and survival analysis types.
 }
 \examples{
-\donttest{
 data_matrix <- matrix(rnorm(200), ncol = 2)
 outcome_vector <- rbinom(100, 1, 0.5)
 split_data <- SplitTrainTest(
@@ -40,5 +39,4 @@ split_data <- SplitTrainTest(
   train_ratio = 0.7,
   type = "binomial", seed = 123
 )
-}
 }
