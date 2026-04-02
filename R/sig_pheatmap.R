@@ -223,7 +223,7 @@ sig_pheatmap <- function(input,
     p_cols = cluster_colors,
     plot = ht,
     eset = eset
-  ) |> invisible()
+  ) %>% invisible()
 }
 
 #' Get Group Colors

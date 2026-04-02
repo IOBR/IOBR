@@ -48,9 +48,9 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   if (is.null(index)) index <- 1
 
   if (save && plot_hculst) {
-    tree.combat <- eset |>
-      t() |>
-      stats::dist() |>
+    tree.combat <- eset %>%
+      t() %>%
+      stats::dist() %>%
       stats::hclust(method = "average")
 
     grDevices::pdf(

@@ -133,8 +133,8 @@ batch_kruskal <- function(data,
   )
 
   # Calculate group means (mean-centered)
-  result_mean <- data |>
-    dplyr::group_by(.data$group) |>
+  result_mean <- data %>%
+    dplyr::group_by(.data$group) %>%
     dplyr::summarise(
       dplyr::across(
         dplyr::all_of(valid_features),
@@ -147,11 +147,11 @@ batch_kruskal <- function(data,
     result_mean,
     names_from = "group",
     values_from = dplyr::all_of(valid_features)
-  ) |>
+  ) %>%
     as.data.frame()
 
   # Pivot results in feature x group format, need to transpose
-  result_mean <- t(result_mean) |>
+  result_mean <- t(result_mean) %>%
     as.data.frame()
   # After transpose, columns are 1:n_groups, rows are features
   colnames(result_mean) <- group_names[1:ncol(result_mean)]

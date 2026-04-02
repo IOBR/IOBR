@@ -74,27 +74,27 @@ generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
     tmp
   })
 
-  median_value <- t(dat) |>
-    as.data.frame() |>
-    split(pheno) |>
+  median_value <- t(dat) %>%
+    as.data.frame() %>%
+    split(pheno) %>%
     purrr::map(function(x) apply(as.matrix(x), 2, stats::median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
   con_nums <- numeric(151)
   for (i in 50:200) {
-    probes <- resData |>
-      purrr::map(function(x) Top_probe(dat = x, i = i)) |>
-      unlist() |>
+    probes <- resData %>%
+      purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
+      unlist() %>%
       unique()
     tmpdat <- median_value[probes, , drop = FALSE]
     con_nums[i - 49] <- kappa(tmpdat)
   }
 
   i <- 49 + which.min(con_nums)
-  probes <- resData |>
-    purrr::map(function(x) Top_probe(dat = x, i = i)) |>
-    unlist() |>
+  probes <- resData %>%
+    purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
+    unlist() %>%
     unique()
   reference <- median_value[probes, , drop = FALSE]
   reference <- data.frame(NAME = rownames(reference), reference)

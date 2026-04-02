@@ -59,16 +59,16 @@ high_var_fea <- function(result, target, name_padj = "padj", padj_cutoff = 1,
     result[, "logfc"] <- result[, "logfc"] - 1
   }
 
-  topVarFeature1 <- result |>
-    dplyr::filter(.data$padj < padj_cutoff) |>
-    dplyr::arrange(.data$padj) |>
-    dplyr::filter(.data$logfc < -abs(logfc_cutoff)) |>
+  topVarFeature1 <- result %>%
+    dplyr::filter(.data$padj < padj_cutoff) %>%
+    dplyr::arrange(.data$padj) %>%
+    dplyr::filter(.data$logfc < -abs(logfc_cutoff)) %>%
     dplyr::select(.data$target, .data$padj, .data$logfc)
 
-  topVarFeature2 <- result |>
-    dplyr::filter(.data$padj < padj_cutoff) |>
-    dplyr::arrange(.data$padj) |>
-    dplyr::filter(.data$logfc > abs(logfc_cutoff)) |>
+  topVarFeature2 <- result %>%
+    dplyr::filter(.data$padj < padj_cutoff) %>%
+    dplyr::arrange(.data$padj) %>%
+    dplyr::filter(.data$logfc > abs(logfc_cutoff)) %>%
     dplyr::select(.data$target, .data$padj, .data$logfc)
 
   if (nrow(topVarFeature1) < n) {

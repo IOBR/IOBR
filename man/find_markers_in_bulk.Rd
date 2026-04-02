@@ -56,8 +56,8 @@ res <- find_markers_in_bulk(
   group = "TMEcluster"
 )
 # Extract top 15 markers per cluster
-top15 <- res$top_markers |>
-  dplyr::group_by(cluster) |>
+top15 <- res$top_markers %>%
+  dplyr::group_by(cluster) %>%
   dplyr::top_n(15, avg_log2FC)
 }
 }

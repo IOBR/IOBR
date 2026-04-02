@@ -129,8 +129,8 @@ batch_wilcoxon <- function(data,
   names(test_results) <- valid_features
 
   # Calculate group means - vectorized approach
-  result_mean <- data |>
-    dplyr::group_by(.data$group) |>
+  result_mean <- data %>%
+    dplyr::group_by(.data$group) %>%
     dplyr::summarise(
       dplyr::across(
         dplyr::all_of(valid_features), \(.x) mean(.x, na.rm = TRUE)
@@ -141,7 +141,7 @@ batch_wilcoxon <- function(data,
   # Convert to wide format with groups as columns
   result_mean <- tidyr::pivot_longer(result_mean,
     cols = valid_features
-  ) |> tidyr::pivot_wider(
+  ) %>% tidyr::pivot_wider(
     id_cols = "name", names_from = "group"
   )
 
@@ -160,8 +160,8 @@ batch_wilcoxon <- function(data,
     row.names = NULL
   )
 
-  cc <- dplyr::left_join(cc, result_mean, by = "name") |>
-    dplyr::arrange(.data$p.value) |>
+  cc <- dplyr::left_join(cc, result_mean, by = "name") %>%
+    dplyr::arrange(.data$p.value) %>%
     dplyr::mutate(
       p.adj = stats::p.adjust(.data$p.value, method = "BH"),
       log10pvalue = -log10(.data$p.value),

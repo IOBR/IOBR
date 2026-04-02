@@ -37,8 +37,8 @@ get_sig_sc <- function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "av
 
   deg <- as.data.frame(deg)
 
-  deg_top <- deg |>
-    dplyr::group_by(.data[[cluster]]) |>
+  deg_top <- deg %>%
+    dplyr::group_by(.data[[cluster]]) %>%
     dplyr::top_n(n, .data[[avg_log2FC]])
 
   feas <- split(deg_top, deg_top[[cluster]])

@@ -27,7 +27,7 @@ URL: https://doi.org/10.3389/fimmu.2021.687975 (paper),
     https://iobr.github.io/book/ (docs), https://iobr.github.io/IOBR/
 BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
-    R (>= 4.1.0)
+    R (>= 3.6.0)
 Imports:
     biomaRt,
     circlize,

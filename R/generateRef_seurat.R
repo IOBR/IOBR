@@ -107,8 +107,8 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
 
   print(utils::head(sce.markers))
 
-  refgene <- sce.markers |>
-    dplyr::group_by(.data$cluster) |>
+  refgene <- sce.markers %>%
+    dplyr::group_by(.data$cluster) %>%
     dplyr::top_n(n_ref_genes, .data$avg_log2FC)
 
   print(refgene)

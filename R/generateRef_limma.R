@@ -44,37 +44,37 @@ generateRef_limma <- function(dat, pheno, FDR = 0.05) {
 
   con <- Construct_con(pheno = pheno)
 
-  fit <- limma::lmFit(dat, design) |>
-    limma::contrasts.fit(con) |>
+  fit <- limma::lmFit(dat, design) %>%
+    limma::contrasts.fit(con) %>%
     limma::eBayes()
 
-  dif <- colnames(con) |>
-    purrr::map(function(x) limma::topTable(fit, adjust.method = "BH", coef = x, number = Inf)) |>
-    lapply(function(x) data.frame(probe = rownames(x), x)) |>
-    purrr::map(function(x) dplyr::filter(x, .data$adj.P.Val < FDR)) |>
+  dif <- colnames(con) %>%
+    purrr::map(function(x) limma::topTable(fit, adjust.method = "BH", coef = x, number = Inf)) %>%
+    lapply(function(x) data.frame(probe = rownames(x), x)) %>%
+    purrr::map(function(x) dplyr::filter(x, .data$adj.P.Val < FDR)) %>%
     purrr::map(function(x) dplyr::arrange(x, desc(.data$logFC)))
 
-  median_value <- t(dat) |>
-    as.data.frame() |>
-    split(pheno) |>
+  median_value <- t(dat) %>%
+    as.data.frame() %>%
+    split(pheno) %>%
     purrr::map(function(x) apply(as.matrix(x), 2, stats::median, na.rm = TRUE))
   median_value <- do.call(cbind, median_value)
   rownames(median_value) <- rownames(dat)
 
   con_nums <- numeric(151)
   for (i in 50:200) {
-    probes <- dif |>
-      purrr::map(function(x) Top_probe(dat = x, i = i)) |>
-      unlist() |>
+    probes <- dif %>%
+      purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
+      unlist() %>%
       unique()
     tmpdat <- median_value[probes, , drop = FALSE]
     con_nums[i - 49] <- kappa(tmpdat)
   }
 
   i <- 49 + which.min(con_nums)
-  probes <- dif |>
-    purrr::map(function(x) Top_probe(dat = x, i = i)) |>
-    unlist() |>
+  probes <- dif %>%
+    purrr::map(function(x) Top_probe(dat = x, i = i)) %>%
+    unlist() %>%
     unique()
   reference <- median_value[probes, , drop = FALSE]
   reference <- data.frame(NAME = rownames(reference), reference)

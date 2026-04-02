@@ -30,8 +30,8 @@
 #'   group = "TMEcluster"
 #' )
 #' # Extract top 15 markers per cluster
-#' top15 <- res$top_markers |>
-#'   dplyr::group_by(cluster) |>
+#' top15 <- res$top_markers %>%
+#'   dplyr::group_by(cluster) %>%
 #'   dplyr::top_n(15, avg_log2FC)
 #' }
 find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures = 2000, top_n = 20, thresh.use = 0.25, only.pos = TRUE, min.pct = 0.25, npcs = 30) {

@@ -23,7 +23,7 @@ template:
 repo:
   url:
     home: https://github.com/IOBR/IOBR
-    source: https://github.com/IOBR/IOBR/blob/main/
+    source: https://github.com/IOBR/IOBR/blob/master/
     issue: https://github.com/IOBR/IOBR/issues/
     user: https://github.com/
 
