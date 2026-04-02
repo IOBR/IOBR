@@ -1,4 +1,326 @@
 url: https://iobr.github.io/IOBR/
+
+home:
+  title: Immune Oncology Biological Research in R
+  description: >
+    Comprehensive toolkit for tumor microenvironment (TME) analysis,
+    integrating deconvolution, signature scoring, and visualization.
+
 template:
   bootstrap: 5
+  bslib:
+    primary: "#0054AD"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+
+repo:
+  url:
+    home: https://github.com/IOBR/IOBR
+    source: https://github.com/IOBR/IOBR/blob/main/
+    issue: https://github.com/IOBR/IOBR/issues/
+    user: https://github.com/
+
+authors:
+  Dongqiang Zeng:
+    href: https://github.com/IOBR
+  Yiran Fang:
+    href: https://orcid.org/0000-0001-9855-7357
+  Shixiang Wang:
+    href: https://orcid.org/0000-0001-9855-7357
+  Qingcong Luo:
+    href: https://github.com/IOBR
+  Hongqian Qian:
+    href: https://github.com/IOBR
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [search, github]
+
+reference:
+  - title: "Data Input & Validation"
+    desc: "Read, validate, and format expression data."
+    contents:
+      - check_eset
+      - anno_eset
+      - combine_pd_eset
+      - merge_eset
+      - rbind_iobr
+      - filterCommonGenes
+      - remove_duplicate_genes
+      - merge_duplicate
+      - assimilate_data
+
+  - title: "Data Preprocessing & Transformation"
+    desc: "Normalize, transform, and batch-correct expression data."
+    contents:
+      - transform_data
+      - count2tpm
+      - log2eset
+      - remove_batcheffect
+      - RemoveBatchEffect
+      - scale_matrix
+      - eset_distribution
+      - mouse2human_eset
+      - patterns_to_na
+      - tcga_rna_preps
+
+  - title: "TME Deconvolution — Main Interface"
+    desc: >
+      Estimate immune and stromal cell fractions from bulk expression data
+      using 11 integrated deconvolution algorithms.
+    contents:
+      - deconvo_tme
+      - tme_deconvolution_methods
+      - select_method
+      - iobr_deconvo_pipeline
+
+  - title: "TME Deconvolution — Individual Methods"
+    desc: "Standalone wrappers for each supported deconvolution method."
+    contents:
+      - deconvo_cibersort
+      - deconvo_timer
+      - deconvo_xcell
+      - deconvo_mcpcounter
+      - deconvo_estimate
+      - deconvo_epic
+      - deconvo_ips
+      - deconvo_quantiseq
+      - deconvolute_quantiseq.default
+      - deconvolute_timer.default
+      - deconvo_ref
+
+  - title: "TME Deconvolution — CIBERSORT Internals"
+    desc: "Core CIBERSORT algorithm implementation."
+    contents:
+      - CIBERSORT
+      - CoreAlg
+      - GetFractions.Abbas
+      - ParseInputExpression
+      - doPerm
+      - parallel_doperm
+
+  - title: "TME Deconvolution — TIMER Internals"
+    desc: "TIMER algorithm utilities and cancer-type support."
+    contents:
+      - timer_available_cancers
+      - timer_info
+      - check_cancer_types
+      - GetOutlierGenes
+      - Top_probe
+
+  - title: "TME Deconvolution — Other Algorithm Internals"
+    desc: "Internal helpers for EPIC, IPS, MCPcounter, and ESTIMATE."
+    contents:
+      - MCPcounter.estimate
+      - EPIC
+      - IPS_calculation
+      - ipsmap
+      - estimateScore
+      - plotPurity
+
+  - title: "Signature Scoring"
+    desc: >
+      Calculate gene signature scores using PCA, z-score, and ssGSEA methods
+      for 300+ curated TME signatures.
+    contents:
+      - calculate_sig_score
+      - sigScore
+      - signature_score_calculation_methods
+      - calculate_sig_score_pca
+      - calculate_sig_score_zscore
+      - calculate_sig_score_ssgsea
+      - calculate_sig_score_integration
+      - test_for_infiltration
+
+  - title: "Statistical Analysis — Correlation"
+    desc: "Batch correlation tests between features or signature scores."
+    contents:
+      - batch_cor
+      - batch_pcc
+      - get_cor
+      - get_cor_matrix
+
+  - title: "Statistical Analysis — Group Comparison"
+    desc: "Statistical tests comparing groups (Wilcoxon, Kruskal-Wallis)."
+    contents:
+      - batch_wilcoxon
+      - batch_kruskal
+      - exact_pvalue
+
+  - title: "Statistical Analysis — Survival & Time-to-Event"
+    desc: "Optimal cutoff identification and time-dependent ROC analysis."
+    contents:
+      - best_cutoff
+      - best_cutoff2
+      - calculate_break_month
+      - CalculateTimeROC
+      - PlotTimeROC
+      - roc_time
+
+  - title: "Visualization — Heatmaps & Correlation"
+    desc: "Heatmaps and correlation plots for TME features."
+    contents:
+      - sig_heatmap
+      - sig_pheatmap
+      - iobr_cor_plot
+
+  - title: "Visualization — Survival & ROC"
+    desc: "Kaplan-Meier survival curves and ROC plots."
+    contents:
+      - sig_surv_plot
+      - batch_surv
+      - batch_sig_surv_plot
+      - surv_group
+      - subgroup_survival
+      - sig_roc
+
+  - title: "Visualization — Comparison Plots"
+    desc: "Box plots, violin plots, and forest plots."
+    contents:
+      - sig_box
+      - sig_box_batch
+      - sig_forest
+
+  - title: "Visualization — Distribution & Enrichment"
+    desc: "Bar charts, pie charts, and enrichment visualizations."
+    contents:
+      - cell_bar_plot
+      - percent_bar_plot
+      - pie_chart
+      - enrichment_barplot
+
+  - title: "Visualization — Themes & Color Utilities"
+    desc: "Color palettes, themes, and plot formatting helpers."
+    contents:
+      - get_cols
+      - mapcolors
+      - mapbw
+      - design_mytheme
+      - palettes
+      - DrawQQPlot
+
+  - title: "Prognostic Modeling"
+    desc: "Build LASSO/Elastic-Net prognostic models and compute risk scores."
+    contents:
+      - PrognosticModel
+      - BinomialModel
+      - add_riskscore
+      - PrognosticAUC
+      - BinomialAUC
+      - SplitTrainTest
+      - PrognosticResult
+      - RegressionResult
+      - PlotAUC
+      - getHRandCIfromCoxph
+      - ProcessingData
+      - Enet
+      - CalculatePref
+
+  - title: "Clustering & Subgroup Analysis"
+    desc: "Cluster TME profiles and identify patient subgroups."
+    contents:
+      - tme_cluster
+
+  - title: "Feature Selection"
+    desc: "Identify informative features and variable genes."
+    contents:
+      - feature_select
+      - feature_manipulation
+      - lasso_select
+      - high_var_fea
+      - find_variable_genes
+      - find_outlier_samples
+
+  - title: "Genomics & Differential Expression"
+    desc: "Differential expression, mutation analysis, and PCA."
+    contents:
+      - limma.dif
+      - iobr_deg
+      - iobr_pca
+      - find_mutations
+      - find_markers_in_bulk
+      - make_mut_matrix
+      - ConvertRownameToLoci
+
+  - title: "scRNA-seq Reference Construction"
+    desc: "Build custom deconvolution reference matrices from scRNA-seq data."
+    contents:
+      - generateRef
+      - generateRef_rnaseq
+      - generateRef_seurat
+      - generateRef_limma
+      - generateRef_DEseq2
+      - extract_sc_data
+      - get_sig_sc
+      - Construct_con
+
+  - title: "Signature Format & Export"
+    desc: "Format, annotate, and export gene signatures."
+    contents:
+      - format_signatures
+      - format_msigdb
+      - output_sig
+      - outputGCT
+      - sig_gsea
+
+  - title: "Ligand-Receptor Interactions"
+    desc: "Calculate ligand-receptor interaction scores."
+    contents:
+      - LR_cal
+
+  - title: "General Utilities"
+    desc: "Miscellaneous helper functions for data and file management."
+    contents:
+      - load_data
+      - creat_folder
+      - remove_names
+
+  - title: "Datasets — Expression Sets"
+    desc: "Example bulk RNA-seq expression matrices."
+    contents:
+      - eset_stad
+      - eset_blca
+      - eset_gse62254
+      - eset_tme_stad
+
+  - title: "Datasets — Deconvolution Reference Matrices"
+    desc: "Reference signature matrices for CIBERSORT and EPIC."
+    contents:
+      - lm22
+      - TRef
+      - BRef
+
+  - title: "Datasets — Gene Signatures"
+    desc: "Curated gene signature collections for TME scoring."
+    contents:
+      - signature_collection
+      - imvigor210_sig
+      - sig_stad
+      - tcga_stad_sig
+
+  - title: "Datasets — Sample Metadata"
+    desc: "Clinical and phenotypic data for example datasets."
+    contents:
+      - pdata_stad
+      - tcga_stad_pdata
+      - imvigor210_pdata
+      - sig_group
+      - stad_group
+      - subgroup_data
+
+  - title: "Datasets — Genomic Annotation"
+    desc: "Gene and probe annotation tables for multiple platforms."
+    contents:
+      - anno_rnaseq
+      - anno_grch38
+      - anno_illumina
+      - anno_hug133plus2
+      - anno_gc_vm32
+
+  - title: "Datasets — Miscellaneous"
+    desc: "Additional reference data used by package functions."
+    contents:
+      - deg
+      - null_models
 
