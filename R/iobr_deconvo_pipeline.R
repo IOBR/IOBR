@@ -16,7 +16,7 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")

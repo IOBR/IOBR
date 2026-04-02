@@ -424,7 +424,7 @@ GetOutlierGenes <- function(cancers) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' tf <- tempfile(fileext = ".csv")
 #' write.table(data.frame("exp1", "luad", "exp2", "brca"),
 #'   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE

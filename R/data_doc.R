@@ -3,6 +3,12 @@
 #' @format A `data.frame` with cell types in rows and coefficients in columns.
 #' @usage data(null_models)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(null_models)
+#' head(null_models)
+#' }
 "null_models"
 
 #' Toy STAD expression matrix
@@ -14,6 +20,12 @@
 #' @format A numeric matrix with genes in rows and samples in columns.
 #' @usage data(eset_stad)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(eset_stad)
+#' head(eset_stad)
+#' }
 "eset_stad"
 
 
@@ -48,6 +60,12 @@
 #'
 #' @usage data(pdata_stad)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(pdata_stad)
+#' head(pdata_stad)
+#' }
 "pdata_stad"
 
 
@@ -74,6 +92,12 @@
 #'
 #' @usage data(signature_collection)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(signature_collection)
+#' head(signature_collection)
+#' }
 "signature_collection"
 
 
@@ -108,6 +132,12 @@
 #'
 #' @usage data(sig_group)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(sig_group)
+#' head(sig_group)
+#' }
 "sig_group"
 
 
@@ -143,6 +173,12 @@
 #'
 #' @usage data(TRef)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(TRef)
+#' head(TRef)
+#' }
 "TRef"
 
 
@@ -192,6 +228,12 @@
 #'
 #' @usage data(BRef)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(BRef)
+#' head(BRef)
+#' }
 "BRef"
 
 
@@ -224,6 +266,12 @@
 #'
 #' @usage data(lm22)
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(lm22)
+#' head(lm22)
+#' }
 "lm22"
 
 
@@ -249,6 +297,12 @@
 #' doi:10.1038/nm.3850
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(eset_gse62254)
+#' head(eset_gse62254)
+#' }
 "eset_gse62254"
 
 
@@ -275,6 +329,12 @@
 #' doi:10.1038/nature13480
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(eset_tme_stad)
+#' head(eset_tme_stad)
+#' }
 "eset_tme_stad"
 
 
@@ -300,6 +360,12 @@
 #' doi:10.1038/nature12965
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(eset_blca)
+#' head(eset_blca)
+#' }
 "eset_blca"
 
 #' TCGA-STAD Clinical and Molecular Annotation Data
@@ -337,6 +403,12 @@
 #' doi:10.1038/nature13480
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(tcga_stad_pdata)
+#' head(tcga_stad_pdata)
+#' }
 "tcga_stad_pdata"
 
 
@@ -373,6 +445,12 @@
 #' doi:10.1038/nature25501
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(imvigor210_pdata)
+#' head(imvigor210_pdata)
+#' }
 "imvigor210_pdata"
 
 
@@ -413,6 +491,12 @@
 #' doi:10.1016/j.celrep.2019.09.045
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(sig_stad)
+#' head(sig_stad)
+#' }
 #' @docType data
 "sig_stad"
 
@@ -453,6 +537,12 @@
 #' doi:10.1038/nature13480
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(tcga_stad_sig)
+#' head(tcga_stad_sig)
+#' }
 #' @docType data
 "tcga_stad_sig"
 
@@ -497,6 +587,12 @@
 #' Nature Methods 12, 453-457 (2015). doi:10.1038/nmeth.3337
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(imvigor210_sig)
+#' head(imvigor210_sig)
+#' }
 #' @docType data
 "imvigor210_sig"
 
@@ -524,6 +620,12 @@
 #' @usage data(deg)
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(deg)
+#' head(deg)
+#' }
 #' @docType data
 "deg"
 
@@ -547,6 +649,12 @@
 #' @usage data(subgroup_data)
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(subgroup_data)
+#' head(subgroup_data)
+#' }
 #' @docType data
 "subgroup_data"
 
@@ -572,6 +680,12 @@
 #' @usage data(stad_group)
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(stad_group)
+#' head(stad_group)
+#' }
 #' @docType data
 "stad_group"
 
@@ -601,6 +715,12 @@
 #' @source Ensembl release 104 (GRCh38.p13)
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anno_grch38)
+#' head(anno_grch38)
+#' }
 "anno_grch38"
 
 
@@ -630,6 +750,12 @@
 #' @source Ensembl database for mouse GRCm38/mm10
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anno_gc_vm32)
+#' head(anno_gc_vm32)
+#' }
 "anno_gc_vm32"
 
 
@@ -650,6 +776,12 @@
 #' @source Affymetrix annotation files (HuGene-1_0-st-v1)
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anno_hug133plus2)
+#' head(anno_hug133plus2)
+#' }
 "anno_hug133plus2"
 
 #' General RNA-seq Annotation
@@ -668,6 +800,12 @@
 #' @source Curated from multiple public RNA-seq resources
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anno_rnaseq)
+#' head(anno_rnaseq)
+#' }
 "anno_rnaseq"
 
 #' Illumina Microarray Annotation
@@ -686,4 +824,10 @@
 #' @source Illumina annotation manifest files
 #'
 #' @keywords datasets
+#'
+#' @examples
+#' \donttest{
+#' data(anno_illumina)
+#' head(anno_illumina)
+#' }
 "anno_illumina"

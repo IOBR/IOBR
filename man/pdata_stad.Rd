@@ -36,4 +36,10 @@ the \code{ID} column. This dataset is typically used together with
 \code{eset_stad} in examples of survival analysis, subgroup comparison
 and immune deconvolution in the IOBR package.
 }
+\examples{
+\donttest{
+data(pdata_stad)
+head(pdata_stad)
+}
+}
 \keyword{datasets}

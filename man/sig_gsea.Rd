@@ -127,17 +127,26 @@ from differential gene expression data. Supports MSigDB gene sets or custom gene
 signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
+\donttest{
 set.seed(123)
+genes <- c("TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
+           "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
+           "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3",
+           "ARF1", "ARF3", "ARF4", "ARF5", "ARF6", "GSK3B", "AKT1", "AKT2",
+           "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3")
 deg <- data.frame(
-  symbol = paste0("Gene", 1:100),
-  log2FoldChange = rnorm(100, mean = 0, sd = 2),
-  padj = runif(100, 0, 0.1)
+  symbol = genes,
+  log2FoldChange = rnorm(length(genes), mean = 0, sd = 2),
+  padj = runif(length(genes), 0, 0.1)
 )
 signature <- list(
-  Signature1 = paste0("Gene", 1:20),
-  Signature2 = paste0("Gene", 21:40)
+  DNA_Repair = c("TP53", "BRCA1", "ATM", "ATR", "CHEK2", "PALB2", "RAD51"),
+  Cell_Cycle = c("TP53", "MYC", "RB1", "CDKN2A", "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3"),
+  PI3K_AKT = c("AKT1", "AKT2", "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3")
 )
-res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE)
+res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE, print_bar = FALSE)
+print(names(res))
+}
 }
 \author{
 Dongqiang Zeng

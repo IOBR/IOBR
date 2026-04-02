@@ -123,15 +123,16 @@ rawEnrichmentAnalysis <- function(expr, signatures, genes, file.name = NULL) {
   use_new_api <- gsva_info$use_new_api
 
   if (use_new_api) {
-    params <- GSVA::gsvaParam(
-      as.matrix(expr),
-      signatures,
+    params <- GSVA::ssgseaParam(
+      exprData = as.matrix(expr),
+      geneSets = signatures,
       minSize = 1,
       maxSize = Inf,
       kcdf = "Gaussian",
       tau = 1,
       maxDiff = TRUE,
-      absRanking = FALSE
+      absRanking = FALSE,
+      normalize = FALSE
     )
 
     rlang::check_installed("BiocParallel")

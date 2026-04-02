@@ -53,7 +53,6 @@ Note: Windows users may experience slower performance due to socket-based
 parallelization (PSOCK) versus forking on Unix systems.
 }
 \examples{
-\donttest{
 X <- matrix(rnorm(1000), nrow = 100)
 Y <- matrix(rnorm(500), nrow = 100)
 rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
@@ -63,7 +62,6 @@ result <- parallel_doperm(
   absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 2
 )
 str(result$dist)
-}
 }
 \seealso{
 \code{\link{doPerm}} for the sequential version, \code{\link{CoreAlg}}, \code{\link{CIBERSORT}}

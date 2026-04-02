@@ -82,12 +82,12 @@ tme_deconvolution_methods <- c(
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' xcell_result <- deconvo_xcell(eset = eset, project = "TCGA-STAD")
-#' head(xcell_result)
+#' xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
+#' head(xcell_result)[, 1:5]
 #' }
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   rlang::check_installed("xCell", reason = "to run xCell deconvolution")
@@ -152,11 +152,13 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+#' eset <- eset[1:500, 1:3]
 #' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
+#' head(mcp_result)
 #' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
   cli::cli_alert_info("Running MCP-counter deconvolution")
@@ -496,15 +498,16 @@ deconvo_ref <- function(eset,
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:6]
+#' eset <- eset[1:500, 1:3]
 #' res <- deconvo_timer(
 #'   eset = eset, project = "stad",
 #'   indications = rep("stad", ncol(eset))
 #' )
+#' head(res)
 #' }
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   cli::cli_alert_info("Running TIMER deconvolution")
@@ -566,7 +569,7 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -575,6 +578,7 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #'   eset = eset, project = "stad", tumor = TRUE,
 #'   arrays = FALSE, scale_mrna = FALSE
 #' )
+#' head(res)
 #' }
 deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
   cli::cli_alert_info("Running quanTIseq deconvolution")

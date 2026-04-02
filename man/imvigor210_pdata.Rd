@@ -33,6 +33,12 @@ Clinical and biomarker data from the IMvigor210 clinical trial cohort.
 Includes treatment response, survival outcomes, and immune biomarker
 measurements for bladder cancer patients treated with atezolizumab.
 }
+\examples{
+\donttest{
+data(imvigor210_pdata)
+head(imvigor210_pdata)
+}
+}
 \references{
 Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
 by contributing to exclusion of T cells. Nature 554, 544-548 (2018).

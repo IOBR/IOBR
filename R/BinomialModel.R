@@ -341,7 +341,6 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("ROCR", quietly = TRUE)) {
 #'   set.seed(123)
@@ -352,7 +351,6 @@ Enet <- function(train.x, train.y, lambdamax, nfold = 10) {
 #'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
 #'   auc_value <- BinomialAUC(fitted_model, test_data, fitted_model$lambda.min, test_outcome)
 #'   print(auc_value)
-#' }
 #' }
 BinomialAUC <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
@@ -382,7 +380,6 @@ BinomialAUC <- function(model, newx, s, acture.y) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE)) {
 #'   set.seed(123)
 #'   train_data <- matrix(rnorm(100 * 5), ncol = 5)
@@ -392,7 +389,6 @@ BinomialAUC <- function(model, newx, s, acture.y) {
 #'   fitted_model <- glmnet::cv.glmnet(train_data, train_outcome, family = "binomial", nfolds = 5)
 #'   p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
 #'   print(p)
-#' }
 #' }
 PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
                     cols = NULL, palette = "jama") {
@@ -465,12 +461,10 @@ PlotAUC <- function(train.x, train.y, test.x, test.y, model, modelname,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("glmnet", quietly = TRUE) &&
 #'   requireNamespace("ROCR", quietly = TRUE)) {
 #'   fitted_model <- glmnet::cv.glmnet(matrix(rnorm(100), ncol = 2), rbinom(50, 1, 0.5), nfolds = 3)
 #'   perf <- CalculatePref(fitted_model, matrix(rnorm(20), ncol = 2), "lambda.min", rbinom(10, 1, 0.5))
-#' }
 #' }
 CalculatePref <- function(model, newx, s, acture.y) {
   rlang::check_installed("ROCR")
@@ -503,7 +497,6 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' data_matrix <- matrix(rnorm(200), ncol = 2)
 #' outcome_vector <- rbinom(100, 1, 0.5)
 #' split_data <- SplitTrainTest(
@@ -511,7 +504,6 @@ CalculatePref <- function(model, newx, s, acture.y) {
 #'   train_ratio = 0.7,
 #'   type = "binomial", seed = 123
 #' )
-#' }
 SplitTrainTest <- function(x, y, train_ratio, type = c("binomial", "survival"), seed) {
   type <- rlang::arg_match(type)
 

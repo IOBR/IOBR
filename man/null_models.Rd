@@ -13,4 +13,10 @@ data(null_models)
 \description{
 NULL Model Coefficients for MCPcounter
 }
+\examples{
+\donttest{
+data(null_models)
+head(null_models)
+}
+}
 \keyword{datasets}

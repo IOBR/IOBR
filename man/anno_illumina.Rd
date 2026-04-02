@@ -21,4 +21,10 @@ data(anno_illumina)
 Probe annotation for Illumina microarray platforms. Provides mapping
 between Illumina probe IDs and gene symbols for microarray data analysis.
 }
+\examples{
+\donttest{
+data(anno_illumina)
+head(anno_illumina)
+}
+}
 \keyword{datasets}

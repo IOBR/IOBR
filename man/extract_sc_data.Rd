@@ -35,7 +35,7 @@ from Seurat assay data. Supports multiple assays and optional metadata
 integration.
 }
 \examples{
-\dontrun{
+\donttest{
 if (requireNamespace("Seurat", quietly = TRUE)) {
   pbmc <- SeuratObject::pbmc_small
   vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3")

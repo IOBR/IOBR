@@ -336,21 +336,17 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       BiocParallel::SerialParam(progressbar = TRUE)
     }
 
-    # Build parameters
-    args <- list(
-      as.matrix(eset),
-      signature,
+    param <- GSVA::ssgseaParam(
+      exprData = as.matrix(eset),
+      geneSets = signature,
       minSize = min_genes,
       maxSize = Inf,
       kcdf = "Gaussian",
       tau = 1,
       maxDiff = TRUE,
       absRanking = FALSE,
-      ssgsea.norm = TRUE
+      normalize = TRUE
     )
-    args <- args[names(args) %in% names(formals(GSVA::ssgseaParam))]
-
-    param <- do.call(GSVA::ssgseaParam, args)
     res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = bp)
   } else {
     res <- GSVA::gsva(
@@ -468,15 +464,16 @@ calculate_sig_score_integration <- function(pdata = NULL,
 
     if (gsva_info$use_new_api) {
       rlang::check_installed("BiocParallel")
-      param <- GSVA::gsvaParam(
-        as.matrix(eset),
-        sig_ssgsea,
+      param <- GSVA::ssgseaParam(
+        exprData = as.matrix(eset),
+        geneSets = sig_ssgsea,
         minSize = ssgsea_min,
         maxSize = Inf,
         kcdf = "Gaussian",
         tau = 1,
         maxDiff = TRUE,
-        absRanking = FALSE
+        absRanking = FALSE,
+        normalize = TRUE
       )
       res <- GSVA::gsva(param,
         verbose = TRUE,

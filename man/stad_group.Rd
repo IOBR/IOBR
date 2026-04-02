@@ -26,4 +26,10 @@ A small example dataset demonstrating the clinical data structure required
 for TCGA Stomach Adenocarcinoma (STAD) analysis using IOBR package functions.
 Contains simulated clinical variables, molecular subtypes, and survival data.
 }
+\examples{
+\donttest{
+data(stad_group)
+head(stad_group)
+}
+}
 \keyword{datasets}
