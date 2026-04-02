@@ -49,8 +49,8 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ✔ 100% of probes in expression set were annotated
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
+eset <- as.data.frame(eset)
 eset <- tibble::rownames_to_column(eset, var = "symbol")
-#> Error in tibble::rownames_to_column(eset, var = "symbol"): is.data.frame(df) is not TRUE
 input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
 output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
 writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
@@ -61,5 +61,6 @@ utils::write.table(
 )
 #> Warning: appending column names to file
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
-#> Error in read.table(file = file, header = header, sep = sep, quote = quote,     dec = dec, fill = fill, comment.char = comment.char, ...): duplicate 'row.names' are not allowed
+#> [1] "1 gene set: StromalSignature  overlap= 138"
+#> [1] "2 gene set: ImmuneSignature  overlap= 140"
 ```
