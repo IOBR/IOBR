@@ -123,7 +123,6 @@ Dongqiang Zeng, Rongfang Shen
 ## Examples
 
 ``` r
-# \donttest{
 lm22 <- load_data("lm22")
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
@@ -136,5 +135,4 @@ res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running CIBERSORT
-# }
 ```

@@ -82,7 +82,6 @@ Wubing Zhang, Dongqiang Zeng, Yiran Fang
 ## Examples
 
 ``` r
-# \donttest{
 # Load TCGA count data
 eset_stad <- load_data("eset_stad")
 
@@ -114,5 +113,4 @@ head(eset)
 #> ENSG00000000457    2.0238365   2.94567403
 #> ENSG00000000460    0.2368734   5.09922078
 #> ENSG00000000938    0.5413752   1.18625545
-# }
 ```

@@ -103,6 +103,68 @@ select sets of signatures for scoring and visualization.</p>
 
 </dl></div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sig_group</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sig_group</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tumor_signature</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "CellCycle_Reg"                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "Cell_cycle"                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "DDR"                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "Mismatch_Repair"                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "Histones"                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Homologous_recombination"                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Nature_metabolism_Hypoxia"                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "Molecular_Cancer_m6A"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "MT_exosome"                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Positive_regulation_of_exosomal_secretion"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Ferroptosis"                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "EV_Cell_2020"                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $EMT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pan_F_TBRs" "EMT1"       "EMT2"       "EMT3"       "WNT_target"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $io_biomarkers</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "TMEscore_CIR"                    "TMEscoreA_CIR"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "TMEscoreB_CIR"                   "T_cell_inflamed_GEP_Ayers_et_al"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "CD_8_T_effector"                 "IPS_IPS"                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "Immune_Checkpoint"               "Exhausted_CD8_Danaher_et_al"    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "Pan_F_TBRs"                      "Mismatch_Repair"                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "APM"                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $immu_microenvironment</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "GPAGs"                       "PPAGs"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Pan_F_TBRs"                  "MDSC_Peng_et_al"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "TAM_Peng_et_al"              "MicroenvironmentScore_xCell"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "TMEscore"                    "ImmuneScore_xCell"          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "ImmuneScore_estimate"        "StromalScore_estimate"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $immu_suppression</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pan_F_TBRs"                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Fibroblasts_MCPcounter"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Immune_Checkpoint"                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Exhausted_CD8_Danaher_et_al"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "MDSC_Wang_et_al"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "Macrophages_M2_cibersort"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "Tregs_quantiseq"                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8] "T_cells_regulatory_(Tregs)_CIBERSORT"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $immu_exclusion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Pan_F_TBRs"                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "CAF_Peng_et_al"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "Fibroblasts_MCPcounter"              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "CAFs_EPIC"                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "EMT1"                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "EMT2"                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "WNT_target"                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "TGFb_Family_Member_Receptor_Li_et_al"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "TGFb_Family_Member_Li_et_al"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "Macrophages_M2_CIBERSORT"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Macrophages_M2_quantiseq"            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "TAM_Peng_et_al"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

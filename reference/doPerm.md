@@ -52,9 +52,7 @@ List containing:
 ## Examples
 
 ``` r
-# \donttest{
 X <- matrix(rnorm(100), nrow = 10)
 Y <- rnorm(10)
-result <- doPerm(1000, X, Y, absolute = FALSE, abs_method = "sig.score")
-# }
+result <- doPerm(100, X, Y, absolute = FALSE, abs_method = "sig.score")
 ```

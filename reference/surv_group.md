@@ -121,7 +121,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 surv_group(
   input_pdata = tcga_stad_pdata,
@@ -136,6 +135,4 @@ surv_group(
 #> ℹ Reference group not defined, using alphabetical order
 #> Ignoring unknown labels:
 #> • colour : "Strata"
-
-# }
 ```

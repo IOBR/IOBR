@@ -138,6 +138,11 @@ IOBR Package
 </div>
 </div>
 <div class="section level2">
+<h2 id="id_️-important-note">⚠️ Important Note<a class="anchor" aria-label="anchor" href="#id_%EF%B8%8F-important-note"></a>
+</h2>
+<p>To better integrate IOBR into the bioinformatics community, we have recently made extensive changes to optimize the code and enhance documentation. However, these improvements may introduce code instability and inconsistency. If you need to reproduce previous analysis results, please install and use the previously tagged versions from <a href="https://github.com/IOBR/IOBR/tags" class="external-link uri">https://github.com/IOBR/IOBR/tags</a>.</p>
+</div>
+<div class="section level2">
 <h2 id="id_-installation">📦 Installation<a class="anchor" aria-label="anchor" href="#id_-installation"></a>
 </h2>
 <div class="section level3">
@@ -264,7 +269,7 @@ IOBR Package
 <h3 id="signature-collection">Signature Collection<a class="anchor" aria-label="anchor" href="#signature-collection"></a>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"signature_collection"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">signature_collection</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_data.html">load_data</a></span><span class="op">(</span><span class="st">"signature_collection"</span><span class="op">)</span></span>
 <span><span class="co"># Number of available signatures</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">signature_collection</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 323</span></span>
@@ -315,7 +320,7 @@ IOBR Package
 <span><span class="co">#&gt; [13] "PXDC1"    "SEMA7A"   "SH3PXD2A" "TAGLN"    "TGFBI"    "TNS1"    </span></span>
 <span><span class="co">#&gt; [19] "TPM1"</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"signature_collection_citation"</span><span class="op">)</span></span>
+<span><span class="va">signature_collection_citation</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_data.html">load_data</a></span><span class="op">(</span><span class="st">"signature_collection_citation"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">signature_collection_citation</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 6</span></span>
 <span><span class="co">#&gt;   Signatures        `Published year` Journal Title                   PMID  DOI  </span></span>
@@ -327,7 +332,7 @@ IOBR Package
 <span><span class="co">#&gt; 5 CellCycle_Reg                 2018 Nature  TGFβ attenuates tumour… 2944… 10.1…</span></span>
 <span><span class="co">#&gt; 6 Pan_F_TBRs                    2018 Nature  TGFβ attenuates tumour… 2944… 10.1…</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sig_group"</span><span class="op">)</span></span>
+<span><span class="va">sig_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_group"</span><span class="op">)</span></span>
 <span><span class="va">sig_group</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
 <span><span class="co">#&gt; $tumor_signature</span></span>
 <span><span class="co">#&gt;  [1] "CellCycle_Reg"                            </span></span>

@@ -53,3 +53,17 @@ A data frame with one row per TCGA-STAD sample and 8 variables:
 
   Integer/binary. Overall survival status indicator. (`1` = death, `0` =
   censored)
+
+## Examples
+
+``` r
+data(pdata_stad)
+head(pdata_stad)
+#>               ID     stage status     Lauren subtype      EBV  time OS_status
+#> 61  TCGA-BR-8365  Stage_II   Dead      Mixed     CIN Negitive 17.77         1
+#> 58  TCGA-BR-8297 Stage_III  Alive    Diffuse     CIN Negitive  7.50         0
+#> 23  TCGA-BR-6564 Stage_III   Dead    Diffuse     CIN Negitive 26.47         1
+#> 65  TCGA-BR-8369 Stage_III  Alive      Mixed     CIN Negitive 14.23         0
+#> 87  TCGA-BR-8682  Stage_II  Alive Intestinal     CIN Negitive 33.03         0
+#> 125 TCGA-CD-A489  Stage_II   Dead    Diffuse     CIN Negitive 11.47         1
+```

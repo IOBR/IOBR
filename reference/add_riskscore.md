@@ -67,29 +67,19 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-if (requireNamespace("survival", quietly = TRUE)) {
-  lung <- survival::lung
-  result <- add_riskscore(
-    lung,
-    time = "time", status = "status",
-    vars = c("age", "sex")
-  )
-  head(result)
-}
-#>   inst time status age sex ph.ecog ph.karno pat.karno meal.cal wt.loss
-#> 1    3  306      2  74   1       1       90       100     1175      NA
-#> 2    3  455      2  68   1       0       90        90     1225      15
-#> 3    3 1010      1  56   1       0       90        90       NA      15
-#> 4    5  210      2  57   1       1       90        60     1150      11
-#> 5    1  883      2  60   1       0      100        90       NA       0
-#> 6   12 1022      1  74   1       1       50        80      513       0
-#>    riskscore
-#> 1 0.39950470
-#> 2 0.29723270
-#> 3 0.09268872
-#> 4 0.10973405
-#> 5 0.16087005
-#> 6 0.39950470
-# }
+set.seed(123)
+input_data <- data.frame(
+  time = rexp(100),
+  status = rbinom(100, 1, 0.5),
+  age = rnorm(100, 60, 10),
+  score1 = rnorm(100),
+  score2 = rnorm(100)
+)
+result <- add_riskscore(
+  input_data,
+  time = "time", status = "status",
+  vars = c("age", "score1", "score2")
+)
+head(result$riskscore)
+#> [1]  0.14482695 -0.01998538 -0.16480176  0.02682253 -0.15742721 -0.08938045
 ```

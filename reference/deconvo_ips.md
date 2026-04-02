@@ -33,7 +33,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -43,5 +42,4 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
 #> ℹ Running IPS calculation
-# }
 ```

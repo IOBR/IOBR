@@ -39,7 +39,7 @@ condition number. - \`whole_matrix\`: Full median expression matrix.
 ## Examples
 
 ``` r
-# \donttest{
+set.seed(123)
 dds <- matrix(sample(0:1000, 2000, replace = TRUE), nrow = 100, ncol = 20)
 colnames(dds) <- paste("Sample", 1:20, sep = "_")
 rownames(dds) <- paste("Gene", 1:100, sep = "_")
@@ -47,6 +47,7 @@ pheno <- rep(c("Type1", "Type2"), each = 10)
 dat <- matrix(runif(2000), nrow = 100, ncol = 20)
 rownames(dat) <- rownames(dds)
 colnames(dat) <- colnames(dds)
+# \donttest{
 result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #> converting counts to integer mode
 #> Warning: some variables in design formula are characters, converting to factors

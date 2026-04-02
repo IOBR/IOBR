@@ -34,8 +34,8 @@ Numeric AUC value between 0 and 1.
 ## Examples
 
 ``` r
-# \donttest{
-if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quietly = TRUE)) {
+if (requireNamespace("glmnet", quietly = TRUE) &&
+  requireNamespace("ROCR", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 5), ncol = 5)
   train_outcome <- rbinom(100, 1, 0.5)
@@ -46,5 +46,4 @@ if (requireNamespace("glmnet", quietly = TRUE) && requireNamespace("ROCR", quiet
   print(auc_value)
 }
 #> [1] 0.4879227
-# }
 ```

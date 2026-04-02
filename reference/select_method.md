@@ -32,7 +32,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 hallmark <- load_data("hallmark")
@@ -54,13 +53,10 @@ res <- calculate_sig_score(
 #> ℹ Step 3/3: ssGSEA method
 #> ℹ GSVA version 2.4.8
 #> ℹ Searching for rows with constant values
-#> ℹ Calculating GSVA ranks
-#> ℹ GSVA dense (classical) algorithm
-#> ℹ Row-wise ECDF estimation with Gaussian kernels
-#> ℹ Calculating row ECDFs
-#> ℹ Calculating column ranks
-#> ℹ GSVA dense (classical) algorithm
-#> ℹ Calculating GSVA scores
+#> ℹ Calculating ssGSEA scores for 4 gene sets
+#> ℹ Calculating ranks
+#> ℹ Calculating rank weights
+#> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 select_method(res, method = "PCA")
 #> # A tibble: 10 × 6
@@ -78,5 +74,4 @@ select_method(res, method = "PCA")
 #> 10 TCGA-FP-7916    10                -0.501                       7.27  
 #> # ℹ 2 more variables: HALLMARK_ANDROGEN_RESPONSE <dbl>,
 #> #   HALLMARK_ANGIOGENESIS <dbl>
-# }
 ```

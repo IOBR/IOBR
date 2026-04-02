@@ -33,7 +33,6 @@ output file.
 ## Examples
 
 ``` r
-# \donttest{
 # Create a sample common_genes dataframe
 common_genes <- data.frame(
   GeneSymbol = c("BRCA1", "TP53", "EGFR"),
@@ -58,5 +57,4 @@ write.table(input_data,
 # Call the filterCommonGenes function
 # Note: This example requires IOBR::common_genes data
 # filterCommonGenes(input_file, output_file, id = "GeneSymbol")
-# }
 ```

@@ -53,7 +53,6 @@ List containing:
 ## Examples
 
 ``` r
-# \donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 10), ncol = 10)
@@ -66,5 +65,4 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
     test.x = test_data, test.y = test_outcome, model = fitted_model
   )
 }
-# }
 ```

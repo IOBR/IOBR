@@ -42,23 +42,18 @@ List with elements:
 ## Examples
 
 ``` r
-# \donttest{
-# Create single folder
 creat_folder(file.path(tempdir(), "1-result"))
 #> $folder_name
-#> [1] "/tmp/Rtmp8wyU3P/1-result"
+#> [1] "/tmp/RtmploxFSf/1-result"
 #> 
 #> $abspath
-#> [1] "/tmp/Rtmp8wyU3P/1-result/"
+#> [1] "/tmp/RtmploxFSf/1-result/"
 #> 
-
-# Create nested folders
 creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
 #> $folder_name
-#> [1] "/tmp/Rtmp8wyU3P/1-result/figures/correlation"
+#> [1] "/tmp/RtmploxFSf/1-result/figures/correlation"
 #> 
 #> $abspath
-#> [1] "/tmp/Rtmp8wyU3P/1-result/figures/correlation/"
+#> [1] "/tmp/RtmploxFSf/1-result/figures/correlation/"
 #> 
-# }
 ```

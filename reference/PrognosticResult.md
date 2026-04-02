@@ -56,7 +56,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -72,5 +71,4 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
     test.x = test_x, test.y = test_y
   )
 }
-# }
 ```

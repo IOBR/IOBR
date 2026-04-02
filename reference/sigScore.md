@@ -34,7 +34,6 @@ Dorothee Nickles, Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Load example data
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
@@ -54,5 +53,4 @@ if (length(genes) >= 2) {
   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
 }
-# }
 ```

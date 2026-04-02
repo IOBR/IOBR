@@ -113,7 +113,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 set.seed(123)
 data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
 colnames(data) <- paste0("Gene_", 1:10)
@@ -129,6 +128,4 @@ cor_plot <- get_cor_matrix(
   project = "Example Correlation"
 )
 #> ℹ Calculating spearman correlation: 3 x 3
-
-# }
 ```

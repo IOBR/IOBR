@@ -33,7 +33,6 @@ belonging to one signature.
 ## Examples
 
 ``` r
-# \donttest{
 tf <- tempfile(fileext = ".gmt")
 writeLines(
   c(
@@ -44,9 +43,9 @@ writeLines(
 )
 
 sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+#> 
 names(sig_list)
 #> [1] "HALLMARK_TNFA_SIGNALING_VIA_NFKB" "HALLMARK_P53_PATHWAY"            
 sig_list[[1]]
 #> [1] "TNF"   "NFKB1" "NFKB2"
-# }
 ```

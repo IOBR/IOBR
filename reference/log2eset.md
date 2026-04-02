@@ -26,19 +26,10 @@ was needed), or the original data otherwise.
 ## Examples
 
 ``` r
-# \donttest{
-# Load TCGA-STAD expression data (raw count matrix)
-eset_stad <- load_data("eset_stad")
-
-# Transform count data to TPM
-eset <- count2tpm(eset_stad, idType = "ensembl")
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ! Omitting 3985 genes without length information
-#> Warning: longer object length is not a multiple of shorter object length
-#> ℹ No duplicate gene symbols found.
-
-# Apply log2 transformation if needed
-eset <- log2eset(eset)
-#> ✔ Applied log2 transformation
-# }
+set.seed(123)
+eset <- matrix(rnorm(1000, mean = 10, sd = 2), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+eset_transformed <- log2eset(eset)
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 ```

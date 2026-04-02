@@ -73,6 +73,15 @@ Three robust computational methods for signature scoring:
 - Forest plots for biomarker validation
 - Customizable themes and color palettes
 
+## ⚠️ Important Note
+
+To better integrate IOBR into the bioinformatics community, we have
+recently made extensive changes to optimize the code and enhance
+documentation. However, these improvements may introduce code
+instability and inconsistency. If you need to reproduce previous
+analysis results, please install and use the previously tagged versions
+from <https://github.com/IOBR/IOBR/tags>.
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -188,7 +197,7 @@ signature_score_calculation_methods
 ### Signature Collection
 
 ``` r
-data("signature_collection")
+signature_collection <- load_data("signature_collection")
 # Number of available signatures
 length(signature_collection)
 #> [1] 323
@@ -239,7 +248,7 @@ head(signature_collection)
 #> [13] "PXDC1"    "SEMA7A"   "SH3PXD2A" "TAGLN"    "TGFBI"    "TNS1"    
 #> [19] "TPM1"
 
-data("signature_collection_citation")
+signature_collection_citation <- load_data("signature_collection_citation")
 head(signature_collection_citation)
 #> # A tibble: 6 × 6
 #>   Signatures        `Published year` Journal Title                   PMID  DOI  
@@ -251,7 +260,7 @@ head(signature_collection_citation)
 #> 5 CellCycle_Reg                 2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
 #> 6 Pan_F_TBRs                    2018 Nature  TGFβ attenuates tumour… 2944… 10.1…
 
-data("sig_group")
+sig_group <- load_data("sig_group")
 sig_group[1:3]
 #> $tumor_signature
 #>  [1] "CellCycle_Reg"                            

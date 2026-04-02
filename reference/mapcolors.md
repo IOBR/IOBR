@@ -28,9 +28,7 @@ A color from the palette as a hex code.
 ## Examples
 
 ``` r
-# \donttest{
 my_palette <- grDevices::colorRampPalette(c("blue", "white", "red"))(1001)
 color <- mapcolors(2, my_palette)
 color <- mapcolors(-2, my_palette)
-# }
 ```

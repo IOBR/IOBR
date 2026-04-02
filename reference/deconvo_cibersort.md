@@ -70,7 +70,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 lm22 <- load_data("lm22")
 cibersort_result <- deconvo_cibersort(
@@ -79,5 +78,4 @@ cibersort_result <- deconvo_cibersort(
   perm = 100
 )
 #> ℹ Running CIBERSORT
-# }
 ```

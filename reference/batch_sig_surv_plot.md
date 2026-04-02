@@ -113,7 +113,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 sig_stad <- load_data("sig_stad")
 result <- batch_sig_surv_plot(
   input_pdata = sig_stad,
@@ -132,7 +131,7 @@ result <- batch_sig_surv_plot(
   fig_type = "pdf"
 )
 #> ℹ Processing project: "TCGA-STAD"
-#> ℹ Saving plots to: "/tmp/Rtmp8wyU3P/Multiple-KM-plot"
+#> ℹ Saving plots to: "/tmp/RtmploxFSf/Multiple-KM-plot"
 #> ℹ Survival follow-up time range: 0.1 to 124 months
 #> ℹ Best cutoff for "T.cells.CD8": 0.1
 #> ✔ Best cutoff for "T.cells.CD8": 0.101
@@ -155,5 +154,4 @@ result <- batch_sig_surv_plot(
 #> • colour : "Strata"
 #> Ignoring unknown labels:
 #> • colour : "Strata"
-# }
 ```

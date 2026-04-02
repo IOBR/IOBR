@@ -63,11 +63,6 @@ pd1_cor <- feature_select(
   family = "pearson", padjcut = 0.05, cutoff = 0.5
 )
 #> Deteching more than two levels in y, we will treat y as a quantitative varibale
-#> Warning: `as.tibble()` was deprecated in tibble 2.0.0.
-#> ℹ Please use `as_tibble()` instead.
-#> ℹ The signature and semantics have changed, see `?as_tibble`.
-#> ℹ The deprecated feature was likely used in the IOBR package.
-#>   Please report the issue at <https://github.com/IOBR/IOBR/issues>.
 pd1_dif <- feature_select(
   x = imvigor210_eset, y = pd1, method = "dif",
   padjcut = 0.05, cutoff = 2

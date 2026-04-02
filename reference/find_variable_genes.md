@@ -5,24 +5,9 @@ selection criteria. Supports multiple methods, including expression
 thresholding and variability estimation via median absolute deviation
 (MAD).
 
-Identifies variable genes from a gene expression dataset using specified
-selection criteria. Supports multiple methods, including expression
-thresholding and variability estimation via median absolute deviation
-(MAD).
-
 ## Usage
 
 ``` r
-find_variable_genes(
-  eset,
-  data_type = c("count", "normalized"),
-  methods = c("low", "mad"),
-  prop = 0.7,
-  quantile = c(0.75, 0.5, 0.25),
-  min.mad = 0.1,
-  feas = NULL
-)
-
 find_variable_genes(
   eset,
   data_type = c("count", "normalized"),
@@ -74,8 +59,6 @@ find_variable_genes(
 
 Matrix subset of \`eset\` containing variable genes.
 
-Matrix subset of \`eset\` containing variable genes.
-
 ## Author
 
 Dongqiang Zeng
@@ -83,7 +66,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 eset <- find_variable_genes(
   eset = eset_tme_stad,
@@ -95,18 +77,4 @@ eset <- find_variable_genes(
 #> ℹ min.mad = 0.1
 #> ℹ Range of MAD: 0.1 to 2.22
 #> ℹ 25% of variables will be filtered out...
-# }
-# \donttest{
-eset_tme_stad <- load_data("eset_tme_stad")
-eset <- find_variable_genes(
-  eset = eset_tme_stad,
-  data_type = "normalized",
-  methods = "mad",
-  quantile = 0.25
-)
-#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
-#> ℹ min.mad = 0.1
-#> ℹ Range of MAD: 0.1 to 2.22
-#> ℹ 25% of variables will be filtered out...
-# }
 ```

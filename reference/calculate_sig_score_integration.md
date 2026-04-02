@@ -59,30 +59,26 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#> ℹ Row number of original eset: 60483
-#> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2293 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50181
-signature_collection <- load_data("signature_collection")
-result <- calculate_sig_score_integration(eset = eset, signature = signature_collection[1:4])
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+signature <- list(
+  Signature1 = paste0("Gene", 1:15),
+  Signature2 = paste0("Gene", 16:30)
+)
+result <- calculate_sig_score_integration(eset = eset, signature = signature)
 #> ℹ Calculating signature scores using PCA, z-score, and ssGSEA methods
-#> ✔ Applied log2 transformation
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Step 1/3: PCA method
 #> ℹ Step 2/3: z-score method
 #> ℹ Step 3/3: ssGSEA method
+#> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘HDF5Array’
 #> ℹ GSVA version 2.4.8
 #> ℹ Searching for rows with constant values
-#> ℹ Calculating GSVA ranks
-#> ℹ GSVA dense (classical) algorithm
-#> ℹ Row-wise ECDF estimation with Gaussian kernels
-#> ℹ Calculating row ECDFs
-#> ℹ Calculating column ranks
-#> ℹ GSVA dense (classical) algorithm
-#> ℹ Calculating GSVA scores
+#> ℹ Calculating ssGSEA scores for 2 gene sets
+#> ℹ Calculating ranks
+#> ℹ Calculating rank weights
+#> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
-# }
 ```

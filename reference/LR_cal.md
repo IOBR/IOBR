@@ -51,7 +51,6 @@ https://doi.org/10.1016/j.patter.2021.100293
 ## Examples
 
 ``` r
-# \donttest{
 # LR_cal requires HGNC gene symbols as rownames
 # Create a simple example with gene symbols
 example_genes <- c(
@@ -64,10 +63,12 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
+# \donttest{
 if (requireNamespace("easier", quietly = TRUE)) {
   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
   head(lr)
 }
+#> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘SummarizedExperiment’
 #> 
 #> 
 #> 

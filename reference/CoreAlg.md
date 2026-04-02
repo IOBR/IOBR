@@ -52,9 +52,7 @@ List containing:
 ## Examples
 
 ``` r
-# \donttest{
 X <- matrix(rnorm(100), nrow = 10)
 y <- rnorm(10)
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
-# }
 ```

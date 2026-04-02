@@ -73,13 +73,39 @@ Must match number of columns in `eset`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">anno_grch38</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"anno_grch38"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="anno_eset.html">anno_eset</a></span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_stad</span>, annotation <span class="op">=</span> <span class="va">anno_grch38</span>, probe <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="va">eset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">deconvo_timer</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset</span>, project <span class="op">=</span> <span class="st">"stad"</span>, indications <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"stad"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">eset</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number of original eset: 60483</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 100% of probes in expression set were annotated</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2293 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50181</span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">deconvo_timer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset</span>, project <span class="op">=</span> <span class="st">"stad"</span>,</span></span>
+<span class="r-in"><span>  indications <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"stad"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">eset</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running TIMER deconvolution</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Enter batch mode</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading immune gene expression</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Outlier genes: ACTB ACTG1 CD74 COL1A1 EEF1A1 ERBB2 FLNA IGHG1 IGKC MT-CO1 MT-CO2 MT-ND4 MT-RNR2 MYH11</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing batch effects for stad</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ID ProjectID B_cell_TIMER T_cell_CD4_TIMER T_cell_CD8_TIMER</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TCGA-BR-6455      stad   0.06826546       0.21842268       0.15152999</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TCGA-BR-7196      stad   0.23999602       0.02734689       0.31100535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCGA-BR-8371      stad   0.09497758       0.23729463       0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 TCGA-BR-8380      stad   0.01639131       0.01427079       0.24176014</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 TCGA-BR-8592      stad   0.09192814       0.27745725       0.08620296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 TCGA-BR-8686      stad   0.11028687       0.12045346       0.20750275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Neutrophil_TIMER Macrophage_TIMER  DC_TIMER</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0.03064815        0.0000000 0.3631485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.03863240        0.2485108 0.4523019</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       0.13239111        0.0000000 0.4644136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       0.18324600        0.1265858 0.4282349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       0.10411675        0.2958384 0.3811259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       0.01544118        0.0000000 0.2927147</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

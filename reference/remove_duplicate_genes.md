@@ -48,7 +48,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Load and annotate expression data
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
@@ -78,5 +77,4 @@ eset_stad <- remove_duplicate_genes(
 # Check duplicates after
 sum(duplicated(rownames(eset_stad)))
 #> [1] 0
-# }
 ```

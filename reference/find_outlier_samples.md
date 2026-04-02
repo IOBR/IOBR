@@ -65,7 +65,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 
@@ -74,5 +73,4 @@ outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 print(outs)
 #> [1] "TCGA-BR-4253-01A" "TCGA-BR-6709-01A" "TCGA-CD-8531-01A" "TCGA-RD-A8N2-01A"
 #> [5] "TCGA-VQ-AA69-01A"
-# }
 ```

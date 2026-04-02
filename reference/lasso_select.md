@@ -75,17 +75,4 @@ lasso_select(
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> character(0)
-
-# Survival response example
-survival_data <- survival::Surv(
-  time = sample(1:100, 20, replace = TRUE),
-  event = sample(c(0, 1), 20, replace = TRUE)
-)
-lasso_select(
-  x = gene_expression,
-  y = survival_data,
-  type = "survival",
-  nfold = 5
-)
-#> character(0)
 ```

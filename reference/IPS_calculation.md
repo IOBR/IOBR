@@ -58,7 +58,6 @@ Data frame containing:
 ## Examples
 
 ``` r
-# \donttest{
 # IPS requires gene symbols as rownames
 # Create a simple example with gene symbols
 example_genes <- c(
@@ -80,5 +79,4 @@ head(ips_result)
 #> Sample4   Example  0.19513209 NaN NaN NaN  0.19513209   1
 #> Sample5   Example -0.08050166 NaN NaN NaN -0.08050166   0
 #> Sample6   Example -0.20960706 NaN NaN NaN -0.20960706   0
-# }
 ```

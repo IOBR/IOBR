@@ -34,7 +34,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -66,5 +65,4 @@ head(epic_result)
 #> 3    1.058650e-09
 #> 4    7.642237e-07
 #> 5    1.789082e-06
-# }
 ```

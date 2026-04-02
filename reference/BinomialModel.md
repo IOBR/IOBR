@@ -84,19 +84,26 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-imvigor210_sig <- load_data("imvigor210_sig")
-imvigor210_pdata <- load_data("imvigor210_pdata")
-pdata_group <- imvigor210_pdata[imvigor210_pdata$BOR_binary != "NA", c("ID", "BOR_binary")]
-pdata_group$BOR_binary <- factor(ifelse(pdata_group$BOR_binary == "R", 1, 0))
-result <- BinomialModel(
-  x = imvigor210_sig, y = pdata_group,
-  seed = 123456, scale = TRUE, train_ratio = 0.7, nfold = 10, plot = FALSE
+set.seed(123)
+x <- data.frame(
+  ID = paste0("Sample", 1:50),
+  Feature1 = rnorm(50),
+  Feature2 = rnorm(50),
+  Feature3 = rnorm(50)
 )
+y <- data.frame(
+  ID = x$ID,
+  Outcome = factor(rbinom(50, 1, 0.5))
+)
+result <- BinomialModel(x = x, y = y, plot = FALSE, nfold = 5)
 #> ℹ Processing data
 #> ℹ Splitting data into training and test sets
 #> ℹ Running LASSO
 #> ℹ Running RIDGE REGRESSION
 #> ✔ Model fitting complete
-# }
+str(result, max.level = 1)
+#> List of 3
+#>  $ lasso_result:List of 3
+#>  $ ridge_result:List of 3
+#>  $ train.x     :'data.frame':    35 obs. of  4 variables:
 ```

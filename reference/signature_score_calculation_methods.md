@@ -27,3 +27,14 @@ Named character vector:
 - Integration:
 
   Integration of multiple methods ("integration")
+
+## Examples
+
+``` r
+signature_score_calculation_methods
+#>           PCA        ssGSEA       z-score   Integration 
+#>         "pca"      "ssgsea"      "zscore" "integration" 
+signature_score_calculation_methods["PCA"]
+#>   PCA 
+#> "pca" 
+```

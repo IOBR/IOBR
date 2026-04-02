@@ -71,3 +71,21 @@ IMvigor210 clinical trial (NCT02108652)
 Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
 by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
 doi:10.1038/nature25501
+
+## Examples
+
+``` r
+data(imvigor210_pdata)
+head(imvigor210_pdata)
+#> # A tibble: 6 × 12
+#>   ID           BOR   BOR_binary OS_days OS_status Mutation_Load Neo_antigen_Load
+#>   <chr>        <chr> <chr>      <chr>   <chr>     <chr>         <chr>           
+#> 1 SAM00b9e5c5… NA    NA         57.166… 1         NA            NA              
+#> 2 SAM0257bbbb… SD    NR         469.15… 1         18            4.6862745099999…
+#> 3 SAM025b45c2… PD    NR         263.16… 1         1             0.31372549      
+#> 4 SAM032c6423… PD    NR         74.907… 1         44            6.1960784310000…
+#> 5 SAM04c589eb… NA    NA         20.698… 0         50            NA              
+#> 6 SAM0571f17f… SD    NR         136.01… 1         2             1.4705882349999…
+#> # ℹ 5 more variables: CD_8_T_effector <dbl>, Immune_Checkpoint <dbl>,
+#> #   Pan_F_TBRs <chr>, Mismatch_Repair <chr>, TumorPurity <dbl>
+```

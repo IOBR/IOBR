@@ -50,3 +50,21 @@ The Cancer Genome Atlas Stomach Adenocarcinoma (TCGA-STAD)
 Cancer Genome Atlas Research Network. Comprehensive molecular
 characterization of gastric adenocarcinoma. Nature 513, 202-209 (2014).
 doi:10.1038/nature13480
+
+## Examples
+
+``` r
+data(tcga_stad_pdata)
+head(tcga_stad_pdata)
+#> # A tibble: 6 × 17
+#>   ID        stage status Lauren subtype EBV   TMEscore_plus TMEscore_plus_binary
+#>   <fct>     <fct> <fct>  <fct>  <fct>   <chr>         <dbl> <fct>               
+#> 1 TCGA-3M-… Stag… Alive  Mixed  NA      NE           0.0874 Low                 
+#> 2 TCGA-B7-… Stag… Alive  Diffu… EBV     Posi…        2.03   High                
+#> 3 TCGA-B7-… Stag… Alive  Diffu… NA      NE          -0.0423 Low                 
+#> 4 TCGA-B7-… Stag… Alive  Intes… NA      NE          -0.686  Low                 
+#> 5 TCGA-B7-… Stag… Alive  Intes… NA      NE           2.51   High                
+#> 6 TCGA-B7-… Stag… Alive  Mixed  NA      NE          -0.627  Low                 
+#> # ℹ 9 more variables: time <dbl>, OS_status <int>, ARID1A <chr>, PIK3CA <chr>,
+#> #   MALAT1 <dbl>, GZMB <dbl>, GNLY <dbl>, CD274 <dbl>, HOTAIR <dbl>
+```

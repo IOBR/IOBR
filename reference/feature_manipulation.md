@@ -49,7 +49,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 feas <- feature_manipulation(
   data = eset_stad,
@@ -59,5 +58,4 @@ feas <- feature_manipulation(
 )
 #> ℹ Removing 9060 features with zero variance
 #> ✔ Retained 51423 of 60483 features
-# }
 ```

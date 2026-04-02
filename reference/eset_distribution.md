@@ -39,7 +39,6 @@ Invisibly returns \`NULL\`. Side effect: saves PNG files to disk.
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
@@ -49,5 +48,4 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #> ℹ Row number after filtering duplicated gene symbol: 50139
 eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 #> ✔ Applied log2 transformation
-# }
 ```

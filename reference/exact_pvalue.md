@@ -35,7 +35,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 sig_stad <- load_data("sig_stad")
 p_val <- exact_pvalue(
   x = sig_stad$CD8.T.cells,
@@ -44,5 +43,4 @@ p_val <- exact_pvalue(
 )
 print(p_val)
 #> [1] 7.285891e-48
-# }
 ```

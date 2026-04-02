@@ -69,6 +69,9 @@ results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship
+#> -- note: fitType='parametric', but the dispersion trend was not well captured by the
+#>    function: y = a/x + b, and a local regression fit was automatically substituted.
+#>    specify fitType='local' or 'mean' to avoid this message next time.
 #> final dispersion estimates
 #> fitting model and testing
 #> converting counts to integer mode
@@ -77,12 +80,10 @@ results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship
+#> -- note: fitType='parametric', but the dispersion trend was not well captured by the
+#>    function: y = a/x + b, and a local regression fit was automatically substituted.
+#>    specify fitType='local' or 'mean' to avoid this message next time.
 #> final dispersion estimates
-#> fitting model and testing
-#> -- replacing outliers and refitting for 30 genes
-#> -- DESeq argument 'minReplicatesForReplace' = 7 
-#> -- original counts are preserved in counts(dds)
-#> estimating dispersions
 #> fitting model and testing
 # }
 ```

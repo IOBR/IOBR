@@ -235,59 +235,60 @@ Default is `TRUE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">stad_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"stad_group"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="iobr_deg.html">iobr_deg</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset_stad</span>, pdata <span class="op">=</span> <span class="va">stad_group</span>, group_id <span class="op">=</span> <span class="st">"subtype"</span>,</span></span>
-<span class="r-in"><span>  pdata_id <span class="op">=</span> <span class="st">"ID"</span>, array <span class="op">=</span> <span class="cn">FALSE</span>, method <span class="op">=</span> <span class="st">"DESeq2"</span>,</span></span>
-<span class="r-in"><span>  contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EBV"</span>, <span class="st">"GS"</span><span class="op">)</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"STAD"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"TP53"</span>, <span class="st">"BRCA1"</span>, <span class="st">"EGFR"</span>, <span class="st">"MYC"</span>, <span class="st">"KRAS"</span>, <span class="st">"PTEN"</span>, <span class="st">"APC"</span>, <span class="st">"RB1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"CDKN2A"</span>, <span class="st">"VHL"</span>, <span class="st">"ATM"</span>, <span class="st">"ATR"</span>, <span class="st">"CHEK2"</span>, <span class="st">"PALB2"</span>, <span class="st">"RAD51"</span>, <span class="st">"MDM2"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"CDK4"</span>, <span class="st">"CDK6"</span>, <span class="st">"CCND1"</span>, <span class="st">"CCNE1"</span>, <span class="st">"CDK2"</span>, <span class="st">"E2F1"</span>, <span class="st">"E2F2"</span>, <span class="st">"E2F3"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"ARF1"</span>, <span class="st">"ARF3"</span>, <span class="st">"ARF4"</span>, <span class="st">"ARF5"</span>, <span class="st">"ARF6"</span>, <span class="st">"GSK3B"</span>, <span class="st">"AKT1"</span>, <span class="st">"AKT2"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"PIK3CA"</span>, <span class="st">"PIK3CB"</span>, <span class="st">"PIK3CD"</span>, <span class="st">"PIK3CG"</span>, <span class="st">"PIK3R1"</span>, <span class="st">"PIK3R2"</span>, <span class="st">"PIK3R3"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Matching grouping information and expression matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using DESeq2 for RNA-seq differential analysis</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Ensure `eset` is a count expression matrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> converting counts to integer mode</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>some variables in design formula are characters, converting to factors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> estimating size factors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> estimating dispersions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> gene-wise dispersion estimates</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> mean-dispersion relationship</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> final dispersion estimates</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> fitting model and testing</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Differential analysis summary:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Adj.p &lt; 0.001: 2509</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Adj.p &lt; 0.05: 7446</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Adj.p &lt; 0.1: 9565</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Adj.p &lt; 0.25: 13933</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using built-in anno_grch38 for annotation</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Group 1 = EBV: 5 samples</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Group 2 = GS: 5 samples</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Group 1 samples: TCGA-BR-6455, TCGA-BR-7196, TCGA-BR-8686, TCGA-BR-A4J4, TCGA-FP-7916</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Group 2 samples: TCGA-BR-8371, TCGA-BR-8380, TCGA-BR-8592, TCGA-BR-A4IV, TCGA-BR-A4J9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> DEG results written to: <span style="color: #0000BB;">/tmp/Rtmp8wyU3P/STAD/2-DEGs.csv</span></span>
-<span class="r-in"><span><span class="va">signature_tme</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"signature_tme"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_gsea</span><span class="op">(</span>deg <span class="op">=</span> <span class="va">deg</span>, genesets <span class="op">=</span> <span class="va">signature_tme</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  symbol <span class="op">=</span> <span class="va">genes</span>,</span></span>
+<span class="r-in"><span>  log2FoldChange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genes</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  padj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">genes</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">signature</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  DNA_Repair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"TP53"</span>, <span class="st">"BRCA1"</span>, <span class="st">"ATM"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"ATR"</span>, <span class="st">"CHEK2"</span>, <span class="st">"PALB2"</span>, <span class="st">"RAD51"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Cell_Cycle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"TP53"</span>, <span class="st">"MYC"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"RB1"</span>, <span class="st">"CDKN2A"</span>, <span class="st">"CDK4"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"CDK6"</span>, <span class="st">"CCND1"</span>, <span class="st">"CCNE1"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"CDK2"</span>, <span class="st">"E2F1"</span>, <span class="st">"E2F2"</span>, <span class="st">"E2F3"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  PI3K_AKT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"AKT1"</span>, <span class="st">"AKT2"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"PIK3CA"</span>, <span class="st">"PIK3CB"</span>, <span class="st">"PIK3CD"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"PIK3CG"</span>, <span class="st">"PIK3R1"</span>, <span class="st">"PIK3R2"</span>, <span class="st">"PIK3R3"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_gsea</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  deg <span class="op">=</span> <span class="va">deg</span>,</span></span>
+<span class="r-in"><span>  genesets <span class="op">=</span> <span class="va">signature</span>,</span></span>
+<span class="r-in"><span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  show_plot <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  print_bar <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mapping gene symbols to Entrez IDs for <span style="color: #0000BB;">"hsa"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:many mapping between keys and columns</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>39.39% of input gene IDs are fail to map...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:1 mapping between keys and columns</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>number of columns of result is not a multiple of vector length (arg 1)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Signature data saved to <span style="color: #0000BB;">sig.csv</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:many mapping between keys and columns</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>5.59% of input gene IDs are fail to map...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'select()' returned 1:1 mapping between keys and columns</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>3.57% of input gene IDs are fail to map...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running GSEA analysis...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> using 'fgsea' for GSEA analysis, please cite Korotkevich et al (2019).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> preparing geneSet collections...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> GSEA analysis...</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There are ties in the preranked stats (3.41% of the list).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> The order of those tied genes will be arbitrary, which may produce unexpected results.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> leading edge analysis...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> done...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> GSEA results written to: <span style="color: #0000BB;">/tmp/Rtmp8wyU3P/1-H_GSEA_significant_results.csv</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Most significant gene sets: TMEscoreB_CIR, HLA_signature_gene, TMEscoreA_CIR, TMEscoreA_plus, Antigen_Processing_and_Presentation_Li_et_al, Natural_Killer_Cell_Cytotoxicity_Li_et_al, Normal_Fibroblast, CD8_c5_Tisg</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 27564 rows containing missing values or values outside the scale range</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_line()`).</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> GSEA results written to: <span style="color: #0000BB;">/tmp/RtmploxFSf/1-H_GSEA_significant_results.csv</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Most significant gene sets: Cell_Cycle</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "up"       "down"     "all"      "plot_top"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

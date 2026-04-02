@@ -21,7 +21,6 @@ if not available
 ## Examples
 
 ``` r
-# \donttest{
 # Detect GSVA API version (only runs if GSVA is installed)
 api_info <- IOBR:::gsva_use_new_api()
 print(api_info)
@@ -31,5 +30,4 @@ print(api_info)
 #> $gsva_version
 #> [1] "2.4.8"
 #> 
-# }
 ```

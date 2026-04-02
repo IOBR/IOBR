@@ -58,8 +58,6 @@
   : Split Data into Training and Testing Sets
 - [`TRef`](https://iobr.github.io/IOBR/reference/TRef.md) : Reference
   profiles from tumor-infiltrating non-malignant cells
-- [`TimerINFO()`](https://iobr.github.io/IOBR/reference/TimerINFO.md) :
-  Display Timer Information Messages (Deprecated)
 - [`Top_probe()`](https://iobr.github.io/IOBR/reference/Top_probe.md) :
   Top Probe Selector
 - [`add_riskscore()`](https://iobr.github.io/IOBR/reference/add_riskscore.md)

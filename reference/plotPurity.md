@@ -46,7 +46,6 @@ specified output directory.
 ## Examples
 
 ``` r
-# \donttest{
 # Create a sample ESTIMATE score matrix
 scores_data <- data.frame(
   Sample1 = c(100, 200, 500, 0.80),
@@ -62,5 +61,4 @@ scores_data <- data.frame(
 # Write to a temporary GCT file
 scores_file <- tempfile(fileext = ".gct")
 outputGCT(scores_data, scores_file)
-# }
 ```

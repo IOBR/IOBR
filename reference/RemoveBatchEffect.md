@@ -67,10 +67,4 @@ immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 names(immune.cellType) <- sample_names_immune
 
 result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
-#> Found2batches
-#> Adjusting for0covariate(s) or covariate level(s)
-#> Standardizing Data across genes
-#> Fitting L/S model and finding priors
-#> Finding parametric adjustments
-#> Adjusting the Data
 ```

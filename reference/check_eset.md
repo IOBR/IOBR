@@ -40,26 +40,12 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# Load TCGA-STAD expression data
-eset_stad <- load_data("eset_stad")
-
-# Convert counts to TPM
-eset <- count2tpm(eset_stad, idType = "ensembl")
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ! Omitting 3985 genes without length information
-#> Warning: longer object length is not a multiple of shorter object length
-#> ℹ No duplicate gene symbols found.
-
-# Check expression set integrity
-check_eset(eset)
-
-# Check with detailed output
-check_eset(eset, print_result = TRUE, estimate_sd = TRUE)
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+check_eset(eset, print_result = TRUE)
 #> ℹ Checking for NA values: 0 found
 #> ℹ Checking for -Inf values: 0 found
 #> ℹ Checking for +Inf values: 0 found
-#> ℹ Features with zero variance: 7768
-#> Warning: 7768 features have zero variance.
-#> ℹ Zero-variance features may affect score calculation.
-#> • Set `adjust_eset = TRUE` to remove them automatically.
 ```

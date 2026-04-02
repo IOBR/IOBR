@@ -51,9 +51,9 @@ Etienne Becht
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 rownames(expr) <- paste0("Gene", 1:100)
 estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
-} # }
+# }
 ```

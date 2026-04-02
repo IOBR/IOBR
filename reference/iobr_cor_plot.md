@@ -180,7 +180,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 set.seed(123)
 
 pdata_group <- data.frame(
@@ -232,5 +231,4 @@ print(results)
 #> 1 Feature2    0.225  -0.122   0.493      0.647  "+"  
 #> 2 Feature3    0.328  -0.0987  0.493      0.484  "+"  
 #> 3 Feature1    0.969   0.00390 0.969      0.0136 ""   
-# }
 ```

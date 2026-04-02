@@ -90,7 +90,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Example with sample survival results
 sample_results <- data.frame(
   ID = c("Sig1", "Sig2", "Sig3"),
@@ -101,6 +100,4 @@ sample_results <- data.frame(
 )
 sig_forest(data = sample_results, signature = "ID")
 #> `height` was translated to `width`.
-
-# }
 ```

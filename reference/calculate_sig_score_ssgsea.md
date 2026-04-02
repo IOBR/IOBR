@@ -59,16 +59,23 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-eset <- count2tpm(eset_stad, idType = "ensembl")
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ! Omitting 3985 genes without length information
-#> Warning: longer object length is not a multiple of shorter object length
-#> ℹ No duplicate gene symbols found.
-signature_tme <- load_data("signature_tme")
-result <- calculate_sig_score_ssgsea(eset = eset, signature = signature_tme)
+set.seed(123)
+eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+rownames(eset) <- paste0("Gene", 1:100)
+colnames(eset) <- paste0("Sample", 1:10)
+signature <- list(
+  Signature1 = paste0("Gene", 1:15),
+  Signature2 = paste0("Gene", 16:30)
+)
+result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
 #> ℹ Calculating signature scores using ssGSEA method
-#> Warning: No signatures have enough genes (min: 5). Returning pdata unchanged.
-# }
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
+#> ℹ Calculating scores for 2 signature(s)
+#> ℹ GSVA version 2.4.8
+#> ℹ Searching for rows with constant values
+#> ℹ Calculating ssGSEA scores for 2 gene sets
+#> ℹ Calculating ranks
+#> ℹ Calculating rank weights
+#> ℹ Normalizing ssGSEA scores
+#> ✔ Calculations finished
 ```

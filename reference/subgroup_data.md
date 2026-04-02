@@ -43,3 +43,17 @@ A data frame with clinical variables and biomarker scores:
 - score_binary:
 
   Binary biomarker classification ("High", "Low")
+
+## Examples
+
+``` r
+data(subgroup_data)
+head(subgroup_data)
+#>   Patient_ID ProjectID AJCC_stage status   time       score score_binary
+#> 1          1  Dataset1          2      0  88.73  0.60585688          Low
+#> 2          2  Dataset1          2      0  88.23  0.73717229         High
+#> 3          3  Dataset1          2      0  88.23 -0.35452887          Low
+#> 4          4  Dataset1          2      0 105.70  0.79880007         High
+#> 5          5  Dataset1          3      0 105.53 -0.09554256          Low
+#> 6          6  Dataset1          2      1  25.50 -0.51527214          Low
+```

@@ -34,7 +34,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -47,5 +46,4 @@ estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
 #> [1] "Merged dataset includes 10148 genes (264 mismatched)."
 #> [1] "1 gene set: StromalSignature  overlap= 138"
 #> [1] "2 gene set: ImmuneSignature  overlap= 140"
-# }
 ```

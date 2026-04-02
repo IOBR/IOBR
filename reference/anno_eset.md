@@ -74,7 +74,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Annotate Affymetrix microarray data
 eset_gse62254 <- load_data("eset_gse62254")
 anno_hug133plus2 <- load_data("anno_hug133plus2")
@@ -91,9 +90,7 @@ head(eset)
 #> RPL41          4.246149   4.246808   4.257940
 #> ND4            4.285322   4.218556   4.244270
 #> LOC101928826   4.219303   4.219670   4.213252
-# }
 
-# \donttest{
 # Annotate RNA-seq data with Ensembl IDs
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
@@ -117,5 +114,4 @@ head(eset)
 #> MT-RNR2       527914      1890956      1323163      1606934       487683
 #> FLNA          105371      1483645       129692      1622593       190714
 #> ACTB          200980      1231785       563329      1041598       540407
-# }
 ```

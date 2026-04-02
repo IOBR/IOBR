@@ -102,68 +102,18 @@ including cutoff value and Cox model summaries. Default is `TRUE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad2</span> <span class="op">&lt;-</span> <span class="fu">best_cutoff</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  pdata <span class="op">=</span> <span class="va">sig_stad</span>,</span></span>
-<span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"TMEscore_CIR"</span>,</span></span>
-<span class="r-in"><span>  time <span class="op">=</span> <span class="st">"OS_time"</span>,</span></span>
-<span class="r-in"><span>  status <span class="op">=</span> <span class="st">"OS_status"</span>,</span></span>
-<span class="r-in"><span>  print_result <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">rexp</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">50</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"TMEscore_CIR"</span>: 5.697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $best_cutoff</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The best cutoff is = 5.697"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $cox_continuous_object</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> survival::coxph(formula = surv_obj ~ pdata[[variable]], data = pdata)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n= 367, number of events= 144 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        coef exp(coef)  se(coef)      z Pr(&gt;|z|)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> pdata[[variable]] -0.018491  0.981679  0.007099 -2.605   0.0092 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   exp(coef) exp(-coef) lower .95 upper .95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> pdata[[variable]]    0.9817      1.019    0.9681    0.9954</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Concordance= 0.569  (se = 0.026 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Likelihood ratio test= 6.61  on 1 df,   p=0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Wald test            = 6.78  on 1 df,   p=0.009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Score (logrank) test = 6.81  on 1 df,   p=0.009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $summary_binary_variable</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Low High </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  257  110 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $cox_binary_object</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> survival::coxph(formula = surv_obj ~ pdata[[variable2]], data = pdata)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   n= 367, number of events= 144 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           coef exp(coef) se(coef)      z Pr(&gt;|z|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> pdata[[variable2]]High -0.7056    0.4938   0.2058 -3.429 0.000605 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        exp(coef) exp(-coef) lower .95 upper .95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> pdata[[variable2]]High    0.4938      2.025    0.3299    0.7391</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Concordance= 0.567  (se = 0.02 )</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Likelihood ratio test= 13.32  on 1 df,   p=3e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Wald test            = 11.76  on 1 df,   p=6e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Score (logrank) test = 12.25  on 1 df,   p=5e-04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">sig_stad2</span><span class="op">$</span><span class="va">TMEscore_CIR_binary</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">best_cutoff</span><span class="op">(</span><span class="va">pdata</span>, variable <span class="op">=</span> <span class="st">"score"</span>, print_result <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"score"</span>: 46.503</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">result</span><span class="op">$</span><span class="va">score_binary</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Low High </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  257  110 </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   45   55 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

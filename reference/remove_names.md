@@ -46,11 +46,12 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-imvigor210_sig <- load_data("imvigor210_sig")
-input <- remove_names(
-  imvigor210_sig,
-  variable = "colnames",
-  patterns_to_na = patterns_to_na,
-  patterns_space = NULL
+df <- data.frame(
+  "CellA_cibersort" = 1:5,
+  "CellB_xCell" = 6:10,
+  "CellC_TIMER" = 11:15
 )
+result <- remove_names(df, variable = "colnames", patterns_to_na = patterns_to_na)
+colnames(result)
+#> [1] "CellA"  "CellB_" "CellC" 
 ```

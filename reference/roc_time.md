@@ -112,7 +112,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 tcga_stad_sig <- load_data("tcga_stad_sig")
 pdata_stad <- load_data("pdata_stad")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
@@ -121,6 +120,4 @@ roc_time(
   time = "time", status = "OS_status", time_point = 12, path = NULL, main = "OS"
 )
 #> ℹ Time range: 0.1 to 78.37
-
-# }
 ```

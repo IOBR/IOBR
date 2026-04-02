@@ -152,7 +152,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box_batch(
   input = tcga_stad_pdata,
@@ -184,6 +183,5 @@ sig_box_batch(
 #> 5 signature EBV    MSI    1.59e- 2 0.032         0.016    *        Wilcoxon
 #> 6 signature GS     MSI    8.71e- 8 0.00000026    8.7e-08  ****     Wilcoxon
 
-#> ✔ Batch processing complete. Plots saved to: /tmp/Rtmp8wyU3P
-# }
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmploxFSf
 ```

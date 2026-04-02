@@ -108,7 +108,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 sig_stad <- load_data("sig_stad")
 percent_bar_plot(
   input = sig_stad, x = "Subtype", y = "Lauren",
@@ -141,6 +140,4 @@ percent_bar_plot(
 #> [1] "'#5f75ae', '#64a841', '#e5486e', '#de8e06', '#b5aa0f', '#7ba39d', '#b15928', '#6a3d9a', '#cab2d6', '#374E55FF', '#80796BFF', '#e31a1c', '#fb9a99', '#1f78b4', '#a6cee3', '#008280FF', '#8F7700FF', '#A20056FF', '#fdbf6f', '#E78AC3', '#b2df8a', '#CD534CFF', '#008B45FF', '#67001F', '#00A087FF', '#A73030FF', '#386CB0', '#F0027F', '#666666', '#EFC000FF', '#003C67FF', '#7AA6DCFF', '#8F7700FF', '#33a02c', '#66C2A5', '#A6D854', '#E5C494', '#6A3D9A', '#374E55FF', '#DF8F44FF', '#8DA0CB', '#80796BFF', '#FFFF99', '#E78AC3', '#7FC97F', '#3B3B3BFF', '#B24745FF', '#3B4992FF', '#631879FF', '#7AA6DCFF', '#7ba39d', '#b15928', '#00A1D5FF', '#a6a6a6', '#386CB0', '#F0027F', '#1B9E77', '#7570B3', '#67001F', '#4DBBD5FF', '#F39B7FFF', '#7FC97F', '#BEAED4', '#224444', '#DF8F44FF', '#B24745FF', '#3B4992FF', '#631879FF', '#7AA6DCFF', '#003C67FF', '#8F7700FF', '#3B3B3BFF', '#984EA3', '#a6a6a6', '#8DA0CB', '#E78AC3', '#FFD92F', '#8DD3C7', '#1F78B4', '#66A61E', '#D62728FF', '#9467BDFF', '#8C564BFF', '#E377C2FF', '#7F7F7FFF', '#17BECFFF', '#FB9A99', '#FDBF6F', '#33adff', '#439373', '#92C5DE', '#CAB2D6'"
 
 
-
-# }
 ```

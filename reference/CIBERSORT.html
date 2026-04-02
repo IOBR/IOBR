@@ -131,7 +131,6 @@ parallel and serial permutation.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Create simulated data matching LM22 signature matrix gene names</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">common_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">sim_mixture</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
@@ -148,54 +147,54 @@ parallel and serial permutation.</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         B cells naive B cells memory Plasma cells T cells CD8 T cells CD4 naive</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1             0     0.18225155  0.000000000  0.00000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2             0     0.00000000  0.009197916  0.09708868         0.1543896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3             0     0.00000000  0.031932727  0.00000000         0.1179203</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4             0     0.02848117  0.000000000  0.00000000         0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5             0     0.13461164  0.031886333  0.00000000         0.1400873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6             0     0.04968648  0.000000000  0.30487427         0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1    0.02412905     0.00000000  0.037892551 0.019998246         0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2    0.00000000     0.07172372  0.002375459 0.044081770         0.1042969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3    0.11411301     0.00000000  0.000000000 0.000000000         0.1783976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4    0.11715171     0.00000000  0.037357552 0.000000000         0.0265595</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5    0.26525360     0.00000000  0.000000000 0.004074691         0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6    0.00000000     0.20875624  0.000000000 0.000000000         0.2307710</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         T cells CD4 memory resting T cells CD4 memory activated</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1                0.000000000                            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2                0.000000000                            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3                0.000000000                            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4                0.141609900                            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5                0.000000000                            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6                0.006337446                            0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1                 0.40885968                    0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2                 0.31821463                    0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3                 0.00000000                    0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4                 0.03621121                    0.2325042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5                 0.37245162                    0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6                 0.00000000                    0.2167616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         T cells follicular helper T cells regulatory (Tregs)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1                0.06818487                 0.06879419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2                0.18578157                 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3                0.08071338                 0.11463869</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4                0.03146895                 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5                0.16872688                 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6                0.00000000                 0.04591456</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1               0.000000000                0.013494054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2               0.000000000                0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3               0.009737929                0.003535199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4               0.000000000                0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5               0.000000000                0.086789363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6               0.000000000                0.000000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         T cells gamma delta NK cells resting NK cells activated  Monocytes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1         0.007867152       0.03349354        0.000000000 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2         0.032333507       0.04837349        0.000000000 0.04976289</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3         0.017656394       0.00000000        0.112270547 0.25979544</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4         0.000000000       0.02212775        0.067613042 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5         0.157583874       0.00000000        0.005653372 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6         0.000000000       0.08006571        0.009674645 0.13915701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1           0.0000000       0.09884303        0.000000000 0.19894746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2           0.0000000       0.00000000        0.182426896 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3           0.1649016       0.05216157        0.000000000 0.04518743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4           0.1515656       0.00000000        0.181914131 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5           0.0000000       0.02657193        0.009252027 0.04745452</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6           0.0000000       0.00000000        0.121123571 0.04279619</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Macrophages M0 Macrophages M1 Macrophages M2 Dendritic cells resting</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1      0.1305253   0.000000e+00    0.220600655              0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2      0.0000000   0.000000e+00    0.221272980              0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3      0.0000000   0.000000e+00    0.023165264              0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4      0.1477710   4.818640e-02    0.008736663              0.09074849</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5      0.0000000   1.954162e-05    0.046899915              0.02008421</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6      0.0000000   2.501610e-02    0.000000000              0.09413481</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1    0.000000000    0.000000000              0             0.039739550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2    0.009086296    0.000000000              0             0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3    0.055247741    0.013230023              0             0.214292844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4    0.038951497    0.000000000              0             0.001887852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5    0.022309752    0.006959781              0             0.081581053</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6    0.070107782    0.000000000              0             0.010842482</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Dendritic cells activated Mast cells resting Mast cells activated</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1                0.00000000         0.00000000           0.12404322</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2                0.11746095         0.05457561           0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3                0.03702223         0.17010062           0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4                0.05891092         0.35434569           0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5                0.00000000         0.14752717           0.03462643</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6                0.00000000         0.00000000           0.24513896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Eosinophils Neutrophils P-value  Correlation     RMSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1  0.16423953  0.00000000     0.9 -0.028504120 1.101778</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2  0.02976284  0.00000000     0.9 -0.024426465 1.088628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3  0.03478440  0.00000000     0.8 -0.003341701 1.081645</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4  0.00000000  0.00000000     0.9 -0.049245746 1.103864</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5  0.08494039  0.02735297     0.3  0.051526620 1.062632</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6  0.00000000  0.00000000     0.8 -0.007026086 1.109070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1              0.0512166001         0.07712769           0.02975208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2              0.0309039896         0.17390011           0.01904856</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3              0.0000000000         0.07987597           0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4              0.0175130310         0.09108622           0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5              0.0000000000         0.06087293           0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6              0.0008915717         0.09794957           0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Eosinophils Neutrophils P-value   Correlation     RMSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample1  0.00000000  0.00000000     0.0  0.0812753089 1.051259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample2  0.00000000  0.04394169     0.5 -0.0017905115 1.122588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample3  0.06931906  0.00000000     0.0  0.1174831102 1.031201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample4  0.06729750  0.00000000     0.5  0.0003266841 1.129563</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample5  0.01642874  0.00000000     0.2  0.0340252078 1.091239</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sample6  0.00000000  0.00000000     0.4  0.0150830890 1.087891</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

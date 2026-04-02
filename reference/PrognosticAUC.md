@@ -41,7 +41,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -53,5 +52,4 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
   acture_y <- data.frame(time = y[, 1], status = y[, 2])
   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
 }
-# }
 ```

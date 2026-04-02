@@ -60,7 +60,6 @@ ggplot object of ROC curves.
 ## Examples
 
 ``` r
-# \donttest{
 if (requireNamespace("glmnet", quietly = TRUE)) {
   set.seed(123)
   train_data <- matrix(rnorm(100 * 5), ncol = 5)
@@ -71,6 +70,4 @@ if (requireNamespace("glmnet", quietly = TRUE)) {
   p <- PlotAUC(train_data, train_outcome, test_data, test_outcome, fitted_model, "MyModel")
   print(p)
 }
-
-# }
 ```

@@ -77,7 +77,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
@@ -91,14 +90,13 @@ res <- batch_wilcoxon(
 #> ℹ Features: 255
 #> ✔ Wilcoxon test complete
 head(res)
-#> # A tibble: 6 × 7
-#>   sig_names                      p.value     M statistic p.adj log10pvalue stars
-#>   <chr>                            <dbl> <dbl>     <dbl> <dbl>       <dbl> <fct>
-#> 1 Steroid_Hormone_Metabolism     0.00653    NA        NA 0.717        2.18 **   
-#> 2 Steroid_Hormone_Biosynthesis   0.00694    NA        NA 0.717        2.16 **   
-#> 3 Linoleic_Acid_Metabolism       0.00991    NA        NA 0.717        2.00 **   
-#> 4 Ascorbate_and_Aldrate_Metabol… 0.0112     NA        NA 0.717        1.95 *    
-#> 5 Pentose_and_Glucuronate_Inter… 0.0189     NA        NA 0.854        1.72 *    
-#> 6 Drug_Metabolism_by_Cytochrome… 0.0201     NA        NA 0.854        1.70 *    
-# }
+#> # A tibble: 6 × 8
+#>   sig_names               p.value      F     M statistic p.adj log10pvalue stars
+#>   <chr>                     <dbl>  <dbl> <dbl>     <dbl> <dbl>       <dbl> <fct>
+#> 1 Steroid_Hormone_Metabo… 0.00653 -0.526 0.292    -0.818 0.717        2.18 **   
+#> 2 Steroid_Hormone_Biosyn… 0.00694 -0.516 0.284    -0.800 0.717        2.16 **   
+#> 3 Linoleic_Acid_Metaboli… 0.00991 -0.345 0.192    -0.537 0.717        2.00 **   
+#> 4 Ascorbate_and_Aldrate_… 0.0112  -0.371 0.204    -0.575 0.717        1.95 *    
+#> 5 Pentose_and_Glucuronat… 0.0189  -0.378 0.210    -0.588 0.854        1.72 *    
+#> 6 Drug_Metabolism_by_Cyt… 0.0201  -0.548 0.295    -0.843 0.854        1.70 *    
 ```

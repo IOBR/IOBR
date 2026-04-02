@@ -125,7 +125,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box(
   data = tcga_stad_pdata,
@@ -147,6 +146,4 @@ sig_box(
 #> 4 signature CIN    MSI    3.57e-10 1.10e- 9 3.6e-10  ****     Wilcoxon
 #> 5 signature EBV    MSI    1.10e- 2 1.1 e- 2 0.011    *        Wilcoxon
 #> 6 signature GS     MSI    1.83e-15 1.10e-14 1.8e-15  ****     Wilcoxon
-
-# }
 ```

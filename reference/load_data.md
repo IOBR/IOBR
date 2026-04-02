@@ -43,7 +43,6 @@ eset <- load_data("eset_stad")
 colors <- load_data("palette1")
 
 # Error handling with suggestions for similar names
-# \donttest{
 try(load_data("sign_tme")) # Will suggest "signature_tme"
 #> Error in load_data("sign_tme") : 
 #>   Dataset "sign_tme" not found in IOBR package.
@@ -57,5 +56,4 @@ try(load_data("sign_tme")) # Will suggest "signature_tme"
 #>   onco_sig, palette1, palette2, palette3, palette4, panel_for_gene,
 #>   panel_for_signature, patterns_to_na, pdata_GSE63557, pdata_acrg,
 #>   pdata_sig_tme, pdata_sig_tme_binary, pdata_stad ...
-# }
 ```

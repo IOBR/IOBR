@@ -28,7 +28,6 @@ file in GCT format.
 ## Examples
 
 ``` r
-# \donttest{
 # Create a sample input data frame
 sample_data <- data.frame(
   Gene = c("BRCA1", "TP53", "EGFR"),
@@ -42,5 +41,4 @@ sample_data <- sample_data[, -1]
 # Convert the input data frame to GCT format and save to temporary file
 output_file <- tempfile(fileext = ".gct")
 outputGCT(sample_data, output_file)
-# }
 ```

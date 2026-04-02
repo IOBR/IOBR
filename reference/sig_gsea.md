@@ -197,57 +197,58 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-stad_group <- load_data("stad_group")
-deg <- iobr_deg(
-  eset = eset_stad, pdata = stad_group, group_id = "subtype",
-  pdata_id = "ID", array = FALSE, method = "DESeq2",
-  contrast = c("EBV", "GS"), path = file.path(tempdir(), "STAD")
+set.seed(123)
+genes <- c(
+  "TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
+  "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
+  "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3",
+  "ARF1", "ARF3", "ARF4", "ARF5", "ARF6", "GSK3B", "AKT1", "AKT2",
+  "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
 )
-#> ℹ Matching grouping information and expression matrix
-#> ℹ Using DESeq2 for RNA-seq differential analysis
-#> ! Ensure `eset` is a count expression matrix
-#> converting counts to integer mode
-#> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
-#> estimating dispersions
-#> gene-wise dispersion estimates
-#> mean-dispersion relationship
-#> final dispersion estimates
-#> fitting model and testing
-#> ℹ Differential analysis summary:
-#> ℹ   Adj.p < 0.001: 2509
-#> ℹ   Adj.p < 0.05: 7446
-#> ℹ   Adj.p < 0.1: 9565
-#> ℹ   Adj.p < 0.25: 13933
-#> ℹ Using built-in anno_grch38 for annotation
-#> ℹ Group 1 = EBV: 5 samples
-#> ℹ Group 2 = GS: 5 samples
-#> ℹ Group 1 samples: TCGA-BR-6455, TCGA-BR-7196, TCGA-BR-8686, TCGA-BR-A4J4, TCGA-FP-7916
-#> ℹ Group 2 samples: TCGA-BR-8371, TCGA-BR-8380, TCGA-BR-8592, TCGA-BR-A4IV, TCGA-BR-A4J9
-#> ✔ DEG results written to: /tmp/Rtmp8wyU3P/STAD/2-DEGs.csv
-signature_tme <- load_data("signature_tme")
-res <- sig_gsea(deg = deg, genesets = signature_tme, path = tempdir())
+deg <- data.frame(
+  symbol = genes,
+  log2FoldChange = rnorm(length(genes), mean = 0, sd = 2),
+  padj = runif(length(genes), 0, 0.1)
+)
+signature <- list(
+  DNA_Repair = c(
+    "TP53", "BRCA1", "ATM",
+    "ATR", "CHEK2", "PALB2", "RAD51"
+  ),
+  Cell_Cycle = c(
+    "TP53", "MYC",
+    "RB1", "CDKN2A", "CDK4",
+    "CDK6", "CCND1", "CCNE1",
+    "CDK2", "E2F1", "E2F2", "E2F3"
+  ),
+  PI3K_AKT = c(
+    "AKT1", "AKT2",
+    "PIK3CA", "PIK3CB", "PIK3CD",
+    "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
+  )
+)
+res <- sig_gsea(
+  deg = deg,
+  genesets = signature,
+  path = tempdir(),
+  show_plot = FALSE,
+  print_bar = FALSE
+)
 #> ℹ Mapping gene symbols to Entrez IDs for "hsa"
 #> 
-#> 'select()' returned 1:many mapping between keys and columns
-#> Warning: 39.39% of input gene IDs are fail to map...
+#> 'select()' returned 1:1 mapping between keys and columns
 #> Warning: number of columns of result is not a multiple of vector length (arg 1)
 #> ✔ Signature data saved to sig.csv
-#> 'select()' returned 1:many mapping between keys and columns
-#> Warning: 5.59% of input gene IDs are fail to map...
+#> 'select()' returned 1:1 mapping between keys and columns
+#> Warning: 3.57% of input gene IDs are fail to map...
 #> ℹ Running GSEA analysis...
 #> using 'fgsea' for GSEA analysis, please cite Korotkevich et al (2019).
 #> preparing geneSet collections...
 #> GSEA analysis...
-#> Warning: There are ties in the preranked stats (3.41% of the list).
-#> The order of those tied genes will be arbitrary, which may produce unexpected results.
 #> leading edge analysis...
 #> done...
-#> ✔ GSEA results written to: /tmp/Rtmp8wyU3P/1-H_GSEA_significant_results.csv
-#> ℹ Most significant gene sets: TMEscoreB_CIR, HLA_signature_gene, TMEscoreA_CIR, TMEscoreA_plus, Antigen_Processing_and_Presentation_Li_et_al, Natural_Killer_Cell_Cytotoxicity_Li_et_al, Normal_Fibroblast, CD8_c5_Tisg
-#> Warning: Removed 27564 rows containing missing values or values outside the scale range
-#> (`geom_line()`).
-# }
+#> ✔ GSEA results written to: /tmp/RtmploxFSf/1-H_GSEA_significant_results.csv
+#> ℹ Most significant gene sets: Cell_Cycle
+print(names(res))
+#> [1] "up"       "down"     "all"      "plot_top"
 ```

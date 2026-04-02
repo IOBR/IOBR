@@ -65,17 +65,26 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_sig <- load_data("tcga_stad_sig")
-res <- tme_cluster(
-  input = tcga_stad_sig,
+set.seed(123)
+input_data <- data.frame(
+  ID = paste0("Sample", 1:20),
+  xCell_Tcells = rnorm(20),
+  xCell_Bcells = rnorm(20),
+  xCell_Macrophages = rnorm(20),
+  Other_feature = rnorm(20)
+)
+result <- tme_cluster(
+  input = input_data,
   pattern = "xCell",
   id = "ID",
   method = "kmeans"
 )
 #> ℹ Best number of TME clusters: 3
 #> ℹ Cluster distribution:
-#>   1   2   3 
-#> 264  13  98 
-# }
+#>  1  2  3 
+#> 10  8  2 
+table(result$cluster)
+#> 
+#> TME1 TME2 TME3 
+#>   10    8    2 
 ```

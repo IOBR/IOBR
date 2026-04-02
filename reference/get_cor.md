@@ -189,7 +189,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 get_cor(
   eset = eset_tme_stad,
@@ -210,6 +209,4 @@ get_cor(
 #> 
 #> ℹ Exact p-value: 5.4e-54
 #> `geom_smooth()` using formula = 'y ~ x'
-
-# }
 ```

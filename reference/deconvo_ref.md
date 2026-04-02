@@ -68,7 +68,6 @@ Dongqiang Zeng, Rongfang Shen
 ## Examples
 
 ``` r
-# \donttest{
 lm22 <- load_data("lm22")
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
@@ -140,5 +139,4 @@ deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
 #> 3            0.04545455            0.04545455
 #> 4            0.04545455            0.04545455
 #> 5            0.04545455            0.04545455
-# }
 ```

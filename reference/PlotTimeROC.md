@@ -64,7 +64,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -76,6 +75,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
   test_y <- data.frame(time = rexp(50), status = rbinom(50, 1, 0.5))
   fit <- glmnet::cv.glmnet(train_x, Surv(train_y$time, train_y$status), family = "cox")
   p <- PlotTimeROC(train_x, train_y, test_x, test_y, fit, "Cox Model")
+  print(p)
 }
-# }
 ```

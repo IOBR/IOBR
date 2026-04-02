@@ -99,7 +99,6 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 eset_stad <- load_data("eset_stad")
 eset_blca <- load_data("eset_blca")
 eset_corrected <- remove_batcheffect(
@@ -147,6 +146,4 @@ eset_corrected <- remove_batcheffect(
 #> • linetype : "batch"
 #> Ignoring unknown labels:
 #> • linetype : "batch"
-
-# }
 ```

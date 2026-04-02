@@ -84,16 +84,14 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-sig_stad <- load_data("sig_stad")
-cell_bar_plot(
-  input = sig_stad[1:20, ],
-  id = "ID",
-  features = colnames(sig_stad)[25:46]
+set.seed(123)
+input_data <- data.frame(
+  ID = paste0("Sample", 1:10),
+  Cell_A = runif(10, 0, 0.4),
+  Cell_B = runif(10, 0, 0.3),
+  Cell_C = runif(10, 0, 0.3)
 )
+cell_bar_plot(input = input_data, id = "ID", features = c("Cell_A", "Cell_B", "Cell_C"))
 #> ℹ Available categories: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 #> ℹ Random palettes: 1 (palette1), 2 (palette2), 3 (palette3), 4 (palette4)
-
-
-# }
 ```
