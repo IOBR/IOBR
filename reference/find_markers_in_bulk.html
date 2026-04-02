@@ -34,7 +34,7 @@ feature selection, scaling, PCA, clustering, and marker discovery."></head><body
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Identify Marker Features in Bulk Expression Data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/IOBR/IOBR/blob/main/R/find_marker_in_bulk.R" class="external-link"><code>R/find_marker_in_bulk.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/IOBR/IOBR/blob/master/R/find_marker_in_bulk.R" class="external-link"><code>R/find_marker_in_bulk.R</code></a></small>
       <div class="d-none name"><code>find_markers_in_bulk.Rd</code></div>
     </div>
 
@@ -172,9 +172,11 @@ feature selection, scaling, PCA, clustering, and marker discovery.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating cluster IE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating cluster IS</span>
 <span class="r-in"><span><span class="co"># Extract top 15 markers per cluster</span></span></span>
-<span class="r-in"><span><span class="va">top15</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">top_markers</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="va">top15</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">top_markers</span> </span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">cluster</span><span class="op">)</span> </span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("group_by"):</span> no applicable method for 'group_by' applied to an object of class "function"</span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/top_n.html" class="external-link">top_n</a></span><span class="op">(</span><span class="fl">15</span>, <span class="va">avg_log2FC</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("tbl_vars"):</span> no applicable method for 'tbl_vars' applied to an object of class "c('double', 'numeric')"</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

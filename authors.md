@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/IOBR/IOBR/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/IOBR/IOBR/blob/master/inst/CITATION)
 
 Zeng D, Fang Y, Luo P, Qiu W, Wang S, Shen R, Gu W, Huang X, Mao Q, Lai
 Y, Xu X, Shi M, Yu G, Liao W (2024). “IOBR2: Multidimensional Decoding
