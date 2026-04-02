@@ -47,9 +47,9 @@ IOBR integrates visualization function, including ***boxplots*** ,
 ***heatmaps*** , ***percentage bar charts*** , ***scatter plots*** ,
 ***KM plot*** , ***PCA plot*** etc.
 
-## Vignette
+## Tutorial
 
-Please go to <https://iobr.github.io/book/> for the full vignette.
+Please go to <https://iobr.github.io/book/> for the full tutorial.
 
 ## Citation
 

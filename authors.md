@@ -5,7 +5,7 @@
 - **[Dongqiang Zeng](https://github.com/IOBR)**. Author.
 
 - **[Yiran Fang](https://orcid.org/0000-0001-9855-7357)**. Author,
-  maintainer. [](https://orcid.org/0000-0001-9855-7357)
+  maintainer.
 
 - **[Shixiang Wang](https://orcid.org/0000-0001-9855-7357)**. Author.
   [](https://orcid.org/0000-0001-9855-7357)

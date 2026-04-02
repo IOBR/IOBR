@@ -1,7 +1,6 @@
 # IOBR: Immuno-Oncology Biological Research
 
-[![GitHub
-release](https://img.shields.io/github/release/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/releases/)
+[![R-CMD-check.yaml](https://github.com/IOBR/IOBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/IOBR/IOBR/actions/workflows/R-CMD-check.yaml)
 [![GitHub
 stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/stargazers/)
 [![GitHub
@@ -353,7 +352,7 @@ please include:
 For questions or inquiries, please contact:
 
 - Dr. Deqiang Zeng: <interlaken@smu.edu.cn>
-- Dr. Yunru Fang: <fyr_nate@163.com>
+- Dr. Yiran Fang: <fyr_nate@163.com>
 
 ## 📄 License
 
