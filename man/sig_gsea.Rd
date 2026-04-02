@@ -141,11 +141,29 @@ deg <- data.frame(
   padj = runif(length(genes), 0, 0.1)
 )
 signature <- list(
-  DNA_Repair = c("TP53", "BRCA1", "ATM", "ATR", "CHEK2", "PALB2", "RAD51"),
-  Cell_Cycle = c("TP53", "MYC", "RB1", "CDKN2A", "CDK4", "CDK6", "CCND1", "CCNE1", "CDK2", "E2F1", "E2F2", "E2F3"),
-  PI3K_AKT = c("AKT1", "AKT2", "PIK3CA", "PIK3CB", "PIK3CD", "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3")
+  DNA_Repair = c(
+    "TP53", "BRCA1", "ATM",
+    "ATR", "CHEK2", "PALB2", "RAD51"
+  ),
+  Cell_Cycle = c(
+    "TP53", "MYC",
+    "RB1", "CDKN2A", "CDK4",
+    "CDK6", "CCND1", "CCNE1",
+    "CDK2", "E2F1", "E2F2", "E2F3"
+  ),
+  PI3K_AKT = c(
+    "AKT1", "AKT2",
+    "PIK3CA", "PIK3CB", "PIK3CD",
+    "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
+  )
 )
-res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE, print_bar = FALSE)
+res <- sig_gsea(
+  deg = deg,
+  genesets = signature,
+  path = tempdir(),
+  show_plot = FALSE,
+  print_bar = FALSE
+)
 print(names(res))
 }
 \author{
