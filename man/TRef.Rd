@@ -36,10 +36,8 @@ method (and wrapped by IOBR). Expression values are based on single-cell
 RNA-seq data from melanoma tumour samples, and are given in TPM units.
 }
 \examples{
-\donttest{
 data(TRef)
 head(TRef)
-}
 }
 \references{
 Tirosh et al. (2016) Science 352:189-196. doi:10.1126/science.aad0501

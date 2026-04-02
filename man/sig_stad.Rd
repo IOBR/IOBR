@@ -32,10 +32,8 @@ features
 for gastric cancer patients.
 }
 \examples{
-\donttest{
 data(sig_stad)
 head(sig_stad)
-}
 }
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular

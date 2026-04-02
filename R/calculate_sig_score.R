@@ -341,10 +341,6 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
       geneSets = signature,
       minSize = min_genes,
       maxSize = Inf,
-      kcdf = "Gaussian",
-      tau = 1,
-      maxDiff = TRUE,
-      absRanking = FALSE,
       normalize = TRUE
     )
     res <- GSVA::gsva(param, verbose = TRUE, BPPARAM = bp)
@@ -469,10 +465,6 @@ calculate_sig_score_integration <- function(pdata = NULL,
         geneSets = sig_ssgsea,
         minSize = ssgsea_min,
         maxSize = Inf,
-        kcdf = "Gaussian",
-        tau = 1,
-        maxDiff = TRUE,
-        absRanking = FALSE,
         normalize = TRUE
       )
       res <- GSVA::gsva(param,

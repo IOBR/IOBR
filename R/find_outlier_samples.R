@@ -26,11 +26,9 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 #' print(outs)
-#' }
 find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset",
                                  plot_hculst = FALSE, show_plot = TRUE,
                                  index = NULL, save = TRUE) {

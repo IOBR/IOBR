@@ -23,9 +23,7 @@ Provides mapping between probe IDs and gene symbols for microarray data
 analysis.
 }
 \examples{
-\donttest{
 data(anno_hug133plus2)
 head(anno_hug133plus2)
-}
 }
 \keyword{datasets}

@@ -119,7 +119,6 @@ statistical significance and generates publication-ready visualizations includin
 box plots, heatmaps, and correlation plots.
 }
 \examples{
-\donttest{
 set.seed(123)
 
 pdata_group <- data.frame(
@@ -152,7 +151,6 @@ results <- iobr_cor_plot(
 )
 
 print(results)
-}
 }
 \author{
 Dongqiang Zeng

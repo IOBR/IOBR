@@ -51,7 +51,6 @@ cross-validation and optionally generates time-dependent ROC curves for visual
 assessment of predictive accuracy.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE)) {
   library(survival)
@@ -67,7 +66,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
     scale = TRUE, seed = 123456,
     train_ratio = 0.7, nfold = 10, plot = FALSE
   )
-}
 }
 }
 \author{

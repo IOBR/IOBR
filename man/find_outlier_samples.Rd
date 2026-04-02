@@ -45,11 +45,9 @@ adjacency and connectivity z-scores for each sample, generates connectivity
 plots, and optionally performs hierarchical clustering.
 }
 \examples{
-\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 print(outs)
-}
 }
 \author{
 Dongqiang Zeng

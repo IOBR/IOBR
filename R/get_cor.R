@@ -48,7 +48,6 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' get_cor(
 #'   eset = eset_tme_stad,
@@ -56,7 +55,6 @@
 #'   var1 = "GZMB",
 #'   var2 = "CD274"
 #' )
-#' }
 get_cor <- function(eset,
                     pdata = NULL,
                     var1,

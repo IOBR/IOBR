@@ -34,10 +34,8 @@ Includes treatment response, survival outcomes, and immune biomarker
 measurements for bladder cancer patients treated with atezolizumab.
 }
 \examples{
-\donttest{
 data(imvigor210_pdata)
 head(imvigor210_pdata)
-}
 }
 \references{
 Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade

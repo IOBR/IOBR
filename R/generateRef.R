@@ -35,12 +35,10 @@
 #' rownames(rawCountData) <- paste("Gene", 1:1000, sep = "_")
 #' colnames(rawCountData) <- paste("Sample", 1:4, sep = "_")
 #'
-#' \donttest{
 #' result <- generateRef(
 #'   dds = rawCountData, pheno = phenotype,
 #'   FDR = 0.05, dat = expressionData, method = "DESeq2"
 #' )
-#' }
 generateRef <- function(dds, pheno, FDR = 0.05, dat, method = "limma") {
   method <- rlang::arg_match(method, c("limma", "DESeq2"))
 

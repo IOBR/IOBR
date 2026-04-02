@@ -44,7 +44,6 @@
 #' @import survival
 #'
 #' @examples
-#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' result <- batch_sig_surv_plot(
 #'   input_pdata = sig_stad,
@@ -62,7 +61,6 @@
 #'   show_col = TRUE,
 #'   fig_type = "pdf"
 #' )
-#' }
 batch_sig_surv_plot <- function(
   input_pdata,
   signature,

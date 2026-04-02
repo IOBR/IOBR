@@ -51,9 +51,7 @@ This reference dataset includes the following components:
 }
 }
 \examples{
-\donttest{
 data(BRef)
 head(BRef)
-}
 }
 \keyword{datasets}

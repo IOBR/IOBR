@@ -37,9 +37,7 @@ immuno-oncology biomarkers. These groups are used in IOBR to conveniently
 select sets of signatures for scoring and visualization.
 }
 \examples{
-\donttest{
 data(sig_group)
 head(sig_group)
-}
 }
 \keyword{datasets}

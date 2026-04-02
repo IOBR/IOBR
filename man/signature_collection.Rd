@@ -29,9 +29,7 @@ predefined biological signature and contains a character vector of HGNC
 gene symbols.
 }
 \examples{
-\donttest{
 data(signature_collection)
 head(signature_collection)
-}
 }
 \keyword{datasets}

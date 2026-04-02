@@ -70,7 +70,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' set.seed(123)
 #' genes <- c("TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
 #'            "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
@@ -89,7 +88,6 @@
 #' )
 #' res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE, print_bar = FALSE)
 #' print(names(res))
-#' }
 sig_gsea <- function(deg,
                      genesets = NULL,
                      path = NULL,

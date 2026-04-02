@@ -62,7 +62,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' set.seed(123)
 #'
 #' pdata_group <- data.frame(
@@ -95,7 +94,6 @@
 #' )
 #'
 #' print(results)
-#' }
 iobr_cor_plot <- function(pdata_group,
                           id1 = "ID",
                           feature_data,

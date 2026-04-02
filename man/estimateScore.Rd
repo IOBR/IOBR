@@ -35,7 +35,6 @@ It supports multiple
 platform types and performs platform-specific calculations if necessary.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -49,5 +48,4 @@ utils::write.table(
   sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
 )
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
-}
 }

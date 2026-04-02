@@ -31,9 +31,7 @@ Gene annotation for human GRCh38/hg38 genome assembly, used for expression
 normalization and gene identifier mapping in IOBR functions.
 }
 \examples{
-\donttest{
 data(anno_grch38)
 head(anno_grch38)
-}
 }
 \keyword{datasets}

@@ -15,11 +15,9 @@
 #' @keywords internal
 #'
 #' @examples
-#' \donttest{
 #' # Detect GSVA API version (only runs if GSVA is installed)
 #' api_info <- IOBR:::gsva_use_new_api()
 #' print(api_info)
-#' }
 gsva_use_new_api <- function() {
   if (!requireNamespace("GSVA", quietly = TRUE)) {
     return(list(use_new_api = FALSE, gsva_version = "not installed"))
@@ -66,9 +64,7 @@ gsva_use_new_api <- function() {
 #' colors <- load_data("palette1")
 #'
 #' # Error handling with suggestions for similar names
-#' \donttest{
 #' try(load_data("sign_tme")) # Will suggest "signature_tme"
-#' }
 load_data <- function(name) {
   # Input validation
   if (!is.character(name) || length(name) != 1 || is.na(name) || nchar(name) == 0) {

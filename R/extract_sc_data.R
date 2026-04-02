@@ -20,12 +20,10 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("Seurat", quietly = TRUE)) {
 #'   pbmc <- SeuratObject::pbmc_small
 #'   vars <- c("PPBP", "IGLL5", "VDAC3", "CD1C", "AKR1C3")
 #'   eset <- extract_sc_data(sce = pbmc, vars = vars, assay = "RNA")
-#' }
 #' }
 extract_sc_data <- function(sce, vars = NULL, assay, slot = "scale.data", combine_meta_data = TRUE) {
   rlang::check_installed(c("Seurat", "SeuratObject"))

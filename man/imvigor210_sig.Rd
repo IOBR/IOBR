@@ -32,10 +32,8 @@ expression
 values, and various immune-related molecular signatures.
 }
 \examples{
-\donttest{
 data(imvigor210_sig)
 head(imvigor210_sig)
-}
 }
 \references{
 Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade

@@ -24,10 +24,8 @@ stomach adenocarcinoma (STAD) samples. Contains expression levels of
 key TME-related genes and potentially immune/stomal signature scores.
 }
 \examples{
-\donttest{
 data(eset_tme_stad)
 head(eset_tme_stad)
-}
 }
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular

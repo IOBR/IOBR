@@ -33,7 +33,6 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' set.seed(123)
 #' data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
 #' colnames(data) <- paste0("Gene_", 1:10)
@@ -48,7 +47,6 @@
 #'   method = "spearman",
 #'   project = "Example Correlation"
 #' )
-#' }
 get_cor_matrix <- function(data,
                            feas1,
                            feas2,

@@ -29,9 +29,7 @@
 #' dat <- matrix(rnorm(200 * 10), ncol = 10)
 #' rownames(dat) <- rownames(dds)
 #' colnames(dat) <- colnames(dds)
-#' \donttest{
 #' results <- generateRef_rnaseq(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
-#' }
 generateRef_rnaseq <- function(dds, pheno, mode = "oneVSothers", FDR = 0.05, dat) {
   rlang::check_installed("DESeq2")
 

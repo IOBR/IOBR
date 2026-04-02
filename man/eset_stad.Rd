@@ -16,9 +16,7 @@ tests. Rows correspond to Ensembl gene IDs and columns correspond to TCGA
 sample barcodes. Values are raw (unnormalized) read counts.
 }
 \examples{
-\donttest{
 data(eset_stad)
 head(eset_stad)
-}
 }
 \keyword{datasets}

@@ -48,7 +48,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_box(
 #'   data = tcga_stad_pdata,
@@ -57,7 +56,6 @@
 #'   jitter = TRUE,
 #'   palette = "jco"
 #' )
-#' }
 sig_box <- function(data,
                     signature,
                     variable,

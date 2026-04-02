@@ -24,7 +24,6 @@ algorithm. Processes multiple cancer datasets, removes batch effects,
 and estimates immune cell type abundances.
 }
 \examples{
-\donttest{
 tf <- tempfile(fileext = ".csv")
 write.table(data.frame("exp1", "luad", "exp2", "brca"),
   file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
@@ -32,5 +31,4 @@ write.table(data.frame("exp1", "luad", "exp2", "brca"),
 outdir <- tempdir()
 args <- list(outdir = outdir, batch = tf)
 results <- deconvolute_timer.default(args)
-}
 }

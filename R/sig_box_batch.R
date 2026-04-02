@@ -46,7 +46,6 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_box_batch(
 #'   input = tcga_stad_pdata,
@@ -56,7 +55,6 @@
 #'   palette = "jco",
 #'   path = tempdir()
 #' )
-#' }
 sig_box_batch <- function(input,
                           vars,
                           groups,

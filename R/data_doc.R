@@ -5,10 +5,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(null_models)
 #' head(null_models)
-#' }
 "null_models"
 
 #' Toy STAD expression matrix
@@ -22,10 +20,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(eset_stad)
 #' head(eset_stad)
-#' }
 "eset_stad"
 
 
@@ -62,10 +58,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(pdata_stad)
 #' head(pdata_stad)
-#' }
 "pdata_stad"
 
 
@@ -94,10 +88,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(signature_collection)
 #' head(signature_collection)
-#' }
 "signature_collection"
 
 
@@ -134,10 +126,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(sig_group)
 #' head(sig_group)
-#' }
 "sig_group"
 
 
@@ -175,10 +165,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(TRef)
 #' head(TRef)
-#' }
 "TRef"
 
 
@@ -230,10 +218,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(BRef)
 #' head(BRef)
-#' }
 "BRef"
 
 
@@ -268,10 +254,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(lm22)
 #' head(lm22)
-#' }
 "lm22"
 
 
@@ -299,10 +283,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(eset_gse62254)
 #' head(eset_gse62254)
-#' }
 "eset_gse62254"
 
 
@@ -331,10 +313,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(eset_tme_stad)
 #' head(eset_tme_stad)
-#' }
 "eset_tme_stad"
 
 
@@ -362,10 +342,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(eset_blca)
 #' head(eset_blca)
-#' }
 "eset_blca"
 
 #' TCGA-STAD Clinical and Molecular Annotation Data
@@ -405,10 +383,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(tcga_stad_pdata)
 #' head(tcga_stad_pdata)
-#' }
 "tcga_stad_pdata"
 
 
@@ -447,10 +423,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(imvigor210_pdata)
 #' head(imvigor210_pdata)
-#' }
 "imvigor210_pdata"
 
 
@@ -493,10 +467,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(sig_stad)
 #' head(sig_stad)
-#' }
 #' @docType data
 "sig_stad"
 
@@ -539,10 +511,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(tcga_stad_sig)
 #' head(tcga_stad_sig)
-#' }
 #' @docType data
 "tcga_stad_sig"
 
@@ -589,10 +559,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(imvigor210_sig)
 #' head(imvigor210_sig)
-#' }
 #' @docType data
 "imvigor210_sig"
 
@@ -622,10 +590,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(deg)
 #' head(deg)
-#' }
 #' @docType data
 "deg"
 
@@ -651,10 +617,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(subgroup_data)
 #' head(subgroup_data)
-#' }
 #' @docType data
 "subgroup_data"
 
@@ -682,10 +646,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(stad_group)
 #' head(stad_group)
-#' }
 #' @docType data
 "stad_group"
 
@@ -717,10 +679,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(anno_grch38)
 #' head(anno_grch38)
-#' }
 "anno_grch38"
 
 
@@ -752,10 +712,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(anno_gc_vm32)
 #' head(anno_gc_vm32)
-#' }
 "anno_gc_vm32"
 
 
@@ -778,10 +736,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(anno_hug133plus2)
 #' head(anno_hug133plus2)
-#' }
 "anno_hug133plus2"
 
 #' General RNA-seq Annotation
@@ -802,10 +758,8 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(anno_rnaseq)
 #' head(anno_rnaseq)
-#' }
 "anno_rnaseq"
 
 #' Illumina Microarray Annotation
@@ -826,8 +780,6 @@
 #' @keywords datasets
 #'
 #' @examples
-#' \donttest{
 #' data(anno_illumina)
 #' head(anno_illumina)
-#' }
 "anno_illumina"

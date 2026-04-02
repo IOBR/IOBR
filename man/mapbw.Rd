@@ -20,9 +20,7 @@ Maps a numeric input value to a color from a black-white gradient palette.
 Values are mapped to a 1001-color palette where -2 maps to black and +2 maps to white.
 }
 \examples{
-\donttest{
 my_palette2 <- grDevices::colorRampPalette(c("black", "white"))(1001)
 color <- mapbw(1.5, my_palette2)
 color <- mapbw(-1, my_palette2)
-}
 }

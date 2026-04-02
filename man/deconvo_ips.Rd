@@ -20,12 +20,10 @@ Data frame with IPS scores. Columns suffixed with `_IPS`.
 Calculates immune phenotype scores from gene expression data.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
-}
 }
 \author{
 Dongqiang Zeng

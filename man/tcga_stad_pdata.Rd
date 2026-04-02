@@ -35,10 +35,8 @@ Clinical, molecular, and signature score data for TCGA stomach adenocarcinoma
 molecular subtypes, and pre-computed signature scores.
 }
 \examples{
-\donttest{
 data(tcga_stad_pdata)
 head(tcga_stad_pdata)
-}
 }
 \references{
 Cancer Genome Atlas Research Network. Comprehensive molecular

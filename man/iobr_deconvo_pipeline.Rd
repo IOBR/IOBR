@@ -36,7 +36,6 @@ signature scores, and aggregates results. Designed for exploratory
 immunogenomic profiling.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -46,7 +45,6 @@ res <- iobr_deconvo_pipeline(
   array = FALSE, tumor_type = "stad",
   path = tempdir(), permutation = 10
 )
-}
 }
 \author{
 Dongqiang Zeng

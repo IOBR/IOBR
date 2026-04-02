@@ -16,7 +16,6 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -26,7 +25,6 @@
 #'   array = FALSE, tumor_type = "stad",
 #'   path = tempdir(), permutation = 10
 #' )
-#' }
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000) {
   #######################################
   path <- creat_folder(paste0(path))

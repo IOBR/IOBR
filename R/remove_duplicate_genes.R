@@ -28,7 +28,6 @@
 #' method) and discards others.
 #'
 #' @examples
-#' \donttest{
 #' # Load and annotate expression data
 #' eset_stad <- load_data("eset_stad")
 #' anno_rnaseq <- load_data("anno_rnaseq")
@@ -50,7 +49,6 @@
 #'
 #' # Check duplicates after
 #' sum(duplicated(rownames(eset_stad)))
-#' }
 remove_duplicate_genes <- function(eset,
                                    column_of_symbol,
                                    method = c("mean", "sd", "sum")) {

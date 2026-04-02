@@ -30,11 +30,9 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' if (requireNamespace("Seurat", quietly = TRUE)) {
 #'   pbmc <- SeuratObject::pbmc_small
 #'   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
-#' }
 #' }
 generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
                                assay_deg = "RNA", slot_deg = "data",

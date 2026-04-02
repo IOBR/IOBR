@@ -127,7 +127,6 @@ from differential gene expression data. Supports MSigDB gene sets or custom gene
 signatures, and generates comprehensive visualizations and statistical results.
 }
 \examples{
-\donttest{
 set.seed(123)
 genes <- c("TP53", "BRCA1", "EGFR", "MYC", "KRAS", "PTEN", "APC", "RB1",
            "CDKN2A", "VHL", "ATM", "ATR", "CHEK2", "PALB2", "RAD51", "MDM2",
@@ -146,7 +145,6 @@ signature <- list(
 )
 res <- sig_gsea(deg = deg, genesets = signature, path = tempdir(), show_plot = FALSE, print_bar = FALSE)
 print(names(res))
-}
 }
 \author{
 Dongqiang Zeng

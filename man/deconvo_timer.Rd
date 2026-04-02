@@ -21,7 +21,6 @@ Data frame with TIMER cell fractions. Columns suffixed with `_TIMER`.
 TIMER deconvolution for cancer-specific immune estimation.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -31,7 +30,6 @@ res <- deconvo_timer(
   indications = rep("stad", ncol(eset))
 )
 head(res)
-}
 }
 \author{
 Dongqiang Zeng

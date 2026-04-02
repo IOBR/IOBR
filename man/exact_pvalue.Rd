@@ -22,7 +22,6 @@ Computes the exact p-value for the correlation between two numeric variables
 using a specified correlation method.
 }
 \examples{
-\donttest{
 sig_stad <- load_data("sig_stad")
 p_val <- exact_pvalue(
   x = sig_stad$CD8.T.cells,
@@ -30,7 +29,6 @@ p_val <- exact_pvalue(
   method = "spearman"
 )
 print(p_val)
-}
 }
 \author{
 Dongqiang Zeng

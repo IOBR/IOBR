@@ -23,7 +23,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' # LR_cal requires HGNC gene symbols as rownames
 #' # Create a simple example with gene symbols
 #' example_genes <- c(
@@ -39,7 +38,6 @@
 #' if (requireNamespace("easier", quietly = TRUE)) {
 #'   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
 #'   head(lr)
-#' }
 #' }
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
   rlang::check_installed("easier")

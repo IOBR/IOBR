@@ -72,7 +72,6 @@ Supports Pearson, Spearman, and Kendall correlation methods. The function
 generates a customizable heatmap with significance stars.
 }
 \examples{
-\donttest{
 set.seed(123)
 data <- as.data.frame(matrix(rnorm(1000), nrow = 100, ncol = 10))
 colnames(data) <- paste0("Gene_", 1:10)
@@ -87,7 +86,6 @@ cor_plot <- get_cor_matrix(
   method = "spearman",
   project = "Example Correlation"
 )
-}
 }
 \author{
 Dongqiang Zeng

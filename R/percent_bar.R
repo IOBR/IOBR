@@ -28,13 +28,11 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' percent_bar_plot(
 #'   input = sig_stad, x = "Subtype", y = "Lauren",
 #'   axis_angle = 60
 #' )
-#' }
 percent_bar_plot <- function(input, x, y,
                              subset.x = NULL,
                              color = NULL,
@@ -137,11 +135,9 @@ percent_bar_plot <- function(input, x, y,
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
 #' pie_chart(input = sig_stad, var = "Subtype", type = 2)
-#' }
 pie_chart <- function(input, var, var2 = NULL, type = 2,
                       show_freq = FALSE, color = NULL, palette = "jama",
                       title = NULL, text_size = 10, title_size = 20,

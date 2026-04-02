@@ -60,7 +60,6 @@ selection criteria. Supports multiple methods, including expression
 thresholding and variability estimation via median absolute deviation (MAD).
 }
 \examples{
-\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 eset <- find_variable_genes(
   eset = eset_tme_stad,
@@ -68,8 +67,6 @@ eset <- find_variable_genes(
   methods = "mad",
   quantile = 0.25
 )
-}
-\donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 eset <- find_variable_genes(
   eset = eset_tme_stad,
@@ -77,7 +74,6 @@ eset <- find_variable_genes(
   methods = "mad",
   quantile = 0.25
 )
-}
 }
 \author{
 Dongqiang Zeng

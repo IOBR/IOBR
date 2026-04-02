@@ -40,7 +40,6 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' stad_group <- load_data("stad_group")
 #' deg <- iobr_deg(
@@ -50,7 +49,6 @@
 #'   path = file.path(tempdir(), "STAD")
 #' )
 #' head(deg)
-#' }
 iobr_deg <- function(eset,
                      annotation = NULL,
                      id_anno = NULL,

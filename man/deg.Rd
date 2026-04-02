@@ -28,9 +28,7 @@ package,
 particularly \code{\link{get_sig_sc}} and \code{\link{sig_gsea}}.
 }
 \examples{
-\donttest{
 data(deg)
 head(deg)
-}
 }
 \keyword{datasets}

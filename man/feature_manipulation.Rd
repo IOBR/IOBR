@@ -33,7 +33,6 @@ missing values, non-numeric types, infinite values, or zero variance.
 This is useful for preparing data for downstream statistical analyses.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 feas <- feature_manipulation(
   data = eset_stad,
@@ -41,7 +40,6 @@ feas <- feature_manipulation(
   is_matrix = TRUE,
   print_result = TRUE
 )
-}
 }
 \author{
 Dongqiang Zeng

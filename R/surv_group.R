@@ -33,7 +33,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' surv_group(
 #'   input_pdata = tcga_stad_pdata,
@@ -41,7 +40,6 @@
 #'   time = "time",
 #'   status = "OS_status"
 #' )
-#' }
 surv_group <- function(input_pdata,
                        target_group,
                        ID = "ID",

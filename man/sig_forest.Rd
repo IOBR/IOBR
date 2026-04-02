@@ -58,7 +58,6 @@ Generates a forest plot to visualize hazard ratios, confidence intervals,
 and p-values for gene signatures or features from survival analysis.
 }
 \examples{
-\donttest{
 # Example with sample survival results
 sample_results <- data.frame(
   ID = c("Sig1", "Sig2", "Sig3"),
@@ -68,7 +67,6 @@ sample_results <- data.frame(
   CI_up_0.95 = c(2.0, 1.0, 2.8)
 )
 sig_forest(data = sample_results, signature = "ID")
-}
 }
 \author{
 Dongqiang Zeng

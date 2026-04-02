@@ -79,7 +79,6 @@ and calculates fold changes and adjusted p-values. Optionally generates
 volcano plots and heatmaps.
 }
 \examples{
-\donttest{
 eset_stad <- load_data("eset_stad")
 stad_group <- load_data("stad_group")
 deg <- iobr_deg(
@@ -89,7 +88,6 @@ deg <- iobr_deg(
   path = file.path(tempdir(), "STAD")
 )
 head(deg)
-}
 }
 \author{
 Dongqiang Zeng

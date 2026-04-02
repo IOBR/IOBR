@@ -42,7 +42,6 @@ distribution of specified features between two groups. Computes p-values,
 adjusts for multiple testing, and ranks features by significance.
 }
 \examples{
-\donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
@@ -53,7 +52,6 @@ res <- batch_wilcoxon(
   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 )
 head(res)
-}
 }
 \author{
 Dongqiang Zeng

@@ -47,13 +47,11 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' tcga_stad_sig <- load_data("tcga_stad_sig")
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 #' feas <- grep("MCPcounter", colnames(input), value = TRUE)
 #' sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
-#' }
 sig_heatmap <- function(input,
                         id = "ID",
                         features,

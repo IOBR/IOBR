@@ -28,10 +28,8 @@ Includes detailed immune cell subtype proportions for each gastric cancer
 sample.
 }
 \examples{
-\donttest{
 data(tcga_stad_sig)
 head(tcga_stad_sig)
-}
 }
 \references{
 Newman AM et al. Robust enumeration of cell subsets from tissue expression

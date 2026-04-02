@@ -22,9 +22,7 @@ Generic gene annotation for RNA-seq data analysis. Provides basic
 gene identifier mappings for various RNA-seq analysis workflows.
 }
 \examples{
-\donttest{
 data(anno_rnaseq)
 head(anno_rnaseq)
-}
 }
 \keyword{datasets}

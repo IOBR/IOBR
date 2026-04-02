@@ -22,7 +22,6 @@ Computes signature scores from gene expression data using Principal
 Component Analysis (PCA), mean-based, or z-score approaches.
 }
 \examples{
-\donttest{
 # Load example data
 eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
@@ -37,7 +36,6 @@ if (length(genes) >= 2) {
   score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
-}
 }
 }
 \author{

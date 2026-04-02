@@ -31,7 +31,6 @@ Extracts model coefficients at optimal lambda values (`lambda.min` and `lambda.1
 and calculates time-dependent AUC metrics for both training and testing datasets.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE) &&
   requireNamespace("timeROC", quietly = TRUE)) {
@@ -46,7 +45,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
     model = fit, train.x = train_x, train.y = train_y,
     test.x = test_x, test.y = test_y
   )
-}
 }
 }
 \author{

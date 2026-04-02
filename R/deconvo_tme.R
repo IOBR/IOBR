@@ -82,13 +82,11 @@ tme_deconvolution_methods <- c(
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #' head(xcell_result)[, 1:5]
-#' }
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   rlang::check_installed("xCell", reason = "to run xCell deconvolution")
 
@@ -152,14 +150,12 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- eset[1:500, 1:3]
 #' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 #' head(mcp_result)
-#' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
   cli::cli_alert_info("Running MCP-counter deconvolution")
 
@@ -193,14 +189,12 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- eset[1:500, 1:5]
 #' epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
 #' head(epic_result)
-#' }
 deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
   cli::cli_alert_info("Running EPIC deconvolution")
 
@@ -240,7 +234,6 @@ deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' lm22 <- load_data("lm22")
 #' cibersort_result <- deconvo_cibersort(
@@ -248,7 +241,6 @@ deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
 #'   project = "TCGA-STAD",
 #'   perm = 100
 #' )
-#' }
 deconvo_cibersort <- function(eset,
                               project = NULL,
                               arrays = FALSE,
@@ -296,12 +288,10 @@ deconvo_cibersort <- function(eset,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
-#' }
 deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
   cli::cli_alert_info("Running IPS calculation")
 
@@ -327,12 +317,10 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
-#' }
 deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   cli::cli_alert_info("Running ESTIMATE")
 
@@ -498,7 +486,6 @@ deconvo_ref <- function(eset,
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -508,7 +495,6 @@ deconvo_ref <- function(eset,
 #'   indications = rep("stad", ncol(eset))
 #' )
 #' head(res)
-#' }
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   cli::cli_alert_info("Running TIMER deconvolution")
 
@@ -569,7 +555,6 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -579,7 +564,6 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #'   arrays = FALSE, scale_mrna = FALSE
 #' )
 #' head(res)
-#' }
 deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
   cli::cli_alert_info("Running quanTIseq deconvolution")
 
