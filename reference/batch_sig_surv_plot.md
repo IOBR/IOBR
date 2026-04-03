@@ -132,7 +132,7 @@ result <- batch_sig_surv_plot(
   fig_type = "pdf"
 )
 #> ℹ Processing project: "TCGA-STAD"
-#> ℹ Saving plots to: "/tmp/RtmpVdtER6/Multiple-KM-plot"
+#> ℹ Saving plots to: "/tmp/RtmpJRFF17/Multiple-KM-plot"
 #> ℹ Survival follow-up time range: 0.1 to 124 months
 #> ℹ Best cutoff for "T.cells.CD8": 0.1
 #> ✔ Best cutoff for "T.cells.CD8": 0.101
