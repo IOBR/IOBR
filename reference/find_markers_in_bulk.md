@@ -131,11 +131,7 @@ res <- find_markers_in_bulk(
 #> This message will be shown once per session
 #> Calculating cluster IE
 #> Calculating cluster IS
-# Extract top 15 markers per cluster
-top15 <- res$top_markers 
-  dplyr::group_by(cluster) 
-#> Error in UseMethod("group_by"): no applicable method for 'group_by' applied to an object of class "function"
-  dplyr::top_n(15, avg_log2FC)
-#> Error in UseMethod("tbl_vars"): no applicable method for 'tbl_vars' applied to an object of class "c('double', 'numeric')"
+# Extract top markers per cluster using base R
+top_markers <- res$top_markers
 # }
 ```
