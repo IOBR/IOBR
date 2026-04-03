@@ -19,20 +19,20 @@ Source:
 [`inst/CITATION`](https://github.com/IOBR/IOBR/blob/master/inst/CITATION)
 
 Zeng D, Fang Y, Luo P, Qiu W, Wang S, Shen R, Gu W, Huang X, Mao Q, Lai
-Y, Xu X, Shi M, Yu G, Liao W (2024). “IOBR2: Multidimensional Decoding
-of Tumor Microenvironment for Immuno-Oncology Research.” *bioRxiv*.
-[doi:10.1101/2024.01.13.575484](https://doi.org/10.1101/2024.01.13.575484),
-preprint (which was not certified by peer review) is the author/funder,
-who has granted bioRxiv a license to display the preprint in perpetuity.
-It is made available under a CC-BY-NC-ND 4.0 International license.
+Y, Xu X, Shi M, Yu G, Liao W. Enhancing Immuno-Oncology Investigations
+Through Multidimensional Decoding of Tumour Microenvironment with IOBR
+2.0. Cell Rep Methods. 2024;4(9):100910.
+doi:10.1016/j.crmeth.2024.100910.
 
     @Article{,
-      title = {IOBR2: Multidimensional Decoding of Tumor Microenvironment for Immuno-Oncology Research},
+      title = {Enhancing Immuno-Oncology Investigations Through Multidimensional Decoding of Tumour Microenvironment with IOBR 2.0},
       author = {Dongqiang Zeng and Yiran Fang and Peng Luo and Wenjun Qiu and Shixiang Wang and Rongfang Shen and Wenchao Gu and Xiatong Huang and Qianqian Mao and Yonghong Lai and Xi Xu and Min Shi and Guangchuang Yu and Wangjun Liao},
-      journal = {bioRxiv},
+      journal = {Cell Reports Methods},
       year = {2024},
-      doi = {https://doi.org/10.1101/2024.01.13.575484},
-      note = {preprint (which was not certified by peer review) is the author/funder, who has granted bioRxiv a license to display the preprint in perpetuity. It is made available under a CC-BY-NC-ND 4.0 International license.},
+      volume = {4},
+      number = {9},
+      pages = {100910},
+      doi = {10.1016/j.crmeth.2024.100910},
     }
 
 Zeng D, Ye Z, Shen R, Yu G, Wu J, Xiong Y, Zhou R, Qiu W, Huang N, Sun

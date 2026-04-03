@@ -35,9 +35,9 @@ Mariathasan S et al. Nature 554, 544-548 (2018)
 
 ## References
 
-Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
-by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
-doi:10.1038/nature25501
+Mariathasan S et al. TGF\\\beta\\ attenuates tumour response to PD-L1
+blockade by contributing to exclusion of T cells. Nature 554, 544-548
+(2018). doi:10.1038/nature25501
 
 Rosenberg JE et al. Atezolizumab in patients with locally advanced and
 metastatic urothelial carcinoma who have progressed following treatment

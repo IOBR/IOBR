@@ -52,7 +52,7 @@ A data frame with patients as rows and variables as columns:
 
 - Pan_F_TBRs:
 
-  Pan-fibroblast TGF-β response signature
+  Pan-fibroblast TGF-\\\beta\\ response signature
 
 - Mismatch_Repair:
 
@@ -68,9 +68,9 @@ IMvigor210 clinical trial (NCT02108652)
 
 ## References
 
-Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
-by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
-doi:10.1038/nature25501
+Mariathasan S et al. TGF\\\beta\\ attenuates tumour response to PD-L1
+blockade by contributing to exclusion of T cells. Nature 554, 544-548
+(2018). doi:10.1038/nature25501
 
 ## Examples
 

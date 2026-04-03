@@ -1,8 +1,8 @@
 # Map Score to Immunophenoscore
 
-Maps input score to Immunophenoscore (IPS) on a 0-10 scale. Scores ≤0
-map to 0, scores ≥3 map to 10, and intermediate scores are linearly
-scaled.
+Maps input score to Immunophenoscore (IPS) on a 0-10 scale. Scores
+\\\le\\0 map to 0, scores \\\ge\\3 map to 10, and intermediate scores
+are linearly scaled.
 
 ## Usage
 

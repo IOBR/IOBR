@@ -15,7 +15,7 @@ doPerm(perm, X, Y, absolute, abs_method, seed = NULL)
 
 - perm:
 
-  Integer. Number of permutations to perform (≥100 recommended for
+  Integer. Number of permutations to perform (\\\ge\\100 recommended for
   reliable p-value estimation).
 
 - X:

@@ -25,7 +25,7 @@ CIBERSORT(
 
   Cell type GEP barcode matrix: row 1 = sample labels; column 1 = gene
   symbols; no missing values; default = LM22.txt download from CIBERSORT
-  (https://cibersort.stanford.edu/runcibersort.php)
+  (https://cibersortx.stanford.edu/runcibersort.php)
 
 - mixture_file:
 

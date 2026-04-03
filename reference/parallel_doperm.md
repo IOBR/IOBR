@@ -23,7 +23,7 @@ parallel_doperm(
 
 - perm1:
 
-  Integer. Number of permutations to perform (≥100 recommended).
+  Integer. Number of permutations to perform (\\\ge\\100 recommended).
 
 - X1:
 

@@ -27,7 +27,7 @@ A data frame with 375 rows (samples) and 464 variables:
 
 The Cancer Genome Atlas (TCGA) Research Network, processed with
 CIBERSORT <https://www.cancer.gov/tcga>
-<https://cibersort.stanford.edu/>
+<https://cibersortx.stanford.edu/>
 
 ## References
 

@@ -79,8 +79,8 @@ Tibble with phenotype data and signature scores.
 1.  Hänzelmann S, Castelo R, Guinney J. GSVA: gene set variation
     analysis. BMC Bioinformatics. 2013;14:7.
 
-2.  Mariathasan S, et al. TGFβ attenuates tumour response to PD-L1
-    blockade. Nature. 2018;554:544-548.
+2.  Mariathasan S, et al. TGF\\\beta\\ attenuates tumour response to
+    PD-L1 blockade. Nature. 2018;554:544-548.
 
 ## Author
 

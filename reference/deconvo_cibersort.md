@@ -1,7 +1,7 @@
 # Deconvolve Using CIBERSORT
 
 CIBERSORT is freely available to academic users. License and binary can
-be obtained from https://cibersort.stanford.edu.
+be obtained from https://cibersortx.stanford.edu.
 
 ## Usage
 

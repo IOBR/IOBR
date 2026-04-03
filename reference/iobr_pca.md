@@ -97,15 +97,18 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-set.seed(123)
-eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
-rownames(eset) <- paste0("Gene", 1:100)
-colnames(eset) <- paste0("Sample", 1:10)
-pdata <- data.frame(
-  ID = colnames(eset),
-  group = rep(c("A", "B"), each = 5)
-)
-iobr_pca(eset, pdata = pdata, id_pdata = "ID", group = "group", addEllipses = FALSE)
+if (requireNamespace("FactoMineR", quietly = TRUE) &&
+  requireNamespace("factoextra", quietly = TRUE)) {
+  set.seed(123)
+  eset <- matrix(rnorm(1000), nrow = 100, ncol = 10)
+  rownames(eset) <- paste0("Gene", 1:100)
+  colnames(eset) <- paste0("Sample", 1:10)
+  pdata <- data.frame(
+    ID = colnames(eset),
+    group = rep(c("A", "B"), each = 5)
+  )
+  iobr_pca(eset, pdata = pdata, id_pdata = "ID", group = "group", addEllipses = FALSE)
+}
 #> 
 #> A B 
 #> 5 5 
