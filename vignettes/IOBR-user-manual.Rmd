@@ -30,13 +30,9 @@ knitr::opts_chunk$set(
 
 IOBR is the acronym for [Immuno-Oncology Biological Research](https://github.com/IOBR/IOBR)  to perform multi-omics immuno-oncology biological research to decipher tumour microenvironment and signatures for clinical translation.
 
-
-
 # Module Introduction
 
-<right>
 ![](Figure_1.jpg)
-
 
 IOBR encompasses six functional modules: 
 
@@ -47,9 +43,6 @@ IOBR encompasses six functional modules:
 + __*Genome and TME interaction module*__ : analysis of signature associated mutations; 
 + __*TME data visualization and Statistical analysis module*__ : visual representation and statistical examination of TME data; 
 + __*TME modeling module*__ : fast model construction and the assessment of model performance.
-
-<center>
-![](Figure_1.png)
 
 
 # Methodology
@@ -80,4 +73,4 @@ doi:[10.3389/fimmu.2021.687975](https://www.frontiersin.org/journals/immunology/
 
 # Feedback and helps
 
-Should any queries or concerns arise, consider checking the [IOBR primary webpage](https://github.com/IOBR/IOBR) initially. The majority of your issues are likely already addressed there. Supposing you've detected a fault, adhere to the instructions, and offer a replicable instance to be showcased on the [github issue tracker](https://github.com/IOBR/IOBR/issues). In the case of queries, kindly make your submission to the [Bioconductor help forum](https://support.bioconductor.org/) and label your entry with *IOBR*.
+Should any queries or concerns arise, consider checking the [IOBR primary webpage](https://github.com/IOBR/IOBR) initially. The majority of your issues are likely already addressed there. Supposing you've detected a fault, adhere to the instructions, and offer a replicable instance to be showcased on the [github issue tracker](https://github.com/IOBR/IOBR/issues).
