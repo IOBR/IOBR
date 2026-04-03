@@ -34,6 +34,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \dontrun{
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' sig_surv_plot(
 #'   input_pdata = tcga_stad_pdata,
@@ -41,6 +42,7 @@
 #'   time = "time",
 #'   status = "OS_status"
 #' )
+#' }
 sig_surv_plot <- function(input_pdata,
                           signature,
                           project = "KM",

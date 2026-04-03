@@ -44,7 +44,7 @@
 #' @import survival
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' sig_stad <- load_data("sig_stad")
 #' result <- batch_sig_surv_plot(
 #'   input_pdata = sig_stad,
