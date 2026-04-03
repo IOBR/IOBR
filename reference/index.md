@@ -365,6 +365,8 @@ Build custom deconvolution reference matrices from scRNA-seq data.
   : Extract Top Marker Genes from Single-Cell Differential Results
 - [`Construct_con()`](https://iobr.github.io/IOBR/reference/Construct_con.md)
   : Construct Contrast Matrix
+- [`random_strata_cells()`](https://iobr.github.io/IOBR/reference/random_strata_cells.md)
+  : Stratified Random Sampling of Cells
 
 ## Signature Format & Export
 

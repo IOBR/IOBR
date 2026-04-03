@@ -88,16 +88,28 @@ from <https://github.com/IOBR/IOBR/tags>.
 - R version 3.6.0 or higher
 - Bioconductor version 3.10 or higher
 
-### Install from GitHub
-
-#### Standard Installation
-
 ``` r
 # Install BiocManager if not already installed
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
+```
 
+### Install from CRAN
+
+``` r
+# Install IOBR from GitHub
+BiocManager::install("IOBR")
+```
+
+> Note: install with `dependencies = TRUE` is recommended to ensure all
+> required packages are installed for full functionality.
+>
+> `BiocManager::install("IOBR", dependencies = TRUE)`
+
+### Install from GitHub
+
+``` r
 # Install IOBR from GitHub
 BiocManager::install("IOBR/IOBR")
 ```
@@ -726,6 +738,8 @@ Build custom deconvolution reference matrices from scRNA-seq data.
   : Extract Top Marker Genes from Single-Cell Differential Results
 - [`Construct_con()`](https://iobr.github.io/IOBR/reference/Construct_con.md)
   : Construct Contrast Matrix
+- [`random_strata_cells()`](https://iobr.github.io/IOBR/reference/random_strata_cells.md)
+  : Stratified Random Sampling of Cells
 
 ## Signature Format & Export
 
