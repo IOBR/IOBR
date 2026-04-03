@@ -41,7 +41,7 @@ authors:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, book]
+    left:  [intro, reference, articles, book, news]
     right: [search, github]
   components:
     articles:
