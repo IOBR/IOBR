@@ -174,42 +174,11 @@ remove_batcheffect <- function(eset1,
     prefix <- "count"
   }
 
-  # Generate PCA plots
-  p1 <- iobr_pca(
-    data = combined.expr,
-    is.matrix = TRUE,
-    scale = TRUE,
-    is.log = TRUE,
-    pdata = batch,
-    id_pdata = "ID",
-    group = "batch",
-    cols = cols,
-    palette = palette,
-    repel = repel,
-    ncp = 3,
-    axes = c(1, 2),
-    addEllipses = TRUE
-  ) + ggplot2::ggtitle(paste("Before correction:", prefix))
-
-  p2 <- iobr_pca(
-    data = combined.expr.combat,
-    is.matrix = TRUE,
-    scale = TRUE,
-    is.log = TRUE,
-    pdata = batch,
-    id_pdata = "ID",
-    group = "batch",
-    cols = cols,
-    palette = palette,
-    repel = repel,
-    ncp = 3,
-    axes = c(1, 2),
-    addEllipses = TRUE
-  ) + ggplot2::ggtitle(paste("After correction:", prefix))
-
-  if (data_type == "count") {
-    p3 <- iobr_pca(
-      data = eset2_tpm,
+  # Generate PCA plots if FactoMineR is available
+  if (requireNamespace("FactoMineR", quietly = TRUE) &&
+      requireNamespace("factoextra", quietly = TRUE)) {
+    p1 <- iobr_pca(
+      data = combined.expr,
       is.matrix = TRUE,
       scale = TRUE,
       is.log = TRUE,
@@ -222,27 +191,61 @@ remove_batcheffect <- function(eset1,
       ncp = 3,
       axes = c(1, 2),
       addEllipses = TRUE
-    ) + ggplot2::ggtitle("After correction: count2TPM")
+    ) + ggplot2::ggtitle(paste("Before correction:", prefix))
 
-    p <- patchwork::wrap_plots(p1, p2, p3, nrow = 1)
-  } else {
-    p <- patchwork::wrap_plots(p1, p2, nrow = 1)
-  }
+    p2 <- iobr_pca(
+      data = combined.expr.combat,
+      is.matrix = TRUE,
+      scale = TRUE,
+      is.log = TRUE,
+      pdata = batch,
+      id_pdata = "ID",
+      group = "batch",
+      cols = cols,
+      palette = palette,
+      repel = repel,
+      ncp = 3,
+      axes = c(1, 2),
+      addEllipses = TRUE
+    ) + ggplot2::ggtitle(paste("After correction:", prefix))
 
-  print(p)
+    if (data_type == "count") {
+      p3 <- iobr_pca(
+        data = eset2_tpm,
+        is.matrix = TRUE,
+        scale = TRUE,
+        is.log = TRUE,
+        pdata = batch,
+        id_pdata = "ID",
+        group = "batch",
+        cols = cols,
+        palette = palette,
+        repel = repel,
+        ncp = 3,
+        axes = c(1, 2),
+        addEllipses = TRUE
+      ) + ggplot2::ggtitle("After correction: count2TPM")
 
-  # Save plot if path provided
-  if (!is.null(path)) {
-    num_plots <- if (data_type == "count") 3 else 2
-    width <- num_plots * 5
+      p <- patchwork::wrap_plots(p1, p2, p3, nrow = 1)
+    } else {
+      p <- patchwork::wrap_plots(p1, p2, nrow = 1)
+    }
 
-    ggplot2::ggsave(
-      p,
-      filename = paste0("0-PCA-of-", num_plots, "-eset.pdf"),
-      width = width,
-      height = 5,
-      path = path$folder_name
-    )
+    print(p)
+
+    # Save plot if path provided
+    if (!is.null(path)) {
+      num_plots <- if (data_type == "count") 3 else 2
+      width <- num_plots * 5
+
+      ggplot2::ggsave(
+        p,
+        filename = paste0("0-PCA-of-", num_plots, "-eset.pdf"),
+        width = width,
+        height = 5,
+        path = path$folder_name
+      )
+    }
   }
 
   invisible(combined.expr.combat)
