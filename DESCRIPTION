@@ -9,19 +9,20 @@ Authors@R: c(
     person("Qingcong", "Luo", , "qingcongl@163.com", role = "aut"),
     person("Hongqian", "Qian", , "536769786@qq.com", role = "aut")
   )
-Description: This package offers six modules for TME analysis based on
-    multi-omics data. These modules cover data preprocessing, TME
-    estimation, TME infiltrating patterns, cellular interactions, genome
-    and TME interaction, and visualization for TME relevant features, as
-    well as modelling based on key features. It integrates multiple vital
-    microenvironmental analysis algorithms and signature estimation
-    methods, simplifying the analysis and downstream visualization of the
-    TME. In addition to providing a quick and easy way to construct gene
-    signatures from scRNA-seq data, It also provides a way to construct a
-    reference matrix for TME deconvolution from scRNA-seq data. The
-    analysis pipeline and feature visualization are user-friendly and
-    provide a comprehensive description of the complex TME, offering
-    insights into tumour-immune interactions.
+Description: Provides six modules for tumor microenvironment (TME)
+    analysis based on multi-omics data. These modules cover data
+    preprocessing, TME estimation, TME infiltrating patterns, cellular
+    interactions, genome and TME interaction, and visualization for TME
+    relevant features, as well as modelling based on key features. It
+    integrates multiple microenvironmental analysis algorithms and
+    signature estimation methods, simplifying the analysis and downstream
+    visualization of the TME. In addition to providing a quick and easy
+    way to construct gene signatures from single-cell RNA-seq data, it
+    also provides a way to construct a reference matrix for TME
+    deconvolution from single-cell RNA-seq data. The analysis pipeline
+    and feature visualization are user-friendly and provide a
+    comprehensive description of the complex TME, offering insights into
+    tumour-immune interactions.
 License: GPL-3 + file LICENSE
 URL: https://doi.org/10.3389/fimmu.2021.687975 (paper),
     https://iobr.github.io/book/ (docs), https://iobr.github.io/IOBR/
@@ -96,7 +97,6 @@ Suggests:
     WGCNA
 VignetteBuilder: 
     knitr
-BiocType: Software
 biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3

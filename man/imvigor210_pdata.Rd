@@ -17,7 +17,7 @@ A data frame with patients as rows and variables as columns:
   \item{Neo_antigen_Load}{Neoantigen load}
   \item{CD_8_T_effector}{CD8+ T effector signature score}
   \item{Immune_Checkpoint}{Immune checkpoint signature score}
-  \item{Pan_F_TBRs}{Pan-fibroblast TGF-β response signature}
+  \item{Pan_F_TBRs}{Pan-fibroblast TGF-\eqn{\beta} response signature}
   \item{Mismatch_Repair}{Mismatch repair status or signature}
   \item{TumorPurity}{Estimated tumor purity}
 }
@@ -38,7 +38,7 @@ data(imvigor210_pdata)
 head(imvigor210_pdata)
 }
 \references{
-Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
+Mariathasan S et al. TGF\eqn{\beta} attenuates tumour response to PD-L1 blockade
 by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
 doi:10.1038/nature25501
 }

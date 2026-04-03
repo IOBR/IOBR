@@ -525,7 +525,7 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #' \enumerate{
 #'   \item Hänzelmann S, Castelo R, Guinney J. GSVA: gene set variation
 #'     analysis. BMC Bioinformatics. 2013;14:7.
-#'   \item Mariathasan S, et al. TGFβ attenuates tumour response to PD-L1 blockade.
+#'   \item Mariathasan S, et al. TGF\eqn{\beta} attenuates tumour response to PD-L1 blockade.
 #'     Nature. 2018;554:544-548.
 #' }
 #'

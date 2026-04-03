@@ -213,7 +213,7 @@ deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
 #'
 #' @description
 #' CIBERSORT is freely available to academic users. License and binary can be
-#' obtained from https://cibersort.stanford.edu.
+#' obtained from https://cibersortx.stanford.edu.
 #'
 #' @param eset Expression matrix with gene symbols as row names.
 #' @param project Optional project name. Default is `NULL`.

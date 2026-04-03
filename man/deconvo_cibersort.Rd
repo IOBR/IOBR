@@ -41,7 +41,7 @@ Data frame with CIBERSORT cell fractions. Columns suffixed with `_CIBERSORT`.
 }
 \description{
 CIBERSORT is freely available to academic users. License and binary can be
-obtained from https://cibersort.stanford.edu.
+obtained from https://cibersortx.stanford.edu.
 }
 \examples{
 eset_tme_stad <- load_data("eset_tme_stad")

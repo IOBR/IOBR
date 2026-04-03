@@ -19,7 +19,7 @@ CIBERSORT(
 \arguments{
 \item{sig_matrix}{Cell type GEP barcode matrix: row 1 = sample labels;
 column 1 = gene symbols; no missing values; default = LM22.txt download
-from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)}
+from CIBERSORT (https://cibersortx.stanford.edu/runcibersort.php)}
 
 \item{mixture_file}{GEP matrix: row 1 = sample labels; column 1 = gene
 symbols; no missing values}

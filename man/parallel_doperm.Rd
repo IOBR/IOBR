@@ -15,7 +15,7 @@ parallel_doperm(
 )
 }
 \arguments{
-\item{perm1}{Integer. Number of permutations to perform (≥100 recommended).}
+\item{perm1}{Integer. Number of permutations to perform (\eqn{\ge}100 recommended).}
 
 \item{X1}{Matrix or data frame. Signature matrix (cell type GEP barcode).}
 

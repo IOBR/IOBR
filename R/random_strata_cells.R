@@ -46,13 +46,13 @@
 #' )
 #' }
 random_strata_cells <- function(input,
-                                 group,
-                                 proportion = 0.1,
-                                 minimum_count_include = 300,
-                                 minimum_count = 200,
-                                 maximum_count = 1000,
-                                 sub_cluster = NULL,
-                                 cell_type = NULL) {
+                                group,
+                                proportion = 0.1,
+                                minimum_count_include = 300,
+                                minimum_count = 200,
+                                maximum_count = 1000,
+                                sub_cluster = NULL,
+                                cell_type = NULL) {
   # Validate inputs
   stopifnot(
     "input must be a data frame or Seurat object" =

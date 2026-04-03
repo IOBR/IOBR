@@ -4,7 +4,7 @@
 # Author: Aaron M. Newman, Stanford University (amnewman@stanford.edu)
 # Requirements:
 #   R v3.0 or later.
-# License: http://cibersort.stanford.edu/CIBERSORT_License.txt
+# License: https://cibersortx.stanford.edu/CIBERSORT_License.txt
 
 #' Core Algorithm for CIBERSORT Deconvolution
 #'
@@ -89,7 +89,7 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #' of correlation coefficients for p-value calculation in CIBERSORT analysis.
 #' Randomly samples from the mixture data to create null distributions.
 #'
-#' @param perm Integer. Number of permutations to perform (≥100 recommended for
+#' @param perm Integer. Number of permutations to perform (\eqn{\ge}100 recommended for
 #'   reliable p-value estimation).
 #' @param X Matrix or data frame containing signature matrix (predictor variables).
 #' @param Y Numeric vector containing the mixture sample expression.
@@ -139,7 +139,7 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #' computation. This function generates an empirical null distribution of
 #' correlation coefficients for p-value calculation in CIBERSORT analysis.
 #'
-#' @param perm1 Integer. Number of permutations to perform (≥100 recommended).
+#' @param perm1 Integer. Number of permutations to perform (\eqn{\ge}100 recommended).
 #' @param X1 Matrix or data frame. Signature matrix (cell type GEP barcode).
 #' @param Y1 Matrix. Mixture file containing gene expression profiles.
 #' @param absolute1 Logical. Whether to run in absolute mode (default: FALSE).
@@ -235,7 +235,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 
 #' @param sig_matrix Cell type GEP barcode matrix: row 1 = sample labels;
 #'   column 1 = gene symbols; no missing values; default = LM22.txt download
-#'   from CIBERSORT (https://cibersort.stanford.edu/runcibersort.php)
+#'   from CIBERSORT (https://cibersortx.stanford.edu/runcibersort.php)
 #' @param mixture_file GEP matrix: row 1 = sample labels; column 1 = gene
 #'   symbols; no missing values
 #' @param perm Set permutations for statistical analysis

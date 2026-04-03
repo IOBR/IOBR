@@ -7,7 +7,7 @@
 doPerm(perm, X, Y, absolute, abs_method, seed = NULL)
 }
 \arguments{
-\item{perm}{Integer. Number of permutations to perform (≥100 recommended for
+\item{perm}{Integer. Number of permutations to perform (\eqn{\ge}100 recommended for
 reliable p-value estimation).}
 
 \item{X}{Matrix or data frame containing signature matrix (predictor variables).}

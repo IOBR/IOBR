@@ -406,7 +406,7 @@
 #'   \item{Neo_antigen_Load}{Neoantigen load}
 #'   \item{CD_8_T_effector}{CD8+ T effector signature score}
 #'   \item{Immune_Checkpoint}{Immune checkpoint signature score}
-#'   \item{Pan_F_TBRs}{Pan-fibroblast TGF-β response signature}
+#'   \item{Pan_F_TBRs}{Pan-fibroblast TGF-\eqn{\beta} response signature}
 #'   \item{Mismatch_Repair}{Mismatch repair status or signature}
 #'   \item{TumorPurity}{Estimated tumor purity}
 #' }
@@ -416,7 +416,7 @@
 #' @source IMvigor210 clinical trial (NCT02108652)
 #'
 #' @references
-#' Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
+#' Mariathasan S et al. TGF\eqn{\beta} attenuates tumour response to PD-L1 blockade
 #' by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
 #' doi:10.1038/nature25501
 #'
@@ -491,7 +491,7 @@
 #'
 #' @source The Cancer Genome Atlas (TCGA) Research Network, processed with CIBERSORT
 #' \url{https://www.cancer.gov/tcga}
-#' \url{https://cibersort.stanford.edu/}
+#' \url{https://cibersortx.stanford.edu/}
 #'
 #' @references
 #' Newman AM et al. Robust enumeration of cell subsets from tissue expression
@@ -543,7 +543,7 @@
 #' \url{https://clinicaltrials.gov/ct2/show/NCT02108652}
 #'
 #' @references
-#' Mariathasan S et al. TGFβ attenuates tumour response to PD-L1 blockade
+#' Mariathasan S et al. TGF\eqn{\beta} attenuates tumour response to PD-L1 blockade
 #' by contributing to exclusion of T cells. Nature 554, 544-548 (2018).
 #' doi:10.1038/nature25501
 #'

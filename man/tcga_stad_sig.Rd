@@ -16,7 +16,7 @@ A data frame with 375 rows (samples) and 464 variables:
 \source{
 The Cancer Genome Atlas (TCGA) Research Network, processed with CIBERSORT
 \url{https://www.cancer.gov/tcga}
-\url{https://cibersort.stanford.edu/}
+\url{https://cibersortx.stanford.edu/}
 }
 \usage{
 data(tcga_stad_sig)
