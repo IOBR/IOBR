@@ -35,7 +35,7 @@
 #' # Convert using local database
 #' human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
 mouse2human_eset <- function(eset,
-                             source = c("ensembl", "local"),
+                             source = c("local", "ensembl"),
                              is_matrix = TRUE,
                              column_of_symbol = NULL,
                              verbose = FALSE) {
@@ -62,6 +62,7 @@ mouse2human_eset <- function(eset,
   }
 
   if (source == "ensembl") {
+    rlang::check_installed("biomaRt")
     probe_data <- tryCatch(
       {
         ensembl <- biomaRt::useEnsembl(biomart = "ensembl")

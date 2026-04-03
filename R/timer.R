@@ -94,6 +94,8 @@ timer_available_cancers <- c(
 #'
 #' result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
+  rlang::check_installed("sva")
+
   tmp.dd <- as.matrix(cancer.exp)
   tmp.ss <- intersect(rownames(tmp.dd), rownames(immune.exp))
 
@@ -484,7 +486,7 @@ deconvolute_timer.default <- function(args) {
 
     gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
-    
+
     if (length(gene.selected.marker) < 6) {
       cli::cli_abort(c(
         "Insufficient marker genes for TIMER deconvolution.",
@@ -494,7 +496,7 @@ deconvolute_timer.default <- function(args) {
         "*" = "TIMER requires cancer-specific gene markers that may not be in top-expressed genes."
       ))
     }
-    
+
     XX <- immune.expNormMedian[gene.selected.marker, -4]
     YY <- cancer.expNorm[gene.selected.marker, , drop = FALSE]
 

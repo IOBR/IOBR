@@ -267,6 +267,7 @@ sig_gsea <- function(deg,
     # Process custom gene sets
     term2genes <- output_sig(genesets, file.name = "sig")
     file.remove("sig.csv")
+    rlang::check_installed("reshape2")
     term2genes <- reshape2::melt(as.matrix(term2genes))
     term2genes <- term2genes[, -1]
     colnames(term2genes) <- c("gs_name", "symbol")

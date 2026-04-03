@@ -114,6 +114,7 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
       indel = t(mut_indel),
       frameshift = t(mut_frameshift)
     )
+    rlang::check_installed("ComplexHeatmap")
     mut_list <- ComplexHeatmap::unify_mat_list(mut_list)
   } else {
     mut_all <- .create_mut_matrix(mut)
@@ -136,6 +137,7 @@ make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
     return(matrix(nrow = 0, ncol = 0))
   }
 
+  rlang::check_installed("reshape2")
   mut_mat <- reshape2::dcast(mut, Hugo_Symbol ~ Tumor_Sample_Barcode,
     value.var = "Variant_Classification"
   )

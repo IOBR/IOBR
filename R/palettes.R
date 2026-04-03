@@ -27,6 +27,8 @@
 palettes <- function(category = "box", palette = "nrc", alpha = 1,
                      counts = 50, show_col = TRUE, show_message = FALSE) {
   rlang::check_installed("ggsci")
+  rlang::check_installed("RColorBrewer")
+  rlang::check_installed("scales")
 
   valid_categories <- c(
     "box", "continue2", "continue", "random", "heatmap",

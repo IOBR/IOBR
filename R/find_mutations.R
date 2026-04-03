@@ -50,6 +50,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
                            show_col = FALSE, width = 8, height = 4, oncoprint_group_by = "mean",
                            oncoprint_col = "#224444", gene_counts = 10, jitter = FALSE, genes = NULL, point_size = 4.5) {
   rlang::check_installed("ggpubr")
+  rlang::check_installed("reshape2")
   rlang::check_installed("PMCMRplus")
   if (!is.null(save_path)) {
     file_name <- save_path
@@ -443,7 +444,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   pdata1 <- pdata_group[pdata_group$ID %in% idh, ]
   pdata2 <- pdata_group[pdata_group$ID %in% idl, ]
 
-  # library(ComplexHeatmap)
+  rlang::check_installed("ComplexHeatmap")
   group_col <- palettes(category = "box", palette = palette, show_col = show_col)
 
   h1 <- ComplexHeatmap::HeatmapAnnotation(

@@ -1,13 +1,13 @@
 Package: IOBR
 Title: Immune Oncology Biological Research
-Version: 0.99.99
+Version: 2.1.0
 Authors@R: c(
     person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
-    person("Yiran", "Fang", , "fyr_nate@163.com", role = c("aut", "cre")),
-    person("Shixiang", "Wang", , "w_shixiang@163.com", role = "aut",
+    person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
+    person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
     person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
-    person("Hongqian", "Qian", , "xx@qq.com", role = "aut")
+    person("Hongqian", "Qian", , "536769786@qq.com", role = "aut")
   )
 Description: This package offers six modules for TME analysis based on
     multi-omics data. These modules cover data preprocessing, TME
@@ -29,39 +29,30 @@ BugReports: https://github.com/IOBR/IOBR/issues
 Depends: 
     R (>= 3.6.0)
 Imports:
-    biomaRt,
-    circlize,
     cli,
-    clusterProfiler,
-    ComplexHeatmap,
     dplyr,
-    e1071,
     ggplot2,
     glmnet,
     GSVA,
-    limSolve,
-    pracma,
     methods,
-    preprocessCore,
     purrr,
-    RColorBrewer,
-    reshape2,
     rlang,
-    scales,
     stringr,
     survival,
     survminer,
-    sva,
     tibble,
-    tidyHeatmap,
-    tidyr,
-    timeROC
+    tidyr
 Suggests: 
     BiocParallel,
+    biomaRt,
+    circlize,
+    clusterProfiler,
+    ComplexHeatmap,
     corrplot,
     DESeq2,
     doParallel,
     DOSE,
+    e1071,
     easier,
     enrichplot,
     factoextra,
@@ -74,6 +65,7 @@ Suggests:
     Hmisc,
     knitr,
     limma,
+    limSolve,
     maftools,
     MASS,
     Matrix,
@@ -83,14 +75,22 @@ Suggests:
     org.Mm.eg.db,
     patchwork,
     PMCMRplus,
+    pracma,
+    preprocessCore,
     prettydoc,
     pROC,
     psych,
+    RColorBrewer,
+    reshape2,
     rmarkdown,
     ROCR,
+    scales,
     Seurat,
     SeuratObject,
+    sva,
     testthat (>= 3.0.0),
+    tidyHeatmap,
+    timeROC,
     webr,
     WGCNA
 VignetteBuilder: 

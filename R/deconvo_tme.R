@@ -404,6 +404,7 @@ deconvo_ref <- function(eset,
                         absolute.mode = FALSE,
                         abs.method = "sig.score") {
   method <- rlang::arg_match(method)
+  rlang::check_installed("limSolve")
 
   # Check gene overlap
   common_genes <- intersect(rownames(eset), rownames(reference))
@@ -435,6 +436,7 @@ deconvo_ref <- function(eset,
 
     # Quantile normalization
     if (arrays) {
+      rlang::check_installed("preprocessCore")
       eset <- preprocessCore::normalize.quantiles(eset)
     }
 

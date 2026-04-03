@@ -49,6 +49,7 @@ percent_bar_plot <- function(input, x, y,
                              print_result = TRUE,
                              round.num = 2) {
   input <- as.data.frame(input[, colnames(input) %in% c(x, y)])
+  rlang::check_installed("scales")
 
   if (!is.null(subset.x)) {
     input <- input[input[, x] %in% subset.x, ]

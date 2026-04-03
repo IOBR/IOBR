@@ -214,6 +214,7 @@ PrognosticResult <- function(model, train.x, train.y, test.x, test.y) {
 #'   auc_results <- PrognosticAUC(fit, newx = x, s = "lambda.min", acture.y = acture_y)
 #' }
 PrognosticAUC <- function(model, newx, s, acture.y) {
+  rlang::check_installed("timeROC")
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
 
@@ -268,6 +269,7 @@ PrognosticAUC <- function(model, newx, s, acture.y) {
 #'   print(roc_info$AUC)
 #' }
 CalculateTimeROC <- function(model, newx, s, acture.y, modelname, time_prob = 0.9) {
+  rlang::check_installed("timeROC")
   riskscore <- stats::predict(model, newx = newx, s = s)
   timerocDat <- data.frame(risk = riskscore[, 1], acture.y)
 

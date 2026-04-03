@@ -33,6 +33,7 @@ format_msigdb <- function(gmt, ont = "term", gene = "gene") {
     cli::cli_abort("File {.file {gmt}} does not exist")
   }
 
+  rlang::check_installed("clusterProfiler")
   sig <- clusterProfiler::read.gmt(gmt)
   sig <- as.data.frame(sig)
 

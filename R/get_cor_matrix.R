@@ -113,6 +113,7 @@ get_cor_matrix <- function(data,
   )
 
   # Reshape for plotting
+  rlang::check_installed("reshape2")
   heat <- cbind(
     reshape2::melt(result$r),
     reshape2::melt(result$p)

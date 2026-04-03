@@ -50,6 +50,7 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
   eset1 <- as.data.frame(eset1)
   eset1$Sample.Name <- rownames(eset1)
 
+  rlang::check_installed("reshape2")
   eset.melt <- reshape2::melt(eset1, id.vars = "Sample.Name")
   colnames(eset.melt)[2:3] <- c("Symbol", "Intensity")
 

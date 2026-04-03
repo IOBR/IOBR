@@ -150,6 +150,7 @@ remove_batcheffect <- function(eset1,
       batch = batch$batch,
       mod = modcombat
     )
+    rlang::check_installed("preprocessCore")
     combined.expr.combat <- preprocessCore::normalize.quantiles(
       as.matrix(combined.expr.combat),
       keep.names = TRUE
