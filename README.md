@@ -93,16 +93,28 @@ from <https://github.com/IOBR/IOBR/tags>.
 - R version 3.6.0 or higher
 - Bioconductor version 3.10 or higher
 
-### Install from GitHub
-
-#### Standard Installation
-
 ``` r
 # Install BiocManager if not already installed
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
 }
+```
 
+### Install from CRAN
+
+``` r
+# Install IOBR from GitHub
+BiocManager::install("IOBR")
+```
+
+> Note: install with `dependencies = TRUE` is recommended to ensure all
+> required packages are installed for full functionality.
+>
+> `BiocManager::install("IOBR", dependencies = TRUE)`
+
+### Install from GitHub
+
+``` r
 # Install IOBR from GitHub
 BiocManager::install("IOBR/IOBR")
 ```

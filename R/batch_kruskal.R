@@ -138,7 +138,7 @@ batch_kruskal <- function(data,
     dplyr::summarise(
       dplyr::across(
         dplyr::all_of(valid_features),
-        \(.x) mean(.x, na.rm = TRUE)
+        function(.x) mean(.x, na.rm = TRUE)
       ),
       .groups = "drop"
     )

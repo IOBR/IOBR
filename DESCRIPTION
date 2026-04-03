@@ -6,7 +6,7 @@ Authors@R: c(
     person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
     person("Shixiang", "Wang", , "w_shixiang@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-9855-7357")),
-    person("Qingcong", "Luo", , "xx@qq.com", role = "aut"),
+    person("Qingcong", "Luo", , "qingcongl@163.com", role = "aut"),
     person("Hongqian", "Qian", , "536769786@qq.com", role = "aut")
   )
 Description: This package offers six modules for TME analysis based on
@@ -84,6 +84,7 @@ Suggests:
     reshape2,
     rmarkdown,
     ROCR,
+    sampling,
     scales,
     Seurat,
     SeuratObject,

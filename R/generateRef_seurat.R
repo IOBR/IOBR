@@ -76,7 +76,7 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
     input <- random_strata_cells(
       input = sce@meta.data,
       group = celltype,
-      propotion = proportion
+      proportion = proportion
     )
     cell_input <- rownames(input)
 

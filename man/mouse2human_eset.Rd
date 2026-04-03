@@ -6,7 +6,7 @@
 \usage{
 mouse2human_eset(
   eset,
-  source = c("ensembl", "local"),
+  source = c("local", "ensembl"),
   is_matrix = TRUE,
   column_of_symbol = NULL,
   verbose = FALSE

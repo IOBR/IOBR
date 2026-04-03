@@ -133,7 +133,7 @@ batch_wilcoxon <- function(data,
     dplyr::group_by(.data$group) %>%
     dplyr::summarise(
       dplyr::across(
-        dplyr::all_of(valid_features), \(.x) mean(.x, na.rm = TRUE)
+        dplyr::all_of(valid_features), function(.x) mean(.x, na.rm = TRUE)
       ),
       .groups = "drop"
     )

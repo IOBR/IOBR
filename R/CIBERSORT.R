@@ -267,7 +267,6 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #'   p-values, correlation coefficients, and RMSE values.
 #' @export
 #' @import parallel
-#' @import preprocessCore
 #' @import dplyr
 #' @import tibble
 #' @import tidyr
@@ -339,7 +338,8 @@ CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE,
   if (QN == TRUE) {
     tmpc <- colnames(Y)
     tmpr <- rownames(Y)
-    Yq <- normalize.quantiles(Y)
+    rlang::check_installed("preprocessCore")
+    Yq <- preprocessCore::normalize.quantiles(Y)
     Y <- matrix(Yq,
       nrow = length(tmpr), ncol = length(tmpc),
       dimnames = list(tmpr, tmpc)

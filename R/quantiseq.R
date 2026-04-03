@@ -32,7 +32,6 @@
 #'
 #' @return Data frame with cell fractions for each sample.
 #'
-#' @import preprocessCore
 #' @export
 #' @author Finotello F, et al. (adapted for IOBR)
 #'

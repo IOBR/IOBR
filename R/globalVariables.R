@@ -39,12 +39,6 @@ utils::globalVariables(c(
 
   # ---------- Cross-package functions / S3 methods ----------
   # Names called via :: or get() but still flagged by codetools
-  "DefaultAssay<-", "check_installed", "geom_hdr_lines",
-  "ggboxplot", "grid.arrange", "rlm", "lsei", "DESeq", "results",
-  "counts", "makeContrasts", "eBayes", "lmFit", "contrasts.fit",
-  "topTable", "stat_compare_means", "compare_means",
-  "listDatasets", "useMart", "getLDS", "random_strata_cells",
-  "bicor", "fundamentalNetworkConcepts", "anno_barplot", "gene_count",
 
   # ---------- Variables added during code quality improvements ----------
   "main", "p.format", ".break_month", "draw", "coef", "Mode"
