@@ -27,8 +27,6 @@ IOBR encompasses six functional modules:
 - ***TME modeling module*** : fast model construction and the assessment
   of model performance.
 
-![](Figure_1.png)
-
 ## Methodology
 
 IOBR integrates eight open-source deconvolution methodologies:
@@ -73,7 +71,4 @@ primary webpage](https://github.com/IOBR/IOBR) initially. The majority
 of your issues are likely already addressed there. Supposing you’ve
 detected a fault, adhere to the instructions, and offer a replicable
 instance to be showcased on the [github issue
-tracker](https://github.com/IOBR/IOBR/issues). In the case of queries,
-kindly make your submission to the [Bioconductor help
-forum](https://support.bioconductor.org/) and label your entry with
-*IOBR*.
+tracker](https://github.com/IOBR/IOBR/issues).
