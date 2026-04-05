@@ -122,17 +122,12 @@ Dongqiang Zeng
 
 ``` r
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
+if (FALSE) { # \dontrun{
 surv_group(
   input_pdata = tcga_stad_pdata,
   target_group = "TMEscore_plus_binary",
   time = "time",
   status = "OS_status"
 )
-#> ℹ Follow-up time ranges from 0.1 to 124 months
-#> High  Low 
-#>  105  243 
-#> ℹ Maximum follow-up time is 124 months; divided into 6 sections
-#> ℹ Reference group not defined, using alphabetical order
-#> Ignoring unknown labels:
-#> • colour : "Strata"
+} # }
 ```
