@@ -23,51 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install BiocManager and set up Bioconductor
 RUN Rscript -e "install.packages('BiocManager', repos = 'https://cloud.r-project.org'); \
-    BiocManager::install(ask = FALSE, update = FALSE)"
-
-# Install IOBR dependencies that are commonly needed
-RUN Rscript -e "BiocManager::install(c( \
-    'GSVA', \
-    'limma', \
-    'DESeq2', \
-    'ComplexHeatmap', \
-    'clusterProfiler', \
-    'org.Hs.eg.db', \
-    'org.Mm.eg.db', \
-    'preprocessCore', \
-    'sva', \
-    'biomaRt', \
-    'enrichplot', \
-    'DOSE' \
-    ), ask = FALSE, update = FALSE)"
-
-# Install additional CRAN packages
-RUN Rscript -e "install.packages(c( \
-    'survminer', \
-    'glmnet', \
-    'ggpubr', \
-    'ggsci', \
-    'RColorBrewer', \
-    'scales', \
-    'patchwork', \
-    'corrplot', \
-    'factoextra', \
-    'FactoMineR', \
-    'pROC', \
-    'timeROC', \
-    'tidyHeatmap', \
-    'Hmisc', \
-    'msigdbr', \
-    'MASS', \
-    'e1071', \
-    'psych', \
-    'reshape2', \
-    'gridExtra', \
-    'WGCNA' \
-    ), repos = 'https://cloud.r-project.org')"
+    install.packages('pak', repos = 'https://cloud.r-project.org'); \
+    BiocManager::install(ask = FALSE, update = FALSE);"
 
 # Install IOBR from GitHub
-RUN Rscript -e "BiocManager::install('IOBR/IOBR', ask = FALSE, update = FALSE, dependencies = TRUE)"
+RUN Rscript -e "pak::pkg_install('IOBR/IOBR', dependencies = TRUE)"
 
 # Set working directory
 WORKDIR /home/rstudio
