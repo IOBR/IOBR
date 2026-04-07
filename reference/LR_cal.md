@@ -63,23 +63,10 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
-# \donttest{
+if (FALSE) { # \dontrun{
 if (requireNamespace("easier", quietly = TRUE)) {
   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
   head(lr)
 }
-#> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘SummarizedExperiment’
-#> 
-#> 
-#> 
-#> LR signature genes found in data set: 11/644 (1.7%)
-#> Ligand-Receptor pair weights computed 
-#>        ID CXCL12_CXCR4   IL6_IL6R TNF_TNFRSF1A_TNFRSF21_TRAF2
-#> 1 Sample1     2.368152  2.4361612                    2.341010
-#> 2 Sample2     2.759510 -0.2755479                    1.052273
-#> 3 Sample3     2.057308  2.7174774                    2.716119
-#> 4 Sample4     2.426236  2.1919763                    2.178430
-#> 5 Sample5     2.328362  2.6795345                    1.777969
-#> 6 Sample6     2.582983  2.5136527                    2.255756
-# }
+} # }
 ```
