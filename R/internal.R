@@ -114,8 +114,8 @@ load_data <- function(name) {
     "Dataset {.val {name}} not found in IOBR package.",
     "i" = paste(
       "Available datasets:",
-      paste(utils::head(available, 50), collapse = ", "),
-      ifelse(length(available) > 50, "...", "")
+      paste(utils::head(available, 100), collapse = ", "),
+      ifelse(length(available) > 100, "...", "")
     )
   )
 

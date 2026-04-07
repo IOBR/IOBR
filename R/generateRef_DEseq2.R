@@ -63,6 +63,7 @@ generateRef_DEseq2 <- function(dds, pheno, FDR = 0.05, dat) {
       colData = samples,
       design = ~group
     )
+    dds2 <- DESeq2::estimateSizeFactors(dds2, type = "poscounts")
     dds2 <- DESeq2::DESeq(dds2)
     res[[i]] <- DESeq2::results(dds2, contrast = c("group", cellA, "others"))
   }
