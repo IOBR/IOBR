@@ -151,6 +151,20 @@ Then install IOBR in R:
 BiocManager::install("IOBR/IOBR")
 ```
 
+### Use Docker
+
+``` bash
+# Pull the image
+docker pull ghcr.io/iobr/iobr:latest
+
+# Run with RStudio Server
+docker run -d -p 8787:8787 -e PASSWORD=yourpassword ghcr.io/iobr/iobr:latest
+
+# Access RStudio at http://localhost:8787
+# Username: rstudio
+# Password: yourpassword
+```
+
 ### Load the Package
 
 ``` r
