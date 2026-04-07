@@ -95,6 +95,25 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 }
 ```
 
+### Install from GitHub
+
+``` r
+# Install IOBR from GitHub
+BiocManager::install("IOBR/IOBR")
+```
+
+#### For Chinese Users (Faster Download Maybe)
+
+``` r
+# Install remotes if not already installed
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+# Install IOBR using a mirror for faster download
+remotes::install_git("https://ghfast.top/https://github.com/IOBR/IOBR")
+```
+
 ### Install from CRAN
 
 ``` r
@@ -107,23 +126,24 @@ BiocManager::install("IOBR")
 >
 > `BiocManager::install("IOBR", dependencies = TRUE)`
 
-### Install from GitHub
+### Install via Conda/Mamba
 
-``` r
-# Install IOBR from GitHub
-BiocManager::install("IOBR/IOBR")
+Using Conda or Mamba provides a clean, isolated environment with all
+system dependencies pre-installed:
+
+``` bash
+# Create a new conda environment with R and essential dependencies
+mamba create -n r45 -c conda-forge -c bioconda \
+  r-base=4.5 r-xml r-magick r-cairo r-gdtools r-remotes r-tidyverse r-biocmanager
+
+# Activate the environment
+mamba activate r45
 ```
 
-#### For Chinese Users (Faster Download)
+Then install IOBR in R:
 
 ``` r
-# Install remotes if not already installed
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-
-# Install IOBR using a mirror for faster download
-remotes::install_git("https://ghfast.top/https://github.com/IOBR/IOBR")
+BiocManager::install("IOBR/IOBR")
 ```
 
 ### Load the Package

@@ -161,26 +161,15 @@ IOBR Package
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="install-from-cran">Install from CRAN<a class="anchor" aria-label="anchor" href="#install-from-cran"></a>
+<h3 id="install-from-github">Install from GitHub<a class="anchor" aria-label="anchor" href="#install-from-github"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install IOBR from GitHub</span></span>
-<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"IOBR"</span><span class="op">)</span></span></code></pre></div>
-<blockquote>
-<p>Note: install with <code>dependencies = TRUE</code> is recommended to ensure all required packages are installed for full functionality.</p>
-<p><code>BiocManager::install("IOBR", dependencies = TRUE)</code></p>
-</blockquote>
-</div>
-<div class="section level3">
-<h3 id="install-from-github">Install from GitHub<a class="anchor" aria-label="anchor" href="#install-from-github"></a>
-</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install IOBR from GitHub</span></span>
 <span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"IOBR/IOBR"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
-<h4 id="for-chinese-users-faster-download">For Chinese Users (Faster Download)<a class="anchor" aria-label="anchor" href="#for-chinese-users-faster-download"></a>
+<h4 id="for-chinese-users-faster-download-maybe">For Chinese Users (Faster Download Maybe)<a class="anchor" aria-label="anchor" href="#for-chinese-users-faster-download-maybe"></a>
 </h4>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install remotes if not already installed</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
@@ -191,9 +180,34 @@ IOBR Package
 </div>
 </div>
 <div class="section level3">
+<h3 id="install-from-cran">Install from CRAN<a class="anchor" aria-label="anchor" href="#install-from-cran"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install IOBR from GitHub</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"IOBR"</span><span class="op">)</span></span></code></pre></div>
+<blockquote>
+<p>Note: install with <code>dependencies = TRUE</code> is recommended to ensure all required packages are installed for full functionality.</p>
+<p><code>BiocManager::install("IOBR", dependencies = TRUE)</code></p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="install-via-condamamba">Install via Conda/Mamba<a class="anchor" aria-label="anchor" href="#install-via-condamamba"></a>
+</h3>
+<p>Using Conda or Mamba provides a clean, isolated environment with all system dependencies pre-installed:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Create a new conda environment with R and essential dependencies</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">mamba</span> create <span class="at">-n</span> r45 <span class="at">-c</span> conda-forge <span class="at">-c</span> bioconda <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  r-base=4.5 r-xml r-magick r-cairo r-gdtools r-remotes r-tidyverse r-biocmanager</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Activate the environment</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="ex">mamba</span> activate r45</span></code></pre></div>
+<p>Then install IOBR in R:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"IOBR/IOBR"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="load-the-package">Load the Package<a class="anchor" aria-label="anchor" href="#load-the-package"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://doi.org/10.3389/fimmu.2021.687975" class="external-link">IOBR</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -203,7 +217,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="tme-deconvolution">TME Deconvolution<a class="anchor" aria-label="anchor" href="#tme-deconvolution"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available TME deconvolution methods</span></span>
 <span><span class="va">tme_deconvolution_methods</span></span>
 <span></span>
@@ -216,7 +230,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-score-calculation">Signature Score Calculation<a class="anchor" aria-label="anchor" href="#signature-score-calculation"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available signature score calculation methods</span></span>
 <span><span class="va">signature_score_calculation_methods</span></span>
 <span></span>
@@ -247,7 +261,7 @@ IOBR Package
 <h3 id="package-vignettes">Package Vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
 </h3>
 <p>Vignettes are available within the package and can be accessed using:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"IOBR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -257,7 +271,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="tme-deconvolution-methods">TME Deconvolution Methods<a class="anchor" aria-label="anchor" href="#tme-deconvolution-methods"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tme_deconvolution_methods</span></span>
 <span><span class="co">#&gt;         MCPcounter               EPIC              xCell          CIBERSORT </span></span>
 <span><span class="co">#&gt;       "mcpcounter"             "epic"            "xcell"        "cibersort" </span></span>
@@ -269,7 +283,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-score-calculation-methods">Signature Score Calculation Methods<a class="anchor" aria-label="anchor" href="#signature-score-calculation-methods"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">signature_score_calculation_methods</span></span>
 <span><span class="co">#&gt;           PCA        ssGSEA       z-score   Integration </span></span>
 <span><span class="co">#&gt;         "pca"      "ssgsea"      "zscore" "integration"</span></span></code></pre></div>
@@ -277,7 +291,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-collection">Signature Collection<a class="anchor" aria-label="anchor" href="#signature-collection"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">signature_collection</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_data.html">load_data</a></span><span class="op">(</span><span class="st">"signature_collection"</span><span class="op">)</span></span>
 <span><span class="co"># Number of available signatures</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">signature_collection</span><span class="op">)</span></span>
