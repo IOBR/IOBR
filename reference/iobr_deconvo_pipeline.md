@@ -148,6 +148,8 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
 #> ℹ Calculating ranks
 #> ℹ Calculating rank weights
+#> Calculating ssGSEA scores ■■■■■■■■■■                        30% | ETA:  5s
+#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 #> [1] ">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: STAD"

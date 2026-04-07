@@ -72,7 +72,7 @@ eset_stad <- remove_duplicate_genes(
   method = "mean"
 )
 #> ℹ Found 2 duplicate symbols. Using "mean" for ranking.
-#> ✔ Reduced to 8 unique genes
+#> ✔ Reduced to 50137 unique genes
 
 # Check duplicates after
 sum(duplicated(rownames(eset_stad)))

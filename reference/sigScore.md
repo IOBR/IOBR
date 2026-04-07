@@ -39,8 +39,8 @@ eset_stad <- load_data("eset_stad")
 eset <- count2tpm(eset_stad, idType = "ensembl")
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ! Omitting 3985 genes without length information
-#> Warning: longer object length is not a multiple of shorter object length
-#> ℹ No duplicate gene symbols found.
+#> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.
+#> ✔ Reduced to 54658 unique genes
 
 # Get signature genes
 signature_tme <- load_data("signature_tme")
