@@ -141,24 +141,17 @@ batch_kruskal <- function(data,
         function(.x) mean(.x, na.rm = TRUE)
       ),
       .groups = "drop"
-    )
-
-  result_mean <- tidyr::pivot_wider(
-    result_mean,
-    names_from = "group",
-    values_from = dplyr::all_of(valid_features)
-  ) %>%
+    ) %>%
+    tidyr::pivot_longer(
+      cols = dplyr::all_of(valid_features),
+      names_to = "sig_names",
+      values_to = "value"
+    ) %>%
+    tidyr::pivot_wider(
+      names_from = "group",
+      values_from = "value"
+    ) %>%
     as.data.frame()
-
-  # Pivot results in feature x group format, need to transpose
-  result_mean <- t(result_mean) %>%
-    as.data.frame()
-  # After transpose, columns are 1:n_groups, rows are features
-  colnames(result_mean) <- group_names[1:ncol(result_mean)]
-  result_mean$sig_names <- rownames(result_mean)
-
-  # Filter to valid features only and ensure correct order
-  result_mean <- result_mean[rownames(result_mean) %in% valid_features, , drop = FALSE]
 
   # Calculate mean-centered values
   group_cols <- intersect(group_names, colnames(result_mean))

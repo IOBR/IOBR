@@ -258,8 +258,12 @@ iobr_cor_plot <- function(pdata_group,
     if (length(features) > feature_limit) {
       if (!is_target_continuous) {
         eset <- pf[, colnames(pf) %in% c(group, features)]
-        if (group == "group3") eset <- eset[eset$group3 != "Middle", ]
-        res <- batch_wilcoxon(data = eset, target = group, feature = setdiff(colnames(eset), group))
+        n_groups <- length(unique(eset[[group]]))
+        if (n_groups == 2) {
+          res <- batch_wilcoxon(data = eset, target = group, feature = setdiff(colnames(eset), group))
+        } else {
+          res <- batch_kruskal(data = eset, group = group, feature = setdiff(colnames(eset), group))
+        }
         good_features <- high_var_fea(
           result = res, target = "sig_names", name_padj = "p.adj",
           padj_cutoff = padj_cutoff, name_logfc = "statistic",
@@ -528,17 +532,16 @@ iobr_cor_plot <- function(pdata_group,
 
   # Return statistical results
   if (!is_target_continuous) {
-    if (group == "group3") pf_stat <- pf_stat[pf_stat$group3 != "Middle", ]
-
-    if (length(unique(pf_stat[[group]])) == 2) {
-      cli::cli_alert_info("Two-group comparison: {table(pf_stat[[group]])}")
-      eset <- pf_stat
-      feas <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
+    n_groups <- length(unique(pf_stat[[group]]))
+    cli::cli_alert_info("{n_groups}-group comparison: {table(pf_stat[[group]])}")
+    eset <- pf_stat
+    feas <- colnames(pf_stat)[scale_begin:ncol(pf_stat)]
+    if (n_groups == 2) {
       res <- batch_wilcoxon(data = eset, target = group, feature = feas, feature_manipulation = TRUE)
-      res <- tibble::as_tibble(res)
     } else {
-      cli::cli_abort("Only two categorical variables support statistical difference calculation")
+      res <- batch_kruskal(data = eset, group = group, feature = feas, feature_manipulation = TRUE)
     }
+    res <- tibble::as_tibble(res)
   } else {
     if (is.null(target)) cli::cli_abort("target must be defined for continuous analysis")
     eset <- pf_stat
