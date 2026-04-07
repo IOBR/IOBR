@@ -86,13 +86,13 @@ if ("Gender" %in% colnames(sig_stad)) {
 #> ℹ Groups: 2 ("M" and "F")
 #> ℹ Features: 255
 #> ✔ Kruskal-Wallis test complete
-#> # A tibble: 6 × 7
-#>   sig_names                      p.value statistic     M p.adj log10pvalue stars
-#>   <chr>                            <dbl>     <dbl> <dbl> <dbl>       <dbl> <fct>
-#> 1 Steroid_Hormone_Metabolism     0.00652      7.40    NA 0.715        2.19 **   
-#> 2 Steroid_Hormone_Biosynthesis   0.00693      7.29    NA 0.715        2.16 **   
-#> 3 Linoleic_Acid_Metabolism       0.00989      6.65    NA 0.715        2.00 **   
-#> 4 Ascorbate_and_Aldrate_Metabol… 0.0112       6.43    NA 0.715        1.95 *    
-#> 5 Pentose_and_Glucuronate_Inter… 0.0189       5.51    NA 0.853        1.72 *    
-#> 6 Drug_Metabolism_by_Cytochrome… 0.0201       5.41    NA 0.853        1.70 *    
+#> # A tibble: 6 × 8
+#>   sig_names               p.value statistic      F     M p.adj log10pvalue stars
+#>   <chr>                     <dbl>     <dbl>  <dbl> <dbl> <dbl>       <dbl> <fct>
+#> 1 Steroid_Hormone_Metabo… 0.00652      7.40 -0.409 0.409 0.715        2.19 **   
+#> 2 Steroid_Hormone_Biosyn… 0.00693      7.29 -0.400 0.400 0.715        2.16 **   
+#> 3 Linoleic_Acid_Metaboli… 0.00989      6.65 -0.268 0.268 0.715        2.00 **   
+#> 4 Ascorbate_and_Aldrate_… 0.0112       6.43 -0.288 0.288 0.715        1.95 *    
+#> 5 Pentose_and_Glucuronat… 0.0189       5.51 -0.294 0.294 0.853        1.72 *    
+#> 6 Drug_Metabolism_by_Cyt… 0.0201       5.41 -0.422 0.422 0.853        1.70 *    
 ```
