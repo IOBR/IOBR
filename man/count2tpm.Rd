@@ -47,7 +47,8 @@ the count matrix. Default is `FALSE`.}
 }
 \value{
 Data frame of TPM-normalized expression values with genes in rows
-  and samples in columns.
+  and samples in columns. Gene identifiers are converted to gene symbols
+  in the output, regardless of the input `idType`.
 }
 \description{
 Transforms gene expression count data into Transcripts Per Million (TPM)

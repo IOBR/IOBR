@@ -27,7 +27,8 @@
 #'   the count matrix. Default is `FALSE`.
 #'
 #' @return Data frame of TPM-normalized expression values with genes in rows
-#'   and samples in columns.
+#'   and samples in columns. Gene identifiers are converted to gene symbols
+#'   in the output, regardless of the input `idType`.
 #'
 #' @author Wubing Zhang, Dongqiang Zeng, Yiran Fang
 #' @export
