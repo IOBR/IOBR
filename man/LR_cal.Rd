@@ -44,7 +44,7 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
-\donttest{
+\dontrun{
 if (requireNamespace("easier", quietly = TRUE)) {
   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
   head(lr)
