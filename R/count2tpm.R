@@ -70,17 +70,17 @@ count2tpm <- function(countMat,
     }
   }
 
-  # Get gene lengths
+  # Get gene lengths and symbols
   if (!is.null(effLength)) {
-    # Use provided effective lengths
-    len <- .get_lengths_from_df(countMat, effLength, id, gene_symbol, length)
+    result <- .get_lengths_from_df(countMat, effLength, id, gene_symbol, length)
   } else if (source == "biomart") {
-    # Fetch from BioMart
-    len <- .get_lengths_from_biomart(countMat, idType, org)
+    result <- .get_lengths_from_biomart(countMat, idType, org)
   } else {
-    # Use local annotation
-    len <- .get_lengths_local(countMat, idType, org)
+    result <- .get_lengths_local(countMat, idType, org)
   }
+
+  countMat <- result$countMat
+  len <- result$lengths
 
   # Remove genes without length information
   valid_idx <- !is.na(len)
@@ -107,15 +107,10 @@ count2tpm <- function(countMat,
 }
 
 
-# TODO
-# Warning message:
-# In counts/(lengths/1000) :
-#   longer object length is not a multiple of shorter object length
-
 # Helper: Calculate TPM values
 .calculate_tpm <- function(counts, lengths) {
   # RPK: reads per kilobase
-  rpk <- counts / (lengths / 1000)
+  rpk <- counts / c(lengths / 1000)
   # TPM: transcripts per million
   tpm <- 1e6 * t(t(rpk) / colSums(rpk, na.rm = TRUE))
   tpm
@@ -142,12 +137,11 @@ count2tpm <- function(countMat,
     effLength$gene_symbol <- effLength$id
   }
 
-  rownames(countMat) <- effLength[
-    match(rownames(countMat), effLength$id),
-    "gene_symbol"
-  ]
+  idx <- match(rownames(countMat), effLength$id)
+  rownames(countMat) <- effLength[idx, "gene_symbol"]
+  lengths <- effLength[idx, "eff_length"]
 
-  effLength[match(rownames(countMat), effLength$gene_symbol), "eff_length"]
+  list(countMat = countMat, lengths = lengths)
 }
 
 # Helper: Get lengths from BioMart
@@ -186,10 +180,11 @@ count2tpm <- function(countMat,
     cli::cli_abort("Invalid idType: {.val {idType}}")
   )
 
-  # Update rownames and return lengths
   idx <- match(rownames(countMat), ensembl[[id_col]])
   rownames(countMat) <- ensembl[idx, type[3]]
-  ensembl$Length[idx]
+  lengths <- ensembl$Length[idx]
+
+  list(countMat = countMat, lengths = lengths)
 }
 
 # Helper: Get lengths from local annotation
@@ -276,19 +271,19 @@ count2tpm <- function(countMat,
 
   if (length(common_genes) == 0) {
     cli::cli_abort(
-      paste("No matching identifiers found between count matrix and annotation")
+      "No matching identifiers found between count matrix and annotation"
     )
   }
 
   countMat <- countMat[rownames(countMat) %in% common_genes, , drop = FALSE]
   length_df <- length_df[length_df$id %in% common_genes, ]
 
-  # Match and return lengths
+  # Match and extract lengths
   idx <- match(rownames(countMat), length_df$id)
   lengths <- length_df$eff_length[idx]
 
-  # Update rownames to symbols
+  # Update rownames to symbols (third column is symbol)
   rownames(countMat) <- length_df[idx, 3]
 
-  lengths
+  list(countMat = countMat, lengths = lengths)
 }

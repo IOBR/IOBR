@@ -84,14 +84,10 @@ remove_duplicate_genes <- function(eset,
   # Get expression columns (excluding symbol column)
   expr_cols <- setdiff(colnames(eset), column_of_symbol)
 
-  # Calculate ranking index based on method
+  # Calculate ranking index based on method (per row)
   order_index <- switch(method,
-    "mean" = vapply(eset[, expr_cols, drop = FALSE], mean, numeric(1),
-      na.rm = TRUE
-    ),
-    "sd" = vapply(eset[, expr_cols, drop = FALSE], stats::sd, numeric(1),
-      na.rm = TRUE
-    ),
+    "mean" = rowMeans(eset[, expr_cols, drop = FALSE], na.rm = TRUE),
+    "sd" = apply(eset[, expr_cols, drop = FALSE], 1, stats::sd, na.rm = TRUE),
     "sum" = rowSums(eset[, expr_cols, drop = FALSE], na.rm = TRUE)
   )
 
