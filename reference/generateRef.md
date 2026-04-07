@@ -64,7 +64,7 @@ result <- generateRef(
 #> ℹ Running differentially expressed genes using DESeq2
 #> converting counts to integer mode
 #> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
+#> using pre-existing size factors
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship
@@ -75,7 +75,7 @@ result <- generateRef(
 #> fitting model and testing
 #> converting counts to integer mode
 #> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
+#> using pre-existing size factors
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship

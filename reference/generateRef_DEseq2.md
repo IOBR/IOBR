@@ -51,7 +51,7 @@ colnames(dat) <- colnames(dds)
 result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #> converting counts to integer mode
 #> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
+#> using pre-existing size factors
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship
@@ -62,7 +62,7 @@ result <- generateRef_DEseq2(dds = dds, pheno = pheno, FDR = 0.05, dat = dat)
 #> fitting model and testing
 #> converting counts to integer mode
 #> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
+#> using pre-existing size factors
 #> estimating dispersions
 #> gene-wise dispersion estimates
 #> mean-dispersion relationship

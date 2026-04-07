@@ -73,7 +73,8 @@ count2tpm(
 ## Value
 
 Data frame of TPM-normalized expression values with genes in rows and
-samples in columns.
+samples in columns. Gene identifiers are converted to gene symbols in
+the output, regardless of the input \`idType\`.
 
 ## Author
 

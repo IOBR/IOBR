@@ -55,5 +55,9 @@ try(load_data("sign_tme")) # Will suggest "signature_tme"
 #>   melanoma_data, msig_immune, msig_sc, mus_human_gene_symbol, null_models,
 #>   onco_sig, palette1, palette2, palette3, palette4, panel_for_gene,
 #>   panel_for_signature, patterns_to_na, pdata_GSE63557, pdata_acrg,
-#>   pdata_sig_tme, pdata_sig_tme_binary, pdata_stad ...
+#>   pdata_sig_tme, pdata_sig_tme_binary, pdata_stad, pdata_tme_binary,
+#>   quantiseq_data, reactome, sig_excel, sig_group, sig_stad,
+#>   signature_collection, signature_collection_citation, signature_metabolism,
+#>   signature_sc, signature_tme, signature_tumor, stad_group, subgroup_data,
+#>   tcga_stad_pdata, tcga_stad_sig, tcga_stad_var, xCell.data
 ```
