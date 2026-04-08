@@ -207,15 +207,19 @@ IOBR Package
 <div class="section level3">
 <h3 id="use-docker">Use Docker<a class="anchor" aria-label="anchor" href="#use-docker"></a>
 </h3>
+<blockquote>
+<p>Only works for Linux.</p>
+</blockquote>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Pull the image</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/iobr/iobr:latest</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Run with RStudio Server</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 8787:8787 <span class="at">-e</span> PASSWORD=yourpassword ghcr.io/iobr/iobr:latest</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co"># Access RStudio at http://localhost:8787</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># Username: rstudio</span></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co"># Password: yourpassword</span></span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># China: docker pull ghcr.nju.edu.cn/iobr/iobr:latest</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># Run with RStudio Server</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">-p</span> 8787:8787 <span class="at">-e</span> PASSWORD=yourpassword ghcr.io/iobr/iobr:latest</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co"># Access RStudio at http://localhost:8787</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co"># Username: rstudio</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># Password: yourpassword</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="load-the-package">Load the Package<a class="anchor" aria-label="anchor" href="#load-the-package"></a>

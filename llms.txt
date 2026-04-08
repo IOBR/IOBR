@@ -148,9 +148,12 @@ BiocManager::install("IOBR/IOBR")
 
 ### Use Docker
 
+> Only works for Linux.
+
 ``` bash
 # Pull the image
 docker pull ghcr.io/iobr/iobr:latest
+# China: docker pull ghcr.nju.edu.cn/iobr/iobr:latest
 
 # Run with RStudio Server
 docker run -d -p 8787:8787 -e PASSWORD=yourpassword ghcr.io/iobr/iobr:latest
