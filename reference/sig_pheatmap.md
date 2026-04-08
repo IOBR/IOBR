@@ -186,5 +186,5 @@ sig_pheatmap(
 #>         EBV          GS         CIN         MSI 
 #> "#8F7700FF"   "#386CB0" "#008B45FF"   "#e31a1c" 
 #> 
-#> ✔ Heatmap saved to: /tmp/RtmpMKXhnd/1-pheatmap-subtype.pdf
+#> ✔ Heatmap saved to: /tmp/Rtmp2rleeB/1-pheatmap-subtype.pdf
 ```
