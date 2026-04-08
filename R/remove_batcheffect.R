@@ -176,7 +176,7 @@ remove_batcheffect <- function(eset1,
 
   # Generate PCA plots if FactoMineR is available
   if (requireNamespace("FactoMineR", quietly = TRUE) &&
-      requireNamespace("factoextra", quietly = TRUE)) {
+    requireNamespace("factoextra", quietly = TRUE)) {
     p1 <- iobr_pca(
       data = combined.expr,
       is.matrix = TRUE,

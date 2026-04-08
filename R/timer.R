@@ -91,8 +91,7 @@ timer_available_cancers <- c(
 #'
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 #' names(immune.cellType) <- sample_names_immune
-#'
-#'  \donttest{
+#' \donttest{
 #' result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
 #' }
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {

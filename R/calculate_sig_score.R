@@ -391,7 +391,9 @@ calculate_sig_score_ssgsea <- function(pdata = NULL,
 #'   Signature1 = paste0("Gene", 1:15),
 #'   Signature2 = paste0("Gene", 16:30)
 #' )
+#' \donttest{
 #' result <- calculate_sig_score_integration(eset = eset, signature = signature)
+#' }
 calculate_sig_score_integration <- function(pdata = NULL,
                                             eset,
                                             signature,

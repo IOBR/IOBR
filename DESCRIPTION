@@ -19,10 +19,10 @@ Description: Provides six modules for tumor microenvironment (TME)
     visualization of the TME. In addition to providing a quick and easy
     way to construct gene signatures from single-cell RNA-seq data, it
     also provides a way to construct a reference matrix for TME
-    deconvolution from single-cell RNA-seq data. The analysis pipeline
-    and feature visualization are user-friendly and provide a
-    comprehensive description of the complex TME, offering insights into
-    tumour-immune interactions.
+    deconvolution from single-cell RNA-seq data. The analysis pipeline and
+    feature visualization are user-friendly and provide a comprehensive
+    description of the complex TME, offering insights into tumour-immune
+    interactions.
 License: GPL-3 + file LICENSE
 URL: https://doi.org/10.3389/fimmu.2021.687975 (paper),
     https://iobr.github.io/book/ (docs), https://iobr.github.io/IOBR/
