@@ -82,9 +82,9 @@ tme_deconvolution_methods <- c(
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
-#' \donttest{
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #' head(xcell_result)[, 1:5]

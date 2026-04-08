@@ -23,7 +23,9 @@ Calculates immune phenotype scores from gene expression data.
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+\donttest{
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
+}
 }
 \author{
 Dongqiang Zeng

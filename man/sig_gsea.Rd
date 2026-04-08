@@ -157,6 +157,7 @@ signature <- list(
     "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
   )
 )
+\donttest{
 res <- sig_gsea(
   deg = deg,
   genesets = signature,
@@ -165,6 +166,7 @@ res <- sig_gsea(
   print_bar = FALSE
 )
 print(names(res))
+}
 }
 \author{
 Dongqiang Zeng

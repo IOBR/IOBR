@@ -61,11 +61,13 @@ PCA plots to visualize data before and after correction.
 \examples{
 eset_stad <- load_data("eset_stad")
 eset_blca <- load_data("eset_blca")
+\donttest{
 eset_corrected <- remove_batcheffect(
   eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
   id_type = "ensembl",
   data_type = "count"
 )
+}
 }
 \references{
 Zhang Y, et al. ComBat-seq: batch effect adjustment for RNA-seq count data.

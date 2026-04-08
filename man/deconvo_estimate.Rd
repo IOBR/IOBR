@@ -24,7 +24,9 @@ Calculates stromal, immune, and ESTIMATE scores from gene expression.
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
+\donttest{
 estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+}
 }
 \author{
 Dongqiang Zeng

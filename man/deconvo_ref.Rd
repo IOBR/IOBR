@@ -50,7 +50,9 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- common_genes
 colnames(sim_eset) <- paste0("Sample", 1:5)
+\donttest{
 deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
+}
 }
 \author{
 Dongqiang Zeng, Rongfang Shen

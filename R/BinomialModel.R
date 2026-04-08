@@ -108,7 +108,10 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
 
   cli::cli_alert_success("Model fitting complete")
 
-  list(lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x)
+  list(
+    lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x,
+    plots = list(p1, p2)
+  )
 }
 
 #' Process Data for Model Construction
