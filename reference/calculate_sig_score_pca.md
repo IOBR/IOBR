@@ -62,8 +62,10 @@ signature <- list(
   Signature1 = paste0("Gene", 1:10),
   Signature2 = paste0("Gene", 11:20)
 )
+# \donttest{
 result <- calculate_sig_score_pca(eset = eset, signature = signature)
 #> ℹ Calculating signature scores using PCA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Calculating scores for 2 signature(s)
+# }
 ```

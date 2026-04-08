@@ -67,6 +67,7 @@ signature <- list(
   Signature1 = paste0("Gene", 1:15),
   Signature2 = paste0("Gene", 16:30)
 )
+# \donttest{
 result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
@@ -78,4 +79,5 @@ result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
 #> ℹ Calculating rank weights
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
+# }
 ```
