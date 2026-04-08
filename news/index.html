@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,10 +35,33 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.1.1" id="iobr-211">IOBR 2.1.1<a class="anchor" aria-label="anchor" href="#iobr-211"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-1-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-2-1-1"></a></h3>
+<ul><li>Added Docker support with automated image builds and publishing to GitHub Container Registry (<code>ghcr.io/iobr/iobr</code>). The image is based on <code>rocker/tidyverse</code> and includes IOBR with all dependencies pre-installed (#Docker).</li>
+<li>Added Conda/Mamba installation instructions to README for easier environment setup.</li>
+<li>Expanded <code><a href="../reference/iobr_cor_plot.html">iobr_cor_plot()</a></code> to support multi-group (3+) comparisons using Kruskal-Wallis test, in addition to the existing two-group Wilcoxon test (<a href="https://github.com/IOBR/IOBR/issues/28" class="external-link">#28</a>).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1-1"></a></h3>
+<ul><li>Fixed <code><a href="../reference/generateRef_DEseq2.html">generateRef_DEseq2()</a></code> to handle sparse single-cell RNA-seq data by using <code>type = "poscounts"</code> for size factor estimation, preventing errors when all genes contain at least one zero.</li>
+<li>Fixed <code><a href="../reference/batch_kruskal.html">batch_kruskal()</a></code> output format to correctly display mean-centered values for all groups.</li>
+<li>Fixed <code><a href="../reference/count2tpm.html">count2tpm()</a></code> computation results to align with previous correct versions.</li>
+<li>Updated <code><a href="../reference/count2tpm.html">count2tpm()</a></code> documentation to clarify that gene identifiers are converted to gene symbols in the output regardless of input ID type.</li>
+<li>Wrapped some long-running examples in <code>\dontrun{}</code> and <code>\donttest{}</code> to comply with CRAN check time limits.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-2-1-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-2-1-1"></a></h3>
+<ul><li>Refactored internal helper functions in <code>count2tpm.R</code> for better code organization and maintainability.</li>
+<li>Updated <code><a href="../reference/load_data.html">load_data()</a></code> documentation to include additional available datasets.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.0" id="iobr-210">IOBR 2.1.0<a class="anchor" aria-label="anchor" href="#iobr-210"></a></h2>
 <ul><li>Initial CRAN submission.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
