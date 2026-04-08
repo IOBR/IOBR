@@ -100,6 +100,7 @@
 #'     "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
 #'   )
 #' )
+#' \donttest{
 #' res <- sig_gsea(
 #'   deg = deg,
 #'   genesets = signature,
@@ -108,6 +109,7 @@
 #'   print_bar = FALSE
 #' )
 #' print(names(res))
+#' }
 sig_gsea <- function(deg,
                      genesets = NULL,
                      path = NULL,

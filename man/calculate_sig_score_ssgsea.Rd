@@ -45,7 +45,9 @@ signature <- list(
   Signature1 = paste0("Gene", 1:15),
   Signature2 = paste0("Gene", 16:30)
 )
+\donttest{
 result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
+}
 }
 \author{
 Dongqiang Zeng

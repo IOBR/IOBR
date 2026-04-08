@@ -80,7 +80,7 @@ tcga_stad_pdata <- load_data("tcga_stad_pdata")
 \dontrun{
 surv_group(
   input_pdata = tcga_stad_pdata,
-  target_group = "TMEscore_plus_binary",
+  target_group = "Lauren",
   time = "time",
   status = "OS_status"
 )

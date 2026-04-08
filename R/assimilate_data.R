@@ -28,6 +28,13 @@
 #' pdata_b_harmonized <- assimilate_data(data_a = pdata_a, data_b = pdata_b)
 #' print(names(pdata_b_harmonized)) # Now has A, B, C, D, E
 assimilate_data <- function(data_a, data_b) {
+  if (is.matrix(data_a)) {
+    data_a <- as.data.frame(data_a)
+  }
+  if (is.matrix(data_b)) {
+    data_b <- as.data.frame(data_b)
+  }
+
   # Input validation
   if (is.null(data_a) || !is.data.frame(data_a)) {
     cli::cli_abort("{.arg data_a} must be a non-null data frame.")

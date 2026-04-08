@@ -43,7 +43,9 @@ signature <- list(
   Signature1 = paste0("Gene", 1:10),
   Signature2 = paste0("Gene", 11:20)
 )
+\donttest{
 result <- calculate_sig_score_pca(eset = eset, signature = signature)
+}
 }
 \author{
 Dongqiang Zeng

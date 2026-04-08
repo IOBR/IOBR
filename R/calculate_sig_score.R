@@ -118,7 +118,9 @@ signature_score_calculation_methods <- c(
 #'   Signature1 = paste0("Gene", 1:10),
 #'   Signature2 = paste0("Gene", 11:20)
 #' )
+#' \donttest{
 #' result <- calculate_sig_score_pca(eset = eset, signature = signature)
+#' }
 calculate_sig_score_pca <- function(pdata = NULL,
                                     eset,
                                     signature,
@@ -199,7 +201,9 @@ calculate_sig_score_pca <- function(pdata = NULL,
 #'   Signature1 = paste0("Gene", 1:10),
 #'   Signature2 = paste0("Gene", 11:20)
 #' )
+#' \donttest{
 #' result <- calculate_sig_score_zscore(eset = eset, signature = signature)
+#' }
 calculate_sig_score_zscore <- function(pdata = NULL,
                                        eset,
                                        signature,
@@ -275,7 +279,9 @@ calculate_sig_score_zscore <- function(pdata = NULL,
 #'   Signature1 = paste0("Gene", 1:15),
 #'   Signature2 = paste0("Gene", 16:30)
 #' )
+#' \donttest{
 #' result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
+#' }
 calculate_sig_score_ssgsea <- function(pdata = NULL,
                                        eset,
                                        signature,
@@ -540,7 +546,9 @@ calculate_sig_score_integration <- function(pdata = NULL,
 #'   Signature1 = paste0("Gene", 1:10),
 #'   Signature2 = paste0("Gene", 11:20)
 #' )
+#' \donttest{
 #' result <- calculate_sig_score(eset = eset, signature = signature, method = "pca")
+#' }
 calculate_sig_score <- function(pdata = NULL,
                                 eset,
                                 signature = NULL,

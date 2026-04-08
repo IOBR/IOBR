@@ -37,7 +37,7 @@
 #' \dontrun{
 #' surv_group(
 #'   input_pdata = tcga_stad_pdata,
-#'   target_group = "TMEscore_plus_binary",
+#'   target_group = "Lauren",
 #'   time = "time",
 #'   status = "OS_status"
 #' )
@@ -202,17 +202,15 @@ surv_group <- function(input_pdata,
   )))
   addTab[is.na(addTab)] <- "-"
 
+  rlang::check_installed("ggpp")
   df <- tibble::tibble(x = 0, y = 0, tb = list(addTab))
-  rlang::check_installed("gridExtra")
-
-  tb_grob <- gridExtra::tableGrob(df$tb,
-    rows = TRUE,
-    theme = gridExtra::ttheme_minimal(base_size = font.size.table)
-  )
-
   pp$plot <- pp$plot +
-    ggplot2::geom_text(ggplot2::aes(x = x, y = y, label = ""), data = df, size = 0) +
-    ggplot2::annotation_custom(tb_grob, xmin = df$x, xmax = df$x, ymin = df$y, ymax = df$y)
+    ggpp::geom_table(
+      data = df,
+      ggplot2::aes(x = x, y = y, label = tb),
+      table.rownames = TRUE,
+      size = font.size.table
+    )
 
   pp
 }

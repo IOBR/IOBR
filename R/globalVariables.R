@@ -41,5 +41,5 @@ utils::globalVariables(c(
   # Names called via :: or get() but still flagged by codetools
 
   # ---------- Variables added during code quality improvements ----------
-  "main", "p.format", ".break_month", "draw", "coef", "Mode"
+  "main", "p.format", ".break_month", "draw", "coef", "Mode", "tb"
 ))

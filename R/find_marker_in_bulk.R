@@ -66,8 +66,8 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
     # Seurat v5+ 的处理逻辑
     message("Using Seurat v5+ workflow")
     sce <- Seurat::NormalizeData(sce)
-    sce <- Seurat::NormalizeData(sce, assay = "RNA", normalization.method = "LogNormalize") # 兼容v5的Layer访问
-    sce <- Seurat::ScaleData(sce, assay = "RNA")
+    sce[["RNA"]]$data <- SeuratObject::LayerData(sce, assay = "RNA", layer = "counts") # 兼容v5的Layer访问
+    sce <- Seurat::ScaleData(sce, layer = "data")
   } else {
     # Seurat v4及以下版本的处理逻辑
     message("Using Seurat v4 workflow")
@@ -91,7 +91,7 @@ find_markers_in_bulk <- function(pdata, eset, group, id_pdata = "ID", nfeatures 
       counts <- Seurat::GetAssayData(sce, assay = "RNA", slot = "counts")
       gene_var <- apply(counts, 1, var)
       top_genes <- names(sort(gene_var, decreasing = TRUE))[1:nfeatures]
-      Seurat::VariableFeatures(sce) <- top_genes # Assign variable features
+      Seurat::VariableFeatures(sce) <<- top_genes # Assign variable features
     }
   )
 

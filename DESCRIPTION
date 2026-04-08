@@ -60,6 +60,7 @@ Suggests:
     FactoMineR,
     foreach,
     ggdensity,
+    ggpp,
     ggpubr,
     ggsci,
     gridExtra,
