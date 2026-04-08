@@ -50,6 +50,7 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 eset <- eset[1:500, 1:3]
+# \donttest{
 res <- deconvo_quantiseq(
   eset = eset, project = "stad", tumor = TRUE,
   arrays = FALSE, scale_mrna = FALSE
@@ -79,4 +80,5 @@ head(res)
 #> 1             NaN                       NaN             NaN
 #> 2             NaN                       NaN             NaN
 #> 3             NaN                       NaN             NaN
+# }
 ```

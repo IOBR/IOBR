@@ -41,9 +41,11 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ✔ 100% of probes in expression set were annotated
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
+# \donttest{
 estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
 #> ℹ Running ESTIMATE
 #> [1] "Merged dataset includes 10148 genes (264 mismatched)."
 #> [1] "1 gene set: StromalSignature  overlap= 138"
 #> [1] "2 gene set: ImmuneSignature  overlap= 140"
+# }
 ```

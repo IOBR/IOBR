@@ -40,6 +40,8 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ✔ 100% of probes in expression set were annotated
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
+# \donttest{
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
 #> ℹ Running IPS calculation
+# }
 ```

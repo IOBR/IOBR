@@ -101,9 +101,7 @@ result <- BinomialModel(x = x, y = y, plot = FALSE, nfold = 5)
 #> ℹ Running LASSO
 #> ℹ Running RIDGE REGRESSION
 #> ✔ Model fitting complete
+#> Error in BinomialModel(x = x, y = y, plot = FALSE, nfold = 5): object 'p1' not found
 str(result, max.level = 1)
-#> List of 3
-#>  $ lasso_result:List of 3
-#>  $ ridge_result:List of 3
-#>  $ train.x     :'data.frame':    35 obs. of  4 variables:
+#> Error: object 'result' not found
 ```

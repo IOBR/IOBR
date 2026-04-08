@@ -264,6 +264,7 @@ Default is `TRUE`.</p></dd>
 <span class="r-in"><span>    <span class="st">"PIK3CG"</span>, <span class="st">"PIK3R1"</span>, <span class="st">"PIK3R2"</span>, <span class="st">"PIK3R3"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">sig_gsea</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  deg <span class="op">=</span> <span class="va">deg</span>,</span></span>
 <span class="r-in"><span>  genesets <span class="op">=</span> <span class="va">signature</span>,</span></span>
@@ -284,10 +285,11 @@ Default is `TRUE`.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> GSEA analysis...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> leading edge analysis...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> done...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> GSEA results written to: <span style="color: #0000BB;">/tmp/Rtmpupw0yP/1-H_GSEA_significant_results.csv</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> GSEA results written to: <span style="color: #0000BB;">/tmp/RtmpyIfKO0/1-H_GSEA_significant_results.csv</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Most significant gene sets: Cell_Cycle</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "up"       "down"     "all"      "plot_top"</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

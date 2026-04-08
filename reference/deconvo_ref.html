@@ -113,6 +113,7 @@
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">common_genes</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">deconvo_ref</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, reference <span class="op">=</span> <span class="va">lm22</span>, method <span class="op">=</span> <span class="st">"lsei"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 500 common genes</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running lsei deconvolution</span>
@@ -176,6 +177,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3            0.04545455            0.04545455</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4            0.04545455            0.04545455</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5            0.04545455            0.04545455</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

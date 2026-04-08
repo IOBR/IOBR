@@ -76,6 +76,7 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- common_genes
 colnames(sim_eset) <- paste0("Sample", 1:5)
+# \donttest{
 deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
 #> ℹ Found 500 common genes
 #> ℹ Running lsei deconvolution
@@ -139,4 +140,5 @@ deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
 #> 3            0.04545455            0.04545455
 #> 4            0.04545455            0.04545455
 #> 5            0.04545455            0.04545455
+# }
 ```

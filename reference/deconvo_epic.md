@@ -42,6 +42,7 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 eset <- eset[1:500, 1:5]
+# \donttest{
 epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
 #> ℹ Running EPIC deconvolution
 #> Warning: there are few genes in common between the bulk samples and reference cells:471, so the data scaling might be an issue
@@ -65,4 +66,5 @@ head(epic_result)
 #> 3    1.058650e-09
 #> 4    7.642237e-07
 #> 5    1.789082e-06
+# }
 ```

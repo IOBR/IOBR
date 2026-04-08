@@ -227,6 +227,7 @@ signature <- list(
     "PIK3CG", "PIK3R1", "PIK3R2", "PIK3R3"
   )
 )
+# \donttest{
 res <- sig_gsea(
   deg = deg,
   genesets = signature,
@@ -247,8 +248,9 @@ res <- sig_gsea(
 #> GSEA analysis...
 #> leading edge analysis...
 #> done...
-#> ✔ GSEA results written to: /tmp/Rtmpupw0yP/1-H_GSEA_significant_results.csv
+#> ✔ GSEA results written to: /tmp/RtmpyIfKO0/1-H_GSEA_significant_results.csv
 #> ℹ Most significant gene sets: Cell_Cycle
 print(names(res))
 #> [1] "up"       "down"     "all"      "plot_top"
+# }
 ```

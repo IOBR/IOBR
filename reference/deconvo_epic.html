@@ -80,6 +80,7 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2293 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50181</span>
 <span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="va">eset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">epic_result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_epic</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset</span>, project <span class="op">=</span> <span class="st">"Example"</span>, tumor <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running EPIC deconvolution</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there are few genes in common between the bulk samples and reference cells:471, so the data scaling might be an issue</span>
@@ -103,6 +104,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    1.058650e-09</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    7.642237e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    1.789082e-06</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -38,6 +38,7 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 eset <- eset[1:500, 1:3]
+# \donttest{
 mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
 #> ℹ Running MCP-counter deconvolution
 head(mcp_result)
@@ -49,4 +50,5 @@ head(mcp_result)
 #> 1               51296.86
 #> 2              143209.86
 #> 3               99398.14
+# }
 ```

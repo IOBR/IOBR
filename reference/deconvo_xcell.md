@@ -39,6 +39,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -65,4 +66,5 @@ head(xcell_result)[, 1:5]
 #> 1 TCGA-BR-6455 TCGA-STAD     3.755491e-23     0.000000e+00  0.000000e+00
 #> 2 TCGA-BR-7196 TCGA-STAD     1.794635e-23     3.702040e-22  1.311341e-23
 #> 3 TCGA-BR-8371 TCGA-STAD     0.000000e+00     1.881182e-21  3.149663e-08
+# }
 ```

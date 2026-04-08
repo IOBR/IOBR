@@ -101,6 +101,7 @@ Dongqiang Zeng
 ``` r
 eset_stad <- load_data("eset_stad")
 eset_blca <- load_data("eset_blca")
+# \donttest{
 eset_corrected <- remove_batcheffect(
   eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
   id_type = "ensembl",
@@ -146,4 +147,6 @@ eset_corrected <- remove_batcheffect(
 #> • linetype : "batch"
 #> Ignoring unknown labels:
 #> • linetype : "batch"
+
+# }
 ```

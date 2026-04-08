@@ -109,5 +109,6 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
 #> ℹ Running LASSO
 #> ℹ Running RIDGE REGRESSION
 #> ✔ Model fitting complete
+#> Error in PrognosticModel(x = imvigor210_sig, y = pdata_prog, scale = TRUE,     seed = 123456, train_ratio = 0.7, nfold = 10, plot = FALSE): object 'p1' not found
 # }
 ```
