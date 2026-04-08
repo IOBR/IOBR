@@ -22,6 +22,7 @@
 #'   \item{lasso_result}{Results from LASSO model including coefficients and AUC}
 #'   \item{ridge_result}{Results from Ridge model including coefficients and AUC}
 #'   \item{train.x}{Training data with sample IDs}
+#'   \item{plots}{Named list with \code{lasso} and \code{ridge} time-ROC plots}
 #' }
 #'
 #' @author Dongqiang Zeng
@@ -79,13 +80,11 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   )
   lasso_result <- PrognosticResult(model = lasso_model, train.x, train.y, test.x, test.y)
 
-  if (plot) {
-    p1 <- PlotTimeROC(
-      train.x = train.x, train.y = train.y,
-      test.x = test.x, test.y = test.y, model = lasso_model, modelname = "LASSO"
-    )
-    print(p1)
-  }
+  p1 <- PlotTimeROC(
+    train.x = train.x, train.y = train.y,
+    test.x = test.x, test.y = test.y, model = lasso_model, modelname = "LASSO"
+  )
+  if (plot) print(p1)
 
   cli::cli_alert_info("Running RIDGE REGRESSION")
   set.seed(seed)
@@ -95,19 +94,17 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
   )
   ridge_result <- PrognosticResult(model = ridge_model, train.x, train.y, test.x, test.y)
 
-  if (plot) {
-    p2 <- PlotTimeROC(
-      train.x = train.x, train.y = train.y, cols = cols, palette = palette,
-      test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE"
-    )
-    print(p2)
-  }
+  p2 <- PlotTimeROC(
+    train.x = train.x, train.y = train.y, cols = cols, palette = palette,
+    test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE"
+  )
+  if (plot) print(p2)
 
   cli::cli_alert_success("Model fitting complete")
 
   list(
     lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x,
-    plots = list(p1, p2)
+    plots = list(lasso = p1, ridge = p2)
   )
 }
 

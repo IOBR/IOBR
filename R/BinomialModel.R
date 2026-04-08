@@ -22,6 +22,7 @@
 #'   \item{lasso_result}{Lasso model results}
 #'   \item{ridge_result}{Ridge model results}
 #'   \item{train.x}{Training data with IDs}
+#'   \item{plots}{Named list with \code{lasso} and \code{ridge} AUC plots}
 #' }
 #'
 #' @export
@@ -77,14 +78,12 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
     test.x = test.x, test.y = test.y, model = lasso_model
   )
 
-  if (plot) {
-    p1 <- PlotAUC(
-      train.x = train.x, train.y = train.y,
-      test.x = test.x, test.y = test.y, model = lasso_model,
-      cols = cols, palette = palette, modelname = "lasso_model"
-    )
-    print(p1)
-  }
+  p1 <- PlotAUC(
+    train.x = train.x, train.y = train.y,
+    test.x = test.x, test.y = test.y, model = lasso_model,
+    cols = cols, palette = palette, modelname = "lasso_model"
+  )
+  if (plot) print(p1)
 
   cli::cli_alert_info("Running RIDGE REGRESSION")
   set.seed(seed)
@@ -97,20 +96,18 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
     test.x = test.x, test.y = test.y, model = ridge_model
   )
 
-  if (plot) {
-    p2 <- PlotAUC(
-      train.x = train.x, train.y = train.y,
-      test.x = test.x, test.y = test.y, model = ridge_model,
-      cols = cols, palette = palette, modelname = "ridge_model"
-    )
-    print(p2)
-  }
+  p2 <- PlotAUC(
+    train.x = train.x, train.y = train.y,
+    test.x = test.x, test.y = test.y, model = ridge_model,
+    cols = cols, palette = palette, modelname = "ridge_model"
+  )
+  if (plot) print(p2)
 
   cli::cli_alert_success("Model fitting complete")
 
   list(
     lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x,
-    plots = list(p1, p2)
+    plots = list(lasso = p1, ridge = p2)
   )
 }
 

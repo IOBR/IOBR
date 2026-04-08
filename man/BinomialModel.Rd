@@ -42,6 +42,7 @@ List containing:
   \item{lasso_result}{Lasso model results}
   \item{ridge_result}{Ridge model results}
   \item{train.x}{Training data with IDs}
+  \item{plots}{Named list with \code{lasso} and \code{ridge} AUC plots}
 }
 }
 \description{

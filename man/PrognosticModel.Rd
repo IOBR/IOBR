@@ -42,6 +42,7 @@ A list containing:
   \item{lasso_result}{Results from LASSO model including coefficients and AUC}
   \item{ridge_result}{Results from Ridge model including coefficients and AUC}
   \item{train.x}{Training data with sample IDs}
+  \item{plots}{Named list with \code{lasso} and \code{ridge} time-ROC plots}
 }
 }
 \description{
