@@ -107,7 +107,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
 
   list(
     lasso_result = lasso_result, ridge_result = ridge_result, train.x = return.x,
-    plots = list(p1, p2)
+    plots = if (plot) list(lasso = p1, ridge = p2) else NULL
   )
 }
 
