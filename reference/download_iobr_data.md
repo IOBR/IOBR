@@ -46,8 +46,11 @@ if (FALSE) { # \dontrun{
 tcga_sig <- download_iobr_data("tcga_stad_sig")
 
 # Download with custom mirrors
-eset <- download_iobr_data("eset_stad", 
-  mirrors = c("https://ghproxy.vip/https://github.com",
-              "https://gh-proxy.org/https://github.com"))
+eset <- download_iobr_data("eset_stad",
+  mirrors = c(
+    "https://ghproxy.vip/https://github.com",
+    "https://gh-proxy.org/https://github.com"
+  )
+)
 } # }
 ```
