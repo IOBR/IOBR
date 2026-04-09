@@ -30,10 +30,10 @@ doesn't make any difference).}
 \item{reference}{(optional): A string or a list defining the reference cells.
 It can take multiple formats:
 - `NULL`: to use the default reference profiles and genes signature
-\code{\link{TRef}}
+\code{TRef}
 - A character: either \code{"BRef"} or \code{"TRef"} to use the
 reference cells and genes signature of the corresponding datasets (see
-\code{\link{BRef}} and \code{\link{TRef}})
+\code{BRef} and \code{TRef})
 - A list containing:
   - `$refProfiles`: a matrix (\code{nGenes} x \code{nCellTypes}) of the
   reference cells genes expression (don't include a column of the 'other

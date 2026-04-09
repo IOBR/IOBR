@@ -65,7 +65,7 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
     colnames(gene_expression) <- sample_names
   }
 
-  IPSG <- ips_gene_set
+  IPSG <- load_data("ips_gene_set")
   IPSG <- IPSG[IPSG$GENE %in% rownames(gene_expression), ]
 
   if (nrow(IPSG) == 0) {

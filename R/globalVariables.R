@@ -27,15 +27,13 @@ utils::globalVariables(c(
   "ID", "ID1", "ID2", "Intensity", "Sample.Name", "Sample.Num",
   "Z.score", "title", "target_group", "sig_group", "variables",
   "idd", "goup3", "categorys", "point.alpha", "mutation",
-  "entrez_gene", "gs_cat", "gs_name", "gs_subcat", "hallmark",
-  "go_bp", "go_cc", "go_mf", "kegg", "reactome",
-  "signature_collection", "immuneCuratedData", "cancer_type_genes",
-  "SI_geneset", "TRef", "mRNA_cell_default", "ips_gene_set", "y1", "y2",
-  "lm22", "anno_grch38", "anno_gc_vm32", "mcp_genes", "mcp_probesets",
-  "quantiseq_data", "xCell.data", "null_models", "common_genes",
-  "avg_log2FC", "mus_human_gene_symbol", "PurityDataAffy",
+  "entrez_gene", "gs_cat", "gs_name", "gs_subcat",
+  "signature_collection",
+  "mcp_genes", "mcp_probesets",
+  "null_models",
   "my_palette", "my_palette2", "Group", "ENTREZID", "logfc", "p",
   "FPR", "TPR", "variable", "itor", "s",
+  "y1", "y2", "avg_log2FC",
 
   # ---------- Cross-package functions / S3 methods ----------
   # Names called via :: or get() but still flagged by codetools

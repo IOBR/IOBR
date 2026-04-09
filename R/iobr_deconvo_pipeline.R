@@ -71,11 +71,17 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TM
   print(paste0(">>>>> Signature esitmation was completed: ", project))
   save(sig_res, file = paste0(path$abspath, "2-", project, "-Signature-score-mycollection.RData"))
   ########################################
+  hallmark_data <- load_data("hallmark")
+  go_bp_data <- load_data("go_bp")
+  go_cc_data <- load_data("go_cc")
+  go_mf_data <- load_data("go_mf")
+  kegg_data <- load_data("kegg")
+  reactome_data <- load_data("reactome")
   sig_go_kegg <- calculate_sig_score(
     pdata = NULL,
     eset = eset,
     adjust_eset = TRUE,
-    signature = c(hallmark, go_bp, go_cc, go_mf, kegg, reactome),
+    signature = c(hallmark_data, go_bp_data, go_cc_data, go_mf_data, kegg_data, reactome_data),
     method = "ssgsea",
     mini_gene_count = 2
   )

@@ -24,3 +24,7 @@ test_timer_debug.R
 Rplots.pdf
 DOCUMENTATION_OPTIMIZATION_SUMMARY.md
 IOBR-2.0.2
+inst/github_data/
+R/sysdata.rda.backup
+**/.DS_Store
+.DS_Store

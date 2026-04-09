@@ -48,12 +48,13 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
   }
 
   # Load default data if not provided
-  signatures <- signatures %||% xCell.data$signatures
-  genes <- genes %||% xCell.data$genes
+  xcell_ref <- load_data("xCell.data")
+  signatures <- signatures %||% xcell_ref$signatures
+  genes <- genes %||% xcell_ref$genes
   spill <- spill %||% if (rnaseq) {
-    xCell.data$spill
+    xcell_ref$spill
   } else {
-    xCell.data$spill.array
+    xcell_ref$spill.array
   }
 
   # Validate cell types if specified
@@ -317,14 +318,15 @@ microenvironmentScores <- function(adjustedScores) {
 #' @keywords internal
 xCellSignifcanceBetaDist <- function(scores, beta_params = NULL, rnaseq = TRUE,
                                      file.name = NULL) {
+  xcell_ref <- load_data("xCell.data")
   beta_params <- beta_params %||% if (rnaseq) {
-    xCell.data$spill$beta_params
+    xcell_ref$spill$beta_params
   } else {
-    xCell.data$spill.array$beta_params
+    xcell_ref$spill.array$beta_params
   }
 
   scores <- scores[rownames(scores) %in%
-    colnames(xCell.data$spill$beta_params[[1]]), ]
+    colnames(xcell_ref$spill$beta_params[[1]]), ]
   pvals <- matrix(0, nrow(scores), ncol(scores))
   rownames(pvals) <- rownames(scores)
   eps <- 1e-3

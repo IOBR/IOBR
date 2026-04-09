@@ -444,7 +444,7 @@ deconvolute_timer.default <- function(args) {
 
   timer_info("Loading immune gene expression")
 
-  immune <- immuneCuratedData
+  immune <- load_data("immuneCuratedData")
   immune.geneExpression <- immune$genes
   immune.cellTypes <- immune$celltypes
 
@@ -485,7 +485,8 @@ deconvolute_timer.default <- function(args) {
       )
     }
 
-    gene.selected.marker <- cancer_type_genes[[which(names(cancer_type_genes) == cancer.category)]]
+    cancer_type_genes_data <- load_data("cancer_type_genes")
+    gene.selected.marker <- cancer_type_genes_data[[which(names(cancer_type_genes_data) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
 
     if (length(gene.selected.marker) < 6) {

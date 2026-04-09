@@ -68,10 +68,11 @@ deconvolute_quantiseq.default <- function(mix.mat,
 
   listsig <- c("TIL10")
 
+  quantiseq_ref <- load_data("quantiseq_data")
   if (signame %in% listsig) {
-    sig.mat <- quantiseq_data$TIL10_signature
-    mRNA <- quantiseq_data$TIL10_mRNA_scaling
-    lrmgenes <- quantiseq_data$TIL10_rmgenes
+    sig.mat <- quantiseq_ref$TIL10_signature
+    mRNA <- quantiseq_ref$TIL10_mRNA_scaling
+    lrmgenes <- quantiseq_ref$TIL10_rmgenes
   } else {
     sig.mat.file <- paste0(signame, "_signature.txt")
     sig.mat <- read.table(sig.mat.file, header = TRUE, sep = "\t", row.names = 1)
@@ -108,7 +109,7 @@ deconvolute_quantiseq.default <- function(mix.mat,
 
   if (tumor) {
     if (signame %in% listsig) {
-      abgenes <- quantiseq_data$TIL10_TCGA_aberrant_immune_genes
+      abgenes <- quantiseq_ref$TIL10_TCGA_aberrant_immune_genes
       n1 <- nrow(sig.mat)
       sig.mat <- sig.mat[!rownames(sig.mat) %in% abgenes, , drop = FALSE]
       n2 <- nrow(sig.mat)

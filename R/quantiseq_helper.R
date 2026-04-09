@@ -70,7 +70,8 @@ makeQN <- function(mix.mat) {
 #'
 #' @keywords internal
 mapGenes <- function(mydata) {
-  HGNC <- quantiseq_data$HGNC_genenames_20170418
+  quantiseq_ref <- load_data("quantiseq_data")
+  HGNC <- quantiseq_ref$HGNC_genenames_20170418
 
   curgenes <- rownames(mydata)
   newgenes <- rep(NA, length(curgenes))

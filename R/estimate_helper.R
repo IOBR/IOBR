@@ -86,9 +86,10 @@ estimateScore <- function(input.ds,
   m <- 10000 * m / Ng
 
   ## SI_geneset
-  gs <- as.matrix(SI_geneset[, -1], dimnames = NULL)
+  si_geneset_data <- load_data("SI_geneset")
+  gs <- as.matrix(si_geneset_data[, -1], dimnames = NULL)
   N.gs <- 2
-  gs.names <- row.names(SI_geneset)
+  gs.names <- row.names(si_geneset_data)
 
   ## Loop over gene sets
   score.matrix <- matrix(0, nrow = N.gs, ncol = Ns)
@@ -240,13 +241,14 @@ filterCommonGenes <- function(input.f,
     stringsAsFactors = FALSE
   )
 
-  merged.df <- merge(common_genes, input.df, by.x = id, by.y = "row.names")
+  common_genes_data <- load_data("common_genes")
+  merged.df <- merge(common_genes_data, input.df, by.x = id, by.y = "row.names")
   rownames(merged.df) <- merged.df$GeneSymbol
-  merged.df <- merged.df[, -1:-ncol(common_genes)]
+  merged.df <- merged.df[, -1:-ncol(common_genes_data)]
   print(sprintf(
     "Merged dataset includes %d genes (%d mismatched).",
     nrow(merged.df),
-    nrow(common_genes) - nrow(merged.df)
+    nrow(common_genes_data) - nrow(merged.df)
   ))
   outputGCT(merged.df, output.f)
 }
@@ -373,7 +375,7 @@ plotPurity <- function(scores,
   ## Read ESTIMATE data file
   estimate.df <- get_estimates_df(scores)
   samplenames <- rownames(estimate.df)
-  Affy.model <- PurityDataAffy
+  Affy.model <- load_data("PurityDataAffy")
   pred.p <- Affy.model[, 5:7]
   est <- estimate.df[, 3]
   est.new <- estimate.df[, 4]

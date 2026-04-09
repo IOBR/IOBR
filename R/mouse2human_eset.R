@@ -89,11 +89,11 @@ mouse2human_eset <- function(eset,
       error = function(e) {
         cli::cli_warn("Failed to connect to Ensembl: {e$message}")
         cli::cli_alert_info("Falling back to local database.")
-        mus_human_gene_symbol
+        load_data("mus_human_gene_symbol")
       }
     )
   } else {
-    probe_data <- mus_human_gene_symbol
+    probe_data <- load_data("mus_human_gene_symbol")
   }
 
   if (nrow(probe_data) == 0) {

@@ -65,7 +65,7 @@ using gene expression data.
 }
 \examples{
 \donttest{
-data(lm22)
+lm22 <- load_data("lm22")
 common_genes <- rownames(lm22)[1:500]
 sim_mixture <- as.data.frame(matrix(
   rnorm(length(common_genes) * 10, mean = 5, sd = 2),

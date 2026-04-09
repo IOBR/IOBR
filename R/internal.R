@@ -71,19 +71,19 @@ load_data <- function(name) {
     stop("'name' must be a single non-empty character string")
   }
 
-  # Define sysdata names (internal package data)
+  # Define sysdata names (internal package data - minimal essential data)
+  # Large datasets moved to GitHub to meet CRAN size requirements
   sysdata_names <- c(
-    "cancer_type_genes", "cellmarkers", "common_genes", "go_bp",
-    "go_cc", "go_mf", "hallmark", "immuneCuratedData", "imvigor210_eset",
-    "ips_gene_set", "kegg", "length_ensembl", "mcp_genes", "mcp_probesets",
-    "melanoma_data", "mRNA_cell_default", "msig_immune", "msig_sc",
-    "mus_human_gene_symbol", "onco_sig", "palette1", "palette2",
-    "palette3", "palette4", "panel_for_gene", "panel_for_signature",
-    "patterns_to_na", "pdata_acrg", "pdata_GSE63557", "pdata_sig_tme",
-    "pdata_sig_tme_binary", "pdata_tme_binary", "PurityDataAffy",
-    "quantiseq_data", "reactome", "SI_geneset", "sig_excel", "signature_collection_citation",
-    "signature_metabolism", "signature_sc", "signature_tme", "signature_tumor",
-    "tcga_stad_var", "xCell.data"
+    # Core signatures (small, frequently used) - stored in sysdata.rda
+    "signature_tme",
+
+    # MCPCounter (required for deconvolution) - stored in sysdata.rda
+    "mcp_genes", "mcp_probesets",
+
+    # Color palettes and configs (small) - stored in sysdata.rda
+    "palette1", "palette2", "palette3", "palette4",
+    "panel_for_gene", "panel_for_signature",
+    "patterns_to_na", "sig_excel"
   )
 
   # Get available data names from package
@@ -103,8 +103,16 @@ load_data <- function(name) {
     return(get(name, envir = environment()))
   }
 
+  # Check if it's a GitHub-hosted dataset (large datasets moved from sysdata and data/)
+  github_datasets <- list_github_datasets()
+
+  if (name %in% github_datasets) {
+    # Try to download from GitHub
+    return(download_iobr_data(name))
+  }
+
   # Dataset not found - provide helpful error message with suggestions
-  available <- sort(c(sysdata_names, data_names))
+  available <- sort(c(sysdata_names, data_names, github_datasets))
 
   # Find similar names for suggestions
   distances <- utils::adist(name, available, ignore.case = TRUE)

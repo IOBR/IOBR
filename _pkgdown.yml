@@ -291,6 +291,16 @@ reference:
       - creat_folder
       - remove_names
 
+  - title: "Data Download & Management"
+    desc: "Download large datasets from GitHub with mirror support."
+    contents:
+      - download_iobr_data
+      - list_github_datasets
+      - add_iobr_mirror
+      - list_iobr_mirrors
+      - reset_iobr_mirrors
+      - clear_iobr_cache
+
   - title: "Datasets — Expression Sets"
     desc: "Example bulk RNA-seq expression matrices."
     contents:

@@ -274,7 +274,7 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #' @import stringr
 #' @examples
 #' \donttest{
-#' data(lm22)
+#' lm22 <- load_data("lm22")
 #' common_genes <- rownames(lm22)[1:500]
 #' sim_mixture <- as.data.frame(matrix(
 #'   rnorm(length(common_genes) * 10, mean = 5, sd = 2),

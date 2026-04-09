@@ -36,10 +36,10 @@
 #' @param reference (optional): A string or a list defining the reference cells.
 #'    It can take multiple formats:
 #'    - `NULL`: to use the default reference profiles and genes signature
-#'    \code{\link{TRef}}
+#'    \code{TRef}
 #'    - A character: either \code{"BRef"} or \code{"TRef"} to use the
 #'    reference cells and genes signature of the corresponding datasets (see
-#'    \code{\link{BRef}} and \code{\link{TRef}})
+#'    \code{BRef} and \code{TRef})
 #'    - A list containing:
 #'      - `$refProfiles`: a matrix (\code{nGenes} x \code{nCellTypes}) of the
 #'      reference cells genes expression (don't include a column of the 'other
@@ -152,8 +152,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
     reference <- load_data("TRef")
   } else if (is.character(reference)) {
     if (reference %in% c("TRef", "BRef")) {
-      data(list = reference, package = "IOBR", envir = environment())
-      reference <- get(reference, envir = environment())
+      reference <- load_data(reference)
       # Replace the char defining the reference name by the corresponding
       # pre-built reference values.
     } else {
@@ -281,7 +280,7 @@ EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
   }
 
   if (is.null(mRNA_cell)) {
-    mRNA_cell <- mRNA_cell_default
+    mRNA_cell <- load_data("mRNA_cell_default")
   }
 
   if (!is.null(mRNA_cell_sub)) {
