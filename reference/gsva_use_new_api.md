@@ -28,6 +28,6 @@ print(api_info)
 #> [1] TRUE
 #> 
 #> $gsva_version
-#> [1] "2.4.8"
+#> [1] "2.4.9"
 #> 
 ```

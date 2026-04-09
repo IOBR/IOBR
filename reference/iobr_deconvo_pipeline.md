@@ -89,7 +89,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running xCell deconvolution
 #> ℹ Number of genes: 10783
-#> ℹ GSVA version 2.4.8
+#> ℹ GSVA version 2.4.9
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
 #> ℹ kcdf='auto' (default)
@@ -132,7 +132,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Step 1/3: PCA method
 #> ℹ Step 2/3: z-score method
 #> ℹ Step 3/3: ssGSEA method
-#> ℹ GSVA version 2.4.8
+#> ℹ GSVA version 2.4.9
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 280 gene sets
 #> ℹ Calculating ranks
@@ -143,7 +143,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Calculating scores for 12059 signature(s)
-#> ℹ GSVA version 2.4.8
+#> ℹ GSVA version 2.4.9
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
 #> ℹ Calculating ranks

@@ -76,7 +76,7 @@ result <- calculate_sig_score_integration(eset = eset, signature = signature)
 #> ℹ Step 3/3: ssGSEA method
 #> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘HDF5Array’
 #> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘SummarizedExperiment’
-#> ℹ GSVA version 2.4.8
+#> ℹ GSVA version 2.4.9
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 2 gene sets
 #> ℹ Calculating ranks
