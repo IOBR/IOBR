@@ -118,6 +118,7 @@
 #' expression in the sigGenes vs predicted gene expression in the sigGenes
 #'
 #' @examples
+#' \donttest{
 #' melanoma_data <- load_data("melanoma_data")
 #' TRef <- load_data("TRef")
 #' res1 <- EPIC(melanoma_data$counts)
@@ -135,7 +136,7 @@
 #' # melanoma_data$cellFractions.pred for these first 4 results.
 #' # The values of cellFraction for res5 will be different due to the use of
 #' # other mRNA per cell values for the B and other cells.
-#'
+#' }
 #' @export
 EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,
                  sigGenes = NULL, scaleExprs = TRUE, withOtherCells = TRUE,

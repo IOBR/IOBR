@@ -191,11 +191,11 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' eset <- eset[1:500, 1:5]
-#' \donttest{
 #' epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
 #' head(epic_result)
 #' }

@@ -138,6 +138,7 @@ these cases differently, you can remove the duplicates before calling
 \emph{EPIC}.
 }
 \examples{
+\donttest{
 melanoma_data <- load_data("melanoma_data")
 TRef <- load_data("TRef")
 res1 <- EPIC(melanoma_data$counts)
@@ -155,5 +156,5 @@ res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(
 # melanoma_data$cellFractions.pred for these first 4 results.
 # The values of cellFraction for res5 will be different due to the use of
 # other mRNA per cell values for the B and other cells.
-
+}
 }

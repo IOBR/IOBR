@@ -39,6 +39,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Annotate Affymetrix microarray data
 #' eset_gse62254 <- load_data("eset_gse62254")
 #' anno_hug133plus2 <- load_data("anno_hug133plus2")
@@ -50,6 +51,7 @@
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #' head(eset)
+#' }
 anno_eset <- function(eset,
                       annotation,
                       symbol = "symbol",
