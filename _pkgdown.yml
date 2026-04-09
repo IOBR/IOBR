@@ -301,28 +301,10 @@ reference:
       - reset_iobr_mirrors
       - clear_iobr_cache
 
-  - title: "Datasets — Expression Sets"
-    desc: "Example bulk RNA-seq expression matrices."
-    contents:
-      - eset_stad
-      - eset_blca
-      - eset_gse62254
-      - eset_tme_stad
-
-  - title: "Datasets — Deconvolution Reference Matrices"
-    desc: "Reference signature matrices for CIBERSORT and EPIC."
-    contents:
-      - lm22
-      - TRef
-      - BRef
-
   - title: "Datasets — Gene Signatures"
     desc: "Curated gene signature collections for TME scoring."
     contents:
       - signature_collection
-      - imvigor210_sig
-      - sig_stad
-      - tcga_stad_sig
 
   - title: "Datasets — Sample Metadata"
     desc: "Clinical and phenotypic data for example datasets."
@@ -334,18 +316,8 @@ reference:
       - stad_group
       - subgroup_data
 
-  - title: "Datasets — Genomic Annotation"
-    desc: "Gene and probe annotation tables for multiple platforms."
-    contents:
-      - anno_rnaseq
-      - anno_grch38
-      - anno_illumina
-      - anno_hug133plus2
-      - anno_gc_vm32
-
   - title: "Datasets — Miscellaneous"
     desc: "Additional reference data used by package functions."
     contents:
-      - deg
       - null_models
 

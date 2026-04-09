@@ -10,6 +10,7 @@
   - Added `list_github_datasets()` to show available remote datasets
   - Added `clear_iobr_cache()` to manage downloaded data
 * **Automatic Caching**: Downloaded datasets are cached in user's cache directory and persist across package updates.
+* Fixed `count2tpm()` to handle symbol-based gene IDs more robustly.
 
 ## Data Migration
 

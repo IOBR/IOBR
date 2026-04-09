@@ -165,11 +165,38 @@ count2tpm <- function(countMat,
   if (org == "mmus") type[3] <- "mgi_symbol"
 
   ds <- datasets[grepl(org, datasets)]
-  mart <- biomaRt::useMart(
-    host = "https://www.ensembl.org",
-    biomart = "ENSEMBL_MART_ENSEMBL",
-    dataset = ds
+
+  # Define mirror hosts for failover
+  mirrors <- c(
+    "https://www.ensembl.org",
+    "https://useast.ensembl.org",
+    "https://asia.ensembl.org"
   )
+
+  # Try each mirror until success
+  mart <- NULL
+  last_error <- NULL
+  for (mirror in mirrors) {
+    tryCatch({
+      cli::cli_alert_info("Trying Ensembl mirror: {.url {mirror}}")
+      mart <- biomaRt::useMart(
+        host = mirror,
+        biomart = "ENSEMBL_MART_ENSEMBL",
+        dataset = ds
+      )
+      cli::cli_alert_success("Connected to Ensembl mirror: {.url {mirror}}")
+      break
+    }, error = function(e) {
+      last_error <<- e
+      cli::cli_alert_warning("Failed to connect to {.url {mirror}}: {e$message}")
+    })
+  }
+
+  if (is.null(mart)) {
+    cli::cli_abort(
+      "Failed to connect to all Ensembl mirrors. Please try {.code source='local'}"
+    )
+  }
 
   ensembl <- biomaRt::getBM(attributes = type, mart = mart)
   ensembl$Length <- abs(ensembl$end_position - ensembl$start_position)
@@ -221,7 +248,7 @@ count2tpm <- function(countMat,
     cli::cli_alert_warning(
       "Gene symbols may yield fuzzy results. Consider using Ensembl IDs"
     )
-    length_df <- anno_grch38[, c("symbol", "eff_length", "gc")]
+    length_df <- anno_grch38[, c("symbol", "eff_length", "symbol")]
     colnames(length_df)[1] <- "id"
     length_df <- length_df[!duplicated(length_df$id), ]
   } else {
@@ -252,7 +279,7 @@ count2tpm <- function(countMat,
     cli::cli_alert_warning(
       "Gene symbols may yield fuzzy results. Consider using Ensembl IDs"
     )
-    length_df <- anno_gc_vm32[, c("symbol", "eff_length", "gc")]
+    length_df <- anno_gc_vm32[, c("symbol", "eff_length", "symbol")]
     colnames(length_df)[1] <- "id"
     length_df <- length_df[!duplicated(length_df$id), ]
   } else {
