@@ -401,29 +401,22 @@ Miscellaneous helper functions for data and file management.
 - [`remove_names()`](https://iobr.github.io/IOBR/reference/remove_names.md)
   : Remove Patterns from Column Names or Variables
 
-## Datasets — Expression Sets
+## Data Download & Management
 
-Example bulk RNA-seq expression matrices.
+Download large datasets from GitHub with mirror support.
 
-- [`eset_stad`](https://iobr.github.io/IOBR/reference/eset_stad.md) :
-  Toy STAD expression matrix
-- [`eset_blca`](https://iobr.github.io/IOBR/reference/eset_blca.md) :
-  TCGA-BLCA Bladder Cancer Expression Data
-- [`eset_gse62254`](https://iobr.github.io/IOBR/reference/eset_gse62254.md)
-  : GSE62254 Gastric Cancer Expression Data
-- [`eset_tme_stad`](https://iobr.github.io/IOBR/reference/eset_tme_stad.md)
-  : TCGA-STAD Tumor Microenvironment Signature Scores
-
-## Datasets — Deconvolution Reference Matrices
-
-Reference signature matrices for CIBERSORT and EPIC.
-
-- [`lm22`](https://iobr.github.io/IOBR/reference/lm22.md) : Reference
-  profiles for immune cell types using lm22 (EPIC/IOBR)
-- [`TRef`](https://iobr.github.io/IOBR/reference/TRef.md) : Reference
-  profiles from tumor-infiltrating non-malignant cells
-- [`BRef`](https://iobr.github.io/IOBR/reference/BRef.md) : Reference
-  profiles for B cell–related deconvolution (EPIC/IOBR)
+- [`download_iobr_data()`](https://iobr.github.io/IOBR/reference/download_iobr_data.md)
+  : Download IOBR Data from GitHub with Mirror Support
+- [`list_github_datasets()`](https://iobr.github.io/IOBR/reference/list_github_datasets.md)
+  : List Available GitHub Datasets
+- [`add_iobr_mirror()`](https://iobr.github.io/IOBR/reference/add_iobr_mirror.md)
+  : Add Custom Download Mirror
+- [`list_iobr_mirrors()`](https://iobr.github.io/IOBR/reference/list_iobr_mirrors.md)
+  : List Current Download Mirrors
+- [`reset_iobr_mirrors()`](https://iobr.github.io/IOBR/reference/reset_iobr_mirrors.md)
+  : Reset Download Mirrors to Default
+- [`clear_iobr_cache()`](https://iobr.github.io/IOBR/reference/clear_iobr_cache.md)
+  : Clear IOBR Data Cache
 
 ## Datasets — Gene Signatures
 
@@ -431,12 +424,6 @@ Curated gene signature collections for TME scoring.
 
 - [`signature_collection`](https://iobr.github.io/IOBR/reference/signature_collection.md)
   : Gene signature collection for pathway and immune analysis
-- [`imvigor210_sig`](https://iobr.github.io/IOBR/reference/imvigor210_sig.md)
-  : IMvigor210 Bladder Cancer Cohort Multi-omics Signatures
-- [`sig_stad`](https://iobr.github.io/IOBR/reference/sig_stad.md) :
-  TCGA-STAD Gastric Cancer Cohort with Molecular and Clinical Data
-- [`tcga_stad_sig`](https://iobr.github.io/IOBR/reference/tcga_stad_sig.md)
-  : TCGA-STAD Gastric Cancer Immune Infiltration Signatures
 
 ## Datasets — Sample Metadata
 
@@ -455,26 +442,9 @@ Clinical and phenotypic data for example datasets.
 - [`subgroup_data`](https://iobr.github.io/IOBR/reference/subgroup_data.md)
   : Example Dataset for Subgroup Survival Analysis
 
-## Datasets — Genomic Annotation
-
-Gene and probe annotation tables for multiple platforms.
-
-- [`anno_rnaseq`](https://iobr.github.io/IOBR/reference/anno_rnaseq.md)
-  : General RNA-seq Annotation
-- [`anno_grch38`](https://iobr.github.io/IOBR/reference/anno_grch38.md)
-  : GRCh38 Human Genome Annotation
-- [`anno_illumina`](https://iobr.github.io/IOBR/reference/anno_illumina.md)
-  : Illumina Microarray Annotation
-- [`anno_hug133plus2`](https://iobr.github.io/IOBR/reference/anno_hug133plus2.md)
-  : Affymetrix Human Genome U133 Plus 2.0 Array Annotation
-- [`anno_gc_vm32`](https://iobr.github.io/IOBR/reference/anno_gc_vm32.md)
-  : Mouse Genome Annotation (GC/VM32)
-
 ## Datasets — Miscellaneous
 
 Additional reference data used by package functions.
 
-- [`deg`](https://iobr.github.io/IOBR/reference/deg.md) : Single-cell
-  RNA-seq Differential Expression Analysis Results
 - [`null_models`](https://iobr.github.io/IOBR/reference/null_models.md)
   : NULL Model Coefficients for MCPcounter

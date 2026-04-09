@@ -80,6 +80,7 @@ Finotello F, et al. (adapted for IOBR)
 
 ``` r
 lm22 <- load_data("lm22")
+#> ℹ Loading cached data: "lm22"
 common_genes <- rownames(lm22)[1:500]
 tpm_matrix <- as.data.frame(matrix(
   rnorm(length(common_genes) * 5, mean = 5, sd = 2),
@@ -89,7 +90,9 @@ rownames(tpm_matrix) <- common_genes
 colnames(tpm_matrix) <- paste0("Sample", 1:5)
 results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
 #> ℹ Running quanTIseq deconvolution module
+#> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
+#> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Removing 17 noisy genes
 #> ℹ Signature genes found in data set: 41/153 (26.8%)
 #> ℹ Mixture deconvolution (method: lsei)

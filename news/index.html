@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,35 @@
       <small>Source: <a href="https://github.com/IOBR/IOBR/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.2.0" id="iobr-220">IOBR 2.2.0<a class="anchor" aria-label="anchor" href="#iobr-220"></a></h2>
+<div class="section level3">
+<h3 id="major-changes-2-2-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-2-2-0"></a></h3>
+<ul><li>
+<strong>CRAN Size Compliance</strong>: Moved large datasets (&gt;5MB total) from <code>R/sysdata.rda</code> and <code>data/</code> to GitHub Releases to meet CRAN package size requirements. Data is now downloaded on-demand and cached locally.</li>
+<li>
+<strong>New Data Management System</strong>:
+<ul><li>Added <code><a href="../reference/load_data.html">load_data()</a></code> function for unified data access (supports sysdata, exported data, and GitHub-hosted datasets)</li>
+<li>Added <code><a href="../reference/download_iobr_data.html">download_iobr_data()</a></code> with multiple mirror support (GitHub, ghproxy.vip, gh-proxy.org, ghfast.top)</li>
+<li>Added <code><a href="../reference/add_iobr_mirror.html">add_iobr_mirror()</a></code> for custom mirror configuration</li>
+<li>Added <code><a href="../reference/list_github_datasets.html">list_github_datasets()</a></code> to show available remote datasets</li>
+<li>Added <code><a href="../reference/clear_iobr_cache.html">clear_iobr_cache()</a></code> to manage downloaded data</li>
+</ul></li>
+<li>
+<strong>Automatic Caching</strong>: Downloaded datasets are cached in user’s cache directory and persist across package updates.</li>
+<li>Fixed <code><a href="../reference/count2tpm.html">count2tpm()</a></code> to handle symbol-based gene IDs more robustly.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="data-migration-2-2-0">Data Migration<a class="anchor" aria-label="anchor" href="#data-migration-2-2-0"></a></h3>
+<p>The following datasets are now hosted on GitHub and downloaded on first use: - Reference matrices: <code>BRef</code>, <code>TRef</code>, <code>lm22</code> - Annotations: <code>anno_gc_vm32</code>, <code>anno_grch38</code>, <code>anno_hug133plus2</code>, <code>anno_illumina</code>, <code>anno_rnaseq</code> - Example datasets: <code>tcga_stad_sig</code>, <code>imvigor210_sig</code>, <code>eset_stad</code>, <code>sig_stad</code>, <code>eset_gse62254</code>, etc. - Gene sets: <code>hallmark</code>, <code>kegg</code>, <code>go_bp</code>, <code>go_cc</code>, <code>go_mf</code>, <code>reactome</code>, <code>msig_immune</code>, <code>msig_sc</code> - Cell markers: <code>cancer_type_genes</code>, <code>cellmarkers</code>, <code>common_genes</code>, <code>immuneCuratedData</code>, <code>ips_gene_set</code>, <code>SI_geneset</code>, <code>mRNA_cell_default</code>, <code>mus_human_gene_symbol</code>, <code>onco_sig</code>, <code>PurityDataAffy</code> - Reference data: <code>xCell.data</code>, <code>quantiseq_data</code> - Signatures: <code>signature_collection_citation</code>, <code>signature_metabolism</code>, <code>signature_sc</code>, <code>signature_tumor</code></p>
+</div>
+<div class="section level3">
+<h3 id="internal-updates-2-2-0">Internal Updates<a class="anchor" aria-label="anchor" href="#internal-updates-2-2-0"></a></h3>
+<ul><li>Updated all internal code to use <code><a href="../reference/load_data.html">load_data()</a></code> instead of direct object references for migrated datasets</li>
+<li>Updated <code>globalVariables.R</code> to reflect data migration</li>
+<li>Enhanced error messages with manual download instructions when all mirrors fail</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.1" id="iobr-211">IOBR 2.1.1<a class="anchor" aria-label="anchor" href="#iobr-211"></a></h2>
 <div class="section level3">

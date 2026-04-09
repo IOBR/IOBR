@@ -122,6 +122,7 @@ Dongqiang Zeng
 ``` r
 # \donttest{
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 stad_group <- load_data("stad_group")
 deg <- iobr_deg(
   eset = eset_stad, pdata = stad_group,
@@ -146,11 +147,12 @@ deg <- iobr_deg(
 #> ℹ   Adj.p < 0.1: 9565
 #> ℹ   Adj.p < 0.25: 13933
 #> ℹ Using built-in anno_grch38 for annotation
+#> ℹ Loading cached data: "anno_grch38"
 #> ℹ Group 1 = EBV: 5 samples
 #> ℹ Group 2 = GS: 5 samples
 #> ℹ Group 1 samples: TCGA-BR-6455, TCGA-BR-7196, TCGA-BR-8686, TCGA-BR-A4J4, TCGA-FP-7916
 #> ℹ Group 2 samples: TCGA-BR-8371, TCGA-BR-8380, TCGA-BR-8592, TCGA-BR-A4IV, TCGA-BR-A4J9
-#> ✔ DEG results written to: /tmp/RtmpDcizNE/STAD/2-DEGs.csv
+#> ✔ DEG results written to: /tmp/RtmpxxfAB4/STAD/2-DEGs.csv
 head(deg)
 #> # A tibble: 6 × 21
 #>   row     baseMean log2FoldChange lfcSE  stat   pvalue     padj eff_length    gc

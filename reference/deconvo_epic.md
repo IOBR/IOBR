@@ -34,18 +34,22 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
+#> ℹ Loading cached data: "anno_grch38"
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number of original eset: 60483
 #> ✔ 100% of probes in expression set were annotated
 #> ℹ Found 2293 duplicate symbols, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 eset <- eset[1:500, 1:5]
-# \donttest{
 epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
 #> ℹ Running EPIC deconvolution
+#> ℹ Loading cached data: "TRef"
 #> Warning: there are few genes in common between the bulk samples and reference cells:471, so the data scaling might be an issue
+#> ℹ Loading cached data: "mRNA_cell_default"
 #> Warning: mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.
 head(epic_result)
 #>             ID ProjectID  Bcells_EPIC  CAFs_EPIC CD4_Tcells_EPIC

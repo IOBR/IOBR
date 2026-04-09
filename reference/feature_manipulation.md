@@ -50,6 +50,7 @@ Dongqiang Zeng
 
 ``` r
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 feas <- feature_manipulation(
   data = eset_stad,
   feature = rownames(eset_stad),

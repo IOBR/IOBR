@@ -82,6 +82,7 @@ Rongfang Shen
 ``` r
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 
 # Calculate partial correlations controlling for tumor purity
 res <- batch_pcc(

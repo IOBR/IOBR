@@ -43,7 +43,9 @@ Dongqiang Zeng
 
 ``` r
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
+#> ℹ Loading cached data: "anno_grch38"
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number of original eset: 60483
 #> ✔ 100% of probes in expression set were annotated
@@ -57,7 +59,10 @@ res <- deconvo_quantiseq(
 )
 #> ℹ Running quanTIseq deconvolution
 #> ℹ Running quanTIseq deconvolution module
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
+#> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Removing 17 noisy genes
 #> ℹ Removing 15 genes with high expression in tumors
 #> ℹ Signature genes found in data set: 0/138 (0%)

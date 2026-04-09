@@ -66,6 +66,7 @@ Dongqiang Zeng
 
 ``` r
 eset_tme_stad <- load_data("eset_tme_stad")
+#> ℹ Loading cached data: "eset_tme_stad"
 outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
 
 #> ℹ When yinter = -3

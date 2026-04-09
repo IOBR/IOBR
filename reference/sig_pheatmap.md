@@ -172,6 +172,7 @@ Dongqiang Zeng
 
 ``` r
 tcga_stad_sig <- load_data("tcga_stad_sig")
+#> ℹ Loading cached data: "tcga_stad_sig"
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 feas <- grep("MCPcounter", colnames(input), value = TRUE)
@@ -186,5 +187,5 @@ sig_pheatmap(
 #>         EBV          GS         CIN         MSI 
 #> "#8F7700FF"   "#386CB0" "#008B45FF"   "#e31a1c" 
 #> 
-#> ✔ Heatmap saved to: /tmp/RtmpDcizNE/1-pheatmap-subtype.pdf
+#> ✔ Heatmap saved to: /tmp/RtmpxxfAB4/1-pheatmap-subtype.pdf
 ```

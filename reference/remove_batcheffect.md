@@ -100,7 +100,10 @@ Dongqiang Zeng
 
 ``` r
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 eset_blca <- load_data("eset_blca")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "eset_blca"
 # \donttest{
 eset_corrected <- remove_batcheffect(
   eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
@@ -116,6 +119,7 @@ eset_corrected <- remove_batcheffect(
 #> Fitting the GLM model
 #> Shrinkage off - using GLM estimates for parameters
 #> Adjusting the data
+#> ℹ Loading cached data: "anno_grch38"
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ℹ No duplicate gene symbols found.
 #> ✔ Applied log2 transformation

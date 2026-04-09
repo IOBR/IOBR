@@ -405,5 +405,4 @@ For questions or inquiries, please contact:
 
 ## 📄 License
 
-IOBR is released under the [GNU General Public License
-v3.0](https://iobr.github.io/IOBR/LICENSE).
+IOBR is released under the GNU General Public License.

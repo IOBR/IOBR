@@ -57,6 +57,7 @@ Dongqiang Zeng
 
 ``` r
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 eset <- tcga_rna_preps(
   eset = eset_stad, id_type = "ensembl", input_type = "count",
   output = "tumor", output_type = "tpm", annotation = TRUE
@@ -71,6 +72,7 @@ eset <- tcga_rna_preps(
 #>    Mode   FALSE 
 #> logical      10 
 #> ℹ Converting count to TPM
+#> ℹ Loading cached data: "anno_grch38"
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ! Omitting 3985 genes without length information
 #> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.

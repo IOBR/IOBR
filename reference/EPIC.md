@@ -36,19 +36,16 @@ EPIC(
 
   (optional): A string or a list defining the reference cells. It can
   take multiple formats: - \`NULL\`: to use the default reference
-  profiles and genes signature
-  [`TRef`](https://iobr.github.io/IOBR/reference/TRef.md) - A character:
-  either `"BRef"` or `"TRef"` to use the reference cells and genes
-  signature of the corresponding datasets (see
-  [`BRef`](https://iobr.github.io/IOBR/reference/BRef.md) and
-  [`TRef`](https://iobr.github.io/IOBR/reference/TRef.md)) - A list
-  containing: - \`\$refProfiles\`: a matrix (`nGenes` x `nCellTypes`) of
-  the reference cells genes expression (don't include a column of the
-  'other cells' (representing usually the cancer cells for which such a
-  profile is usually not conserved between samples); the rownames needs
-  to be defined as well as the colnames giving the names of each gene
-  and reference cell types respectively. It is advised to keep all genes
-  in this `refProfiles` matrix instead of a subset of signature genes -
+  profiles and genes signature `TRef` - A character: either `"BRef"` or
+  `"TRef"` to use the reference cells and genes signature of the
+  corresponding datasets (see `BRef` and `TRef`) - A list containing: -
+  \`\$refProfiles\`: a matrix (`nGenes` x `nCellTypes`) of the reference
+  cells genes expression (don't include a column of the 'other cells'
+  (representing usually the cancer cells for which such a profile is
+  usually not conserved between samples); the rownames needs to be
+  defined as well as the colnames giving the names of each gene and
+  reference cell types respectively. It is advised to keep all genes in
+  this `refProfiles` matrix instead of a subset of signature genes -
   \`\$sigGenes\`: a character vector of the gene names to use as
   signature - sigGenes can also be given as a direct input to EPIC
   function - \`\$refProfiles.var\` (optional): a matrix (`nGenes` x
@@ -156,9 +153,17 @@ duplicates before calling *EPIC*.
 ## Examples
 
 ``` r
+# \donttest{
 melanoma_data <- load_data("melanoma_data")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "melanoma_data"
 TRef <- load_data("TRef")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "TRef"
 res1 <- EPIC(melanoma_data$counts)
+#> ℹ Loading cached data: "TRef"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355
 #>  - check fit.gof for the convergeCode and convergeMessage
@@ -175,16 +180,20 @@ res1$cellFractions
 #> LAU1314 4.095899e-03  0.2211814
 #> LAU355  4.601164e-08  0.2518857
 res2 <- EPIC(melanoma_data$counts, TRef)
+#> ℹ Loading cached data: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355
 #>  - check fit.gof for the convergeCode and convergeMessage
 #> Warning: mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.
 res3 <- EPIC(bulk = melanoma_data$counts, reference = TRef)
+#> ℹ Loading cached data: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355
 #>  - check fit.gof for the convergeCode and convergeMessage
 #> Warning: mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.
 res4 <- EPIC(melanoma_data$counts, reference = "TRef")
+#> ℹ Loading cached data: "TRef"
+#> ℹ Loading cached data: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355
 #>  - check fit.gof for the convergeCode and convergeMessage
@@ -193,6 +202,8 @@ res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(
   Bcells = 1,
   otherCells = 5
 ))
+#> ℹ Loading cached data: "TRef"
+#> ℹ Loading cached data: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355
 #>  - check fit.gof for the convergeCode and convergeMessage
@@ -203,4 +214,5 @@ res5 <- EPIC(melanoma_data$counts, mRNA_cell_sub = c(
 # melanoma_data$cellFractions.pred for these first 4 results.
 # The values of cellFraction for res5 will be different due to the use of
 # other mRNA per cell values for the B and other cells.
+# }
 ```

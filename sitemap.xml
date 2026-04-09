@@ -1,14 +1,12 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://iobr.github.io/IOBR/404.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/CLAUDE.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/LICENSE-text.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/articles/IOBR-user-manual.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/articles/index.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/authors.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/copilot-instructions.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/index.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/news/index.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/BRef.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/BinomialAUC.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/BinomialModel.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/CIBERSORT.html</loc></url>
@@ -37,15 +35,10 @@
 <url><loc>https://iobr.github.io/IOBR/reference/RegressionResult.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/RemoveBatchEffect.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/SplitTrainTest.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/TRef.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/Top_probe.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/add_iobr_mirror.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/add_riskscore.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/anno_eset.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/anno_gc_vm32.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/anno_grch38.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/anno_hug133plus2.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/anno_illumina.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/anno_rnaseq.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/assimilate_data.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/batch_cor.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/batch_kruskal.html</loc></url>
@@ -64,6 +57,7 @@
 <url><loc>https://iobr.github.io/IOBR/reference/cell_bar_plot.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/check_cancer_types.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/check_eset.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/clear_iobr_cache.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/combine_pd_eset.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/count2tpm.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/creat_folder.html</loc></url>
@@ -79,18 +73,14 @@
 <url><loc>https://iobr.github.io/IOBR/reference/deconvo_xcell.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/deconvolute_quantiseq.default.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/deconvolute_timer.default.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/deg.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/design_mytheme.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/doPerm.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/dot-appendSignatures.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/dot-build_mut_matrices.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/dot-create_mut_matrix.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/download_iobr_data.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/enrichment_barplot.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/eset_blca.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/eset_distribution.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/eset_gse62254.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/eset_stad.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/eset_tme_stad.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/estimateScore.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/exact_pvalue.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/extract_sc_data.html</loc></url>
@@ -113,11 +103,11 @@
 <url><loc>https://iobr.github.io/IOBR/reference/get_cols.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_cor.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_cor_matrix.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/get_default_mirrors.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_sig_sc.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/gsva_use_new_api.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/high_var_fea.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/imvigor210_pdata.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/imvigor210_sig.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/index.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/iobr_cor_plot.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/iobr_deconvo_pipeline.html</loc></url>
@@ -126,7 +116,8 @@
 <url><loc>https://iobr.github.io/IOBR/reference/ipsmap.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/lasso_select.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/limma.dif.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/lm22.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/list_github_datasets.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/list_iobr_mirrors.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/load_data.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/log2eset.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/makeQN.html</loc></url>
@@ -157,6 +148,7 @@
 <url><loc>https://iobr.github.io/IOBR/reference/remove_batcheffect.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/remove_duplicate_genes.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/remove_names.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/reset_iobr_mirrors.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/roc_time.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/scaleCounts.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/scale_matrix.html</loc></url>
@@ -170,7 +162,6 @@
 <url><loc>https://iobr.github.io/IOBR/reference/sig_heatmap.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sig_pheatmap.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sig_roc.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/sig_stad.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sig_surv_plot.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/signature_collection.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/signature_score_calculation_methods.html</loc></url>
@@ -181,7 +172,6 @@
 <url><loc>https://iobr.github.io/IOBR/reference/surv_group.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/tcga_rna_preps.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/tcga_stad_pdata.html</loc></url>
-<url><loc>https://iobr.github.io/IOBR/reference/tcga_stad_sig.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/test_for_infiltration.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/timer_available_cancers.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/timer_info.html</loc></url>

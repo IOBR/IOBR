@@ -69,6 +69,7 @@ Dongqiang Zeng, Rongfang Shen
 
 ``` r
 lm22 <- load_data("lm22")
+#> ℹ Loading cached data: "lm22"
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
   rnorm(length(common_genes) * 5, mean = 5, sd = 2),

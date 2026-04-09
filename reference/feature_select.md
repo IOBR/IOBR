@@ -54,6 +54,8 @@ Character vector of selected feature names.
 
 ``` r
 imvigor210_eset <- load_data("imvigor210_eset")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "imvigor210_eset"
 mad <- apply(imvigor210_eset, 1, mad)
 imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
 pd1 <- as.numeric(imvigor210_eset["PDCD1", ])

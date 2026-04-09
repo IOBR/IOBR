@@ -31,7 +31,9 @@ Dongqiang Zeng
 
 ``` r
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
+#> ℹ Loading cached data: "anno_grch38"
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number of original eset: 60483
 #> ✔ 100% of probes in expression set were annotated

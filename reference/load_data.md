@@ -38,6 +38,7 @@ sig_tme <- load_data("signature_tme")
 
 # Load expression data
 eset <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 
 # Load color palette
 colors <- load_data("palette1")

@@ -67,6 +67,7 @@ Dongqiang Zeng
 
 ``` r
 eset_tme_stad <- load_data("eset_tme_stad")
+#> ℹ Loading cached data: "eset_tme_stad"
 eset <- find_variable_genes(
   eset = eset_tme_stad,
   data_type = "normalized",

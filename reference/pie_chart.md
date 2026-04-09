@@ -78,6 +78,7 @@ Dongqiang Zeng
 
 ``` r
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
 #>   var Freq percent_weight lab.ypos
 #> 1 CIN  122           51.0    25.50

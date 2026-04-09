@@ -36,7 +36,9 @@ Dorothee Nickles, Dongqiang Zeng
 ``` r
 # Load example data
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 eset <- count2tpm(eset_stad, idType = "ensembl")
+#> ℹ Loading cached data: "anno_grch38"
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ! Omitting 3985 genes without length information
 #> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.

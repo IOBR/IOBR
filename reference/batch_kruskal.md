@@ -73,6 +73,7 @@ Dongqiang Zeng
 ``` r
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 
 # Test features by gender (if available in your dataset)
 if ("Gender" %in% colnames(sig_stad)) {

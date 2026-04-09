@@ -71,6 +71,8 @@ sim_eset <- as.data.frame(matrix(
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
 ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "ips_gene_set"
 head(ips_result)
 #>         ProjectID         MHC  EC  SC  CP          AZ IPS
 #> Sample1   Example  0.84758794 NaN NaN NaN  0.84758794   3

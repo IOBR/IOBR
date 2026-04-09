@@ -72,8 +72,11 @@ markers), \`top_markers\` (top markers per group).
 
 ``` r
 eset_tme_stad <- load_data("eset_tme_stad")
+#> ℹ Loading cached data: "eset_tme_stad"
 colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
 pdata_sig_tme <- load_data("pdata_sig_tme")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "pdata_sig_tme"
 # \donttest{
 res <- find_markers_in_bulk(
   pdata = pdata_sig_tme, eset = eset_tme_stad,
@@ -112,12 +115,12 @@ res <- find_markers_in_bulk(
 #>     ERCC2, CLDN3, PNKP, ROR2, H2AFX, HIST1H2BL, SEMA7A, XAB2, SMUG1, HIST2H2BF 
 #>     NUDT1, TAGLN, OGG1, POLL, LOXL2, SH3PXD2A, XRCC1, TWIST2, POLM, FOXF1 
 #> PC_ 5 
-#> Positive:  EME2, RECQL5, TBX21, PDCD1, PNKP, TIGIT, POLM, NEIL1, UVSSA, XRCC3 
-#>     POLG, ATRIP, CD8A, MSH5, FBXW7, RAD9A, GATA6, PER1, ENDOV, MUTYH 
-#>     CTLA4, DCLRE1C, POLD1, ATM, POLE, HLA-A, RAD52, PRF1, XAB2, DDB2 
-#> Negative:  UBE2B, UBE2V2, UBE2N, CDK7, APEX1, MNAT1, FAP, RAD51C, POLB, TGFBI 
+#> Positive:  UBE2B, UBE2V2, UBE2N, CDK7, APEX1, MNAT1, FAP, RAD51C, POLB, TGFBI 
 #>     CCNH, ADAM12, CETN2, RAD1, TDP2, ALKBH2, LOXL2, GTF2H5, XRCC4, TWIST1 
 #>     XRCC6, PARP2, XRCC5, UBE2A, ERCC8, RNF8, RAD23B, FSTL3, RPA2, CHEK1 
+#> Negative:  EME2, RECQL5, TBX21, PDCD1, PNKP, TIGIT, POLM, NEIL1, UVSSA, XRCC3 
+#>     POLG, ATRIP, CD8A, MSH5, FBXW7, RAD9A, GATA6, PER1, ENDOV, MUTYH 
+#>     CTLA4, DCLRE1C, POLD1, ATM, POLE, HLA-A, RAD52, PRF1, XAB2, DDB2 
 #> Calculating cluster IA
 #> For a (much!) faster implementation of the Wilcoxon Rank Sum Test,
 #> (default method for FindMarkers) please install the presto package

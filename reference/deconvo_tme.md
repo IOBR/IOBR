@@ -124,6 +124,7 @@ Dongqiang Zeng, Rongfang Shen
 
 ``` r
 lm22 <- load_data("lm22")
+#> ℹ Loading cached data: "lm22"
 common_genes <- rownames(lm22)[1:500]
 sim_eset <- as.data.frame(matrix(
   rnorm(length(common_genes) * 5, mean = 5, sd = 2),
@@ -136,5 +137,6 @@ res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running CIBERSORT
+#> ℹ Loading cached data: "lm22"
 # }
 ```

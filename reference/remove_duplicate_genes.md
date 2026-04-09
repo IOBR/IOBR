@@ -50,7 +50,9 @@ Dongqiang Zeng
 ``` r
 # Load and annotate expression data
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 anno_rnaseq <- load_data("anno_rnaseq")
+#> ℹ Loading cached data: "anno_rnaseq"
 eset_stad <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #> ℹ Row number of original eset: 60483
 #> ✔ 100% of probes in expression set were annotated

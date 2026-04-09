@@ -113,6 +113,8 @@ Dongqiang Zeng
 
 ``` r
 tcga_stad_sig <- load_data("tcga_stad_sig")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "tcga_stad_sig"
 pdata_stad <- load_data("pdata_stad")
 input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
 roc_time(

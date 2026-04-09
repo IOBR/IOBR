@@ -57,6 +57,7 @@ Dongqiang Zeng
 
 ``` r
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 batch_surv(
   pdata = sig_stad,
   variable = colnames(sig_stad)[69:ncol(sig_stad)],

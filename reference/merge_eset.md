@@ -38,6 +38,7 @@ Dongqiang Zeng
 ``` r
 # Load example data
 eset_stad <- load_data("eset_stad")
+#> ℹ Loading cached data: "eset_stad"
 
 # Create mock expression sets with common genes
 common_genes <- c("TP53", "BRCA1", "EGFR", "MYC")

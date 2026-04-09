@@ -79,6 +79,7 @@ Dongqiang Zeng
 ``` r
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 
 # Compare features by gender
 res <- batch_wilcoxon(

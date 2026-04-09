@@ -109,6 +109,7 @@ Dongqiang Zeng
 
 ``` r
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 percent_bar_plot(
   input = sig_stad, x = "Subtype", y = "Lauren",
   axis_angle = 60

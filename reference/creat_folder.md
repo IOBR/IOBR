@@ -44,16 +44,16 @@ List with elements:
 ``` r
 creat_folder(file.path(tempdir(), "1-result"))
 #> $folder_name
-#> [1] "/tmp/RtmpDcizNE/1-result"
+#> [1] "/tmp/RtmpxxfAB4/1-result"
 #> 
 #> $abspath
-#> [1] "/tmp/RtmpDcizNE/1-result/"
+#> [1] "/tmp/RtmpxxfAB4/1-result/"
 #> 
 creat_folder(file.path(tempdir(), "1-result"), "figures", "correlation")
 #> $folder_name
-#> [1] "/tmp/RtmpDcizNE/1-result/figures/correlation"
+#> [1] "/tmp/RtmpxxfAB4/1-result/figures/correlation"
 #> 
 #> $abspath
-#> [1] "/tmp/RtmpDcizNE/1-result/figures/correlation/"
+#> [1] "/tmp/RtmpxxfAB4/1-result/figures/correlation/"
 #> 
 ```

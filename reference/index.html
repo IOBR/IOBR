@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -1223,46 +1223,9 @@
         </dt>
         <dd>Remove Patterns from Column Names or Variables</dd>
       </dl></div><div class="section level2">
-      <h2 id="datasets-expression-sets">Datasets — Expression Sets<a class="anchor" aria-label="anchor" href="#datasets-expression-sets"></a></h2>
+      <h2 id="data-download-management">Data Download &amp; Management<a class="anchor" aria-label="anchor" href="#data-download-management"></a></h2>
 
-      <div class="section-desc"><p>Example bulk RNA-seq expression matrices.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="eset_stad.html">eset_stad</a></code>
-
-        </dt>
-        <dd>Toy STAD expression matrix</dd>
-
-        <dt>
-
-          <code><a href="eset_blca.html">eset_blca</a></code>
-
-        </dt>
-        <dd>TCGA-BLCA Bladder Cancer Expression Data</dd>
-
-        <dt>
-
-          <code><a href="eset_gse62254.html">eset_gse62254</a></code>
-
-        </dt>
-        <dd>GSE62254 Gastric Cancer Expression Data</dd>
-
-        <dt>
-
-          <code><a href="eset_tme_stad.html">eset_tme_stad</a></code>
-
-        </dt>
-        <dd>TCGA-STAD Tumor Microenvironment Signature Scores</dd>
-      </dl></div><div class="section level2">
-      <h2 id="datasets-deconvolution-reference-matrices">Datasets — Deconvolution Reference Matrices<a class="anchor" aria-label="anchor" href="#datasets-deconvolution-reference-matrices"></a></h2>
-
-      <div class="section-desc"><p>Reference signature matrices for CIBERSORT and EPIC.</p></div>
+      <div class="section-desc"><p>Download large datasets from GitHub with mirror support.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -1271,24 +1234,45 @@
 
       <dl><dt>
 
-          <code><a href="lm22.html">lm22</a></code>
+          <code><a href="download_iobr_data.html">download_iobr_data()</a></code>
 
         </dt>
-        <dd>Reference profiles for immune cell types using lm22 (EPIC/IOBR)</dd>
+        <dd>Download IOBR Data from GitHub with Mirror Support</dd>
 
         <dt>
 
-          <code><a href="TRef.html">TRef</a></code>
+          <code><a href="list_github_datasets.html">list_github_datasets()</a></code>
 
         </dt>
-        <dd>Reference profiles from tumor-infiltrating non-malignant cells</dd>
+        <dd>List Available GitHub Datasets</dd>
 
         <dt>
 
-          <code><a href="BRef.html">BRef</a></code>
+          <code><a href="add_iobr_mirror.html">add_iobr_mirror()</a></code>
 
         </dt>
-        <dd>Reference profiles for B cell–related deconvolution (EPIC/IOBR)</dd>
+        <dd>Add Custom Download Mirror</dd>
+
+        <dt>
+
+          <code><a href="list_iobr_mirrors.html">list_iobr_mirrors()</a></code>
+
+        </dt>
+        <dd>List Current Download Mirrors</dd>
+
+        <dt>
+
+          <code><a href="reset_iobr_mirrors.html">reset_iobr_mirrors()</a></code>
+
+        </dt>
+        <dd>Reset Download Mirrors to Default</dd>
+
+        <dt>
+
+          <code><a href="clear_iobr_cache.html">clear_iobr_cache()</a></code>
+
+        </dt>
+        <dd>Clear IOBR Data Cache</dd>
       </dl></div><div class="section level2">
       <h2 id="datasets-gene-signatures">Datasets — Gene Signatures<a class="anchor" aria-label="anchor" href="#datasets-gene-signatures"></a></h2>
 
@@ -1305,27 +1289,6 @@
 
         </dt>
         <dd>Gene signature collection for pathway and immune analysis</dd>
-
-        <dt>
-
-          <code><a href="imvigor210_sig.html">imvigor210_sig</a></code>
-
-        </dt>
-        <dd>IMvigor210 Bladder Cancer Cohort Multi-omics Signatures</dd>
-
-        <dt>
-
-          <code><a href="sig_stad.html">sig_stad</a></code>
-
-        </dt>
-        <dd>TCGA-STAD Gastric Cancer Cohort with Molecular and Clinical Data</dd>
-
-        <dt>
-
-          <code><a href="tcga_stad_sig.html">tcga_stad_sig</a></code>
-
-        </dt>
-        <dd>TCGA-STAD Gastric Cancer Immune Infiltration Signatures</dd>
       </dl></div><div class="section level2">
       <h2 id="datasets-sample-metadata">Datasets — Sample Metadata<a class="anchor" aria-label="anchor" href="#datasets-sample-metadata"></a></h2>
 
@@ -1378,50 +1341,6 @@
         </dt>
         <dd>Example Dataset for Subgroup Survival Analysis</dd>
       </dl></div><div class="section level2">
-      <h2 id="datasets-genomic-annotation">Datasets — Genomic Annotation<a class="anchor" aria-label="anchor" href="#datasets-genomic-annotation"></a></h2>
-
-      <div class="section-desc"><p>Gene and probe annotation tables for multiple platforms.</p></div>
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="anno_rnaseq.html">anno_rnaseq</a></code>
-
-        </dt>
-        <dd>General RNA-seq Annotation</dd>
-
-        <dt>
-
-          <code><a href="anno_grch38.html">anno_grch38</a></code>
-
-        </dt>
-        <dd>GRCh38 Human Genome Annotation</dd>
-
-        <dt>
-
-          <code><a href="anno_illumina.html">anno_illumina</a></code>
-
-        </dt>
-        <dd>Illumina Microarray Annotation</dd>
-
-        <dt>
-
-          <code><a href="anno_hug133plus2.html">anno_hug133plus2</a></code>
-
-        </dt>
-        <dd>Affymetrix Human Genome U133 Plus 2.0 Array Annotation</dd>
-
-        <dt>
-
-          <code><a href="anno_gc_vm32.html">anno_gc_vm32</a></code>
-
-        </dt>
-        <dd>Mouse Genome Annotation (GC/VM32)</dd>
-      </dl></div><div class="section level2">
       <h2 id="datasets-miscellaneous">Datasets — Miscellaneous<a class="anchor" aria-label="anchor" href="#datasets-miscellaneous"></a></h2>
 
       <div class="section-desc"><p>Additional reference data used by package functions.</p></div>
@@ -1432,13 +1351,6 @@
 
 
       <dl><dt>
-
-          <code><a href="deg.html">deg</a></code>
-
-        </dt>
-        <dd>Single-cell RNA-seq Differential Expression Analysis Results</dd>
-
-        <dt>
 
           <code><a href="null_models.html">null_models</a></code>
 
