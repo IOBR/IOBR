@@ -8,7 +8,7 @@
 #' @param name Character string. Name of the dataset to download.
 #' @param force Logical. Whether to force re-download even if cached. Default: FALSE.
 #' @param verbose Logical. Whether to print progress messages. Default: TRUE.
-#' @param mirrors Character vector. URLs of mirrors to try. Default uses 
+#' @param mirrors Character vector. URLs of mirrors to try. Default uses
 #'   get_default_mirrors().
 #'
 #' @return The requested dataset.
@@ -20,18 +20,23 @@
 #' tcga_sig <- download_iobr_data("tcga_stad_sig")
 #'
 #' # Download with custom mirrors
-#' eset <- download_iobr_data("eset_stad", 
-#'   mirrors = c("https://ghproxy.vip/https://github.com",
-#'               "https://gh-proxy.org/https://github.com"))
+#' eset <- download_iobr_data("eset_stad",
+#'   mirrors = c(
+#'     "https://ghproxy.vip/https://github.com",
+#'     "https://gh-proxy.org/https://github.com"
+#'   )
+#' )
 #' }
-download_iobr_data <- function(name, force = FALSE, verbose = TRUE, 
+download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
                                mirrors = get_default_mirrors()) {
   # Get all available GitHub datasets
   github_data <- list_github_datasets()
 
   if (!name %in% github_data) {
-    stop(sprintf("Dataset '%s' not available for download. Available: %s",
-                 name, paste(github_data, collapse = ", ")))
+    stop(sprintf(
+      "Dataset '%s' not available for download. Available: %s",
+      name, paste(github_data, collapse = ", ")
+    ))
   }
 
   # Set up cache directory
@@ -60,34 +65,39 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
   last_error <- NULL
   for (i in seq_along(mirrors)) {
     mirror <- mirrors[i]
-    url <- sprintf("%s/IOBR/IOBR/releases/download/data-v1.0/%s.rda",
-                   mirror, name)
-    
+    url <- sprintf(
+      "%s/IOBR/IOBR/releases/download/data-v1.0/%s.rda",
+      mirror, name
+    )
+
     if (verbose) {
       cli::cli_alert_info("Trying mirror {i}/{length(mirrors)}: {.url {mirror}}")
     }
 
-    tryCatch({
-      utils::download.file(url, cache_file, mode = "wb", quiet = !verbose)
-      
-      if (file.exists(cache_file) && file.size(cache_file) > 0) {
-        if (verbose) cli::cli_alert_success("Download complete: {.val {name}}")
-        
-        env <- new.env()
-        load(cache_file, envir = env)
-        obj_names <- ls(env)
-        if (length(obj_names) == 1) {
-          return(env[[obj_names[1]]])
-        } else {
-          return(env[[name]])
+    tryCatch(
+      {
+        utils::download.file(url, cache_file, mode = "wb", quiet = !verbose)
+
+        if (file.exists(cache_file) && file.size(cache_file) > 0) {
+          if (verbose) cli::cli_alert_success("Download complete: {.val {name}}")
+
+          env <- new.env()
+          load(cache_file, envir = env)
+          obj_names <- ls(env)
+          if (length(obj_names) == 1) {
+            return(env[[obj_names[1]]])
+          } else {
+            return(env[[name]])
+          }
         }
+      },
+      error = function(e) {
+        last_error <<- e
+        if (verbose) cli::cli_alert_warning("Mirror {i} failed: {e$message}")
+        # Clean up partial download
+        if (file.exists(cache_file)) file.remove(cache_file)
       }
-    }, error = function(e) {
-      last_error <<- e
-      if (verbose) cli::cli_alert_warning("Mirror {i} failed: {e$message}")
-      # Clean up partial download
-      if (file.exists(cache_file)) file.remove(cache_file)
-    })
+    )
   }
 
   # All mirrors failed
@@ -102,8 +112,10 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
     sprintf("2. Save it to: {.path %s}", file.path(cache_dir, paste0(name, ".rda"))),
     "3. Run your code again - the data will be loaded from cache"
   ))
-  stop(sprintf("Failed to download '%s' from all %d mirrors. Please download manually.", 
-               name, length(mirrors)))
+  stop(sprintf(
+    "Failed to download '%s' from all %d mirrors. Please download manually.",
+    name, length(mirrors)
+  ))
 }
 
 #' Get Default Download Mirrors
@@ -124,12 +136,12 @@ get_default_mirrors <- function() {
 
 #' Add Custom Download Mirror
 #'
-#' @description 
+#' @description
 #' Adds a custom mirror URL to the default mirrors for the current session.
 #' The mirror URL should be a base URL that will be prepended to GitHub paths.
 #'
 #' @param url Character string. The mirror URL to add.
-#' @param position Character. Where to add the mirror: "first", "last", or 
+#' @param position Character. Where to add the mirror: "first", "last", or
 #'   "before_github". Default: "first".
 #'
 #' @return Invisibly returns the updated mirror list.
@@ -142,30 +154,30 @@ get_default_mirrors <- function() {
 #'
 #' # Add mirror to try before default GitHub
 #' add_iobr_mirror("https://fast-mirror.org", position = "before_github")
-#' 
+#'
 #' # Download with the new mirror
 #' data <- download_iobr_data("BRef")
 #' }
 add_iobr_mirror <- function(url, position = c("first", "last", "before_github")) {
   position <- match.arg(position)
-  
+
   # Validate URL
   if (!grepl("^https?://", url)) {
     stop("Invalid URL. Must start with http:// or https://")
   }
-  
+
   # Get current mirrors from option or default
   current_mirrors <- getOption("IOBR.download_mirrors", get_default_mirrors())
-  
+
   # Remove trailing slash if present
   url <- sub("/$", "", url)
-  
+
   # Add URL if not already present
   if (url %in% current_mirrors) {
     cli::cli_alert_info("Mirror {.url {url}} already exists in the list")
     return(invisible(current_mirrors))
   }
-  
+
   # Add at specified position
   new_mirrors <- switch(position,
     "first" = c(url, current_mirrors),
@@ -176,17 +188,17 @@ add_iobr_mirror <- function(url, position = c("first", "last", "before_github"))
       if (length(github_idx) == 0) {
         c(current_mirrors, url)
       } else {
-        c(current_mirrors[1:(github_idx-1)], url, current_mirrors[github_idx:length(current_mirrors)])
+        c(current_mirrors[1:(github_idx - 1)], url, current_mirrors[github_idx:length(current_mirrors)])
       }
     }
   )
-  
+
   # Store in options
   options(IOBR.download_mirrors = new_mirrors)
-  
+
   cli::cli_alert_success("Added mirror {.url {url}} to position: {.val {position}}")
   cli::cli_alert_info("Current mirrors: {.val {length(new_mirrors)}} total")
-  
+
   invisible(new_mirrors)
 }
 
@@ -200,7 +212,7 @@ add_iobr_mirror <- function(url, position = c("first", "last", "before_github"))
 #' list_iobr_mirrors()
 list_iobr_mirrors <- function() {
   mirrors <- getOption("IOBR.download_mirrors", get_default_mirrors())
-  
+
   cat("Current IOBR download mirrors:\n")
   cat("==============================\n")
   for (i in seq_along(mirrors)) {
@@ -208,7 +220,7 @@ list_iobr_mirrors <- function() {
   }
   cat("==============================\n")
   cat(sprintf("Total: %d mirrors\n", length(mirrors)))
-  
+
   invisible(mirrors)
 }
 

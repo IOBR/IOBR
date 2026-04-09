@@ -9,7 +9,7 @@ add_iobr_mirror(url, position = c("first", "last", "before_github"))
 \arguments{
 \item{url}{Character string. The mirror URL to add.}
 
-\item{position}{Character. Where to add the mirror: "first", "last", or 
+\item{position}{Character. Where to add the mirror: "first", "last", or
 "before_github". Default: "first".}
 }
 \value{

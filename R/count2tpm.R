@@ -177,19 +177,22 @@ count2tpm <- function(countMat,
   mart <- NULL
   last_error <- NULL
   for (mirror in mirrors) {
-    tryCatch({
-      cli::cli_alert_info("Trying Ensembl mirror: {.url {mirror}}")
-      mart <- biomaRt::useMart(
-        host = mirror,
-        biomart = "ENSEMBL_MART_ENSEMBL",
-        dataset = ds
-      )
-      cli::cli_alert_success("Connected to Ensembl mirror: {.url {mirror}}")
-      break
-    }, error = function(e) {
-      last_error <<- e
-      cli::cli_alert_warning("Failed to connect to {.url {mirror}}: {e$message}")
-    })
+    tryCatch(
+      {
+        cli::cli_alert_info("Trying Ensembl mirror: {.url {mirror}}")
+        mart <- biomaRt::useMart(
+          host = mirror,
+          biomart = "ENSEMBL_MART_ENSEMBL",
+          dataset = ds
+        )
+        cli::cli_alert_success("Connected to Ensembl mirror: {.url {mirror}}")
+        break
+      },
+      error = function(e) {
+        last_error <<- e
+        cli::cli_alert_warning("Failed to connect to {.url {mirror}}: {e$message}")
+      }
+    )
   }
 
   if (is.null(mart)) {

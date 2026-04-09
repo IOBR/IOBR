@@ -18,7 +18,7 @@ download_iobr_data(
 
 \item{verbose}{Logical. Whether to print progress messages. Default: TRUE.}
 
-\item{mirrors}{Character vector. URLs of mirrors to try. Default uses 
+\item{mirrors}{Character vector. URLs of mirrors to try. Default uses
 get_default_mirrors().}
 }
 \value{
@@ -35,8 +35,11 @@ Data is cached locally after first download.
 tcga_sig <- download_iobr_data("tcga_stad_sig")
 
 # Download with custom mirrors
-eset <- download_iobr_data("eset_stad", 
-  mirrors = c("https://ghproxy.vip/https://github.com",
-              "https://gh-proxy.org/https://github.com"))
+eset <- download_iobr_data("eset_stad",
+  mirrors = c(
+    "https://ghproxy.vip/https://github.com",
+    "https://gh-proxy.org/https://github.com"
+  )
+)
 }
 }

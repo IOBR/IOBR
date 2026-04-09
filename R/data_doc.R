@@ -197,8 +197,6 @@
 "imvigor210_pdata"
 
 
-
-
 #' Example Dataset for Subgroup Survival Analysis
 #'
 #' An example dataset demonstrating the data structure required for subgroup
@@ -254,7 +252,3 @@
 #' head(stad_group)
 #' @docType data
 "stad_group"
-
-
-
-
