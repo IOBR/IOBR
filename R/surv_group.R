@@ -28,13 +28,14 @@
 #' @param font.size.table Font size for risk table. Default is 3.
 #'
 #' @return Kaplan-Meier plot object.
+#' @importFrom utils capture.output
 #'
 #' @author Dongqiang Zeng
 #' @export
 #'
 #' @examples
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
-#' \dontrun{
+#' \donttest{
 #' surv_group(
 #'   input_pdata = tcga_stad_pdata,
 #'   target_group = "Lauren",
@@ -102,7 +103,7 @@ surv_group <- function(input_pdata,
 
   colnames(input_pd)[which(colnames(input_pd) == target_group)] <- "target_group"
   input_pd <- input_pd[!is.na(input_pd$target_group), ]
-  print(summary(as.factor(input_pd$target_group)))
+  message(paste(capture.output(summary(as.factor(input_pd$target_group))), collapse = "\n"))
 
   # Define break time and colors
   break_month_val <- break_month

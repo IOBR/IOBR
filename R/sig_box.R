@@ -183,7 +183,7 @@ sig_box <- function(data,
     stats::reformulate("variable", "signature"),
     data = data
   )
-  print(res)
+  if (interactive()) print(res)
 
   # Add jitter points if requested
   if (jitter) {
@@ -195,7 +195,7 @@ sig_box <- function(data,
     )
   }
 
-  print(p)
+  if (interactive()) print(p)
 
   if (return_stat_res) {
     invisible(res)

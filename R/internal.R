@@ -13,11 +13,6 @@
 #'     or `"not installed"` if not available
 #'
 #' @keywords internal
-#'
-#' @examples
-#' # Detect GSVA API version (only runs if GSVA is installed)
-#' api_info <- IOBR:::gsva_use_new_api()
-#' print(api_info)
 gsva_use_new_api <- function() {
   if (!requireNamespace("GSVA", quietly = TRUE)) {
     return(list(use_new_api = FALSE, gsva_version = "not installed"))

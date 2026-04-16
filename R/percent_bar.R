@@ -70,7 +70,7 @@ percent_bar_plot <- function(input, x, y,
       count = round(sum(.data$Freq), 0)
     )
 
-  if (print_result) print(df_sum)
+  if (print_result) message(paste(capture.output(df_sum), collapse = "\n"))
 
   # Get colors
   if (is.null(color)) {
@@ -108,7 +108,7 @@ percent_bar_plot <- function(input, x, y,
     pp <- pp + ggplot2::coord_flip()
   }
 
-  print(pp)
+  if (interactive()) print(pp)
   pp
 }
 
@@ -158,7 +158,7 @@ pie_chart <- function(input, var, var2 = NULL, type = 2,
     dplyr::arrange(dplyr::desc(.data$Freq)) %>%
     dplyr::mutate(lab.ypos = cumsum(.data$percent_weight) - 0.5 * .data$percent_weight)
 
-  print(input)
+  if (interactive()) print(input)
 
   if (add_sum) {
     input[, 1] <- paste0(as.character(input[, 1]), "(", input$Freq, ")")
@@ -179,7 +179,7 @@ pie_chart <- function(input, var, var2 = NULL, type = 2,
     cli::cli_abort("type must be 1, 2, or 3")
   )
 
-  if (type %in% c(1, 2)) print(pp)
+  if (type %in% c(1, 2) && interactive()) print(pp)
 
   pp
 }

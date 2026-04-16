@@ -53,7 +53,7 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1,
   )
 
   if (show_col && !is.null(mypal)) {
-    print(paste0("'", mypal, "'", collapse = ", "))
+    message(paste0("'", mypal, "'", collapse = ", "))
     scales::show_col(mypal)
   }
 

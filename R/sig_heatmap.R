@@ -232,7 +232,7 @@ sig_heatmap <- function(input,
       )
   }
 
-  if (isTRUE(show_plot)) {
+  if (isTRUE(show_plot) && interactive()) {
     print(pp)
   }
 

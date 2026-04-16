@@ -27,7 +27,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Sample cells from a data frame
 #' sampled_cells <- random_strata_cells(
 #'   input = cell_annotations,

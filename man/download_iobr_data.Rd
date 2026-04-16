@@ -30,7 +30,7 @@ Supports multiple download mirrors for users in different regions.
 Data is cached locally after first download.
 }
 \examples{
-\dontrun{
+\donttest{
 # Download TCGA STAD signature data
 tcga_sig <- download_iobr_data("tcga_stad_sig")
 

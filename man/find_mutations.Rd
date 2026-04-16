@@ -81,7 +81,7 @@ for significance, and generates oncoprints and box plots to visualize
 relationships.
 }
 \examples{
-\dontrun{
+\donttest{
 # This example requires a MAF file
 mut_list <- make_mut_matrix(
   maf = "path_to_maf_file", isTCGA = TRUE,

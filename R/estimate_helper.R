@@ -96,7 +96,7 @@ estimateScore <- function(input.ds,
   for (gs.i in 1:N.gs) {
     gene.set <- gs[gs.i, ]
     gene.overlap <- intersect(gene.set, gene.names)
-    print(paste(gs.i, "gene set:", gs.names[gs.i], " overlap=", length(gene.overlap)))
+    message(gs.i, " gene set: ", gs.names[gs.i], " overlap=", length(gene.overlap))
     if (length(gene.overlap) == 0) {
       score.matrix[gs.i, ] <- rep(NA, Ns)
       next
@@ -199,12 +199,7 @@ estimateScore <- function(input.ds,
 #' @export
 #'
 #' @examples
-#' # Create a sample common_genes dataframe
-#' common_genes <- data.frame(
-#'   GeneSymbol = c("BRCA1", "TP53", "EGFR"),
-#'   stringsAsFactors = FALSE
-#' )
-#'
+#' \donttest{
 #' # Create a sample input dataframe
 #' input_data <- data.frame(
 #'   GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
@@ -221,8 +216,8 @@ estimateScore <- function(input.ds,
 #' )
 #'
 #' # Call the filterCommonGenes function
-#' # Note: This example requires IOBR::common_genes data
-#' # filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+#' filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+#' }
 filterCommonGenes <- function(input.f,
                               output.f,
                               id = c("GeneSymbol", "EntrezID")) {
@@ -245,7 +240,7 @@ filterCommonGenes <- function(input.f,
   merged.df <- merge(common_genes_data, input.df, by.x = id, by.y = "row.names")
   rownames(merged.df) <- merged.df$GeneSymbol
   merged.df <- merged.df[, -1:-ncol(common_genes_data)]
-  print(sprintf(
+  message(sprintf(
     "Merged dataset includes %d genes (%d mismatched).",
     nrow(merged.df),
     nrow(common_genes_data) - nrow(merged.df)

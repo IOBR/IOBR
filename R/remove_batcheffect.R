@@ -233,7 +233,7 @@ remove_batcheffect <- function(eset1,
       p <- patchwork::wrap_plots(p1, p2, nrow = 1)
     }
 
-    print(p)
+    if (interactive()) print(p)
 
     # Save plot if path provided
     if (!is.null(path)) {

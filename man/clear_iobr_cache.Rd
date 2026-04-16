@@ -6,6 +6,9 @@
 \usage{
 clear_iobr_cache()
 }
+\value{
+Invisible NULL. Called for side effects of clearing the cache.
+}
 \description{
 Removes all cached data files downloaded from GitHub.
 }

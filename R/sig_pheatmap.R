@@ -167,7 +167,7 @@ sig_pheatmap <- function(input,
     cluster_colors[[group3]] <- stats::setNames(mycols3[seq_along(lev3)], lev3)
   }
 
-  print(cluster_colors)
+  if (interactive()) print(cluster_colors)
 
   # Create heatmap
   mat <- as.matrix(eset)

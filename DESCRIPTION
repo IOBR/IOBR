@@ -22,7 +22,9 @@ Description: Provides six modules for tumor microenvironment (TME)
     deconvolution from single-cell RNA-seq data. The analysis pipeline and
     feature visualization are user-friendly and provide a comprehensive
     description of the complex TME, offering insights into tumour-immune
-    interactions.
+    interactions (Zeng D, et al. (2024)
+    <doi:10.1016/j.crmeth.2024.100910>.  Fang Y, et al. (2025)
+    <doi:10.1002/mdr2.70001>).
 License: GPL-3
 URL: https://doi.org/10.3389/fimmu.2021.687975 (paper),
     https://iobr.github.io/book/ (docs), https://iobr.github.io/IOBR/

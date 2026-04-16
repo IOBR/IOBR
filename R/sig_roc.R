@@ -82,7 +82,7 @@ sig_roc <- function(data,
   input <- as.data.frame(data[, c(response, variables)])
 
   cli::cli_alert_info("Input data preview:")
-  print(head(input))
+  if (interactive()) print(head(input))
 
   var_counts <- length(variables)
 
@@ -146,7 +146,8 @@ sig_roc <- function(data,
   colnames(auc.out) <- c("Name", "AUC", "AUC CI")
 
   legend.name <- paste(colnames(input)[seq(2, ncol(input))], " AUC = ", auc.out$AUC, sep = " ")
-  par(xpd = TRUE)
+  oldpar <- par(xpd = TRUE)
+  on.exit(par(oldpar), add = TRUE)
   legend("bottomright",
     legend = legend.name,
     col = cols[seq(2, length(variables) + 1)],

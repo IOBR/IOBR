@@ -54,7 +54,7 @@ find_variable_genes <- function(eset,
       "Genes expressed in more than {prop * 100}% of samples"
     )
     keep <- rowSums(eset == 0) < ncol(eset) * prop
-    print(table(keep))
+    message(paste(capture.output(table(keep)), collapse = "\n"))
     feas1 <- rownames(eset)[keep]
   }
 

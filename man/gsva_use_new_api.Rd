@@ -19,9 +19,4 @@ parameter-based API (gsvaParam/ssgseaParam) or the old direct argument API.
 This function is used internally to ensure compatibility across different
 GSVA package versions (1.50.0+ vs older versions).
 }
-\examples{
-# Detect GSVA API version (only runs if GSVA is installed)
-api_info <- IOBR:::gsva_use_new_api()
-print(api_info)
-}
 \keyword{internal}

@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Download TCGA STAD signature data
 #' tcga_sig <- download_iobr_data("tcga_stad_sig")
 #'
@@ -148,7 +148,7 @@ get_default_mirrors <- function() {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Add a custom mirror to try first
 #' add_iobr_mirror("https://my-mirror.com/https://github.com")
 #'
@@ -283,6 +283,7 @@ list_github_datasets <- function() {
 #' Clear IOBR Data Cache
 #'
 #' @description Removes all cached data files downloaded from GitHub.
+#' @return Invisible NULL. Called for side effects of clearing the cache.
 #' @export
 clear_iobr_cache <- function() {
   cache_dir <- tools::R_user_dir("IOBR", which = "cache")

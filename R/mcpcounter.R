@@ -31,17 +31,11 @@ MCPcounter.estimate <- function(
     "ENSEMBL_ID"
   ),
   probesets = read.table(
-    url(paste0(
-      "https://raw.githubusercontent.com/ebecht/",
-      "MCPcounter/master/Signatures/probesets.txt"
-    )),
+    system.file("extdata/probesets.txt", package = "IOBR"),
     sep = "\t", stringsAsFactors = FALSE, colClasses = "character"
   ),
   genes = read.table(
-    url(paste0(
-      "https://raw.githubusercontent.com/ebecht/",
-      "MCPcounter/master/Signatures/genes.txt"
-    )),
+    system.file("extdata/genes.txt", package = "IOBR"),
     sep = "\t", stringsAsFactors = FALSE, header = TRUE,
     colClasses = "character", check.names = FALSE
   )

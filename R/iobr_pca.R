@@ -58,7 +58,7 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   pdata <- pdata[match(rownames(data), pdata$id), ]
 
 
-  message(print(table(pdata[, group])))
+  message(paste(capture.output(table(pdata[, group])), collapse = "\n"))
   ##########################################
 
   cols <- get_cols(cols = cols, palette = palette, show_col = FALSE, seed = 123)
@@ -67,7 +67,7 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   # print(pdata[, group])
   cols <- cols[1:length(unique(pdata[[group]]))]
 
-  print(paste0(">>== colors for group: "))
+  message(paste0(">>== colors for group: "))
   message(paste0(">>== ", cols))
   #########################################
 

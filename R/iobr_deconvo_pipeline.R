@@ -9,7 +9,7 @@
 #' @param project Character. Project name (used in output naming).
 #' @param array Logical. Whether data originated from an array platform. Affects deconvolution choices.
 #' @param tumor_type Character. Tumor type code (e.g., "stad") used by certain methods.
-#' @param path Character. Output directory. Default is "1-TME".
+#' @param path Character. Output directory. Default is NULL (uses tempdir()).
 #' @param permutation Integer. Number of permutations for CIBERSORT (and similar). Default is 1000.
 #'
 #' @return Data frame integrating cell fractions and signature scores (also writes intermediate outputs to disk).
@@ -26,7 +26,10 @@
 #'   path = tempdir(), permutation = 10
 #' )
 #' }
-iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = "1-TME", permutation = 1000) {
+iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL, permutation = 1000) {
+  if (is.null(path)) {
+    path <- tempdir()
+  }
   #######################################
   path <- creat_folder(paste0(path))
   #######################################

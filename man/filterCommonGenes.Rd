@@ -20,12 +20,7 @@ No return value. The function writes the merged dataset to the specified output 
 This function filters and merges a dataset with a set of common genes.
 }
 \examples{
-# Create a sample common_genes dataframe
-common_genes <- data.frame(
-  GeneSymbol = c("BRCA1", "TP53", "EGFR"),
-  stringsAsFactors = FALSE
-)
-
+\donttest{
 # Create a sample input dataframe
 input_data <- data.frame(
   GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
@@ -42,6 +37,6 @@ write.table(input_data,
 )
 
 # Call the filterCommonGenes function
-# Note: This example requires IOBR::common_genes data
-# filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+}
 }

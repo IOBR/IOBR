@@ -20,7 +20,7 @@ Adds a custom mirror URL to the default mirrors for the current session.
 The mirror URL should be a base URL that will be prepended to GitHub paths.
 }
 \examples{
-\dontrun{
+\donttest{
 # Add a custom mirror to try first
 add_iobr_mirror("https://my-mirror.com/https://github.com")
 

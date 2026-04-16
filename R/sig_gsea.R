@@ -258,7 +258,7 @@ sig_gsea <- function(deg,
       dplyr::distinct(.data$gs_cat, .data$gs_subcat) %>%
       dplyr::arrange(.data$gs_cat, .data$gs_subcat)
     cli::cli_alert_info("Available MSigDB categories:")
-    print(as.data.frame(a))
+    message(paste(capture.output(as.data.frame(a)), collapse = "\n"))
 
     category <- category %||% "H"
     term2genes <- msigdbr::msigdbr(species = species, category = category, subcategory = subcategory)

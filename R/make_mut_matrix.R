@@ -29,7 +29,7 @@
 #' @author Shixiang Huang
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # See maftools or TCGAbiolinks documentation for obtaining MAF input
 #' mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
 #' }

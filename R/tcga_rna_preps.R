@@ -51,7 +51,7 @@ tcga_rna_preps <- function(eset,
 
   if (output == "tumor") {
     cli::cli_alert_info("Sample type distribution:")
-    print(table(substring(colnames(eset), 14, 16)))
+    message(paste(capture.output(table(substring(colnames(eset), 14, 16))), collapse = "\n"))
 
     cli::cli_alert_info("Adjacent normal samples removed")
     eset <- eset[, !substring(colnames(eset), 14, 16) == "11A"]
@@ -60,7 +60,7 @@ tcga_rna_preps <- function(eset,
     colnames(eset) <- substring(colnames(eset), 1, 12)
 
     cli::cli_alert_info("Duplicate barcode check:")
-    print(summary(duplicated(colnames(eset))))
+    message(paste(capture.output(summary(duplicated(colnames(eset)))), collapse = "\n"))
     eset <- eset[, !duplicated(colnames(eset))]
   } else {
     cli::cli_alert_info(

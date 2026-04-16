@@ -9,7 +9,7 @@ iobr_deconvo_pipeline(
   project,
   array,
   tumor_type,
-  path = "1-TME",
+  path = NULL,
   permutation = 1000
 )
 }
@@ -22,7 +22,7 @@ iobr_deconvo_pipeline(
 
 \item{tumor_type}{Character. Tumor type code (e.g., "stad") used by certain methods.}
 
-\item{path}{Character. Output directory. Default is "1-TME".}
+\item{path}{Character. Output directory. Default is NULL (uses tempdir()).}
 
 \item{permutation}{Integer. Number of permutations for CIBERSORT (and similar). Default is 1000.}
 }

@@ -68,7 +68,7 @@ mouse2human_eset <- function(eset,
         ensembl <- biomaRt::useEnsembl(biomart = "ensembl")
         if (verbose) {
           datasets <- biomaRt::listDatasets(ensembl)
-          print(head(datasets))
+          message(paste(capture.output(head(datasets)), collapse = "\n"))
         }
 
         human <- biomaRt::useMart("ensembl", dataset = "hsapiens_gene_ensembl")
