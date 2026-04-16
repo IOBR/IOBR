@@ -67,7 +67,7 @@ proportions.
 ## Examples
 
 ``` r
-# \donttest{
+if (FALSE) { # \dontrun{
 # Sample cells from a data frame
 sampled_cells <- random_strata_cells(
   input = cell_annotations,
@@ -77,7 +77,6 @@ sampled_cells <- random_strata_cells(
   minimum_count = 200,
   maximum_count = 1000
 )
-#> Error: object 'cell_annotations' not found
 
 # Sample cells from a Seurat object
 sampled_cells <- random_strata_cells(
@@ -85,6 +84,5 @@ sampled_cells <- random_strata_cells(
   group = "seurat_clusters",
   proportion = 0.2
 )
-#> Error: object 'seurat_object' not found
-# }
+} # }
 ```

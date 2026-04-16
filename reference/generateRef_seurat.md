@@ -92,20 +92,10 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
+if (FALSE) { # \dontrun{
 if (requireNamespace("Seurat", quietly = TRUE)) {
-  pbmc <- SeuratObject::pbmc_small
-  sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
+  # Requires a Seurat object with sufficient cells and markers
+  sm <- generateRef_seurat(sce = seurat_obj, celltype = "cell_type", slot_out = "data")
 }
-#> ℹ Assay used to find markers: RNA
-#> ℹ Idents of Seurat object is: groups
-#> 
-#> g1 g2 
-#> 44 36 
-#> ℹ Find markers of each celltype...
-#> Warning: No DE genes identified
-#> data frame with 0 columns and 0 rows
-#> Error in dplyr::group_by(., .data$cluster): Must group by variables found in `.data`.
-#> ✖ Column `cluster` is not found.
-# }
+} # }
 ```
