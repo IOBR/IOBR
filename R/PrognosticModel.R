@@ -84,7 +84,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
       train.x = train.x, train.y = train.y,
       test.x = test.x, test.y = test.y, model = lasso_model, modelname = "LASSO"
     )
-    print(p1)
+    if (interactive()) print(p1)
   }
 
   cli::cli_alert_info("Running RIDGE REGRESSION")
@@ -100,7 +100,7 @@ PrognosticModel <- function(x, y, scale = FALSE, seed = 123456, train_ratio = 0.
       train.x = train.x, train.y = train.y, cols = cols, palette = palette,
       test.x = test.x, test.y = test.y, model = ridge_model, modelname = "RIDGE"
     )
-    print(p2)
+    if (interactive()) print(p2)
   }
 
   cli::cli_alert_success("Model fitting complete")

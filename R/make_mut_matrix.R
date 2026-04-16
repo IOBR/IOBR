@@ -29,9 +29,10 @@
 #' @author Shixiang Huang
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # See maftools or TCGAbiolinks documentation for obtaining MAF input
-#' mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
+#' # Example: Download MAF file from TCGA portal
+#' mut_list <- make_mut_matrix(maf = "path_to_maf_file.maf", isTCGA = TRUE, category = "multi")
 #' }
 make_mut_matrix <- function(maf = NULL, mut_data = NULL, isTCGA = TRUE,
                             category = c("multi", "all", "snp", "indel", "frameshift"),

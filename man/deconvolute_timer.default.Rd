@@ -24,14 +24,16 @@ algorithm. Processes multiple cancer datasets, removes batch effects,
 and estimates immune cell type abundances.
 }
 \examples{
-\donttest{
-# file
-tf <- tempfile(fileext = ".csv")
-write.table(data.frame("exp1", "luad", "exp2", "brca"),
-  file = tf, sep = ",", row.names = FALSE, col.names = FALSE, quote = FALSE
-)
+\dontrun{
+# This example requires actual expression data files
+# Create a batch file with paths to expression data and cancer types
+batch_file <- "batch.csv"
+# batch.csv format: each row contains expression_file_path,cancer_type
+# Example content:
+# /path/to/exp1.txt,luad
+# /path/to/exp2.txt,brca
 outdir <- tempdir()
-args <- list(outdir = outdir, batch = tf)
+args <- list(outdir = outdir, batch = batch_file)
 results <- deconvolute_timer.default(args)
 }
 }

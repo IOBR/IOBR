@@ -81,8 +81,9 @@ for significance, and generates oncoprints and box plots to visualize
 relationships.
 }
 \examples{
-\donttest{
-# This example requires a MAF file
+\dontrun{
+# This example requires a MAF file from TCGA or maftools
+# See maftools or TCGAbiolinks documentation for obtaining MAF files
 mut_list <- make_mut_matrix(
   maf = "path_to_maf_file", isTCGA = TRUE,
   category = "multi"

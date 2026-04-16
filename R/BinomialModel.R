@@ -83,7 +83,7 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
       test.x = test.x, test.y = test.y, model = lasso_model,
       cols = cols, palette = palette, modelname = "lasso_model"
     )
-    print(p1)
+    if (interactive()) print(p1)
   }
 
   cli::cli_alert_info("Running RIDGE REGRESSION")
@@ -103,7 +103,7 @@ BinomialModel <- function(x, y, seed = 123456, scale = TRUE, train_ratio = 0.7,
       test.x = test.x, test.y = test.y, model = ridge_model,
       cols = cols, palette = palette, modelname = "ridge_model"
     )
-    print(p2)
+    if (interactive()) print(p2)
   }
 
   cli::cli_alert_success("Model fitting complete")

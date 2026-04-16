@@ -212,6 +212,6 @@ get_cor_matrix <- function(data,
     )
   }
 
-  print(cor_plot)
+  if (interactive()) print(cor_plot)
   invisible(cor_plot)
 }

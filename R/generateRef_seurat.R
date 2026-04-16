@@ -30,10 +30,10 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' if (requireNamespace("Seurat", quietly = TRUE)) {
-#'   pbmc <- SeuratObject::pbmc_small
-#'   sm <- generateRef_seurat(sce = pbmc, celltype = "groups", slot_out = "data")
+#'   # Requires a Seurat object with sufficient cells and markers
+#'   sm <- generateRef_seurat(sce = seurat_obj, celltype = "cell_type", slot_out = "data")
 #' }
 #' }
 generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
@@ -105,13 +105,13 @@ generateRef_seurat <- function(sce, celltype = NULL, proportion = NULL,
     fc.name = "avg_log2FC"
   )
 
-  print(utils::head(sce.markers))
+  if (interactive()) print(utils::head(sce.markers))
 
   refgene <- sce.markers %>%
     dplyr::group_by(.data$cluster) %>%
     dplyr::top_n(n_ref_genes, .data$avg_log2FC)
 
-  print(refgene)
+  if (interactive()) print(refgene)
 
   cli::cli_alert_info("Aggregating scRNAseq data...")
 

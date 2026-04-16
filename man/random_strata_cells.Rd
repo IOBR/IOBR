@@ -49,7 +49,7 @@ ensuring proportional representation of each cell type while respecting
 minimum and maximum count constraints.
 }
 \examples{
-\donttest{
+\dontrun{
 # Sample cells from a data frame
 sampled_cells <- random_strata_cells(
   input = cell_annotations,

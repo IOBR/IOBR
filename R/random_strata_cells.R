@@ -27,7 +27,7 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Sample cells from a data frame
 #' sampled_cells <- random_strata_cells(
 #'   input = cell_annotations,
@@ -95,7 +95,7 @@ random_strata_cells <- function(input,
   colnames(cell_freq) <- c("CellType", "Count")
 
   cli::cli_alert_info("Cell type counts before sampling:")
-  print(cell_freq)
+  if (interactive()) print(cell_freq)
 
   # Select cell types meeting minimum count threshold
   valid_types <- as.character(
@@ -108,7 +108,7 @@ random_strata_cells <- function(input,
   }
 
   cli::cli_alert_info("Cell types included in sampling:")
-  print(valid_types)
+  if (interactive()) print(valid_types)
 
   # Filter to valid cell types
   input <- input[input[[group]] %in% valid_types, ]
@@ -128,7 +128,7 @@ random_strata_cells <- function(input,
   sample_sizes <- round(table(input[[group]]) * proportion)
 
   cli::cli_alert_info("Initial sample sizes (proportion = {proportion}):")
-  print(sample_sizes)
+  if (interactive()) print(sample_sizes)
 
   # Perform stratified sampling
   rlang::check_installed("sampling")
@@ -179,7 +179,7 @@ random_strata_cells <- function(input,
   colnames(final_freq) <- c("CellType", "Count")
 
   cli::cli_alert_info("Cell type counts after sampling:")
-  print(final_freq)
+  if (interactive()) print(final_freq)
 
   return(sampled_data)
 }

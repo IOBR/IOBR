@@ -382,9 +382,9 @@ iobr_cor_plot <- function(pdata_group,
     )
 
     if (show_plot && length(features) < 13) {
-      print(pp1)
+      if (interactive()) print(pp1)
     } else if (show_plot && length(features) > 13) {
-      print(pp2)
+      if (interactive()) print(pp2)
     }
 
     plot_width <- length(features) * 0.4 + 3

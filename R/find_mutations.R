@@ -31,8 +31,9 @@
 #' @export
 #' @author Dongqiang Zeng
 #' @examples
-#' \donttest{
-#' # This example requires a MAF file
+#' \dontrun{
+#' # This example requires a MAF file from TCGA or maftools
+#' # See maftools or TCGAbiolinks documentation for obtaining MAF files
 #' mut_list <- make_mut_matrix(
 #'   maf = "path_to_maf_file", isTCGA = TRUE,
 #'   category = "multi"
@@ -125,7 +126,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   if (method == "multi") {
     if (!is.null(genes)) {
       if (length(genes) < 10) {
-        print(genes)
+        message(paste(capture.output(genes), collapse = "\n"))
         stop(paste0("Please provide at least 10 genes with mutaion freq larger than ", min_mut_freq))
       }
       input_genes <- genes
@@ -142,9 +143,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       statistic = sapply(aa, getElement, name = "statistic")
     )
     res1$adjust_pvalue <- stats::p.adjust(res1$p.value, method = "BH", n = length(res1$p.value))
-    print(">>>> Result of Cuzick Test")
+    message(">>>> Result of Cuzick Test")
     res1 <- res1[order(res1$p.value, decreasing = FALSE), ]
-    print(res1[1:10, ])
+    message(paste(capture.output(res1[1:10, ]), collapse = "\n"))
 
     # write.csv(res1, paste0(abspath, "1-cuzickTest-test-relevant-mutations.csv"))
     if (!is.null(save_path)) {
@@ -223,8 +224,8 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     res2$adjust_pvalue <- stats::p.adjust(res2$p.value, method = "BH", n = length(res2$p.value))
 
     res2 <- res2[order(res2$p.value, decreasing = FALSE), ]
-    print(">>> Result of Wilcoxon test (top 10)")
-    print(res2[1:10, ])
+    message(">>> Result of Wilcoxon test (top 10)")
+    message(paste(capture.output(res2[1:10, ]), collapse = "\n"))
     write.csv(res2, paste0(abspath, "2-Wilcoxon-test-relevant-mutations.csv"))
 
     result <- list(
@@ -285,7 +286,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   } else if (tolower(method) == "wilcoxon") {
     if (!is.null(genes)) {
       if (length(genes) < 10) {
-        print(genes)
+        message(paste(capture.output(genes), collapse = "\n"))
         stop(paste0("Please provide at least 10 genes with mutaion freq larger than ", min_mut_freq))
       }
       input_genes <- genes
@@ -317,8 +318,8 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
 
     res <- res[order(res$p.value, decreasing = FALSE), ]
 
-    print(">>> Result of Wilcoxon test (top 10): ")
-    print(res[1:10, ])
+    message(">>> Result of Wilcoxon test (top 10): ")
+    message(paste(capture.output(res[1:10, ]), collapse = "\n"))
 
     write.csv(res, paste0(abspath, "0-Wilcoxon-test-relevant-mutations.csv"))
 
@@ -547,7 +548,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   # print to screen
   # draw(p)
   if (show_plot) {
-    print(p)
+    if (interactive()) print(p)
   }
 
   result$onco_plot <- p
