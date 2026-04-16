@@ -82,8 +82,9 @@ Shixiang Huang
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # See maftools or TCGAbiolinks documentation for obtaining MAF input
 mut_list <- make_mut_matrix(maf = maf, isTCGA = TRUE, category = "multi")
-} # }
+#> Error: object 'maf' not found
+# }
 ```

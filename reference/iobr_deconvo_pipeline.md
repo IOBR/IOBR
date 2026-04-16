@@ -13,7 +13,7 @@ iobr_deconvo_pipeline(
   project,
   array,
   tumor_type,
-  path = "1-TME",
+  path = NULL,
   permutation = 1000
 )
 ```
@@ -39,7 +39,7 @@ iobr_deconvo_pipeline(
 
 - path:
 
-  Character. Output directory. Default is "1-TME".
+  Character. Output directory. Default is NULL (uses tempdir()).
 
 - permutation:
 
@@ -110,10 +110,10 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running ESTIMATE
 #> ℹ Loading cached data: "common_genes"
-#> [1] "Merged dataset includes 10148 genes (264 mismatched)."
+#> Merged dataset includes 10148 genes (264 mismatched).
 #> ℹ Loading cached data: "SI_geneset"
-#> [1] "1 gene set: StromalSignature  overlap= 138"
-#> [1] "2 gene set: ImmuneSignature  overlap= 140"
+#> 1 gene set: StromalSignature overlap=138
+#> 2 gene set: ImmuneSignature overlap=140
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running TIMER deconvolution

@@ -48,10 +48,10 @@ estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
 #> ℹ Running ESTIMATE
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "common_genes"
-#> [1] "Merged dataset includes 10148 genes (264 mismatched)."
+#> Merged dataset includes 10148 genes (264 mismatched).
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "SI_geneset"
-#> [1] "1 gene set: StromalSignature  overlap= 138"
-#> [1] "2 gene set: ImmuneSignature  overlap= 140"
+#> 1 gene set: StromalSignature overlap=138
+#> 2 gene set: ImmuneSignature overlap=140
 # }
 ```

@@ -55,7 +55,7 @@ immunogenomic profiling.</p>
 <span>  <span class="va">project</span>,</span>
 <span>  <span class="va">array</span>,</span>
 <span>  <span class="va">tumor_type</span>,</span>
-<span>  path <span class="op">=</span> <span class="st">"1-TME"</span>,</span>
+<span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  permutation <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -81,7 +81,7 @@ immunogenomic profiling.</p>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>Character. Output directory. Default is "1-TME".</p></dd>
+<dd><p>Character. Output directory. Default is NULL (uses tempdir()).</p></dd>
 
 
 <dt id="arg-permutation">permutation<a class="anchor" aria-label="anchor" href="#arg-permutation"></a></dt>
@@ -151,10 +151,10 @@ immunogenomic profiling.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Input should be in TPM/FPKM scale, not log-transformed</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running ESTIMATE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"common_genes"</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Merged dataset includes 10148 genes (264 mismatched)."</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Merged dataset includes 10148 genes (264 mismatched).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"SI_geneset"</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1 gene set: StromalSignature  overlap= 138"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2 gene set: ImmuneSignature  overlap= 140"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 gene set: StromalSignature overlap=138</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 gene set: ImmuneSignature overlap=140</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Data values appear small (&lt; 50).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Input should be in TPM/FPKM scale, not log-transformed</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running TIMER deconvolution</span>

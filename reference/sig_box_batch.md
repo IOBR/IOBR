@@ -162,26 +162,6 @@ sig_box_batch(
   path = tempdir()
 )
 #> ℹ Processing feature: "TMEscore_plus"
-#> # A tibble: 6 × 8
-#>   .y.       group1 group2        p    p.adj p.format p.signif method  
-#>   <chr>     <chr>  <chr>     <dbl>    <dbl> <chr>    <chr>    <chr>   
-#> 1 signature CIN    EBV    1.81e-10 7.30e-10 1.8e-10  ****     Wilcoxon
-#> 2 signature CIN    GS     3.67e- 6 7.3 e- 6 3.7e-06  ****     Wilcoxon
-#> 3 signature EBV    GS     2.17e-14 1.10e-13 2.2e-14  ****     Wilcoxon
-#> 4 signature CIN    MSI    3.57e-10 1.10e- 9 3.6e-10  ****     Wilcoxon
-#> 5 signature EBV    MSI    1.10e- 2 1.1 e- 2 0.011    *        Wilcoxon
-#> 6 signature GS     MSI    1.83e-15 1.10e-14 1.8e-15  ****     Wilcoxon
-
 #> ℹ Processing feature: "GZMB"
-#> # A tibble: 6 × 8
-#>   .y.       group1 group2        p         p.adj p.format p.signif method  
-#>   <chr>     <chr>  <chr>     <dbl>         <dbl> <chr>    <chr>    <chr>   
-#> 1 signature CIN    EBV    7.28e-10 0.0000000036  7.3e-10  ****     Wilcoxon
-#> 2 signature CIN    GS     8.98e- 1 0.9           0.898    ns       Wilcoxon
-#> 3 signature EBV    GS     3.62e-11 0.00000000022 3.6e-11  ****     Wilcoxon
-#> 4 signature CIN    MSI    2.04e- 8 0.000000082   2.0e-08  ****     Wilcoxon
-#> 5 signature EBV    MSI    1.59e- 2 0.032         0.016    *        Wilcoxon
-#> 6 signature GS     MSI    8.71e- 8 0.00000026    8.7e-08  ****     Wilcoxon
-
-#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpitzwVG
+#> ✔ Batch processing complete. Plots saved to: /tmp/Rtmpq9LRNq
 ```

@@ -128,29 +128,19 @@ eset_corrected <- remove_batcheffect(
 #> 
 #> eset1 eset2 
 #>     5     5 
-#> 55
-#> [1] ">>== colors for group: "
+#> >>== colors for group: 
 #> >>== #374E55FF>>== #DF8F44FF
 #> ✔ Applied log2 transformation
 #> 
 #> eset1 eset2 
 #>     5     5 
-#> 55
-#> [1] ">>== colors for group: "
+#> >>== colors for group: 
 #> >>== #374E55FF>>== #DF8F44FF
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> 
 #> eset1 eset2 
 #>     5     5 
-#> 55
-#> [1] ">>== colors for group: "
+#> >>== colors for group: 
 #> >>== #374E55FF>>== #DF8F44FF
-#> Ignoring unknown labels:
-#> • linetype : "batch"
-#> Ignoring unknown labels:
-#> • linetype : "batch"
-#> Ignoring unknown labels:
-#> • linetype : "batch"
-
 # }
 ```

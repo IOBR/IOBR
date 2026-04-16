@@ -41,9 +41,11 @@ The requested dataset.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # Download TCGA STAD signature data
 tcga_sig <- download_iobr_data("tcga_stad_sig")
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "tcga_stad_sig"
 
 # Download with custom mirrors
 eset <- download_iobr_data("eset_stad",
@@ -52,5 +54,6 @@ eset <- download_iobr_data("eset_stad",
     "https://gh-proxy.org/https://github.com"
   )
 )
-} # }
+#> ℹ Loading cached data: "eset_stad"
+# }
 ```

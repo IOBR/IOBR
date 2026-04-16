@@ -17,17 +17,3 @@ A list with two elements: - \`use_new_api\`: Logical indicating whether
 to use the new API (\`TRUE\`) or old API (\`FALSE\`) - \`gsva_version\`:
 Character string of the installed GSVA version, or \`"not installed"\`
 if not available
-
-## Examples
-
-``` r
-# Detect GSVA API version (only runs if GSVA is installed)
-api_info <- IOBR:::gsva_use_new_api()
-print(api_info)
-#> $use_new_api
-#> [1] TRUE
-#> 
-#> $gsva_version
-#> [1] "2.4.9"
-#> 
-```

@@ -122,12 +122,23 @@ Dongqiang Zeng
 
 ``` r
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
-if (FALSE) { # \dontrun{
+# \donttest{
 surv_group(
   input_pdata = tcga_stad_pdata,
   target_group = "Lauren",
   time = "time",
   status = "OS_status"
 )
-} # }
+#> ℹ Follow-up time ranges from 0.1 to 124 months
+#>    Diffuse Intestinal      Mixed 
+#>         59        160        117 
+#> ℹ Maximum follow-up time is 124 months; divided into 6 sections
+#> Registered S3 methods overwritten by 'ggpp':
+#>   method                  from   
+#>   heightDetails.titleGrob ggplot2
+#>   widthDetails.titleGrob  ggplot2
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+
+# }
 ```

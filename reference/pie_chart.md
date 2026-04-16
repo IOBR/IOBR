@@ -80,22 +80,10 @@ Dongqiang Zeng
 sig_stad <- load_data("sig_stad")
 #> ℹ Loading cached data: "sig_stad"
 pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
-#>   var Freq percent_weight lab.ypos
-#> 1 CIN  122           51.0    25.50
-#> 2  GS   47           19.7    60.85
-#> 3 MSI   47           19.7    80.55
-#> 4 EBV   23            9.6    95.20
 #> ℹ Available categories: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 #> ℹ Box palettes: nrc, jama, aaas, jco, paired1, paired2, paired3, paired4, accent, set2
-
 
 pie_chart(input = sig_stad, var = "Subtype", type = 2)
-#>   var Freq percent_weight lab.ypos
-#> 1 CIN  122           51.0    25.50
-#> 2  GS   47           19.7    60.85
-#> 3 MSI   47           19.7    80.55
-#> 4 EBV   23            9.6    95.20
 #> ℹ Available categories: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 #> ℹ Box palettes: nrc, jama, aaas, jco, paired1, paired2, paired3, paired4, accent, set2
-
 ```

@@ -33,12 +33,7 @@ output file.
 ## Examples
 
 ``` r
-# Create a sample common_genes dataframe
-common_genes <- data.frame(
-  GeneSymbol = c("BRCA1", "TP53", "EGFR"),
-  stringsAsFactors = FALSE
-)
-
+# \donttest{
 # Create a sample input dataframe
 input_data <- data.frame(
   GeneSymbol = c("BRCA1", "TP53", "EGFR", "NOTCH1"),
@@ -55,6 +50,8 @@ write.table(input_data,
 )
 
 # Call the filterCommonGenes function
-# Note: This example requires IOBR::common_genes data
-# filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+filterCommonGenes(input_file, output_file, id = "GeneSymbol")
+#> ℹ Loading cached data: "common_genes"
+#> Merged dataset includes 0 genes (10412 mismatched).
+# }
 ```

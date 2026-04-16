@@ -33,7 +33,7 @@ multiple cancer samples.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # file
 tf <- tempfile(fileext = ".csv")
 write.table(data.frame("exp1", "luad", "exp2", "brca"),
@@ -42,5 +42,10 @@ write.table(data.frame("exp1", "luad", "exp2", "brca"),
 outdir <- tempdir()
 args <- list(outdir = outdir, batch = tf)
 results <- deconvolute_timer.default(args)
-} # }
+#> ℹ Enter batch mode
+#> ℹ Loading immune gene expression
+#> ℹ Loading cached data: "immuneCuratedData"
+#> Warning: cannot open file 'exp1': No such file or directory
+#> Error in file(file, "rt"): cannot open the connection
+# }
 ```

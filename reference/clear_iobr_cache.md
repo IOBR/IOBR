@@ -7,3 +7,7 @@ Removes all cached data files downloaded from GitHub.
 ``` r
 clear_iobr_cache()
 ```
+
+## Value
+
+Invisible NULL. Called for side effects of clearing the cache.

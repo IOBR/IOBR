@@ -113,8 +113,9 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 sig_stad <- load_data("sig_stad")
+#> ℹ Loading cached data: "sig_stad"
 result <- batch_sig_surv_plot(
   input_pdata = sig_stad,
   signature = "T.cells.CD8",
@@ -131,5 +132,29 @@ result <- batch_sig_surv_plot(
   show_col = TRUE,
   fig_type = "pdf"
 )
-} # }
+#> ℹ Processing project: "TCGA-STAD"
+#> ℹ Saving plots to: "/tmp/Rtmpq9LRNq/Multiple-KM-plot"
+#> ℹ Survival follow-up time range: 0.1 to 124 months
+#> ℹ Best cutoff for "T.cells.CD8": 0.1
+#> ✔ Best cutoff for "T.cells.CD8": 0.101
+#> ℹ High T.cells.CD8: 106
+#> ℹ Low T.cells.CD8: 244
+#> ℹ Maximum follow-up time is 124 months; divided into 6 sections
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the ggpubr package.
+#>   Please report the issue at <https://github.com/kassambara/ggpubr/issues>.
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+# }
 ```

@@ -137,13 +137,4 @@ sig_box(
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the IOBR package.
 #>   Please report the issue at <https://github.com/IOBR/IOBR/issues>.
-#> # A tibble: 6 × 8
-#>   .y.       group1 group2        p    p.adj p.format p.signif method  
-#>   <chr>     <chr>  <chr>     <dbl>    <dbl> <chr>    <chr>    <chr>   
-#> 1 signature CIN    EBV    1.81e-10 7.30e-10 1.8e-10  ****     Wilcoxon
-#> 2 signature CIN    GS     3.67e- 6 7.3 e- 6 3.7e-06  ****     Wilcoxon
-#> 3 signature EBV    GS     2.17e-14 1.10e-13 2.2e-14  ****     Wilcoxon
-#> 4 signature CIN    MSI    3.57e-10 1.10e- 9 3.6e-10  ****     Wilcoxon
-#> 5 signature EBV    MSI    1.10e- 2 1.1 e- 2 0.011    *        Wilcoxon
-#> 6 signature GS     MSI    1.83e-15 1.10e-14 1.8e-15  ****     Wilcoxon
 ```

@@ -64,6 +64,6 @@ utils::write.table(
 #> Warning: appending column names to file
 estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
 #> ℹ Loading cached data: "SI_geneset"
-#> [1] "1 gene set: StromalSignature  overlap= 138"
-#> [1] "2 gene set: ImmuneSignature  overlap= 140"
+#> 1 gene set: StromalSignature overlap=138
+#> 2 gene set: ImmuneSignature overlap=140
 ```

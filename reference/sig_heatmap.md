@@ -173,6 +173,5 @@ input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
 feas <- grep("MCPcounter", colnames(input), value = TRUE)
 sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
 #> ℹ Creating heatmap with 10 features
-
 # }
 ```

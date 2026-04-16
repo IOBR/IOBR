@@ -112,8 +112,7 @@ if (requireNamespace("FactoMineR", quietly = TRUE) &&
 #> 
 #> A B 
 #> 5 5 
-#> 55
-#> [1] ">>== colors for group: "
+#> >>== colors for group: 
 #> >>== #374E55FF>>== #DF8F44FF
 #> Ignoring unknown labels:
 #> • fill : "group"

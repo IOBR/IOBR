@@ -83,6 +83,7 @@ Wubing Zhang, Dongqiang Zeng, Yiran Fang
 ## Examples
 
 ``` r
+# \donttest{
 # Load TCGA count data
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
@@ -109,4 +110,5 @@ head(eset)
 #> IGKC        50262.87     10617.20     2900.288     21222.09     70074.94
 #> MT-CO2      20287.58     32023.19    54797.893     30150.49     13184.96
 #> MT-RNR2     25519.06     36721.41    31241.258     31834.37     12436.25
+# }
 ```

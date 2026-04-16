@@ -114,13 +114,6 @@ sig_roc(
   variables = c("TMEscore_plus", "GZMB", "GNLY")
 )
 #> ℹ Input data preview:
-#>   OS_status TMEscore_plus     GZMB     GNLY
-#> 1         0    0.08743285 1.900275 1.363343
-#> 2         0    2.03057603 6.094523 3.458662
-#> 3         0   -0.04228022 3.935882 1.915537
-#> 4         0   -0.68600841 1.750043 2.162907
-#> 5         0    2.50849409 8.289163 6.021458
-#> 6         0   -0.62742822 3.371944 2.126128
 #> Registered S3 method overwritten by 'pROC':
 #>   method   from            
 #>   plot.roc spatstat.explore

@@ -183,9 +183,5 @@ sig_pheatmap(
 #> ℹ Heatmap palettes: 1 (pheatmap), 2 (peach), 3 (blues), 4 (virids), 5 (reds), 6 (RdBu), 7 (navy_firebrick), 8 (magma)
 #> ℹ Random palettes: 1 (palette1), 2 (palette2), 3 (palette3), 4 (palette4)
 #> ℹ Using random seed: 54321
-#> $subtype
-#>         EBV          GS         CIN         MSI 
-#> "#8F7700FF"   "#386CB0" "#008B45FF"   "#e31a1c" 
-#> 
-#> ✔ Heatmap saved to: /tmp/RtmpitzwVG/1-pheatmap-subtype.pdf
+#> ✔ Heatmap saved to: /tmp/Rtmpq9LRNq/1-pheatmap-subtype.pdf
 ```

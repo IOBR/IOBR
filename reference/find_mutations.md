@@ -136,17 +136,21 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # This example requires a MAF file
 mut_list <- make_mut_matrix(
   maf = "path_to_maf_file", isTCGA = TRUE,
   category = "multi"
 )
+#> -Reading
+#> Error in data.table::fread(file = maf, sep = "\t", stringsAsFactors = FALSE,     verbose = FALSE, data.table = TRUE, showProgress = TRUE,     header = TRUE, fill = TRUE, skip = "Hugo_Symbol", quote = ""): File 'path_to_maf_file' does not exist or is non-readable. getwd()=='/home/runner/work/IOBR/IOBR/docs/reference'
 mut <- mut_list$snp
+#> Error: object 'mut_list' not found
 results <- find_mutations(
   mutation_matrix = mut, signature_matrix = signature_data,
   id_signature_matrix = "ID", signature = "CD_8_T_effector",
   min_mut_freq = 0.01, plot = TRUE, method = "multi"
 )
-} # }
+#> Error: object 'signature_data' not found
+# }
 ```
