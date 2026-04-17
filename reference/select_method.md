@@ -32,6 +32,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
@@ -77,4 +78,5 @@ select_method(res, method = "PCA")
 #> 10 TCGA-FP-7916    10                -0.501                       7.27  
 #> # ℹ 2 more variables: HALLMARK_ANDROGEN_RESPONSE <dbl>,
 #> #   HALLMARK_ANGIOGENESIS <dbl>
+# }
 ```
