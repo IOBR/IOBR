@@ -15,6 +15,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' hallmark <- load_data("hallmark")
@@ -26,6 +27,7 @@
 #'   method = "integration"
 #' )
 #' select_method(res, method = "PCA")
+#' }
 select_method <- function(data, method = c("ssGSEA", "PCA", "zscore")) {
   method <- tolower(rlang::arg_match(method))
 

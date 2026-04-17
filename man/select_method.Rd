@@ -21,6 +21,7 @@ specified method (PCA, ssGSEA, or zscore) and strips method suffixes from
 column names.
 }
 \examples{
+\donttest{
 eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 hallmark <- load_data("hallmark")
@@ -32,6 +33,7 @@ res <- calculate_sig_score(
   method = "integration"
 )
 select_method(res, method = "PCA")
+}
 }
 \author{
 Dongqiang Zeng
