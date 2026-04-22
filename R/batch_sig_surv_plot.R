@@ -28,8 +28,8 @@
 #'   Default is `NULL`.
 #' @param mini_sig Character string for the signature label in the legend.
 #'   Default is `"score"`.
-#' @param save_path Character string specifying the directory path for saving
-#'   plots.
+#' @param save_path Character string or `NULL`. Directory path for saving plots.
+#'   If `NULL`, plots are not saved. Default is `NULL`.
 #' @param show_col Logical indicating whether to display color information.
 #'   Default is `TRUE`.
 #' @param fig_type Character string specifying the output file format
@@ -76,7 +76,7 @@ batch_sig_surv_plot <- function(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  save_path = file.path(tempdir(), "Multiple-KM-plot"),
+  save_path = NULL,
   show_col = TRUE,
   fig_type = "pdf"
 ) {

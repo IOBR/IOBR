@@ -4,7 +4,7 @@
 \alias{format_signatures}
 \title{Transform Signature Data into List Format}
 \usage{
-format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
+format_signatures(sig_data, save_signature = FALSE, output_path = NULL)
 }
 \arguments{
 \item{sig_data}{Data frame with signature names as columns and genes in
@@ -13,7 +13,8 @@ rows. Use `NA` for missing values.}
 \item{save_signature}{Logical. Whether to save the signature list as RData.
 Default is `FALSE`.}
 
-\item{output_name}{Character. Output RData file name. Default is `"signatures"`.}
+\item{output_path}{Character. Full path (without extension) for output file.
+Required if `save_signature = TRUE`. Default is `NULL`.}
 }
 \value{
 List of signatures.

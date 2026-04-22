@@ -10,8 +10,8 @@
 #'   samples as columns.
 #' @param yinter Numeric. Z-score threshold for identifying outliers.
 #'   Default is -3.
-#' @param project Character. Project name for output folder. Default is
-#'   `"find_outlier_eset"`.
+#' @param project Character or `NULL`. Output directory path for saving plots.
+#'   Required if `save = TRUE`. Default is `NULL`.
 #' @param plot_hculst Logical. Whether to plot hierarchical clustering.
 #'   Default is `FALSE`.
 #' @param show_plot Logical. Whether to display the connectivity plot.
@@ -29,7 +29,7 @@
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' outs <- find_outlier_samples(eset = eset_tme_stad)
 #' print(outs)
-find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset",
+find_outlier_samples <- function(eset, yinter = -3, project = NULL,
                                  plot_hculst = FALSE, show_plot = TRUE,
                                  index = NULL, save = FALSE) {
   rlang::check_installed("WGCNA")
@@ -42,6 +42,10 @@ find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset
   }
   if (!is.numeric(yinter) || length(yinter) != 1) {
     cli::cli_abort("{.arg yinter} must be a single numeric value")
+  }
+
+  if (save && is.null(project)) {
+    cli::cli_abort("{.arg project} must be provided when save = TRUE")
   }
 
   path <- if (save) creat_folder(project) else NULL

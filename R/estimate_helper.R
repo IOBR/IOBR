@@ -345,7 +345,9 @@ plotPurity <- function(scores,
   ## Check arguments
   stopifnot((is.character(scores) && length(scores) == 1 && nzchar(scores)) ||
     (inherits(scores, "connection") && isOpen(scores, "r")))
-  stopifnot(is.character(output.dir) && length(output.dir) == 1 && nzchar(output.dir))
+  if (!is.null(output.dir)) {
+    stopifnot(is.character(output.dir) && length(output.dir) == 1 && nzchar(output.dir))
+  }
   platform <- match.arg(platform, choices = c("affymetrix", "agilent", "illumina"))
 
   if (platform != "affymetrix") {

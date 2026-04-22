@@ -7,7 +7,7 @@
 find_outlier_samples(
   eset,
   yinter = -3,
-  project = "find_outlier_eset",
+  project = NULL,
   plot_hculst = FALSE,
   show_plot = TRUE,
   index = NULL,
@@ -21,8 +21,8 @@ samples as columns.}
 \item{yinter}{Numeric. Z-score threshold for identifying outliers.
 Default is -3.}
 
-\item{project}{Character. Project name for output folder. Default is
-`"find_outlier_eset"`.}
+\item{project}{Character or `NULL`. Output directory path for saving plots.
+Required if `save = TRUE`. Default is `NULL`.}
 
 \item{plot_hculst}{Logical. Whether to plot hierarchical clustering.
 Default is `FALSE`.}

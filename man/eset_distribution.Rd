@@ -16,8 +16,8 @@ Default is 3 (samples 1/3 of columns).}
 \item{log}{Logical indicating whether to perform log2 transformation.
 Default is `TRUE`.}
 
-\item{project}{Optional project name for output files. Default is `NULL`
-(uses "ESET").}
+\item{project}{Optional output directory path for saving files. If `NULL`,
+no files are saved. Default is `NULL`.}
 }
 \value{
 Invisibly returns `NULL`. If `project` is provided, saves PNG files to disk.

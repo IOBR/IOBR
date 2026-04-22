@@ -9,7 +9,8 @@
 #'   rows. Use `NA` for missing values.
 #' @param save_signature Logical. Whether to save the signature list as RData.
 #'   Default is `FALSE`.
-#' @param output_name Character. Output RData file name. Default is `"signatures"`.
+#' @param output_path Character. Full path (without extension) for output file.
+#'   Required if `save_signature = TRUE`. Default is `NULL`.
 #'
 #' @return List of signatures.
 #'
@@ -22,7 +23,7 @@
 #'   Signature2 = c("Gene4", "Gene5", NA, NA)
 #' )
 #' format_signatures(sig_data)
-format_signatures <- function(sig_data, save_signature = FALSE, output_name = "signatures") {
+format_signatures <- function(sig_data, save_signature = FALSE, output_path = NULL) {
   if (!is.data.frame(sig_data) && !is.matrix(sig_data)) {
     cli::cli_abort("{.arg sig_data} must be a data frame or matrix")
   }
@@ -48,7 +49,10 @@ format_signatures <- function(sig_data, save_signature = FALSE, output_name = "s
   my_signatures <- bb
 
   if (save_signature) {
-    save(my_signatures, file = paste0(output_name, ".RData"))
+    if (is.null(output_path)) {
+      cli::cli_abort("{.arg output_path} must be provided when save_signature = TRUE")
+    }
+    save(my_signatures, file = paste0(output_path, ".RData"))
   }
 
   my_signatures

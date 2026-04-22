@@ -12,7 +12,7 @@
 #' @param min_mut_freq Minimum mutation frequency required for gene inclusion. Default is 0.05.
 #' @param plot Logical indicating whether to generate and save plots. Default is TRUE.
 #' @param method Statistical test method: "multi" for both Cuzick and Wilcoxon, or "Wilcoxon" only. Default is "multi".
-#' @param save_path Directory to save plots and results. If NULL, uses signature name.
+#' @param save_path Directory to save plots and results. If NULL, no files are saved.
 #' @param palette Color palette for box plots(used when cols is NULL). Default is "jco".
 #' @param cols Character vector. Custom colors for box plots. If NULL, uses palette. Default is NULL.
 #' @param show_plot Logical indicating whether to display plots. Default is TRUE.

@@ -45,7 +45,7 @@ find_mutations(
 
 \item{point_alpha}{Transparency of points in box plot. Default is 0.1.}
 
-\item{save_path}{Directory to save plots and results. If NULL, uses signature name.}
+\item{save_path}{Directory to save plots and results. If NULL, no files are saved.}
 
 \item{palette}{Color palette for box plots(used when cols is NULL). Default is "jco".}
 

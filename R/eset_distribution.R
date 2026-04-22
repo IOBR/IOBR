@@ -11,8 +11,8 @@
 #'   Default is 3 (samples 1/3 of columns).
 #' @param log Logical indicating whether to perform log2 transformation.
 #'   Default is `TRUE`.
-#' @param project Optional project name for output files. Default is `NULL`
-#'   (uses "ESET").
+#' @param project Optional output directory path for saving files. If `NULL`,
+#'   no files are saved. Default is `NULL`.
 #'
 #' @return Invisibly returns `NULL`. If `project` is provided, saves PNG files to disk.
 #'
