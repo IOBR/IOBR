@@ -54,11 +54,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
   rlang::check_installed("reshape2")
   rlang::check_installed("PMCMRplus")
   if (!is.null(save_path)) {
-    file_name <- save_path
-    if (!dir.exists(file_name)) dir.create(file_name, recursive = TRUE)
-    abspath <- file.path(normalizePath(file_name, winslash = "/", mustWork = FALSE), "")
+    output_dir <- save_path
+    if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
+    abspath <- file.path(normalizePath(output_dir, winslash = "/", mustWork = FALSE), "")
   } else {
     abspath <- NULL
+    output_dir <- NULL
   }
   #######################################################
   signature_matrix <- as.data.frame(signature_matrix)
@@ -186,9 +187,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
         if (!is.null(save_path)) {
-          ggplot2::ggsave(pl[[i]],
+          ggplot2::ggsave(
             filename = paste0(4 + i, "-1-", gene, "-continue.pdf"),
-            width = 4, height = 5.8, path = file_name
+            plot = pl[[i]],
+            width = 4, height = 5.8, path = output_dir
           )
         }
       }
@@ -201,7 +203,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       if (show_plot) print(com_plot)
       #####################################
       if (!is.null(save_path)) {
-        ggplot2::ggsave(com_plot, filename = "3-Relevant_mutations_Continue.pdf", width = 14, height = 10.5, path = file_name)
+        ggplot2::ggsave(filename = "3-Relevant_mutations_Continue.pdf", plot = com_plot, width = 14, height = 10.5, path = output_dir)
       }
       #####################################
     }
@@ -275,9 +277,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         }
 
         if (!is.null(save_path)) {
-          ggplot2::ggsave(pl[[i]],
+          ggplot2::ggsave(
             filename = paste0(4 + i, "-2-", gene, "-binary.pdf"),
-            width = 4, height = 5.8, path = file_name
+            plot = pl[[i]],
+            width = 4, height = 5.8, path = output_dir
           )
         }
       }
@@ -289,7 +292,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       if (show_plot) print(com_plot)
       #####################################
       if (!is.null(save_path)) {
-        ggplot2::ggsave(com_plot, filename = "4-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+        ggplot2::ggsave(filename = "4-Relevant_mutations_binary.pdf", plot = com_plot, width = 14, height = 10.5, path = output_dir)
       }
       #####################################
     }
@@ -374,9 +377,10 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         }
 
         if (!is.null(save_path)) {
-          ggplot2::ggsave(pl[[i]],
+          ggplot2::ggsave(
             filename = paste0(i, "-1-", gene, "-binary.pdf"),
-            width = 4, height = 5.8, path = file_name
+            plot = pl[[i]],
+            width = 4, height = 5.8, path = output_dir
           )
         }
       }
@@ -388,7 +392,7 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       if (show_plot) print(com_plot)
       #####################################
       if (!is.null(save_path)) {
-        ggplot2::ggsave(com_plot, filename = "0-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+        ggplot2::ggsave(filename = "0-Relevant_mutations_binary.pdf", plot = com_plot, width = 14, height = 10.5, path = output_dir)
       }
       #####################################
     }

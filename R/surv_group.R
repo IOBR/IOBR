@@ -136,8 +136,9 @@ surv_group <- function(input_pdata,
   res <- survminer::arrange_ggsurvplots(pp, print = FALSE, ncol = 1, nrow = 1)
 
   if (!is.null(save_path)) {
-    ggplot2::ggsave(res,
+    ggplot2::ggsave(
       filename = paste0(index, "-KMplot-", target_group, "-", project, ".", fig.type),
+      plot = res,
       width = width, height = height, path = save_path
     )
   }

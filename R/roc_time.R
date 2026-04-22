@@ -106,8 +106,9 @@ roc_time <- function(input, vars, time = "time", status = "status", time_point =
   p <- p + design_mytheme(axis_angle = 0, hjust = 0.5, axis_title_size = 1.7)
 
   if (save_plot) {
-    ggplot2::ggsave(p,
+    ggplot2::ggsave(
       filename = paste0(index, "-", main, "-ROC-time.", fig.type),
+      plot = p,
       width = width, height = height, path = save_path
     )
   }

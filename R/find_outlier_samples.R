@@ -96,8 +96,8 @@ find_outlier_samples <- function(eset, yinter = -3, project = NULL,
 
   if (save) {
     ggplot2::ggsave(
-      p,
       filename = paste0(index, "-2-connectivityplot.pdf"),
+      plot = p,
       width = 8, height = 8,
       path = path$folder_name
     )

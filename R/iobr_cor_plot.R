@@ -388,18 +388,20 @@ iobr_cor_plot <- function(pdata_group,
 
     prefix <- if (!is.null(target)) target else group
     if (save_results) {
-      ggplot2::ggsave(pp1,
+      ggplot2::ggsave(
         filename = paste0(
           index, "-", x, "-1-", ProjectID, "-", prefix,
           "-", group_name, "-pvalue-box.", fig_ext
         ),
+        plot = pp1,
         width = plot_width, height = plot_height, path = file_store
       )
-      ggplot2::ggsave(pp2,
+      ggplot2::ggsave(
         filename = paste0(
           index, "-", x, "-2-", ProjectID, "-", prefix,
           "-", group_name, "-box.", fig_ext
         ),
+        plot = pp2,
         width = plot_width, height = plot_height, path = file_store
       )
     }
@@ -521,11 +523,12 @@ iobr_cor_plot <- function(pdata_group,
         ggplot2::ggtitle(group_name)
 
       if (save_results) {
-        ggplot2::ggsave(p,
+        ggplot2::ggsave(
           filename = paste0(
             index, "-", x, "-5-", ProjectID, "-", group_name,
             "-associated-", category, "-corplot.", fig_ext
           ),
+          plot = p,
           width = 12, height = 12.8, path = file_store
         )
       }

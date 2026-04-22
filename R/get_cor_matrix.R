@@ -204,8 +204,8 @@ get_cor_matrix <- function(data,
   # Save if path provided
   if (!is.null(path)) {
     ggplot2::ggsave(
-      cor_plot,
       filename = paste0(index, "-", project %||% "cor", "-cor_plot.", fig.type),
+      plot = cor_plot,
       width = width,
       height = height,
       path = path$folder_name

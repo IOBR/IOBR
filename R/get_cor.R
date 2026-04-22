@@ -357,8 +357,8 @@ get_cor <- function(eset,
   filename <- paste0(index, "-", var2, "-", var1, "-correlation.", fig.format)
 
   ggplot2::ggsave(
-    p,
     filename = filename,
+    plot = p,
     width = fig.width,
     height = fig.height,
     path = ff$folder_name

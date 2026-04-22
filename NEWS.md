@@ -3,8 +3,19 @@
 ## CRAN Policy Fix (Resubmission)
 
 * Fixed all functions that wrote to the user's home filespace (working directory) by default. Writing now only occurs when an explicit `path` / `save_path` / `output.dir` is provided.
-* Affected functions: `eset_distribution()`, `find_outlier_samples()`, `iobr_cor_plot()`, `sig_pheatmap()`, `sig_box_batch()`, `plotPurity()`, `IPS_calculation()`, `find_mutations()`, `sig_gsea()`, `get_cor()`, and `creat_folder()`.
+* Affected functions: `eset_distribution()`, `find_outlier_samples()`, `iobr_cor_plot()`, `sig_pheatmap()`, `sig_box_batch()`, `plotPurity()`, `IPS_calculation()`, `find_mutations()`, `sig_gsea()`, `get_cor()`, `batch_sig_surv_plot()`, `format_signatures()`, and `creat_folder()`.
 * Examples updated to use `tempdir()` when file writing is demonstrated.
+
+## Bug Fixes
+
+* **`find_mutations()`**: Fixed semantic naming error where `file_name` variable was used to store directory paths. Renamed to `output_dir` for clarity. Fixed `ggsave()` parameter order issues.
+* **`iobr_cor_plot()`**: Fixed `ggsave()` parameter order issues. The correct order is `filename` first, then `plot`.
+* **`surv_group()`**: Fixed `ggsave()` parameter order issues.
+* **`roc_time()`**: Fixed `ggsave()` parameter order issues.
+* **`batch_sig_surv_plot()`**: Changed default `save_path` from `file.path(tempdir(), "Multiple-KM-plot")` to `NULL` to prevent automatic directory creation.
+* **`format_signatures()`**: Changed parameter name from `output_name` to `output_path` for consistency. Added validation requiring `output_path` when `save_signature = TRUE`.
+* **`find_outlier_samples()`**: Added validation requiring `project` when `save = TRUE`.
+* **`plotPurity()`**: Changed default `output.dir` from `"estimated_purity_plots"` to `NULL`.
 
 ## Major Changes
 

@@ -161,9 +161,10 @@ sig_box_batch <- function(input,
       if (!return_stat_res && save_results) {
         ggplot2::ggsave(
           filename = paste0(index + i, "-", vars[i], "-and-", groups, ".", fig_type),
-          height   = height,
-          width    = width,
-          path     = path$folder_name
+          plot = p,
+          height = height,
+          width = width,
+          path = path$folder_name
         )
       }
     }
@@ -197,16 +198,16 @@ sig_box_batch <- function(input,
       )
 
       if (!return_stat_res && save_results) {
-        # Adjust height based on number of groups
         levs <- unique(input[[groups[i]]])
         levs <- length(levs[!is.na(levs)])
         plot_height <- 2 + base_height * levs
 
         ggplot2::ggsave(
           filename = paste0(index + i, "-", vars, "-and-", groups[i], ".", fig_type),
-          height   = plot_height,
-          width    = width,
-          path     = path$folder_name
+          plot = p,
+          height = plot_height,
+          width = width,
+          path = path$folder_name
         )
       }
     }

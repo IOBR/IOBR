@@ -241,8 +241,8 @@ remove_batcheffect <- function(eset1,
       width <- num_plots * 5
 
       ggplot2::ggsave(
-        p,
         filename = paste0("0-PCA-of-", num_plots, "-eset.pdf"),
+        plot = p,
         width = width,
         height = 5,
         path = path$folder_name
