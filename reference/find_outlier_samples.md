@@ -11,11 +11,11 @@ connectivity plots, and optionally performs hierarchical clustering.
 find_outlier_samples(
   eset,
   yinter = -3,
-  project = "find_outlier_eset",
+  project = NULL,
   plot_hculst = FALSE,
   show_plot = TRUE,
   index = NULL,
-  save = TRUE
+  save = FALSE
 )
 ```
 
@@ -32,8 +32,8 @@ find_outlier_samples(
 
 - project:
 
-  Character. Project name for output folder. Default is
-  \`"find_outlier_eset"\`.
+  Character or \`NULL\`. Output directory path for saving plots.
+  Required if \`save = TRUE\`. Default is \`NULL\`.
 
 - plot_hculst:
 
@@ -52,7 +52,7 @@ find_outlier_samples(
 
 - save:
 
-  Logical. Whether to save plots to files. Default is \`TRUE\`.
+  Logical. Whether to save plots to files. Default is \`FALSE\`.
 
 ## Value
 
@@ -67,7 +67,7 @@ Dongqiang Zeng
 ``` r
 eset_tme_stad <- load_data("eset_tme_stad")
 #> ℹ Loading cached data: "eset_tme_stad"
-outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
+outs <- find_outlier_samples(eset = eset_tme_stad)
 
 #> ℹ When yinter = -3
 #> ℹ Potential outliers: "TCGA-BR-4253-01A", "TCGA-BR-6709-01A", "TCGA-CD-8531-01A", "TCGA-RD-A8N2-01A", and "TCGA-VQ-AA69-01A"

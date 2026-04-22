@@ -35,7 +35,32 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.2.0" id="iobr-220">IOBR 2.2.0<a class="anchor" aria-label="anchor" href="#iobr-220"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.2.0" id="iobr-220">IOBR 2.2.0<a class="anchor" aria-label="anchor" href="#iobr-220"></a></h2><p class="text-muted">CRAN release: 2026-04-22</p>
+<div class="section level3">
+<h3 id="cran-policy-fix-resubmission-2-2-0">CRAN Policy Fix (Resubmission)<a class="anchor" aria-label="anchor" href="#cran-policy-fix-resubmission-2-2-0"></a></h3>
+<ul><li>Fixed all functions that wrote to the user’s home filespace (working directory) by default. Writing now only occurs when an explicit <code>path</code> / <code>save_path</code> / <code>output.dir</code> is provided.</li>
+<li>Affected functions: <code><a href="../reference/eset_distribution.html">eset_distribution()</a></code>, <code><a href="../reference/find_outlier_samples.html">find_outlier_samples()</a></code>, <code><a href="../reference/iobr_cor_plot.html">iobr_cor_plot()</a></code>, <code><a href="../reference/sig_pheatmap.html">sig_pheatmap()</a></code>, <code><a href="../reference/sig_box_batch.html">sig_box_batch()</a></code>, <code><a href="../reference/plotPurity.html">plotPurity()</a></code>, <code><a href="../reference/IPS_calculation.html">IPS_calculation()</a></code>, <code><a href="../reference/find_mutations.html">find_mutations()</a></code>, <code><a href="../reference/sig_gsea.html">sig_gsea()</a></code>, <code><a href="../reference/get_cor.html">get_cor()</a></code>, <code><a href="../reference/batch_sig_surv_plot.html">batch_sig_surv_plot()</a></code>, <code><a href="../reference/format_signatures.html">format_signatures()</a></code>, and <code><a href="../reference/creat_folder.html">creat_folder()</a></code>.</li>
+<li>Examples updated to use <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code> when file writing is demonstrated.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-2-0"></a></h3>
+<ul><li>
+<strong><code><a href="../reference/find_mutations.html">find_mutations()</a></code></strong>: Fixed semantic naming error where <code>file_name</code> variable was used to store directory paths. Renamed to <code>output_dir</code> for clarity. Fixed <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> parameter order issues.</li>
+<li>
+<strong><code><a href="../reference/iobr_cor_plot.html">iobr_cor_plot()</a></code></strong>: Fixed <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> parameter order issues. The correct order is <code>filename</code> first, then <code>plot</code>.</li>
+<li>
+<strong><code><a href="../reference/surv_group.html">surv_group()</a></code></strong>: Fixed <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> parameter order issues.</li>
+<li>
+<strong><code><a href="../reference/roc_time.html">roc_time()</a></code></strong>: Fixed <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> parameter order issues.</li>
+<li>
+<strong><code><a href="../reference/batch_sig_surv_plot.html">batch_sig_surv_plot()</a></code></strong>: Changed default <code>save_path</code> from <code>file.path(tempdir(), "Multiple-KM-plot")</code> to <code>NULL</code> to prevent automatic directory creation.</li>
+<li>
+<strong><code><a href="../reference/format_signatures.html">format_signatures()</a></code></strong>: Changed parameter name from <code>output_name</code> to <code>output_path</code> for consistency. Added validation requiring <code>output_path</code> when <code>save_signature = TRUE</code>.</li>
+<li>
+<strong><code><a href="../reference/find_outlier_samples.html">find_outlier_samples()</a></code></strong>: Added validation requiring <code>project</code> when <code>save = TRUE</code>.</li>
+<li>
+<strong><code><a href="../reference/plotPurity.html">plotPurity()</a></code></strong>: Changed default <code>output.dir</code> from <code>"estimated_purity_plots"</code> to <code>NULL</code>.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="major-changes-2-2-0">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-2-2-0"></a></h3>
 <ul><li>

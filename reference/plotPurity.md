@@ -10,7 +10,7 @@ plotPurity(
   scores,
   samples = "all_samples",
   platform = c("affymetrix", "agilent", "illumina"),
-  output.dir = "estimated_purity_plots"
+  output.dir = NULL
 )
 ```
 
@@ -36,7 +36,7 @@ plotPurity(
 - output.dir:
 
   A character string specifying the directory to save the output plots.
-  The default is "estimated_purity_plots".
+  If \`NULL\`, plots are not saved. Default is \`NULL\`.
 
 ## Value
 

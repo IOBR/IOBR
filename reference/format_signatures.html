@@ -47,7 +47,7 @@ NA values appropriately.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_signatures</span><span class="op">(</span><span class="va">sig_data</span>, save_signature <span class="op">=</span> <span class="cn">FALSE</span>, output_name <span class="op">=</span> <span class="st">"signatures"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">format_signatures</span><span class="op">(</span><span class="va">sig_data</span>, save_signature <span class="op">=</span> <span class="cn">FALSE</span>, output_path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,8 +64,9 @@ rows. Use `NA` for missing values.</p></dd>
 Default is `FALSE`.</p></dd>
 
 
-<dt id="arg-output-name">output_name<a class="anchor" aria-label="anchor" href="#arg-output-name"></a></dt>
-<dd><p>Character. Output RData file name. Default is `"signatures"`.</p></dd>
+<dt id="arg-output-path">output_path<a class="anchor" aria-label="anchor" href="#arg-output-path"></a></dt>
+<dd><p>Character. Full path (without extension) for output file.
+Required if `save_signature = TRUE`. Default is `NULL`.</p></dd>
 
 </dl></div>
     <div class="section level2">

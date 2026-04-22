@@ -48,7 +48,7 @@ scores for given samples.</p>
 <span>  <span class="va">scores</span>,</span>
 <span>  samples <span class="op">=</span> <span class="st">"all_samples"</span>,</span>
 <span>  platform <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"affymetrix"</span>, <span class="st">"agilent"</span>, <span class="st">"illumina"</span><span class="op">)</span>,</span>
-<span>  output.dir <span class="op">=</span> <span class="st">"estimated_purity_plots"</span></span>
+<span>  output.dir <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -69,7 +69,7 @@ scores for given samples.</p>
 
 
 <dt id="arg-output-dir">output.dir<a class="anchor" aria-label="anchor" href="#arg-output-dir"></a></dt>
-<dd><p>A character string specifying the directory to save the output plots. The default is "estimated_purity_plots".</p></dd>
+<dd><p>A character string specifying the directory to save the output plots. If `NULL`, plots are not saved. Default is `NULL`.</p></dd>
 
 </dl></div>
     <div class="section level2">

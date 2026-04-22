@@ -21,7 +21,7 @@ batch_sig_surv_plot(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  save_path = file.path(tempdir(), "Multiple-KM-plot"),
+  save_path = NULL,
   show_col = TRUE,
   fig_type = "pdf"
 )
@@ -89,7 +89,8 @@ batch_sig_surv_plot(
 
 - save_path:
 
-  Character string specifying the directory path for saving plots.
+  Character string or \`NULL\`. Directory path for saving plots. If
+  \`NULL\`, plots are not saved. Default is \`NULL\`.
 
 - show_col:
 
@@ -133,7 +134,6 @@ result <- batch_sig_surv_plot(
   fig_type = "pdf"
 )
 #> ℹ Processing project: "TCGA-STAD"
-#> ℹ Saving plots to: "/tmp/RtmpBCLm2C/Multiple-KM-plot"
 #> ℹ Survival follow-up time range: 0.1 to 124 months
 #> ℹ Best cutoff for "T.cells.CD8": 0.1
 #> ✔ Best cutoff for "T.cells.CD8": 0.101

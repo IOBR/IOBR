@@ -71,7 +71,7 @@ find_mutations(
 
 - save_path:
 
-  Directory to save plots and results. If NULL, uses signature name.
+  Directory to save plots and results. If NULL, no files are saved.
 
 - palette:
 

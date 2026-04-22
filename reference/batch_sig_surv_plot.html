@@ -60,7 +60,7 @@ stratification and creates publication-ready survival curves.</p>
 <span>  palette <span class="op">=</span> <span class="st">"jama"</span>,</span>
 <span>  cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mini_sig <span class="op">=</span> <span class="st">"score"</span>,</span>
-<span>  save_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Multiple-KM-plot"</span><span class="op">)</span>,</span>
+<span>  save_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  show_col <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fig_type <span class="op">=</span> <span class="st">"pdf"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -130,8 +130,8 @@ Default is `"score"`.</p></dd>
 
 
 <dt id="arg-save-path">save_path<a class="anchor" aria-label="anchor" href="#arg-save-path"></a></dt>
-<dd><p>Character string specifying the directory path for saving
-plots.</p></dd>
+<dd><p>Character string or `NULL`. Directory path for saving plots.
+If `NULL`, plots are not saved. Default is `NULL`.</p></dd>
 
 
 <dt id="arg-show-col">show_col<a class="anchor" aria-label="anchor" href="#arg-show-col"></a></dt>
@@ -176,7 +176,6 @@ Default is `TRUE`.</p></dd>
 <span class="r-in"><span>  fig_type <span class="op">=</span> <span class="st">"pdf"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"TCGA-STAD"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Saving plots to: <span style="color: #0000BB;">"/tmp/RtmpBCLm2C/Multiple-KM-plot"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 0.1 to 124 months</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.101</span>

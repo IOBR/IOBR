@@ -53,11 +53,11 @@ plots, and optionally performs hierarchical clustering.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_outlier_samples</span><span class="op">(</span></span>
 <span>  <span class="va">eset</span>,</span>
 <span>  yinter <span class="op">=</span> <span class="op">-</span><span class="fl">3</span>,</span>
-<span>  project <span class="op">=</span> <span class="st">"find_outlier_eset"</span>,</span>
+<span>  project <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  plot_hculst <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_plot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  index <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  save <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  save <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -76,8 +76,8 @@ Default is -3.</p></dd>
 
 
 <dt id="arg-project">project<a class="anchor" aria-label="anchor" href="#arg-project"></a></dt>
-<dd><p>Character. Project name for output folder. Default is
-`"find_outlier_eset"`.</p></dd>
+<dd><p>Character or `NULL`. Output directory path for saving plots.
+Required if `save = TRUE`. Default is `NULL`.</p></dd>
 
 
 <dt id="arg-plot-hculst">plot_hculst<a class="anchor" aria-label="anchor" href="#arg-plot-hculst"></a></dt>
@@ -96,7 +96,7 @@ Default is `NULL`.</p></dd>
 
 
 <dt id="arg-save">save<a class="anchor" aria-label="anchor" href="#arg-save"></a></dt>
-<dd><p>Logical. Whether to save plots to files. Default is `TRUE`.</p></dd>
+<dd><p>Logical. Whether to save plots to files. Default is `FALSE`.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -112,7 +112,7 @@ Default is `NULL`.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">eset_tme_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_tme_stad"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_tme_stad"</span></span>
-<span class="r-in"><span><span class="va">outs</span> <span class="op">&lt;-</span> <span class="fu">find_outlier_samples</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_tme_stad</span>, save <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outs</span> <span class="op">&lt;-</span> <span class="fu">find_outlier_samples</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_tme_stad</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="find_outlier_samples-1.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> When yinter = -3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Potential outliers: <span style="color: #0000BB;">"TCGA-BR-4253-01A"</span>, <span style="color: #0000BB;">"TCGA-BR-6709-01A"</span>, <span style="color: #0000BB;">"TCGA-CD-8531-01A"</span>, <span style="color: #0000BB;">"TCGA-RD-A8N2-01A"</span>, and <span style="color: #0000BB;">"TCGA-VQ-AA69-01A"</span></span>

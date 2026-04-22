@@ -2,6 +2,66 @@
 
 ## IOBR 2.2.0
 
+CRAN release: 2026-04-22
+
+### CRAN Policy Fix (Resubmission)
+
+- Fixed all functions that wrote to the user’s home filespace (working
+  directory) by default. Writing now only occurs when an explicit `path`
+  / `save_path` / `output.dir` is provided.
+- Affected functions:
+  [`eset_distribution()`](https://iobr.github.io/IOBR/reference/eset_distribution.md),
+  [`find_outlier_samples()`](https://iobr.github.io/IOBR/reference/find_outlier_samples.md),
+  [`iobr_cor_plot()`](https://iobr.github.io/IOBR/reference/iobr_cor_plot.md),
+  [`sig_pheatmap()`](https://iobr.github.io/IOBR/reference/sig_pheatmap.md),
+  [`sig_box_batch()`](https://iobr.github.io/IOBR/reference/sig_box_batch.md),
+  [`plotPurity()`](https://iobr.github.io/IOBR/reference/plotPurity.md),
+  [`IPS_calculation()`](https://iobr.github.io/IOBR/reference/IPS_calculation.md),
+  [`find_mutations()`](https://iobr.github.io/IOBR/reference/find_mutations.md),
+  [`sig_gsea()`](https://iobr.github.io/IOBR/reference/sig_gsea.md),
+  [`get_cor()`](https://iobr.github.io/IOBR/reference/get_cor.md),
+  [`batch_sig_surv_plot()`](https://iobr.github.io/IOBR/reference/batch_sig_surv_plot.md),
+  [`format_signatures()`](https://iobr.github.io/IOBR/reference/format_signatures.md),
+  and
+  [`creat_folder()`](https://iobr.github.io/IOBR/reference/creat_folder.md).
+- Examples updated to use
+  [`tempdir()`](https://rdrr.io/r/base/tempfile.html) when file writing
+  is demonstrated.
+
+### Bug Fixes
+
+- **[`find_mutations()`](https://iobr.github.io/IOBR/reference/find_mutations.md)**:
+  Fixed semantic naming error where `file_name` variable was used to
+  store directory paths. Renamed to `output_dir` for clarity. Fixed
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  parameter order issues.
+- **[`iobr_cor_plot()`](https://iobr.github.io/IOBR/reference/iobr_cor_plot.md)**:
+  Fixed
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  parameter order issues. The correct order is `filename` first, then
+  `plot`.
+- **[`surv_group()`](https://iobr.github.io/IOBR/reference/surv_group.md)**:
+  Fixed
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  parameter order issues.
+- **[`roc_time()`](https://iobr.github.io/IOBR/reference/roc_time.md)**:
+  Fixed
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+  parameter order issues.
+- **[`batch_sig_surv_plot()`](https://iobr.github.io/IOBR/reference/batch_sig_surv_plot.md)**:
+  Changed default `save_path` from
+  `file.path(tempdir(), "Multiple-KM-plot")` to `NULL` to prevent
+  automatic directory creation.
+- **[`format_signatures()`](https://iobr.github.io/IOBR/reference/format_signatures.md)**:
+  Changed parameter name from `output_name` to `output_path` for
+  consistency. Added validation requiring `output_path` when
+  `save_signature = TRUE`.
+- **[`find_outlier_samples()`](https://iobr.github.io/IOBR/reference/find_outlier_samples.md)**:
+  Added validation requiring `project` when `save = TRUE`.
+- **[`plotPurity()`](https://iobr.github.io/IOBR/reference/plotPurity.md)**:
+  Changed default `output.dir` from `"estimated_purity_plots"` to
+  `NULL`.
+
 ### Major Changes
 
 - **CRAN Size Compliance**: Moved large datasets (\>5MB total) from

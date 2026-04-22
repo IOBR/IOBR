@@ -59,7 +59,7 @@ sig_box_batch(
 - path:
 
   Character string or \`NULL\`. Directory to save plots. If \`NULL\`,
-  uses default \`"1-sig-box-batch"\`.
+  plots are not saved. Default is \`NULL\`.
 
 - index:
 
@@ -163,5 +163,5 @@ sig_box_batch(
 )
 #> ℹ Processing feature: "TMEscore_plus"
 #> ℹ Processing feature: "GZMB"
-#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpBCLm2C
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpAzCVUs
 ```

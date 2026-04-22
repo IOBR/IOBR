@@ -7,7 +7,7 @@ Handles NA values appropriately.
 ## Usage
 
 ``` r
-format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
+format_signatures(sig_data, save_signature = FALSE, output_path = NULL)
 ```
 
 ## Arguments
@@ -22,9 +22,10 @@ format_signatures(sig_data, save_signature = FALSE, output_name = "signatures")
   Logical. Whether to save the signature list as RData. Default is
   \`FALSE\`.
 
-- output_name:
+- output_path:
 
-  Character. Output RData file name. Default is \`"signatures"\`.
+  Character. Full path (without extension) for output file. Required if
+  \`save_signature = TRUE\`. Default is \`NULL\`.
 
 ## Value
 
