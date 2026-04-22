@@ -128,19 +128,13 @@ iobr_cor_plot <- function(pdata_group,
   }
 
   # Create output directory
-  if (is.null(path)) {
-    file_store <- if (!is.null(target)) {
-      paste0(index, "-1-", ProjectID, "-", target, "-relevant-", category)
-    } else {
-      paste0(index, "-1-", ProjectID, "-", group, "-relevant-", category)
-    }
-    if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
-    abspath <- file.path(getwd(), file_store, "")
-  } else {
-    # Use provided path directly (handles absolute paths like tempdir())
+  save_results <- !is.null(path)
+  if (save_results) {
     file_store <- path
     if (!dir.exists(file_store)) dir.create(file_store, recursive = TRUE)
     abspath <- file.path(normalizePath(file_store, winslash = "/", mustWork = FALSE), "")
+  } else {
+    abspath <- NULL
   }
 
   if (is.null(names(signature_group))) {
@@ -393,20 +387,22 @@ iobr_cor_plot <- function(pdata_group,
     fig_ext <- if (fig.type == "pdf") "pdf" else "png"
 
     prefix <- if (!is.null(target)) target else group
-    ggplot2::ggsave(pp1,
-      filename = paste0(
-        index, "-", x, "-1-", ProjectID, "-", prefix,
-        "-", group_name, "-pvalue-box.", fig_ext
-      ),
-      width = plot_width, height = plot_height, path = file_store
-    )
-    ggplot2::ggsave(pp2,
-      filename = paste0(
-        index, "-", x, "-2-", ProjectID, "-", prefix,
-        "-", group_name, "-box.", fig_ext
-      ),
-      width = plot_width, height = plot_height, path = file_store
-    )
+    if (save_results) {
+      ggplot2::ggsave(pp1,
+        filename = paste0(
+          index, "-", x, "-1-", ProjectID, "-", prefix,
+          "-", group_name, "-pvalue-box.", fig_ext
+        ),
+        width = plot_width, height = plot_height, path = file_store
+      )
+      ggplot2::ggsave(pp2,
+        filename = paste0(
+          index, "-", x, "-2-", ProjectID, "-", prefix,
+          "-", group_name, "-box.", fig_ext
+        ),
+        width = plot_width, height = plot_height, path = file_store
+      )
+    }
 
     # Create heatmap
     colnames(pf_long_group)[colnames(pf_long_group) == group] <- "target_group"
@@ -429,13 +425,15 @@ iobr_cor_plot <- function(pdata_group,
 
     if (show_plot) print(pp)
 
-    pp %>% tidyHeatmap::save_pdf(
-      paste0(
-        abspath, index, "-", x, "-3-", ProjectID, "-", group, "-", group_name,
-        "-tidyheatmap.pdf"
-      ),
-      width = 8, height = height_heatmap
-    )
+    if (save_results) {
+      pp %>% tidyHeatmap::save_pdf(
+        paste0(
+          abspath, index, "-", x, "-3-", ProjectID, "-", group, "-", group_name,
+          "-tidyheatmap.pdf"
+        ),
+        width = 8, height = height_heatmap
+      )
+    }
 
     # Create correlation plot for continuous targets
     if (is_target_continuous && length(group_list[[x]]) <= 20) {
@@ -453,22 +451,24 @@ iobr_cor_plot <- function(pdata_group,
       width_heatmap <- length(group_list[[x]]) * 0.75 + 5
       height_heatmap <- length(group_list[[x]]) * 0.75 + 4
 
-      grDevices::pdf(
-        file = paste0(
-          abspath, index, "-", x, "-4-", ProjectID, "-", group_name,
-          "-associated-", category, "-corplot.pdf"
-        ),
-        width = width_heatmap,
-        height = height_heatmap
-      )
-      rlang::check_installed("corrplot")
-      corrplot::corrplot(bbcor$r,
-        type = "lower", order = "hclust", p.mat = bbcor$P,
-        sig.level = 0.05, tl.srt = 45, tl.col = "black",
-        tl.cex = 1.3, addrect = 2, rect.col = "black",
-        rect.lwd = 3, col = grDevices::colorRampPalette(col)(50)
-      )
-      grDevices::dev.off()
+      if (save_results) {
+        grDevices::pdf(
+          file = paste0(
+            abspath, index, "-", x, "-4-", ProjectID, "-", group_name,
+            "-associated-", category, "-corplot.pdf"
+          ),
+          width = width_heatmap,
+          height = height_heatmap
+        )
+        rlang::check_installed("corrplot")
+        corrplot::corrplot(bbcor$r,
+          type = "lower", order = "hclust", p.mat = bbcor$P,
+          sig.level = 0.05, tl.srt = 45, tl.col = "black",
+          tl.cex = 1.3, addrect = 2, rect.col = "black",
+          rect.lwd = 3, col = grDevices::colorRampPalette(col)(50)
+        )
+        grDevices::dev.off()
+      }
 
       corrplot::corrplot(bbcor$r,
         type = "lower", order = "hclust", p.mat = bbcor$P,
@@ -520,13 +520,15 @@ iobr_cor_plot <- function(pdata_group,
         ) +
         ggplot2::ggtitle(group_name)
 
-      ggplot2::ggsave(p,
-        filename = paste0(
-          index, "-", x, "-5-", ProjectID, "-", group_name,
-          "-associated-", category, "-corplot.", fig_ext
-        ),
-        width = 12, height = 12.8, path = file_store
-      )
+      if (save_results) {
+        ggplot2::ggsave(p,
+          filename = paste0(
+            index, "-", x, "-5-", ProjectID, "-", group_name,
+            "-associated-", category, "-corplot.", fig_ext
+          ),
+          width = 12, height = 12.8, path = file_store
+        )
+      }
     }
   }
 

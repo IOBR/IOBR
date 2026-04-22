@@ -185,10 +185,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
         if (jitter) {
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
-        ggplot2::ggsave(pl[[i]],
-          filename = paste0(4 + i, "-1-", gene, "-continue.pdf"),
-          width = 4, height = 5.8, path = file_name
-        )
+        if (!is.null(save_path)) {
+          ggplot2::ggsave(pl[[i]],
+            filename = paste0(4 + i, "-1-", gene, "-continue.pdf"),
+            width = 4, height = 5.8, path = file_name
+          )
+        }
       }
       rlang::check_installed("patchwork")
       com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
@@ -198,7 +200,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       )
       if (show_plot) print(com_plot)
       #####################################
-      ggplot2::ggsave(com_plot, filename = "3-Relevant_mutations_Continue.pdf", width = 14, height = 10.5, path = file_name)
+      if (!is.null(save_path)) {
+        ggplot2::ggsave(com_plot, filename = "3-Relevant_mutations_Continue.pdf", width = 14, height = 10.5, path = file_name)
+      }
       #####################################
     }
 
@@ -226,7 +230,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     res2 <- res2[order(res2$p.value, decreasing = FALSE), ]
     message(">>> Result of Wilcoxon test (top 10)")
     message(paste(capture.output(res2[1:10, ]), collapse = "\n"))
-    write.csv(res2, paste0(abspath, "2-Wilcoxon-test-relevant-mutations.csv"))
+    if (!is.null(save_path)) {
+      write.csv(res2, paste0(abspath, "2-Wilcoxon-test-relevant-mutations.csv"))
+    }
 
     result <- list(
       "cuzick_test" = res1, "wilcoxon_test" = res2,
@@ -268,10 +274,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
 
-        ggplot2::ggsave(pl[[i]],
-          filename = paste0(4 + i, "-2-", gene, "-binary.pdf"),
-          width = 4, height = 5.8, path = file_name
-        )
+        if (!is.null(save_path)) {
+          ggplot2::ggsave(pl[[i]],
+            filename = paste0(4 + i, "-2-", gene, "-binary.pdf"),
+            width = 4, height = 5.8, path = file_name
+          )
+        }
       }
       com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
         ncol = 5, nrow = 2,
@@ -280,7 +288,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       )
       if (show_plot) print(com_plot)
       #####################################
-      ggplot2::ggsave(com_plot, filename = "4-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+      if (!is.null(save_path)) {
+        ggplot2::ggsave(com_plot, filename = "4-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+      }
       #####################################
     }
   } else if (tolower(method) == "wilcoxon") {
@@ -321,7 +331,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
     message(">>> Result of Wilcoxon test (top 10): ")
     message(paste(capture.output(res[1:10, ]), collapse = "\n"))
 
-    write.csv(res, paste0(abspath, "0-Wilcoxon-test-relevant-mutations.csv"))
+    if (!is.null(save_path)) {
+      write.csv(res, paste0(abspath, "0-Wilcoxon-test-relevant-mutations.csv"))
+    }
 
     result <- list("wilcoxon_test" = res, "sig_mut_data" = input2)
     #################################
@@ -361,10 +373,12 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
           pl[[i]] <- pl[[i]] + ggplot2::geom_jitter(width = 0.25, size = point_size, alpha = point_alpha, color = "black")
         }
 
-        ggplot2::ggsave(pl[[i]],
-          filename = paste0(i, "-1-", gene, "-binary.pdf"),
-          width = 4, height = 5.8, path = file_name
-        )
+        if (!is.null(save_path)) {
+          ggplot2::ggsave(pl[[i]],
+            filename = paste0(i, "-1-", gene, "-binary.pdf"),
+            width = 4, height = 5.8, path = file_name
+          )
+        }
       }
       com_plot <- patchwork::wrap_plots(pl[1:10], #  等价拼图
         ncol = 5, nrow = 2,
@@ -373,7 +387,9 @@ find_mutations <- function(mutation_matrix, signature_matrix, id_signature_matri
       )
       if (show_plot) print(com_plot)
       #####################################
-      ggplot2::ggsave(com_plot, filename = "0-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+      if (!is.null(save_path)) {
+        ggplot2::ggsave(com_plot, filename = "0-Relevant_mutations_binary.pdf", width = 14, height = 10.5, path = file_name)
+      }
       #####################################
     }
   }

@@ -12,7 +12,7 @@
 #' @param group3 Character string or `NULL`. Optional tertiary grouping variable.
 #' @param ID Character string. Column name for sample identifiers. Default is `"ID"`.
 #' @param path Character string or `NULL`. Directory to save output files.
-#'   Default creates `"Marker-heatmap-average"`.
+#'   If `NULL`, the heatmap is not saved. Default is `NULL`.
 #' @param cols1 Character vector or `"random"` or `"normal"`. Colors for primary group.
 #'   Default is `"random"`.
 #' @param seed Integer. Random seed for color generation. Default is `54321`.
@@ -84,8 +84,12 @@ sig_pheatmap <- function(input,
   rlang::check_installed("grid")
 
   # Create output directory
-  file_store <- path %||% "Marker-heatmap-average"
-  path_obj <- creat_folder(file_store)
+  save_results <- !is.null(path)
+  if (save_results) {
+    path_obj <- creat_folder(path)
+  } else {
+    path_obj <- NULL
+  }
 
   # Prepare input data
   input <- as.data.frame(input)
@@ -200,23 +204,25 @@ sig_pheatmap <- function(input,
   )
 
   # Save output
-  outfile <- file.path(
-    path_obj$folder_name,
-    paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type)
-  )
+  if (save_results) {
+    outfile <- file.path(
+      path_obj$folder_name,
+      paste0(file_name_prefix, "-pheatmap-", group, ".", fig.type)
+    )
 
-  if (fig.type == "pdf") {
-    grDevices::pdf(outfile, width = width, height = height)
-  } else if (fig.type %in% c("png", "jpg", "jpeg", "tiff")) {
-    # Handle other formats if needed
-    cli::cli_alert_warning("Only PDF format is fully supported; saving as PDF")
-    grDevices::pdf(outfile, width = width, height = height)
+    if (fig.type == "pdf") {
+      grDevices::pdf(outfile, width = width, height = height)
+    } else if (fig.type %in% c("png", "jpg", "jpeg", "tiff")) {
+      # Handle other formats if needed
+      cli::cli_alert_warning("Only PDF format is fully supported; saving as PDF")
+      grDevices::pdf(outfile, width = width, height = height)
+    }
+
+    ComplexHeatmap::draw(ht)
+    grDevices::dev.off()
+
+    cli::cli_alert_success("Heatmap saved to: {.path {outfile}}")
   }
-
-  ComplexHeatmap::draw(ht)
-  grDevices::dev.off()
-
-  cli::cli_alert_success("Heatmap saved to: {.path {outfile}}")
 
   list(
     p_anno = anno,

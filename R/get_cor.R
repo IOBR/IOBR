@@ -348,7 +348,8 @@ get_cor <- function(eset,
 .save_cor_plot <- function(p, path, var1, var2, index, fig.format,
                            fig.width, fig.height, data) {
   if (is.null(path)) {
-    path <- paste0("1-Cor-of-", var1, "-and-", var2)
+    cli::cli_warn("{.arg path} is NULL; plot will not be saved.")
+    return(invisible(NULL))
   }
 
   ff <- creat_folder(path)

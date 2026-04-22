@@ -267,8 +267,9 @@ sig_gsea <- function(deg,
       as.data.frame()
   } else {
     # Process custom gene sets
-    term2genes <- output_sig(genesets, file.name = "sig")
-    file.remove("sig.csv")
+    tmpbase <- tempfile()
+    term2genes <- output_sig(genesets, file.name = tmpbase)
+    file.remove(paste0(tmpbase, ".csv"))
     rlang::check_installed("reshape2")
     term2genes <- reshape2::melt(as.matrix(term2genes))
     term2genes <- term2genes[, -1]

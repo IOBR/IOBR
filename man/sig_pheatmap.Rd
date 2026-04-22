@@ -46,7 +46,7 @@ sig_pheatmap(
 \item{ID}{Character string. Column name for sample identifiers. Default is `"ID"`.}
 
 \item{path}{Character string or `NULL`. Directory to save output files.
-Default creates `"Marker-heatmap-average"`.}
+If `NULL`, the heatmap is not saved. Default is `NULL`.}
 
 \item{cols1}{Character vector or `"random"` or `"normal"`. Colors for primary group.
 Default is `"random"`.}

@@ -18,7 +18,7 @@
 #'   Default is `TRUE`.
 #' @param index Integer or `NULL`. Index for output file naming.
 #'   Default is `NULL`.
-#' @param save Logical. Whether to save plots to files. Default is `TRUE`.
+#' @param save Logical. Whether to save plots to files. Default is `FALSE`.
 #'
 #' @return Character vector of sample names identified as potential outliers.
 #'
@@ -27,11 +27,11 @@
 #'
 #' @examples
 #' eset_tme_stad <- load_data("eset_tme_stad")
-#' outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
+#' outs <- find_outlier_samples(eset = eset_tme_stad)
 #' print(outs)
 find_outlier_samples <- function(eset, yinter = -3, project = "find_outlier_eset",
                                  plot_hculst = FALSE, show_plot = TRUE,
-                                 index = NULL, save = TRUE) {
+                                 index = NULL, save = FALSE) {
   rlang::check_installed("WGCNA")
 
   if (!is.matrix(eset) && !is.data.frame(eset)) {

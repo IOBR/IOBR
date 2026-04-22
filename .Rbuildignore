@@ -45,3 +45,4 @@
 ^CRAN-SUBMISSION$
 ^Dockerfile$
 ^Rplots.pdf$
+^cran-comments\.md$

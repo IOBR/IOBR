@@ -1,5 +1,11 @@
 # IOBR 2.2.0
 
+## CRAN Policy Fix (Resubmission)
+
+* Fixed all functions that wrote to the user's home filespace (working directory) by default. Writing now only occurs when an explicit `path` / `save_path` / `output.dir` is provided.
+* Affected functions: `eset_distribution()`, `find_outlier_samples()`, `iobr_cor_plot()`, `sig_pheatmap()`, `sig_box_batch()`, `plotPurity()`, `IPS_calculation()`, `find_mutations()`, `sig_gsea()`, `get_cor()`, and `creat_folder()`.
+* Examples updated to use `tempdir()` when file writing is demonstrated.
+
 ## Major Changes
 
 * **CRAN Size Compliance**: Moved large datasets (>5MB total) from `R/sysdata.rda` and `data/` to GitHub Releases to meet CRAN package size requirements. Data is now downloaded on-demand and cached locally.

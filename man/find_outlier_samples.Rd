@@ -11,7 +11,7 @@ find_outlier_samples(
   plot_hculst = FALSE,
   show_plot = TRUE,
   index = NULL,
-  save = TRUE
+  save = FALSE
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ Default is `TRUE`.}
 \item{index}{Integer or `NULL`. Index for output file naming.
 Default is `NULL`.}
 
-\item{save}{Logical. Whether to save plots to files. Default is `TRUE`.}
+\item{save}{Logical. Whether to save plots to files. Default is `FALSE`.}
 }
 \value{
 Character vector of sample names identified as potential outliers.
@@ -46,7 +46,7 @@ plots, and optionally performs hierarchical clustering.
 }
 \examples{
 eset_tme_stad <- load_data("eset_tme_stad")
-outs <- find_outlier_samples(eset = eset_tme_stad, save = FALSE)
+outs <- find_outlier_samples(eset = eset_tme_stad)
 print(outs)
 }
 \author{

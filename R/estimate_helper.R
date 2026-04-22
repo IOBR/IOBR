@@ -317,7 +317,7 @@ outputGCT <- function(input.f,
 #' @param scores A character string specifying the path to the input file containing ESTIMATE scores. The file should be a tab-separated table with appropriate headers.
 #' @param samples A character vector specifying the sample names to plot. The default is "all_samples", which plots all samples in the input file.
 #' @param platform A character string specifying the platform used for data collection. Can be "affymetrix", "agilent", or "illumina". Currently, only "affymetrix" is implemented.
-#' @param output.dir A character string specifying the directory to save the output plots. The default is "estimated_purity_plots".
+#' @param output.dir A character string specifying the directory to save the output plots. If `NULL`, plots are not saved. Default is `NULL`.
 #'
 #' @return No return value. The function generates and saves scatterplots in the specified output directory.
 #' @export
@@ -341,7 +341,7 @@ outputGCT <- function(input.f,
 plotPurity <- function(scores,
                        samples = "all_samples",
                        platform = c("affymetrix", "agilent", "illumina"),
-                       output.dir = "estimated_purity_plots") {
+                       output.dir = NULL) {
   ## Check arguments
   stopifnot((is.character(scores) && length(scores) == 1 && nzchar(scores)) ||
     (inherits(scores, "connection") && isOpen(scores, "r")))
@@ -376,10 +376,14 @@ plotPurity <- function(scores,
   est.new <- estimate.df[, 4]
 
   ## Create output directory
-  dir.create(output.dir)
+  if (!is.null(output.dir)) {
+    dir.create(output.dir, showWarnings = FALSE, recursive = TRUE)
+  }
 
   ## ESTIMATE based tumor purity in scatterplot with prediction interval
-  message("Plotting tumor purity based on ESTIMATE score")
+  if (!is.null(output.dir)) {
+    message("Plotting tumor purity based on ESTIMATE score")
+  }
 
   max.af <- max(Affy.model$ESTIMATEScore)
   min.af <- min(Affy.model$ESTIMATEScore)
@@ -397,8 +401,10 @@ plotPurity <- function(scores,
       samplename <- samples[i]
     }
 
-    png.filename <- file.path(output.dir, sprintf("%s.png", samplename))
-    png(filename = png.filename, width = 480, height = 480)
+    if (!is.null(output.dir)) {
+      png.filename <- file.path(output.dir, sprintf("%s.png", samplename))
+      png(filename = png.filename, width = 480, height = 480)
+    }
 
     geMin <- est[i] >= min.af
     leMax <- est[i] <= max.af
@@ -447,6 +453,8 @@ plotPurity <- function(scores,
     abline(h = est.new[i], col = "black", lty = 2)
     abline(v = est[i], col = "black", lty = 2)
 
-    dev.off()
+    if (!is.null(output.dir)) {
+      dev.off()
+    }
   }
 }

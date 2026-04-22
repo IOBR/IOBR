@@ -42,7 +42,7 @@ sig_box_batch(
 expression patterns for matching column names. Default is `FALSE`.}
 
 \item{path}{Character string or `NULL`. Directory to save plots. If `NULL`,
-uses default `"1-sig-box-batch"`.}
+plots are not saved. Default is `NULL`.}
 
 \item{index}{Integer. Starting index for plot filenames. Default is `0`.}
 

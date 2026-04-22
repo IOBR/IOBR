@@ -13,7 +13,7 @@
 #' @param pattern_vars Logical indicating whether to treat `vars` as regular
 #'   expression patterns for matching column names. Default is `FALSE`.
 #' @param path Character string or `NULL`. Directory to save plots. If `NULL`,
-#'   uses default `"1-sig-box-batch"`.
+#'   plots are not saved. Default is `NULL`.
 #' @param index Integer. Starting index for plot filenames. Default is `0`.
 #' @param angle_x_text Numeric. Angle of x-axis labels in degrees. Default is `0`.
 #' @param hjust Numeric. Horizontal justification of x-axis labels. Default is `0.5`.
@@ -126,7 +126,12 @@ sig_box_batch <- function(input,
   }
 
   # Create output directory
-  path <- creat_folder(path %||% "1-sig-box-batch")
+  save_results <- !is.null(path)
+  if (save_results) {
+    path <- creat_folder(path)
+  } else {
+    path <- NULL
+  }
 
   # Process multiple variables
   if (length(vars) > 1) {
@@ -153,7 +158,7 @@ sig_box_batch <- function(input,
         scale           = scale
       )
 
-      if (!return_stat_res) {
+      if (!return_stat_res && save_results) {
         ggplot2::ggsave(
           filename = paste0(index + i, "-", vars[i], "-and-", groups, ".", fig_type),
           height   = height,
@@ -191,7 +196,7 @@ sig_box_batch <- function(input,
         scale           = scale
       )
 
-      if (!return_stat_res) {
+      if (!return_stat_res && save_results) {
         # Adjust height based on number of groups
         levs <- unique(input[[groups[i]]])
         levs <- length(levs[!is.na(levs)])
@@ -207,7 +212,10 @@ sig_box_batch <- function(input,
     }
   }
 
-  cli::cli_alert_success("Batch processing complete. Plots saved to: {.path {path$folder_name}}")
-
-  invisible(path$folder_name)
+  if (save_results) {
+    cli::cli_alert_success("Batch processing complete. Plots saved to: {.path {path$folder_name}}")
+    invisible(path$folder_name)
+  } else {
+    invisible(NULL)
+  }
 }

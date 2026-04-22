@@ -14,7 +14,7 @@
 #' @param project Optional project name for output files. Default is `NULL`
 #'   (uses "ESET").
 #'
-#' @return Invisibly returns `NULL`. Side effect: saves PNG files to disk.
+#' @return Invisibly returns `NULL`. If `project` is provided, saves PNG files to disk.
 #'
 #' @export
 #'
@@ -22,6 +22,7 @@
 #' eset_stad <- load_data("eset_stad")
 #' anno_rnaseq <- load_data("anno_rnaseq")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+#' eset_distribution(eset)
 #' eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
   if (!is.matrix(eset) && !is.data.frame(eset)) {
@@ -54,10 +55,7 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
   eset.melt <- reshape2::melt(eset1, id.vars = "Sample.Name")
   colnames(eset.melt)[2:3] <- c("Symbol", "Intensity")
 
-  if (is.null(project)) {
-    path <- creat_folder("result")
-    project <- "ESET"
-  } else {
+  if (!is.null(project)) {
     path <- creat_folder(project)
   }
 
@@ -85,13 +83,6 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
       plot.subtitle = ggplot2::element_text(size = 18, hjust = 0.1, face = "italic", color = "black")
     )
 
-  ggplot2::ggsave(
-    filename = paste0("1-", project, "-boxplot.png"),
-    plot = p,
-    width = 15, height = 8,
-    path = path$folder_name
-  )
-
   p2 <- ggplot2::ggplot(eset.melt, ggplot2::aes(.data$Intensity, group = .data$Sample.Name)) +
     ggplot2::geom_density() +
     ggplot2::theme_bw() +
@@ -103,12 +94,21 @@ eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
     ggplot2::ylab("Density") +
     ggplot2::xlab("Log2 Expression")
 
-  ggplot2::ggsave(
-    filename = paste0("2-", project, "-Densityplot.png"),
-    plot = p2,
-    width = 9, height = 6,
-    path = path$folder_name
-  )
+  if (!is.null(project)) {
+    ggplot2::ggsave(
+      filename = paste0("1-", project, "-boxplot.png"),
+      plot = p,
+      width = 15, height = 8,
+      path = path$folder_name
+    )
+
+    ggplot2::ggsave(
+      filename = paste0("2-", project, "-Densityplot.png"),
+      plot = p2,
+      width = 9, height = 6,
+      path = path$folder_name
+    )
+  }
 
   invisible(NULL)
 }

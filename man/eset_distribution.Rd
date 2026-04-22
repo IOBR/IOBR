@@ -20,7 +20,7 @@ Default is `TRUE`.}
 (uses "ESET").}
 }
 \value{
-Invisibly returns `NULL`. Side effect: saves PNG files to disk.
+Invisibly returns `NULL`. If `project` is provided, saves PNG files to disk.
 }
 \description{
 Generates boxplots and density plots to analyze the distribution of
@@ -31,5 +31,6 @@ assessing data normalization.
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+eset_distribution(eset)
 eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 }

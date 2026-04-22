@@ -32,7 +32,7 @@ creat_folder <- function(f1, f2 = NULL, f3 = NULL, return = NULL) {
     (nchar(f1) > 1 && substr(f1, 2, 2) == ":")) {
     path <- do.call(file.path, as.list(components))
   } else {
-    path <- do.call(file.path, c(list(getwd()), components))
+    path <- do.call(file.path, c(list(tempdir()), components))
   }
 
   if (!dir.exists(path)) {

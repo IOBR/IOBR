@@ -116,7 +116,7 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
     IPS[i] <- ipsmap(AZ[i])
 
     if (plot) {
-      file_name <- "IPS-Results"
+      file_name <- file.path(tempdir(), "IPS-Results")
       if (!dir.exists(file_name)) dir.create(file_name, recursive = TRUE)
 
       plotpath <- file.path(file_name, "IPS_plot_results")

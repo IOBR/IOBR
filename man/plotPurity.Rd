@@ -8,7 +8,7 @@ plotPurity(
   scores,
   samples = "all_samples",
   platform = c("affymetrix", "agilent", "illumina"),
-  output.dir = "estimated_purity_plots"
+  output.dir = NULL
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ plotPurity(
 
 \item{platform}{A character string specifying the platform used for data collection. Can be "affymetrix", "agilent", or "illumina". Currently, only "affymetrix" is implemented.}
 
-\item{output.dir}{A character string specifying the directory to save the output plots. The default is "estimated_purity_plots".}
+\item{output.dir}{A character string specifying the directory to save the output plots. If `NULL`, plots are not saved. Default is `NULL`.}
 }
 \value{
 No return value. The function generates and saves scatterplots in the specified output directory.
