@@ -38,7 +38,8 @@ eset_stad <- load_data("eset_stad")
 anno_grch38 <- load_data("anno_grch38")
 #> ℹ Loading cached data: "anno_grch38"
 hallmark <- load_data("hallmark")
-#> ℹ Loading cached data: "hallmark"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "hallmark"
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number of original eset: 60483
 #> ✔ 100% of probes in expression set were annotated

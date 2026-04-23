@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,21 @@
       <small>Source: <a href="https://github.com/IOBR/IOBR/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="iobr-development-version">IOBR (development version)<a class="anchor" aria-label="anchor" href="#iobr-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>
+<strong>Custom Cache Directory</strong>: Added support for customizing the download cache location via <code>options(IOBR.cache_dir = "your/path")</code>. New functions:
+<ul><li>
+<code><a href="../reference/get_iobr_cache_dir.html">get_iobr_cache_dir()</a></code> - Get current cache directory path</li>
+<li>
+<code>set_iobr_cache_dir(path)</code> - Set custom cache directory</li>
+<li>
+<code><a href="../reference/reset_iobr_cache_dir.html">reset_iobr_cache_dir()</a></code> - Reset to default system cache location This enables users to store cached data on shared network drives or any preferred location for easy access across sessions.</li>
+</ul></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.0" id="iobr-220">IOBR 2.2.0<a class="anchor" aria-label="anchor" href="#iobr-220"></a></h2><p class="text-muted">CRAN release: 2026-04-22</p>
 <div class="section level3">

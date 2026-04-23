@@ -74,7 +74,8 @@ eset_tme_stad <- load_data("eset_tme_stad")
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "eset_tme_stad"
 lm22 <- load_data("lm22")
-#> ℹ Loading cached data: "lm22"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "lm22"
 # \donttest{
 cibersort_result <- deconvo_cibersort(
   eset = eset_tme_stad,

@@ -403,7 +403,8 @@ Miscellaneous helper functions for data and file management.
 
 ## Data Download & Management
 
-Download large datasets from GitHub with mirror support.
+Download large datasets from GitHub with mirror support and custom cache
+directory.
 
 - [`download_iobr_data()`](https://iobr.github.io/IOBR/reference/download_iobr_data.md)
   : Download IOBR Data from GitHub with Mirror Support
@@ -415,6 +416,12 @@ Download large datasets from GitHub with mirror support.
   : List Current Download Mirrors
 - [`reset_iobr_mirrors()`](https://iobr.github.io/IOBR/reference/reset_iobr_mirrors.md)
   : Reset Download Mirrors to Default
+- [`get_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/get_iobr_cache_dir.md)
+  : Get IOBR Cache Directory
+- [`set_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/set_iobr_cache_dir.md)
+  : Set IOBR Cache Directory
+- [`reset_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/reset_iobr_cache_dir.md)
+  : Reset IOBR Cache Directory to Default
 - [`clear_iobr_cache()`](https://iobr.github.io/IOBR/reference/clear_iobr_cache.md)
   : Clear IOBR Data Cache
 

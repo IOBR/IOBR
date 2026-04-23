@@ -13,7 +13,7 @@ datasets."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,11 +129,13 @@ the count matrix. Default is `FALSE`.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Load TCGA count data</span></span></span>
 <span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_stad"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/4: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"eset_stad"</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Transform to TPM using local gene annotation</span></span></span>
 <span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu">count2tpm</span><span class="op">(</span>countMat <span class="op">=</span> <span class="va">eset_stad</span>, source <span class="op">=</span> <span class="st">"local"</span>, idType <span class="op">=</span> <span class="st">"ensembl"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"anno_grch38"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/4: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"anno_grch38"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using local annotation (anno_grch38) for TPM conversion</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Omitting 3985 genes without length information</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 1679 duplicate symbols. Using <span style="color: #0000BB;">"mean"</span> for ranking.</span>

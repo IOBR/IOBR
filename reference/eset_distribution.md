@@ -41,7 +41,8 @@ to disk.
 
 ``` r
 eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "eset_stad"
 anno_rnaseq <- load_data("anno_rnaseq")
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "anno_rnaseq"

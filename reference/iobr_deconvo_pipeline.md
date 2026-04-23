@@ -81,8 +81,10 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running EPIC deconvolution
-#> ℹ Loading cached data: "TRef"
-#> ℹ Loading cached data: "mRNA_cell_default"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "TRef"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> TCGA-BR-6455; TCGA-FP-7916
 #>  - check fit.gof for the convergeCode and convergeMessage
@@ -93,7 +95,8 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running xCell deconvolution
-#> ℹ Loading cached data: "xCell.data"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
 #> ℹ GSVA version 2.4.9
 #> ℹ Searching for rows with constant values
@@ -119,15 +122,18 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Running TIMER deconvolution
 #> ℹ Enter batch mode
 #> ℹ Loading immune gene expression
-#> ℹ Loading cached data: "immuneCuratedData"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "immuneCuratedData"
 #> ℹ Outlier genes: ACTB ACTG1 CD74 COL1A1 EEF1A1 ERBB2 FLNA IGHG1 IGKC MT-CO1 MT-CO2 MT-ND4 MT-RNR2 MYH11
 #> ℹ Removing batch effects for stad
-#> ℹ Loading cached data: "cancer_type_genes"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "cancer_type_genes"
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running quanTIseq deconvolution
 #> ℹ Running quanTIseq deconvolution module
-#> ℹ Loading cached data: "quantiseq_data"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
 #> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Removing 17 noisy genes
@@ -138,7 +144,8 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running IPS calculation
-#> ℹ Loading cached data: "ips_gene_set"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "ips_gene_set"
 #> [1] ">>>>> TME cell deconvolution was completed: STAD"
 #> ℹ Calculating signature scores using PCA, z-score, and ssGSEA methods
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
@@ -173,6 +180,8 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
 #> ℹ Calculating ranks
 #> ℹ Calculating rank weights
+#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■                  50% | ETA:  2s
+#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 #> [1] ">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: STAD"

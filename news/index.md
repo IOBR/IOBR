@@ -1,5 +1,20 @@
 # Changelog
 
+## IOBR (development version)
+
+### New Features
+
+- **Custom Cache Directory**: Added support for customizing the download
+  cache location via `options(IOBR.cache_dir = "your/path")`. New
+  functions:
+  - [`get_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/get_iobr_cache_dir.md) -
+    Get current cache directory path
+  - `set_iobr_cache_dir(path)` - Set custom cache directory
+  - [`reset_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/reset_iobr_cache_dir.md) -
+    Reset to default system cache location This enables users to store
+    cached data on shared network drives or any preferred location for
+    easy access across sessions.
+
 ## IOBR 2.2.0
 
 CRAN release: 2026-04-22

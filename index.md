@@ -169,6 +169,35 @@ docker run -d -p 8787:8787 -e PASSWORD=yourpassword ghcr.io/iobr/iobr:latest
 library(IOBR)
 ```
 
+## 💾 Data Cache Management
+
+IOBR downloads large datasets from GitHub releases and caches them
+locally. You can customize the cache location:
+
+``` r
+# Check current cache directory
+get_iobr_cache_dir()
+
+# Set a custom cache directory (persists for current R session)
+set_iobr_cache_dir("~/my_iobr_cache")
+
+# Or set via options (useful in .Rprofile for permanent setting)
+options(IOBR.cache_dir = "~/my_iobr_cache")
+
+# Clear cached data
+clear_iobr_cache()
+
+# Reset to default cache location
+reset_iobr_cache_dir()
+```
+
+To permanently set a custom cache directory, add this to your
+`~/.Rprofile`:
+
+``` r
+options(IOBR.cache_dir = "/path/to/your/cache")
+```
+
 ## 🚀 Quick Start
 
 ### TME Deconvolution

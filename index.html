@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -229,12 +229,35 @@ IOBR Package
 </div>
 </div>
 <div class="section level2">
+<h2 id="id_-data-cache-management">💾 Data Cache Management<a class="anchor" aria-label="anchor" href="#id_-data-cache-management"></a>
+</h2>
+<p>IOBR downloads large datasets from GitHub releases and caches them locally. You can customize the cache location:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Check current cache directory</span></span>
+<span><span class="fu"><a href="reference/get_iobr_cache_dir.html">get_iobr_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set a custom cache directory (persists for current R session)</span></span>
+<span><span class="fu"><a href="reference/set_iobr_cache_dir.html">set_iobr_cache_dir</a></span><span class="op">(</span><span class="st">"~/my_iobr_cache"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or set via options (useful in .Rprofile for permanent setting)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>IOBR.cache_dir <span class="op">=</span> <span class="st">"~/my_iobr_cache"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Clear cached data</span></span>
+<span><span class="fu"><a href="reference/clear_iobr_cache.html">clear_iobr_cache</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Reset to default cache location</span></span>
+<span><span class="fu"><a href="reference/reset_iobr_cache_dir.html">reset_iobr_cache_dir</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>To permanently set a custom cache directory, add this to your <code>~/.Rprofile</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>IOBR.cache_dir <span class="op">=</span> <span class="st">"/path/to/your/cache"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="id_-quick-start">🚀 Quick Start<a class="anchor" aria-label="anchor" href="#id_-quick-start"></a>
 </h2>
 <div class="section level3">
 <h3 id="tme-deconvolution">TME Deconvolution<a class="anchor" aria-label="anchor" href="#tme-deconvolution"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available TME deconvolution methods</span></span>
 <span><span class="va">tme_deconvolution_methods</span></span>
 <span></span>
@@ -247,7 +270,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-score-calculation">Signature Score Calculation<a class="anchor" aria-label="anchor" href="#signature-score-calculation"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available signature score calculation methods</span></span>
 <span><span class="va">signature_score_calculation_methods</span></span>
 <span></span>
@@ -278,7 +301,7 @@ IOBR Package
 <h3 id="package-vignettes">Package Vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
 </h3>
 <p>Vignettes are available within the package and can be accessed using:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"IOBR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -288,7 +311,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="tme-deconvolution-methods">TME Deconvolution Methods<a class="anchor" aria-label="anchor" href="#tme-deconvolution-methods"></a>
 </h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tme_deconvolution_methods</span></span>
 <span><span class="co">#&gt;         MCPcounter               EPIC              xCell          CIBERSORT </span></span>
 <span><span class="co">#&gt;       "mcpcounter"             "epic"            "xcell"        "cibersort" </span></span>
@@ -300,7 +323,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-score-calculation-methods">Signature Score Calculation Methods<a class="anchor" aria-label="anchor" href="#signature-score-calculation-methods"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">signature_score_calculation_methods</span></span>
 <span><span class="co">#&gt;           PCA        ssGSEA       z-score   Integration </span></span>
 <span><span class="co">#&gt;         "pca"      "ssgsea"      "zscore" "integration"</span></span></code></pre></div>
@@ -308,7 +331,7 @@ IOBR Package
 <div class="section level3">
 <h3 id="signature-collection">Signature Collection<a class="anchor" aria-label="anchor" href="#signature-collection"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">signature_collection</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_data.html">load_data</a></span><span class="op">(</span><span class="st">"signature_collection"</span><span class="op">)</span></span>
 <span><span class="co"># Number of available signatures</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">signature_collection</span><span class="op">)</span></span>

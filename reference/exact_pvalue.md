@@ -36,7 +36,8 @@ Dongqiang Zeng
 
 ``` r
 sig_stad <- load_data("sig_stad")
-#> ℹ Loading cached data: "sig_stad"
+#> ℹ Trying mirror 1/4: <https://github.com>
+#> ✔ Download complete: "sig_stad"
 p_val <- exact_pvalue(
   x = sig_stad$CD8.T.cells,
   y = sig_stad$CD_8_T_effector,

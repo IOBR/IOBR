@@ -104,6 +104,7 @@
 <url><loc>https://iobr.github.io/IOBR/reference/get_cor.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_cor_matrix.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_default_mirrors.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/get_iobr_cache_dir.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/get_sig_sc.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/gsva_use_new_api.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/high_var_fea.html</loc></url>
@@ -148,11 +149,13 @@
 <url><loc>https://iobr.github.io/IOBR/reference/remove_batcheffect.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/remove_duplicate_genes.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/remove_names.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/reset_iobr_cache_dir.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/reset_iobr_mirrors.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/roc_time.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/scaleCounts.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/scale_matrix.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/select_method.html</loc></url>
+<url><loc>https://iobr.github.io/IOBR/reference/set_iobr_cache_dir.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sigScore.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sig_box.html</loc></url>
 <url><loc>https://iobr.github.io/IOBR/reference/sig_box_batch.html</loc></url>
