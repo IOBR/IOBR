@@ -180,7 +180,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
 #> ℹ Calculating ranks
 #> ℹ Calculating rank weights
-#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■                  50% | ETA:  2s
+#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■                  50% | ETA:  3s
 #> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
