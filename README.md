@@ -4,6 +4,10 @@
 # IOBR: Immuno-Oncology Biological Research
 
 [![R-CMD-check.yaml](https://github.com/IOBR/IOBR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/IOBR/IOBR/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/IOBR)](https://cran.r-project.org/package=IOBR)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/IOBR?color=blue)](https://cran.r-project.org/package=IOBR)
 [![GitHub
 stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/stargazers/)
 [![GitHub
