@@ -292,13 +292,16 @@ reference:
       - remove_names
 
   - title: "Data Download & Management"
-    desc: "Download large datasets from GitHub with mirror support."
+    desc: "Download large datasets from GitHub with mirror support and custom cache directory."
     contents:
       - download_iobr_data
       - list_github_datasets
       - add_iobr_mirror
       - list_iobr_mirrors
       - reset_iobr_mirrors
+      - get_iobr_cache_dir
+      - set_iobr_cache_dir
+      - reset_iobr_cache_dir
       - clear_iobr_cache
 
   - title: "Datasets — Gene Signatures"

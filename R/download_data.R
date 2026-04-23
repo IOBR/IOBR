@@ -3,13 +3,16 @@
 #' @description
 #' Downloads large datasets from GitHub releases to avoid CRAN size limits.
 #' Supports multiple download mirrors for users in different regions.
-#' Data is cached locally after first download.
+#' Data is cached locally after first download. Cache directory can be
+#' customized via `options(IOBR.cache_dir = "your/path")`.
 #'
 #' @param name Character string. Name of the dataset to download.
 #' @param force Logical. Whether to force re-download even if cached. Default: FALSE.
 #' @param verbose Logical. Whether to print progress messages. Default: TRUE.
 #' @param mirrors Character vector. URLs of mirrors to try. Default uses
 #'   get_default_mirrors().
+#' @param cache_dir Character string. Custom cache directory. If NULL, uses
+#'   the option `IOBR.cache_dir` or the default system cache location.
 #'
 #' @return The requested dataset.
 #' @export
@@ -26,9 +29,14 @@
 #'     "https://gh-proxy.org/https://github.com"
 #'   )
 #' )
+#'
+#' # Use custom cache directory (use tempdir() for examples)
+#' options(IOBR.cache_dir = tempdir())
+#' data <- download_iobr_data("lm22")
 #' }
 download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
-                               mirrors = get_default_mirrors()) {
+                               mirrors = get_default_mirrors(),
+                               cache_dir = NULL) {
   # Get all available GitHub datasets
   github_data <- list_github_datasets()
 
@@ -39,8 +47,8 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
     ))
   }
 
-  # Set up cache directory
-  cache_dir <- tools::R_user_dir("IOBR", which = "cache")
+  # Set up cache directory (priority: argument > option > default)
+  cache_dir <- get_iobr_cache_dir(cache_dir)
   if (!dir.exists(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
   }
@@ -101,7 +109,7 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
   }
 
   # All mirrors failed
-  cache_dir <- tools::R_user_dir("IOBR", which = "cache")
+  cache_dir <- get_iobr_cache_dir()
   manual_url <- sprintf(
     "https://github.com/IOBR/IOBR/releases/download/data-v1.0/%s.rda", name
   )
@@ -238,6 +246,103 @@ reset_iobr_mirrors <- function() {
   invisible(get_default_mirrors())
 }
 
+#' Get IOBR Cache Directory
+#'
+#' @description Returns the current cache directory for IOBR downloaded data.
+#' The cache directory is determined in the following priority order:
+#' 1. Function argument `cache_dir` (if provided)
+#' 2. Option `IOBR.cache_dir` (if set via `options()`)
+#' 3. Default system cache location via `tools::R_user_dir()`
+#'
+#' @param cache_dir Optional character string to override the current setting.
+#' @return Character string with the cache directory path.
+#' @export
+#'
+#' @examples
+#' # Get current cache directory
+#' get_iobr_cache_dir()
+#'
+#' # Set custom cache directory via options (use tempdir() for examples)
+#' options(IOBR.cache_dir = tempdir())
+#' get_iobr_cache_dir()
+get_iobr_cache_dir <- function(cache_dir = NULL) {
+  # Priority: argument > option > default
+  if (!is.null(cache_dir)) {
+    if (!is.character(cache_dir) || length(cache_dir) != 1) {
+      stop("'cache_dir' must be a single character string")
+    }
+    return(path.expand(cache_dir))
+  }
+
+  option_cache <- getOption("IOBR.cache_dir")
+  if (!is.null(option_cache)) {
+    return(path.expand(option_cache))
+  }
+
+  # Default to R user cache directory
+  tools::R_user_dir("IOBR", which = "cache")
+}
+
+#' Set IOBR Cache Directory
+#'
+#' @description Sets a custom cache directory for IOBR downloaded data.
+#' This is useful when you want to store cached data in a specific location,
+#' such as a shared network drive or a custom directory.
+#'
+#' @param path Character string. The path to the cache directory.
+#' @param create Logical. Whether to create the directory if it doesn't exist.
+#'   Default: TRUE.
+#'
+#' @return Invisibly returns the cache directory path.
+#' @export
+#'
+#' @examples
+#' \donttest{
+#' # Set a custom cache directory (use tempdir() for examples)
+#' set_iobr_cache_dir(tempdir())
+#'
+#' # Check the current cache directory
+#' get_iobr_cache_dir()
+#'
+#' # Download data will now use the custom cache
+#' data <- download_iobr_data("lm22")
+#' }
+set_iobr_cache_dir <- function(path, create = TRUE) {
+  if (!is.character(path) || length(path) != 1) {
+    stop("'path' must be a single character string")
+  }
+
+  path <- path.expand(path)
+
+  if (create && !dir.exists(path)) {
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
+    if (!dir.exists(path)) {
+      stop(sprintf("Failed to create cache directory: %s", path))
+    }
+    cli::cli_alert_success("Created cache directory: {.path {path}}")
+  }
+
+  options(IOBR.cache_dir = path)
+  cli::cli_alert_success("IOBR cache directory set to: {.path {path}}")
+
+  invisible(path)
+}
+
+#' Reset IOBR Cache Directory to Default
+#'
+#' @description Resets the cache directory to the default system location.
+#' @return Invisibly returns the default cache directory path.
+#' @export
+#'
+#' @examples
+#' reset_iobr_cache_dir()
+reset_iobr_cache_dir <- function() {
+  options(IOBR.cache_dir = NULL)
+  default_cache <- tools::R_user_dir("IOBR", which = "cache")
+  cli::cli_alert_success("Cache directory reset to default: {.path {default_cache}}")
+  invisible(default_cache)
+}
+
 #' List Available GitHub Datasets
 #'
 #' @return Character vector of available dataset names.
@@ -283,19 +388,25 @@ list_github_datasets <- function() {
 #' Clear IOBR Data Cache
 #'
 #' @description Removes all cached data files downloaded from GitHub.
+#' @param cache_dir Character string. Custom cache directory. If NULL, uses
+#'   the option `IOBR.cache_dir` or the default system cache location.
 #' @return Invisible NULL. Called for side effects of clearing the cache.
 #' @export
-clear_iobr_cache <- function() {
-  cache_dir <- tools::R_user_dir("IOBR", which = "cache")
+#'
+#' @examples
+#' clear_iobr_cache()
+clear_iobr_cache <- function(cache_dir = NULL) {
+  cache_dir <- get_iobr_cache_dir(cache_dir)
   if (dir.exists(cache_dir)) {
     files <- list.files(cache_dir, full.names = TRUE)
     if (length(files) > 0) {
       file.remove(files)
-      cli::cli_alert_success("Cache cleared: {.val {length(files)}} file(s) removed")
+      cli::cli_alert_success("Cache cleared: {.val {length(files)}} file(s) removed from {.path {cache_dir}}")
     } else {
-      cli::cli_alert_info("Cache is already empty")
+      cli::cli_alert_info("Cache is already empty: {.path {cache_dir}}")
     }
   } else {
-    cli::cli_alert_info("Cache directory does not exist")
+    cli::cli_alert_info("Cache directory does not exist: {.path {cache_dir}}")
   }
+  invisible(NULL)
 }

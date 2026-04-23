@@ -4,11 +4,18 @@
 \alias{clear_iobr_cache}
 \title{Clear IOBR Data Cache}
 \usage{
-clear_iobr_cache()
+clear_iobr_cache(cache_dir = NULL)
+}
+\arguments{
+\item{cache_dir}{Character string. Custom cache directory. If NULL, uses
+the option `IOBR.cache_dir` or the default system cache location.}
 }
 \value{
 Invisible NULL. Called for side effects of clearing the cache.
 }
 \description{
 Removes all cached data files downloaded from GitHub.
+}
+\examples{
+clear_iobr_cache()
 }

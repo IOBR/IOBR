@@ -8,7 +8,8 @@ download_iobr_data(
   name,
   force = FALSE,
   verbose = TRUE,
-  mirrors = get_default_mirrors()
+  mirrors = get_default_mirrors(),
+  cache_dir = NULL
 )
 }
 \arguments{
@@ -20,6 +21,9 @@ download_iobr_data(
 
 \item{mirrors}{Character vector. URLs of mirrors to try. Default uses
 get_default_mirrors().}
+
+\item{cache_dir}{Character string. Custom cache directory. If NULL, uses
+the option `IOBR.cache_dir` or the default system cache location.}
 }
 \value{
 The requested dataset.
@@ -27,7 +31,8 @@ The requested dataset.
 \description{
 Downloads large datasets from GitHub releases to avoid CRAN size limits.
 Supports multiple download mirrors for users in different regions.
-Data is cached locally after first download.
+Data is cached locally after first download. Cache directory can be
+customized via `options(IOBR.cache_dir = "your/path")`.
 }
 \examples{
 \donttest{
@@ -41,5 +46,9 @@ eset <- download_iobr_data("eset_stad",
     "https://gh-proxy.org/https://github.com"
   )
 )
+
+# Use custom cache directory (use tempdir() for examples)
+options(IOBR.cache_dir = tempdir())
+data <- download_iobr_data("lm22")
 }
 }
