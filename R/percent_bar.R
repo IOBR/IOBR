@@ -83,7 +83,7 @@ percent_bar_plot <- function(input, x, y,
 
   if (add_sum) {
     df_sum <- as.data.frame(df_sum)
-    df_sum[, 1] <- paste0(as.character(df_sum[, 1]), "(", df_sum$count, ")")
+    df_sum[, 1] <- paste0(as.character(df_sum[, 1]), "\n(", df_sum$count, ")")
   }
 
   hjust <- if (axis_angle == 0) 0.5 else 1
@@ -100,7 +100,7 @@ percent_bar_plot <- function(input, x, y,
     ggplot2::scale_fill_manual(values = color) +
     ggplot2::xlab(NULL) +
     design_mytheme(
-      axis_text_size = 20, axis_angle = axis_angle, hjust = hjust,
+      axis_text_size = 10, axis_angle = axis_angle, hjust = hjust,
       legend.size = legend.size, legend.size.text = legend.size.text
     )
 
