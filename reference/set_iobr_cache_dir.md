@@ -31,11 +31,11 @@ Invisibly returns the cache directory path.
 # \donttest{
 # Set a custom cache directory (use tempdir() for examples)
 set_iobr_cache_dir(tempdir())
-#> ✔ IOBR cache directory set to: /tmp/Rtmp5pJcZ0
+#> ✔ IOBR cache directory set to: /tmp/Rtmpw1oEFv
 
 # Check the current cache directory
 get_iobr_cache_dir()
-#> [1] "/tmp/Rtmp5pJcZ0"
+#> [1] "/tmp/Rtmpw1oEFv"
 
 # Download data will now use the custom cache
 data <- download_iobr_data("lm22")

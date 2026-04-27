@@ -72,11 +72,9 @@ result <- calculate_sig_score_ssgsea(eset = eset, signature = signature)
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Calculating scores for 2 signature(s)
-#> ℹ GSVA version 2.4.9
+#> ℹ GSVA version 2.5.41
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 2 gene sets
-#> ℹ Calculating ranks
-#> ℹ Calculating rank weights
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 # }

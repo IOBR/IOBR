@@ -54,7 +54,7 @@ xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
-#> ℹ GSVA version 2.4.9
+#> ℹ GSVA version 2.5.41
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
 #> ℹ kcdf='auto' (default)
@@ -63,7 +63,7 @@ xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #> ℹ Calculating row ECDFs
 #> ℹ Calculating column ranks
 #> ℹ GSVA dense (classical) algorithm
-#> ℹ Calculating GSVA scores
+#> ℹ Calculating GSVA scores for 489 gene sets
 #> ✔ Calculations finished
 head(xcell_result)[, 1:5]
 #>             ID ProjectID Adipocytes_xCell Astrocytes_xCell B-cells_xCell

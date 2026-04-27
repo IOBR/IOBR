@@ -98,7 +98,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
-#> ℹ GSVA version 2.4.9
+#> ℹ GSVA version 2.5.41
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
 #> ℹ kcdf='auto' (default)
@@ -107,7 +107,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating row ECDFs
 #> ℹ Calculating column ranks
 #> ℹ GSVA dense (classical) algorithm
-#> ℹ Calculating GSVA scores
+#> ℹ Calculating GSVA scores for 489 gene sets
 #> ✔ Calculations finished
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
@@ -152,11 +152,9 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Step 1/3: PCA method
 #> ℹ Step 2/3: z-score method
 #> ℹ Step 3/3: ssGSEA method
-#> ℹ GSVA version 2.4.9
+#> ℹ GSVA version 2.5.41
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 280 gene sets
-#> ℹ Calculating ranks
-#> ℹ Calculating rank weights
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 #> [1] ">>>>> Signature esitmation was completed: STAD"
@@ -175,13 +173,9 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Calculating scores for 12059 signature(s)
-#> ℹ GSVA version 2.4.9
+#> ℹ GSVA version 2.5.41
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
-#> ℹ Calculating ranks
-#> ℹ Calculating rank weights
-#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■                  50% | ETA:  3s
-#> Calculating ssGSEA scores ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 #> [1] ">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: STAD"
