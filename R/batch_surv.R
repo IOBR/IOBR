@@ -92,6 +92,8 @@ batch_surv <- function(pdata, variable, time = "time", status = "status", best_c
 
   result <- dplyr::bind_rows(result_list)
   result$ID <- if (best_cutoff) gsub("_binary$", "", valid_vars) else valid_vars
+  # 把 ID 调整到第一列
+  result <- result[, c("ID", setdiff(colnames(result), "ID")), drop = FALSE]
   result <- result[order(result$P, decreasing = FALSE), , drop = FALSE]
   rownames(result) <- NULL
 

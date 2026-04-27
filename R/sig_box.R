@@ -108,8 +108,8 @@ sig_box <- function(data,
     data$signature <- as.numeric(scale(data$signature))
   }
 
-  # Remove NA groups
-  data <- data[!is.na(data$variable), ]
+  # Remove NA in grouping variable or signature
+  data <- data[!is.na(data$variable) & !is.na(data$signature), , drop = FALSE]
 
   if (nrow(data) == 0) {
     cli::cli_abort("No valid data after removing NA values")
@@ -139,9 +139,16 @@ sig_box <- function(data,
     ggplot2::ylab(signature) +
     ggplot2::xlab(variable)
 
-  # Generate comparisons
-  group_levels <- unique(as.character(data$variable))
-  comparisons <- utils::combn(group_levels, 2, simplify = FALSE)
+    # Count samples per group
+  group_count <- table(data$variable)
+  valid_groups <- names(group_count[group_count >= 2])
+
+  # Generate comparisons safely
+  if (length(valid_groups) >= 2) {
+    comparisons <- utils::combn(valid_groups, 2, simplify = FALSE)
+  } else {
+    comparisons <- list()
+  }
 
   # Adjust hjust for angled text
   if (angle_x_text %in% c(30, 45, 60)) {
@@ -168,24 +175,42 @@ sig_box <- function(data,
 
   # Add statistical comparisons
   if (show_pairwise_p) {
-    p <- p + ggpubr::stat_compare_means(
-      comparisons = comparisons,
-      size = size_of_pvalue
-    )
+    if (length(comparisons) > 0) {
+      p <- p + ggpubr::stat_compare_means(
+        comparisons = comparisons,
+        size = size_of_pvalue
+      )
+    }
   }
 
   if (show_overall_p) {
-    p <- p + ggpubr::stat_compare_means(size = size_of_pvalue)
+    if (length(valid_groups) >= 2) {
+      stat_data <- data[data$variable %in% valid_groups, , drop = FALSE]
+      p <- p + ggpubr::stat_compare_means(
+        data = stat_data,
+        size = size_of_pvalue
+      )
+    }
   }
 
   # Calculate and print statistics
-  res <- ggpubr::compare_means(
-    stats::reformulate("variable", "signature"),
-    data = data
-  )
-  if (interactive()) print(res)
+  res <- NULL
+  if (length(valid_groups) >= 2) {
+    stat_data <- data[data$variable %in% valid_groups, , drop = FALSE]
 
-  # Add jitter points if requested
+    res <- tryCatch({
+      ggpubr::compare_means(
+        stats::reformulate("variable", "signature"),
+        data = stat_data
+      )
+    }, error = function(e) {
+      NULL
+    })
+
+    if (interactive() && !is.null(res)) print(res)
+  }
+  
+   # Add jitter points if requested
   if (jitter) {
     p <- p + ggplot2::geom_point(
       shape = 21,
@@ -194,8 +219,6 @@ sig_box <- function(data,
       alpha = 0.5
     )
   }
-
-  if (interactive()) print(p)
 
   if (return_stat_res) {
     invisible(res)

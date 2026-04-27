@@ -45,7 +45,7 @@ iobr_pca <- function(data, is.matrix = TRUE, scale = TRUE, is.log = FALSE, pdata
   data <- data[rownames(data) %in% feas, ]
   #######################################
   if (is.matrix) data <- t(data)
-  if (scale) data <- scale(data)
+  if (scale) data <- base::scale(data)
 
   rlang::check_installed("FactoMineR")
 

@@ -157,41 +157,59 @@ get_cor_matrix <- function(data,
   }
 
   # Create plot
-  p <- ggplot2::ggplot(heat, ggplot2::aes(x = .data$ID1, y = .data$ID2, fill = .data$cor))
-
-  cor_plot <- p +
+  # cor_plot <- p +
+  # ggplot2::geom_tile() +
+  # ggplot2::scale_fill_gradient2(
+  #   low = low_col,
+  #   mid = mid_col,
+  #   high = high_col,
+  #   name = "Coefficient"
+  # ) +
+  cor_plot <- ggplot2::ggplot(
+    heat,
+    ggplot2::aes(x = ID1, y = ID2, fill = cor)
+  ) +
     ggplot2::geom_tile() +
     ggplot2::scale_fill_gradient2(
       low = low_col,
       mid = mid_col,
       high = high_col,
       name = "Coefficient"
-    ) +
-    ggplot2::geom_text(
-      ggplot2::aes(label = .data$stars),
-      color = "black",
-      size = font.size.star
-    ) +
-    ggplot2::scale_y_discrete(
-      labels = function(y) stringr::str_wrap(y, width = 40)
-    ) +
-    ggplot2::labs(x = NULL, y = NULL) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      axis.text.x = ggplot2::element_text(
-        angle = -45,
-        hjust = 0,
-        size = font.size
-      ),
-      axis.text.y = ggplot2::element_text(
-        angle = 0,
-        hjust = 1,
-        size = font.size
-      ),
-      axis.title = ggplot2::element_text(
-        size = font.size + 4
-      )
+  ) +
+  ggplot2::geom_text(
+    ggplot2::aes(label = .data$stars),
+    color = "black",
+    size = font.size.star
+  ) +
+  ggplot2::scale_x_discrete(
+    labels = function(x) stringr::str_trunc(x, width = 28)
+  ) +
+  ggplot2::scale_y_discrete(
+    labels = function(y) stringr::str_wrap(y, width = 40)
+  ) +
+  ggplot2::labs(x = NULL, y = NULL) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::theme_bw() +
+  ggplot2::theme(
+    axis.text.x = ggplot2::element_text(
+      angle = -45,
+      hjust = 0,
+      vjust = 1,
+      size = font.size,
+      margin = ggplot2::margin(t = 8)
+    ),
+    axis.text.y = ggplot2::element_text(
+      angle = 0,
+      hjust = 1,
+      size = font.size
+    ),
+    axis.title = ggplot2::element_text(
+      size = font.size + 4
+    ),
+    plot.margin = ggplot2::margin(
+      t = 10, r = 20, b = 80, l = 20
     )
+  )
 
   if (!is.null(project)) {
     cor_plot <- cor_plot + ggplot2::ggtitle(label = project)
