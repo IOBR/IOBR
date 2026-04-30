@@ -8,6 +8,10 @@
   - `reset_iobr_cache_dir()` - Reset to default system cache location
   This enables users to store cached data on shared network drives or any preferred location for easy access across sessions.
 
+## Improvements
+
+- Modified content of some files to adapt to portal display and improve minor errors and prompts (#135).
+
 # IOBR 2.2.0
 
 ## CRAN Policy Fix (Resubmission)
