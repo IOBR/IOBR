@@ -99,35 +99,35 @@
 <h2 id="architecture">Architecture<a class="anchor" aria-label="anchor" href="#architecture"></a></h2>
 <div class="section level3">
 <h3 id="core-modules">Core Modules<a class="anchor" aria-label="anchor" href="#core-modules"></a></h3>
-<table class="table"><colgroup><col width="28%"><col width="39%"><col width="32%"></colgroup><thead><tr class="header"><th>Module</th>
+<table class="table"><colgroup><col width="28%"><col width="39%"><col width="32%"></colgroup><thead><tr><th>Module</th>
 <th>Key Files</th>
 <th>Purpose</th>
-</tr></thead><tbody><tr class="odd"><td>TME Deconvolution</td>
+</tr></thead><tbody><tr><td>TME Deconvolution</td>
 <td>
 <code>R/deconvo_tme.R</code>, <code>R/CIBERSORT.R</code>, <code>R/timer.R</code>, <code>R/xCell.R</code>, <code>R/mcpcounter.R</code>, <code>R/EPIC_helper.R</code>, <code>R/quantiseq.R</code>, <code>R/estimate_helper.R</code>, <code>R/IPS_helper.R</code>
 </td>
 <td>Cell fraction estimation from expression data</td>
-</tr><tr class="even"><td>Signature Scoring</td>
+</tr><tr><td>Signature Scoring</td>
 <td>
 <code>R/sigScore.R</code>, <code>R/calculate_sig_score.R</code>
 </td>
 <td>Calculate signature scores (PCA, z-score, ssGSEA)</td>
-</tr><tr class="odd"><td>Visualization</td>
+</tr><tr><td>Visualization</td>
 <td>
 <code>R/sig_heatmap.R</code>, <code>R/sig_pheatmap.R</code>, <code>R/iobr_cor_plot.R</code>, <code>R/sig_surv_plot.R</code>, <code>R/batch_surv.R</code>, <code>R/sig_box.R</code>, <code>R/sig_forest.R</code>
 </td>
 <td>Plotting functions for TME results</td>
-</tr><tr class="even"><td>Data Preprocessing</td>
+</tr><tr><td>Data Preprocessing</td>
 <td>
 <code>R/remove_batcheffect.R</code>, <code>R/count2tpm.R</code>, <code>R/check_eset.R</code>, <code>R/anno_eset.R</code>, <code>R/transform_data.R</code>
 </td>
 <td>Expression data preparation</td>
-</tr><tr class="odd"><td>Statistical Analysis</td>
+</tr><tr><td>Statistical Analysis</td>
 <td>
 <code>R/batch_cor.R</code>, <code>R/batch_wilcoxon.R</code>, <code>R/batch_kruskal.R</code>, <code>R/get_cor_matrix.R</code>
 </td>
 <td>Statistical testing utilities</td>
-</tr><tr class="even"><td>Prognostic Models</td>
+</tr><tr><td>Prognostic Models</td>
 <td>
 <code>R/PrognosticModel.R</code>, <code>R/BinomialModel.R</code>, <code>R/add_riskscore.R</code>, <code>R/roc_time.R</code>
 </td>

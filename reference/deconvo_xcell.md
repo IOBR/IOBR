@@ -54,7 +54,7 @@ xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #> ℹ Trying mirror 1/4: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
-#> ℹ GSVA version 2.5.41
+#> ℹ GSVA version 2.6.0
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
 #> ℹ kcdf='auto' (default)

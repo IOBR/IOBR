@@ -79,14 +79,14 @@ documentation and vignettes.
 
 ### Core Modules
 
-| Module               | Key Files                                                                                                                                                   | Purpose                                           |
-|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------|
-| TME Deconvolution    | `R/deconvo_tme.R`, `R/CIBERSORT.R`, `R/timer.R`, `R/xCell.R`, `R/mcpcounter.R`, `R/EPIC_helper.R`, `R/quantiseq.R`, `R/estimate_helper.R`, `R/IPS_helper.R` | Cell fraction estimation from expression data     |
-| Signature Scoring    | `R/sigScore.R`, `R/calculate_sig_score.R`                                                                                                                   | Calculate signature scores (PCA, z-score, ssGSEA) |
-| Visualization        | `R/sig_heatmap.R`, `R/sig_pheatmap.R`, `R/iobr_cor_plot.R`, `R/sig_surv_plot.R`, `R/batch_surv.R`, `R/sig_box.R`, `R/sig_forest.R`                          | Plotting functions for TME results                |
-| Data Preprocessing   | `R/remove_batcheffect.R`, `R/count2tpm.R`, `R/check_eset.R`, `R/anno_eset.R`, `R/transform_data.R`                                                          | Expression data preparation                       |
-| Statistical Analysis | `R/batch_cor.R`, `R/batch_wilcoxon.R`, `R/batch_kruskal.R`, `R/get_cor_matrix.R`                                                                            | Statistical testing utilities                     |
-| Prognostic Models    | `R/PrognosticModel.R`, `R/BinomialModel.R`, `R/add_riskscore.R`, `R/roc_time.R`                                                                             | Survival analysis and risk modeling               |
+| Module | Key Files | Purpose |
+|----|----|----|
+| TME Deconvolution | `R/deconvo_tme.R`, `R/CIBERSORT.R`, `R/timer.R`, `R/xCell.R`, `R/mcpcounter.R`, `R/EPIC_helper.R`, `R/quantiseq.R`, `R/estimate_helper.R`, `R/IPS_helper.R` | Cell fraction estimation from expression data |
+| Signature Scoring | `R/sigScore.R`, `R/calculate_sig_score.R` | Calculate signature scores (PCA, z-score, ssGSEA) |
+| Visualization | `R/sig_heatmap.R`, `R/sig_pheatmap.R`, `R/iobr_cor_plot.R`, `R/sig_surv_plot.R`, `R/batch_surv.R`, `R/sig_box.R`, `R/sig_forest.R` | Plotting functions for TME results |
+| Data Preprocessing | `R/remove_batcheffect.R`, `R/count2tpm.R`, `R/check_eset.R`, `R/anno_eset.R`, `R/transform_data.R` | Expression data preparation |
+| Statistical Analysis | `R/batch_cor.R`, `R/batch_wilcoxon.R`, `R/batch_kruskal.R`, `R/get_cor_matrix.R` | Statistical testing utilities |
+| Prognostic Models | `R/PrognosticModel.R`, `R/BinomialModel.R`, `R/add_riskscore.R`, `R/roc_time.R` | Survival analysis and risk modeling |
 
 ### Key Data Structures
 
@@ -160,6 +160,7 @@ macOS (R release) - Windows (R release) - Ubuntu (R devel, R release)
 function:**
 
 ``` r
+
 # Load internal data (stored in R/sysdata.rda)
 lm22 <- load_data("lm22")
 xCell.data <- load_data("xCell.data")

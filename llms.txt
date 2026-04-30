@@ -93,6 +93,7 @@ from <https://github.com/IOBR/IOBR/tags>.
 - Bioconductor version 3.10 or higher
 
 ``` r
+
 # Install BiocManager if not already installed
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
   install.packages("BiocManager")
@@ -102,6 +103,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 ### Install from GitHub
 
 ``` r
+
 # Install IOBR from GitHub
 BiocManager::install("IOBR/IOBR")
 ```
@@ -109,6 +111,7 @@ BiocManager::install("IOBR/IOBR")
 #### For Chinese Users (Faster Download Maybe)
 
 ``` r
+
 # Install remotes if not already installed
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
@@ -121,6 +124,7 @@ remotes::install_git("https://ghfast.top/https://github.com/IOBR/IOBR")
 ### Install from CRAN
 
 ``` r
+
 # Install IOBR from GitHub
 BiocManager::install("IOBR")
 ```
@@ -147,6 +151,7 @@ mamba activate r45
 Then install IOBR in R:
 
 ``` r
+
 BiocManager::install("IOBR/IOBR")
 ```
 
@@ -170,6 +175,7 @@ docker run -d -p 8787:8787 -e PASSWORD=yourpassword ghcr.io/iobr/iobr:latest
 ### Load the Package
 
 ``` r
+
 library(IOBR)
 ```
 
@@ -179,6 +185,7 @@ IOBR downloads large datasets from GitHub releases and caches them
 locally. You can customize the cache location:
 
 ``` r
+
 # Check current cache directory
 get_iobr_cache_dir()
 
@@ -199,6 +206,7 @@ To permanently set a custom cache directory, add this to your
 `~/.Rprofile`:
 
 ``` r
+
 options(IOBR.cache_dir = "/path/to/your/cache")
 ```
 
@@ -207,6 +215,7 @@ options(IOBR.cache_dir = "/path/to/your/cache")
 ### TME Deconvolution
 
 ``` r
+
 # List available TME deconvolution methods
 tme_deconvolution_methods
 
@@ -220,6 +229,7 @@ tme_result <- deconvo_tme(eset,
 ### Signature Score Calculation
 
 ``` r
+
 # List available signature score calculation methods
 signature_score_calculation_methods
 
@@ -250,6 +260,7 @@ guidance on:
 Vignettes are available within the package and can be accessed using:
 
 ``` r
+
 browseVignettes("IOBR")
 ```
 
@@ -258,6 +269,7 @@ browseVignettes("IOBR")
 ### TME Deconvolution Methods
 
 ``` r
+
 tme_deconvolution_methods
 #>         MCPcounter               EPIC              xCell          CIBERSORT 
 #>       "mcpcounter"             "epic"            "xcell"        "cibersort" 
@@ -270,6 +282,7 @@ tme_deconvolution_methods
 ### Signature Score Calculation Methods
 
 ``` r
+
 signature_score_calculation_methods
 #>           PCA        ssGSEA       z-score   Integration 
 #>         "pca"      "ssgsea"      "zscore" "integration"
@@ -278,6 +291,7 @@ signature_score_calculation_methods
 ### Signature Collection
 
 ``` r
+
 signature_collection <- load_data("signature_collection")
 # Number of available signatures
 length(signature_collection)
@@ -373,21 +387,21 @@ sig_group[1:3]
 
 ### TME Deconvolution Methods
 
-| Method                                                                      | License                                                                                                       | Citation                                                                                                |
-|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
-| [CIBERSORT](https://cibersortx.stanford.edu/)                               | Free for non-commercial use only                                                                              | Newman, A. M., et al. (2015). Nature Methods, 12(5), 453–457. <https://doi.org/10.1038/nmeth.3337>      |
-| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | Free ([GPL2.0](https://bioinformatics.mdanderson.org/estimate/))                                              | Vegesna R, et al. (2013). Nature Communications, 4, 2612. <https://doi.org/10.1038/ncomms3612>          |
-| [quanTIseq](https://icbi.i-med.ac.at/software/quantiseq/doc/index.html)     | Free ([GPL2.0](https://github.com/omnideconv/immunedeconv/blob/master/LICENSE))                               | Finotello, F., et al. (2019). Genome Medicine, 11(1), 34. <https://doi.org/10.1186/s13073-019-0638-6>   |
-| [TIMER](http://cistrome.org/TIMER/)                                         | Free ([GPL 2.0](http://cistrome.org/TIMER/download.md))                                                       | Li, B., et al. (2016). Genome Biology, 17(1), 174. <https://doi.org/10.1186/s13059-016-1028-7>          |
-| [IPS](https://github.com/icbi-lab/Immunophenogram)                          | Free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE))                                 | Charoentong P, et al. (2017). Cell Reports, 18, 248-262. <https://doi.org/10.1016/j.celrep.2016.12.019> |
-| [MCPCounter](https://github.com/ebecht/MCPcounter)                          | Free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License))                             | Becht, E., et al. (2016). Genome Biology, 17(1), 218. <https://doi.org/10.1186/s13059-016-1070-5>       |
-| [xCell](https://xcell.ucsf.edu/)                                            | Free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION))                                   | Aran, D., et al. (2017). Genome Biology, 18(1), 220. <https://doi.org/10.1186/s13059-017-1349-1>        |
-| [EPIC](https://github.com/GfellerLab/EPIC)                                  | Free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., et al. (2017). eLife, 6, e26476. <https://doi.org/10.7554/eLife.26476>                       |
+| Method | License | Citation |
+|----|----|----|
+| [CIBERSORT](https://cibersortx.stanford.edu/) | Free for non-commercial use only | Newman, A. M., et al. (2015). Nature Methods, 12(5), 453–457. <https://doi.org/10.1038/nmeth.3337> |
+| [ESTIMATE](https://bioinformatics.mdanderson.org/public-software/estimate/) | Free ([GPL2.0](https://bioinformatics.mdanderson.org/estimate/)) | Vegesna R, et al. (2013). Nature Communications, 4, 2612. <https://doi.org/10.1038/ncomms3612> |
+| [quanTIseq](https://icbi.i-med.ac.at/software/quantiseq/doc/index.html) | Free ([GPL2.0](https://github.com/omnideconv/immunedeconv/blob/master/LICENSE)) | Finotello, F., et al. (2019). Genome Medicine, 11(1), 34. <https://doi.org/10.1186/s13073-019-0638-6> |
+| [TIMER](http://cistrome.org/TIMER/) | Free ([GPL 2.0](http://cistrome.org/TIMER/download.md)) | Li, B., et al. (2016). Genome Biology, 17(1), 174. <https://doi.org/10.1186/s13059-016-1028-7> |
+| [IPS](https://github.com/icbi-lab/Immunophenogram) | Free ([BSD](https://github.com/icbi-lab/Immunophenogram/blob/master/LICENSE)) | Charoentong P, et al. (2017). Cell Reports, 18, 248-262. <https://doi.org/10.1016/j.celrep.2016.12.019> |
+| [MCPCounter](https://github.com/ebecht/MCPcounter) | Free ([GPL 3.0](https://github.com/ebecht/MCPcounter/blob/master/Source/License)) | Becht, E., et al. (2016). Genome Biology, 17(1), 218. <https://doi.org/10.1186/s13059-016-1070-5> |
+| [xCell](https://xcell.ucsf.edu/) | Free ([GPL 3.0](https://github.com/dviraran/xCell/blob/master/DESCRIPTION)) | Aran, D., et al. (2017). Genome Biology, 18(1), 220. <https://doi.org/10.1186/s13059-017-1349-1> |
+| [EPIC](https://github.com/GfellerLab/EPIC) | Free for non-commercial use only ([Academic License](https://github.com/GfellerLab/EPIC/blob/master/LICENSE)) | Racle, J., et al. (2017). eLife, 6, e26476. <https://doi.org/10.7554/eLife.26476> |
 
 ### Signature Estimation Methods
 
-| Method                                                                    | License                                                | Citation                                                                                         |
-|---------------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Method | License | Citation |
+|----|----|----|
 | [GSVA](https://www.bioconductor.org/packages/release/bioc/html/GSVA.html) | Free ([GPL (\>= 2)](https://github.com/rcastelo/GSVA)) | Hänzelmann S, et al. (2013). BMC Bioinformatics, 14, 7. <https://doi.org/10.1186/1471-2105-14-7> |
 
 ## 📝 Citing IOBR

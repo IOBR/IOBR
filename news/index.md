@@ -15,6 +15,12 @@
     cached data on shared network drives or any preferred location for
     easy access across sessions.
 
+### Improvements
+
+- Modified content of some files to adapt to portal display and improve
+  minor errors and prompts
+  ([\#135](https://github.com/IOBR/IOBR/issues/135)).
+
 ## IOBR 2.2.0
 
 CRAN release: 2026-04-22
