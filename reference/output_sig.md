@@ -43,7 +43,7 @@ output_sig(
   file.name = tools::file_path_sans_ext(tmpfile)
 )
 #> Warning: number of columns of result is not a multiple of vector length (arg 1)
-#> ✔ Signature data saved to /tmp/Rtmp2Qs1f6/file1fbf61fadc3d.csv
+#> ✔ Signature data saved to /tmp/RtmpYX5KuO/file1cde250141af.csv
 #>     CD_8_T_effector     DDR   APM Immune_Checkpoint CellCycle_Reg Pan_F_TBRs
 #> 1              CD8A     UNG   B2M             CD274           ATM      ACTA2
 #> 2              GZMA   SMUG1 HLA-A          PDCD1LG2        CDKN1A      ACTG2

@@ -163,5 +163,5 @@ sig_box_batch(
 )
 #> ℹ Processing feature: "TMEscore_plus"
 #> ℹ Processing feature: "GZMB"
-#> ✔ Batch processing complete. Plots saved to: /tmp/Rtmp2Qs1f6
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpYX5KuO
 ```
