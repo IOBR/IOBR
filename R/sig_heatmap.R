@@ -262,15 +262,15 @@ sig_heatmap <- function(input,
     n_colors <- length(cols_heatmap)
 
     if (n_colors >= 5) {
-      return(circlize::colorRamp2(c(-2, -1, 0, 1, 2), cols_heatmap[1:5]))
+      return(circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), col_vector[1:5]))
     } else if (n_colors >= 3) {
-      return(circlize::colorRamp2(c(-2, 0, 2), cols_heatmap[1:3]))
+      return(circlize::colorRamp2(c(-3, 0, 3), col_vector[1:3]))
     } else if (n_colors == 2) {
       cli::cli_alert_info("Only 2 heatmap colors provided, using white as midpoint")
-      return(circlize::colorRamp2(c(-2, 0, 2), c(cols_heatmap[1], "white", cols_heatmap[2])))
+      return(circlize::colorRamp2(c(-3, 0, 3), c(cols_heatmap[1], "white", cols_heatmap[2])))
     } else {
       cli::cli_warn("Invalid cols_heatmap, using default colors")
-      return(circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red")))
+      return(circlize::colorRamp2(c(-3, 0, 3), c("blue", "white", "red")))
     }
   }
 
@@ -289,13 +289,13 @@ sig_heatmap <- function(input,
   color_vector <- .convert_to_colors(heatmap_col_raw)
 
   if (length(color_vector) >= 5) {
-    circlize::colorRamp2(c(-2, -1, 0, 1, 2), color_vector[1:5])
+    circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), color_vector[1:5])
   } else if (length(color_vector) >= 3) {
-    circlize::colorRamp2(c(-2, 0, 2), color_vector[1:3])
+    circlize::colorRamp2(c(-3, 0, 3), color_vector[1:3])
   } else if (length(color_vector) == 2) {
-    circlize::colorRamp2(c(-2, 0, 2), c(color_vector[1], "white", color_vector[2]))
+    circlize::colorRamp2(c(-3, 0, 3), c(color_vector[1], "white", color_vector[2]))
   } else {
-    circlize::colorRamp2(c(-2, 0, 2), c("blue", "white", "red"))
+    circlize::colorRamp2(c(-3, 0, 3), c("blue", "white", "red"))
   }
 }
 
