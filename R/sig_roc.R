@@ -106,8 +106,8 @@ sig_roc <- function(data,
   }
 
   x <- pROC::plot.roc(input[, 1], input[, 2],
-    ylim = c(0, 1),
-    xlim = c(1, 0),
+    #ylim = c(0, 1),
+    #xlim = c(1, 0),
     smooth = smooth,
     ci = TRUE,
     main = main,
@@ -146,8 +146,8 @@ sig_roc <- function(data,
   colnames(auc.out) <- c("Name", "AUC", "AUC CI")
 
   legend.name <- paste(colnames(input)[seq(2, ncol(input))], " AUC = ", auc.out$AUC, sep = " ")
-  oldpar <- par(xpd = TRUE)
-  on.exit(par(oldpar), add = TRUE)
+  #oldpar <- par(xpd = TRUE)
+  #on.exit(par(oldpar), add = TRUE)
   legend("bottomright",
     legend = legend.name,
     col = cols[seq(2, length(variables) + 1)],
