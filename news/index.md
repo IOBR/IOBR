@@ -1,6 +1,6 @@
 # Changelog
 
-## IOBR (development version)
+## IOBR 2.2.1
 
 ### New Features
 
