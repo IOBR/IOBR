@@ -219,8 +219,16 @@ results <- iobr_cor_plot(
 #> ℹ The deprecated feature was likely used in the tidyHeatmap package.
 #>   Please report the issue at
 #>   <https://github.com/stemangiola/tidyHeatmap/issues>.
-#> Error in eval(dots[[i]][[action]], env, env): tidyHeatmap says: If palette_value is a vector of hexadecimal colours, it should have 3 values. If you want more customisation, you can pass to palette_value a function, that is derived as for example "colorRamp2(c(-2, 0, 2), palette_value)"
+#> ℹ Heatmap3 palettes: pheatmap, peach, blues, virids, reds, normal
+
+#> ℹ Computing spearman correlation for 3 features
+#> ✔ Correlation analysis complete
 
 print(results)
-#> Error: object 'results' not found
+#> # A tibble: 3 × 6
+#>   sig_names p.value statistic p.adj log10pvalue stars
+#>   <chr>       <dbl>     <dbl> <dbl>       <dbl> <fct>
+#> 1 Feature2    0.225  -0.122   0.493      0.647  "+"  
+#> 2 Feature3    0.328  -0.0987  0.493      0.484  "+"  
+#> 3 Feature1    0.969   0.00390 0.969      0.0136 ""   
 ```

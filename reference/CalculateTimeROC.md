@@ -63,6 +63,7 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
   )
   print(roc_info$AUC)
 }
+#> Warning: Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.
 #>       t=0     t=259 
-#>        NA 0.6751424 
+#>        NA 0.6791684 
 ```

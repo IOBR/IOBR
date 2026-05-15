@@ -68,7 +68,6 @@ if (requireNamespace("easier", quietly = TRUE)) {
   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
   head(lr)
 }
-#> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘SummarizedExperiment’
 #> 
 #> 
 #> 
