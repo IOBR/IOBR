@@ -56,7 +56,6 @@ Suggests:
     doParallel,
     DOSE,
     e1071,
-    easier,
     enrichplot,
     factoextra,
     FactoMineR,
