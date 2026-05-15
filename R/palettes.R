@@ -272,7 +272,7 @@ palettes <- function(category = "box", palette = "nrc", alpha = 1,
     return(rev(RColorBrewer::brewer.pal(3, "RdYlGn")))
   }
   if (palette == 4) {
-    return(c("#9E0142", "#FFFFBF", "#5C4A42"))
+    return(rev(RColorBrewer::brewer.pal(3, "Spectral")))
   }
   if (palette == 5) {
     return(rev(RColorBrewer::brewer.pal(3, "PiYG")))
