@@ -35,10 +35,14 @@
 #' ))
 #' rownames(sim_eset) <- example_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:10)
-#' \donttest{
+#' \dontrun{
 #' if (requireNamespace("easier", quietly = TRUE)) {
-#'   lr <- LR_cal(eset = sim_eset, data_type = "tpm")
-#'   head(lr)
+#'   tryCatch({
+#'     lr <- LR_cal(eset = sim_eset, data_type = "tpm")
+#'     head(lr)
+#'   }, error = function(e) {
+#'     message("Example skipped: could not download ExperimentHub data")
+#'   })
 #' }
 #' }
 LR_cal <- function(eset, data_type = c("count", "tpm"), id_type = "ensembl", cancer_type = "pancan") {
