@@ -1,6 +1,6 @@
 Package: IOBR
 Title: Immune Oncology Biological Research
-Version: 2.2.0.9000
+Version: 2.2.1
 Authors@R: c(
     person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
     person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
