@@ -262,9 +262,9 @@ sig_heatmap <- function(input,
     n_colors <- length(cols_heatmap)
 
     if (n_colors >= 5) {
-      return(circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), col_vector[1:5]))
+      return(circlize::colorRamp2(c(-3, -1.5, 0, 1.5, 3), cols_heatmap[1:5]))
     } else if (n_colors >= 3) {
-      return(circlize::colorRamp2(c(-3, 0, 3), col_vector[1:3]))
+      return(circlize::colorRamp2(c(-3, 0, 3), cols_heatmap[1:3]))
     } else if (n_colors == 2) {
       cli::cli_alert_info("Only 2 heatmap colors provided, using white as midpoint")
       return(circlize::colorRamp2(c(-3, 0, 3), c(cols_heatmap[1], "white", cols_heatmap[2])))
