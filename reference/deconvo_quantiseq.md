@@ -59,7 +59,7 @@ res <- deconvo_quantiseq(
 )
 #> ℹ Running quanTIseq deconvolution
 #> ℹ Running quanTIseq deconvolution module
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
 #> ℹ Loading cached data: "quantiseq_data"

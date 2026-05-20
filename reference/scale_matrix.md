@@ -38,7 +38,7 @@ Dongqiang Zeng
 
 ``` r
 eset_gse62254 <- load_data("eset_gse62254")
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "eset_gse62254"
 eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
 #> ✔ Retained 54675 of 54675 features

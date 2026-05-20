@@ -51,11 +51,11 @@ res <- deconvo_timer(
 #> ℹ Running TIMER deconvolution
 #> ℹ Enter batch mode
 #> ℹ Loading immune gene expression
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "immuneCuratedData"
 #> ℹ Outlier genes: ACTB ACTG1 CD74 COL1A1 EEF1A1 ERBB2 FLNA IGHG1 IGKC MT-CO1 MT-CO2 MT-ND4 MT-RNR2 MYH11
 #> ℹ Removing batch effects for stad
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "cancer_type_genes"
 head(res)
 #>             ID ProjectID B_cell_TIMER T_cell_CD4_TIMER T_cell_CD8_TIMER

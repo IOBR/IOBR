@@ -45,7 +45,7 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 # \donttest{
 ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
 #> ℹ Running IPS calculation
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "ips_gene_set"
 # }
 ```

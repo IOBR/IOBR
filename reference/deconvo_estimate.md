@@ -46,10 +46,10 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 # \donttest{
 estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
 #> ℹ Running ESTIMATE
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "common_genes"
 #> Merged dataset includes 10148 genes (264 mismatched).
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "SI_geneset"
 #> 1 gene set: StromalSignature overlap=138
 #> 2 gene set: ImmuneSignature overlap=140

@@ -41,10 +41,10 @@ to disk.
 
 ``` r
 eset_stad <- load_data("eset_stad")
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "eset_stad"
 anno_rnaseq <- load_data("anno_rnaseq")
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "anno_rnaseq"
 eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
 #> ℹ Row number of original eset: 60483

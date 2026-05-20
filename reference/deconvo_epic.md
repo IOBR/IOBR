@@ -47,10 +47,10 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 eset <- eset[1:500, 1:5]
 epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
 #> ℹ Running EPIC deconvolution
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "TRef"
 #> Warning: there are few genes in common between the bulk samples and reference cells:471, so the data scaling might be an issue
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "mRNA_cell_default"
 #> Warning: mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.
 head(epic_result)

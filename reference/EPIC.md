@@ -155,14 +155,14 @@ duplicates before calling *EPIC*.
 ``` r
 # \donttest{
 melanoma_data <- load_data("melanoma_data")
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "melanoma_data"
 TRef <- load_data("TRef")
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "TRef"
 res1 <- EPIC(melanoma_data$counts)
 #> ℹ Loading cached data: "TRef"
-#> ℹ Trying mirror 1/11: <https://github.com>
+#> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> LAU1255; LAU355

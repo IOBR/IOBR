@@ -31,6 +31,7 @@ list_iobr_mirrors()
 #> 11. https://ghfast.top/https://github.com
 #> 12. https://download.githubcdn.com?url=https://github.com
 #> 13. https://proxy.gitwarp.top/https://github.com
+#> 14. http://biotree.top:49004/d/IOBR_data
 #> ==============================
-#> Total: 13 mirrors
+#> Total: 14 mirrors
 ```
