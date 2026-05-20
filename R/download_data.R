@@ -73,10 +73,19 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
   last_error <- NULL
   for (i in seq_along(mirrors)) {
     mirror <- mirrors[i]
-    url <- sprintf(
-      "%s/IOBR/IOBR/releases/download/data-v1.0/%s.rda",
-      mirror, name
-    )
+
+    # Construct URL based on mirror type
+    if (grepl("github\\.com", mirror)) {
+      # GitHub or GitHub proxy
+      url <- sprintf(
+        "%s/IOBR/IOBR/releases/download/data-v1.0/%s.rda",
+        mirror, name
+      )
+    } else {
+      # Standalone mirror (e.g., biotree.top)
+      # Ensure there's a slash between mirror and name
+      url <- sprintf("%s/%s.rda", sub("/$", "", mirror), name)
+    }
 
     if (verbose) {
       cli::cli_alert_info("Trying mirror {i}/{length(mirrors)}: {.url {mirror}}")
@@ -145,7 +154,9 @@ get_default_mirrors <- function() {
     "https://gh-proxy.org/https://github.com",
     "https://ghfast.top/https://github.com",
     "https://download.githubcdn.com?url=https://github.com",
-    "https://proxy.gitwarp.top/https://github.com"
+    "https://proxy.gitwarp.top/https://github.com",
+    # Biotree mirror (Fallback)
+    "http://biotree.top:49004/d/IOBR_data"
   )
 }
 
@@ -153,7 +164,9 @@ get_default_mirrors <- function() {
 #'
 #' @description
 #' Adds a custom mirror URL to the default mirrors for the current session.
-#' The mirror URL should be a base URL that will be prepended to GitHub paths.
+#' The mirror URL should be a base URL. If it contains 'github.com', it will
+#' be treated as a GitHub proxy and the relative path to IOBR releases will
+#' be appended. Otherwise, it will be treated as a direct repository path.
 #'
 #' @param url Character string. The mirror URL to add.
 #' @param position Character. Where to add the mirror: "first", "last", or

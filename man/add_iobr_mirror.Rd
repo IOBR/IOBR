@@ -17,7 +17,9 @@ Invisibly returns the updated mirror list.
 }
 \description{
 Adds a custom mirror URL to the default mirrors for the current session.
-The mirror URL should be a base URL that will be prepended to GitHub paths.
+The mirror URL should be a base URL. If it contains 'github.com', it will
+be treated as a GitHub proxy and the relative path to IOBR releases will
+be appended. Otherwise, it will be treated as a direct repository path.
 }
 \examples{
 \donttest{
