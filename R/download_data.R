@@ -135,10 +135,17 @@ get_default_mirrors <- function() {
   c(
     # Original GitHub (default)
     "https://github.com",
-    # Chinese mirrors
-    "https://ghproxy.vip/https://github.com",
+    # Chinese mirrors (Verified working)
+    "https://gh-proxy.com/https://github.com",
+    "https://ghproxy.net/https://github.com",
+    "https://moeyy.cn/gh-proxy/https://github.com",
+    "https://github.akams.cn/https://github.com",
+    "http://toolwa.com/github/https://github.com",
+    "https://v6.gh-proxy.org/https://github.com",
     "https://gh-proxy.org/https://github.com",
-    "https://ghfast.top/https://github.com"
+    "https://ghfast.top/https://github.com",
+    "https://download.githubcdn.com?url=https://github.com",
+    "https://proxy.gitwarp.top/https://github.com"
   )
 }
 
