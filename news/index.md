@@ -2,6 +2,8 @@
 
 ## IOBR 2.2.1
 
+CRAN release: 2026-05-15
+
 ### New Features
 
 - **Custom Cache Directory**: Added support for customizing the download

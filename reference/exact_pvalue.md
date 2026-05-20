@@ -36,7 +36,7 @@ Dongqiang Zeng
 
 ``` r
 sig_stad <- load_data("sig_stad")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "sig_stad"
 p_val <- exact_pvalue(
   x = sig_stad$CD8.T.cells,

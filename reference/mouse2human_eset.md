@@ -57,7 +57,7 @@ Dongqiang Zeng
 ``` r
 # Create example mouse expression data
 anno_gc_vm32 <- load_data("anno_gc_vm32")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "anno_gc_vm32"
 num_rows <- 200
 num_cols <- 10
@@ -68,7 +68,7 @@ colnames(data) <- sample_names
 
 # Convert using local database
 human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "mus_human_gene_symbol"
 #> ℹ Row number of original eset: 200
 #> ✔ 94% of probes in expression set were annotated

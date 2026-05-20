@@ -77,10 +77,10 @@ Dongqiang Zeng
 # \donttest{
 # Annotate Affymetrix microarray data
 eset_gse62254 <- load_data("eset_gse62254")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "eset_gse62254"
 anno_hug133plus2 <- load_data("anno_hug133plus2")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "anno_hug133plus2"
 eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
 #> ℹ Row number of original eset: 54675
@@ -98,10 +98,10 @@ head(eset)
 
 # Annotate RNA-seq data with Ensembl IDs
 eset_stad <- load_data("eset_stad")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "anno_grch38"
 eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number of original eset: 60483

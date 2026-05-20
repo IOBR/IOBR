@@ -69,7 +69,7 @@ Dongqiang Zeng
 ``` r
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "sig_stad"
 
 # Perform batch correlation

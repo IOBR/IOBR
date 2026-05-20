@@ -86,12 +86,12 @@ Wubing Zhang, Dongqiang Zeng, Yiran Fang
 # \donttest{
 # Load TCGA count data
 eset_stad <- load_data("eset_stad")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "eset_stad"
 
 # Transform to TPM using local gene annotation
 eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "anno_grch38"
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ! Omitting 3985 genes without length information

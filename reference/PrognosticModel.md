@@ -104,7 +104,7 @@ if (requireNamespace("glmnet", quietly = TRUE) &&
     train_ratio = 0.7, nfold = 10, plot = FALSE
   )
 }
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "imvigor210_sig"
 #> ℹ Processing data
 #> ℹ Splitting data into training and validation sets

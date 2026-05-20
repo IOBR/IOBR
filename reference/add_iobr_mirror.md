@@ -32,16 +32,16 @@ Invisibly returns the updated mirror list.
 # Add a custom mirror to try first
 add_iobr_mirror("https://my-mirror.com/https://github.com")
 #> ✔ Added mirror <https://my-mirror.com/https://github.com> to position: "first"
-#> ℹ Current mirrors: 5 total
+#> ℹ Current mirrors: 12 total
 
 # Add mirror to try before default GitHub
 add_iobr_mirror("https://fast-mirror.org", position = "before_github")
 #> ✔ Added mirror <https://fast-mirror.org> to position: "before_github"
-#> ℹ Current mirrors: 6 total
+#> ℹ Current mirrors: 13 total
 
 # Download with the new mirror
 data <- download_iobr_data("BRef")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "BRef"
 # }
 ```

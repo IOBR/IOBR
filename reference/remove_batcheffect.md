@@ -102,7 +102,7 @@ Dongqiang Zeng
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
 eset_blca <- load_data("eset_blca")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "eset_blca"
 # \donttest{
 eset_corrected <- remove_batcheffect(

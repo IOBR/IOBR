@@ -81,9 +81,9 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running EPIC deconvolution
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "TRef"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
 #> TCGA-BR-6455; TCGA-FP-7916
@@ -95,7 +95,7 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running xCell deconvolution
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
 #> ℹ GSVA version 2.6.1
@@ -122,17 +122,17 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Running TIMER deconvolution
 #> ℹ Enter batch mode
 #> ℹ Loading immune gene expression
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "immuneCuratedData"
 #> ℹ Outlier genes: ACTB ACTG1 CD74 COL1A1 EEF1A1 ERBB2 FLNA IGHG1 IGKC MT-CO1 MT-CO2 MT-ND4 MT-RNR2 MYH11
 #> ℹ Removing batch effects for stad
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "cancer_type_genes"
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running quanTIseq deconvolution
 #> ℹ Running quanTIseq deconvolution module
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
 #> ℹ Loading cached data: "quantiseq_data"
@@ -144,7 +144,7 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running IPS calculation
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "ips_gene_set"
 #> [1] ">>>>> TME cell deconvolution was completed: STAD"
 #> ℹ Calculating signature scores using PCA, z-score, and ssGSEA methods
@@ -158,17 +158,17 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
 #> [1] ">>>>> Signature esitmation was completed: STAD"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "hallmark"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "go_bp"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "go_cc"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "go_mf"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "kegg"
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "reactome"
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)

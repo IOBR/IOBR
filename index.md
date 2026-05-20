@@ -181,8 +181,9 @@ library(IOBR)
 
 ## 💾 Data Cache Management
 
-IOBR downloads large datasets from GitHub releases and caches them
-locally. You can customize the cache location:
+IOBR downloads large datasets from [GitHub
+releases](https://github.com/IOBR/IOBR/releases/tag/data-v1.0/) and
+caches them locally. You can customize the cache location:
 
 ``` r
 
@@ -209,6 +210,10 @@ To permanently set a custom cache directory, add this to your
 
 options(IOBR.cache_dir = "/path/to/your/cache")
 ```
+
+> When R fails to download, you can manually download the data from
+> GitHub or GitHub acceleration sites, and then configure the cache
+> directory.
 
 ## 🚀 Quick Start
 

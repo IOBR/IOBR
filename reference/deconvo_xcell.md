@@ -51,7 +51,7 @@ eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
 #> ℹ Row number after filtering duplicated gene symbol: 50181
 xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #> ℹ Running xCell deconvolution
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
 #> ℹ GSVA version 2.6.1

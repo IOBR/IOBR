@@ -49,7 +49,7 @@ cluster.
 
 ``` r
 deg <- load_data("deg")
-#> ℹ Trying mirror 1/4: <https://github.com>
+#> ℹ Trying mirror 1/11: <https://github.com>
 #> ✔ Download complete: "deg"
 get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
 #> $`Epithelial cells 11`
