@@ -1,13 +1,15 @@
-# IOBR 2.2.1
+## Test environments
+* local macOS Tahoe (26.5), R 4.5.2
+* ubuntu-latest (on GitHub Actions), R-release, R-devel
+* windows-latest (on GitHub Actions), R-release
+* macos-latest (on GitHub Actions), R-release
 
-## New Features
+## R CMD check results
 
-* **Custom Cache Directory**: Added support for customizing the download cache location via `options(IOBR.cache_dir = "your/path")`. New functions:
-  - `get_iobr_cache_dir()` - Get current cache directory path
-  - `set_iobr_cache_dir(path)` - Set custom cache directory
-  - `reset_iobr_cache_dir()` - Reset to default system cache location
-  This enables users to store cached data on shared network drives or any preferred location for easy access across sessions.
+0 errors | 0 warnings | 0 notes
 
-## Improvements
+## Resubmission
+This is a resubmission to address dependency issues reported on `r-oldrel-macos-arm64`.
 
-- Modified content of some files to adapt to portal display and improve minor errors and prompts (#135).
+* Added `BiocManager` to `Suggests` to ensure Bioconductor repositories are correctly identified by automated check tools.
+* Fixed GitHub Actions configuration for `r-devel` which was causing false positive dependency resolution errors.

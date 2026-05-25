@@ -1,6 +1,6 @@
 Package: IOBR
 Title: Immune Oncology Biological Research
-Version: 2.2.1
+Version: 2.2.2
 Authors@R: c(
     person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
     person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
@@ -46,6 +46,7 @@ Imports:
     tibble,
     tidyr
 Suggests: 
+    BiocManager,
     BiocParallel,
     biomaRt,
     circlize,
