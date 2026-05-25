@@ -44,17 +44,11 @@ to disk.
 eset_stad <- load_data("eset_stad")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "eset_stad"
-anno_rnaseq <- load_data("anno_rnaseq")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_rnaseq"
-eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-#> ℹ Row number of original eset: 60483
-#> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2098 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50139
-eset_distribution(eset)
+eset_distribution(eset_stad[1:1000, ])
 #> ✔ Applied log2 transformation
-eset_distribution(eset, project = file.path(tempdir(), "ESET"))
-#> ✔ Applied log2 transformation
+#anno_rnaseq <- load_data("anno_rnaseq")
+#eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+#eset_distribution(eset)
+#eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 # }
 ```
