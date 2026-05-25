@@ -40,6 +40,7 @@ to disk.
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "eset_stad"
@@ -55,4 +56,5 @@ eset_distribution(eset)
 #> ✔ Applied log2 transformation
 eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 #> ✔ Applied log2 transformation
+# }
 ```
