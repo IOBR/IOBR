@@ -21,10 +21,11 @@
 #' @examples
 #' \donttest{
 #' eset_stad <- load_data("eset_stad")
-#' anno_rnaseq <- load_data("anno_rnaseq")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-#' eset_distribution(eset)
-#' eset_distribution(eset, project = file.path(tempdir(), "ESET"))
+#' eset_distribution(eset_stad[1:1000, ])
+#' #anno_rnaseq <- load_data("anno_rnaseq")
+#' #eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
+#' #eset_distribution(eset)
+#' #eset_distribution(eset, project = file.path(tempdir(), "ESET"))
 #' }
 eset_distribution <- function(eset, quantile = 3, log = TRUE, project = NULL) {
   if (!is.matrix(eset) && !is.data.frame(eset)) {
