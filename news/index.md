@@ -1,5 +1,20 @@
 # Changelog
 
+## IOBR 2.2.2
+
+### Improvements
+
+- Supported non-GitHub mirrors and added fallback.
+
+### Bug Fixes
+
+- Fixed GitHub Actions CI failure on `r-devel` by correcting the
+  `http-user-agent` configuration and removing redundant dependency
+  specifications.
+- Added `BiocManager` to `Suggests` in `DESCRIPTION` to improve
+  Bioconductor package resolution and address dependency availability
+  issues reported in CRAN checks.
+
 ## IOBR 2.2.1
 
 CRAN release: 2026-05-15

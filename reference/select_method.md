@@ -56,7 +56,7 @@ res <- calculate_sig_score(
 #> ℹ Step 1/3: PCA method
 #> ℹ Step 2/3: z-score method
 #> ℹ Step 3/3: ssGSEA method
-#> ℹ GSVA version 2.6.1
+#> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 4 gene sets
 #> ℹ Normalizing ssGSEA scores

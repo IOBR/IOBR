@@ -98,7 +98,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "xCell.data"
 #> ℹ Number of genes: 10783
-#> ℹ GSVA version 2.6.1
+#> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
 #> ℹ kcdf='auto' (default)
@@ -152,7 +152,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Step 1/3: PCA method
 #> ℹ Step 2/3: z-score method
 #> ℹ Step 3/3: ssGSEA method
-#> ℹ GSVA version 2.6.1
+#> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 280 gene sets
 #> ℹ Normalizing ssGSEA scores
@@ -173,7 +173,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Calculating scores for 12059 signature(s)
-#> ℹ GSVA version 2.6.1
+#> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating ssGSEA scores for 12059 gene sets
 #> ℹ Normalizing ssGSEA scores
