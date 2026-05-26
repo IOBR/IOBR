@@ -42,7 +42,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           needs: check
-          extra-packages: any::rcmdcheck, any::sessioninfo
+          extra-packages: any::rcmdcheck, any::sessioninfo, any::knitr, any::rmarkdown
           dependencies: ${{ matrix.config.dependencies }}
 
       - uses: r-lib/actions/check-r-package@v2
