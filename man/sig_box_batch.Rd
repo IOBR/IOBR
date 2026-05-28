@@ -97,6 +97,7 @@ statistical annotation, and compatibility with Seurat objects. Plots are saved
 to the specified directory or a default folder.
 }
 \examples{
+\donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box_batch(
   input = tcga_stad_pdata,
@@ -106,6 +107,7 @@ sig_box_batch(
   palette = "jco",
   path = tempdir()
 )
+}
 }
 \author{
 Dongqiang Zeng

@@ -37,6 +37,7 @@ different groups. Computes p-values, adjusts for multiple testing, and ranks
 features by significance.
 }
 \examples{
+\donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
@@ -48,6 +49,7 @@ if ("Gender" \%in\% colnames(sig_stad)) {
     feature = colnames(sig_stad)[69:ncol(sig_stad)]
   )
   head(res)
+}
 }
 }
 \author{

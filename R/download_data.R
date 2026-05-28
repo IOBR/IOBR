@@ -269,17 +269,21 @@ reset_iobr_mirrors <- function() {
 #' Get IOBR Cache Directory
 #'
 #' @description Returns the current cache directory for IOBR downloaded data.
+#' To comply with CRAN policies, the default cache directory is a session-specific
+#' temporary directory. Users can opt-in to a persistent cache by setting
+#' `options(IOBR.cache_dir = "your/path")` or using `set_iobr_cache_dir()`.
+#'
 #' The cache directory is determined in the following priority order:
 #' 1. Function argument `cache_dir` (if provided)
 #' 2. Option `IOBR.cache_dir` (if set via `options()`)
-#' 3. Default system cache location via `tools::R_user_dir()`
+#' 3. Default: A session-specific temporary directory (`file.path(tempdir(), "IOBR_cache")`)
 #'
 #' @param cache_dir Optional character string to override the current setting.
 #' @return Character string with the cache directory path.
 #' @export
 #'
 #' @examples
-#' # Get current cache directory
+#' # Get current cache directory (defaults to tempdir)
 #' get_iobr_cache_dir()
 #'
 #' # Set custom cache directory via options (use tempdir() for examples)
@@ -299,8 +303,8 @@ get_iobr_cache_dir <- function(cache_dir = NULL) {
     return(path.expand(option_cache))
   }
 
-  # Default to R user cache directory
-  tools::R_user_dir("IOBR", which = "cache")
+  # Default to temporary directory to satisfy CRAN policies
+  file.path(tempdir(), "IOBR_cache")
 }
 
 #' Set IOBR Cache Directory
@@ -308,6 +312,9 @@ get_iobr_cache_dir <- function(cache_dir = NULL) {
 #' @description Sets a custom cache directory for IOBR downloaded data.
 #' This is useful when you want to store cached data in a specific location,
 #' such as a shared network drive or a custom directory.
+#'
+#' To use the standard system cache location (persistent across sessions),
+#' you can use: `set_iobr_cache_dir(tools::R_user_dir("IOBR", which = "cache"))`.
 #'
 #' @param path Character string. The path to the cache directory.
 #' @param create Logical. Whether to create the directory if it doesn't exist.
@@ -320,6 +327,9 @@ get_iobr_cache_dir <- function(cache_dir = NULL) {
 #' \donttest{
 #' # Set a custom cache directory (use tempdir() for examples)
 #' set_iobr_cache_dir(tempdir())
+#'
+#' # Use standard system cache (persistent)
+#' # set_iobr_cache_dir(tools::R_user_dir("IOBR", which = "cache"))
 #'
 #' # Check the current cache directory
 #' get_iobr_cache_dir()
@@ -350,7 +360,8 @@ set_iobr_cache_dir <- function(path, create = TRUE) {
 
 #' Reset IOBR Cache Directory to Default
 #'
-#' @description Resets the cache directory to the default system location.
+#' @description Resets the cache directory to the default session-specific
+#' temporary directory.
 #' @return Invisibly returns the default cache directory path.
 #' @export
 #'
@@ -358,8 +369,8 @@ set_iobr_cache_dir <- function(path, create = TRUE) {
 #' reset_iobr_cache_dir()
 reset_iobr_cache_dir <- function() {
   options(IOBR.cache_dir = NULL)
-  default_cache <- tools::R_user_dir("IOBR", which = "cache")
-  cli::cli_alert_success("Cache directory reset to default: {.path {default_cache}}")
+  default_cache <- file.path(tempdir(), "IOBR_cache")
+  cli::cli_alert_success("Cache directory reset to session-specific temporary directory: {.path {default_cache}}")
   invisible(default_cache)
 }
 

@@ -35,6 +35,7 @@ variables. Computes correlation coefficients, p-values, and adjusts for
 multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
+\donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
@@ -45,6 +46,7 @@ results <- batch_cor(
   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 )
 head(results)
+}
 }
 \author{
 Dongqiang Zeng

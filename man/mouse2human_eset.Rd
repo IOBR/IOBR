@@ -38,6 +38,7 @@ Supports using either an online resource (Ensembl) or a local dataset for
 conversion.
 }
 \examples{
+\donttest{
 # Create example mouse expression data
 anno_gc_vm32 <- load_data("anno_gc_vm32")
 num_rows <- 200
@@ -49,6 +50,7 @@ colnames(data) <- sample_names
 
 # Convert using local database
 human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+}
 }
 \author{
 Dongqiang Zeng

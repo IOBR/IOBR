@@ -21,11 +21,13 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' eset <- tcga_rna_preps(
 #'   eset = eset_stad, id_type = "ensembl", input_type = "count",
 #'   output = "tumor", output_type = "tpm", annotation = TRUE
 #' )
+#' }
 tcga_rna_preps <- function(eset,
                            id_type = c("ensembl", "symbol"),
                            input_type = c("log2count", "count"),

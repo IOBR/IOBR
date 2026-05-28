@@ -48,9 +48,11 @@ A ggplot object.
 Generates a pie chart or donut chart from input data.
 }
 \examples{
+\donttest{
 sig_stad <- load_data("sig_stad")
 pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
 pie_chart(input = sig_stad, var = "Subtype", type = 2)
+}
 }
 \author{
 Dongqiang Zeng

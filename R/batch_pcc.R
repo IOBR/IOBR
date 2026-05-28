@@ -31,6 +31,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load TCGA-STAD signature data
 #' sig_stad <- load_data("sig_stad")
 #'
@@ -43,6 +44,7 @@
 #'   features = colnames(sig_stad)[70:ncol(sig_stad)]
 #' )
 #' head(res)
+#' }
 batch_pcc <- function(input,
                       interferenceid,
                       target,

@@ -22,6 +22,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' imvigor210_eset <- load_data("imvigor210_eset")
 #' mad <- apply(imvigor210_eset, 1, mad)
 #' imvigor210_eset <- imvigor210_eset[mad > 0.5, ]
@@ -39,6 +40,7 @@
 #'   x = imvigor210_eset, y = group,
 #'   method = "dif", padjcut = 0.05, cutoff = 2
 #' )
+#' }
 feature_select <- function(x, y, method = c("cor", "dif"),
                            family = c("spearman", "pearson"),
                            cutoff = NULL, padjcut = NULL) {

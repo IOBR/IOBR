@@ -20,6 +20,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' feas <- feature_manipulation(
 #'   data = eset_stad,
@@ -27,6 +28,7 @@
 #'   is_matrix = TRUE,
 #'   print_result = TRUE
 #' )
+#' }
 feature_manipulation <- function(data,
                                  feature = NULL,
                                  is_matrix = FALSE,

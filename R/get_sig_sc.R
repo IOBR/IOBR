@@ -19,8 +19,10 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' deg <- load_data("deg")
 #' get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
+#' }
 get_sig_sc <- function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100) {
   if (!is.data.frame(deg) && !is.matrix(deg)) {
     cli::cli_abort("{.arg deg} must be a data frame or matrix")

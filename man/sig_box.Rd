@@ -87,6 +87,7 @@ optional statistical pairwise comparisons. Supports both data frames and
 Seurat objects for single-cell data visualization.
 }
 \examples{
+\donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box(
   data = tcga_stad_pdata,
@@ -95,6 +96,7 @@ sig_box(
   jitter = TRUE,
   palette = "jco"
 )
+}
 }
 \author{
 Dongqiang Zeng

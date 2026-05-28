@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eset_stad <- load_data("eset_stad")
 #' anno_grch38 <- load_data("anno_grch38")
 #' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
@@ -39,6 +40,7 @@
 #'   sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
 #' )
 #' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+#' }
 estimateScore <- function(input.ds,
                           output.ds,
                           platform = c("affymetrix", "agilent", "illumina")) {

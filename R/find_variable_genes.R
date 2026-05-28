@@ -25,6 +25,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' eset_tme_stad <- load_data("eset_tme_stad")
 #' eset <- find_variable_genes(
 #'   eset = eset_tme_stad,
@@ -32,6 +33,7 @@
 #'   methods = "mad",
 #'   quantile = 0.25
 #' )
+#' }
 find_variable_genes <- function(eset,
                                 data_type = c("count", "normalized"),
                                 methods = c("low", "mad"),

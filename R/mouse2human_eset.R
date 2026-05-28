@@ -23,6 +23,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' # Create example mouse expression data
 #' anno_gc_vm32 <- load_data("anno_gc_vm32")
 #' num_rows <- 200
@@ -34,6 +35,7 @@
 #'
 #' # Convert using local database
 #' human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+#' }
 mouse2human_eset <- function(eset,
                              source = c("local", "ensembl"),
                              is_matrix = TRUE,

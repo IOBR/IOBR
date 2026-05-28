@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load TCGA-STAD signature data
 #' sig_stad <- load_data("sig_stad")
 #'
@@ -37,6 +38,7 @@
 #'   feature = colnames(sig_stad)[69:ncol(sig_stad)]
 #' )
 #' head(results)
+#' }
 batch_cor <- function(data,
                       target,
                       feature,
@@ -149,6 +151,7 @@ batch_cor <- function(data,
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' sig_stad <- load_data("sig_stad")
 #' p_val <- exact_pvalue(
 #'   x = sig_stad$CD8.T.cells,
@@ -156,6 +159,7 @@ batch_cor <- function(data,
 #'   method = "spearman"
 #' )
 #' print(p_val)
+#' }
 exact_pvalue <- function(x, y, method) {
   l <- sum(!is.na(x) & !is.na(y))
 

@@ -46,6 +46,7 @@ target variable while controlling for an interference (confounding) variable.
 Adjusts p-values for multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
+\donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 
@@ -58,6 +59,7 @@ res <- batch_pcc(
   features = colnames(sig_stad)[70:ncol(sig_stad)]
 )
 head(res)
+}
 }
 \author{
 Rongfang Shen

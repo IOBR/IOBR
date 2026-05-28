@@ -36,6 +36,7 @@
 #' @author Finotello F, et al. (adapted for IOBR)
 #'
 #' @examples
+#' \donttest{
 #' lm22 <- load_data("lm22")
 #' common_genes <- rownames(lm22)[1:500]
 #' tpm_matrix <- as.data.frame(matrix(
@@ -45,6 +46,7 @@
 #' rownames(tpm_matrix) <- common_genes
 #' colnames(tpm_matrix) <- paste0("Sample", 1:5)
 #' results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
+#' }
 deconvolute_quantiseq.default <- function(mix.mat,
                                           arrays = FALSE,
                                           signame = "TIL10",

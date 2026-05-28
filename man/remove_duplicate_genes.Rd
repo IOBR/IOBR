@@ -35,6 +35,7 @@ genes, it retains only the highest-ranking instance (based on the specified
 method) and discards others.
 }
 \examples{
+\donttest{
 # Load and annotate expression data
 eset_stad <- load_data("eset_stad")
 anno_rnaseq <- load_data("anno_rnaseq")
@@ -56,6 +57,7 @@ eset_stad <- remove_duplicate_genes(
 
 # Check duplicates after
 sum(duplicated(rownames(eset_stad)))
+}
 }
 \author{
 Dongqiang Zeng

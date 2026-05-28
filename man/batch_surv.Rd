@@ -36,6 +36,7 @@ Optionally determines optimal cutoffs to dichotomize continuous predictors befor
 modeling. Returns hazard ratios, confidence intervals, and p-values for each variable.
 }
 \examples{
+\donttest{
 sig_stad <- load_data("sig_stad")
 batch_surv(
   pdata = sig_stad,
@@ -43,6 +44,7 @@ batch_surv(
   time = "OS_time",
   status = "OS_status"
 )
+}
 }
 \author{
 Dongqiang Zeng

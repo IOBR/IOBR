@@ -47,6 +47,7 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' tcga_stad_sig <- load_data("tcga_stad_sig")
 #' tcga_stad_pdata <- load_data("tcga_stad_pdata")
 #' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
@@ -55,6 +56,7 @@
 #'   input = input, feas = feas, group = "subtype",
 #'   scale.matrix = TRUE, path = tempdir()
 #' )
+#' }
 sig_pheatmap <- function(input,
                          feas,
                          group,

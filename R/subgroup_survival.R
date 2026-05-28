@@ -20,6 +20,7 @@
 #' @import survival
 #'
 #' @examples
+#' \donttest{
 #' subgroup_data <- load_data("subgroup_data")
 #' input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
 #'
@@ -34,6 +35,7 @@
 #'   pdata = input, time_name = "time", status_name = "status",
 #'   variables = c("ProjectID", "AJCC_stage"), object = "score"
 #' )
+#' }
 subgroup_survival <- function(pdata,
                               time_name = "time",
                               status_name = "status",

@@ -102,6 +102,7 @@ flexible options for colors, clustering, and output formats using
 ComplexHeatmap.
 }
 \examples{
+\donttest{
 tcga_stad_sig <- load_data("tcga_stad_sig")
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
@@ -110,6 +111,7 @@ sig_pheatmap(
   input = input, feas = feas, group = "subtype",
   scale.matrix = TRUE, path = tempdir()
 )
+}
 }
 \author{
 Dongqiang Zeng

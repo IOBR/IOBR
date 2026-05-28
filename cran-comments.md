@@ -9,7 +9,9 @@
 0 errors | 0 warnings | 0 notes
 
 ## Resubmission
-This is a resubmission to address dependency issues reported on `r-oldrel-macos-arm64`.
+This is a resubmission to address CRAN policy violations regarding file system usage and internet access during checks reported by Prof Brian Ripley.
 
-* Added `BiocManager` to `Suggests` to ensure Bioconductor repositories are correctly identified by automated check tools.
-* Fixed GitHub Actions configuration for `r-devel` which was causing false positive dependency resolution errors.
+* Changed the default cache directory from `tools::R_user_dir("IOBR", which = "cache")` to a session-specific temporary directory (`file.path(tempdir(), "IOBR_cache")`). This ensures that the package does not write to the user's home directory (`~/.cache/R/IOBR`) by default, complying with CRAN policies.
+* Wrapped all examples in documentation that trigger internet downloads (via `download_iobr_data()` or `load_data()` for GitHub-hosted datasets) in `\donttest{}` blocks. This prevents automated checks from downloading large datasets and ensures they fail gracefully or are skipped during the check process.
+* Updated `get_iobr_cache_dir()`, `set_iobr_cache_dir()`, and `reset_iobr_cache_dir()` documentation to clarify the new default behavior and provide instructions for users to opt-in to persistent caching.
+* Regenerated all `.Rd` files to reflect these changes.

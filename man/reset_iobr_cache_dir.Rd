@@ -10,7 +10,8 @@ reset_iobr_cache_dir()
 Invisibly returns the default cache directory path.
 }
 \description{
-Resets the cache directory to the default system location.
+Resets the cache directory to the default session-specific
+temporary directory.
 }
 \examples{
 reset_iobr_cache_dir()

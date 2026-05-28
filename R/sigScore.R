@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Load example data
 #' eset_stad <- load_data("eset_stad")
 #' eset <- count2tpm(eset_stad, idType = "ensembl")
@@ -30,6 +31,7 @@
 #'   score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
 #'   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
 #'   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
+#' }
 #' }
 sigScore <- function(eset, methods = c("PCA", "mean", "zscore")) {
   methods <- rlang::arg_match(methods)

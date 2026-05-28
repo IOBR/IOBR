@@ -17,8 +17,10 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
+#' \donttest{
 #' eset_gse62254 <- load_data("eset_gse62254")
 #' eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
+#' }
 scale_matrix <- function(matrix, log2matrix = TRUE, manipulate = TRUE) {
   # Input validation
   if (!is.matrix(matrix) && !is.data.frame(matrix)) {
