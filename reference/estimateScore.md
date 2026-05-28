@@ -42,6 +42,7 @@ the specified output file in GCT format.
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
 anno_grch38 <- load_data("anno_grch38")
@@ -68,4 +69,5 @@ estimateScore(input.ds = input_file, output.ds = output_file, platform = "affyme
 #> ✔ Download complete: "SI_geneset"
 #> 1 gene set: StromalSignature overlap=138
 #> 2 gene set: ImmuneSignature overlap=140
+# }
 ```

@@ -77,6 +77,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 #> ℹ Loading cached data: "sig_stad"
@@ -100,4 +101,5 @@ head(res)
 #> 4 Ascorbate_and_Aldrate_… 0.0112  -0.371 0.204    -0.575 0.717        1.95 *    
 #> 5 Pentose_and_Glucuronat… 0.0189  -0.378 0.210    -0.588 0.854        1.72 *    
 #> 6 Drug_Metabolism_by_Cyt… 0.0201  -0.548 0.295    -0.843 0.854        1.70 *    
+# }
 ```

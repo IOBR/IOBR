@@ -4,6 +4,10 @@ Sets a custom cache directory for IOBR downloaded data. This is useful
 when you want to store cached data in a specific location, such as a
 shared network drive or a custom directory.
 
+To use the standard system cache location (persistent across sessions),
+you can use: \`set_iobr_cache_dir(tools::R_user_dir("IOBR", which =
+"cache"))\`.
+
 ## Usage
 
 ``` r
@@ -31,11 +35,14 @@ Invisibly returns the cache directory path.
 # \donttest{
 # Set a custom cache directory (use tempdir() for examples)
 set_iobr_cache_dir(tempdir())
-#> ✔ IOBR cache directory set to: /tmp/RtmpHcZPu3
+#> ✔ IOBR cache directory set to: /tmp/RtmpzHA8vS
+
+# Use standard system cache (persistent)
+# set_iobr_cache_dir(tools::R_user_dir("IOBR", which = "cache"))
 
 # Check the current cache directory
 get_iobr_cache_dir()
-#> [1] "/tmp/RtmpHcZPu3"
+#> [1] "/tmp/RtmpzHA8vS"
 
 # Download data will now use the custom cache
 data <- download_iobr_data("lm22")

@@ -66,6 +66,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 eset_tme_stad <- load_data("eset_tme_stad")
 #> ℹ Loading cached data: "eset_tme_stad"
 eset <- find_variable_genes(
@@ -78,4 +79,5 @@ eset <- find_variable_genes(
 #> ℹ min.mad = 0.1
 #> ℹ Range of MAD: 0.1 to 2.22
 #> ℹ 25% of variables will be filtered out...
+# }
 ```

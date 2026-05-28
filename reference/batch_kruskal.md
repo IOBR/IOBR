@@ -71,6 +71,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 #> ℹ Loading cached data: "sig_stad"
@@ -96,4 +97,5 @@ if ("Gender" %in% colnames(sig_stad)) {
 #> 4 Ascorbate_and_Aldrate_… 0.0112       6.43 -0.288 0.288 0.715        1.95 *    
 #> 5 Pentose_and_Glucuronat… 0.0189       5.51 -0.294 0.294 0.853        1.72 *    
 #> 6 Drug_Metabolism_by_Cyt… 0.0201       5.41 -0.422 0.422 0.853        1.70 *    
+# }
 ```

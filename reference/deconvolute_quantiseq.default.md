@@ -79,6 +79,7 @@ Finotello F, et al. (adapted for IOBR)
 ## Examples
 
 ``` r
+# \donttest{
 lm22 <- load_data("lm22")
 #> ℹ Loading cached data: "lm22"
 common_genes <- rownames(lm22)[1:500]
@@ -97,4 +98,5 @@ results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
 #> ℹ Signature genes found in data set: 41/153 (26.8%)
 #> ℹ Mixture deconvolution (method: lsei)
 #> ✔ Deconvolution successful!
+# }
 ```

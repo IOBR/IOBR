@@ -56,6 +56,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 sig_stad <- load_data("sig_stad")
 #> ℹ Loading cached data: "sig_stad"
 batch_surv(
@@ -78,4 +79,5 @@ batch_surv(
 #>  9 EMT2                               0.00358   1.13        1.04       1.23
 #> 10 MDSC_Peng_et_al                    0.00393   1.09        1.03       1.16
 #> # ℹ 245 more rows
+# }
 ```

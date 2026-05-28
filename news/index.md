@@ -1,6 +1,22 @@
 # Changelog
 
+## IOBR (development version)
+
+### Improvements
+
+- **CRAN Compliance**: Fixed policy violations regarding home directory
+  usage and internet access during checks.
+  - Default cache directory changed from
+    [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html) to a
+    session-specific temporary directory.
+  - Added `\donttest{}` to examples triggering data downloads.
+  - Users can still opt-in to persistent caching via
+    [`set_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/set_iobr_cache_dir.md)
+    or `options(IOBR.cache_dir = ...)`.
+
 ## IOBR 2.2.2
+
+CRAN release: 2026-05-25
 
 ### Improvements
 

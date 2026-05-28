@@ -152,6 +152,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box_batch(
   input = tcga_stad_pdata,
@@ -163,5 +164,6 @@ sig_box_batch(
 )
 #> ℹ Processing feature: "TMEscore_plus"
 #> ℹ Processing feature: "GZMB"
-#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpHcZPu3
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpzHA8vS
+# }
 ```

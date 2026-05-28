@@ -67,6 +67,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 #> ℹ Trying mirror 1/12: <https://github.com>
@@ -90,4 +91,5 @@ head(results)
 #> 4 T_cell_inflamed_GEP_Ayers_et_… 5.95e-204     0.958 3.78e-202        203. **** 
 #> 5 IFNG_signature_Ayers_et_al     8.63e-173     0.938 4.38e-171        172. **** 
 #> 6 TMEscoreA_plus                 7.35e-154     0.920 3.11e-152        153. **** 
+# }
 ```

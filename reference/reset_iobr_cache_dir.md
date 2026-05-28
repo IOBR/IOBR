@@ -1,6 +1,7 @@
 # Reset IOBR Cache Directory to Default
 
-Resets the cache directory to the default system location.
+Resets the cache directory to the default session-specific temporary
+directory.
 
 ## Usage
 
@@ -16,5 +17,5 @@ Invisibly returns the default cache directory path.
 
 ``` r
 reset_iobr_cache_dir()
-#> ✔ Cache directory reset to default: /home/runner/.cache/R/IOBR
+#> ✔ Cache directory reset to session-specific temporary directory: /tmp/RtmpzHA8vS/IOBR_cache
 ```

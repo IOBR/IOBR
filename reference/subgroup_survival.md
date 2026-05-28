@@ -50,6 +50,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 subgroup_data <- load_data("subgroup_data")
 input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
 
@@ -64,4 +65,5 @@ res_cont <- subgroup_survival(
   pdata = input, time_name = "time", status_name = "status",
   variables = c("ProjectID", "AJCC_stage"), object = "score"
 )
+# }
 ```

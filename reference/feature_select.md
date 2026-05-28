@@ -53,6 +53,7 @@ Character vector of selected feature names.
 ## Examples
 
 ``` r
+# \donttest{
 imvigor210_eset <- load_data("imvigor210_eset")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "imvigor210_eset"
@@ -77,4 +78,5 @@ pd1_dif_2 <- feature_select(
   method = "dif", padjcut = 0.05, cutoff = 2
 )
 #> Deteching two levels in y, we will treat y as a binary varibale
+# }
 ```

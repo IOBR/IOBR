@@ -48,6 +48,7 @@ cluster.
 ## Examples
 
 ``` r
+# \donttest{
 deg <- load_data("deg")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "deg"
@@ -280,4 +281,5 @@ get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n
 #>  [91] "IVD"        "DST"        "HSPA6"      "SAC3D1"     "UBE2S"     
 #>  [96] "ABCA7"      "SEPT11"     "C19orf60"   "HPGD"       "GADD45GIP1"
 #> 
+# }
 ```

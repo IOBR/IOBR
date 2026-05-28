@@ -171,6 +171,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 tcga_stad_sig <- load_data("tcga_stad_sig")
 #> ℹ Loading cached data: "tcga_stad_sig"
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
@@ -183,5 +184,6 @@ sig_pheatmap(
 #> ℹ Heatmap palettes: 1 (pheatmap), 2 (peach), 3 (blues), 4 (virids), 5 (reds), 6 (RdBu), 7 (navy_firebrick), 8 (magma)
 #> ℹ Random palettes: 1 (palette1), 2 (palette2), 3 (palette3), 4 (palette4)
 #> ℹ Using random seed: 54321
-#> ✔ Heatmap saved to: /tmp/RtmpHcZPu3/1-pheatmap-subtype.pdf
+#> ✔ Heatmap saved to: /tmp/RtmpzHA8vS/1-pheatmap-subtype.pdf
+# }
 ```

@@ -11,7 +11,7 @@ Adjusts p-values for multiple testing using the Benjamini-Hochberg method."></he
 
     <a class="navbar-brand me-2" href="../index.html">IOBR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +115,8 @@ variables to correlate with the target.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load TCGA-STAD signature data</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># Load TCGA-STAD signature data</span></span></span>
 <span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"sig_stad"</span></span>
 <span class="r-in"><span></span></span>
@@ -139,6 +140,7 @@ variables to correlate with the target.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CAF.S1                     1.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 99</span>     0.838 9.94<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>        98.8 **** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> TMEscoreB_plus             3.05<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>     0.835 1.54<span style="color: #949494;">e</span><span style="color: #BB0000;">- 96</span>        97.5 **** </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> CAF_Peng_et_al             4.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>     0.834 2.08<span style="color: #949494;">e</span><span style="color: #BB0000;">- 96</span>        97.3 **** </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

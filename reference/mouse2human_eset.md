@@ -55,6 +55,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Create example mouse expression data
 anno_gc_vm32 <- load_data("anno_gc_vm32")
 #> ℹ Trying mirror 1/12: <https://github.com>
@@ -74,4 +75,5 @@ human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
 #> ✔ 94% of probes in expression set were annotated
 #> ℹ Found 1 duplicate symbol, using "mean" method
 #> ℹ Row number after filtering duplicated gene symbol: 217
+# }
 ```

@@ -36,6 +36,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 signature_collection <- load_data("signature_collection")
 tmpfile <- tempfile(fileext = ".csv")
 output_sig(
@@ -43,7 +44,7 @@ output_sig(
   file.name = tools::file_path_sans_ext(tmpfile)
 )
 #> Warning: number of columns of result is not a multiple of vector length (arg 1)
-#> ✔ Signature data saved to /tmp/RtmpHcZPu3/file1cc273fe2ba5.csv
+#> ✔ Signature data saved to /tmp/RtmpzHA8vS/file58343b35bd67.csv
 #>     CD_8_T_effector     DDR   APM Immune_Checkpoint CellCycle_Reg Pan_F_TBRs
 #> 1              CD8A     UNG   B2M             CD274           ATM      ACTA2
 #> 2              GZMA   SMUG1 HLA-A          PDCD1LG2        CDKN1A      ACTG2
@@ -36005,4 +36006,5 @@ output_sig(
 #> 308        <NA>      <NA>         <NA>              <NA>
 #> 309        <NA>      <NA>         <NA>              <NA>
 #>  [ reached 'max' / getOption("max.print") -- omitted 154 rows ]
+# }
 ```

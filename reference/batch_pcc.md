@@ -80,6 +80,7 @@ Rongfang Shen
 ## Examples
 
 ``` r
+# \donttest{
 # Load TCGA-STAD signature data
 sig_stad <- load_data("sig_stad")
 #> ℹ Loading cached data: "sig_stad"
@@ -104,4 +105,5 @@ head(res)
 #> 4 CAF.S1                     1.58e- 99     0.838 9.94e- 98        98.8 **** 
 #> 5 TMEscoreB_plus             3.05e- 98     0.835 1.54e- 96        97.5 **** 
 #> 6 CAF_Peng_et_al             4.95e- 98     0.834 2.08e- 96        97.3 **** 
+# }
 ```

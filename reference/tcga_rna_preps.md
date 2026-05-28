@@ -56,6 +56,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
 eset <- tcga_rna_preps(
@@ -77,4 +78,5 @@ eset <- tcga_rna_preps(
 #> ! Omitting 3985 genes without length information
 #> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.
 #> ✔ Reduced to 54658 unique genes
+# }
 ```

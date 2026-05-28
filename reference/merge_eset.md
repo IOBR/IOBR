@@ -36,6 +36,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load example data
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
@@ -58,4 +59,5 @@ merged_eset <- merge_eset(eset1, eset2)
 #> ✔ Final merged expression set: 4 genes x 7 samples
 print(dim(merged_eset))
 #> [1] 4 7
+# }
 ```

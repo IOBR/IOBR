@@ -35,6 +35,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 sig_stad <- load_data("sig_stad")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "sig_stad"
@@ -45,4 +46,5 @@ p_val <- exact_pvalue(
 )
 print(p_val)
 #> [1] 7.285891e-48
+# }
 ```

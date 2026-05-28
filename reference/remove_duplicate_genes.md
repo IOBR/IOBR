@@ -48,6 +48,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load and annotate expression data
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
@@ -80,4 +81,5 @@ eset_stad <- remove_duplicate_genes(
 # Check duplicates after
 sum(duplicated(rownames(eset_stad)))
 #> [1] 0
+# }
 ```

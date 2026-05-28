@@ -34,6 +34,7 @@ Dorothee Nickles, Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 # Load example data
 eset_stad <- load_data("eset_stad")
 #> ℹ Loading cached data: "eset_stad"
@@ -55,4 +56,5 @@ if (length(genes) >= 2) {
   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
 }
+# }
 ```

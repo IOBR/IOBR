@@ -125,6 +125,7 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
+# \donttest{
 tcga_stad_pdata <- load_data("tcga_stad_pdata")
 sig_box(
   data = tcga_stad_pdata,
@@ -137,4 +138,5 @@ sig_box(
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the IOBR package.
 #>   Please report the issue at <https://github.com/IOBR/IOBR/issues>.
+# }
 ```
