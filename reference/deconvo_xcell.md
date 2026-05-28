@@ -67,8 +67,8 @@ xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
 #> ✔ Calculations finished
 head(xcell_result)[, 1:5]
 #>             ID ProjectID Adipocytes_xCell Astrocytes_xCell B-cells_xCell
-#> 1 TCGA-BR-6455 TCGA-STAD     3.755491e-23     0.000000e+00  0.000000e+00
-#> 2 TCGA-BR-7196 TCGA-STAD     1.794635e-23     3.702040e-22  1.311341e-23
-#> 3 TCGA-BR-8371 TCGA-STAD     0.000000e+00     1.881182e-21  3.149663e-08
+#> 1 TCGA-BR-6455 TCGA-STAD     0.000000e+00     3.768541e-22  1.563798e-23
+#> 2 TCGA-BR-7196 TCGA-STAD     1.017532e-23     6.161059e-22  0.000000e+00
+#> 3 TCGA-BR-8371 TCGA-STAD     0.000000e+00     9.347657e-22  3.149663e-08
 # }
 ```
