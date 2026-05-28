@@ -28,7 +28,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      R_BIOC_VERSION: "3.20"
+      R_BIOC_VERSION: "3.23"
 
     steps:
       - uses: actions/checkout@v4
@@ -43,6 +43,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          extra-packages: any::rcmdcheck
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
