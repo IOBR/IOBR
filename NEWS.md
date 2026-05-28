@@ -1,3 +1,5 @@
+# IOBR (development version)
+
 # IOBR 2.2.2
 
 ## Improvements
@@ -13,6 +15,10 @@
 
 ## New Features
 
+* **CRAN Compliance**: Fixed policy violations regarding home directory usage and internet access during checks.
+  - Default cache directory changed from `tools::R_user_dir()` to a session-specific temporary directory.
+  - Added `\donttest{}` to examples triggering data downloads.
+  - Users can still opt-in to persistent caching via `set_iobr_cache_dir()` or `options(IOBR.cache_dir = ...)`.
 * **Custom Cache Directory**: Added support for customizing the download cache location via `options(IOBR.cache_dir = "your/path")`. New functions:
   - `get_iobr_cache_dir()` - Get current cache directory path
   - `set_iobr_cache_dir(path)` - Set custom cache directory
