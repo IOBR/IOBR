@@ -12,6 +12,7 @@ permissions: read-all
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+    continue-on-error: ${{ matrix.config.r == 'devel' }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
@@ -27,6 +28,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      R_BIOC_VERSION: "3.20"
 
     steps:
       - uses: actions/checkout@v4
