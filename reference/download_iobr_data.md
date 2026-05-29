@@ -48,7 +48,7 @@ The requested dataset.
 ## Examples
 
 ``` r
-if (interactive()) {
-  tcga_sig <- download_iobr_data("tcga_stad_sig")
-}
+if (FALSE) { # \dontrun{
+tcga_sig <- download_iobr_data("tcga_stad_sig")
+} # }
 ```

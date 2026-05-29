@@ -107,12 +107,25 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (interactive()) {
-  set.seed(123)
-  test_data <- data.frame(
-    OS_status = sample(c(0, 1), 50, replace = TRUE),
-    TMEscore_plus = rnorm(50)
-  )
-  sig_roc(data = test_data, response = "OS_status", variables = "TMEscore_plus")
-}
+set.seed(123)
+test_data <- data.frame(
+  OS_status = sample(c(0, 1), 30, replace = TRUE),
+  Marker1 = rnorm(30),
+  Marker2 = rnorm(30)
+)
+result <- sig_roc(data = test_data, response = "OS_status",
+                  variables = c("Marker1", "Marker2"))
+#> ℹ Input data preview:
+#> Registered S3 method overwritten by 'pROC':
+#>   method   from            
+#>   plot.roc spatstat.explore
+#> Setting levels: control = 0, case = 1
+#> Setting direction: controls > cases
+#> Setting levels: control = 0, case = 1
+#> Setting direction: controls < cases
+
+if (!is.null(result)) print(result$auc.out)
+#>             Name   AUC      AUC CI
+#> auc.ci   Marker1 0.529  0.322-0.71
+#> auc.ci.1 Marker2 0.563 0.385-0.775
 ```

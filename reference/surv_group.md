@@ -129,12 +129,24 @@ sim_pdata <- data.frame(
   time = runif(100, 1, 60),
   OS_status = sample(0:1, 100, replace = TRUE)
 )
-if (interactive()) {
-  surv_group(
-    input_pdata = sim_pdata,
-    target_group = "Lauren",
-    time = "time",
-    status = "OS_status"
-  )
-}
+# Run survival analysis (survival and survminer are imported packages)
+result <- surv_group(
+  input_pdata = sim_pdata,
+  target_group = "Lauren",
+  time = "time",
+  status = "OS_status",
+  save_path = NULL
+)
+#> ℹ Follow-up time ranges from 1.62 to 59.15 months
+#>    Diffuse Intestinal 
+#>         43         57 
+#> ℹ Maximum follow-up time is 59.2 months; divided into 6 sections
+#> ℹ Reference group not defined, using alphabetical order
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+if (!is.null(result)) print(result)
+
+#> [[1]]
+#> NULL
+#> 
 ```

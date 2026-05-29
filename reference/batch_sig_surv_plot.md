@@ -114,24 +114,59 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (interactive()) {
-  set.seed(123)
-  test_pdata <- data.frame(
-    ID = paste0("S", 1:30),
-    ProjectID = rep(c("Project1", "Project2"), each = 15),
-    OS_time = runif(30, 1, 60),
-    OS_status = sample(c(0, 1), 30, replace = TRUE),
-    T.cells.CD8 = rnorm(30)
-  )
-  result <- batch_sig_surv_plot(
-    input_pdata = test_pdata,
-    signature = "T.cells.CD8",
-    id = "ID",
-    column_of_project = "ProjectID",
-    project = NULL,
-    time = "OS_time",
-    status = "OS_status",
-    time_type = "month"
-  )
-}
+set.seed(123)
+test_pdata <- data.frame(
+  ID = paste0("S", 1:30),
+  ProjectID = rep(c("P1", "P2"), each = 15),
+  OS_time = runif(30, 1, 60),
+  OS_status = sample(c(0, 1), 30, replace = TRUE),
+  Marker = rnorm(30)
+)
+result <- batch_sig_surv_plot(
+  input_pdata = test_pdata, signature = "Marker",
+  id = "ID", column_of_project = "ProjectID",
+  time = "OS_time", status = "OS_status", time_type = "month"
+)
+#> ℹ Processing project: "P1"
+#> ℹ Survival follow-up time range: 3.69 to 57.45 months
+#> ℹ Best cutoff for "Marker": -0.21
+#> ✔ Best cutoff for "Marker": -0.208
+#> ℹ High Marker: 9
+#> ℹ Low Marker: 6
+#> ℹ Maximum follow-up time is 57.5 months; divided into 6 sections
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the ggpubr package.
+#>   Please report the issue at <https://github.com/kassambara/ggpubr/issues>.
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> ℹ Processing project: "P2"
+#> ℹ Survival follow-up time range: 3.48 to 59.66 months
+#> ℹ Best cutoff for "Marker": -1.55
+#> ✔ Best cutoff for "Marker": -1.549
+#> ℹ High Marker: 14
+#> ℹ Low Marker: 1
+#> ℹ Maximum follow-up time is 59.7 months; divided into 6 sections
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
+#> Ignoring unknown labels:
+#> • colour : "Strata"
 ```

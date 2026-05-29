@@ -58,8 +58,8 @@ try(load_data("sign_tme")) # Will suggest "signature_tme"
 #>   signature_sc, signature_tme, signature_tumor, stad_group, subgroup_data,
 #>   tcga_stad_pdata, tcga_stad_sig, tcga_stad_var, xCell.data
 
-if (interactive()) {
-  # Load expression data (triggers download from GitHub)
-  eset <- load_data("eset_stad")
-}
+if (FALSE) { # \dontrun{
+# Load expression data (triggers download from GitHub)
+eset <- load_data("eset_stad")
+} # }
 ```

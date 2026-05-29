@@ -39,15 +39,15 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (interactive()) {
-  xcell <- load_data("xCell.data")
-  if (!is.null(xcell)) {
-    set.seed(123)
-    sim_eset <- matrix(rnorm(length(xcell$genes) * 2), length(xcell$genes), 2)
-    rownames(sim_eset) <- xcell$genes
-    colnames(sim_eset) <- paste0("Sample", 1:2)
-    result <- deconvo_xcell(eset = sim_eset, project = "TCGA-STAD")
-    if (!is.null(result)) head(result)
-  }
+if (FALSE) { # \dontrun{
+xcell <- load_data("xCell.data")
+if (!is.null(xcell)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(length(xcell$genes) * 2), length(xcell$genes), 2)
+  rownames(sim_eset) <- xcell$genes
+  colnames(sim_eset) <- paste0("Sample", 1:2)
+  result <- deconvo_xcell(eset = sim_eset, project = "TCGA-STAD")
+  if (!is.null(result)) head(result)
 }
+} # }
 ```

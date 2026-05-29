@@ -42,7 +42,8 @@
 <strong>CRAN Compliance</strong>: Fixed policy violations regarding home directory usage and internet access during checks.
 <ul><li>Default cache directory changed from <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir()</a></code> to a session-specific temporary directory.</li>
 <li>Added internet connectivity check for both Google and Baidu (for Chinese users).</li>
-<li>Wrapped network-dependent examples with <code>if(interactive())</code> to ensure all examples complete within 5 seconds.</li>
+<li>Fixed example handling: replaced <code>if(interactive())</code> with proper <code>\dontrun{}</code> blocks for genuinely non-runable examples (network-dependent, user files required, Suggested packages). CRAN clarified that <code>if(interactive())</code> does NOT skip examples in checks.</li>
+<li>Minimized <code>\dontrun{}</code> usage to 22 blocks with documented reasons; functions that can run offline use simulated data.</li>
 <li>Users can still opt-in to persistent caching via <code><a href="../reference/set_iobr_cache_dir.html">set_iobr_cache_dir()</a></code> or <code>options(IOBR.cache_dir = ...)</code>.</li>
 </ul></li>
 </ul></div>

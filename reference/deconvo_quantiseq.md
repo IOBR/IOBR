@@ -42,17 +42,17 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (interactive()) {
-  quantiseq_data <- load_data("quantiseq_data")
-  if (!is.null(quantiseq_data)) {
-    set.seed(123)
-    n_sig <- nrow(quantiseq_data$TIL10_signature)
-    sim_eset <- matrix(rnorm(n_sig * 2), n_sig, 2)
-    rownames(sim_eset) <- rownames(quantiseq_data$TIL10_signature)
-    colnames(sim_eset) <- paste0("Sample", 1:2)
-    result <- deconvo_quantiseq(eset = sim_eset, project = "Example", tumor = TRUE,
-                                arrays = FALSE, scale_mrna = FALSE)
-    if (!is.null(result)) head(result)
-  }
+if (FALSE) { # \dontrun{
+quantiseq_data <- load_data("quantiseq_data")
+if (!is.null(quantiseq_data)) {
+  set.seed(123)
+  n_sig <- nrow(quantiseq_data$TIL10_signature)
+  sim_eset <- matrix(rnorm(n_sig * 2), n_sig, 2)
+  rownames(sim_eset) <- rownames(quantiseq_data$TIL10_signature)
+  colnames(sim_eset) <- paste0("Sample", 1:2)
+  result <- deconvo_quantiseq(eset = sim_eset, project = "Example", tumor = TRUE,
+                              arrays = FALSE, scale_mrna = FALSE)
+  if (!is.null(result)) head(result)
 }
+} # }
 ```

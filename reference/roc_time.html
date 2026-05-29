@@ -162,12 +162,12 @@ Default is `"pdf"`.</p></dd>
 <span class="r-in"><span>  Marker2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  Marker3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">roc_time</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    input <span class="op">=</span> <span class="va">sim_input</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Marker1"</span>, <span class="st">"Marker2"</span>, <span class="st">"Marker3"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    time <span class="op">=</span> <span class="st">"time"</span>, status <span class="op">=</span> <span class="st">"status"</span>, time_point <span class="op">=</span> <span class="fl">12</span>, path <span class="op">=</span> <span class="cn">NULL</span>, main <span class="op">=</span> <span class="st">"OS"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu">roc_time</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  input <span class="op">=</span> <span class="va">sim_input</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Marker1"</span>, <span class="st">"Marker2"</span>, <span class="st">"Marker3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="st">"time"</span>, status <span class="op">=</span> <span class="st">"status"</span>, time_point <span class="op">=</span> <span class="fl">12</span>, path <span class="op">=</span> <span class="cn">NULL</span>, main <span class="op">=</span> <span class="st">"OS"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

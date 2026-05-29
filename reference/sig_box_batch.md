@@ -160,14 +160,15 @@ sim_pdata <- data.frame(
   TMEscore_plus = rnorm(50),
   GZMB = rnorm(50)
 )
-if (interactive()) {
-  sig_box_batch(
-    input = sim_pdata,
-    vars = c("TMEscore_plus", "GZMB"),
-    groups = "subtype",
-    jitter = TRUE,
-    palette = "jco",
-    path = tempdir()
-  )
-}
+sig_box_batch(
+  input = sim_pdata,
+  vars = c("TMEscore_plus", "GZMB"),
+  groups = "subtype",
+  jitter = TRUE,
+  palette = "jco",
+  path = tempdir()
+)
+#> ℹ Processing feature: "TMEscore_plus"
+#> ℹ Processing feature: "GZMB"
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmpnCsgsm
 ```

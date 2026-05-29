@@ -70,15 +70,15 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-if (interactive()) {
-  lm22 <- load_data("lm22")
-  if (!is.null(lm22)) {
-    set.seed(123)
-    sim_eset <- matrix(rnorm(nrow(lm22) * 2), nrow(lm22), 2)
-    rownames(sim_eset) <- rownames(lm22)
-    colnames(sim_eset) <- paste0("Sample", 1:2)
-    result <- deconvo_cibersort(eset = sim_eset, project = "TCGA-STAD", perm = 10)
-    if (!is.null(result)) head(result)
-  }
+if (FALSE) { # \dontrun{
+lm22 <- load_data("lm22")
+if (!is.null(lm22)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(lm22) * 2), nrow(lm22), 2)
+  rownames(sim_eset) <- rownames(lm22)
+  colnames(sim_eset) <- paste0("Sample", 1:2)
+  result <- deconvo_cibersort(eset = sim_eset, project = "TCGA-STAD", perm = 10)
+  if (!is.null(result)) head(result)
 }
+} # }
 ```

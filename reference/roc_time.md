@@ -122,10 +122,10 @@ sim_input <- data.frame(
   Marker2 = rnorm(100),
   Marker3 = rnorm(100)
 )
-if (interactive()) {
-  roc_time(
-    input = sim_input, vars = c("Marker1", "Marker2", "Marker3"),
-    time = "time", status = "status", time_point = 12, path = NULL, main = "OS"
-  )
-}
+if (FALSE) { # \dontrun{
+roc_time(
+  input = sim_input, vars = c("Marker1", "Marker2", "Marker3"),
+  time = "time", status = "status", time_point = 12, path = NULL, main = "OS"
+)
+} # }
 ```

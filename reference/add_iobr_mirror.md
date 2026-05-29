@@ -30,7 +30,7 @@ Invisibly returns the updated mirror list.
 ## Examples
 
 ``` r
-if (interactive()) {
-  add_iobr_mirror("https://my-mirror.com/https://github.com")
-}
+if (FALSE) { # \dontrun{
+add_iobr_mirror("https://my-mirror.com/https://github.com")
+} # }
 ```
