@@ -171,19 +171,19 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_sig <- load_data("tcga_stad_sig")
-#> ℹ Loading cached data: "tcga_stad_sig"
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
-input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-feas <- grep("MCPcounter", colnames(input), value = TRUE)
+set.seed(123)
+test_input <- data.frame(
+  ID = paste0("Sample", 1:20),
+  subtype = sample(c("TypeA", "TypeB"), 20, replace = TRUE),
+  Sig1 = rnorm(20),
+  Sig2 = rnorm(20)
+)
 sig_pheatmap(
-  input = input, feas = feas, group = "subtype",
-  scale.matrix = TRUE, path = tempdir()
+  input = test_input,
+  feas = c("Sig1", "Sig2"),
+  group = "subtype"
 )
 #> ℹ Heatmap palettes: 1 (pheatmap), 2 (peach), 3 (blues), 4 (virids), 5 (reds), 6 (RdBu), 7 (navy_firebrick), 8 (magma)
 #> ℹ Random palettes: 1 (palette1), 2 (palette2), 3 (palette3), 4 (palette4)
 #> ℹ Using random seed: 54321
-#> ✔ Heatmap saved to: /tmp/RtmpgUkRfL/1-pheatmap-subtype.pdf
-# }
 ```

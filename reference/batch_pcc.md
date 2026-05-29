@@ -80,30 +80,28 @@ Rongfang Shen
 ## Examples
 
 ``` r
-# \donttest{
-# Load TCGA-STAD signature data
-sig_stad <- load_data("sig_stad")
-#> ℹ Loading cached data: "sig_stad"
-
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  TumorPurity = runif(100),
+  TargetVar = rnorm(100),
+  Signature1 = rnorm(100),
+  Signature2 = rnorm(100)
+)
 # Calculate partial correlations controlling for tumor purity
 res <- batch_pcc(
-  input = sig_stad,
-  interferenceid = "TumorPurity_estimate",
-  target = "Pan_F_TBRs",
+  input = test_data,
+  interferenceid = "TumorPurity",
+  target = "TargetVar",
   method = "pearson",
-  features = colnames(sig_stad)[70:ncol(sig_stad)]
+  features = c("Signature1", "Signature2")
 )
 #> ℹ Computing pearson partial correlation for
 #> ✔ Partial correlation analysis complete
 head(res)
-#> # A tibble: 6 × 6
-#>   sig_names                    p.value statistic     p.adj log10pvalue stars
-#>   <chr>                          <dbl>     <dbl>     <dbl>       <dbl> <fct>
-#> 1 EMT2                       1.37e-147     0.914 3.45e-145       147.  **** 
-#> 2 Normal_mucosa_Bindea_et_al 1.41e-134     0.898 1.77e-132       134.  **** 
-#> 3 TGFb.myCAF                 1.07e-105     0.851 9.00e-104       105.  **** 
-#> 4 CAF.S1                     1.58e- 99     0.838 9.94e- 98        98.8 **** 
-#> 5 TMEscoreB_plus             3.05e- 98     0.835 1.54e- 96        97.5 **** 
-#> 6 CAF_Peng_et_al             4.95e- 98     0.834 2.08e- 96        97.3 **** 
-# }
+#> # A tibble: 2 × 6
+#>   sig_names  p.value statistic p.adj log10pvalue stars
+#>   <chr>        <dbl>     <dbl> <dbl>       <dbl> <fct>
+#> 1 Signature1   0.387   -0.0878 0.775      0.412  ""   
+#> 2 Signature2   0.877   -0.0158 0.877      0.0570 ""   
 ```

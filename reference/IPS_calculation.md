@@ -8,20 +8,20 @@ suppressor cells.
 ## Usage
 
 ``` r
-IPS_calculation(project = NULL, eset, plot = FALSE)
+IPS_calculation(eset, project = NULL, plot = FALSE)
 ```
 
 ## Arguments
-
-- project:
-
-  Character string for project identifier. Default is NULL.
 
 - eset:
 
   Gene expression matrix with official human gene symbols (HGNC) as
   rownames. Expression values should be log2(TPM+1) or will be
   transformed if max value \> 100.
+
+- project:
+
+  Character string for project identifier. Default is NULL.
 
 - plot:
 
@@ -70,10 +70,12 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
+
+# Run IPS calculation (may return NULL if no internet for internal data)
 ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "ips_gene_set"
-head(ips_result)
+if (!is.null(ips_result)) head(ips_result)
 #>         ProjectID         MHC  EC  SC  CP          AZ IPS
 #> Sample1   Example  0.84758794 NaN NaN NaN  0.84758794   3
 #> Sample2   Example  0.17473579 NaN NaN NaN  0.17473579   1

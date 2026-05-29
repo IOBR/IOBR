@@ -126,36 +126,36 @@ the count matrix. Default is `FALSE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Load TCGA count data</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"eset_stad"</span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulated count data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">count_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html" class="external-link">rpois</a></span><span class="op">(</span><span class="fl">100</span>, lambda <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ENSG00000"</span>, <span class="fl">101</span><span class="op">:</span><span class="fl">120</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Simulated effective length data</span></span></span>
+<span class="r-in"><span><span class="va">eff_len</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"ENSG00000"</span>, <span class="fl">101</span><span class="op">:</span><span class="fl">120</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  eff_length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">500</span>, <span class="fl">5000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Transform to TPM using local gene annotation</span></span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu">count2tpm</span><span class="op">(</span>countMat <span class="op">=</span> <span class="va">eset_stad</span>, source <span class="op">=</span> <span class="st">"local"</span>, idType <span class="op">=</span> <span class="st">"ensembl"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"anno_grch38"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using local annotation (anno_grch38) for TPM conversion</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Omitting 3985 genes without length information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 1679 duplicate symbols. Using <span style="color: #0000BB;">"mean"</span> for ranking.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reduced to 54658 unique genes</span>
+<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu">count2tpm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  countMat <span class="op">=</span> <span class="va">count_matrix</span>, effLength <span class="op">=</span> <span class="va">eff_len</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"id"</span>, length <span class="op">=</span> <span class="st">"eff_length"</span>, gene_symbol <span class="op">=</span> <span class="st">"symbol"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No duplicate gene symbols found.</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">eset</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TCGA-BR-6455 TCGA-BR-7196 TCGA-BR-8371 TCGA-BR-8380 TCGA-BR-8592</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO1     25097.553     24055.97   59199.1348    50164.982     47776.98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-ND4     14525.308     14963.92   48195.6709    32185.131     36283.39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO3     12465.198     14835.81   47590.7666    34559.375     35808.71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGKC        9897.134     78664.05     713.5372     4372.862     27027.24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO2     12920.617     13063.07   33664.6705    21527.455     25992.41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-RNR2    18660.657     10908.66   41096.2915    20342.721     24383.75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TCGA-BR-8686 TCGA-BR-A4IV TCGA-BR-A4J4 TCGA-BR-A4J9 TCGA-FP-7916</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO1      34875.46     50009.92    27982.230     63380.90     26287.97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-ND4      31111.09     35885.02    49689.108     39741.24     14473.97</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO3      27071.10     37804.39    22623.828     43837.58     17801.27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGKC        50262.87     10617.20     2900.288     21222.09     70074.94</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-CO2      20287.58     32023.19    54797.893     30150.49     13184.96</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MT-RNR2     25519.06     36721.41    31241.258     31834.37     12436.25</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Sample1   Sample2   Sample3   Sample4   Sample5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene1  17872.27  15587.34  18209.61  24387.20  27170.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene2  25679.75  26544.19  23257.31  33978.89  34701.99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3  42051.04  13971.40  36724.09  26826.92  30910.36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4 146098.96 101936.44 133970.97 130487.57 136681.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5  47308.28  33008.03  48201.25  32863.57  35407.06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6  61007.04  37836.40  37295.14  28253.11  53269.60</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -143,10 +143,16 @@ Default is `"bootstrap"`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">tcga_stad_pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"tcga_stad_pdata"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create small example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  TMEscore_plus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  GZMB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  GNLY <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sig_roc</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">tcga_stad_pdata</span>, response <span class="op">=</span> <span class="st">"OS_status"</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">test_data</span>, response <span class="op">=</span> <span class="st">"OS_status"</span>,</span></span>
 <span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TMEscore_plus"</span>, <span class="st">"GZMB"</span>, <span class="st">"GNLY"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Input data preview:</span>
@@ -154,23 +160,22 @@ Default is `"bootstrap"`.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   method   from            </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   plot.roc spatstat.explore</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting levels: control = 0, case = 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Setting direction: controls &gt; cases</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Setting levels: control = 0, case = 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting direction: controls &lt; cases</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting levels: control = 0, case = 1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Setting direction: controls &gt; cases</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Setting levels: control = 0, case = 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Setting direction: controls &lt; cases</span>
 <span class="r-plt img"><img src="sig_roc-1.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $auc.out</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   Name   AUC      AUC CI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci   TMEscore_plus 0.564 0.504-0.624</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci.1          GZMB 0.493 0.431-0.555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci.2          GNLY 0.507 0.449-0.568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci   TMEscore_plus 0.508 0.399-0.617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci.1          GZMB 0.564 0.452-0.675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> auc.ci.2          GNLY  0.53  0.428-0.65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $legend.name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "TMEscore_plus  AUC =  0.564" "GZMB  AUC =  0.493"         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "GNLY  AUC =  0.507"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "TMEscore_plus  AUC =  0.508" "GZMB  AUC =  0.564"         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "GNLY  AUC =  0.53"          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

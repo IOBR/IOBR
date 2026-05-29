@@ -111,31 +111,28 @@ manipulation filtering. Default is `FALSE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Load TCGA-STAD signature data</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"sig_stad"</span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create small example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  Gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Compare features by gender</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">batch_wilcoxon</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sig_stad</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">test_data</span>,</span></span>
 <span class="r-in"><span>  target <span class="op">=</span> <span class="st">"Gender"</span>,</span></span>
-<span class="r-in"><span>  feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">[</span><span class="fl">69</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Signature1"</span>, <span class="st">"Signature2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"M"</span> and <span style="color: #0000BB;">"F"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Features: 255</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"Male"</span> and <span style="color: #0000BB;">"Female"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Features: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Wilcoxon test complete</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names               p.value      F     M statistic p.adj log10pvalue stars</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Steroid_Hormone_Metabo… 0.006<span style="text-decoration: underline;">53</span> -<span style="color: #BB0000;">0.526</span> 0.292    -<span style="color: #BB0000;">0.818</span> 0.717        2.18 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Steroid_Hormone_Biosyn… 0.006<span style="text-decoration: underline;">94</span> -<span style="color: #BB0000;">0.516</span> 0.284    -<span style="color: #BB0000;">0.800</span> 0.717        2.16 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Linoleic_Acid_Metaboli… 0.009<span style="text-decoration: underline;">91</span> -<span style="color: #BB0000;">0.345</span> 0.192    -<span style="color: #BB0000;">0.537</span> 0.717        2.00 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Ascorbate_and_Aldrate_… 0.011<span style="text-decoration: underline;">2</span>  -<span style="color: #BB0000;">0.371</span> 0.204    -<span style="color: #BB0000;">0.575</span> 0.717        1.95 *    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Pentose_and_Glucuronat… 0.018<span style="text-decoration: underline;">9</span>  -<span style="color: #BB0000;">0.378</span> 0.210    -<span style="color: #BB0000;">0.588</span> 0.854        1.72 *    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Drug_Metabolism_by_Cyt… 0.020<span style="text-decoration: underline;">1</span>  -<span style="color: #BB0000;">0.548</span> 0.295    -<span style="color: #BB0000;">0.843</span> 0.854        1.70 *    </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names  p.value Female    Male statistic p.adj log10pvalue stars</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Signature2   0.128 0.038<span style="text-decoration: underline;">8</span> -<span style="color: #BB0000;">0.254</span>      0.293 0.257       0.891 +    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Signature1   0.484 0.146   0.034<span style="text-decoration: underline;">4</span>     0.112 0.484       0.315 +    </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -165,14 +165,13 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_sig <- load_data("tcga_stad_sig")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "tcga_stad_sig"
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
-input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-feas <- grep("MCPcounter", colnames(input), value = TRUE)
-sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
-#> ℹ Creating heatmap with 10 features
-# }
+set.seed(123)
+test_input <- data.frame(
+  ID = paste0("Sample", 1:20),
+  subtype = sample(c("TypeA", "TypeB"), 20, replace = TRUE),
+  Sig1 = rnorm(20),
+  Sig2 = rnorm(20)
+)
+sig_heatmap(input = test_input, features = c("Sig1", "Sig2"), group = "subtype", scale = TRUE)
+#> ℹ Creating heatmap with 2 features
 ```

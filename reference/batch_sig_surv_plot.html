@@ -156,11 +156,16 @@ Default is `TRUE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"sig_stad"</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ProjectID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Project1"</span>, <span class="st">"Project2"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  OS_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  T.cells.CD8 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">batch_sig_surv_plot</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  input_pdata <span class="op">=</span> <span class="va">sig_stad</span>,</span></span>
+<span class="r-in"><span>  input_pdata <span class="op">=</span> <span class="va">test_pdata</span>,</span></span>
 <span class="r-in"><span>  signature <span class="op">=</span> <span class="st">"T.cells.CD8"</span>,</span></span>
 <span class="r-in"><span>  id <span class="op">=</span> <span class="st">"ID"</span>,</span></span>
 <span class="r-in"><span>  column_of_project <span class="op">=</span> <span class="st">"ProjectID"</span>,</span></span>
@@ -172,16 +177,16 @@ Default is `TRUE`.</p></dd>
 <span class="r-in"><span>  palette <span class="op">=</span> <span class="st">"jama"</span>,</span></span>
 <span class="r-in"><span>  cols <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  mini_sig <span class="op">=</span> <span class="st">"score"</span>,</span></span>
-<span class="r-in"><span>  show_col <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  show_col <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  fig_type <span class="op">=</span> <span class="st">"pdf"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"TCGA-STAD"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 0.1 to 124 months</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.101</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High T.cells.CD8: 106</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low T.cells.CD8: 244</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Maximum follow-up time is 124 months; divided into 6 sections</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"Project1"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 3.48 to 59.66 months</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: 0.304</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High T.cells.CD8: 8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low T.cells.CD8: 17</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Maximum follow-up time is 59.7 months; divided into 6 sections</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ggpubr</span> package.</span>
@@ -198,7 +203,27 @@ Default is `TRUE`.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"Project2"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 2.45 to 57.82 months</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: -1.03</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"T.cells.CD8"</span>: -1.026</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; coefficient may be infinite. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High T.cells.CD8: 23</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low T.cells.CD8: 2</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; coefficient may be infinite. </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Maximum follow-up time is 57.8 months; divided into 6 sections</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

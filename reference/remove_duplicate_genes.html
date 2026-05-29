@@ -95,40 +95,25 @@ method) and discards others.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Load and annotate expression data</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_stad"</span></span>
-<span class="r-in"><span><span class="va">anno_rnaseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"anno_rnaseq"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"anno_rnaseq"</span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="anno_eset.html">anno_eset</a></span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_stad</span>, annotation <span class="op">=</span> <span class="va">anno_rnaseq</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number of original eset: 60483</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 100% of probes in expression set were annotated</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2098 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50139</span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">eset_stad</span><span class="op">)</span>, var <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create duplicate gene names for demonstration</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"MT-CO1"</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check duplicates before</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">eset_stad</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Remove duplicates using mean expression as ranking criterion</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu">remove_duplicate_genes</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset_stad</span>,</span></span>
-<span class="r-in"><span>  column_of_symbol <span class="op">=</span> <span class="st">"id"</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  symbol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GeneA"</span>, <span class="st">"GeneA"</span>, <span class="st">"GeneB"</span>, <span class="st">"GeneC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  S1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">20</span>, <span class="fl">15</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  S2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">7</span>, <span class="fl">22</span>, <span class="fl">17</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Remove duplicates using mean expression</span></span></span>
+<span class="r-in"><span><span class="va">test_eset_unique</span> <span class="op">&lt;-</span> <span class="fu">remove_duplicate_genes</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">test_eset</span>,</span></span>
+<span class="r-in"><span>  column_of_symbol <span class="op">=</span> <span class="st">"symbol"</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"mean"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2 duplicate symbols. Using <span style="color: #0000BB;">"mean"</span> for ranking.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reduced to 50137 unique genes</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Check duplicates after</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">eset_stad</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 1 duplicate symbol. Using <span style="color: #0000BB;">"mean"</span> for ranking.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Reduced to 3 unique genes</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">test_eset_unique</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       S1 S2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GeneB 20 22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GeneC 15 17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> GeneA 10 12</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

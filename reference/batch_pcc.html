@@ -115,32 +115,30 @@ variables to correlate with the target.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Load TCGA-STAD signature data</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"sig_stad"</span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create small example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  TumorPurity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  TargetVar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Calculate partial correlations controlling for tumor purity</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">batch_pcc</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  input <span class="op">=</span> <span class="va">sig_stad</span>,</span></span>
-<span class="r-in"><span>  interferenceid <span class="op">=</span> <span class="st">"TumorPurity_estimate"</span>,</span></span>
-<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"Pan_F_TBRs"</span>,</span></span>
+<span class="r-in"><span>  input <span class="op">=</span> <span class="va">test_data</span>,</span></span>
+<span class="r-in"><span>  interferenceid <span class="op">=</span> <span class="st">"TumorPurity"</span>,</span></span>
+<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"TargetVar"</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"pearson"</span>,</span></span>
-<span class="r-in"><span>  features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">[</span><span class="fl">70</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Signature1"</span>, <span class="st">"Signature2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Computing pearson partial correlation for</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Partial correlation analysis complete</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names                    p.value statistic     p.adj log10pvalue stars</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> EMT2                       1.37<span style="color: #949494;">e</span><span style="color: #BB0000;">-147</span>     0.914 3.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-145</span>       147.  **** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Normal_mucosa_Bindea_et_al 1.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-134</span>     0.898 1.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-132</span>       134.  **** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> TGFb.myCAF                 1.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-105</span>     0.851 9.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-104</span>       105.  **** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CAF.S1                     1.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 99</span>     0.838 9.94<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>        98.8 **** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> TMEscoreB_plus             3.05<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>     0.835 1.54<span style="color: #949494;">e</span><span style="color: #BB0000;">- 96</span>        97.5 **** </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> CAF_Peng_et_al             4.95<span style="color: #949494;">e</span><span style="color: #BB0000;">- 98</span>     0.834 2.08<span style="color: #949494;">e</span><span style="color: #BB0000;">- 96</span>        97.3 **** </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names  p.value statistic p.adj log10pvalue stars</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Signature1   0.387   -<span style="color: #BB0000;">0.087</span><span style="color: #BB0000; text-decoration: underline;">8</span> 0.775      0.412  <span style="color: #949494;">""</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Signature2   0.877   -<span style="color: #BB0000;">0.015</span><span style="color: #BB0000; text-decoration: underline;">8</span> 0.877      0.057<span style="text-decoration: underline;">0</span> <span style="color: #949494;">""</span>   </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

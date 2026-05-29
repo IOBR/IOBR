@@ -23,5 +23,5 @@ Invisible NULL. Called for side effects of clearing the cache.
 
 ``` r
 clear_iobr_cache()
-#> ✔ Cache cleared: 12 file(s) removed from /tmp/RtmpgUkRfL/IOBR_cache
+#> ✔ Cache cleared: 3 file(s) removed from /tmp/RtmpVQsgYA/IOBR_cache
 ```

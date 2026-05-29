@@ -74,54 +74,37 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-# Annotate Affymetrix microarray data
-eset_gse62254 <- load_data("eset_gse62254")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_gse62254"
-anno_hug133plus2 <- load_data("anno_hug133plus2")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_hug133plus2"
-eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
-#> ℹ Row number of original eset: 54675
-#> ✔ 83% of probes in expression set were annotated
-#> ℹ Found 23366 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 21752
-head(eset)
-#>              GSM1523727 GSM1523728 GSM1523729
-#> SH3KBP1        4.327974   4.316195   4.351425
-#> EEF1A1         4.293762   4.291038   4.262199
-#> COX2           4.250288   4.283714   4.270508
-#> RPL41          4.246149   4.246808   4.257940
-#> ND4            4.285322   4.218556   4.244270
-#> LOC101928826   4.219303   4.219670   4.213252
+# Create a small example expression matrix
+eset_mat <- matrix(runif(100), nrow = 10, ncol = 10)
+rownames(eset_mat) <- paste0("Probe", 1:10)
+colnames(eset_mat) <- paste0("Sample", 1:10)
 
-# Annotate RNA-seq data with Ensembl IDs
-eset_stad <- load_data("eset_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_stad"
-anno_grch38 <- load_data("anno_grch38")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_grch38"
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#> ℹ Row number of original eset: 60483
+# Create a matching annotation data frame
+anno_df <- data.frame(
+  probe_id = paste0("Probe", 1:10),
+  symbol = c("Gene1", "Gene1", "Gene2", "Gene3", "Gene4",
+             "Gene5", "Gene6", "Gene7", "Gene8", "Gene9")
+)
+
+# Annotate
+result <- anno_eset(eset = eset_mat, annotation = anno_df)
+#> ℹ Row number of original eset: 10
 #> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2293 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50181
-head(eset)
-#>         TCGA-BR-6455 TCGA-BR-7196 TCGA-BR-8371 TCGA-BR-8380 TCGA-BR-8592
-#> MT-CO1        849866       858644      2296926      1851900      2317798
-#> MT-ND4        439551       477310      1671108      1061786      1573003
-#> MYH11          49090       231644      1891538      2278901      2268508
-#> MT-RNR2       638863       393662      1612115       759255      1195967
-#> FLNA           78921       291182      1255093      1469937      1586939
-#> ACTB          367641       435945       806904       864952       872777
-#>         TCGA-BR-8686 TCGA-BR-A4IV TCGA-BR-A4J4 TCGA-BR-A4J9 TCGA-FP-7916
-#> MT-CO1        713603      2547162      1172210      3164451      1019632
-#> MT-ND4        568875      1633347      1860155      1773153       501694
-#> MYH11          89832      1867340        58720      2473820       103143
-#> MT-RNR2       527914      1890956      1323163      1606934       487683
-#> FLNA          105371      1483645       129692      1622593       190714
-#> ACTB          200980      1231785       563329      1041598       540407
-# }
+#> ℹ Found 1 duplicate symbol, using "mean" method
+#> ℹ Row number after filtering duplicated gene symbol: 9
+head(result)
+#>         Sample1   Sample2    Sample3     Sample4   Sample5   Sample6   Sample7
+#> Gene1 0.7619853 0.6753624 0.66960355 0.852364600 0.8665602 0.3637427 0.7706230
+#> Gene2 0.8609894 0.7453418 0.81146366 0.668323644 0.3138426 0.6979466 0.9576697
+#> Gene3 0.6735550 0.9425989 0.75916680 0.511314597 0.9594658 0.6844865 0.1586884
+#> Gene8 0.1072947 0.5656543 0.92369921 0.003896343 0.8083863 0.8868626 0.9758897
+#> Gene6 0.8917137 0.2594267 0.05088011 0.820474512 0.3839367 0.1372436 0.8697061
+#> Gene5 0.6931989 0.2977231 0.38090370 0.903362288 0.5314093 0.5546818 0.8731514
+#>          Sample8    Sample9  Sample10
+#> Gene1 0.38917032 0.95657976 0.6232614
+#> Gene2 0.09292582 0.37215774 0.9079464
+#> Gene3 0.16180921 0.96261534 0.5694433
+#> Gene8 0.56028054 0.50815808 0.7819689
+#> Gene6 0.41525745 0.40994593 0.7620283
+#> Gene5 0.34181444 0.06126261 0.1168276
 ```

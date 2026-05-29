@@ -52,7 +52,17 @@ List containing:
 ## Examples
 
 ``` r
+# Simulate data
+set.seed(123)
 X <- matrix(rnorm(100), nrow = 10)
+rownames(X) <- paste0("Gene", 1:10)
+colnames(X) <- paste0("Cell", 1:10)
 Y <- rnorm(10)
-result <- doPerm(100, X, Y, absolute = FALSE, abs_method = "sig.score")
+names(Y) <- paste0("Gene", 1:10)
+
+# Run permutation test
+result <- doPerm(10, X, Y, absolute = FALSE, abs_method = "sig.score")
+if (!is.null(result)) str(result)
+#> List of 1
+#>  $ dist: num [1:10] 0.883 0.794 0.708 0.739 0.41 ...
 ```

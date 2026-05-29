@@ -123,20 +123,29 @@ Dongqiang Zeng, Rongfang Shen
 ## Examples
 
 ``` r
-lm22 <- load_data("lm22")
-#> ℹ Loading cached data: "lm22"
-common_genes <- rownames(lm22)[1:500]
-sim_eset <- as.data.frame(matrix(
-  rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-  nrow = length(common_genes), ncol = 5
-))
-rownames(sim_eset) <- common_genes
-colnames(sim_eset) <- paste0("Sample", 1:5)
-# \donttest{
-res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
+mcp_genes <- load_data("mcp_genes")
+if (!is.null(mcp_genes)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(mcp_genes) * 3), nrow(mcp_genes), 3)
+  rownames(sim_eset) <- mcp_genes$`HUGO symbols`
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run deconvolution
+  result <- deconvo_tme(eset = sim_eset, method = "mcpcounter")
+  if (!is.null(result)) head(result)
+}
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
-#> ℹ Running CIBERSORT
-#> ℹ Loading cached data: "lm22"
-# }
+#> ℹ Running MCP-counter deconvolution
+#> # A tibble: 3 × 11
+#>   ID      T_cells_MCPcounter CD8_T_cells_MCPcounter Cytotoxic_lymphocytes_MCPc…¹
+#>   <chr>                <dbl>                  <dbl>                        <dbl>
+#> 1 Sample1             0.255                  0.498                      -0.683  
+#> 2 Sample2            -0.175                  0.0780                     -0.225  
+#> 3 Sample3            -0.0221                 0.324                       0.00139
+#> # ℹ abbreviated name: ¹​Cytotoxic_lymphocytes_MCPcounter
+#> # ℹ 7 more variables: B_lineage_MCPcounter <dbl>, NK_cells_MCPcounter <dbl>,
+#> #   Monocytic_lineage_MCPcounter <dbl>,
+#> #   Myeloid_dendritic_cells_MCPcounter <dbl>, Neutrophils_MCPcounter <dbl>,
+#> #   Endothelial_cells_MCPcounter <dbl>, Fibroblasts_MCPcounter <dbl>
 ```

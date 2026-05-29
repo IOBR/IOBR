@@ -68,78 +68,27 @@ Dongqiang Zeng, Rongfang Shen
 ## Examples
 
 ``` r
-lm22 <- load_data("lm22")
-#> ℹ Loading cached data: "lm22"
-common_genes <- rownames(lm22)[1:500]
-sim_eset <- as.data.frame(matrix(
-  rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-  nrow = length(common_genes), ncol = 5
-))
-rownames(sim_eset) <- common_genes
-colnames(sim_eset) <- paste0("Sample", 1:5)
-# \donttest{
-deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
-#> ℹ Found 500 common genes
+# Simulate data
+set.seed(123)
+sim_ref <- matrix(rnorm(100 * 5), 100, 5)
+rownames(sim_ref) <- paste0("Gene", 1:100)
+colnames(sim_ref) <- paste0("CellType", 1:5)
+
+sim_eset <- matrix(rnorm(100 * 3), 100, 3)
+rownames(sim_eset) <- paste0("Gene", 1:100)
+colnames(sim_eset) <- paste0("Sample", 1:3)
+
+# Run deconvolution
+result <- deconvo_ref(eset = sim_eset, reference = sim_ref, method = "lsei")
+#> ℹ Found 100 common genes
 #> ℹ Running lsei deconvolution
-#>   ID B_cells_naive_CIBERSORT B_cells_memory_CIBERSORT Plasma_cells_CIBERSORT
-#> 1  1              0.04545455               0.04545455             0.04545455
-#> 2  2              0.04545455               0.04545455             0.04545455
-#> 3  3              0.04545455               0.04545455             0.04545455
-#> 4  4              0.04545455               0.04545455             0.04545455
-#> 5  5              0.04545455               0.04545455             0.04545455
-#>   T_cells_CD8_CIBERSORT T_cells_CD4_naive_CIBERSORT
-#> 1            0.04545455                  0.04545455
-#> 2            0.04545455                  0.04545455
-#> 3            0.04545455                  0.04545455
-#> 4            0.04545455                  0.04545455
-#> 5            0.04545455                  0.04545455
-#>   T_cells_CD4_memory_resting_CIBERSORT T_cells_CD4_memory_activated_CIBERSORT
-#> 1                           0.04545455                             0.04545455
-#> 2                           0.04545455                             0.04545455
-#> 3                           0.04545455                             0.04545455
-#> 4                           0.04545455                             0.04545455
-#> 5                           0.04545455                             0.04545455
-#>   T_cells_follicular_helper_CIBERSORT T_cells_regulatory_(Tregs)_CIBERSORT
-#> 1                          0.04545455                           0.04545455
-#> 2                          0.04545455                           0.04545455
-#> 3                          0.04545455                           0.04545455
-#> 4                          0.04545455                           0.04545455
-#> 5                          0.04545455                           0.04545455
-#>   T_cells_gamma_delta_CIBERSORT NK_cells_resting_CIBERSORT
-#> 1                    0.04545455                 0.04545455
-#> 2                    0.04545455                 0.04545455
-#> 3                    0.04545455                 0.04545455
-#> 4                    0.04545455                 0.04545455
-#> 5                    0.04545455                 0.04545455
-#>   NK_cells_activated_CIBERSORT Monocytes_CIBERSORT Macrophages_M0_CIBERSORT
-#> 1                   0.04545455          0.04545455               0.04545455
-#> 2                   0.04545455          0.04545455               0.04545455
-#> 3                   0.04545455          0.04545455               0.04545455
-#> 4                   0.04545455          0.04545455               0.04545455
-#> 5                   0.04545455          0.04545455               0.04545455
-#>   Macrophages_M1_CIBERSORT Macrophages_M2_CIBERSORT
-#> 1               0.04545455               0.04545455
-#> 2               0.04545455               0.04545455
-#> 3               0.04545455               0.04545455
-#> 4               0.04545455               0.04545455
-#> 5               0.04545455               0.04545455
-#>   Dendritic_cells_resting_CIBERSORT Dendritic_cells_activated_CIBERSORT
-#> 1                        0.04545455                          0.04545455
-#> 2                        0.04545455                          0.04545455
-#> 3                        0.04545455                          0.04545455
-#> 4                        0.04545455                          0.04545455
-#> 5                        0.04545455                          0.04545455
-#>   Mast_cells_resting_CIBERSORT Mast_cells_activated_CIBERSORT
-#> 1                   0.04545455                     0.04545455
-#> 2                   0.04545455                     0.04545455
-#> 3                   0.04545455                     0.04545455
-#> 4                   0.04545455                     0.04545455
-#> 5                   0.04545455                     0.04545455
-#>   Eosinophils_CIBERSORT Neutrophils_CIBERSORT
-#> 1            0.04545455            0.04545455
-#> 2            0.04545455            0.04545455
-#> 3            0.04545455            0.04545455
-#> 4            0.04545455            0.04545455
-#> 5            0.04545455            0.04545455
-# }
+if (!is.null(result)) head(result)
+#>   ID CellType1_CIBERSORT CellType2_CIBERSORT CellType3_CIBERSORT
+#> 1  1                 0.2                 0.2                 0.2
+#> 2  2                 0.2                 0.2                 0.2
+#> 3  3                 0.2                 0.2                 0.2
+#>   CellType4_CIBERSORT CellType5_CIBERSORT
+#> 1                 0.2                 0.2
+#> 2                 0.2                 0.2
+#> 3                 0.2                 0.2
 ```

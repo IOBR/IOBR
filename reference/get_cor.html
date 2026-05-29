@@ -228,30 +228,29 @@ Default is `FALSE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_tme_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_tme_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_tme_stad"</span></span>
-<span class="r-in"><span><span class="fu">get_cor</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset_tme_stad</span>,</span></span>
-<span class="r-in"><span>  is.matrix <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  var1 <span class="op">=</span> <span class="st">"GZMB"</span>,</span></span>
-<span class="r-in"><span>  var2 <span class="op">=</span> <span class="st">"CD274"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Calculating spearman correlation (n = 375)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">20</span><span class="op">)</span>, <span class="fl">100</span>, <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GZMB"</span>, <span class="st">"CD274"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Calculate and plot correlation</span></span></span>
+<span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu">get_cor</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, is.matrix <span class="op">=</span> <span class="cn">TRUE</span>, var1 <span class="op">=</span> <span class="st">"GZMB"</span>, var2 <span class="op">=</span> <span class="st">"CD274"</span>, show_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Calculating spearman correlation (n = 20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Spearman's rank correlation rho</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  data[[var1]] and data[[var2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> S = 2737736, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> S = 782, p-value = 0.07226</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true rho is not equal to 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       rho </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6885043 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.4120301 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Exact p-value: 5.4e-54</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Exact p-value: 7.1e-02</span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_smooth()` using formula = 'y ~ x'</span>
 <span class="r-plt img"><img src="get_cor-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

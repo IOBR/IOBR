@@ -65,15 +65,21 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_tme_stad <- load_data("eset_tme_stad")
-#> ℹ Loading cached data: "eset_tme_stad"
-outs <- find_outlier_samples(eset = eset_tme_stad)
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(rnorm(100 * 10), 100, 10)
+rownames(sim_eset) <- paste0("Gene", 1:100)
+colnames(sim_eset) <- paste0("Sample", 1:10)
 
+# Add one extreme outlier
+sim_eset[, 10] <- sim_eset[, 10] + 50
+
+# Identify outliers
+if (requireNamespace("WGCNA", quietly = TRUE)) {
+  outs <- find_outlier_samples(eset = sim_eset, show_plot = FALSE)
+  print(outs)
+}
 #> ℹ When yinter = -3
-#> ℹ Potential outliers: "TCGA-BR-4253-01A", "TCGA-BR-6709-01A", "TCGA-CD-8531-01A", "TCGA-RD-A8N2-01A", and "TCGA-VQ-AA69-01A"
-print(outs)
-#> [1] "TCGA-BR-4253-01A" "TCGA-BR-6709-01A" "TCGA-CD-8531-01A" "TCGA-RD-A8N2-01A"
-#> [5] "TCGA-VQ-AA69-01A"
-# }
+#> ℹ Potential outliers: 
+#> character(0)
 ```

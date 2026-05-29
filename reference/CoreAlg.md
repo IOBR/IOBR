@@ -52,7 +52,22 @@ List containing:
 ## Examples
 
 ``` r
+# Simulate data
+set.seed(123)
 X <- matrix(rnorm(100), nrow = 10)
+rownames(X) <- paste0("Gene", 1:10)
+colnames(X) <- paste0("Cell", 1:10)
 y <- rnorm(10)
+names(y) <- paste0("Gene", 1:10)
+
+# Run core algorithm
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
+if (!is.null(result)) str(result)
+#> List of 3
+#>  $ w       : num [1, 1:10] 0.373 0.2 0.301 0 0 ...
+#>   ..- attr(*, "dimnames")=List of 2
+#>   .. ..$ : NULL
+#>   .. ..$ : chr [1:10] "Cell1" "Cell2" "Cell3" "Cell4" ...
+#>  $ mix_rmse: num 0.651
+#>  $ mix_r   : num 0.582
 ```

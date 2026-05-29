@@ -77,16 +77,22 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-sig_stad <- load_data("sig_stad")
-#> ℹ Loading cached data: "sig_stad"
-pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
+# Simulate data
+set.seed(123)
+sim_data <- data.frame(
+  Subtype = sample(c("EBV", "GS", "MSI", "CIN"), 100, replace = TRUE)
+)
+
+# Create pie chart
+p1 <- pie_chart(input = sim_data, var = "Subtype", palette = "jama")
 #> ℹ Available categories: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 #> ℹ Box palettes: nrc, jama, aaas, jco, paired1, paired2, paired3, paired4, accent, set2
+if (!is.null(p1)) print(p1)
 
-pie_chart(input = sig_stad, var = "Subtype", type = 2)
+
+# Create donut chart
+p2 <- pie_chart(input = sim_data, var = "Subtype", type = 2)
 #> ℹ Available categories: box, continue2, continue, random, heatmap, heatmap3, tidyheatmap
 #> ℹ Box palettes: nrc, jama, aaas, jco, paired1, paired2, paired3, paired4, accent, set2
-
-# }
+if (!is.null(p2)) print(p2)
 ```

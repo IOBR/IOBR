@@ -72,45 +72,32 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_stad"</span></span>
-<span class="r-in"><span><span class="va">anno_grch38</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"anno_grch38"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"anno_grch38"</span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="anno_eset.html">anno_eset</a></span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_stad</span>, annotation <span class="op">=</span> <span class="va">anno_grch38</span>, probe <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number of original eset: 60483</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 100% of probes in expression set were annotated</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2293 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50181</span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="va">eset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">epic_result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_epic</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset</span>, project <span class="op">=</span> <span class="st">"Example"</span>, tumor <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running EPIC deconvolution</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">TRef</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"TRef"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"TRef"</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>there are few genes in common between the bulk samples and reference cells:471, so the data scaling might be an issue</span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">TRef</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">TRef</span><span class="op">$</span><span class="va">refProfiles</span><span class="op">)</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">TRef</span><span class="op">$</span><span class="va">refProfiles</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">TRef</span><span class="op">$</span><span class="va">refProfiles</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># Run deconvolution</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_epic</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, project <span class="op">=</span> <span class="st">"Example"</span>, tumor <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running EPIC deconvolution</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"TRef"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"mRNA_cell_default"</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">epic_result</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             ID ProjectID  Bcells_EPIC  CAFs_EPIC CD4_Tcells_EPIC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TCGA-BR-6455   Example 1.718530e-01 0.21892728    2.202905e-01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TCGA-BR-7196   Example 4.592485e-05 0.56234195    2.505652e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCGA-BR-8371   Example 4.505341e-07 0.06686809    2.429061e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 TCGA-BR-8380   Example 2.564102e-02 0.33933005    9.011961e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 TCGA-BR-8592   Example 1.202835e-04 0.37508784    1.278933e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   CD8_Tcells_EPIC Endothelial_EPIC Macrophages_EPIC NKcells_EPIC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    4.321134e-03        0.2925362     1.362744e-06 9.206739e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    9.172491e-06        0.4375160     8.671181e-05 1.773362e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    8.258464e-01        0.1020327     2.330986e-04 2.590220e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    6.812041e-02        0.4477680     2.515113e-05 2.899495e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    2.265081e-01        0.3822764     9.192460e-04 2.296996e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   otherCells_EPIC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    3.197966e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    1.850589e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    1.058650e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    7.642237e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    1.789082e-06</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ID ProjectID Bcells_EPIC    CAFs_EPIC CD4_Tcells_EPIC CD8_Tcells_EPIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Sample1   Example   0.6241581 7.681545e-05    3.384637e-06    3.721190e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Sample2   Example   0.4979907 1.000478e-05    3.054977e-01    3.408085e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Sample3   Example   0.2806504 6.059457e-01    1.566452e-04    3.720188e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Endothelial_EPIC Macrophages_EPIC NKcells_EPIC otherCells_EPIC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.524474e-05       0.07651994 2.986568e-01    5.660059e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     8.786633e-03       0.17879307 8.915900e-03    2.599778e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     6.816456e-04       0.10884494 1.251044e-07    3.095910e-07</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -104,9 +104,22 @@ genes as rows and samples as columns.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">immune.cellType</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"T-cell"</span>, <span class="st">"B-cell"</span>, <span class="st">"T-cell"</span>, <span class="st">"NK-cell"</span>, <span class="st">"B-cell"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">immune.cellType</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">sample_names_immune</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">RemoveBatchEffect</span><span class="op">(</span><span class="va">cancer.exp</span>, <span class="va">immune.exp</span>, <span class="va">immune.cellType</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : num [1:100, 1:10] 290 777 395 872 927 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "dimnames")=List of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:100] "Gene1" "Gene2" "Gene3" "Gene4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:10] "CancerSample1" "CancerSample2" "CancerSample3" "CancerSample4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : num [1:100, 1:5] 329 554 213 811 783 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "dimnames")=List of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:100] "Gene1" "Gene2" "Gene3" "Gene4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:5] "ImmuneSample1" "ImmuneSample2" "ImmuneSample3" "ImmuneSample4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : num [1:100, 1:5] 329 554 213 811 783 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..- attr(*, "dimnames")=List of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:100] "Gene1" "Gene2" "Gene3" "Gene4" ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .. ..$ : chr [1:5] "ImmuneSample1" "ImmuneSample2" "ImmuneSample3" "ImmuneSample4" ...</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

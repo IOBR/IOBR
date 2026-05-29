@@ -121,8 +121,8 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
 # \donttest{
+tcga_stad_pdata <- load_data("tcga_stad_pdata")
 surv_group(
   input_pdata = tcga_stad_pdata,
   target_group = "Lauren",

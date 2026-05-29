@@ -83,34 +83,34 @@ Wubing Zhang, Dongqiang Zeng, Yiran Fang
 ## Examples
 
 ``` r
-# \donttest{
-# Load TCGA count data
-eset_stad <- load_data("eset_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_stad"
-
+# Simulated count data
+set.seed(123)
+count_matrix <- matrix(
+  rpois(100, lambda = 10),
+  ncol = 5,
+  dimnames = list(
+    paste0("ENSG00000", 101:120),
+    paste0("Sample", 1:5)
+  )
+)
+# Simulated effective length data
+eff_len <- data.frame(
+  id = paste0("ENSG00000", 101:120),
+  symbol = paste0("Gene", 1:20),
+  eff_length = runif(20, 500, 5000)
+)
 # Transform to TPM using local gene annotation
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_grch38"
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ! Omitting 3985 genes without length information
-#> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.
-#> ✔ Reduced to 54658 unique genes
+eset <- count2tpm(
+  countMat = count_matrix, effLength = eff_len,
+  id = "id", length = "eff_length", gene_symbol = "symbol"
+)
+#> ℹ No duplicate gene symbols found.
 head(eset)
-#>         TCGA-BR-6455 TCGA-BR-7196 TCGA-BR-8371 TCGA-BR-8380 TCGA-BR-8592
-#> MT-CO1     25097.553     24055.97   59199.1348    50164.982     47776.98
-#> MT-ND4     14525.308     14963.92   48195.6709    32185.131     36283.39
-#> MT-CO3     12465.198     14835.81   47590.7666    34559.375     35808.71
-#> IGKC        9897.134     78664.05     713.5372     4372.862     27027.24
-#> MT-CO2     12920.617     13063.07   33664.6705    21527.455     25992.41
-#> MT-RNR2    18660.657     10908.66   41096.2915    20342.721     24383.75
-#>         TCGA-BR-8686 TCGA-BR-A4IV TCGA-BR-A4J4 TCGA-BR-A4J9 TCGA-FP-7916
-#> MT-CO1      34875.46     50009.92    27982.230     63380.90     26287.97
-#> MT-ND4      31111.09     35885.02    49689.108     39741.24     14473.97
-#> MT-CO3      27071.10     37804.39    22623.828     43837.58     17801.27
-#> IGKC        50262.87     10617.20     2900.288     21222.09     70074.94
-#> MT-CO2      20287.58     32023.19    54797.893     30150.49     13184.96
-#> MT-RNR2     25519.06     36721.41    31241.258     31834.37     12436.25
-# }
+#>         Sample1   Sample2   Sample3   Sample4   Sample5
+#> Gene1  17872.27  15587.34  18209.61  24387.20  27170.38
+#> Gene2  25679.75  26544.19  23257.31  33978.89  34701.99
+#> Gene3  42051.04  13971.40  36724.09  26826.92  30910.36
+#> Gene4 146098.96 101936.44 133970.97 130487.57 136681.51
+#> Gene5  47308.28  33008.03  48201.25  32863.57  35407.06
+#> Gene6  61007.04  37836.40  37295.14  28253.11  53269.60
 ```

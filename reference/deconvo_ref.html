@@ -105,80 +105,29 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lm22</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"lm22"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"lm22"</span></span>
-<span class="r-in"><span><span class="va">common_genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">common_genes</span><span class="op">)</span> <span class="op">*</span> <span class="fl">5</span>, mean <span class="op">=</span> <span class="fl">5</span>, sd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">common_genes</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">common_genes</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu">deconvo_ref</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, reference <span class="op">=</span> <span class="va">lm22</span>, method <span class="op">=</span> <span class="st">"lsei"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 500 common genes</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim_ref</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, <span class="fl">100</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_ref</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_ref</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"CellType"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="fl">100</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Run deconvolution</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_ref</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, reference <span class="op">=</span> <span class="va">sim_ref</span>, method <span class="op">=</span> <span class="st">"lsei"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 100 common genes</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running lsei deconvolution</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ID B_cells_naive_CIBERSORT B_cells_memory_CIBERSORT Plasma_cells_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1              0.04545455               0.04545455             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2              0.04545455               0.04545455             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3              0.04545455               0.04545455             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4              0.04545455               0.04545455             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  5              0.04545455               0.04545455             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_CD8_CIBERSORT T_cells_CD4_naive_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            0.04545455                  0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2            0.04545455                  0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            0.04545455                  0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4            0.04545455                  0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5            0.04545455                  0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_CD4_memory_resting_CIBERSORT T_cells_CD4_memory_activated_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                           0.04545455                             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                           0.04545455                             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           0.04545455                             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                           0.04545455                             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                           0.04545455                             0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_follicular_helper_CIBERSORT T_cells_regulatory_(Tregs)_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                          0.04545455                           0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                          0.04545455                           0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                          0.04545455                           0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                          0.04545455                           0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                          0.04545455                           0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_gamma_delta_CIBERSORT NK_cells_resting_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    0.04545455                 0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    0.04545455                 0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                    0.04545455                 0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                    0.04545455                 0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                    0.04545455                 0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   NK_cells_activated_CIBERSORT Monocytes_CIBERSORT Macrophages_M0_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0.04545455          0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   0.04545455          0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0.04545455          0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   0.04545455          0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                   0.04545455          0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Macrophages_M1_CIBERSORT Macrophages_M2_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1               0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4               0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               0.04545455               0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Dendritic_cells_resting_CIBERSORT Dendritic_cells_activated_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        0.04545455                          0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        0.04545455                          0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        0.04545455                          0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                        0.04545455                          0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                        0.04545455                          0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Mast_cells_resting_CIBERSORT Mast_cells_activated_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0.04545455                     0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   0.04545455                     0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0.04545455                     0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                   0.04545455                     0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                   0.04545455                     0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Eosinophils_CIBERSORT Neutrophils_CIBERSORT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            0.04545455            0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2            0.04545455            0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            0.04545455            0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4            0.04545455            0.04545455</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5            0.04545455            0.04545455</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ID CellType1_CIBERSORT CellType2_CIBERSORT CellType3_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1                 0.2                 0.2                 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2                 0.2                 0.2                 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3                 0.2                 0.2                 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CellType4_CIBERSORT CellType5_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 0.2                 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 0.2                 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 0.2                 0.2</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

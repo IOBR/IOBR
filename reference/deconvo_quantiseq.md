@@ -42,48 +42,45 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-anno_grch38 <- load_data("anno_grch38")
-#> ℹ Loading cached data: "anno_grch38"
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#> ℹ Row number of original eset: 60483
-#> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2293 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50181
-eset <- eset[1:500, 1:3]
-# \donttest{
-res <- deconvo_quantiseq(
-  eset = eset, project = "stad", tumor = TRUE,
-  arrays = FALSE, scale_mrna = FALSE
-)
-#> ℹ Running quanTIseq deconvolution
-#> ℹ Running quanTIseq deconvolution module
+quantiseq_data <- load_data("quantiseq_data")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "quantiseq_data"
+if (!is.null(quantiseq_data)) {
+  set.seed(123)
+  n_sig <- nrow(quantiseq_data$TIL10_signature)
+  sim_eset <- matrix(rnorm(n_sig * 3), n_sig, 3)
+  rownames(sim_eset) <- rownames(quantiseq_data$TIL10_signature)
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run deconvolution
+  result <- deconvo_quantiseq(eset = sim_eset, project = "Example", tumor = TRUE,
+                              arrays = FALSE, scale_mrna = FALSE)
+  if (!is.null(result)) head(result)
+}
+#> ℹ Running quanTIseq deconvolution
+#> ℹ Running quanTIseq deconvolution module
+#> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Gene expression normalization and re-annotation (arrays: FALSE)
 #> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Removing 17 noisy genes
 #> ℹ Removing 15 genes with high expression in tumors
-#> ℹ Signature genes found in data set: 0/138 (0%)
+#> ℹ Signature genes found in data set: 138/138 (100%)
 #> ℹ Mixture deconvolution (method: lsei)
 #> ✔ Deconvolution successful!
-head(res)
-#>             ID ProjectID B_cells_quantiseq Macrophages_M1_quantiseq
-#> 1 TCGA-BR-6455      stad               NaN                      NaN
-#> 2 TCGA-BR-7196      stad               NaN                      NaN
-#> 3 TCGA-BR-8371      stad               NaN                      NaN
+#>        ID ProjectID B_cells_quantiseq Macrophages_M1_quantiseq
+#> 1 Sample1   Example         0.1431669                        0
+#> 2 Sample2   Example         0.0000000                        0
+#> 3 Sample3   Example         0.2047434                        0
 #>   Macrophages_M2_quantiseq Monocytes_quantiseq Neutrophils_quantiseq
-#> 1                      NaN                 NaN                   NaN
-#> 2                      NaN                 NaN                   NaN
-#> 3                      NaN                 NaN                   NaN
+#> 1                        0                   0             0.8568331
+#> 2                        0                   0             0.0000000
+#> 3                        0                   0             0.0000000
 #>   NK_cells_quantiseq T_cells_CD4_quantiseq T_cells_CD8_quantiseq
-#> 1                NaN                   NaN                   NaN
-#> 2                NaN                   NaN                   NaN
-#> 3                NaN                   NaN                   NaN
+#> 1          0.0000000                     0                     0
+#> 2          1.0000000                     0                     0
+#> 3          0.7952566                     0                     0
 #>   Tregs_quantiseq Dendritic_cells_quantiseq Other_quantiseq
-#> 1             NaN                       NaN             NaN
-#> 2             NaN                       NaN             NaN
-#> 3             NaN                       NaN             NaN
-# }
+#> 1               0                         0               0
+#> 2               0                         0               0
+#> 3               0                         0               0
 ```

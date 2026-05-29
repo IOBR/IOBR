@@ -58,22 +58,35 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-anno_grch38 <- load_data("anno_grch38")
-#> ℹ Loading cached data: "anno_grch38"
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#> ℹ Row number of original eset: 60483
-#> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2293 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50181
-# \donttest{
-res <- iobr_deconvo_pipeline(
-  eset = eset, project = "STAD",
-  array = FALSE, tumor_type = "stad",
-  path = tempdir(), permutation = 10
-)
-#> ✔ Applied log2 transformation
+lm22 <- load_data("lm22")
+#> ℹ Loading cached data: "lm22"
+cancer_genes <- load_data("cancer_type_genes")
+#> ℹ Trying mirror 1/12: <https://github.com>
+#> ✔ Download complete: "cancer_type_genes"
+if (!is.null(lm22) && !is.null(cancer_genes)) {
+  set.seed(123)
+  # Create simulated data using lm22 genes to avoid deconvolution failures
+  genes <- rownames(lm22)
+  # Add xcell genes so xCell doesn't crash from insufficient genes
+  xcell <- load_data("xCell.data")
+  if (!is.null(xcell)) genes <- unique(c(genes, xcell$genes))
+  # Add cancer type genes for TIMER
+  genes <- unique(c(genes, cancer_genes[["stad"]]))
+  
+  eset <- matrix(runif(length(genes) * 2), nrow = length(genes), ncol = 2)
+  rownames(eset) <- genes
+  colnames(eset) <- paste0("Sample", 1:2)
+  
+  res <- iobr_deconvo_pipeline(
+    eset = eset, project = "TEST",
+    array = FALSE, tumor_type = "stad",
+    path = tempdir(), permutation = 2
+  )
+  if (!is.null(res)) head(res)
+}
+#> ℹ Trying mirror 1/12: <https://github.com>
+#> ✔ Download complete: "xCell.data"
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running CIBERSORT
@@ -86,7 +99,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "mRNA_cell_default"
 #> Warning: The optimization didn't fully converge for some samples:
-#> TCGA-BR-6455; TCGA-FP-7916
+#> Sample2
 #>  - check fit.gof for the convergeCode and convergeMessage
 #> Warning: mRNA_cell value unknown for some cell types: CAFs, Endothelial - using the default value of 0.4 for these but this might bias the true cell proportions from all cell types.
 #> Warning: Data values appear small (< 50).
@@ -95,9 +108,8 @@ res <- iobr_deconvo_pipeline(
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running xCell deconvolution
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "xCell.data"
-#> ℹ Number of genes: 10783
+#> ℹ Loading cached data: "xCell.data"
+#> ℹ Number of genes: 10808
 #> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
 #> ℹ Calculating GSVA ranks
@@ -113,9 +125,9 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running ESTIMATE
 #> ℹ Loading cached data: "common_genes"
-#> Merged dataset includes 10148 genes (264 mismatched).
+#> Merged dataset includes 9581 genes (831 mismatched).
 #> ℹ Loading cached data: "SI_geneset"
-#> 1 gene set: StromalSignature overlap=138
+#> 1 gene set: StromalSignature overlap=136
 #> 2 gene set: ImmuneSignature overlap=140
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
@@ -124,10 +136,9 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Loading immune gene expression
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "immuneCuratedData"
-#> ℹ Outlier genes: ACTB ACTG1 CD74 COL1A1 EEF1A1 ERBB2 FLNA IGHG1 IGKC MT-CO1 MT-CO2 MT-ND4 MT-RNR2 MYH11
+#> ℹ Outlier genes: AGGF1 CALCA EIF2B2 ILK KLC2 OGDHL PAOX SGPL1 SRY ZC3H11A
 #> ℹ Removing batch effects for stad
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "cancer_type_genes"
+#> ℹ Loading cached data: "cancer_type_genes"
 #> Warning: Data values appear small (< 50).
 #> ℹ Input should be in TPM/FPKM scale, not log-transformed
 #> ℹ Running quanTIseq deconvolution
@@ -138,7 +149,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Loading cached data: "quantiseq_data"
 #> ℹ Removing 17 noisy genes
 #> ℹ Removing 15 genes with high expression in tumors
-#> ℹ Signature genes found in data set: 138/138 (100%)
+#> ℹ Signature genes found in data set: 115/138 (83.33%)
 #> ℹ Mixture deconvolution (method: lsei)
 #> ✔ Deconvolution successful!
 #> Warning: Data values appear small (< 50).
@@ -146,7 +157,7 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Running IPS calculation
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "ips_gene_set"
-#> [1] ">>>>> TME cell deconvolution was completed: STAD"
+#> [1] ">>>>> TME cell deconvolution was completed: TEST"
 #> ℹ Calculating signature scores using PCA, z-score, and ssGSEA methods
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> ℹ Step 1/3: PCA method
@@ -154,10 +165,10 @@ res <- iobr_deconvo_pipeline(
 #> ℹ Step 3/3: ssGSEA method
 #> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
-#> ℹ Calculating ssGSEA scores for 280 gene sets
+#> ℹ Calculating ssGSEA scores for 274 gene sets
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
-#> [1] ">>>>> Signature esitmation was completed: STAD"
+#> [1] ">>>>> Signature esitmation was completed: TEST"
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "hallmark"
 #> ℹ Trying mirror 1/12: <https://github.com>
@@ -172,12 +183,23 @@ res <- iobr_deconvo_pipeline(
 #> ✔ Download complete: "reactome"
 #> ℹ Calculating signature scores using ssGSEA method
 #> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
-#> ℹ Calculating scores for 12059 signature(s)
+#> ℹ Calculating scores for 10908 signature(s)
 #> ℹ GSVA version 2.6.2
 #> ℹ Searching for rows with constant values
-#> ℹ Calculating ssGSEA scores for 12059 gene sets
+#> ℹ Calculating ssGSEA scores for 10908 gene sets
 #> ℹ Normalizing ssGSEA scores
 #> ✔ Calculations finished
-#> [1] ">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: STAD"
-# }
+#> [1] ">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: TEST"
+#> # A tibble: 2 × 11,951
+#>   ID      B_cells_naive_CIBERSORT B_cells_memory_CIBERS…¹ Plasma_cells_CIBERSORT
+#>   <chr>                     <dbl>                   <dbl>                  <dbl>
+#> 1 Sample1                       0                  0.190                 0      
+#> 2 Sample2                       0                  0.0217                0.00892
+#> # ℹ abbreviated name: ¹​B_cells_memory_CIBERSORT
+#> # ℹ 11,947 more variables: T_cells_CD8_CIBERSORT <dbl>,
+#> #   T_cells_CD4_naive_CIBERSORT <dbl>,
+#> #   T_cells_CD4_memory_resting_CIBERSORT <dbl>,
+#> #   T_cells_CD4_memory_activated_CIBERSORT <dbl>,
+#> #   T_cells_follicular_helper_CIBERSORT <dbl>,
+#> #   `T_cells_regulatory_(Tregs)_CIBERSORT` <dbl>, …
 ```

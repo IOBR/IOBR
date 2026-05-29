@@ -189,28 +189,26 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_tme_stad <- load_data("eset_tme_stad")
-#> ℹ Loading cached data: "eset_tme_stad"
-get_cor(
-  eset = eset_tme_stad,
-  is.matrix = TRUE,
-  var1 = "GZMB",
-  var2 = "CD274"
-)
-#> ℹ Calculating spearman correlation (n = 375)
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(rnorm(100 * 20), 100, 20)
+rownames(sim_eset) <- c("GZMB", "CD274", paste0("Gene", 3:100))
+colnames(sim_eset) <- paste0("Sample", 1:20)
+
+# Calculate and plot correlation
+p <- get_cor(eset = sim_eset, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274", show_plot = FALSE)
+#> ℹ Calculating spearman correlation (n = 20)
 #> 
 #>  Spearman's rank correlation rho
 #> 
 #> data:  data[[var1]] and data[[var2]]
-#> S = 2737736, p-value < 2.2e-16
+#> S = 782, p-value = 0.07226
 #> alternative hypothesis: true rho is not equal to 0
 #> sample estimates:
 #>       rho 
-#> 0.6885043 
+#> 0.4120301 
 #> 
-#> ℹ Exact p-value: 5.4e-54
+#> ℹ Exact p-value: 7.1e-02
+if (!is.null(p)) print(p)
 #> `geom_smooth()` using formula = 'y ~ x'
-
-# }
 ```

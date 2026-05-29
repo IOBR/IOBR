@@ -81,21 +81,22 @@ Default is `NULL`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_stad"</span></span>
-<span class="r-in"><span><span class="va">anno_grch38</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"anno_grch38"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"anno_grch38"</span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="anno_eset.html">anno_eset</a></span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_stad</span>, annotation <span class="op">=</span> <span class="va">anno_grch38</span>, probe <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number of original eset: 60483</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 100% of probes in expression set were annotated</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2293 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50181</span>
-<span class="r-in"><span><span class="va">xcell_result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_xcell</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, project <span class="op">=</span> <span class="st">"TCGA-STAD"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running xCell deconvolution</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">xcell</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"xCell.data"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"xCell.data"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Number of genes: 10783</span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">xcell</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xcell</span><span class="op">$</span><span class="va">genes</span><span class="op">)</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">xcell</span><span class="op">$</span><span class="va">genes</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">xcell</span><span class="op">$</span><span class="va">genes</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># Run deconvolution</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_xcell</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, project <span class="op">=</span> <span class="st">"TCGA-STAD"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running xCell deconvolution</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"xCell.data"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Number of genes: 10808</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> GSVA version 2.6.2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Searching for rows with constant values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Calculating GSVA ranks</span>
@@ -107,12 +108,78 @@ Default is `NULL`.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> GSVA dense (classical) algorithm</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Calculating GSVA scores for 489 gene sets</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Calculations finished</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xcell_result</span><span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             ID ProjectID Adipocytes_xCell Astrocytes_xCell B-cells_xCell</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TCGA-BR-6455 TCGA-STAD     3.755491e-23     0.000000e+00  0.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TCGA-BR-7196 TCGA-STAD     1.794635e-23     3.702040e-22  1.311341e-23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCGA-BR-8371 TCGA-STAD     0.000000e+00     1.881182e-21  3.149663e-08</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ID ProjectID Adipocytes_xCell Astrocytes_xCell B-cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Sample1 TCGA-STAD     5.839975e-24     1.357894e-23  2.908985e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Sample2 TCGA-STAD     8.783395e-23     0.000000e+00  0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Sample3 TCGA-STAD     1.597735e-22     9.588740e-22  2.106454e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Basophils_xCell CD4+_T-cells_xCell CD4+_Tcm_xCell CD4+_Tem_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    9.765242e-07       0.000000e+00    6.85281e-24   7.074759e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0.000000e+00       0.000000e+00    4.28731e-23   1.174048e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    1.886662e-06       1.708436e-22    0.00000e+00   0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CD4+_memory_T-cells_xCell CD4+_naive_T-cells_xCell CD8+_T-cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1              0.000000e+00             1.323389e-22       0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2              7.039736e-11             0.000000e+00       1.240735e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3              2.904115e-23             1.363629e-22       0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   CD8+_Tcm_xCell CD8+_Tem_xCell CD8+_naive_T-cells_xCell    CLP_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.000000e+00              0             1.691624e-23 4.020083e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1.239081e-08              0             8.154746e-09 3.718837e-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   4.224813e-23              0             8.740207e-23 7.997449e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      CMP_xCell Chondrocytes_xCell Class-switched_memory_B-cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.000000e+00       5.717669e-24                        1.045045e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 4.917169e-10       3.528086e-22                        4.870414e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.000000e+00       0.000000e+00                        0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       DC_xCell Endothelial_cells_xCell Eosinophils_xCell Epithelial_cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.000000e+00            1.760751e-23      1.935509e-23           0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 5.155503e-23            0.000000e+00      0.000000e+00           8.454114e-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.051736e-23            0.000000e+00      0.000000e+00           3.173240e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Erythrocytes_xCell Fibroblasts_xCell    GMP_xCell    HSC_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       5.462807e-23      7.426554e-07 4.347742e-24 2.320835e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       0.000000e+00      2.609799e-21 0.000000e+00 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       2.883233e-23      5.902750e-22 0.000000e+00 1.455165e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Hepatocytes_xCell Keratinocytes_xCell    MEP_xCell    MPP_xCell    MSC_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      3.375462e-08        1.723631e-24 1.022884e-06 0.000000e+00 5.958079e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      0.000000e+00        5.983594e-25 1.881100e-26 3.479724e-24 5.772338e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      0.000000e+00        1.258025e-23 1.336678e-07 0.000000e+00 1.331732e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Macrophages_xCell Macrophages_M1_xCell Macrophages_M2_xCell Mast_cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                 0         3.442342e-24         0.000000e+00     7.451198e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 0         4.466303e-23         7.547952e-26     0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                 0         0.000000e+00         2.722865e-25     0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Megakaryocytes_xCell Melanocytes_xCell Memory_B-cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         0.000000e+00                 0          5.83088e-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0.000000e+00                 0          0.00000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3.501945e-24                 0          0.00000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mesangial_cells_xCell Monocytes_xCell Myocytes_xCell NK_cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1.495642e-23    1.423937e-22   3.757921e-26   9.290121e-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          3.803919e-22    0.000000e+00   1.841161e-23   0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          3.967947e-22    0.000000e+00   0.000000e+00   2.168879e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      NKT_xCell Neurons_xCell Neutrophils_xCell Osteoblast_xCell Pericytes_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.203153e-23             0      0.000000e+00     1.215375e-22    9.117077e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.000000e+00             0      4.362301e-22     4.316634e-06    2.156544e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.080383e-22             0      0.000000e+00     8.312306e-07    1.613775e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Plasma_cells_xCell Platelets_xCell Preadipocytes_xCell Sebocytes_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       0.000000e+00    0.000000e+00        6.436607e-07    0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       5.369871e-08    1.706983e-22        0.000000e+00    0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       6.201039e-25    6.337865e-23        8.211132e-22    4.585329e-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Skeletal_muscle_xCell Smooth_muscle_xCell Tgd_cells_xCell Th1_cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          3.006928e-23        4.818641e-23    0.000000e+00    0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          4.658381e-22        3.589720e-05    7.939448e-25    3.269045e-24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.000000e+00        1.985315e-05    0.000000e+00    4.155462e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Th2_cells_xCell Tregs_xCell    aDC_xCell cDC_xCell   iDC_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    3.066228e-24           0 1.701780e-10         0 1.04186e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0.000000e+00           0 0.000000e+00         0 0.00000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0.000000e+00           0 3.699777e-22         0 0.00000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ly_Endothelial_cells_xCell mv_Endothelial_cells_xCell naive_B-cells_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               0.000000e+00                          0        1.801548e-27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               0.000000e+00                          0        0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               3.806213e-23                          0        0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   pDC_xCell pro_B-cells_xCell ImmuneScore_xCell StromaScore_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         0      1.517253e-26      6.906789e-09      3.713277e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         0      0.000000e+00      3.334617e-22      1.348816e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         0      4.354660e-27      2.795423e-22      3.750242e-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   MicroenvironmentScore_xCell</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                3.782345e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                1.682278e-21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                6.545665e-22</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

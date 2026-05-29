@@ -54,5 +54,6 @@ filterCommonGenes(input_file, output_file, id = "GeneSymbol")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "common_genes"
 #> Merged dataset includes 0 genes (10412 mismatched).
+#> [1] TRUE
 # }
 ```

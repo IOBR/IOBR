@@ -49,16 +49,18 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-feas <- feature_manipulation(
-  data = eset_stad,
-  feature = rownames(eset_stad),
-  is_matrix = TRUE,
-  print_result = TRUE
+set.seed(123)
+test_data <- data.frame(
+  A = c(1, 2, 3),
+  B = c(1, 1, 1), # zero variance
+  C = c(1, NA, 3), # missing value
+  D = c("a", "b", "c") # non-numeric
 )
-#> ℹ Removing 9060 features with zero variance
-#> ✔ Retained 51423 of 60483 features
-# }
+feas <- feature_manipulation(data = test_data, feature = colnames(test_data), print_result = TRUE)
+#> ℹ Removing 1 feature with NA values
+#> ℹ Removing 1 non-numeric feature
+#> ℹ Removing 1 feature with zero variance
+#> ✔ Retained 1 of 4 features
+print(feas)
+#> [1] "A"
 ```

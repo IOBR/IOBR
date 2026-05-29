@@ -106,33 +106,28 @@ manipulation to filter valid features. Default is `FALSE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># Load TCGA-STAD signature data</span></span></span>
-<span class="r-in"><span><span class="va">sig_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"sig_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"sig_stad"</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Test features by gender (if available in your dataset)</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="st">"Gender"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">batch_kruskal</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    data <span class="op">=</span> <span class="va">sig_stad</span>,</span></span>
-<span class="r-in"><span>    group <span class="op">=</span> <span class="st">"Gender"</span>,</span></span>
-<span class="r-in"><span>    feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">[</span><span class="fl">69</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">sig_stad</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Groups: 2 (<span style="color: #0000BB;">"M"</span> and <span style="color: #0000BB;">"F"</span>)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Features: 255</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create small example data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  Gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="st">"Female"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Signature2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Test features by gender</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">batch_kruskal</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">test_data</span>,</span></span>
+<span class="r-in"><span>  group <span class="op">=</span> <span class="st">"Gender"</span>,</span></span>
+<span class="r-in"><span>  feature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Signature1"</span>, <span class="st">"Signature2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Groups: 2 (<span style="color: #0000BB;">"Male"</span> and <span style="color: #0000BB;">"Female"</span>)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Features: 2</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Kruskal-Wallis test complete</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names               p.value statistic      F     M p.adj log10pvalue stars</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Steroid_Hormone_Metabo… 0.006<span style="text-decoration: underline;">52</span>      7.40 -<span style="color: #BB0000;">0.409</span> 0.409 0.715        2.19 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Steroid_Hormone_Biosyn… 0.006<span style="text-decoration: underline;">93</span>      7.29 -<span style="color: #BB0000;">0.400</span> 0.400 0.715        2.16 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Linoleic_Acid_Metaboli… 0.009<span style="text-decoration: underline;">89</span>      6.65 -<span style="color: #BB0000;">0.268</span> 0.268 0.715        2.00 **   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Ascorbate_and_Aldrate_… 0.011<span style="text-decoration: underline;">2</span>       6.43 -<span style="color: #BB0000;">0.288</span> 0.288 0.715        1.95 *    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Pentose_and_Glucuronat… 0.018<span style="text-decoration: underline;">9</span>       5.51 -<span style="color: #BB0000;">0.294</span> 0.294 0.853        1.72 *    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Drug_Metabolism_by_Cyt… 0.020<span style="text-decoration: underline;">1</span>       5.41 -<span style="color: #BB0000;">0.422</span> 0.422 0.853        1.70 *    </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sig_names  p.value statistic Female    Male p.adj log10pvalue stars</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Signature2   0.128     2.32  0.146  -<span style="color: #BB0000;">0.146</span>  0.255       0.894 +    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Signature1   0.482     0.494 0.056<span style="text-decoration: underline;">0</span> -<span style="color: #BB0000;">0.056</span><span style="color: #BB0000; text-decoration: underline;">0</span> 0.482       0.317 +    </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

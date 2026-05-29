@@ -11,7 +11,7 @@ remove_batcheffect(
   eset1,
   eset2,
   eset3 = NULL,
-  id_type,
+  id_type = "ensembl",
   data_type = c("array", "count", "tpm"),
   cols = "normal",
   palette = "jama",
@@ -99,38 +99,30 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-eset_blca <- load_data("eset_blca")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_blca"
-# \donttest{
-eset_corrected <- remove_batcheffect(
-  eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
-  id_type = "ensembl",
-  data_type = "count"
-)
-#> ℹ The two expression matrices share 995 features
-#> ℹ Processing method: sva::ComBat_seq
-#> Found 2 batches
-#> Using null model in ComBat-seq.
-#> Adjusting for 0 covariate(s) or covariate level(s)
-#> Estimating dispersions
-#> Fitting the GLM model
-#> Shrinkage off - using GLM estimates for parameters
-#> Adjusting the data
-#> ℹ Loading cached data: "anno_grch38"
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ℹ No duplicate gene symbols found.
-#> ✔ Applied log2 transformation
-#> ℹ Count data processed with ComBat_seq
-#> ✔ Applied log2 transformation
-#> 
-#> eset1 eset2 
-#>     5     5 
-#> >>== colors for group: 
-#> >>== #374E55FF>>== #DF8F44FF
-#> ✔ Applied log2 transformation
+# Simulate data
+set.seed(123)
+sim_eset1 <- matrix(rnorm(100 * 5, mean = 10, sd = 2), 100, 5)
+sim_eset2 <- matrix(rnorm(100 * 5, mean = 12, sd = 2), 100, 5)
+rownames(sim_eset1) <- rownames(sim_eset2) <- paste0("Gene", 1:100)
+colnames(sim_eset1) <- paste0("S1_", 1:5)
+colnames(sim_eset2) <- paste0("S2_", 1:5)
+
+# Run batch correction
+if (requireNamespace("sva", quietly = TRUE) && requireNamespace("BiocParallel", quietly = TRUE)) {
+  eset_corrected <- remove_batcheffect(sim_eset1, sim_eset2, data_type = "tpm")
+  if (!is.null(eset_corrected)) head(eset_corrected)
+}
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
+#> ℹ The two expression matrices share 100 features
+#> ℹ Processing method: sva::ComBat
+#> Found2batches
+#> Adjusting for0covariate(s) or covariate level(s)
+#> Standardizing Data across genes
+#> Fitting L/S model and finding priors
+#> Finding parametric adjustments
+#> Adjusting the Data
+#> ℹ Log2 transformation not necessary (data appears to already be log-scaled)
 #> 
 #> eset1 eset2 
 #>     5     5 
@@ -142,5 +134,18 @@ eset_corrected <- remove_batcheffect(
 #>     5     5 
 #> >>== colors for group: 
 #> >>== #374E55FF>>== #DF8F44FF
-# }
+#>            S1_1      S1_2     S1_3      S1_4      S1_5      S2_1      S2_2
+#> Gene1  9.792976  9.944992 14.91214  9.895600 10.695508 10.109164 13.361392
+#> Gene2  9.976222 11.449648 12.48123  9.522742  8.426746  9.566679 11.449648
+#> Gene3 14.048781 11.021545 10.59517  9.683681  9.629662 12.978768 10.960286
+#> Gene4 11.418995 10.960286 12.22496  9.456422 10.960286 12.224961  8.749894
+#> Gene5 11.275189  9.350557 10.10916 10.238317 12.145525  8.260313 12.317743
+#> Gene6 13.906184 11.275189 10.00584 11.545079  8.123103 10.730401 10.831304
+#>            S2_3     S2_4      S2_5
+#> Gene1  9.566679 11.54508  9.236308
+#> Gene2  8.577297 10.10916  9.976222
+#> Gene3  9.456422 12.14552 11.578457
+#> Gene4 10.653537 12.59930 13.558965
+#> Gene5  8.849318 11.36695 12.820878
+#> Gene6 12.145525 11.27519  9.944992
 ```

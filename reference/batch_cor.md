@@ -67,29 +67,27 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-# Load TCGA-STAD signature data
-sig_stad <- load_data("sig_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "sig_stad"
+# Create a small example dataset
+set.seed(123)
+data_df <- as.data.frame(matrix(runif(100 * 10), 100, 10))
+colnames(data_df) <- paste0("Signature", 1:10)
 
 # Perform batch correlation
 results <- batch_cor(
-  data = sig_stad,
-  target = "CD_8_T_effector",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
+  data = data_df,
+  target = "Signature1",
+  feature = colnames(data_df)[2:10]
 )
-#> ℹ Computing spearman correlation for 254 features
+#> ℹ Computing spearman correlation for 9 features
 #> ✔ Correlation analysis complete
 head(results)
 #> # A tibble: 6 × 6
-#>   sig_names                        p.value statistic     p.adj log10pvalue stars
-#>   <chr>                              <dbl>     <dbl>     <dbl>       <dbl> <fct>
-#> 1 CD8_Rooney_et_al               4.10e-234     0.971 1.04e-231        233. **** 
-#> 2 TIP_Killing_of_cancer_cells_1  1.35e-232     0.971 1.72e-230        232. **** 
-#> 3 Cytotoxic_cells_Danaher_et_al  5.18e-212     0.962 4.38e-210        211. **** 
-#> 4 T_cell_inflamed_GEP_Ayers_et_… 5.95e-204     0.958 3.78e-202        203. **** 
-#> 5 IFNG_signature_Ayers_et_al     8.63e-173     0.938 4.38e-171        172. **** 
-#> 6 TMEscoreA_plus                 7.35e-154     0.920 3.11e-152        153. **** 
-# }
+#>   sig_names  p.value statistic p.adj log10pvalue stars
+#>   <chr>        <dbl>     <dbl> <dbl>       <dbl> <fct>
+#> 1 Signature9  0.0514   -0.195  0.462       1.29  "+"  
+#> 2 Signature5  0.171    -0.138  0.698       0.766 "+"  
+#> 3 Signature2  0.380    -0.0887 0.698       0.420 "+"  
+#> 4 Signature6  0.406    -0.0841 0.698       0.392 "+"  
+#> 5 Signature4  0.438    -0.0784 0.698       0.358 "+"  
+#> 6 Signature3  0.532    -0.0633 0.698       0.274 ""   
 ```

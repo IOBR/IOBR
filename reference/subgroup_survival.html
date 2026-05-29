@@ -91,22 +91,24 @@ levels "High" and "Low", recode "High" to 0 and "Low" to 1 before calling.</p></
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">subgroup_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"subgroup_data"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">subgroup_data</span>, <span class="va">time</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">status</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">AJCC_stage</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Binary variable example</span></span></span>
-<span class="r-in"><span><span class="va">res_bin</span> <span class="op">&lt;-</span> <span class="fu">subgroup_survival</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  pdata <span class="op">=</span> <span class="va">input</span>, time_name <span class="op">=</span> <span class="st">"time"</span>, status_name <span class="op">=</span> <span class="st">"status"</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProjectID"</span>, <span class="st">"AJCC_stage"</span><span class="op">)</span>, object <span class="op">=</span> <span class="st">"score_binary"</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1</span>, <span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  subgroup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, <span class="fl">100</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Continuous variable example</span></span></span>
-<span class="r-in"><span><span class="va">res_cont</span> <span class="op">&lt;-</span> <span class="fu">subgroup_survival</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  pdata <span class="op">=</span> <span class="va">input</span>, time_name <span class="op">=</span> <span class="st">"time"</span>, status_name <span class="op">=</span> <span class="st">"status"</span>,</span></span>
-<span class="r-in"><span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ProjectID"</span>, <span class="st">"AJCC_stage"</span><span class="op">)</span>, object <span class="op">=</span> <span class="st">"score"</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">subgroup_survival</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  pdata <span class="op">=</span> <span class="va">test_pdata</span>,</span></span>
+<span class="r-in"><span>  time_name <span class="op">=</span> <span class="st">"time"</span>,</span></span>
+<span class="r-in"><span>  status_name <span class="op">=</span> <span class="st">"status"</span>,</span></span>
+<span class="r-in"><span>  variables <span class="op">=</span> <span class="st">"subgroup"</span>,</span></span>
+<span class="r-in"><span>  object <span class="op">=</span> <span class="st">"score"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    P     HR CI_low_0.95 CI_up_0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> subgroup_A 0.8258723 1.0460      0.7009     1.5608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> subgroup_B 0.5137623 0.8618      0.5515     1.3467</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

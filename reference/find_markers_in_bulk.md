@@ -71,58 +71,64 @@ markers), \`top_markers\` (top markers per group).
 ## Examples
 
 ``` r
-eset_tme_stad <- load_data("eset_tme_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_tme_stad"
-colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
-pdata_sig_tme <- load_data("pdata_sig_tme")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "pdata_sig_tme"
-# \donttest{
-res <- find_markers_in_bulk(
-  pdata = pdata_sig_tme, eset = eset_tme_stad,
-  group = "TMEcluster"
-)
+if (requireNamespace("Seurat", quietly = TRUE) && requireNamespace("Matrix", quietly = TRUE)) {
+  # Simulate data
+  set.seed(123)
+  sim_eset <- matrix(abs(rnorm(100 * 30)), 100, 30)
+  rownames(sim_eset) <- paste0("Gene", 1:100)
+  colnames(sim_eset) <- paste0("Sample", 1:30)
+  
+  sim_pdata <- data.frame(
+    ID = paste0("Sample", 1:30),
+    TMEcluster = rep(c("A", "B", "C"), each = 10)
+  )
+  
+  res <- find_markers_in_bulk(
+    pdata = sim_pdata, eset = sim_eset,
+    group = "TMEcluster", npcs = 5
+  )
+  if (!is.null(res)) head(res$top_markers)
+}
 #> Using Seurat v5+ workflow
 #> Normalizing layer: counts
 #> Centering and scaling data matrix
 #> Finding variable features for layer counts
 #> PC_ 1 
-#> Positive:  HSPB1, CNN1, ACTG2, TAGLN, ACTA2, TWIST2, RPA4, FOXF1, TNS1, TPM1 
-#>     ZEB1, ROR2, VIM, TWIST1, CLDN3, PXDC1, CDKN2A, GTF2H5, CTGF, AXL 
-#>     FSTL3, PER1, NEIL1, ZEB2, HLA-A, MGMT, SHFM1, FAM101B, GATA6, CDKN1A 
-#> Negative:  TOPBP1, MSH2, POLE, MSH6, PRKDC, BRCA1, TDP1, RAD54L, BRIP1, DCLRE1A 
-#>     FANCD2, FANCI, PALB2, GTF2H3, CTPS1, FANCM, FANCA, RIF1, E2F3, POLQ 
-#>     ERCC3, XRCC5, DCLRE1B, FANCB, EXO1, RPA1, DDB1, XRCC2, CHEK1, BRCA2 
+#> Positive:  Gene81, Gene98, Gene73, Gene29, Gene99, Gene97, Gene44, Gene52, Gene14, Gene15 
+#>     Gene32, Gene100, Gene36, Gene62, Gene65, Gene75, Gene91, Gene3, Gene25, Gene17 
+#>     Gene83, Gene46, Gene1, Gene35, Gene13, Gene74, Gene7, Gene59, Gene82, Gene19 
+#> Negative:  Gene53, Gene51, Gene78, Gene77, Gene34, Gene70, Gene22, Gene28, Gene42, Gene33 
+#>     Gene88, Gene57, Gene38, Gene61, Gene87, Gene76, Gene93, Gene37, Gene66, Gene63 
+#>     Gene47, Gene94, Gene30, Gene50, Gene24, Gene21, Gene5, Gene89, Gene55, Gene45 
 #> PC_ 2 
-#> Positive:  RECQL4, RPA3, EME1, NUDT1, RAD54B, RDM1, PCNA, H2AFX, RAD51, EXO1 
-#>     FEN1, CHEK2, SHFM1, RAD54L, CCNE1, XRCC2, POLQ, CLDN7, HIST1H2BL, CHEK1 
-#>     FANCI, NEIL3, FANCG, BLM, CHAF1A, MUTYH, CDH1, FANCD2, FANCA, CLDN4 
-#> Negative:  ZEB1, ZEB2, TNS1, ACTA2, TAGLN, AXL, VIM, ADAM19, ROR2, FOXF1 
-#>     CNN1, TWIST2, TPM1, ACTG2, CTGF, PDCD1LG2, PER1, FAP, SH3PXD2A, POLK 
-#>     TGFBI, FAM101B, REV3L, HAVCR2, COL4A1, ATM, ERCC4, HELQ, XPC, FSTL3 
+#> Positive:  Gene18, Gene17, Gene85, Gene11, Gene14, Gene68, Gene5, Gene48, Gene6, Gene89 
+#>     Gene84, Gene28, Gene94, Gene88, Gene91, Gene12, Gene73, Gene70, Gene61, Gene75 
+#>     Gene62, Gene97, Gene40, Gene92, Gene23, Gene81, Gene1, Gene8, Gene27, Gene24 
+#> Negative:  Gene96, Gene15, Gene69, Gene80, Gene39, Gene30, Gene71, Gene74, Gene64, Gene79 
+#>     Gene83, Gene10, Gene13, Gene99, Gene22, Gene63, Gene82, Gene100, Gene93, Gene19 
+#>     Gene7, Gene52, Gene26, Gene50, Gene38, Gene25, Gene95, Gene78, Gene33, Gene51 
 #> PC_ 3 
-#> Positive:  GZMB, LAG3, CXCL10, GZMA, PRF1, IFNG, CXCL9, CD8A, TAP1, PDCD1 
-#>     TBX21, HAVCR2, HLA-C, HLA-B, TIGIT, CD274, HLA-A, B2M, PDCD1LG2, H2AFX 
-#>     TAP2, MPG, CTLA4, DUT, NUDT1, NTHL1, ALKBH2, PCNA, RAD23A, RPA3 
-#> Negative:  NEIL1, LIG4, MSH5, SHPRH, FAN1, POLI, ERCC6, HLTF, ATM, MRE11A 
-#>     RAD52, MLH3, HUS1, TP53BP1, ERCC5, UVSSA, CLK2, REV3L, POLK, WRN 
-#>     TREX1, RPA4, RAD50, GTF2H4, PMS1, MSH3, LIG3, SH3PXD2A, SPRTN, ATR 
+#> Positive:  Gene54, Gene35, Gene58, Gene45, Gene3, Gene44, Gene76, Gene63, Gene49, Gene75 
+#>     Gene37, Gene87, Gene8, Gene31, Gene86, Gene53, Gene25, Gene89, Gene98, Gene57 
+#>     Gene79, Gene100, Gene94, Gene72, Gene47, Gene24, Gene12, Gene51, Gene5, Gene91 
+#> Negative:  Gene68, Gene41, Gene50, Gene92, Gene20, Gene88, Gene36, Gene11, Gene2, Gene71 
+#>     Gene21, Gene39, Gene34, Gene16, Gene29, Gene4, Gene85, Gene62, Gene55, Gene80 
+#>     Gene10, Gene60, Gene59, Gene67, Gene40, Gene84, Gene82, Gene43, Gene7, Gene66 
 #> PC_ 4 
-#> Positive:  IFNG, B2M, GZMA, ERCC5, CD274, RAD17, CXCL9, RRM2B, CXCL10, CCNH 
-#>     UBE2B, TIGIT, GZMB, MDM2, FBXW7, CTLA4, FANCL, PMS1, TBX21, LIG4 
-#>     TAP2, RB1, NBN, ATM, CD8A, GEN1, POLK, ATR, WRN, PDCD1LG2 
-#> Negative:  NTHL1, MPG, ERCC1, PRPF19, HSPB1, FSTL3, RAD23A, MUS81, MAD2L2, TWIST1 
-#>     ERCC2, CLDN3, PNKP, ROR2, H2AFX, HIST1H2BL, SEMA7A, XAB2, SMUG1, HIST2H2BF 
-#>     NUDT1, TAGLN, OGG1, POLL, LOXL2, SH3PXD2A, XRCC1, TWIST2, POLM, FOXF1 
+#> Positive:  Gene49, Gene64, Gene8, Gene5, Gene47, Gene31, Gene27, Gene67, Gene2, Gene40 
+#>     Gene74, Gene84, Gene41, Gene83, Gene81, Gene88, Gene15, Gene33, Gene71, Gene57 
+#>     Gene10, Gene44, Gene91, Gene46, Gene87, Gene43, Gene100, Gene99, Gene51, Gene25 
+#> Negative:  Gene26, Gene38, Gene86, Gene19, Gene4, Gene77, Gene72, Gene23, Gene9, Gene13 
+#>     Gene90, Gene48, Gene58, Gene30, Gene69, Gene79, Gene93, Gene20, Gene68, Gene65 
+#>     Gene97, Gene39, Gene1, Gene3, Gene17, Gene60, Gene95, Gene61, Gene45, Gene37 
 #> PC_ 5 
-#> Positive:  UBE2B, UBE2V2, UBE2N, CDK7, APEX1, MNAT1, FAP, RAD51C, POLB, TGFBI 
-#>     CCNH, ADAM12, CETN2, RAD1, TDP2, ALKBH2, LOXL2, GTF2H5, XRCC4, TWIST1 
-#>     XRCC6, PARP2, XRCC5, UBE2A, ERCC8, RNF8, RAD23B, FSTL3, RPA2, CHEK1 
-#> Negative:  EME2, RECQL5, TBX21, PDCD1, PNKP, TIGIT, POLM, NEIL1, UVSSA, XRCC3 
-#>     POLG, ATRIP, CD8A, MSH5, FBXW7, RAD9A, GATA6, PER1, ENDOV, MUTYH 
-#>     CTLA4, DCLRE1C, POLD1, ATM, POLE, HLA-A, RAD52, PRF1, XAB2, DDB2 
-#> Calculating cluster IA
+#> Positive:  Gene63, Gene78, Gene50, Gene40, Gene62, Gene25, Gene96, Gene21, Gene95, Gene54 
+#>     Gene90, Gene29, Gene87, Gene41, Gene100, Gene6, Gene17, Gene8, Gene16, Gene35 
+#>     Gene57, Gene61, Gene43, Gene45, Gene11, Gene81, Gene38, Gene18, Gene39, Gene20 
+#> Negative:  Gene31, Gene2, Gene19, Gene71, Gene3, Gene59, Gene37, Gene60, Gene89, Gene9 
+#>     Gene46, Gene66, Gene92, Gene55, Gene22, Gene93, Gene28, Gene80, Gene24, Gene94 
+#>     Gene33, Gene48, Gene75, Gene52, Gene7, Gene88, Gene73, Gene47, Gene13, Gene64 
+#> Calculating cluster A
 #> For a (much!) faster implementation of the Wilcoxon Rank Sum Test,
 #> (default method for FindMarkers) please install the presto package
 #> --------------------------------------------
@@ -132,9 +138,13 @@ res <- find_markers_in_bulk(
 #> After installation of presto, Seurat will automatically use the more 
 #> efficient implementation (no further action necessary).
 #> This message will be shown once per session
-#> Calculating cluster IE
-#> Calculating cluster IS
-# Extract top markers per cluster using base R
-top_markers <- res$top_markers
-# }
+#> Calculating cluster B
+#> Calculating cluster C
+#> # A tibble: 3 × 7
+#> # Groups:   cluster [2]
+#>     p_val avg_log2FC pct.1 pct.2 p_val_adj cluster gene  
+#>     <dbl>      <dbl> <dbl> <dbl>     <dbl> <fct>   <chr> 
+#> 1 0.00597       1.51     1     1     0.597 B       Gene28
+#> 2 0.00778       1.26     1     1     0.778 B       Gene61
+#> 3 0.00521       1.36     1     1     0.521 C       Gene54
 ```

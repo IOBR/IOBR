@@ -33,19 +33,27 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-anno_grch38 <- load_data("anno_grch38")
-#> ℹ Loading cached data: "anno_grch38"
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#> ℹ Row number of original eset: 60483
-#> ✔ 100% of probes in expression set were annotated
-#> ℹ Found 2293 duplicate symbols, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 50181
-# \donttest{
-ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
-#> ℹ Running IPS calculation
+ips_genes <- load_data("ips_gene_set")
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "ips_gene_set"
-# }
+if (!is.null(ips_genes)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(ips_genes) * 3), nrow(ips_genes), 3)
+  rownames(sim_eset) <- ips_genes$GENE
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run calculation
+  result <- deconvo_ips(eset = sim_eset, project = "Example")
+  if (!is.null(result)) head(result)
+}
+#> ℹ Running IPS calculation
+#> ℹ Loading cached data: "ips_gene_set"
+#>        ID ProjectID ProjectID_IPS    MHC_IPS      EC_IPS      SC_IPS     CP_IPS
+#> 1 Sample1   Example       Example 0.09554254 -0.02191850  0.07525168 -0.5033694
+#> 2 Sample2   Example       Example 0.20070607 -0.06235335 -0.14211063 -0.3425485
+#> 3 Sample3   Example       Example 0.23776174 -0.09747729 -0.20235106  0.4555573
+#>       AZ_IPS IPS_IPS
+#> 1 -0.3544937       0
+#> 2 -0.3463064       0
+#> 3  0.3934907       1
 ```

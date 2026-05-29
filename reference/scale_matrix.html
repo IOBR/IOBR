@@ -79,14 +79,23 @@ to remove problematic features. Default is `TRUE`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_gse62254</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_gse62254"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"eset_gse62254"</span></span>
-<span class="r-in"><span><span class="va">eset2</span> <span class="op">&lt;-</span> <span class="fu">scale_matrix</span><span class="op">(</span><span class="va">eset_gse62254</span>, log2matrix <span class="op">=</span> <span class="cn">FALSE</span>, manipulate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Retained 54675 of 54675 features</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Retained 54675 features after manipulation</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ncol <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>  dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eset2</span> <span class="op">&lt;-</span> <span class="fu">scale_matrix</span><span class="op">(</span><span class="va">test_matrix</span>, log2matrix <span class="op">=</span> <span class="cn">FALSE</span>, manipulate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Retained 20 of 20 features</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Retained 20 features after manipulation</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">eset2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Sample1    Sample2    Sample3    Sample4    Sample5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene1 -0.45120149 -0.9503647 -0.6087774  1.5061076  0.5042360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene2 -0.30999533 -0.2805849 -0.2560728 -0.8807423  1.7273953</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3  1.77959701 -0.5253800 -0.5654074 -0.3374958 -0.3513138</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4 -0.40723962 -0.5741448  1.7620081 -0.6084337 -0.1721900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5 -0.07783652 -0.5723871  1.7342497 -0.7306081 -0.3534179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6  1.72922021 -0.7192169 -0.6553447 -0.1861758 -0.1684828</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -73,7 +73,8 @@ eset <- tcga_rna_preps(
 #>    Mode   FALSE 
 #> logical      10 
 #> ℹ Converting count to TPM
-#> ℹ Loading cached data: "anno_grch38"
+#> ℹ Trying mirror 1/12: <https://github.com>
+#> ✔ Download complete: "anno_grch38"
 #> ℹ Using local annotation (anno_grch38) for TPM conversion
 #> ! Omitting 3985 genes without length information
 #> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.

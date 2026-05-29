@@ -61,7 +61,8 @@ eset <- download_iobr_data("eset_stad",
     "https://gh-proxy.org/https://github.com"
   )
 )
-#> ℹ Loading cached data: "eset_stad"
+#> ℹ Trying mirror 1/2: <https://ghproxy.vip/https://github.com>
+#> ✔ Download complete: "eset_stad"
 
 # Use custom cache directory (use tempdir() for examples)
 options(IOBR.cache_dir = tempdir())

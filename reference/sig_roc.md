@@ -107,10 +107,16 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  OS_status = sample(c(0, 1), 100, replace = TRUE),
+  TMEscore_plus = rnorm(100),
+  GZMB = rnorm(100),
+  GNLY = rnorm(100)
+)
 sig_roc(
-  data = tcga_stad_pdata, response = "OS_status",
+  data = test_data, response = "OS_status",
   variables = c("TMEscore_plus", "GZMB", "GNLY")
 )
 #> ℹ Input data preview:
@@ -118,21 +124,20 @@ sig_roc(
 #>   method   from            
 #>   plot.roc spatstat.explore
 #> Setting levels: control = 0, case = 1
-#> Setting direction: controls > cases
-#> Setting levels: control = 0, case = 1
 #> Setting direction: controls < cases
 #> Setting levels: control = 0, case = 1
 #> Setting direction: controls > cases
+#> Setting levels: control = 0, case = 1
+#> Setting direction: controls < cases
 
 #> $auc.out
 #>                   Name   AUC      AUC CI
-#> auc.ci   TMEscore_plus 0.564 0.504-0.624
-#> auc.ci.1          GZMB 0.493 0.431-0.555
-#> auc.ci.2          GNLY 0.507 0.449-0.568
+#> auc.ci   TMEscore_plus 0.508 0.399-0.617
+#> auc.ci.1          GZMB 0.564 0.452-0.675
+#> auc.ci.2          GNLY  0.53  0.428-0.65
 #> 
 #> $legend.name
-#> [1] "TMEscore_plus  AUC =  0.564" "GZMB  AUC =  0.493"         
-#> [3] "GNLY  AUC =  0.507"         
+#> [1] "TMEscore_plus  AUC =  0.508" "GZMB  AUC =  0.564"         
+#> [3] "GNLY  AUC =  0.53"          
 #> 
-# }
 ```

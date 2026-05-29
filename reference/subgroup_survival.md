@@ -50,20 +50,22 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-subgroup_data <- load_data("subgroup_data")
-input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
-
-# Binary variable example
-res_bin <- subgroup_survival(
-  pdata = input, time_name = "time", status_name = "status",
-  variables = c("ProjectID", "AJCC_stage"), object = "score_binary"
+set.seed(123)
+test_pdata <- data.frame(
+  time = runif(100, 1, 100),
+  status = sample(c(0, 1), 100, replace = TRUE),
+  subgroup = sample(c("A", "B"), 100, replace = TRUE),
+  score = rnorm(100)
 )
-
-# Continuous variable example
-res_cont <- subgroup_survival(
-  pdata = input, time_name = "time", status_name = "status",
-  variables = c("ProjectID", "AJCC_stage"), object = "score"
+res <- subgroup_survival(
+  pdata = test_pdata,
+  time_name = "time",
+  status_name = "status",
+  variables = "subgroup",
+  object = "score"
 )
-# }
+print(res)
+#>                    P     HR CI_low_0.95 CI_up_0.95
+#> subgroup_A 0.8258723 1.0460      0.7009     1.5608
+#> subgroup_B 0.5137623 0.8618      0.5515     1.3467
 ```

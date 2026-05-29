@@ -124,35 +124,31 @@ Default is `123456`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"glmnet"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"glmnet"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">&amp;&amp;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"survival"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival" class="external-link">survival</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">imvigor210_sig</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"imvigor210_sig"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">imvigor210_pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"imvigor210_pdata"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">pdata_prog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    ID <span class="op">=</span> <span class="va">imvigor210_pdata</span><span class="op">$</span><span class="va">ID</span>,</span></span>
-<span class="r-in"><span>    OS_days <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">imvigor210_pdata</span><span class="op">$</span><span class="va">OS_days</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">imvigor210_pdata</span><span class="op">$</span><span class="va">OS_status</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># Create small example data (first column must be ID)</span></span></span>
+<span class="r-in"><span>  <span class="va">x_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, <span class="fl">100</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x_sim</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sig"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">x_sim</span><span class="op">$</span><span class="va">ID</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">x_sim</span> <span class="op">&lt;-</span> <span class="va">x_sim</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">]</span> <span class="co"># Move ID to first column</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">y_sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    OS_days <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html" class="external-link">rexp</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0.01</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">1</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">prognostic_result</span> <span class="op">&lt;-</span> <span class="fu">PrognosticModel</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    x <span class="op">=</span> <span class="va">imvigor210_sig</span>, y <span class="op">=</span> <span class="va">pdata_prog</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="va">x_sim</span>, y <span class="op">=</span> <span class="va">y_sim</span>,</span></span>
 <span class="r-in"><span>    scale <span class="op">=</span> <span class="cn">TRUE</span>, seed <span class="op">=</span> <span class="fl">123456</span>,</span></span>
-<span class="r-in"><span>    train_ratio <span class="op">=</span> <span class="fl">0.7</span>, nfold <span class="op">=</span> <span class="fl">10</span>, plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>    train_ratio <span class="op">=</span> <span class="fl">0.7</span>, nfold <span class="op">=</span> <span class="fl">3</span>, plot <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">prognostic_result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">prognostic_result</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"imvigor210_sig"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Splitting data into training and validation sets</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running LASSO</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
@@ -162,15 +158,137 @@ Default is `123456`.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Starting in glmnet 5.1, the default Cox tie-handling method will change from 'breslow' to 'efron' (matching survival::coxph). To silence this message and lock in the v5.0 default, pass cox.ties = 'breslow' explicitly. To preview the v5.1 behavior, pass cox.ties = 'efron'.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Model fitting complete</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lasso_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lasso_result$model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::cv.glmnet(x = train.x, y = as.matrix(train.y), nfolds = nfold,      family = "cox", alpha = 1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Measure: Partial Likelihood Deviance </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      Lambda Index Measure     SE Nonzero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min 0.05584    14   3.876 0.1870       3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1se 0.18715     1   3.968 0.1557       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lasso_result$coefs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   feature  lambda.min lambda.1se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Sig1 -0.21600149          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Sig2  0.31941492          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Sig3  0.00000000          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Sig4  0.08920698          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Sig5  0.00000000          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $lasso_result$AUC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    probs.3   probs.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Train_lambda.min 0.6540505 0.7627230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Train_lambda.1se 0.5000000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test_lambda.min  0.4159452 0.2270948</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test_lambda.1se  0.5000000 0.5000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ridge_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ridge_result$model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::cv.glmnet(x = train.x, y = as.matrix(train.y), nfolds = nfold,      family = "cox", alpha = 0) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Measure: Partial Likelihood Deviance </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Lambda Index Measure     SE Nonzero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min   0.25    72   3.887 0.1889       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1se 187.15     1   3.973 0.1599       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ridge_result$coefs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   feature  lambda.min    lambda.1se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    Sig1 -0.21698782 -1.695910e-37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    Sig2  0.28062189  1.935739e-37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    Sig3  0.04159439  6.573543e-38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    Sig4  0.13033033  8.702333e-38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    Sig5 -0.04593428 -2.337453e-38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ridge_result$AUC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    probs.3   probs.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Train_lambda.min 0.6523896 0.8154881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Train_lambda.1se 0.6482388 0.8120806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test_lambda.min  0.3221501 0.2101121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test_lambda.1se  0.3795094 0.2277480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $train.x</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ID        Sig1        Sig2         Sig3        Sig4        Sig5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60 S60  0.13752572 -0.27615073 -1.740608199  2.51032748 -0.40532716</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 S42 -0.32681639 -0.15993054 -0.655519126  0.95807304  0.35267582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71 S71 -0.63697081 -0.11151520  0.762779177  2.36141760  1.88970138</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54 S54  1.40027842 -0.93158458 -0.031549770  0.14715340  0.61588929</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74 S74 -0.87597805  2.31233678 -1.595718525  0.82943622 -0.34891996</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   S3  1.60854170 -0.14389556 -0.405957160 -0.86862929 -0.74857465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67 S67  0.39197814  0.76952097 -0.266998306  0.39892007  0.64188789</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 S23 -1.22304003 -0.39608682  1.041588525 -1.25392272  0.02068532</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94 S94 -0.78691881 -0.81471300 -0.734760046 -0.76363982 -1.20872075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 S38 -0.16686565  0.87642818  0.314268771 -0.15841460  0.98946613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   S2 -0.35120270  0.37687234  1.254841839 -0.68971795 -1.28822738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80 S80 -0.25119772 -0.36279565 -0.100844561 -1.68857339 -0.33712681</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85 S85 -0.34058618 -0.13312777 -0.002443047  0.49322819  0.61352804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65 S65 -1.27319995 -0.31987081  2.287253372  0.82200403 -1.21154619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56 S56  1.56226982 -0.17874967 -0.220059850  0.35630780 -2.79656893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 S24 -0.89754917 -0.15361681  0.618103217  0.67102022  1.17897691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46 S46 -1.32941869 -0.43781343  1.875919753 -1.65291248  0.06011053</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 S14  0.02221347  0.05375962 -0.670115841 -0.54417984 -0.23102093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79 S79  0.09957931  0.56264510  0.323937751  0.02109732  0.27003069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 S35  0.80101058 -2.01212758 -0.731518252  0.39816939 -0.08752415</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89 S89 -0.45610238  0.89101605 -0.357430264 -0.38451076  1.53741016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97 S97  2.29720706  0.73243581  1.838536067 -0.71037289  0.07681467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92 S92  0.50173432 -0.22455235  0.982984094 -2.04222350  1.31217957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70 S70  2.14685001  0.49277965 -0.032907231 -0.40895563  1.03012700</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63 S63 -0.46407310 -1.19195906 -0.077178967  0.29841644  0.41709667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 S48 -0.61026684  0.82262108 -1.558415198 -0.51563037  0.78582422</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 S29 -1.34588242 -0.88347639  0.804508172  1.32052880  1.54416938</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84 S84  0.60688103 -0.78384339 -0.406490458 -0.98075910  0.01563402</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91 S91  0.98935390  0.33298507  1.103212938 -0.58801864 -0.21391418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82 S82  0.32303830  1.41752943  0.648536159  0.21799896  0.21044890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50 S50 -0.19037243 -1.21975182  0.384254082 -0.13831914 -1.76099216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62 S62 -0.64934164 -0.97377792 -0.642540351  0.66175261 -0.45921595</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 S30  1.27452758  0.03747592 -1.196002577  0.04188851 -1.56098865</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 S10 -0.58726835  1.06159010 -0.183700494  1.99637506  0.12274879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75 S75 -0.85276181 -0.65542717  0.767653526  0.52595815 -0.32333706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   S4 -0.02179795 -0.24818937  0.445034541 -0.97834881 -0.13614297</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 S26 -1.94683206 -0.56298929 -0.063918852  0.69308957 -0.56217912</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 S18 -2.25349176 -0.55136153 -0.888040594 -1.17678842  0.32792758</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 S11  1.24195461 -0.48377109 -0.001284241  1.28746927  0.39053852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87 S87  1.10255872  1.25903201  0.105860180  0.47407414  0.81763358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 S44  2.27707482 -1.45516065 -1.324135788  0.08879602 -0.30903326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88 S88  0.37770550  0.19884876  1.600605039 -1.05832252 -0.68757100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   S7  0.40589817 -0.70048299 -0.957035562 -1.90414261 -0.46051155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 S16  1.85854263  0.42265338  1.637294730  0.71212956 -2.77860368</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83 S83 -0.50510289 -0.25036912  0.279573997  0.20307385  1.23552733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 S43 -1.48529653 -1.51459943  1.448179833  1.64353927  0.56001826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57 S57 -1.79571669  0.69342877  1.011007110  0.43094043  1.01524277</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 S32 -0.42229479  0.57813712 -0.221906908 -1.10919518  0.27550830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 S13  0.34000892 -1.56189951  1.170686804 -1.62739512  0.55330174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55 S55 -0.34637532 -0.01231228  1.556033681 -0.82499052  0.82006109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64 S64 -1.21490140  3.46290911  1.241983044  1.02128929 -0.50188307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59 S59  0.03664303  1.12154623 -0.246457722 -2.33896727  0.12610950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 S28  0.06898128  0.19184097 -0.881884222  0.64420073 -0.09574179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 S22 -0.33783464 -0.86860336  0.523772739  1.20750307  0.18251808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66 S66  0.23347834  0.41962772  1.502418732 -0.16709030  1.11605021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 S12  0.29513939  0.73993902  0.129724233  0.76339238  0.16372849</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 S34  0.86296437 -0.32570258 -0.904318179  1.49737075 -1.12345672</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 S47 -0.54040552 -1.40044213 -0.233124433  0.13048994  0.33655348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 S33  0.88157948  0.15385913  0.099037583 -0.65979392  0.19627881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77 S77 -0.41101270  0.15029701  0.057204752 -0.92469695  1.62375385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98 S98  1.57995139 -1.18277188 -1.549005559  0.84902810  0.05962520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69 S69  0.91131364  0.64572646 -0.536115646  0.85980176 -0.04113526</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61 S61  0.31685861  1.19987005 -0.675435978 -0.16276416  0.77436426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   S5  0.04259548 -0.87288879 -0.563024425 -0.38596830  0.57092782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 S41 -0.86009994  0.83696209 -0.957055704  0.63575502 -1.36140005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81 S81 -0.09272595 -0.98841011 -1.882282138  0.06813174 -0.08631989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 S27  0.81876439  0.35464128 -0.868596532 -0.02368068  2.31627966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 S31  0.36815564  1.60508703  1.931644899  1.01444031 -0.29955929</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76 S76  1.02448422 -1.02219561 -0.596941661 -0.53260313  0.04632311</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96 S96 -0.75663177  2.17661772 -0.056601147  1.48262549 -1.47969495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plots</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

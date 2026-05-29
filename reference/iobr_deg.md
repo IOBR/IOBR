@@ -120,51 +120,37 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-stad_group <- load_data("stad_group")
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(abs(rnorm(100 * 20)), 100, 20)
+rownames(sim_eset) <- paste0("Gene", 1:100)
+colnames(sim_eset) <- paste0("Sample", 1:20)
+
+sim_pdata <- data.frame(
+  ID = paste0("Sample", 1:20),
+  group = rep(c("High", "Low"), each = 10)
+)
+
+# Run DEG analysis
 deg <- iobr_deg(
-  eset = eset_stad, pdata = stad_group,
-  group_id = "subtype", pdata_id = "ID", array = FALSE,
-  method = "DESeq2", contrast = c("EBV", "GS"),
-  path = file.path(tempdir(), "STAD")
+  eset = sim_eset, pdata = sim_pdata,
+  group_id = "group", pdata_id = "ID",
+  method = "limma", contrast = c("High", "Low"),
+  heatmap = FALSE
 )
 #> ℹ Matching grouping information and expression matrix
-#> ℹ Using DESeq2 for RNA-seq differential analysis
-#> ! Ensure `eset` is a count expression matrix
-#> converting counts to integer mode
-#> Warning: some variables in design formula are characters, converting to factors
-#> estimating size factors
-#> estimating dispersions
-#> gene-wise dispersion estimates
-#> mean-dispersion relationship
-#> final dispersion estimates
-#> fitting model and testing
-#> ℹ Differential analysis summary:
-#> ℹ   Adj.p < 0.001: 2509
-#> ℹ   Adj.p < 0.05: 7446
-#> ℹ   Adj.p < 0.1: 9565
-#> ℹ   Adj.p < 0.25: 13933
-#> ℹ Using built-in anno_grch38 for annotation
-#> ℹ Loading cached data: "anno_grch38"
-#> ℹ Group 1 = EBV: 5 samples
-#> ℹ Group 2 = GS: 5 samples
-#> ℹ Group 1 samples: TCGA-BR-6455, TCGA-BR-7196, TCGA-BR-8686, TCGA-BR-A4J4, TCGA-FP-7916
-#> ℹ Group 2 samples: TCGA-BR-8371, TCGA-BR-8380, TCGA-BR-8592, TCGA-BR-A4IV, TCGA-BR-A4J9
-#> ✔ DEG results written to: /tmp/RtmpgUkRfL/STAD/2-DEGs.csv
-head(deg)
-#> # A tibble: 6 × 21
-#>   row     baseMean log2FoldChange lfcSE  stat   pvalue     padj eff_length    gc
-#>   <chr>      <dbl>          <dbl> <dbl> <dbl>    <dbl>    <dbl>      <dbl> <dbl>
-#> 1 ENSG00…    3256.           3.94 0.303  13.0 1.41e-38 4.93e-34       3156 0.519
-#> 2 ENSG00…     312.           5.88 0.492  12.0 5.79e-33 1.01e-28       2494 0.510
-#> 3 ENSG00…  128738.          -4.27 0.373 -11.5 2.15e-30 2.50e-26       9251 0.623
-#> 4 ENSG00…  392400.          -4.95 0.436 -11.3 8.41e-30 7.33e-26       3811 0.498
-#> 5 ENSG00…    3248.           2.55 0.231  11.1 1.78e-28 1.24e-24       9980 0.430
-#> 6 ENSG00…    3225.           3.12 0.302  10.3 4.60e-25 2.67e-21       3545 0.521
-#> # ℹ 12 more variables: entrez <dbl>, symbol <chr>, chr <chr>, start <dbl>,
-#> #   end <dbl>, strand <dbl>, biotype <chr>, description <chr>, sigORnot <chr>,
-#> #   label <chr>, EBV <dbl>, GS <dbl>
-# }
+#> ℹ Using limma for array differential analysis
+#> ℹ Group 1 = High
+#> ℹ Group 2 = Low
+if (!is.null(deg)) head(deg)
+#> # A tibble: 6 × 11
+#>   symbol log2FoldChange AveExpr     t  pvalue  padj     B sigORnot label    High
+#>   <chr>           <dbl>   <dbl> <dbl>   <dbl> <dbl> <dbl> <chr>    <chr>   <dbl>
+#> 1 Gene29          0.813   0.808  3.27 0.00170 0.170 -1.25 NOT      log2FC… 1.21 
+#> 2 Gene16          0.697   1.00   2.56 0.0129  0.430 -2.94 NOT      log2FC… 1.35 
+#> 3 Gene96          0.686   0.732  2.57 0.0123  0.430 -2.90 NOT      log2FC… 1.07 
+#> 4 Gene43          0.605   0.903  2.23 0.0294  0.734 -3.60 NOT      log2FC… 1.21 
+#> 5 Gene28         -0.544   0.775 -2.10 0.0400  0.800 -3.84 NOT      log2FC… 0.503
+#> 6 Gene12         -0.528   0.927 -1.89 0.0632  0.851 -4.20 NOT      log2FC… 0.663
+#> # ℹ 1 more variable: Low <dbl>
 ```

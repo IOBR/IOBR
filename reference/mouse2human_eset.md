@@ -55,25 +55,22 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
 # Create example mouse expression data
-anno_gc_vm32 <- load_data("anno_gc_vm32")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_gc_vm32"
-num_rows <- 200
-num_cols <- 10
-sample_names <- paste0("Sample", 1:num_cols)
-data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
-rownames(data) <- anno_gc_vm32$symbol[1:200]
-colnames(data) <- sample_names
+set.seed(123)
+data <- matrix(runif(100 * 5), nrow = 100, ncol = 5)
+rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:100))
+colnames(data) <- paste0("Sample", 1:5)
 
-# Convert using local database
+# Convert using local database (may return NULL if no internet for internal data)
 human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
 #> ℹ Trying mirror 1/12: <https://github.com>
 #> ✔ Download complete: "mus_human_gene_symbol"
-#> ℹ Row number of original eset: 200
-#> ✔ 94% of probes in expression set were annotated
-#> ℹ Found 1 duplicate symbol, using "mean" method
-#> ℹ Row number after filtering duplicated gene symbol: 217
-# }
+#> ℹ Row number of original eset: 100
+#> ✔ 3% of probes in expression set were annotated
+#> ℹ Row number after filtering duplicated gene symbol: 3
+if (!is.null(human_data)) head(human_data)
+#>         Sample1   Sample2   Sample3     Sample4   Sample5
+#> GAPDH 0.4089769 0.4886130 0.6013657 0.779065883 0.9053096
+#> HMGB1 0.7883051 0.3328235 0.9623589 0.009429905 0.1370675
+#> TPT1  0.2875775 0.5999890 0.2387260 0.784575267 0.9860543
 ```

@@ -80,50 +80,47 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">eset_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_stad"</span></span>
-<span class="r-in"><span><span class="va">anno_grch38</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"anno_grch38"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"anno_grch38"</span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="anno_eset.html">anno_eset</a></span><span class="op">(</span>eset <span class="op">=</span> <span class="va">eset_stad</span>, annotation <span class="op">=</span> <span class="va">anno_grch38</span>, probe <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number of original eset: 60483</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> 100% of probes in expression set were annotated</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Found 2293 duplicate symbols, using <span style="color: #0000BB;">"mean"</span> method</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row number after filtering duplicated gene symbol: 50181</span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="va">eset</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">deconvo_quantiseq</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset</span>, project <span class="op">=</span> <span class="st">"stad"</span>, tumor <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  arrays <span class="op">=</span> <span class="cn">FALSE</span>, scale_mrna <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running quanTIseq deconvolution</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running quanTIseq deconvolution module</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">quantiseq_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"quantiseq_data"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"quantiseq_data"</span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">quantiseq_data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">n_sig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">quantiseq_data</span><span class="op">$</span><span class="va">TIL10_signature</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_sig</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="va">n_sig</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">quantiseq_data</span><span class="op">$</span><span class="va">TIL10_signature</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># Run deconvolution</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_quantiseq</span><span class="op">(</span>eset <span class="op">=</span> <span class="va">sim_eset</span>, project <span class="op">=</span> <span class="st">"Example"</span>, tumor <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                              arrays <span class="op">=</span> <span class="cn">FALSE</span>, scale_mrna <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running quanTIseq deconvolution</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running quanTIseq deconvolution module</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"quantiseq_data"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Gene expression normalization and re-annotation (arrays: FALSE)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"quantiseq_data"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing 17 noisy genes</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing 15 genes with high expression in tumors</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Signature genes found in data set: 0/138 (0%)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Signature genes found in data set: 138/138 (100%)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mixture deconvolution (method: lsei)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Deconvolution successful!</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             ID ProjectID B_cells_quantiseq Macrophages_M1_quantiseq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 TCGA-BR-6455      stad               NaN                      NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 TCGA-BR-7196      stad               NaN                      NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 TCGA-BR-8371      stad               NaN                      NaN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ID ProjectID B_cells_quantiseq Macrophages_M1_quantiseq</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Sample1   Example         0.1431669                        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Sample2   Example         0.0000000                        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Sample3   Example         0.2047434                        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Macrophages_M2_quantiseq Monocytes_quantiseq Neutrophils_quantiseq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                      NaN                 NaN                   NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                      NaN                 NaN                   NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                      NaN                 NaN                   NaN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        0                   0             0.8568331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        0                   0             0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        0                   0             0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   NK_cells_quantiseq T_cells_CD4_quantiseq T_cells_CD8_quantiseq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                NaN                   NaN                   NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                NaN                   NaN                   NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                NaN                   NaN                   NaN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          0.0000000                     0                     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          1.0000000                     0                     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          0.7952566                     0                     0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Tregs_quantiseq Dendritic_cells_quantiseq Other_quantiseq</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             NaN                       NaN             NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2             NaN                       NaN             NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3             NaN                       NaN             NaN</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               0                         0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               0                         0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               0                         0               0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

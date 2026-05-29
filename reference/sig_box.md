@@ -125,10 +125,14 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  subtype = rep(c("A", "B"), each = 50),
+  TMEscore_plus = rnorm(100)
+)
 sig_box(
-  data = tcga_stad_pdata,
+  data = test_data,
   signature = "TMEscore_plus",
   variable = "subtype",
   jitter = TRUE,
@@ -138,5 +142,4 @@ sig_box(
 #> ℹ Please use the `linewidth` argument instead.
 #> ℹ The deprecated feature was likely used in the IOBR package.
 #>   Please report the issue at <https://github.com/IOBR/IOBR/issues>.
-# }
 ```

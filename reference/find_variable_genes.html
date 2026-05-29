@@ -52,7 +52,7 @@ thresholding and variability estimation via median absolute deviation (MAD).</p>
 <span>  data_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"count"</span>, <span class="st">"normalized"</span><span class="op">)</span>,</span>
 <span>  methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low"</span>, <span class="st">"mad"</span><span class="op">)</span>,</span>
 <span>  prop <span class="op">=</span> <span class="fl">0.7</span>,</span>
-<span>  quantile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span><span class="op">)</span>,</span>
+<span>  quantile <span class="op">=</span> <span class="fl">0.75</span>,</span>
 <span>  min.mad <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  feas <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -107,20 +107,52 @@ Default is `NULL`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">eset_tme_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_tme_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"eset_tme_stad"</span></span>
-<span class="r-in"><span><span class="va">eset</span> <span class="op">&lt;-</span> <span class="fu">find_variable_genes</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset_tme_stad</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fl">20</span><span class="op">)</span>, <span class="fl">100</span>, <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Gene"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Identify variable genes</span></span></span>
+<span class="r-in"><span><span class="va">eset_var</span> <span class="op">&lt;-</span> <span class="fu">find_variable_genes</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">sim_eset</span>,</span></span>
 <span class="r-in"><span>  data_type <span class="op">=</span> <span class="st">"normalized"</span>,</span></span>
 <span class="r-in"><span>  methods <span class="op">=</span> <span class="st">"mad"</span>,</span></span>
 <span class="r-in"><span>  quantile <span class="op">=</span> <span class="fl">0.25</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Log2 transformation not necessary (data appears to already be log-scaled)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> min.mad = 0.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Range of MAD: 0.1 to 2.22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Range of MAD: 0.41 to 1.72</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 25% of variables will be filtered out...</span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">eset_var</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Sample1     Sample2    Sample3    Sample4     Sample5     Sample6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3  1.55870831 -0.24669188 -0.2651451 -0.9385387 -0.63474826  1.02678506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4  0.07050839 -0.34754260  0.5431941 -1.0525133 -0.02884155  0.75106130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5  0.12928774 -0.95161857 -0.4143399 -0.4371595  0.67069597 -1.50916654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6  1.71506499 -0.04502772 -0.4762469  0.3311792 -1.65054654 -0.09514745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene7  0.46091621 -0.78490447 -0.7886028 -2.0142105 -0.34975424 -0.89594782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene8 -1.26506123 -1.66794194 -0.5946173  0.2119804  0.75640644 -2.07075107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Sample7    Sample8     Sample9    Sample10    Sample11    Sample12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3 -0.03333034 -0.6930946  0.85520221  0.29959368 -0.01798024 -0.93656903</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4 -1.51606762  0.1188494  1.15293623  1.63905191 -0.13217513 -1.40078743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5  0.79038534 -1.3647095  0.27627456  1.08461701 -2.54934277  0.16027754</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6 -0.21073418  0.5899827  0.14410466 -0.62456747  1.04057346 -0.27396237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene7 -0.65674293  0.2893440 -0.07562508  0.82592290  0.24972574 -0.98553911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene8 -1.41202579 -0.9042150  2.16141585 -0.04856835  2.41620737  0.08393068</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Sample13   Sample14   Sample15   Sample16   Sample17   Sample18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3  0.8515247 -1.1477708  0.7148484 -0.9020980 -0.4539977 -3.0478609</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4 -0.7479300  0.3543522 -0.4316611  0.6270687 -0.5938646  1.8686555</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5  0.6302398  0.4247998  0.2276149  1.1203550 -1.7103797  1.7904242</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6  1.0966616  0.6483474  1.2949458  2.1272136 -0.2094484 -1.1010817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene7 -0.9884429 -1.2198100  0.5783349  0.3661144  2.4787458 -0.1681075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene8  1.1079950  0.1072350  1.3646728 -0.8747814  0.9897022  1.3752753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Sample19    Sample20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene3 -0.0573241 -0.03265845</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene4  1.2567478  1.63675735</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene5  1.5874541 -0.32904197</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene6  0.3194815 -2.60403817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene7  0.3815916  0.51398379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gene8 -0.2436449 -0.88646801</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

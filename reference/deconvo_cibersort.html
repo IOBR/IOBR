@@ -109,21 +109,69 @@ Default is `"sig.score"`.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">eset_tme_stad</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"eset_tme_stad"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"eset_tme_stad"</span></span>
-<span class="r-in"><span><span class="va">lm22</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"lm22"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">lm22</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_data.html">load_data</a></span><span class="op">(</span><span class="st">"lm22"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Trying mirror 1/12: <span style="color: #0000BB; font-style: italic;">&lt;https://github.com&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Download complete: <span style="color: #0000BB;">"lm22"</span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="va">cibersort_result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_cibersort</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  eset <span class="op">=</span> <span class="va">eset_tme_stad</span>,</span></span>
-<span class="r-in"><span>  project <span class="op">=</span> <span class="st">"TCGA-STAD"</span>,</span></span>
-<span class="r-in"><span>  perm <span class="op">=</span> <span class="fl">100</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">sim_eset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span> <span class="op">*</span> <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">lm22</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sim_eset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Sample"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Run deconvolution</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">deconvo_cibersort</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    eset <span class="op">=</span> <span class="va">sim_eset</span>,</span></span>
+<span class="r-in"><span>    project <span class="op">=</span> <span class="st">"TCGA-STAD"</span>,</span></span>
+<span class="r-in"><span>    perm <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Running CIBERSORT</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Loading cached data: <span style="color: #0000BB;">"lm22"</span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        ID ProjectID B_cells_naive_CIBERSORT B_cells_memory_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 Sample1 TCGA-STAD              0.00000000               0.08619764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Sample2 TCGA-STAD              0.06359520               0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Sample3 TCGA-STAD              0.03145937               0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Plasma_cells_CIBERSORT T_cells_CD8_CIBERSORT T_cells_CD4_naive_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             0.03406151            0.00000000                   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             0.00000000            0.03341067                   0.2006443</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             0.01943398            0.00000000                   0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_CD4_memory_resting_CIBERSORT T_cells_CD4_memory_activated_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            0.1686361                             0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            0.0000000                             0.04465699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            0.3518399                             0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_follicular_helper_CIBERSORT T_cells_regulatory_(Tregs)_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                         0.277934421                          0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                         0.000000000                          0.002049631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                         0.005228186                          0.084194087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   T_cells_gamma_delta_CIBERSORT NK_cells_resting_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                    0.00000000                          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                    0.08455261                          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                    0.06415089                          0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   NK_cells_activated_CIBERSORT Monocytes_CIBERSORT Macrophages_M0_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0.07127415          0.06590437               0.01297899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   0.00000000          0.40590254               0.09312735</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0.06329834          0.03628107               0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Macrophages_M1_CIBERSORT Macrophages_M2_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1               0.05736787               0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               0.00000000               0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               0.06291034               0.08127811</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Dendritic_cells_resting_CIBERSORT Dendritic_cells_activated_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                        0.00000000                                   0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                        0.01000038                                   0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                        0.00000000                                   0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Mast_cells_resting_CIBERSORT Mast_cells_activated_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                   0.19312749                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                   0.06206029                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                   0.14263721                              0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Eosinophils_CIBERSORT Neutrophils_CIBERSORT P-value_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            0.03251746            0.00000000               0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2            0.00000000            0.00000000               0.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            0.00000000            0.05728852               0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Correlation_CIBERSORT RMSE_CIBERSORT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            0.10553554       1.053760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2            0.08675359       1.059597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            0.12032892       1.044903</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

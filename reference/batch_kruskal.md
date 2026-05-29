@@ -71,31 +71,26 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-# Load TCGA-STAD signature data
-sig_stad <- load_data("sig_stad")
-#> ℹ Loading cached data: "sig_stad"
-
-# Test features by gender (if available in your dataset)
-if ("Gender" %in% colnames(sig_stad)) {
-  res <- batch_kruskal(
-    data = sig_stad,
-    group = "Gender",
-    feature = colnames(sig_stad)[69:ncol(sig_stad)]
-  )
-  head(res)
-}
-#> ℹ Groups: 2 ("M" and "F")
-#> ℹ Features: 255
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  Gender = rep(c("Male", "Female"), each = 50),
+  Signature1 = rnorm(100),
+  Signature2 = rnorm(100)
+)
+# Test features by gender
+res <- batch_kruskal(
+  data = test_data,
+  group = "Gender",
+  feature = c("Signature1", "Signature2")
+)
+#> ℹ Groups: 2 ("Male" and "Female")
+#> ℹ Features: 2
 #> ✔ Kruskal-Wallis test complete
-#> # A tibble: 6 × 8
-#>   sig_names               p.value statistic      F     M p.adj log10pvalue stars
-#>   <chr>                     <dbl>     <dbl>  <dbl> <dbl> <dbl>       <dbl> <fct>
-#> 1 Steroid_Hormone_Metabo… 0.00652      7.40 -0.409 0.409 0.715        2.19 **   
-#> 2 Steroid_Hormone_Biosyn… 0.00693      7.29 -0.400 0.400 0.715        2.16 **   
-#> 3 Linoleic_Acid_Metaboli… 0.00989      6.65 -0.268 0.268 0.715        2.00 **   
-#> 4 Ascorbate_and_Aldrate_… 0.0112       6.43 -0.288 0.288 0.715        1.95 *    
-#> 5 Pentose_and_Glucuronat… 0.0189       5.51 -0.294 0.294 0.853        1.72 *    
-#> 6 Drug_Metabolism_by_Cyt… 0.0201       5.41 -0.422 0.422 0.853        1.70 *    
-# }
+head(res)
+#> # A tibble: 2 × 8
+#>   sig_names  p.value statistic Female    Male p.adj log10pvalue stars
+#>   <chr>        <dbl>     <dbl>  <dbl>   <dbl> <dbl>       <dbl> <fct>
+#> 1 Signature2   0.128     2.32  0.146  -0.146  0.255       0.894 +    
+#> 2 Signature1   0.482     0.494 0.0560 -0.0560 0.482       0.317 +    
 ```
