@@ -34,7 +34,15 @@ of correlation coefficients for p-value calculation in CIBERSORT analysis.
 Randomly samples from the mixture data to create null distributions.
 }
 \examples{
+# Simulate data
+set.seed(123)
 X <- matrix(rnorm(100), nrow = 10)
+rownames(X) <- paste0("Gene", 1:10)
+colnames(X) <- paste0("Cell", 1:10)
 Y <- rnorm(10)
-result <- doPerm(100, X, Y, absolute = FALSE, abs_method = "sig.score")
+names(Y) <- paste0("Gene", 1:10)
+
+# Run permutation test
+result <- doPerm(10, X, Y, absolute = FALSE, abs_method = "sig.score")
+if (!is.null(result)) str(result)
 }

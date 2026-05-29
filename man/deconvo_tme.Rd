@@ -61,16 +61,16 @@ Tibble with cell fractions and `ID` column.
 Unified interface for multiple TME deconvolution methods.
 }
 \examples{
-lm22 <- load_data("lm22")
-common_genes <- rownames(lm22)[1:500]
-sim_eset <- as.data.frame(matrix(
-  rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-  nrow = length(common_genes), ncol = 5
-))
-rownames(sim_eset) <- common_genes
-colnames(sim_eset) <- paste0("Sample", 1:5)
-\donttest{
-res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
+mcp_genes <- load_data("mcp_genes")
+if (!is.null(mcp_genes)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(mcp_genes) * 3), nrow(mcp_genes), 3)
+  rownames(sim_eset) <- mcp_genes$`HUGO symbols`
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run deconvolution
+  result <- deconvo_tme(eset = sim_eset, method = "mcpcounter")
+  if (!is.null(result)) head(result)
 }
 }
 \references{

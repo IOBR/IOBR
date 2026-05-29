@@ -8,7 +8,7 @@ remove_batcheffect(
   eset1,
   eset2,
   eset3 = NULL,
-  id_type,
+  id_type = "ensembl",
   data_type = c("array", "count", "tpm"),
   cols = "normal",
   palette = "jama",
@@ -59,14 +59,18 @@ microarray/TPM data) or sva::ComBat_seq (for RNA-seq count data). Generates
 PCA plots to visualize data before and after correction.
 }
 \examples{
-eset_stad <- load_data("eset_stad")
-eset_blca <- load_data("eset_blca")
-\donttest{
-eset_corrected <- remove_batcheffect(
-  eset_stad[1:1000, 1:5], eset_blca[1:1000, 1:5],
-  id_type = "ensembl",
-  data_type = "count"
-)
+# Simulate data
+set.seed(123)
+sim_eset1 <- matrix(rnorm(100 * 5, mean = 10, sd = 2), 100, 5)
+sim_eset2 <- matrix(rnorm(100 * 5, mean = 12, sd = 2), 100, 5)
+rownames(sim_eset1) <- rownames(sim_eset2) <- paste0("Gene", 1:100)
+colnames(sim_eset1) <- paste0("S1_", 1:5)
+colnames(sim_eset2) <- paste0("S2_", 1:5)
+
+# Run batch correction
+if (requireNamespace("sva", quietly = TRUE) && requireNamespace("BiocParallel", quietly = TRUE)) {
+  eset_corrected <- remove_batcheffect(sim_eset1, sim_eset2, data_type = "tpm")
+  if (!is.null(eset_corrected)) head(eset_corrected)
 }
 }
 \references{

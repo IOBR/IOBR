@@ -24,10 +24,14 @@ transformation, and performs feature manipulation to remove problematic
 variables (e.g., genes with zero variance or missing values).
 }
 \examples{
-\donttest{
-eset_gse62254 <- load_data("eset_gse62254")
-eset2 <- scale_matrix(eset_gse62254, log2matrix = FALSE, manipulate = TRUE)
-}
+set.seed(123)
+test_matrix <- matrix(
+  rlnorm(100),
+  ncol = 5,
+  dimnames = list(paste0("Gene", 1:20), paste0("Sample", 1:5))
+)
+eset2 <- scale_matrix(test_matrix, log2matrix = FALSE, manipulate = TRUE)
+head(eset2)
 }
 \author{
 Dongqiang Zeng

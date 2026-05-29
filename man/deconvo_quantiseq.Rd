@@ -25,16 +25,18 @@ Data frame with quanTIseq cell fractions. Columns suffixed with
 quanTIseq deconvolution for RNA-seq immune cell fractions.
 }
 \examples{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-eset <- eset[1:500, 1:3]
-\donttest{
-res <- deconvo_quantiseq(
-  eset = eset, project = "stad", tumor = TRUE,
-  arrays = FALSE, scale_mrna = FALSE
-)
-head(res)
+quantiseq_data <- load_data("quantiseq_data")
+if (!is.null(quantiseq_data)) {
+  set.seed(123)
+  n_sig <- nrow(quantiseq_data$TIL10_signature)
+  sim_eset <- matrix(rnorm(n_sig * 3), n_sig, 3)
+  rownames(sim_eset) <- rownames(quantiseq_data$TIL10_signature)
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run deconvolution
+  result <- deconvo_quantiseq(eset = sim_eset, project = "Example", tumor = TRUE,
+                              arrays = FALSE, scale_mrna = FALSE)
+  if (!is.null(result)) head(result)
 }
 }
 \author{

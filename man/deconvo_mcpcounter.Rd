@@ -19,13 +19,16 @@ Data frame with MCP-counter scores. Columns suffixed with
 Estimates immune cell abundances using MCP-counter.
 }
 \examples{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-eset <- eset[1:500, 1:3]
-\donttest{
-mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
-head(mcp_result)
+mcp_genes <- load_data("mcp_genes")
+if (!is.null(mcp_genes)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(mcp_genes) * 3), nrow(mcp_genes), 3)
+  rownames(sim_eset) <- mcp_genes$`HUGO symbols`
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run deconvolution
+  result <- deconvo_mcpcounter(eset = sim_eset, project = "TCGA-STAD")
+  if (!is.null(result)) head(result)
 }
 }
 \author{

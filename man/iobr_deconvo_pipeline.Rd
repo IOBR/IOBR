@@ -36,16 +36,30 @@ signature scores, and aggregates results. Designed for exploratory
 immunogenomic profiling.
 }
 \examples{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-\donttest{
-res <- iobr_deconvo_pipeline(
-  eset = eset, project = "STAD",
-  array = FALSE, tumor_type = "stad",
-  path = tempdir(), permutation = 10
-)
+lm22 <- load_data("lm22")
+cancer_genes <- load_data("cancer_type_genes")
+if (!is.null(lm22) && !is.null(cancer_genes)) {
+  set.seed(123)
+  # Create simulated data using lm22 genes to avoid deconvolution failures
+  genes <- rownames(lm22)
+  # Add xcell genes so xCell doesn't crash from insufficient genes
+  xcell <- load_data("xCell.data")
+  if (!is.null(xcell)) genes <- unique(c(genes, xcell$genes))
+  # Add cancer type genes for TIMER
+  genes <- unique(c(genes, cancer_genes[["stad"]]))
+  
+  eset <- matrix(runif(length(genes) * 2), nrow = length(genes), ncol = 2)
+  rownames(eset) <- genes
+  colnames(eset) <- paste0("Sample", 1:2)
+  
+  res <- iobr_deconvo_pipeline(
+    eset = eset, project = "TEST",
+    array = FALSE, tumor_type = "stad",
+    path = tempdir(), permutation = 2
+  )
+  if (!is.null(res)) head(res)
 }
+
 }
 \author{
 Dongqiang Zeng

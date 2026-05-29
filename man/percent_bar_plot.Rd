@@ -15,7 +15,7 @@ percent_bar_plot(
   axis_angle = 0,
   coord_flip = FALSE,
   add_Freq = TRUE,
-  Freq = NULL,
+  Freq = "Proportion",
   size_freq = 8,
   legend.size = 0.5,
   legend.size.text = 10,
@@ -67,13 +67,19 @@ Generates a bar plot visualizing the percentage distribution of a variable
 grouped by another variable.
 }
 \examples{
-\donttest{
-sig_stad <- load_data("sig_stad")
-percent_bar_plot(
-  input = sig_stad, x = "Subtype", y = "Lauren",
+# Simulate data
+set.seed(123)
+sim_data <- data.frame(
+  Subtype = sample(c("EBV", "GS", "MSI", "CIN"), 100, replace = TRUE),
+  Lauren = sample(c("Diffuse", "Intestinal", "Mixed"), 100, replace = TRUE)
+)
+
+# Create percent bar plot
+p <- percent_bar_plot(
+  input = sim_data, x = "Subtype", y = "Lauren",
   axis_angle = 60
 )
-}
+if (!is.null(p)) print(p)
 }
 \author{
 Dongqiang Zeng

@@ -21,11 +21,16 @@ Data frame with ESTIMATE scores. Columns suffixed with `_estimate`.
 Calculates stromal, immune, and ESTIMATE scores from gene expression.
 }
 \examples{
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-\donttest{
-estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+common_genes <- load_data("common_genes")
+if (!is.null(common_genes)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(common_genes) * 3), nrow(common_genes), 3)
+  rownames(sim_eset) <- common_genes$GeneSymbol
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+  
+  # Run calculation
+  result <- deconvo_estimate(sim_eset, project = "TCGA-STAD")
+  if (!is.null(result)) head(result)
 }
 }
 \author{

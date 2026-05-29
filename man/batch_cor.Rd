@@ -35,18 +35,18 @@ variables. Computes correlation coefficients, p-values, and adjusts for
 multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
-\donttest{
-# Load TCGA-STAD signature data
-sig_stad <- load_data("sig_stad")
+# Create a small example dataset
+set.seed(123)
+data_df <- as.data.frame(matrix(runif(100 * 10), 100, 10))
+colnames(data_df) <- paste0("Signature", 1:10)
 
 # Perform batch correlation
 results <- batch_cor(
-  data = sig_stad,
-  target = "CD_8_T_effector",
-  feature = colnames(sig_stad)[69:ncol(sig_stad)]
+  data = data_df,
+  target = "Signature1",
+  feature = colnames(data_df)[2:10]
 )
 head(results)
-}
 }
 \author{
 Dongqiang Zeng

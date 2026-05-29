@@ -54,19 +54,21 @@ The function performs the following operations:
 }
 }
 \examples{
-\donttest{
-# Annotate Affymetrix microarray data
-eset_gse62254 <- load_data("eset_gse62254")
-anno_hug133plus2 <- load_data("anno_hug133plus2")
-eset <- anno_eset(eset = eset_gse62254, annotation = anno_hug133plus2)
-head(eset)
+# Create a small example expression matrix
+eset_mat <- matrix(runif(100), nrow = 10, ncol = 10)
+rownames(eset_mat) <- paste0("Probe", 1:10)
+colnames(eset_mat) <- paste0("Sample", 1:10)
 
-# Annotate RNA-seq data with Ensembl IDs
-eset_stad <- load_data("eset_stad")
-anno_grch38 <- load_data("anno_grch38")
-eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-head(eset)
-}
+# Create a matching annotation data frame
+anno_df <- data.frame(
+  probe_id = paste0("Probe", 1:10),
+  symbol = c("Gene1", "Gene1", "Gene2", "Gene3", "Gene4",
+             "Gene5", "Gene6", "Gene7", "Gene8", "Gene9")
+)
+
+# Annotate
+result <- anno_eset(eset = eset_mat, annotation = anno_df)
+head(result)
 }
 \author{
 Dongqiang Zeng

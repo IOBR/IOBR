@@ -57,14 +57,28 @@ ID types and can retrieve gene length information from BioMart or use local
 datasets.
 }
 \examples{
-\donttest{
-# Load TCGA count data
-eset_stad <- load_data("eset_stad")
-
+# Simulated count data
+set.seed(123)
+count_matrix <- matrix(
+  rpois(100, lambda = 10),
+  ncol = 5,
+  dimnames = list(
+    paste0("ENSG00000", 101:120),
+    paste0("Sample", 1:5)
+  )
+)
+# Simulated effective length data
+eff_len <- data.frame(
+  id = paste0("ENSG00000", 101:120),
+  symbol = paste0("Gene", 1:20),
+  eff_length = runif(20, 500, 5000)
+)
 # Transform to TPM using local gene annotation
-eset <- count2tpm(countMat = eset_stad, source = "local", idType = "ensembl")
+eset <- count2tpm(
+  countMat = count_matrix, effLength = eff_len,
+  id = "id", length = "eff_length", gene_symbol = "symbol"
+)
 head(eset)
-}
 }
 \author{
 Wubing Zhang, Dongqiang Zeng, Yiran Fang

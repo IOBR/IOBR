@@ -46,20 +46,23 @@ target variable while controlling for an interference (confounding) variable.
 Adjusts p-values for multiple testing using the Benjamini-Hochberg method.
 }
 \examples{
-\donttest{
-# Load TCGA-STAD signature data
-sig_stad <- load_data("sig_stad")
-
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  TumorPurity = runif(100),
+  TargetVar = rnorm(100),
+  Signature1 = rnorm(100),
+  Signature2 = rnorm(100)
+)
 # Calculate partial correlations controlling for tumor purity
 res <- batch_pcc(
-  input = sig_stad,
-  interferenceid = "TumorPurity_estimate",
-  target = "Pan_F_TBRs",
+  input = test_data,
+  interferenceid = "TumorPurity",
+  target = "TargetVar",
   method = "pearson",
-  features = colnames(sig_stad)[70:ncol(sig_stad)]
+  features = c("Signature1", "Signature2")
 )
 head(res)
-}
 }
 \author{
 Rongfang Shen

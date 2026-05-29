@@ -9,7 +9,7 @@ find_variable_genes(
   data_type = c("count", "normalized"),
   methods = c("low", "mad"),
   prop = 0.7,
-  quantile = c(0.75, 0.5, 0.25),
+  quantile = 0.75,
   min.mad = 0.1,
   feas = NULL
 )
@@ -44,15 +44,20 @@ selection criteria. Supports multiple methods, including expression
 thresholding and variability estimation via median absolute deviation (MAD).
 }
 \examples{
-\donttest{
-eset_tme_stad <- load_data("eset_tme_stad")
-eset <- find_variable_genes(
-  eset = eset_tme_stad,
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(rnorm(100 * 20), 100, 20)
+rownames(sim_eset) <- paste0("Gene", 1:100)
+colnames(sim_eset) <- paste0("Sample", 1:20)
+
+# Identify variable genes
+eset_var <- find_variable_genes(
+  eset = sim_eset,
   data_type = "normalized",
   methods = "mad",
   quantile = 0.25
 )
-}
+head(eset_var)
 }
 \author{
 Dongqiang Zeng

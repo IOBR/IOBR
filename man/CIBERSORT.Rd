@@ -64,23 +64,26 @@ An analytical tool to estimate cell type abundances in mixed cell populations
 using gene expression data.
 }
 \examples{
-\donttest{
-lm22 <- load_data("lm22")
-common_genes <- rownames(lm22)[1:500]
+# Simulate data
+set.seed(123)
+sim_sig <- matrix(rnorm(100 * 5), 100, 5)
+rownames(sim_sig) <- paste0("Gene", 1:100)
+colnames(sim_sig) <- paste0("Cell", 1:5)
+
 sim_mixture <- as.data.frame(matrix(
-  rnorm(length(common_genes) * 10, mean = 5, sd = 2),
-  nrow = length(common_genes), ncol = 10
+  rnorm(100 * 3), 100, 3
 ))
-rownames(sim_mixture) <- common_genes
-colnames(sim_mixture) <- paste0("Sample", 1:10)
+rownames(sim_mixture) <- paste0("Gene", 1:100)
+colnames(sim_mixture) <- paste0("Sample", 1:3)
+
+# Run deconvolution
 result <- CIBERSORT(
-  sig_matrix = lm22,
+  sig_matrix = sim_sig,
   mixture_file = sim_mixture,
   perm = 10, QN = FALSE, absolute = FALSE,
   parallel = FALSE
 )
-head(result)
-}
+if (!is.null(result)) head(result)
 }
 \author{
 Aaron M. Newman, Stanford University (amnewman@stanford.edu)

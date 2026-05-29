@@ -66,13 +66,18 @@ Generates Receiver Operating Characteristic (ROC) curves for multiple
 predictors and optionally performs statistical comparisons between them.
 }
 \examples{
-\donttest{
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  OS_status = sample(c(0, 1), 100, replace = TRUE),
+  TMEscore_plus = rnorm(100),
+  GZMB = rnorm(100),
+  GNLY = rnorm(100)
+)
 sig_roc(
-  data = tcga_stad_pdata, response = "OS_status",
+  data = test_data, response = "OS_status",
   variables = c("TMEscore_plus", "GZMB", "GNLY")
 )
-}
 }
 \author{
 Dongqiang Zeng

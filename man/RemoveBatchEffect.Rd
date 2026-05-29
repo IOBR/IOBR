@@ -45,9 +45,9 @@ immune.exp <- matrix(runif(500, 1, 1000),
 
 immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 names(immune.cellType) <- sample_names_immune
-\donttest{
+
 result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
-}
+if (!is.null(result)) str(result)
 }
 \author{
 Bo Li

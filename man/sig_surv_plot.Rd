@@ -69,15 +69,20 @@ automatic cutoff determination. Generates three types of plots: optimal
 cutoff (best cutoff), tertile-based (3 groups), and median split (2 groups).
 }
 \examples{
-\donttest{
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  time = runif(100, 0, 100),
+  OS_status = sample(c(0, 1), 100, replace = TRUE),
+  TMEscore_plus = rnorm(100),
+  ID = paste0("S", 1:100)
+)
 sig_surv_plot(
-  input_pdata = tcga_stad_pdata,
+  input_pdata = test_data,
   signature = "TMEscore_plus",
   time = "time",
   status = "OS_status"
 )
-}
 }
 \author{
 Dongqiang Zeng

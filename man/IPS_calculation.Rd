@@ -4,14 +4,14 @@
 \alias{IPS_calculation}
 \title{Calculate Immunophenoscore (IPS)}
 \usage{
-IPS_calculation(project = NULL, eset, plot = FALSE)
+IPS_calculation(eset, project = NULL, plot = FALSE)
 }
 \arguments{
-\item{project}{Character string for project identifier. Default is NULL.}
-
 \item{eset}{Gene expression matrix with official human gene symbols (HGNC)
 as rownames. Expression values should be log2(TPM+1) or will be transformed
 if max value > 100.}
+
+\item{project}{Character string for project identifier. Default is NULL.}
 
 \item{plot}{Logical. Whether to generate immunophenogram plots. Default is FALSE.}
 }
@@ -44,6 +44,9 @@ sim_eset <- as.data.frame(matrix(
 ))
 rownames(sim_eset) <- example_genes
 colnames(sim_eset) <- paste0("Sample", 1:10)
+
+# Run IPS calculation (may return NULL if no internet for internal data)
 ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
-head(ips_result)
+if (!is.null(ips_result)) head(ips_result)
+
 }

@@ -48,11 +48,19 @@ A ggplot object.
 Generates a pie chart or donut chart from input data.
 }
 \examples{
-\donttest{
-sig_stad <- load_data("sig_stad")
-pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
-pie_chart(input = sig_stad, var = "Subtype", type = 2)
-}
+# Simulate data
+set.seed(123)
+sim_data <- data.frame(
+  Subtype = sample(c("EBV", "GS", "MSI", "CIN"), 100, replace = TRUE)
+)
+
+# Create pie chart
+p1 <- pie_chart(input = sim_data, var = "Subtype", palette = "jama")
+if (!is.null(p1)) print(p1)
+
+# Create donut chart
+p2 <- pie_chart(input = sim_data, var = "Subtype", type = 2)
+if (!is.null(p2)) print(p2)
 }
 \author{
 Dongqiang Zeng

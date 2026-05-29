@@ -49,6 +49,8 @@ tme_deconvolution_methods <- c(
 
 # Helper: Add project ID and format result
 .format_deconv_result <- function(res, project, suffix) {
+  if (is.null(res) || ncol(res) == 0 || nrow(res) == 0) return(NULL)
+
   colnames(res) <- gsub("\\.", "_", colnames(res))
   colnames(res) <- gsub(" ", "_", colnames(res))
   colnames(res) <- paste0(colnames(res), "_", suffix)
@@ -82,14 +84,19 @@ tme_deconvolution_methods <- c(
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' xcell_result <- deconvo_xcell(eset = eset[, 1:3], project = "TCGA-STAD")
-#' head(xcell_result)[, 1:5]
+#' xcell <- load_data("xCell.data")
+#' if (!is.null(xcell)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(length(xcell$genes) * 3), length(xcell$genes), 3)
+#'   rownames(sim_eset) <- xcell$genes
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_xcell(eset = sim_eset, project = "TCGA-STAD")
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running xCell deconvolution")
 
   # Validate row names
@@ -130,6 +137,7 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
   # Run xCell
   rnaseq <- !arrays
   res <- xCellAnalysis(eset, rnaseq = rnaseq)
+  if (is.null(res)) return(NULL)
   res <- as.data.frame(t(res))
 
   .format_deconv_result(res, project, "xCell")
@@ -150,19 +158,25 @@ deconvo_xcell <- function(eset, project = NULL, arrays = FALSE) {
 #' @export
 #'
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:3]
-#' \donttest{
-#' mcp_result <- deconvo_mcpcounter(eset = eset, project = "TCGA-STAD")
-#' head(mcp_result)
+#' mcp_genes <- load_data("mcp_genes")
+#' if (!is.null(mcp_genes)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(mcp_genes) * 3), nrow(mcp_genes), 3)
+#'   rownames(sim_eset) <- mcp_genes$`HUGO symbols`
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_mcpcounter(eset = sim_eset, project = "TCGA-STAD")
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_mcpcounter <- function(eset, project = NULL) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running MCP-counter deconvolution")
 
   mcp_genes <- load_data("mcp_genes")
+  if (is.null(mcp_genes)) return(NULL)
   mcp_probesets <- load_data("mcp_probesets")
+  if (is.null(mcp_probesets)) return(NULL)
 
   res <- MCPcounter.estimate(
     eset,
@@ -191,15 +205,19 @@ deconvo_mcpcounter <- function(eset, project = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:5]
-#' epic_result <- deconvo_epic(eset = eset, project = "Example", tumor = TRUE)
-#' head(epic_result)
+#' TRef <- load_data("TRef")
+#' if (!is.null(TRef)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(TRef$refProfiles) * 3), nrow(TRef$refProfiles), 3)
+#'   rownames(sim_eset) <- rownames(TRef$refProfiles)
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_epic(eset = sim_eset, project = "Example", tumor = TRUE)
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running EPIC deconvolution")
 
   ref <- if (tumor) "TRef" else "BRef"
@@ -210,6 +228,7 @@ deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
     mRNA_cell = NULL,
     scaleExprs = TRUE
   )
+  if (is.null(out)) return(NULL)
   res <- as.data.frame(out$cellFractions)
 
   .format_deconv_result(res, project, "EPIC")
@@ -238,14 +257,20 @@ deconvo_epic <- function(eset, project = NULL, tumor = TRUE) {
 #' @export
 #'
 #' @examples
-#' eset_tme_stad <- load_data("eset_tme_stad")
 #' lm22 <- load_data("lm22")
-#' \donttest{
-#' cibersort_result <- deconvo_cibersort(
-#'   eset = eset_tme_stad,
-#'   project = "TCGA-STAD",
-#'   perm = 100
-#' )
+#' if (!is.null(lm22)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(lm22) * 3), nrow(lm22), 3)
+#'   rownames(sim_eset) <- rownames(lm22)
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'
+#'   # Run deconvolution
+#'   result <- deconvo_cibersort(
+#'     eset = sim_eset,
+#'     project = "TCGA-STAD",
+#'     perm = 10
+#'   )
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_cibersort <- function(eset,
                               project = NULL,
@@ -256,6 +281,7 @@ deconvo_cibersort <- function(eset,
                               parallel = FALSE,
                               num_cores = 2,
                               seed = NULL) {
+  if (is.null(eset)) return(NULL)
   mode_label <- if (absolute) "CIBERSORT (absolute mode)" else "CIBERSORT"
   cli::cli_alert_info("Running {mode_label}")
 
@@ -263,6 +289,7 @@ deconvo_cibersort <- function(eset,
   quantile_norm <- arrays # Disable for RNA-seq
 
   sig_matrix <- load_data("lm22")
+  if (is.null(sig_matrix)) return(NULL)
 
   res <- CIBERSORT(
     sig_matrix = sig_matrix,
@@ -275,6 +302,7 @@ deconvo_cibersort <- function(eset,
     num_cores = num_cores,
     seed = seed
   )
+  if (is.null(res)) return(NULL)
 
   .format_deconv_result(as.data.frame(res), project, "CIBERSORT")
 }
@@ -294,16 +322,23 @@ deconvo_cibersort <- function(eset,
 #' @export
 #'
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' \donttest{
-#' ips_result <- deconvo_ips(eset = eset, project = "TCGA-STAD")
+#' ips_genes <- load_data("ips_gene_set")
+#' if (!is.null(ips_genes)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(ips_genes) * 3), nrow(ips_genes), 3)
+#'   rownames(sim_eset) <- ips_genes$GENE
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run calculation
+#'   result <- deconvo_ips(eset = sim_eset, project = "Example")
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running IPS calculation")
 
   res <- IPS_calculation(project = project, eset = eset, plot = plot)
+  if (is.null(res)) return(NULL)
 
   .format_deconv_result(res, project, "IPS")
 }
@@ -324,13 +359,19 @@ deconvo_ips <- function(eset, project = NULL, plot = FALSE) {
 #' @export
 #'
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' \donttest{
-#' estimate_result <- deconvo_estimate(eset, project = "TCGA-STAD")
+#' common_genes <- load_data("common_genes")
+#' if (!is.null(common_genes)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(common_genes) * 3), nrow(common_genes), 3)
+#'   rownames(sim_eset) <- common_genes$GeneSymbol
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run calculation
+#'   result <- deconvo_estimate(sim_eset, project = "TCGA-STAD")
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running ESTIMATE")
 
   # Save original sample IDs for later restoration
@@ -351,22 +392,27 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
   score_file <- tempfile(pattern = "estimate_", fileext = ".gct")
   on.exit(unlink(c(gct_file, score_file)), add = TRUE)
 
-  filterCommonGenes(
+  filter_res <- filterCommonGenes(
     input.f = sampleData,
     output.f = gct_file,
     id = "GeneSymbol"
   )
+  if (isFALSE(filter_res)) return(NULL)
 
-  estimateScore(
+  score_res <- estimateScore(
     input.ds = gct_file,
     output.ds = score_file,
     platform = platform
   )
+  if (isFALSE(score_res)) return(NULL)
 
-  scores <- utils::read.table(score_file,
+  if (!file.exists(score_file)) return(NULL)
+  scores <- tryCatch(utils::read.table(score_file,
     skip = 2, header = TRUE,
     stringsAsFactors = FALSE
-  )
+  ), error = function(e) NULL)
+  if (is.null(scores)) return(NULL)
+  
   rownames(scores) <- scores[, 1]
   scores <- t(scores[, 3:ncol(scores), drop = FALSE])
 
@@ -397,17 +443,19 @@ deconvo_estimate <- function(eset, project = NULL, platform = "affymetrix") {
 #' @export
 #'
 #' @examples
-#' lm22 <- load_data("lm22")
-#' common_genes <- rownames(lm22)[1:500]
-#' sim_eset <- as.data.frame(matrix(
-#'   rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-#'   nrow = length(common_genes), ncol = 5
-#' ))
-#' rownames(sim_eset) <- common_genes
-#' colnames(sim_eset) <- paste0("Sample", 1:5)
-#' \donttest{
-#' deconvo_ref(eset = sim_eset, reference = lm22, method = "lsei")
-#' }
+#' # Simulate data
+#' set.seed(123)
+#' sim_ref <- matrix(rnorm(100 * 5), 100, 5)
+#' rownames(sim_ref) <- paste0("Gene", 1:100)
+#' colnames(sim_ref) <- paste0("CellType", 1:5)
+#'
+#' sim_eset <- matrix(rnorm(100 * 3), 100, 3)
+#' rownames(sim_eset) <- paste0("Gene", 1:100)
+#' colnames(sim_eset) <- paste0("Sample", 1:3)
+#'
+#' # Run deconvolution
+#' result <- deconvo_ref(eset = sim_eset, reference = sim_ref, method = "lsei")
+#' if (!is.null(result)) head(result)
 deconvo_ref <- function(eset,
                         project = NULL,
                         arrays = TRUE,
@@ -417,6 +465,7 @@ deconvo_ref <- function(eset,
                         scale_reference = TRUE,
                         absolute.mode = FALSE,
                         abs.method = "sig.score") {
+  if (is.null(eset)) return(NULL)
   method <- rlang::arg_match(method)
   rlang::check_installed("limSolve")
 
@@ -504,17 +553,25 @@ deconvo_ref <- function(eset,
 #' @export
 #'
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' \donttest{
-#' res <- deconvo_timer(
-#'   eset = eset, project = "stad",
-#'   indications = rep("stad", ncol(eset))
-#' )
-#' head(res)
+#' immune <- load_data("immuneCuratedData")
+#' cancer_genes <- load_data("cancer_type_genes")
+#' if (!is.null(immune) && !is.null(cancer_genes)) {
+#'   set.seed(123)
+#'   # Extract a subset of genes to avoid "NA" gene names breaking read.table
+#'   genes <- unique(c(head(rownames(immune$genes), 100), cancer_genes[["stad"]]))
+#'   sim_eset <- matrix(rnorm(length(genes) * 3), length(genes), 3)
+#'   rownames(sim_eset) <- genes
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_timer(
+#'     eset = sim_eset, project = "TCGA-STAD",
+#'     indications = rep("stad", 3)
+#'   )
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_timer <- function(eset, project = NULL, indications = NULL) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running TIMER deconvolution")
 
   if (!is.null(indications)) {
@@ -547,7 +604,9 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
   }
 
   # Run TIMER
-  results <- deconvolute_timer.default(args)[, colnames(eset), drop = FALSE]
+  results <- deconvolute_timer.default(args)
+  if (is.null(results)) return(NULL)
+  results <- results[, colnames(eset), drop = FALSE]
   colnames(results) <- colnames(eset)
   results <- as.data.frame(t(results))
 
@@ -572,18 +631,21 @@ deconvo_timer <- function(eset, project = NULL, indications = NULL) {
 #' @export
 #'
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:500, 1:3]
-#' \donttest{
-#' res <- deconvo_quantiseq(
-#'   eset = eset, project = "stad", tumor = TRUE,
-#'   arrays = FALSE, scale_mrna = FALSE
-#' )
-#' head(res)
+#' quantiseq_data <- load_data("quantiseq_data")
+#' if (!is.null(quantiseq_data)) {
+#'   set.seed(123)
+#'   n_sig <- nrow(quantiseq_data$TIL10_signature)
+#'   sim_eset <- matrix(rnorm(n_sig * 3), n_sig, 3)
+#'   rownames(sim_eset) <- rownames(quantiseq_data$TIL10_signature)
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_quantiseq(eset = sim_eset, project = "Example", tumor = TRUE,
+#'                               arrays = FALSE, scale_mrna = FALSE)
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
+  if (is.null(eset)) return(NULL)
   cli::cli_alert_info("Running quanTIseq deconvolution")
 
   res <- deconvolute_quantiseq.default(
@@ -592,6 +654,7 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
     arrays = arrays,
     mRNAscale = scale_mrna
   )
+  if (is.null(res)) return(NULL)
 
   res <- tibble::column_to_rownames(tibble::as_tibble(res), var = "Sample")
 
@@ -646,16 +709,16 @@ deconvo_quantiseq <- function(eset, project = NULL, tumor, arrays, scale_mrna) {
 #' }
 #'
 #' @examples
-#' lm22 <- load_data("lm22")
-#' common_genes <- rownames(lm22)[1:500]
-#' sim_eset <- as.data.frame(matrix(
-#'   rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-#'   nrow = length(common_genes), ncol = 5
-#' ))
-#' rownames(sim_eset) <- common_genes
-#' colnames(sim_eset) <- paste0("Sample", 1:5)
-#' \donttest{
-#' res <- deconvo_tme(eset = sim_eset, method = "cibersort", perm = 10)
+#' mcp_genes <- load_data("mcp_genes")
+#' if (!is.null(mcp_genes)) {
+#'   set.seed(123)
+#'   sim_eset <- matrix(rnorm(nrow(mcp_genes) * 3), nrow(mcp_genes), 3)
+#'   rownames(sim_eset) <- mcp_genes$`HUGO symbols`
+#'   colnames(sim_eset) <- paste0("Sample", 1:3)
+#'   
+#'   # Run deconvolution
+#'   result <- deconvo_tme(eset = sim_eset, method = "mcpcounter")
+#'   if (!is.null(result)) head(result)
 #' }
 deconvo_tme <- function(eset,
                         project = NULL,
@@ -672,6 +735,7 @@ deconvo_tme <- function(eset,
                         absolute.mode = FALSE,
                         abs.method = "sig.score",
                         ...) {
+  if (is.null(eset)) return(NULL)
   method <- rlang::arg_match(method, tme_deconvolution_methods)
 
   # Validate input
@@ -723,5 +787,6 @@ deconvo_tme <- function(eset,
     )
   )
 
+  if (is.null(res)) return(NULL)
   tibble::as_tibble(res)
 }

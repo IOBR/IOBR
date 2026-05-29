@@ -77,10 +77,16 @@ on signature scores. Automatically determines optimal cutpoints for signature
 stratification and creates publication-ready survival curves.
 }
 \examples{
-\donttest{
-sig_stad <- load_data("sig_stad")
+set.seed(123)
+test_pdata <- data.frame(
+  ID = paste0("S", 1:50),
+  ProjectID = rep(c("Project1", "Project2"), each = 25),
+  OS_time = runif(50, 1, 60),
+  OS_status = sample(c(0, 1), 50, replace = TRUE),
+  T.cells.CD8 = rnorm(50)
+)
 result <- batch_sig_surv_plot(
-  input_pdata = sig_stad,
+  input_pdata = test_pdata,
   signature = "T.cells.CD8",
   id = "ID",
   column_of_project = "ProjectID",
@@ -92,10 +98,9 @@ result <- batch_sig_surv_plot(
   palette = "jama",
   cols = NULL,
   mini_sig = "score",
-  show_col = TRUE,
+  show_col = FALSE,
   fig_type = "pdf"
 )
-}
 }
 \author{
 Dongqiang Zeng

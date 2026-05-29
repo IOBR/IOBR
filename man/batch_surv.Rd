@@ -36,15 +36,20 @@ Optionally determines optimal cutoffs to dichotomize continuous predictors befor
 modeling. Returns hazard ratios, confidence intervals, and p-values for each variable.
 }
 \examples{
-\donttest{
-sig_stad <- load_data("sig_stad")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  OS_time = runif(100, 0, 100),
+  OS_status = sample(c(0, 1), 100, replace = TRUE),
+  Signature1 = rnorm(100),
+  Signature2 = rnorm(100)
+)
 batch_surv(
-  pdata = sig_stad,
-  variable = colnames(sig_stad)[69:ncol(sig_stad)],
+  pdata = test_data,
+  variable = c("Signature1", "Signature2"),
   time = "OS_time",
   status = "OS_status"
 )
-}
 }
 \author{
 Dongqiang Zeng

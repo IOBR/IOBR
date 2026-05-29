@@ -79,17 +79,25 @@ and calculates fold changes and adjusted p-values. Optionally generates
 volcano plots and heatmaps.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-stad_group <- load_data("stad_group")
-deg <- iobr_deg(
-  eset = eset_stad, pdata = stad_group,
-  group_id = "subtype", pdata_id = "ID", array = FALSE,
-  method = "DESeq2", contrast = c("EBV", "GS"),
-  path = file.path(tempdir(), "STAD")
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(abs(rnorm(100 * 20)), 100, 20)
+rownames(sim_eset) <- paste0("Gene", 1:100)
+colnames(sim_eset) <- paste0("Sample", 1:20)
+
+sim_pdata <- data.frame(
+  ID = paste0("Sample", 1:20),
+  group = rep(c("High", "Low"), each = 10)
 )
-head(deg)
-}
+
+# Run DEG analysis
+deg <- iobr_deg(
+  eset = sim_eset, pdata = sim_pdata,
+  group_id = "group", pdata_id = "ID",
+  method = "limma", contrast = c("High", "Low"),
+  heatmap = FALSE
+)
+if (!is.null(deg)) head(deg)
 }
 \author{
 Dongqiang Zeng

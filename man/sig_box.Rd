@@ -87,16 +87,19 @@ optional statistical pairwise comparisons. Supports both data frames and
 Seurat objects for single-cell data visualization.
 }
 \examples{
-\donttest{
-tcga_stad_pdata <- load_data("tcga_stad_pdata")
+# Create small example data
+set.seed(123)
+test_data <- data.frame(
+  subtype = rep(c("A", "B"), each = 50),
+  TMEscore_plus = rnorm(100)
+)
 sig_box(
-  data = tcga_stad_pdata,
+  data = test_data,
   signature = "TMEscore_plus",
   variable = "subtype",
   jitter = TRUE,
   palette = "jco"
 )
-}
 }
 \author{
 Dongqiang Zeng

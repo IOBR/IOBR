@@ -51,23 +51,27 @@ cross-validation and optionally generates time-dependent ROC curves for visual
 assessment of predictive accuracy.
 }
 \examples{
-\donttest{
 if (requireNamespace("glmnet", quietly = TRUE) &&
   requireNamespace("survival", quietly = TRUE)) {
   library(survival)
-  imvigor210_sig <- load_data("imvigor210_sig")
-  imvigor210_pdata <- load_data("imvigor210_pdata")
-  pdata_prog <- data.frame(
-    ID = imvigor210_pdata$ID,
-    OS_days = as.numeric(imvigor210_pdata$OS_days),
-    OS_status = as.numeric(imvigor210_pdata$OS_status)
+  set.seed(123)
+  # Create small example data (first column must be ID)
+  x_sim <- as.data.frame(matrix(rnorm(100 * 5), 100, 5))
+  colnames(x_sim) <- paste0("Sig", 1:5)
+  x_sim$ID <- paste0("S", 1:100)
+  x_sim <- x_sim[, c(6, 1:5)] # Move ID to first column
+
+  y_sim <- data.frame(
+    ID = paste0("S", 1:100),
+    OS_days = rexp(100, 0.01),
+    OS_status = rbinom(100, 1, 0.5)
   )
   prognostic_result <- PrognosticModel(
-    x = imvigor210_sig, y = pdata_prog,
+    x = x_sim, y = y_sim,
     scale = TRUE, seed = 123456,
-    train_ratio = 0.7, nfold = 10, plot = FALSE
+    train_ratio = 0.7, nfold = 3, plot = FALSE
   )
-}
+  if (!is.null(prognostic_result)) head(prognostic_result)
 }
 }
 \author{

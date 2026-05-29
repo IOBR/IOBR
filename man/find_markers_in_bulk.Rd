@@ -47,15 +47,22 @@ expression or signature score matrices using Seurat workflows. Performs
 feature selection, scaling, PCA, clustering, and marker discovery.
 }
 \examples{
-eset_tme_stad <- load_data("eset_tme_stad")
-colnames(eset_tme_stad) <- substring(colnames(eset_tme_stad), 1, 12)
-pdata_sig_tme <- load_data("pdata_sig_tme")
-\donttest{
-res <- find_markers_in_bulk(
-  pdata = pdata_sig_tme, eset = eset_tme_stad,
-  group = "TMEcluster"
-)
-# Extract top markers per cluster using base R
-top_markers <- res$top_markers
+if (requireNamespace("Seurat", quietly = TRUE) && requireNamespace("Matrix", quietly = TRUE)) {
+  # Simulate data
+  set.seed(123)
+  sim_eset <- matrix(abs(rnorm(100 * 30)), 100, 30)
+  rownames(sim_eset) <- paste0("Gene", 1:100)
+  colnames(sim_eset) <- paste0("Sample", 1:30)
+  
+  sim_pdata <- data.frame(
+    ID = paste0("Sample", 1:30),
+    TMEcluster = rep(c("A", "B", "C"), each = 10)
+  )
+  
+  res <- find_markers_in_bulk(
+    pdata = sim_pdata, eset = sim_eset,
+    group = "TMEcluster", npcs = 5
+  )
+  if (!is.null(res)) head(res$top_markers)
 }
 }

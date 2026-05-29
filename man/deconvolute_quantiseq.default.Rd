@@ -47,16 +47,17 @@ Deconvolutes gene expression data to estimate immune cell fractions using
 the quanTIseq method. Source code from https://github.com/FFinotello/quanTIseq.
 }
 \examples{
-\donttest{
-lm22 <- load_data("lm22")
-common_genes <- rownames(lm22)[1:500]
-tpm_matrix <- as.data.frame(matrix(
-  rnorm(length(common_genes) * 5, mean = 5, sd = 2),
-  nrow = length(common_genes), ncol = 5
-))
-rownames(tpm_matrix) <- common_genes
-colnames(tpm_matrix) <- paste0("Sample", 1:5)
-results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
+quantiseq_data <- load_data("quantiseq_data")
+if (!is.null(quantiseq_data)) {
+  common_genes <- rownames(quantiseq_data$TIL10_signature)
+  tpm_matrix <- as.data.frame(matrix(
+    abs(rnorm(length(common_genes) * 5, mean = 5, sd = 2)),
+    nrow = length(common_genes), ncol = 5
+  ))
+  rownames(tpm_matrix) <- common_genes
+  colnames(tpm_matrix) <- paste0("Sample", 1:5)
+  results <- deconvolute_quantiseq.default(mix.mat = tpm_matrix)
+  if (!is.null(results)) head(results)
 }
 }
 \references{

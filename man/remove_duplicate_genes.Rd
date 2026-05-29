@@ -35,29 +35,19 @@ genes, it retains only the highest-ranking instance (based on the specified
 method) and discards others.
 }
 \examples{
-\donttest{
-# Load and annotate expression data
-eset_stad <- load_data("eset_stad")
-anno_rnaseq <- load_data("anno_rnaseq")
-eset_stad <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-eset_stad <- tibble::rownames_to_column(as.data.frame(eset_stad), var = "id")
-
-# Create duplicate gene names for demonstration
-eset_stad[2:3, "id"] <- "MT-CO1"
-
-# Check duplicates before
-sum(duplicated(eset_stad$id))
-
-# Remove duplicates using mean expression as ranking criterion
-eset_stad <- remove_duplicate_genes(
-  eset = eset_stad,
-  column_of_symbol = "id",
+set.seed(123)
+test_eset <- data.frame(
+  symbol = c("GeneA", "GeneA", "GeneB", "GeneC"),
+  S1 = c(10, 5, 20, 15),
+  S2 = c(12, 7, 22, 17)
+)
+# Remove duplicates using mean expression
+test_eset_unique <- remove_duplicate_genes(
+  eset = test_eset,
+  column_of_symbol = "symbol",
   method = "mean"
 )
-
-# Check duplicates after
-sum(duplicated(rownames(eset_stad)))
-}
+print(test_eset_unique)
 }
 \author{
 Dongqiang Zeng

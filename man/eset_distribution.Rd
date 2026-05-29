@@ -28,12 +28,12 @@ expression values in an expression set. Useful for quality control and
 assessing data normalization.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-eset_distribution(eset_stad[1:1000, ])
-#anno_rnaseq <- load_data("anno_rnaseq")
-#eset <- anno_eset(eset = eset_stad, annotation = anno_rnaseq)
-#eset_distribution(eset)
-#eset_distribution(eset, project = file.path(tempdir(), "ESET"))
-}
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(rnorm(1000 * 10, mean = 5, sd = 2), 1000, 10)
+rownames(sim_eset) <- paste0("Gene", 1:1000)
+colnames(sim_eset) <- paste0("Sample", 1:10)
+
+# Run distribution plot
+result <- eset_distribution(sim_eset)
 }

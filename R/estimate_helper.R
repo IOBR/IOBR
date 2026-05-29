@@ -25,21 +25,33 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- as.data.frame(eset)
-#' eset <- tibble::rownames_to_column(eset, var = "symbol")
-#' input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
-#' output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
-#' writeLines(c("#1.2", paste(nrow(eset), ncol(eset) - 1, sep = "\t")), input_file)
-#' utils::write.table(
-#'   eset,
-#'   input_file,
-#'   sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
-#' )
-#' estimateScore(input.ds = input_file, output.ds = output_file, platform = "affymetrix")
+#' # Simulate data
+#' set.seed(123)
+#' si_geneset_data <- load_data("SI_geneset")
+#' if (!is.null(si_geneset_data)) {
+#'   gene_names <- unique(c(si_geneset_data[1, -1], si_geneset_data[2, -1]))
+#'   gene_names <- gene_names[!is.na(gene_names) & gene_names != ""]
+#'   gene_names <- head(gene_names, 500)
+#'   n_genes <- length(gene_names)
+#'   eset_sim <- as.data.frame(matrix(rnorm(n_genes * 3, mean = 5, sd = 1), n_genes, 3))
+#'   rownames(eset_sim) <- gene_names
+#'   colnames(eset_sim) <- c("Sample1", "Sample2", "Sample3")
+#'   eset_sim <- tibble::rownames_to_column(eset_sim, var = "symbol")
+#'
+#'   input_file <- tempfile(pattern = "estimate_", fileext = ".gct")
+#'   output_file <- tempfile(pattern = "estimate_score_", fileext = ".gct")
+#'   writeLines(c("#1.2", paste(nrow(eset_sim), ncol(eset_sim) - 1, sep = "\t")), input_file)
+#'   utils::write.table(
+#'     eset_sim,
+#'     input_file,
+#'     sep = "\t", row.names = FALSE, col.names = TRUE, append = TRUE, quote = FALSE
+#'   )
+#'   score_res <- estimateScore(
+#'     input.ds = input_file, output.ds = output_file, platform = "affymetrix"
+#'   )
+#'   if (!isFALSE(score_res) && file.exists(output_file)) {
+#'     head(read.table(output_file, skip = 2, header = TRUE, sep = "\t"))
+#'   }
 #' }
 estimateScore <- function(input.ds,
                           output.ds,
@@ -89,6 +101,7 @@ estimateScore <- function(input.ds,
 
   ## SI_geneset
   si_geneset_data <- load_data("SI_geneset")
+  if (is.null(si_geneset_data)) return(FALSE)
   gs <- as.matrix(si_geneset_data[, -1], dimnames = NULL)
   N.gs <- 2
   gs.names <- row.names(si_geneset_data)
@@ -239,6 +252,7 @@ filterCommonGenes <- function(input.f,
   )
 
   common_genes_data <- load_data("common_genes")
+  if (is.null(common_genes_data)) return(FALSE)
   merged.df <- merge(common_genes_data, input.df, by.x = id, by.y = "row.names")
   rownames(merged.df) <- merged.df$GeneSymbol
   merged.df <- merged.df[, -1:-ncol(common_genes_data)]
@@ -248,6 +262,7 @@ filterCommonGenes <- function(input.f,
     nrow(common_genes_data) - nrow(merged.df)
   ))
   outputGCT(merged.df, output.f)
+  return(TRUE)
 }
 
 

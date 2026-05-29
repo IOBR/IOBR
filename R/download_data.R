@@ -69,6 +69,35 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
     }
   }
 
+  # Check for internet connection if no local file exists
+  if (!file.exists(cache_file)) {
+    has_internet <- function() {
+      # Test both Google and Baidu, return TRUE if either works
+      # Using sequential approach to avoid fork() issues on macOS
+      urls <- c("https://www.google.com", "https://www.baidu.com")
+      for (url_str in urls) {
+        result <- tryCatch({
+          con <- url(url_str)
+          tryCatch({
+            readLines(con, n = 1)
+            TRUE
+          }, error = function(e) FALSE,
+            finally = {
+              tryCatch(close(con), error = function(e) NULL)
+            })
+        }, error = function(e) FALSE)
+        if (result) return(TRUE)
+      }
+      FALSE
+    }
+
+    if (!has_internet()) {
+      cli::cli_alert_warning("No internet connection available and dataset {.val {name}} is not in cache.")
+      cli::cli_alert_info("To comply with CRAN policies, returning {.code NULL} instead of an error.")
+      return(NULL)
+    }
+  }
+
   # Try each mirror until success
   last_error <- NULL
   for (i in seq_along(mirrors)) {
@@ -129,10 +158,8 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
     sprintf("2. Save it to: {.path %s}", file.path(cache_dir, paste0(name, ".rda"))),
     "3. Run your code again - the data will be loaded from cache"
   ))
-  stop(sprintf(
-    "Failed to download '%s' from all %d mirrors. Please download manually.",
-    name, length(mirrors)
-  ))
+  cli::cli_alert_info("To comply with CRAN policies, returning {.code NULL} instead of an error.")
+  return(NULL)
 }
 
 #' Get Default Download Mirrors

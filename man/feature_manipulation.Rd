@@ -33,15 +33,15 @@ missing values, non-numeric types, infinite values, or zero variance.
 This is useful for preparing data for downstream statistical analyses.
 }
 \examples{
-\donttest{
-eset_stad <- load_data("eset_stad")
-feas <- feature_manipulation(
-  data = eset_stad,
-  feature = rownames(eset_stad),
-  is_matrix = TRUE,
-  print_result = TRUE
+set.seed(123)
+test_data <- data.frame(
+  A = c(1, 2, 3),
+  B = c(1, 1, 1), # zero variance
+  C = c(1, NA, 3), # missing value
+  D = c("a", "b", "c") # non-numeric
 )
-}
+feas <- feature_manipulation(data = test_data, feature = colnames(test_data), print_result = TRUE)
+print(feas)
 }
 \author{
 Dongqiang Zeng

@@ -117,15 +117,15 @@ Calculates and visualizes the correlation between two variables with options
 for scaling, handling missing values, and incorporating grouping data.
 }
 \examples{
-\donttest{
-eset_tme_stad <- load_data("eset_tme_stad")
-get_cor(
-  eset = eset_tme_stad,
-  is.matrix = TRUE,
-  var1 = "GZMB",
-  var2 = "CD274"
-)
-}
+# Simulate data
+set.seed(123)
+sim_eset <- matrix(rnorm(100 * 20), 100, 20)
+rownames(sim_eset) <- c("GZMB", "CD274", paste0("Gene", 3:100))
+colnames(sim_eset) <- paste0("Sample", 1:20)
+
+# Calculate and plot correlation
+p <- get_cor(eset = sim_eset, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274", show_plot = FALSE)
+if (!is.null(p)) print(p)
 }
 \author{
 Dongqiang Zeng

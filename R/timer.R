@@ -24,6 +24,7 @@
 #' @examples
 #' timer_info("Data processing started.")
 timer_info <- function(string) {
+  if (is.null(string)) return(NULL)
   cli::cli_alert_info(string)
 }
 
@@ -91,10 +92,11 @@ timer_available_cancers <- c(
 #'
 #' immune.cellType <- c("T-cell", "B-cell", "T-cell", "NK-cell", "B-cell")
 #' names(immune.cellType) <- sample_names_immune
-#' \donttest{
+#'
 #' result <- RemoveBatchEffect(cancer.exp, immune.exp, immune.cellType)
-#' }
+#' if (!is.null(result)) str(result)
 RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
+  if (is.null(cancer.exp)) return(NULL)
   rlang::check_installed("sva")
 
   tmp.dd <- as.matrix(cancer.exp)
@@ -172,6 +174,7 @@ RemoveBatchEffect <- function(cancer.exp, immune.exp, immune.cellType) {
 #' )
 #' result <- check_cancer_types(args)
 check_cancer_types <- function(args) {
+  if (is.null(args)) return(NULL)
   if (!is.null(args$batch)) {
     timer_info("Enter batch mode")
     cancers <- as.matrix(read.table(args$batch, sep = ",", stringsAsFactors = FALSE))
@@ -216,6 +219,7 @@ check_cancer_types <- function(args) {
 #' results <- GetFractions.Abbas(XX, YY)
 #' print(results)
 GetFractions.Abbas <- function(XX, YY, w = NA) {
+  if (is.null(XX)) return(NULL)
   ss.remove <- c()
   ss.names <- colnames(XX)
 
@@ -279,6 +283,7 @@ GetFractions.Abbas <- function(XX, YY, w = NA) {
 #' processed_data <- ConvertRownameToLoci(example_data)
 #' print(processed_data)
 ConvertRownameToLoci <- function(cancerGeneExpression) {
+  if (is.null(cancerGeneExpression)) return(NULL)
   tmp <- strsplit(rownames(cancerGeneExpression), "\\|")
   tmp <- sapply(tmp, function(x) x[[1]])
   tmp.vv <- which(nchar(tmp) > 1)
@@ -314,6 +319,7 @@ ConvertRownameToLoci <- function(cancerGeneExpression) {
 #' gene_expression_data <- ParseInputExpression(tf)
 #' print(gene_expression_data)
 ParseInputExpression <- function(path) {
+  if (is.null(path)) return(NULL)
   ret <- read.delim(path, row.names = 1, check.names = FALSE)
   ret <- as.matrix(ret)
   mode(ret) <- "numeric"
@@ -345,6 +351,7 @@ ParseInputExpression <- function(path) {
 #'   name = "Comparison of Gene Expression"
 #' )
 DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
+  if (is.null(cancer.exp)) return(NULL)
   qq <- qqplot(cancer.exp, immune.exp,
     xlab = "Tumor Expression", ylab = "Ref Expression",
     main = "Sample-Sample Q-Q plot"
@@ -393,6 +400,7 @@ DrawQQPlot <- function(cancer.exp, immune.exp, name = "") {
 #' cancers <- data.frame(ExpressionFiles = c(tf1, tf2))
 #' outlier_genes <- GetOutlierGenes(cancers)
 GetOutlierGenes <- function(cancers) {
+  if (is.null(cancers)) return(NULL)
   outlier.total <- c()
 
   for (i in seq_len(nrow(cancers))) {
@@ -429,28 +437,40 @@ GetOutlierGenes <- function(cancers) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # This example requires actual expression data files
-#' # Create a batch file with paths to expression data and cancer types
-#' batch_file <- "batch.csv"
-#' # batch.csv format: each row contains expression_file_path,cancer_type
-#' # Example content:
-#' # /path/to/exp1.txt,luad
-#' # /path/to/exp2.txt,brca
-#' outdir <- tempdir()
-#' args <- list(outdir = outdir, batch = batch_file)
-#' results <- deconvolute_timer.default(args)
+#' # Simulate data
+#' set.seed(123)
+#' immune <- load_data("immuneCuratedData")
+#' cancer_genes <- load_data("cancer_type_genes")
+#' if (!is.null(immune) && !is.null(cancer_genes)) {
+#'   gene_names <- unique(c(head(rownames(immune$genes), 50), cancer_genes[["stad"]]))
+#'   sample_names <- paste0("Sample", 1:5)
+#'   n_genes <- length(gene_names)
+#'   expr <- matrix(runif(n_genes * 5, 1, 100), n_genes, 5,
+#'                  dimnames = list(gene_names, sample_names))
+#'   tf <- tempfile(fileext = ".tsv")
+#'   write.table(as.data.frame(expr), tf, sep = "\t", quote = FALSE)
+#'
+#'   batch_tf <- tempfile(fileext = ".csv")
+#'   write.table(data.frame(path = tf, type = "stad"), batch_tf, 
+#'               sep = ",", col.names = FALSE, row.names = FALSE, quote = FALSE)
+#'
+#'   args <- list(outdir = tempdir(), batch = batch_tf)
+#'   result <- deconvolute_timer.default(args)
+#'   if (!is.null(result)) head(result)
 #' }
 deconvolute_timer.default <- function(args) {
+  if (is.null(args)) return(NULL)
   cancers <- check_cancer_types(args)
 
   timer_info("Loading immune gene expression")
 
   immune <- load_data("immuneCuratedData")
+  if (is.null(immune)) return(NULL)
   immune.geneExpression <- immune$genes
   immune.cellTypes <- immune$celltypes
 
   outlier.genes <- sort(GetOutlierGenes(cancers))
+  if (is.null(outlier.genes)) return(NULL)
   cli::cli_alert_info("Outlier genes: {paste(outlier.genes, collapse = ' ')}")
 
   dir.create(args$outdir, showWarnings = FALSE, recursive = TRUE)
@@ -478,6 +498,7 @@ deconvolute_timer.default <- function(args) {
     }
 
     tmp <- RemoveBatchEffect(cancer.expression, immune.geneExpression, immune.cellTypes)
+    if (is.null(tmp)) next
     cancer.expNorm <- tmp[[1]]
     immune.expNormMedian <- tmp[[3]]
 
@@ -488,6 +509,7 @@ deconvolute_timer.default <- function(args) {
     }
 
     cancer_type_genes_data <- load_data("cancer_type_genes")
+    if (is.null(cancer_type_genes_data)) return(NULL)
     gene.selected.marker <- cancer_type_genes_data[[which(names(cancer_type_genes_data) == cancer.category)]]
     gene.selected.marker <- intersect(gene.selected.marker, row.names(cancer.expNorm))
 

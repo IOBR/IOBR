@@ -32,7 +32,15 @@ cell type proportions. This is the core computational engine of CIBERSORT,
 using nu-SVR with linear kernel to decompose mixed gene expression signals.
 }
 \examples{
+# Simulate data
+set.seed(123)
 X <- matrix(rnorm(100), nrow = 10)
+rownames(X) <- paste0("Gene", 1:10)
+colnames(X) <- paste0("Cell", 1:10)
 y <- rnorm(10)
+names(y) <- paste0("Gene", 1:10)
+
+# Run core algorithm
 result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
+if (!is.null(result)) str(result)
 }

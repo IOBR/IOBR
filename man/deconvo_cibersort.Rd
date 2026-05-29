@@ -44,14 +44,20 @@ CIBERSORT is freely available to academic users. License and binary can be
 obtained from https://cibersortx.stanford.edu.
 }
 \examples{
-eset_tme_stad <- load_data("eset_tme_stad")
 lm22 <- load_data("lm22")
-\donttest{
-cibersort_result <- deconvo_cibersort(
-  eset = eset_tme_stad,
-  project = "TCGA-STAD",
-  perm = 100
-)
+if (!is.null(lm22)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(lm22) * 3), nrow(lm22), 3)
+  rownames(sim_eset) <- rownames(lm22)
+  colnames(sim_eset) <- paste0("Sample", 1:3)
+
+  # Run deconvolution
+  result <- deconvo_cibersort(
+    eset = sim_eset,
+    project = "TCGA-STAD",
+    perm = 10
+  )
+  if (!is.null(result)) head(result)
 }
 }
 \author{
