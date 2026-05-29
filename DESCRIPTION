@@ -1,6 +1,6 @@
 Package: IOBR
 Title: Immune Oncology Biological Research
-Version: 2.2.2.9000
+Version: 2.2.3
 Authors@R: c(
     person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
     person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
@@ -101,6 +101,13 @@ Suggests:
     WGCNA
 VignetteBuilder: 
     knitr
+Additional_repositories: 
+    https://bioconductor.org/packages/3.22/bioc,
+    https://bioconductor.org/packages/3.22/data/annotation,
+    https://bioconductor.org/packages/3.22/data/experiment,
+    https://bioconductor.org/packages/3.23/bioc,
+    https://bioconductor.org/packages/3.23/data/annotation,
+    https://bioconductor.org/packages/3.23/data/experiment
 biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
