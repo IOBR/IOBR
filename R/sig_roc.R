@@ -35,18 +35,14 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' # Create small example data
-#' set.seed(123)
-#' test_data <- data.frame(
-#'   OS_status = sample(c(0, 1), 100, replace = TRUE),
-#'   TMEscore_plus = rnorm(100),
-#'   GZMB = rnorm(100),
-#'   GNLY = rnorm(100)
-#' )
-#' sig_roc(
-#'   data = test_data, response = "OS_status",
-#'   variables = c("TMEscore_plus", "GZMB", "GNLY")
-#' )
+#' if (interactive()) {
+#'   set.seed(123)
+#'   test_data <- data.frame(
+#'     OS_status = sample(c(0, 1), 50, replace = TRUE),
+#'     TMEscore_plus = rnorm(50)
+#'   )
+#'   sig_roc(data = test_data, response = "OS_status", variables = "TMEscore_plus")
+#' }
 sig_roc <- function(data,
                     response,
                     variables,

@@ -52,15 +52,16 @@ gsva_use_new_api <- function() {
 #' # Load signature collection (stored in sysdata, no download)
 #' sig_tme <- load_data("signature_tme")
 #'
-#' # Load expression data (triggers download from GitHub)
-#' # Returns NULL if no internet connection is available
-#' eset <- load_data("eset_stad")
-#'
 #' # Load color palette (stored in sysdata, no download)
 #' colors <- load_data("palette1")
 #'
 #' # Error handling with suggestions for similar names
 #' try(load_data("sign_tme")) # Will suggest "signature_tme"
+#'
+#' if (interactive()) {
+#'   # Load expression data (triggers download from GitHub)
+#'   eset <- load_data("eset_stad")
+#' }
 load_data <- function(name) {
   # Input validation
   if (!is.character(name) || length(name) != 1 || is.na(name) || nchar(name) == 0) {

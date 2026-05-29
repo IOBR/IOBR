@@ -46,16 +46,23 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
-#' sig_box_batch(
-#'   input = tcga_stad_pdata,
-#'   vars = c("TMEscore_plus", "GZMB"),
-#'   groups = "subtype",
-#'   jitter = TRUE,
-#'   palette = "jco",
-#'   path = tempdir()
+#' # Simulate data
+#' set.seed(123)
+#' sim_pdata <- data.frame(
+#'   ID = paste0("Sample", 1:50),
+#'   subtype = sample(c("TypeA", "TypeB", "TypeC"), 50, replace = TRUE),
+#'   TMEscore_plus = rnorm(50),
+#'   GZMB = rnorm(50)
 #' )
+#' if (interactive()) {
+#'   sig_box_batch(
+#'     input = sim_pdata,
+#'     vars = c("TMEscore_plus", "GZMB"),
+#'     groups = "subtype",
+#'     jitter = TRUE,
+#'     palette = "jco",
+#'     path = tempdir()
+#'   )
 #' }
 sig_box_batch <- function(input,
                           vars,

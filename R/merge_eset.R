@@ -16,11 +16,8 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' # Load example data
-#' eset_stad <- load_data("eset_stad")
-#'
 #' # Create mock expression sets with common genes
+#' set.seed(123)
 #' common_genes <- c("TP53", "BRCA1", "EGFR", "MYC")
 #' eset1 <- matrix(rnorm(12),
 #'   nrow = 4,
@@ -30,11 +27,9 @@
 #'   nrow = 4,
 #'   dimnames = list(common_genes, paste0("S", 4:7))
 #' )
-#'
 #' # Merge two expression sets
 #' merged_eset <- merge_eset(eset1, eset2)
 #' print(dim(merged_eset))
-#' }
 merge_eset <- function(eset1, eset2, eset3 = NULL) {
   # Input validation
   if (!is.matrix(eset1) && !is.data.frame(eset1)) {

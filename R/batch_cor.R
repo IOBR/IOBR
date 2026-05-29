@@ -152,15 +152,12 @@ batch_cor <- function(data,
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
-#' p_val <- exact_pvalue(
-#'   x = sig_stad$CD8.T.cells,
-#'   y = sig_stad$CD_8_T_effector,
-#'   method = "spearman"
-#' )
+#' # Simulate data
+#' set.seed(123)
+#' x <- rnorm(100)
+#' y <- rnorm(100)
+#' p_val <- exact_pvalue(x = x, y = y, method = "spearman")
 #' print(p_val)
-#' }
 exact_pvalue <- function(x, y, method) {
   l <- sum(!is.na(x) & !is.na(y))
 

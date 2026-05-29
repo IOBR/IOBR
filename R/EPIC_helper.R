@@ -118,22 +118,19 @@
 #' expression in the sigGenes vs predicted gene expression in the sigGenes
 #'
 #' @examples
-#' # Create simulated data
-#' melanoma_counts <- matrix(abs(rnorm(1000)), nrow = 100, ncol = 10)
-#' rownames(melanoma_counts) <- paste0("Gene", 1:100)
-#' colnames(melanoma_counts) <- paste0("Sample", 1:10)
-#'
-#' # Create a mock reference
-#' mock_ref <- list(
-#'   refProfiles = matrix(abs(rnorm(500)), nrow = 100, ncol = 5),
-#'   sigGenes = paste0("Gene", 1:50)
-#' )
-#' rownames(mock_ref$refProfiles) <- paste0("Gene", 1:100)
-#' colnames(mock_ref$refProfiles) <- c("Bcells", "CD4T", "CD8T", "NK", "Mono")
-#'
-#' # Run EPIC
-#' res1 <- EPIC(melanoma_counts, reference = mock_ref)
-#' if (!is.null(res1)) head(res1$cellFractions)
+#' if (interactive()) {
+#'   melanoma_counts <- matrix(abs(rnorm(100)), nrow = 25, ncol = 4)
+#'   rownames(melanoma_counts) <- paste0("Gene", 1:25)
+#'   colnames(melanoma_counts) <- paste0("Sample", 1:4)
+#'   mock_ref <- list(
+#'     refProfiles = matrix(abs(rnorm(100)), nrow = 25, ncol = 4),
+#'     sigGenes = paste0("Gene", 1:15)
+#'   )
+#'   rownames(mock_ref$refProfiles) <- paste0("Gene", 1:25)
+#'   colnames(mock_ref$refProfiles) <- c("Bcells", "CD4T", "CD8T", "NK")
+#'   res1 <- EPIC(melanoma_counts, reference = mock_ref)
+#'   if (!is.null(res1)) head(res1$cellFractions)
+#' }
 #'
 #' @export
 EPIC <- function(bulk, reference = NULL, mRNA_cell = NULL, mRNA_cell_sub = NULL,

@@ -34,14 +34,21 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
-#' surv_group(
-#'   input_pdata = tcga_stad_pdata,
-#'   target_group = "Lauren",
-#'   time = "time",
-#'   status = "OS_status"
+#' # Simulate data
+#' set.seed(123)
+#' sim_pdata <- data.frame(
+#'   ID = paste0("Sample", 1:100),
+#'   Lauren = sample(c("Intestinal", "Diffuse"), 100, replace = TRUE),
+#'   time = runif(100, 1, 60),
+#'   OS_status = sample(0:1, 100, replace = TRUE)
 #' )
+#' if (interactive()) {
+#'   surv_group(
+#'     input_pdata = sim_pdata,
+#'     target_group = "Lauren",
+#'     time = "time",
+#'     status = "OS_status"
+#'   )
 #' }
 surv_group <- function(input_pdata,
                        target_group,

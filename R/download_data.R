@@ -18,21 +18,8 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Download TCGA STAD signature data
-#' tcga_sig <- download_iobr_data("tcga_stad_sig")
-#'
-#' # Download with custom mirrors
-#' eset <- download_iobr_data("eset_stad",
-#'   mirrors = c(
-#'     "https://ghproxy.vip/https://github.com",
-#'     "https://gh-proxy.org/https://github.com"
-#'   )
-#' )
-#'
-#' # Use custom cache directory (use tempdir() for examples)
-#' options(IOBR.cache_dir = tempdir())
-#' data <- download_iobr_data("lm22")
+#' if (interactive()) {
+#'   tcga_sig <- download_iobr_data("tcga_stad_sig")
 #' }
 download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
                                mirrors = get_default_mirrors(),
@@ -203,15 +190,8 @@ get_default_mirrors <- function() {
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Add a custom mirror to try first
-#' add_iobr_mirror("https://my-mirror.com/https://github.com")
-#'
-#' # Add mirror to try before default GitHub
-#' add_iobr_mirror("https://fast-mirror.org", position = "before_github")
-#'
-#' # Download with the new mirror
-#' data <- download_iobr_data("BRef")
+#' if (interactive()) {
+#'   add_iobr_mirror("https://my-mirror.com/https://github.com")
 #' }
 add_iobr_mirror <- function(url, position = c("first", "last", "before_github")) {
   position <- match.arg(position)

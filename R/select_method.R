@@ -15,19 +15,20 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' hallmark <- load_data("hallmark")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' eset <- eset[1:5000, 1:10]
-#' res <- calculate_sig_score(
-#'   eset = eset,
-#'   signature = hallmark[1:4],
-#'   method = "integration"
+#' # Simulate data with multiple method columns
+#' set.seed(123)
+#' sim_res <- data.frame(
+#'   ID = paste0("Sample", 1:10),
+#'   Sig1_PCA = rnorm(10),
+#'   Sig1_ssGSEA = rnorm(10),
+#'   Sig1_zscore = rnorm(10),
+#'   Sig2_PCA = rnorm(10),
+#'   Sig2_ssGSEA = rnorm(10),
+#'   Sig2_zscore = rnorm(10)
 #' )
-#' select_method(res, method = "PCA")
-#' }
+#' # Select PCA method columns only
+#' pca_res <- select_method(sim_res, method = "PCA")
+#' print(colnames(pca_res))
 select_method <- function(data, method = c("ssGSEA", "PCA", "zscore")) {
   method <- tolower(rlang::arg_match(method))
 

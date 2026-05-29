@@ -16,14 +16,18 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' signature_collection <- load_data("signature_collection")
+#' # Simulate signatures
+#' set.seed(123)
+#' sim_sigs <- list(
+#'   Signature1 = paste0("Gene", 1:50),
+#'   Signature2 = paste0("Gene", 51:100),
+#'   Signature3 = paste0("Gene", 101:150)
+#' )
 #' tmpfile <- tempfile(fileext = ".csv")
 #' output_sig(
-#'   signatures = signature_collection, format = "csv",
+#'   signatures = sim_sigs, format = "csv",
 #'   file.name = tools::file_path_sans_ext(tmpfile)
 #' )
-#' }
 output_sig <- function(signatures, format = c("csv", "rdata"), file.name) {
   format <- rlang::arg_match(format)
 

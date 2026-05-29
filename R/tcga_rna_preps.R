@@ -21,13 +21,23 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' eset <- tcga_rna_preps(
-#'   eset = eset_stad, id_type = "ensembl", input_type = "count",
-#'   output = "tumor", output_type = "tpm", annotation = TRUE
+#' # Simulate TCGA-style data with Ensembl IDs
+#' set.seed(123)
+#' sim_eset <- matrix(
+#'   abs(rnorm(500)),
+#'   nrow = 100,
+#'   ncol = 5,
+#'   dimnames = list(
+#'     paste0("ENSG00000", 101:200),
+#'     paste0("TCGA-AB-123", 4:8, "-01A")
+#'   )
 #' )
-#' }
+#' # Process tumor samples only (output as count for offline testing)
+#' eset <- tcga_rna_preps(
+#'   eset = sim_eset, id_type = "ensembl", input_type = "count",
+#'   output = "tumor", output_type = "count", annotation = FALSE
+#' )
+#' print(dim(eset))
 tcga_rna_preps <- function(eset,
                            id_type = c("ensembl", "symbol"),
                            input_type = c("log2count", "count"),

@@ -35,20 +35,7 @@ Data is cached locally after first download. Cache directory can be
 customized via `options(IOBR.cache_dir = "your/path")`.
 }
 \examples{
-\donttest{
-# Download TCGA STAD signature data
-tcga_sig <- download_iobr_data("tcga_stad_sig")
-
-# Download with custom mirrors
-eset <- download_iobr_data("eset_stad",
-  mirrors = c(
-    "https://ghproxy.vip/https://github.com",
-    "https://gh-proxy.org/https://github.com"
-  )
-)
-
-# Use custom cache directory (use tempdir() for examples)
-options(IOBR.cache_dir = tempdir())
-data <- download_iobr_data("lm22")
+if (interactive()) {
+  tcga_sig <- download_iobr_data("tcga_stad_sig")
 }
 }

@@ -44,30 +44,26 @@
 #' @import survival
 #'
 #' @examples
-#' set.seed(123)
-#' test_pdata <- data.frame(
-#'   ID = paste0("S", 1:50),
-#'   ProjectID = rep(c("Project1", "Project2"), each = 25),
-#'   OS_time = runif(50, 1, 60),
-#'   OS_status = sample(c(0, 1), 50, replace = TRUE),
-#'   T.cells.CD8 = rnorm(50)
-#' )
-#' result <- batch_sig_surv_plot(
-#'   input_pdata = test_pdata,
-#'   signature = "T.cells.CD8",
-#'   id = "ID",
-#'   column_of_project = "ProjectID",
-#'   project = NULL,
-#'   time = "OS_time",
-#'   status = "OS_status",
-#'   time_type = "month",
-#'   break_month = "auto",
-#'   palette = "jama",
-#'   cols = NULL,
-#'   mini_sig = "score",
-#'   show_col = FALSE,
-#'   fig_type = "pdf"
-#' )
+#' if (interactive()) {
+#'   set.seed(123)
+#'   test_pdata <- data.frame(
+#'     ID = paste0("S", 1:30),
+#'     ProjectID = rep(c("Project1", "Project2"), each = 15),
+#'     OS_time = runif(30, 1, 60),
+#'     OS_status = sample(c(0, 1), 30, replace = TRUE),
+#'     T.cells.CD8 = rnorm(30)
+#'   )
+#'   result <- batch_sig_surv_plot(
+#'     input_pdata = test_pdata,
+#'     signature = "T.cells.CD8",
+#'     id = "ID",
+#'     column_of_project = "ProjectID",
+#'     project = NULL,
+#'     time = "OS_time",
+#'     status = "OS_status",
+#'     time_type = "month"
+#'   )
+#' }
 batch_sig_surv_plot <- function(
   input_pdata,
   signature,

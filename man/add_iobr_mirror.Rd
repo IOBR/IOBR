@@ -22,14 +22,7 @@ be treated as a GitHub proxy and the relative path to IOBR releases will
 be appended. Otherwise, it will be treated as a direct repository path.
 }
 \examples{
-\donttest{
-# Add a custom mirror to try first
-add_iobr_mirror("https://my-mirror.com/https://github.com")
-
-# Add mirror to try before default GitHub
-add_iobr_mirror("https://fast-mirror.org", position = "before_github")
-
-# Download with the new mirror
-data <- download_iobr_data("BRef")
+if (interactive()) {
+  add_iobr_mirror("https://my-mirror.com/https://github.com")
 }
 }

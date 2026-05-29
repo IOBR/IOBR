@@ -23,15 +23,14 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' # Create example mouse expression data
-#' set.seed(123)
-#' data <- matrix(runif(100 * 5), nrow = 100, ncol = 5)
-#' rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:100))
-#' colnames(data) <- paste0("Sample", 1:5)
-#'
-#' # Convert using local database (may return NULL if no internet for internal data)
-#' human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
-#' if (!is.null(human_data)) head(human_data)
+#' if (interactive()) {
+#'   set.seed(123)
+#'   data <- matrix(runif(50 * 3), nrow = 50, ncol = 3)
+#'   rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:50))
+#'   colnames(data) <- paste0("Sample", 1:3)
+#'   human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+#'   if (!is.null(human_data)) head(human_data)
+#' }
 mouse2human_eset <- function(eset,
                              source = c("local", "ensembl"),
                              is_matrix = TRUE,
