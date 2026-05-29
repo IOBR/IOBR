@@ -21,16 +21,16 @@ Data frame with EPIC cell fraction estimates. Columns suffixed with
 Estimates immune cell fractions using EPIC algorithm.
 }
 \examples{
-if (interactive()) {
-  TRef <- load_data("TRef")
-  if (!is.null(TRef)) {
-    set.seed(123)
-    sim_eset <- matrix(rnorm(nrow(TRef$refProfiles) * 2), nrow(TRef$refProfiles), 2)
-    rownames(sim_eset) <- rownames(TRef$refProfiles)
-    colnames(sim_eset) <- paste0("Sample", 1:2)
-    result <- deconvo_epic(eset = sim_eset, project = "Example", tumor = TRUE)
-    if (!is.null(result)) head(result)
-  }
+\dontrun{
+TRef <- load_data("TRef")
+if (!is.null(TRef)) {
+  set.seed(123)
+  sim_eset <- matrix(rnorm(nrow(TRef$refProfiles) * 2), nrow(TRef$refProfiles), 2)
+  rownames(sim_eset) <- rownames(TRef$refProfiles)
+  colnames(sim_eset) <- paste0("Sample", 1:2)
+  result <- deconvo_epic(eset = sim_eset, project = "Example", tumor = TRUE)
+  if (!is.null(result)) head(result)
+}
 }
 }
 \author{

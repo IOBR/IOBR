@@ -21,21 +21,19 @@ Data frame with TIMER cell fractions. Columns suffixed with `_TIMER`.
 TIMER deconvolution for cancer-specific immune estimation.
 }
 \examples{
-if (interactive()) {
-  immune <- load_data("immuneCuratedData")
-  cancer_genes <- load_data("cancer_type_genes")
-  if (!is.null(immune) && !is.null(cancer_genes)) {
-    set.seed(123)
-    genes <- unique(c(head(rownames(immune$genes), 100), cancer_genes[["stad"]]))
-    sim_eset <- matrix(rnorm(length(genes) * 2), length(genes), 2)
-    rownames(sim_eset) <- genes
-    colnames(sim_eset) <- paste0("Sample", 1:2)
-    result <- deconvo_timer(
-      eset = sim_eset, project = "TCGA-STAD",
-      indications = rep("stad", 2)
-    )
-    if (!is.null(result)) head(result)
-  }
+\dontrun{
+immune <- load_data("immuneCuratedData")
+cancer_genes <- load_data("cancer_type_genes")
+if (!is.null(immune) && !is.null(cancer_genes)) {
+  set.seed(123)
+  genes <- unique(c(head(rownames(immune$genes), 100), cancer_genes[["stad"]]))
+  sim_eset <- matrix(rnorm(length(genes) * 2), length(genes), 2)
+  rownames(sim_eset) <- genes
+  colnames(sim_eset) <- paste0("Sample", 1:2)
+  result <- deconvo_timer(eset = sim_eset, project = "TCGA-STAD",
+                          indications = rep("stad", 2))
+  if (!is.null(result)) head(result)
+}
 }
 }
 \author{

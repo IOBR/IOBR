@@ -22,7 +22,7 @@ be treated as a GitHub proxy and the relative path to IOBR releases will
 be appended. Otherwise, it will be treated as a direct repository path.
 }
 \examples{
-if (interactive()) {
-  add_iobr_mirror("https://my-mirror.com/https://github.com")
+\dontrun{
+add_iobr_mirror("https://my-mirror.com/https://github.com")
 }
 }

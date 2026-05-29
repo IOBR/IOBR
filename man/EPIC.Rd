@@ -138,18 +138,16 @@ these cases differently, you can remove the duplicates before calling
 \emph{EPIC}.
 }
 \examples{
-if (interactive()) {
-  melanoma_counts <- matrix(abs(rnorm(100)), nrow = 25, ncol = 4)
-  rownames(melanoma_counts) <- paste0("Gene", 1:25)
-  colnames(melanoma_counts) <- paste0("Sample", 1:4)
-  mock_ref <- list(
-    refProfiles = matrix(abs(rnorm(100)), nrow = 25, ncol = 4),
-    sigGenes = paste0("Gene", 1:15)
-  )
-  rownames(mock_ref$refProfiles) <- paste0("Gene", 1:25)
-  colnames(mock_ref$refProfiles) <- c("Bcells", "CD4T", "CD8T", "NK")
-  res1 <- EPIC(melanoma_counts, reference = mock_ref)
-  if (!is.null(res1)) head(res1$cellFractions)
-}
+melanoma_counts <- matrix(abs(rnorm(80)), nrow = 20, ncol = 4)
+rownames(melanoma_counts) <- paste0("Gene", 1:20)
+colnames(melanoma_counts) <- paste0("Sample", 1:4)
+mock_ref <- list(
+  refProfiles = matrix(abs(rnorm(80)), nrow = 20, ncol = 4),
+  sigGenes = paste0("Gene", 1:10)
+)
+rownames(mock_ref$refProfiles) <- paste0("Gene", 1:20)
+colnames(mock_ref$refProfiles) <- c("Bcells", "CD4T", "CD8T", "NK")
+res1 <- EPIC(melanoma_counts, reference = mock_ref)
+if (!is.null(res1)) head(res1$cellFractions)
 
 }

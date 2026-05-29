@@ -16,25 +16,25 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' if (interactive()) {
-#'   lm22 <- load_data("lm22")
-#'   cancer_genes <- load_data("cancer_type_genes")
-#'   if (!is.null(lm22) && !is.null(cancer_genes)) {
-#'     set.seed(123)
-#'     genes <- rownames(lm22)
-#'     xcell <- load_data("xCell.data")
-#'     if (!is.null(xcell)) genes <- unique(c(genes, xcell$genes))
-#'     genes <- unique(c(genes, cancer_genes[["stad"]]))
-#'     eset <- matrix(runif(length(genes) * 2), nrow = length(genes), ncol = 2)
-#'     rownames(eset) <- genes
-#'     colnames(eset) <- paste0("Sample", 1:2)
-#'     res <- iobr_deconvo_pipeline(
-#'       eset = eset, project = "TEST",
-#'       array = FALSE, tumor_type = "stad",
-#'       path = tempdir(), permutation = 2
-#'     )
-#'     if (!is.null(res)) head(res)
-#'   }
+#' \dontrun{
+#' lm22 <- load_data("lm22")
+#' cancer_genes <- load_data("cancer_type_genes")
+#' if (!is.null(lm22) && !is.null(cancer_genes)) {
+#'   set.seed(123)
+#'   genes <- rownames(lm22)
+#'   xcell <- load_data("xCell.data")
+#'   if (!is.null(xcell)) genes <- unique(c(genes, xcell$genes))
+#'   genes <- unique(c(genes, cancer_genes[["stad"]]))
+#'   eset <- matrix(runif(length(genes) * 2), nrow = length(genes), ncol = 2)
+#'   rownames(eset) <- genes
+#'   colnames(eset) <- paste0("Sample", 1:2)
+#'   res <- iobr_deconvo_pipeline(
+#'     eset = eset, project = "TEST",
+#'     array = FALSE, tumor_type = "stad",
+#'     path = tempdir(), permutation = 2
+#'   )
+#'   if (!is.null(res)) head(res)
+#' }
 #' }
 #'
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL, permutation = 1000) {

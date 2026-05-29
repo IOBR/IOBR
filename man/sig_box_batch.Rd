@@ -105,16 +105,14 @@ sim_pdata <- data.frame(
   TMEscore_plus = rnorm(50),
   GZMB = rnorm(50)
 )
-if (interactive()) {
-  sig_box_batch(
-    input = sim_pdata,
-    vars = c("TMEscore_plus", "GZMB"),
-    groups = "subtype",
-    jitter = TRUE,
-    palette = "jco",
-    path = tempdir()
-  )
-}
+sig_box_batch(
+  input = sim_pdata,
+  vars = c("TMEscore_plus", "GZMB"),
+  groups = "subtype",
+  jitter = TRUE,
+  palette = "jco",
+  path = tempdir()
+)
 }
 \author{
 Dongqiang Zeng

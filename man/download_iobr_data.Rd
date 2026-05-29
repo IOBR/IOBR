@@ -35,7 +35,7 @@ Data is cached locally after first download. Cache directory can be
 customized via `options(IOBR.cache_dir = "your/path")`.
 }
 \examples{
-if (interactive()) {
-  tcga_sig <- download_iobr_data("tcga_stad_sig")
+\dontrun{
+tcga_sig <- download_iobr_data("tcga_stad_sig")
 }
 }

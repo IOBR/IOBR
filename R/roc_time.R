@@ -43,11 +43,11 @@
 #'   Marker2 = rnorm(100),
 #'   Marker3 = rnorm(100)
 #' )
-#' if (interactive()) {
-#'   roc_time(
-#'     input = sim_input, vars = c("Marker1", "Marker2", "Marker3"),
-#'     time = "time", status = "status", time_point = 12, path = NULL, main = "OS"
-#'   )
+#' \dontrun{
+#' roc_time(
+#'   input = sim_input, vars = c("Marker1", "Marker2", "Marker3"),
+#'   time = "time", status = "status", time_point = 12, path = NULL, main = "OS"
+#' )
 #' }
 roc_time <- function(input, vars, time = "time", status = "status", time_point = 12,
                      time_type = "month", palette = "jama", cols = "normal",

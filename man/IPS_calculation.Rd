@@ -32,18 +32,18 @@ composite score measuring immunophenotype based on four major categories:
 MHC molecules, immunomodulators, effector cells, and suppressor cells.
 }
 \examples{
-if (interactive()) {
-  example_genes <- c(
-    "HLA-A", "HLA-B", "HLA-C", "CD274", "PDCD1", "CTLA4",
-    "CD8A", "CD8B", "GZMB", "PRF1", "FOXP3", "IL10"
-  )
-  sim_eset <- as.data.frame(matrix(
-    rnorm(length(example_genes) * 5, mean = 5, sd = 2),
-    nrow = length(example_genes), ncol = 5
-  ))
-  rownames(sim_eset) <- example_genes
-  colnames(sim_eset) <- paste0("Sample", 1:5)
-  ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
-  if (!is.null(ips_result)) head(ips_result)
+\dontrun{
+example_genes <- c(
+  "HLA-A", "HLA-B", "HLA-C", "CD274", "PDCD1", "CTLA4",
+  "CD8A", "CD8B", "GZMB", "PRF1", "FOXP3", "IL10"
+)
+sim_eset <- as.data.frame(matrix(
+  rnorm(length(example_genes) * 5, mean = 5, sd = 2),
+  nrow = length(example_genes), ncol = 5
+))
+rownames(sim_eset) <- example_genes
+colnames(sim_eset) <- paste0("Sample", 1:5)
+ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
+if (!is.null(ips_result)) head(ips_result)
 }
 }

@@ -58,9 +58,9 @@ gsva_use_new_api <- function() {
 #' # Error handling with suggestions for similar names
 #' try(load_data("sign_tme")) # Will suggest "signature_tme"
 #'
-#' if (interactive()) {
-#'   # Load expression data (triggers download from GitHub)
-#'   eset <- load_data("eset_stad")
+#' \dontrun{
+#' # Load expression data (triggers download from GitHub)
+#' eset <- load_data("eset_stad")
 #' }
 load_data <- function(name) {
   # Input validation

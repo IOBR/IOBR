@@ -18,8 +18,8 @@
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   tcga_sig <- download_iobr_data("tcga_stad_sig")
+#' \dontrun{
+#' tcga_sig <- download_iobr_data("tcga_stad_sig")
 #' }
 download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
                                mirrors = get_default_mirrors(),
@@ -190,8 +190,8 @@ get_default_mirrors <- function() {
 #' @export
 #'
 #' @examples
-#' if (interactive()) {
-#'   add_iobr_mirror("https://my-mirror.com/https://github.com")
+#' \dontrun{
+#' add_iobr_mirror("https://my-mirror.com/https://github.com")
 #' }
 add_iobr_mirror <- function(url, position = c("first", "last", "before_github")) {
   position <- match.arg(position)

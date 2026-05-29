@@ -84,13 +84,13 @@ sim_pdata <- data.frame(
   time = runif(100, 1, 60),
   OS_status = sample(0:1, 100, replace = TRUE)
 )
-if (interactive()) {
-  surv_group(
-    input_pdata = sim_pdata,
-    target_group = "Lauren",
-    time = "time",
-    status = "OS_status"
-  )
+\dontrun{
+surv_group(
+  input_pdata = sim_pdata,
+  target_group = "Lauren",
+  time = "time",
+  status = "OS_status"
+)
 }
 }
 \author{

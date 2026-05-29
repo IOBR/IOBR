@@ -38,13 +38,13 @@ Supports using either an online resource (Ensembl) or a local dataset for
 conversion.
 }
 \examples{
-if (interactive()) {
-  set.seed(123)
-  data <- matrix(runif(50 * 3), nrow = 50, ncol = 3)
-  rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:50))
-  colnames(data) <- paste0("Sample", 1:3)
-  human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
-  if (!is.null(human_data)) head(human_data)
+\dontrun{
+set.seed(123)
+data <- matrix(runif(50 * 3), nrow = 50, ncol = 3)
+rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:50))
+colnames(data) <- paste0("Sample", 1:3)
+human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+if (!is.null(human_data)) head(human_data)
 }
 }
 \author{

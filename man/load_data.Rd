@@ -35,8 +35,8 @@ colors <- load_data("palette1")
 # Error handling with suggestions for similar names
 try(load_data("sign_tme")) # Will suggest "signature_tme"
 
-if (interactive()) {
-  # Load expression data (triggers download from GitHub)
-  eset <- load_data("eset_stad")
+\dontrun{
+# Load expression data (triggers download from GitHub)
+eset <- load_data("eset_stad")
 }
 }

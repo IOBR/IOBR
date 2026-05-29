@@ -77,26 +77,19 @@ on signature scores. Automatically determines optimal cutpoints for signature
 stratification and creates publication-ready survival curves.
 }
 \examples{
-if (interactive()) {
-  set.seed(123)
-  test_pdata <- data.frame(
-    ID = paste0("S", 1:30),
-    ProjectID = rep(c("Project1", "Project2"), each = 15),
-    OS_time = runif(30, 1, 60),
-    OS_status = sample(c(0, 1), 30, replace = TRUE),
-    T.cells.CD8 = rnorm(30)
-  )
-  result <- batch_sig_surv_plot(
-    input_pdata = test_pdata,
-    signature = "T.cells.CD8",
-    id = "ID",
-    column_of_project = "ProjectID",
-    project = NULL,
-    time = "OS_time",
-    status = "OS_status",
-    time_type = "month"
-  )
-}
+set.seed(123)
+test_pdata <- data.frame(
+  ID = paste0("S", 1:30),
+  ProjectID = rep(c("P1", "P2"), each = 15),
+  OS_time = runif(30, 1, 60),
+  OS_status = sample(c(0, 1), 30, replace = TRUE),
+  Marker = rnorm(30)
+)
+result <- batch_sig_surv_plot(
+  input_pdata = test_pdata, signature = "Marker",
+  id = "ID", column_of_project = "ProjectID",
+  time = "OS_time", status = "OS_status", time_type = "month"
+)
 }
 \author{
 Dongqiang Zeng
