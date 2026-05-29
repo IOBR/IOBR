@@ -27,24 +27,22 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Sample cells from a data frame
-#' sampled_cells <- random_strata_cells(
-#'   input = cell_annotations,
+#' # Create simulated cell annotation data
+#' set.seed(123)
+#' sim_cells <- data.frame(
+#'   cell_id = paste0("Cell", 1:500),
+#'   cell_type = sample(c("T_cell", "B_cell", "NK_cell", "Macrophage"), 500, replace = TRUE)
+#' )
+#' # Sample cells with stratified random sampling
+#' sampled <- random_strata_cells(
+#'   input = sim_cells,
 #'   group = "cell_type",
-#'   proportion = 0.1,
-#'   minimum_count_include = 300,
-#'   minimum_count = 200,
-#'   maximum_count = 1000
+#'   proportion = 0.2,
+#'   minimum_count_include = 50,
+#'   minimum_count = 20,
+#'   maximum_count = 100
 #' )
-#'
-#' # Sample cells from a Seurat object
-#' sampled_cells <- random_strata_cells(
-#'   input = seurat_object,
-#'   group = "seurat_clusters",
-#'   proportion = 0.2
-#' )
-#' }
+#' if (!is.null(sampled)) head(sampled)
 random_strata_cells <- function(input,
                                 group,
                                 proportion = 0.1,

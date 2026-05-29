@@ -42,14 +42,15 @@
 #'   time = runif(100, 1, 60),
 #'   OS_status = sample(0:1, 100, replace = TRUE)
 #' )
-#' \dontrun{
-#' surv_group(
+#' # Run survival analysis (survival and survminer are imported packages)
+#' result <- surv_group(
 #'   input_pdata = sim_pdata,
 #'   target_group = "Lauren",
 #'   time = "time",
-#'   status = "OS_status"
+#'   status = "OS_status",
+#'   save_path = NULL
 #' )
-#' }
+#' if (!is.null(result)) print(result)
 surv_group <- function(input_pdata,
                        target_group,
                        ID = "ID",
