@@ -114,72 +114,24 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-set.seed(123)
-test_pdata <- data.frame(
-  ID = paste0("S", 1:50),
-  ProjectID = rep(c("Project1", "Project2"), each = 25),
-  OS_time = runif(50, 1, 60),
-  OS_status = sample(c(0, 1), 50, replace = TRUE),
-  T.cells.CD8 = rnorm(50)
-)
-result <- batch_sig_surv_plot(
-  input_pdata = test_pdata,
-  signature = "T.cells.CD8",
-  id = "ID",
-  column_of_project = "ProjectID",
-  project = NULL,
-  time = "OS_time",
-  status = "OS_status",
-  time_type = "month",
-  break_month = "auto",
-  palette = "jama",
-  cols = NULL,
-  mini_sig = "score",
-  show_col = FALSE,
-  fig_type = "pdf"
-)
-#> ℹ Processing project: "Project1"
-#> ℹ Survival follow-up time range: 3.48 to 59.66 months
-#> ℹ Best cutoff for "T.cells.CD8": 0.3
-#> ✔ Best cutoff for "T.cells.CD8": 0.304
-#> ℹ High T.cells.CD8: 8
-#> ℹ Low T.cells.CD8: 17
-#> ℹ Maximum follow-up time is 59.7 months; divided into 6 sections
-#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-#> ℹ Please use `linewidth` instead.
-#> ℹ The deprecated feature was likely used in the ggpubr package.
-#>   Please report the issue at <https://github.com/kassambara/ggpubr/issues>.
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> ℹ Processing project: "Project2"
-#> ℹ Survival follow-up time range: 2.45 to 57.82 months
-#> ℹ Best cutoff for "T.cells.CD8": -1.03
-#> ✔ Best cutoff for "T.cells.CD8": -1.026
-#> Warning: Loglik converged before variable  1 ; coefficient may be infinite. 
-#> ℹ High T.cells.CD8: 23
-#> ℹ Low T.cells.CD8: 2
-#> Warning: Loglik converged before variable  1 ; coefficient may be infinite. 
-#> ℹ Maximum follow-up time is 57.8 months; divided into 6 sections
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
+if (interactive()) {
+  set.seed(123)
+  test_pdata <- data.frame(
+    ID = paste0("S", 1:30),
+    ProjectID = rep(c("Project1", "Project2"), each = 15),
+    OS_time = runif(30, 1, 60),
+    OS_status = sample(c(0, 1), 30, replace = TRUE),
+    T.cells.CD8 = rnorm(30)
+  )
+  result <- batch_sig_surv_plot(
+    input_pdata = test_pdata,
+    signature = "T.cells.CD8",
+    id = "ID",
+    column_of_project = "ProjectID",
+    project = NULL,
+    time = "OS_time",
+    status = "OS_status",
+    time_type = "month"
+  )
+}
 ```

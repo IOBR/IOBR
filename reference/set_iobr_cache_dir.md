@@ -35,17 +35,18 @@ Invisibly returns the cache directory path.
 # \donttest{
 # Set a custom cache directory (use tempdir() for examples)
 set_iobr_cache_dir(tempdir())
-#> ✔ IOBR cache directory set to: /tmp/RtmpVQsgYA
+#> ✔ IOBR cache directory set to: /tmp/RtmpBSLnyj
 
 # Use standard system cache (persistent)
 # set_iobr_cache_dir(tools::R_user_dir("IOBR", which = "cache"))
 
 # Check the current cache directory
 get_iobr_cache_dir()
-#> [1] "/tmp/RtmpVQsgYA"
+#> [1] "/tmp/RtmpBSLnyj"
 
 # Download data will now use the custom cache
 data <- download_iobr_data("lm22")
-#> ℹ Loading cached data: "lm22"
+#> ℹ Trying mirror 1/12: <https://github.com>
+#> ✔ Download complete: "lm22"
 # }
 ```

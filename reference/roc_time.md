@@ -112,16 +112,20 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-tcga_stad_sig <- load_data("tcga_stad_sig")
-#> ℹ Loading cached data: "tcga_stad_sig"
-pdata_stad <- load_data("pdata_stad")
-input <- merge(pdata_stad, tcga_stad_sig, by = "ID")
-roc_time(
-  input = input, vars = c("Pan_F_TBRs", "CD_8_T_effector", "Immune_Checkpoint"),
-  time = "time", status = "OS_status", time_point = 12, path = NULL, main = "OS"
+# Simulate data for offline testing
+set.seed(123)
+sim_input <- data.frame(
+  ID = paste0("Sample", 1:100),
+  time = runif(100, 1, 60),
+  status = sample(0:1, 100, replace = TRUE),
+  Marker1 = rnorm(100),
+  Marker2 = rnorm(100),
+  Marker3 = rnorm(100)
 )
-#> ℹ Time range: 0.1 to 78.37
-
-# }
+if (interactive()) {
+  roc_time(
+    input = sim_input, vars = c("Marker1", "Marker2", "Marker3"),
+    time = "time", status = "status", time_point = 12, path = NULL, main = "OS"
+  )
+}
 ```

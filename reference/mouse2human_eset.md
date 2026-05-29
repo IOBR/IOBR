@@ -55,22 +55,12 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# Create example mouse expression data
-set.seed(123)
-data <- matrix(runif(100 * 5), nrow = 100, ncol = 5)
-rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:100))
-colnames(data) <- paste0("Sample", 1:5)
-
-# Convert using local database (may return NULL if no internet for internal data)
-human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "mus_human_gene_symbol"
-#> ℹ Row number of original eset: 100
-#> ✔ 3% of probes in expression set were annotated
-#> ℹ Row number after filtering duplicated gene symbol: 3
-if (!is.null(human_data)) head(human_data)
-#>         Sample1   Sample2   Sample3     Sample4   Sample5
-#> GAPDH 0.4089769 0.4886130 0.6013657 0.779065883 0.9053096
-#> HMGB1 0.7883051 0.3328235 0.9623589 0.009429905 0.1370675
-#> TPT1  0.2875775 0.5999890 0.2387260 0.784575267 0.9860543
+if (interactive()) {
+  set.seed(123)
+  data <- matrix(runif(50 * 3), nrow = 50, ncol = 3)
+  rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:50))
+  colnames(data) <- paste0("Sample", 1:3)
+  human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
+  if (!is.null(human_data)) head(human_data)
+}
 ```

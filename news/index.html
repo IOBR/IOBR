@@ -41,9 +41,14 @@
 <ul><li>
 <strong>CRAN Compliance</strong>: Fixed policy violations regarding home directory usage and internet access during checks.
 <ul><li>Default cache directory changed from <code><a href="https://rdrr.io/r/tools/userdir.html" class="external-link">tools::R_user_dir()</a></code> to a session-specific temporary directory.</li>
-<li>Added <code>\donttest{}</code> to examples triggering data downloads.</li>
+<li>Added internet connectivity check for both Google and Baidu (for Chinese users).</li>
+<li>Wrapped network-dependent examples with <code>if(interactive())</code> to ensure all examples complete within 5 seconds.</li>
 <li>Users can still opt-in to persistent caching via <code><a href="../reference/set_iobr_cache_dir.html">set_iobr_cache_dir()</a></code> or <code>options(IOBR.cache_dir = ...)</code>.</li>
 </ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-2-2-3">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-2-3"></a></h3>
+<ul><li>Fixed <code><a href="../reference/count2tpm.html">count2tpm()</a></code> to return <code>NULL</code> gracefully when annotation data is unavailable offline.</li>
 </ul></div>
 </div>
     <div class="section level2">

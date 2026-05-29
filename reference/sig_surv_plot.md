@@ -133,6 +133,10 @@ sig_surv_plot(
 #> ℹ High TMEscore_plus: 81
 #> ℹ Low TMEscore_plus: 19
 #> ℹ Maximum follow-up time is 99.4 months; divided into 6 sections
+#> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+#> ℹ Please use `linewidth` instead.
+#> ℹ The deprecated feature was likely used in the ggpubr package.
+#>   Please report the issue at <https://github.com/kassambara/ggpubr/issues>.
 #> Ignoring unknown labels:
 #> • colour : "Strata"
 #> Ignoring unknown labels:

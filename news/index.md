@@ -9,10 +9,19 @@
   - Default cache directory changed from
     [`tools::R_user_dir()`](https://rdrr.io/r/tools/userdir.html) to a
     session-specific temporary directory.
-  - Added `\donttest{}` to examples triggering data downloads.
+  - Added internet connectivity check for both Google and Baidu (for
+    Chinese users).
+  - Wrapped network-dependent examples with `if(interactive())` to
+    ensure all examples complete within 5 seconds.
   - Users can still opt-in to persistent caching via
     [`set_iobr_cache_dir()`](https://iobr.github.io/IOBR/reference/set_iobr_cache_dir.md)
     or `options(IOBR.cache_dir = ...)`.
+
+### Bug Fixes
+
+- Fixed
+  [`count2tpm()`](https://iobr.github.io/IOBR/reference/count2tpm.md) to
+  return `NULL` gracefully when annotation data is unavailable offline.
 
 ## IOBR 2.2.2
 

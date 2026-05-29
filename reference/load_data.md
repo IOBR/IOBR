@@ -36,12 +36,6 @@ exact type depends on the requested dataset.
 # Load signature collection (stored in sysdata, no download)
 sig_tme <- load_data("signature_tme")
 
-# Load expression data (triggers download from GitHub)
-# Returns NULL if no internet connection is available
-eset <- load_data("eset_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "eset_stad"
-
 # Load color palette (stored in sysdata, no download)
 colors <- load_data("palette1")
 
@@ -63,4 +57,9 @@ try(load_data("sign_tme")) # Will suggest "signature_tme"
 #>   signature_collection, signature_collection_citation, signature_metabolism,
 #>   signature_sc, signature_tme, signature_tumor, stad_group, subgroup_data,
 #>   tcga_stad_pdata, tcga_stad_sig, tcga_stad_var, xCell.data
+
+if (interactive()) {
+  # Load expression data (triggers download from GitHub)
+  eset <- load_data("eset_stad")
+}
 ```

@@ -36,12 +36,8 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-# Load example data
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
-
 # Create mock expression sets with common genes
+set.seed(123)
 common_genes <- c("TP53", "BRCA1", "EGFR", "MYC")
 eset1 <- matrix(rnorm(12),
   nrow = 4,
@@ -51,7 +47,6 @@ eset2 <- matrix(rnorm(16),
   nrow = 4,
   dimnames = list(common_genes, paste0("S", 4:7))
 )
-
 # Merge two expression sets
 merged_eset <- merge_eset(eset1, eset2)
 #> ℹ Common genes between eset1 and eset2: 4
@@ -59,5 +54,4 @@ merged_eset <- merge_eset(eset1, eset2)
 #> ✔ Final merged expression set: 4 genes x 7 samples
 print(dim(merged_eset))
 #> [1] 4 7
-# }
 ```

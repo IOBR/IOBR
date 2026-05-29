@@ -35,16 +35,11 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-sig_stad <- load_data("sig_stad")
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "sig_stad"
-p_val <- exact_pvalue(
-  x = sig_stad$CD8.T.cells,
-  y = sig_stad$CD_8_T_effector,
-  method = "spearman"
-)
+# Simulate data
+set.seed(123)
+x <- rnorm(100)
+y <- rnorm(100)
+p_val <- exact_pvalue(x = x, y = y, method = "spearman")
 print(p_val)
-#> [1] 7.285891e-48
-# }
+#> [1] 0.9692781
 ```

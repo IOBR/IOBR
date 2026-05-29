@@ -56,28 +56,31 @@ Dongqiang Zeng
 ## Examples
 
 ``` r
-# \donttest{
-eset_stad <- load_data("eset_stad")
-#> ℹ Loading cached data: "eset_stad"
+# Simulate TCGA-style data with Ensembl IDs
+set.seed(123)
+sim_eset <- matrix(
+  abs(rnorm(500)),
+  nrow = 100,
+  ncol = 5,
+  dimnames = list(
+    paste0("ENSG00000", 101:200),
+    paste0("TCGA-AB-123", 4:8, "-01A")
+  )
+)
+# Process tumor samples only (output as count for offline testing)
 eset <- tcga_rna_preps(
-  eset = eset_stad, id_type = "ensembl", input_type = "count",
-  output = "tumor", output_type = "tpm", annotation = TRUE
+  eset = sim_eset, id_type = "ensembl", input_type = "count",
+  output = "tumor", output_type = "count", annotation = FALSE
 )
 #> ℹ Sample type distribution:
 #> 
-#>    
-#> 10 
+#> 01A 
+#>   5 
 #> ℹ Adjacent normal samples removed
 #> ℹ TCGA barcode reduced to 12 digits
 #> ℹ Duplicate barcode check:
 #>    Mode   FALSE 
-#> logical      10 
-#> ℹ Converting count to TPM
-#> ℹ Trying mirror 1/12: <https://github.com>
-#> ✔ Download complete: "anno_grch38"
-#> ℹ Using local annotation (anno_grch38) for TPM conversion
-#> ! Omitting 3985 genes without length information
-#> ℹ Found 1679 duplicate symbols. Using "mean" for ranking.
-#> ✔ Reduced to 54658 unique genes
-# }
+#> logical       5 
+print(dim(eset))
+#> [1] 100   5
 ```
