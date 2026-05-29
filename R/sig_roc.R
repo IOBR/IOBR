@@ -39,9 +39,11 @@
 #'   set.seed(123)
 #'   test_data <- data.frame(
 #'     OS_status = sample(c(0, 1), 50, replace = TRUE),
-#'     TMEscore_plus = rnorm(50)
+#'     TMEscore_plus = rnorm(50),
+#'     GZMB = rnorm(50)
 #'   )
-#'   sig_roc(data = test_data, response = "OS_status", variables = "TMEscore_plus")
+#'   sig_roc(data = test_data, response = "OS_status",
+#'           variables = c("TMEscore_plus", "GZMB"))
 #' }
 sig_roc <- function(data,
                     response,
