@@ -239,11 +239,11 @@ res <- sig_gsea(
 #> 
 #> 'select()' returned 1:1 mapping between keys and columns
 #> Warning: number of columns of result is not a multiple of vector length (arg 1)
-#> ✔ Signature data saved to /tmp/RtmpIFkDf5/file1cba1df813c9.csv
+#> ✔ Signature data saved to /tmp/RtmpgUkRfL/file1cc17e96a846.csv
 #> 'select()' returned 1:1 mapping between keys and columns
 #> Warning: 3.57% of input gene IDs are fail to map...
 #> ℹ Running GSEA analysis...
-#> ✔ GSEA results written to: /tmp/RtmpIFkDf5/1-H_GSEA_significant_results.csv
+#> ✔ GSEA results written to: /tmp/RtmpgUkRfL/1-H_GSEA_significant_results.csv
 #> ℹ Most significant gene sets: Cell_Cycle
 print(names(res))
 #> [1] "up"       "down"     "all"      "plot_top"
