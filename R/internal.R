@@ -52,10 +52,9 @@ gsva_use_new_api <- function() {
 #' # Load signature collection (stored in sysdata, no download)
 #' sig_tme <- load_data("signature_tme")
 #'
-#' \donttest{
 #' # Load expression data (triggers download from GitHub)
+#' # Returns NULL if no internet connection is available
 #' eset <- load_data("eset_stad")
-#' }
 #'
 #' # Load color palette (stored in sysdata, no download)
 #' colors <- load_data("palette1")

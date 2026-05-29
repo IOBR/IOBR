@@ -25,23 +25,29 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' eset_tme_stad <- load_data("eset_tme_stad")
-#' eset <- find_variable_genes(
-#'   eset = eset_tme_stad,
+#' # Simulate data
+#' set.seed(123)
+#' sim_eset <- matrix(rnorm(100 * 20), 100, 20)
+#' rownames(sim_eset) <- paste0("Gene", 1:100)
+#' colnames(sim_eset) <- paste0("Sample", 1:20)
+#' 
+#' # Identify variable genes
+#' eset_var <- find_variable_genes(
+#'   eset = sim_eset,
 #'   data_type = "normalized",
 #'   methods = "mad",
 #'   quantile = 0.25
 #' )
-#' }
+#' head(eset_var)
 find_variable_genes <- function(eset,
                                 data_type = c("count", "normalized"),
                                 methods = c("low", "mad"),
                                 prop = 0.7,
-                                quantile = c(0.75, 0.5, 0.25),
+                                quantile = 0.75,
                                 min.mad = 0.1,
                                 feas = NULL) {
-  data_type <- rlang::arg_match(data_type)
+  if (is.null(eset)) return(NULL)
+  data_type <- match.arg(data_type)
   methods <- match.arg(methods, c("low", "mad"), several.ok = TRUE)
   quantile <- match.arg(as.character(quantile), c("0.25", "0.5", "0.75"))
   quantile <- as.numeric(quantile)

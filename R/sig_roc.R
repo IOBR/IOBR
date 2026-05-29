@@ -35,13 +35,18 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   OS_status = sample(c(0, 1), 100, replace = TRUE),
+#'   TMEscore_plus = rnorm(100),
+#'   GZMB = rnorm(100),
+#'   GNLY = rnorm(100)
+#' )
 #' sig_roc(
-#'   data = tcga_stad_pdata, response = "OS_status",
+#'   data = test_data, response = "OS_status",
 #'   variables = c("TMEscore_plus", "GZMB", "GNLY")
 #' )
-#' }
 sig_roc <- function(data,
                     response,
                     variables,
@@ -55,6 +60,7 @@ sig_roc <- function(data,
                     smooth = TRUE,
                     compare_method = "bootstrap",
                     boot.n = 100) {
+  if (is.null(data)) return(NULL)
   options(pROCProgress = list(name = "none"))
 
   if (!is.data.frame(data)) {

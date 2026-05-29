@@ -23,24 +23,21 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
 #' # Create example mouse expression data
-#' anno_gc_vm32 <- load_data("anno_gc_vm32")
-#' num_rows <- 200
-#' num_cols <- 10
-#' sample_names <- paste0("Sample", 1:num_cols)
-#' data <- matrix(runif(num_rows * num_cols), nrow = num_rows, ncol = num_cols)
-#' rownames(data) <- anno_gc_vm32$symbol[1:200]
-#' colnames(data) <- sample_names
+#' set.seed(123)
+#' data <- matrix(runif(100 * 5), nrow = 100, ncol = 5)
+#' rownames(data) <- c("Tpt1", "Hmgb1", "Gapdh", paste0("Gene", 4:100))
+#' colnames(data) <- paste0("Sample", 1:5)
 #'
-#' # Convert using local database
+#' # Convert using local database (may return NULL if no internet for internal data)
 #' human_data <- mouse2human_eset(data, source = "local", is_matrix = TRUE)
-#' }
+#' if (!is.null(human_data)) head(human_data)
 mouse2human_eset <- function(eset,
                              source = c("local", "ensembl"),
                              is_matrix = TRUE,
                              column_of_symbol = NULL,
                              verbose = FALSE) {
+  if (is.null(eset)) return(NULL)
   source <- rlang::arg_match(source)
 
   if (!is.matrix(eset) && !is.data.frame(eset)) {
@@ -97,6 +94,8 @@ mouse2human_eset <- function(eset,
   } else {
     probe_data <- load_data("mus_human_gene_symbol")
   }
+
+  if (is.null(probe_data)) return(NULL)
 
   if (nrow(probe_data) == 0) {
     cli::cli_abort("No gene mappings found for the provided genes.")

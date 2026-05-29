@@ -48,15 +48,15 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_tme_stad <- load_data("eset_tme_stad")
-#' get_cor(
-#'   eset = eset_tme_stad,
-#'   is.matrix = TRUE,
-#'   var1 = "GZMB",
-#'   var2 = "CD274"
-#' )
-#' }
+#' # Simulate data
+#' set.seed(123)
+#' sim_eset <- matrix(rnorm(100 * 20), 100, 20)
+#' rownames(sim_eset) <- c("GZMB", "CD274", paste0("Gene", 3:100))
+#' colnames(sim_eset) <- paste0("Sample", 1:20)
+#' 
+#' # Calculate and plot correlation
+#' p <- get_cor(eset = sim_eset, is.matrix = TRUE, var1 = "GZMB", var2 = "CD274", show_plot = FALSE)
+#' if (!is.null(p)) print(p)
 get_cor <- function(eset,
                     pdata = NULL,
                     var1,
@@ -89,6 +89,7 @@ get_cor <- function(eset,
                     fig.width = 7,
                     fig.height = 7.3,
                     add.hdr.line = FALSE) {
+  if (is.null(eset)) return(NULL)
   # Validate arguments
   method <- rlang::arg_match(method)
   if (is.null(index)) index <- 1

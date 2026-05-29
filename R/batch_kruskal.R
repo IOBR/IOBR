@@ -29,26 +29,27 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Load TCGA-STAD signature data
-#' sig_stad <- load_data("sig_stad")
-#'
-#' # Test features by gender (if available in your dataset)
-#' if ("Gender" %in% colnames(sig_stad)) {
-#'   res <- batch_kruskal(
-#'     data = sig_stad,
-#'     group = "Gender",
-#'     feature = colnames(sig_stad)[69:ncol(sig_stad)]
-#'   )
-#'   head(res)
-#' }
-#' }
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   Gender = rep(c("Male", "Female"), each = 50),
+#'   Signature1 = rnorm(100),
+#'   Signature2 = rnorm(100)
+#' )
+#' # Test features by gender
+#' res <- batch_kruskal(
+#'   data = test_data,
+#'   group = "Gender",
+#'   feature = c("Signature1", "Signature2")
+#' )
+#' head(res)
 batch_kruskal <- function(data,
                           group,
                           feature = NULL,
                           feature_manipulation = FALSE) {
+  if (is.null(data)) return(NULL)
   # Input validation
-  if (is.null(data) || !is.data.frame(data)) {
+  if (!is.data.frame(data)) {
     cli::cli_abort("{.arg data} must be a non-null data frame.")
   }
   if (nrow(data) == 0) {

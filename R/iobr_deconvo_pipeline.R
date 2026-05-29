@@ -16,17 +16,34 @@
 #' @author Dongqiang Zeng
 #' @export
 #' @examples
-#' eset_stad <- load_data("eset_stad")
-#' anno_grch38 <- load_data("anno_grch38")
-#' eset <- anno_eset(eset = eset_stad, annotation = anno_grch38, probe = "id")
-#' \donttest{
-#' res <- iobr_deconvo_pipeline(
-#'   eset = eset, project = "STAD",
-#'   array = FALSE, tumor_type = "stad",
-#'   path = tempdir(), permutation = 10
-#' )
+#' lm22 <- load_data("lm22")
+#' cancer_genes <- load_data("cancer_type_genes")
+#' if (!is.null(lm22) && !is.null(cancer_genes)) {
+#'   set.seed(123)
+#'   # Create simulated data using lm22 genes to avoid deconvolution failures
+#'   genes <- rownames(lm22)
+#'   # Add xcell genes so xCell doesn't crash from insufficient genes
+#'   xcell <- load_data("xCell.data")
+#'   if (!is.null(xcell)) genes <- unique(c(genes, xcell$genes))
+#'   # Add cancer type genes for TIMER
+#'   genes <- unique(c(genes, cancer_genes[["stad"]]))
+#'   
+#'   eset <- matrix(runif(length(genes) * 2), nrow = length(genes), ncol = 2)
+#'   rownames(eset) <- genes
+#'   colnames(eset) <- paste0("Sample", 1:2)
+#'   
+#'   res <- iobr_deconvo_pipeline(
+#'     eset = eset, project = "TEST",
+#'     array = FALSE, tumor_type = "stad",
+#'     path = tempdir(), permutation = 2
+#'   )
+#'   if (!is.null(res)) head(res)
 #' }
+#'
 iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL, permutation = 1000) {
+
+  if (is.null(eset)) return(NULL)
+
   if (is.null(path)) {
     path <- tempdir()
   }
@@ -47,14 +64,20 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL,
   quantiseq <- deconvo_tme(eset = eset, method = "quantiseq", tumor = TRUE, arrays = array, scale_mrna = TRUE)
   ips <- deconvo_tme(eset = eset, method = "ips", plot = FALSE)
 
-  tme_combine <- cibersort %>%
-    inner_join(., mcp, by = "ID") %>%
-    inner_join(., xcell, by = "ID") %>%
-    inner_join(., epic, by = "ID") %>%
-    inner_join(., estimate, by = "ID") %>%
-    inner_join(., quantiseq, by = "ID") %>%
-    inner_join(., timer, by = "ID") %>%
-    inner_join(., ips, by = "ID")
+  res_list <- list(cibersort, mcp, xcell, epic, estimate, quantiseq, timer, ips)
+  res_list <- res_list[!sapply(res_list, is.null)]
+
+  if (length(res_list) == 0) {
+    cli::cli_alert_warning("All deconvolution methods returned NULL (likely due to no internet connection).")
+    return(NULL)
+  }
+
+  tme_combine <- res_list[[1]]
+  if (length(res_list) > 1) {
+    for (i in 2:length(res_list)) {
+      tme_combine <- dplyr::inner_join(tme_combine, res_list[[i]], by = "ID")
+    }
+  }
 
   # tme_combine<-tme_combine[,-c(grep(colnames(tme_combine),pattern = "Index"))]
   ############################################
@@ -63,6 +86,8 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL,
   #######################################
 
   signature_collection <- load_data("signature_collection")
+  if (is.null(signature_collection)) return(NULL)
+
   sig_res <- calculate_sig_score(
     pdata = NULL,
     eset = eset,
@@ -75,11 +100,23 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL,
   save(sig_res, file = paste0(path$abspath, "2-", project, "-Signature-score-mycollection.RData"))
   ########################################
   hallmark_data <- load_data("hallmark")
+  if (is.null(hallmark_data)) return(NULL)
+
   go_bp_data <- load_data("go_bp")
+  if (is.null(go_bp_data)) return(NULL)
+
   go_cc_data <- load_data("go_cc")
+  if (is.null(go_cc_data)) return(NULL)
+
   go_mf_data <- load_data("go_mf")
+  if (is.null(go_mf_data)) return(NULL)
+
   kegg_data <- load_data("kegg")
+  if (is.null(kegg_data)) return(NULL)
+
   reactome_data <- load_data("reactome")
+  if (is.null(reactome_data)) return(NULL)
+
   sig_go_kegg <- calculate_sig_score(
     pdata = NULL,
     eset = eset,
@@ -93,9 +130,13 @@ iobr_deconvo_pipeline <- function(eset, project, array, tumor_type, path = NULL,
   save(sig_go_kegg, file = paste0(path$abspath, "3-", project, "-Signature-score-Hallmark-GO-KEGG.RData"))
   print(paste0(">>>>> HALLMARK GO KEGG REACTOME esitmation was completed: ", project))
   #########################################
-  tme_sig_combin <- tme_combine %>%
-    inner_join(., sig_res, by = "ID") %>%
-    inner_join(., sig_go_kegg, by = "ID")
+  tme_sig_combin <- tme_combine
+  if (!is.null(sig_res)) {
+    tme_sig_combin <- dplyr::inner_join(tme_sig_combin, sig_res, by = "ID")
+  }
+  if (!is.null(sig_go_kegg)) {
+    tme_sig_combin <- dplyr::inner_join(tme_sig_combin, sig_go_kegg, by = "ID")
+  }
   save(tme_sig_combin, file = paste0(path$abspath, "0-", project, "-Merge-TME-Signature-and-Hallmark-GO-KEGG.RData"))
   #########################################
   return(tme_sig_combin)

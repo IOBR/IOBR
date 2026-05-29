@@ -19,11 +19,19 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' deg <- load_data("deg")
-#' get_sig_sc(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100)
-#' }
+#' # Simulate marker data
+#' set.seed(123)
+#' sim_deg <- data.frame(
+#'   cluster = rep(c("A", "B"), each = 50),
+#'   gene = paste0("Gene", 1:100),
+#'   avg_log2FC = rnorm(100, 2, 1)
+#' )
+#' 
+#' # Extract top 5 markers per cluster
+#' markers <- get_sig_sc(sim_deg, n = 5)
+#' print(markers)
 get_sig_sc <- function(deg, cluster = "cluster", gene = "gene", avg_log2FC = "avg_log2FC", n = 100) {
+  if (is.null(deg)) return(NULL)
   if (!is.data.frame(deg) && !is.matrix(deg)) {
     cli::cli_abort("{.arg deg} must be a data frame or matrix")
   }

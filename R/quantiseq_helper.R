@@ -26,6 +26,7 @@ NULL
 fixMixture <- function(mix.mat, arrays = FALSE) {
   # Map gene names
   mix.mat <- mapGenes(mix.mat)
+  if (is.null(mix.mat)) return(NULL)
 
   # Un-log data in log2 base
   if (max(mix.mat) < 50) {
@@ -71,6 +72,7 @@ makeQN <- function(mix.mat) {
 #' @keywords internal
 mapGenes <- function(mydata) {
   quantiseq_ref <- load_data("quantiseq_data")
+  if (is.null(quantiseq_ref)) return(NULL)
   HGNC <- quantiseq_ref$HGNC_genenames_20170418
 
   curgenes <- rownames(mydata)

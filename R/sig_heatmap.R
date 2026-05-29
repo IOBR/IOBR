@@ -47,13 +47,14 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_sig <- load_data("tcga_stad_sig")
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
-#' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-#' feas <- grep("MCPcounter", colnames(input), value = TRUE)
-#' sig_heatmap(input = input, features = feas, group = "subtype", scale = TRUE)
-#' }
+#' set.seed(123)
+#' test_input <- data.frame(
+#'   ID = paste0("Sample", 1:20),
+#'   subtype = sample(c("TypeA", "TypeB"), 20, replace = TRUE),
+#'   Sig1 = rnorm(20),
+#'   Sig2 = rnorm(20)
+#' )
+#' sig_heatmap(input = test_input, features = c("Sig1", "Sig2"), group = "subtype", scale = TRUE)
 sig_heatmap <- function(input,
                         id = "ID",
                         features,
@@ -80,6 +81,7 @@ sig_heatmap <- function(input,
                         show_heatmap_col_name = FALSE,
                         path = NULL,
                         index = NULL) {
+  if (is.null(input)) return(NULL)
   rlang::check_installed("tidyHeatmap")
   rlang::check_installed("circlize")
 

@@ -47,16 +47,18 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_sig <- load_data("tcga_stad_sig")
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
-#' input <- merge(tcga_stad_pdata, tcga_stad_sig, by = "ID")
-#' feas <- grep("MCPcounter", colnames(input), value = TRUE)
-#' sig_pheatmap(
-#'   input = input, feas = feas, group = "subtype",
-#'   scale.matrix = TRUE, path = tempdir()
+#' set.seed(123)
+#' test_input <- data.frame(
+#'   ID = paste0("Sample", 1:20),
+#'   subtype = sample(c("TypeA", "TypeB"), 20, replace = TRUE),
+#'   Sig1 = rnorm(20),
+#'   Sig2 = rnorm(20)
 #' )
-#' }
+#' sig_pheatmap(
+#'   input = test_input,
+#'   feas = c("Sig1", "Sig2"),
+#'   group = "subtype"
+#' )
 sig_pheatmap <- function(input,
                          feas,
                          group,
@@ -82,6 +84,7 @@ sig_pheatmap <- function(input,
                          width = 6,
                          height = NULL,
                          file_name_prefix = 1) {
+  if (is.null(input)) return(NULL)
   rlang::check_installed("ComplexHeatmap")
   rlang::check_installed("grid")
 

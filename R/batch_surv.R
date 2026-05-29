@@ -21,16 +21,22 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   OS_time = runif(100, 0, 100),
+#'   OS_status = sample(c(0, 1), 100, replace = TRUE),
+#'   Signature1 = rnorm(100),
+#'   Signature2 = rnorm(100)
+#' )
 #' batch_surv(
-#'   pdata = sig_stad,
-#'   variable = colnames(sig_stad)[69:ncol(sig_stad)],
+#'   pdata = test_data,
+#'   variable = c("Signature1", "Signature2"),
 #'   time = "OS_time",
 #'   status = "OS_status"
 #' )
-#' }
 batch_surv <- function(pdata, variable, time = "time", status = "status", best_cutoff = FALSE) {
+  if (is.null(pdata)) return(NULL)
   if (!is.data.frame(pdata)) {
     cli::cli_abort("{.arg pdata} must be a data frame")
   }

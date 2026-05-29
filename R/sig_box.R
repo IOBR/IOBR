@@ -48,16 +48,19 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   subtype = rep(c("A", "B"), each = 50),
+#'   TMEscore_plus = rnorm(100)
+#' )
 #' sig_box(
-#'   data = tcga_stad_pdata,
+#'   data = test_data,
 #'   signature = "TMEscore_plus",
 #'   variable = "subtype",
 #'   jitter = TRUE,
 #'   palette = "jco"
 #' )
-#' }
 sig_box <- function(data,
                     signature,
                     variable,
@@ -75,6 +78,7 @@ sig_box <- function(data,
                     assay = NULL,
                     slot = "scale.data",
                     scale = FALSE) {
+  if (is.null(data)) return(NULL)
   rlang::check_installed("ggpubr")
 
   # Handle Seurat object

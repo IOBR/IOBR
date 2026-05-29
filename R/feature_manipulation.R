@@ -20,19 +20,20 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' eset_stad <- load_data("eset_stad")
-#' feas <- feature_manipulation(
-#'   data = eset_stad,
-#'   feature = rownames(eset_stad),
-#'   is_matrix = TRUE,
-#'   print_result = TRUE
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   A = c(1, 2, 3),
+#'   B = c(1, 1, 1), # zero variance
+#'   C = c(1, NA, 3), # missing value
+#'   D = c("a", "b", "c") # non-numeric
 #' )
-#' }
+#' feas <- feature_manipulation(data = test_data, feature = colnames(test_data), print_result = TRUE)
+#' print(feas)
 feature_manipulation <- function(data,
                                  feature = NULL,
                                  is_matrix = FALSE,
                                  print_result = FALSE) {
+  if (is.null(data)) return(NULL)
   # Handle matrix input (features as rows)
   if (is_matrix) {
     if (!is.matrix(data) && !is.data.frame(data)) {

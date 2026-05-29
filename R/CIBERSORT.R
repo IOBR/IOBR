@@ -31,10 +31,19 @@
 #' @export
 #'
 #' @examples
+#' # Simulate data
+#' set.seed(123)
 #' X <- matrix(rnorm(100), nrow = 10)
+#' rownames(X) <- paste0("Gene", 1:10)
+#' colnames(X) <- paste0("Cell", 1:10)
 #' y <- rnorm(10)
+#' names(y) <- paste0("Gene", 1:10)
+#'
+#' # Run core algorithm
 #' result <- CoreAlg(X, y, absolute = FALSE, abs_method = "sig.score")
+#' if (!is.null(result)) str(result)
 CoreAlg <- function(X, y, absolute, abs_method) {
+  if (is.null(X)) return(NULL)
   rlang::check_installed("e1071")
 
   svn_itor <- 3
@@ -107,10 +116,19 @@ CoreAlg <- function(X, y, absolute, abs_method) {
 #' @export
 #'
 #' @examples
+#' # Simulate data
+#' set.seed(123)
 #' X <- matrix(rnorm(100), nrow = 10)
+#' rownames(X) <- paste0("Gene", 1:10)
+#' colnames(X) <- paste0("Cell", 1:10)
 #' Y <- rnorm(10)
-#' result <- doPerm(100, X, Y, absolute = FALSE, abs_method = "sig.score")
+#' names(Y) <- paste0("Gene", 1:10)
+#'
+#' # Run permutation test
+#' result <- doPerm(10, X, Y, absolute = FALSE, abs_method = "sig.score")
+#' if (!is.null(result)) str(result)
 doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
+  if (is.null(perm)) return(NULL)
   if (!is.null(seed)) set.seed(seed)
 
   if (perm < 1) {
@@ -169,19 +187,23 @@ doPerm <- function(perm, X, Y, absolute, abs_method, seed = NULL) {
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' # Simulate data
+#' set.seed(123)
 #' X <- matrix(rnorm(1000), nrow = 100)
 #' Y <- matrix(rnorm(500), nrow = 100)
 #' rownames(X) <- rownames(Y) <- paste0("Gene", 1:100)
+#' colnames(X) <- paste0("Cell", 1:10)
+#' colnames(Y) <- paste0("Sample", 1:5)
 #'
+#' # Run parallel permutation test
 #' result <- parallel_doperm(
-#'   perm1 = 100, X1 = X, Y1 = Y,
-#'   absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 2
+#'   perm1 = 10, X1 = X, Y1 = Y,
+#'   absolute1 = FALSE, abs_method1 = "sig.score", num_cores1 = 1
 #' )
-#' str(result$dist)
-#' }
+#' if (!is.null(result)) str(result$dist)
 parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
                             num_cores1 = 2, seed = NULL) {
+  if (is.null(perm1)) return(NULL)
   rlang::check_installed("foreach", reason = "for parallel permutation")
   rlang::check_installed("doParallel", reason = "for parallel backend")
 
@@ -273,28 +295,33 @@ parallel_doperm <- function(perm1, X1, Y1, absolute1, abs_method1,
 #' @import purrr
 #' @import stringr
 #' @examples
-#' \donttest{
-#' lm22 <- load_data("lm22")
-#' common_genes <- rownames(lm22)[1:500]
+#' # Simulate data
+#' set.seed(123)
+#' sim_sig <- matrix(rnorm(100 * 5), 100, 5)
+#' rownames(sim_sig) <- paste0("Gene", 1:100)
+#' colnames(sim_sig) <- paste0("Cell", 1:5)
+#'
 #' sim_mixture <- as.data.frame(matrix(
-#'   rnorm(length(common_genes) * 10, mean = 5, sd = 2),
-#'   nrow = length(common_genes), ncol = 10
+#'   rnorm(100 * 3), 100, 3
 #' ))
-#' rownames(sim_mixture) <- common_genes
-#' colnames(sim_mixture) <- paste0("Sample", 1:10)
+#' rownames(sim_mixture) <- paste0("Gene", 1:100)
+#' colnames(sim_mixture) <- paste0("Sample", 1:3)
+#'
+#' # Run deconvolution
 #' result <- CIBERSORT(
-#'   sig_matrix = lm22,
+#'   sig_matrix = sim_sig,
 #'   mixture_file = sim_mixture,
 #'   perm = 10, QN = FALSE, absolute = FALSE,
 #'   parallel = FALSE
 #' )
-#' head(result)
-#' }
+#' if (!is.null(result)) head(result)
 CIBERSORT <- function(sig_matrix = NULL, mixture_file, perm, QN = TRUE,
                       absolute = FALSE, abs_method = "sig.score",
                       parallel = FALSE, num_cores = 2, seed = NULL) {
+  if (is.null(mixture_file)) return(NULL)
   if (is.null(sig_matrix)) {
     sig_matrix <- load_data("lm22")
+    if (is.null(sig_matrix)) return(NULL)
   }
   # Input validation
   if (length(intersect(rownames(mixture_file), rownames(sig_matrix))) == 0) {

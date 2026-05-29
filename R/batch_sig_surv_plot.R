@@ -44,10 +44,16 @@
 #' @import survival
 #'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
+#' set.seed(123)
+#' test_pdata <- data.frame(
+#'   ID = paste0("S", 1:50),
+#'   ProjectID = rep(c("Project1", "Project2"), each = 25),
+#'   OS_time = runif(50, 1, 60),
+#'   OS_status = sample(c(0, 1), 50, replace = TRUE),
+#'   T.cells.CD8 = rnorm(50)
+#' )
 #' result <- batch_sig_surv_plot(
-#'   input_pdata = sig_stad,
+#'   input_pdata = test_pdata,
 #'   signature = "T.cells.CD8",
 #'   id = "ID",
 #'   column_of_project = "ProjectID",
@@ -59,10 +65,9 @@
 #'   palette = "jama",
 #'   cols = NULL,
 #'   mini_sig = "score",
-#'   show_col = TRUE,
+#'   show_col = FALSE,
 #'   fig_type = "pdf"
 #' )
-#' }
 batch_sig_surv_plot <- function(
   input_pdata,
   signature,
@@ -80,6 +85,7 @@ batch_sig_surv_plot <- function(
   show_col = TRUE,
   fig_type = "pdf"
 ) {
+  if (is.null(input_pdata)) return(NULL)
   if (!is.data.frame(input_pdata)) {
     cli::cli_abort("{.arg input_pdata} must be a data frame")
   }

@@ -16,24 +16,18 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Load example data
-#' eset_stad <- load_data("eset_stad")
-#' eset <- count2tpm(eset_stad, idType = "ensembl")
+#' # Create small example expression matrix
+#' set.seed(123)
+#' test_eset <- matrix(rnorm(1000), nrow = 10, ncol = 100)
+#' rownames(test_eset) <- paste0("Gene", 1:10)
+#' colnames(test_eset) <- paste0("Sample", 1:100)
 #'
-#' # Get signature genes
-#' signature_tme <- load_data("signature_tme")
-#' genes <- signature_tme[["CD_8_T_effector"]]
-#' genes <- genes[genes %in% rownames(eset)]
-#'
-#' # Calculate scores (only if enough genes are available)
-#' if (length(genes) >= 2) {
-#'   score_pca <- sigScore(eset = eset[genes, ], methods = "PCA")
-#'   score_mean <- sigScore(eset = eset[genes, ], methods = "mean")
-#'   score_zscore <- sigScore(eset = eset[genes, ], methods = "zscore")
-#' }
-#' }
+#' # Calculate scores
+#' score_pca <- sigScore(eset = test_eset, methods = "PCA")
+#' score_mean <- sigScore(eset = test_eset, methods = "mean")
+#' score_zscore <- sigScore(eset = test_eset, methods = "zscore")
 sigScore <- function(eset, methods = c("PCA", "mean", "zscore")) {
+  if (is.null(eset)) return(NULL)
   methods <- rlang::arg_match(methods)
 
   eset <- as.matrix(eset)

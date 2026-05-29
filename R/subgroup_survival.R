@@ -20,27 +20,27 @@
 #' @import survival
 #'
 #' @examples
-#' \donttest{
-#' subgroup_data <- load_data("subgroup_data")
-#' input <- subset(subgroup_data, time > 0 & !is.na(status) & !is.na(AJCC_stage))
-#'
-#' # Binary variable example
-#' res_bin <- subgroup_survival(
-#'   pdata = input, time_name = "time", status_name = "status",
-#'   variables = c("ProjectID", "AJCC_stage"), object = "score_binary"
+#' set.seed(123)
+#' test_pdata <- data.frame(
+#'   time = runif(100, 1, 100),
+#'   status = sample(c(0, 1), 100, replace = TRUE),
+#'   subgroup = sample(c("A", "B"), 100, replace = TRUE),
+#'   score = rnorm(100)
 #' )
-#'
-#' # Continuous variable example
-#' res_cont <- subgroup_survival(
-#'   pdata = input, time_name = "time", status_name = "status",
-#'   variables = c("ProjectID", "AJCC_stage"), object = "score"
+#' res <- subgroup_survival(
+#'   pdata = test_pdata,
+#'   time_name = "time",
+#'   status_name = "status",
+#'   variables = "subgroup",
+#'   object = "score"
 #' )
-#' }
+#' print(res)
 subgroup_survival <- function(pdata,
                               time_name = "time",
                               status_name = "status",
                               variables,
                               object) {
+  if (is.null(pdata)) return(NULL)
   if (!is.data.frame(pdata)) {
     cli::cli_abort("{.arg pdata} must be a data frame.")
   }

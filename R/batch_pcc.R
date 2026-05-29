@@ -31,27 +31,31 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
-#' # Load TCGA-STAD signature data
-#' sig_stad <- load_data("sig_stad")
-#'
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   TumorPurity = runif(100),
+#'   TargetVar = rnorm(100),
+#'   Signature1 = rnorm(100),
+#'   Signature2 = rnorm(100)
+#' )
 #' # Calculate partial correlations controlling for tumor purity
 #' res <- batch_pcc(
-#'   input = sig_stad,
-#'   interferenceid = "TumorPurity_estimate",
-#'   target = "Pan_F_TBRs",
+#'   input = test_data,
+#'   interferenceid = "TumorPurity",
+#'   target = "TargetVar",
 #'   method = "pearson",
-#'   features = colnames(sig_stad)[70:ncol(sig_stad)]
+#'   features = c("Signature1", "Signature2")
 #' )
 #' head(res)
-#' }
 batch_pcc <- function(input,
                       interferenceid,
                       target,
                       features,
                       method = c("pearson", "spearman", "kendall")) {
+  if (is.null(input)) return(NULL)
   # Input validation
-  if (is.null(input) || !is.data.frame(input)) {
+  if (!is.data.frame(input)) {
     cli::cli_abort("{.arg input} must be a non-null data frame.")
   }
   if (nrow(input) == 0) {

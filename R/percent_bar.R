@@ -26,15 +26,20 @@
 #'
 #' @export
 #' @author Dongqiang Zeng
-#'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
-#' percent_bar_plot(
-#'   input = sig_stad, x = "Subtype", y = "Lauren",
+#' # Simulate data
+#' set.seed(123)
+#' sim_data <- data.frame(
+#'   Subtype = sample(c("EBV", "GS", "MSI", "CIN"), 100, replace = TRUE),
+#'   Lauren = sample(c("Diffuse", "Intestinal", "Mixed"), 100, replace = TRUE)
+#' )
+#' 
+#' # Create percent bar plot
+#' p <- percent_bar_plot(
+#'   input = sim_data, x = "Subtype", y = "Lauren",
 #'   axis_angle = 60
 #' )
-#' }
+#' if (!is.null(p)) print(p)
 percent_bar_plot <- function(input, x, y,
                              subset.x = NULL,
                              color = NULL,
@@ -43,13 +48,15 @@ percent_bar_plot <- function(input, x, y,
                              axis_angle = 0,
                              coord_flip = FALSE,
                              add_Freq = TRUE,
-                             Freq = NULL,
+                             Freq = "Proportion",
                              size_freq = 8,
                              legend.size = 0.5,
                              legend.size.text = 10,
                              add_sum = TRUE,
                              print_result = TRUE,
                              round.num = 2) {
+  if (is.null(input)) return(NULL)
+  # Check if required columns exist
   input <- as.data.frame(input[, colnames(input) %in% c(x, y)])
   rlang::check_installed("scales")
 
@@ -136,18 +143,27 @@ percent_bar_plot <- function(input, x, y,
 #'
 #' @export
 #' @author Dongqiang Zeng
-#'
 #' @examples
-#' \donttest{
-#' sig_stad <- load_data("sig_stad")
-#' pie_chart(input = sig_stad, var = "Subtype", palette = "jama")
-#' pie_chart(input = sig_stad, var = "Subtype", type = 2)
-#' }
+#' # Simulate data
+#' set.seed(123)
+#' sim_data <- data.frame(
+#'   Subtype = sample(c("EBV", "GS", "MSI", "CIN"), 100, replace = TRUE)
+#' )
+#' 
+#' # Create pie chart
+#' p1 <- pie_chart(input = sim_data, var = "Subtype", palette = "jama")
+#' if (!is.null(p1)) print(p1)
+#' 
+#' # Create donut chart
+#' p2 <- pie_chart(input = sim_data, var = "Subtype", type = 2)
+#' if (!is.null(p2)) print(p2)
 pie_chart <- function(input, var, var2 = NULL, type = 2,
                       show_freq = FALSE, color = NULL, palette = "jama",
                       title = NULL, text_size = 10, title_size = 20,
                       add_sum = FALSE) {
-  input <- input[!is.na(input[, var]), ]
+  if (is.null(input)) return(NULL)
+  # Check if variable exists
+  input <- input[!is.na(input[, var]), , drop = FALSE]
   input <- as.data.frame(input)
   input[, var] <- as.character(input[, var])
 

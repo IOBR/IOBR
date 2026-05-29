@@ -34,15 +34,20 @@
 #' @author Dongqiang Zeng
 #'
 #' @examples
-#' \donttest{
-#' tcga_stad_pdata <- load_data("tcga_stad_pdata")
+#' # Create small example data
+#' set.seed(123)
+#' test_data <- data.frame(
+#'   time = runif(100, 0, 100),
+#'   OS_status = sample(c(0, 1), 100, replace = TRUE),
+#'   TMEscore_plus = rnorm(100),
+#'   ID = paste0("S", 1:100)
+#' )
 #' sig_surv_plot(
-#'   input_pdata = tcga_stad_pdata,
+#'   input_pdata = test_data,
 #'   signature = "TMEscore_plus",
 #'   time = "time",
 #'   status = "OS_status"
 #' )
-#' }
 sig_surv_plot <- function(input_pdata,
                           signature,
                           project = "KM",
@@ -58,6 +63,7 @@ sig_surv_plot <- function(input_pdata,
                           fig.type = "png",
                           save_path = NULL,
                           index = 1) {
+  if (is.null(input_pdata)) return(NULL)
   rlang::check_installed("survminer")
 
   # TODO

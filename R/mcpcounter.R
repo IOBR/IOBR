@@ -19,11 +19,10 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' expr <- matrix(runif(1000), nrow = 100, ncol = 10)
 #' rownames(expr) <- paste0("Gene", 1:100)
 #' estimates <- MCPcounter.estimate(expr, featuresType = "HUGO_symbols")
-#' }
+#'
 MCPcounter.estimate <- function(
   expression,
   featuresType = c(
@@ -40,6 +39,9 @@ MCPcounter.estimate <- function(
     colClasses = "character", check.names = FALSE
   )
 ) {
+
+  if (is.null(expression)) return(NULL)
+
   featuresType <- rlang::arg_match(featuresType)
 
   # Get features based on type
@@ -157,16 +159,14 @@ MCPcounter.estimate <- function(
 #' pvals <- test_for_infiltration(scores, platform = "133P2")
 test_for_infiltration <- function(MCPcounterMatrix,
                                   platform = c("133P2", "133A", "HG1")) {
+
+  if (is.null(MCPcounterMatrix)) return(NULL)
+
   platform <- rlang::arg_match(platform)
 
   # Load null_models from internal data
-  null_models <- tryCatch(load_data("null_models"), error = function(e) NULL)
-  if (is.null(null_models)) {
-    cli::cli_abort(c(
-      "Unable to load required data: null_models",
-      "i" = "This data may need to be downloaded separately or is not available."
-    ))
-  }
+  null_models <- load_data("null_models")
+  if (is.null(null_models)) return(NULL)
 
   MCPcounterMatrix <- t(MCPcounterMatrix)
   params <- null_models[grep(platform, colnames(null_models))]

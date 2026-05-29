@@ -49,6 +49,9 @@ xCellAnalysis <- function(expr, signatures = NULL, genes = NULL,
 
   # Load default data if not provided
   xcell_ref <- load_data("xCell.data")
+  if (is.null(xcell_ref) && (is.null(signatures) || is.null(genes) || is.null(spill))) {
+    return(NULL)
+  }
   signatures <- signatures %||% xcell_ref$signatures
   genes <- genes %||% xcell_ref$genes
   spill <- spill %||% if (rnaseq) {

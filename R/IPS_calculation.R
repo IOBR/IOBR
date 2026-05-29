@@ -30,7 +30,6 @@
 #' @import stringr
 #' @import ggplot2
 #' @import grid
-#'
 #' @examples
 #' # IPS requires gene symbols as rownames
 #' # Create a simple example with gene symbols
@@ -44,9 +43,14 @@
 #' ))
 #' rownames(sim_eset) <- example_genes
 #' colnames(sim_eset) <- paste0("Sample", 1:10)
+#'
+#' # Run IPS calculation (may return NULL if no internet for internal data)
 #' ips_result <- IPS_calculation(eset = sim_eset, project = "Example", plot = FALSE)
-#' head(ips_result)
-IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
+#' if (!is.null(ips_result)) head(ips_result)
+#'
+IPS_calculation <- function(eset, project = NULL, plot = FALSE) {
+  if (is.null(eset)) return(NULL)
+
   if (!is.matrix(eset) && !is.data.frame(eset)) {
     cli::cli_abort("{.arg eset} must be a matrix or data frame")
   }
@@ -66,6 +70,8 @@ IPS_calculation <- function(project = NULL, eset, plot = FALSE) {
   }
 
   IPSG <- load_data("ips_gene_set")
+  if (is.null(IPSG)) return(NULL)
+
   IPSG <- IPSG[IPSG$GENE %in% rownames(gene_expression), ]
 
   if (nrow(IPSG) == 0) {
