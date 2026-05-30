@@ -158,11 +158,11 @@ Default is `TRUE`.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">test_pdata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  ProjectID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P1"</span>, <span class="st">"P2"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  OS_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">30</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  Marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ProjectID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"P1"</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  OS_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">1</span>, <span class="fl">60</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  OS_status <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">20</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  Marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">batch_sig_surv_plot</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  input_pdata <span class="op">=</span> <span class="va">test_pdata</span>, signature <span class="op">=</span> <span class="st">"Marker"</span>,</span></span>
@@ -170,11 +170,11 @@ Default is `TRUE`.</p></dd>
 <span class="r-in"><span>  time <span class="op">=</span> <span class="st">"OS_time"</span>, status <span class="op">=</span> <span class="st">"OS_status"</span>, time_type <span class="op">=</span> <span class="st">"month"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"P1"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 3.69 to 57.45 months</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: -0.21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: -0.208</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High Marker: 9</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low Marker: 6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 3.48 to 57.45 months</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: 0.69</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: 0.689</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High Marker: 5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low Marker: 15</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Maximum follow-up time is 57.5 months; divided into 6 sections</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span>
@@ -192,25 +192,14 @@ Default is `TRUE`.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Processing project: <span style="color: #0000BB;">"P2"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Survival follow-up time range: 3.48 to 59.66 months</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: -1.55</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Best cutoff for <span style="color: #0000BB;">"Marker"</span>: -1.549</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> High Marker: 14</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Low Marker: 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Maximum follow-up time is 59.7 months; divided into 6 sections</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Ignoring unknown labels:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> <span style="color: #00BB00;">colour</span> : <span style="color: #0000BB;">"Strata"</span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ID      time status     Marker group3 group2 bestcutoff</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 S1 17.967074      0 -1.0678237    Low    Low        Low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 S2 47.510003      1 -0.2179749 Middle    Low        Low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 S3 25.129638      0 -1.0260044    Low    Low        Low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 S4 53.098027      0 -0.7288912    Low    Low        Low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 S5 56.487570      0 -0.6250393    Low    Low        Low</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 S6  3.687833      0 -1.6866933    Low    Low        Low</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

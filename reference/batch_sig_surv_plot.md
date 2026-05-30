@@ -116,11 +116,11 @@ Dongqiang Zeng
 ``` r
 set.seed(123)
 test_pdata <- data.frame(
-  ID = paste0("S", 1:30),
-  ProjectID = rep(c("P1", "P2"), each = 15),
-  OS_time = runif(30, 1, 60),
-  OS_status = sample(c(0, 1), 30, replace = TRUE),
-  Marker = rnorm(30)
+  ID = paste0("S", 1:20),
+  ProjectID = rep("P1", 20),
+  OS_time = runif(20, 1, 60),
+  OS_status = sample(c(0, 1), 20, replace = TRUE),
+  Marker = rnorm(20)
 )
 result <- batch_sig_surv_plot(
   input_pdata = test_pdata, signature = "Marker",
@@ -128,11 +128,11 @@ result <- batch_sig_surv_plot(
   time = "OS_time", status = "OS_status", time_type = "month"
 )
 #> ℹ Processing project: "P1"
-#> ℹ Survival follow-up time range: 3.69 to 57.45 months
-#> ℹ Best cutoff for "Marker": -0.21
-#> ✔ Best cutoff for "Marker": -0.208
-#> ℹ High Marker: 9
-#> ℹ Low Marker: 6
+#> ℹ Survival follow-up time range: 3.48 to 57.45 months
+#> ℹ Best cutoff for "Marker": 0.69
+#> ✔ Best cutoff for "Marker": 0.689
+#> ℹ High Marker: 5
+#> ℹ Low Marker: 15
 #> ℹ Maximum follow-up time is 57.5 months; divided into 6 sections
 #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 #> ℹ Please use `linewidth` instead.
@@ -150,23 +150,12 @@ result <- batch_sig_surv_plot(
 #> • colour : "Strata"
 #> Ignoring unknown labels:
 #> • colour : "Strata"
-#> ℹ Processing project: "P2"
-#> ℹ Survival follow-up time range: 3.48 to 59.66 months
-#> ℹ Best cutoff for "Marker": -1.55
-#> ✔ Best cutoff for "Marker": -1.549
-#> ℹ High Marker: 14
-#> ℹ Low Marker: 1
-#> ℹ Maximum follow-up time is 59.7 months; divided into 6 sections
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
-#> Ignoring unknown labels:
-#> • colour : "Strata"
+if (!is.null(result)) head(result)
+#>   ID      time status     Marker group3 group2 bestcutoff
+#> 1 S1 17.967074      0 -1.0678237    Low    Low        Low
+#> 2 S2 47.510003      1 -0.2179749 Middle    Low        Low
+#> 3 S3 25.129638      0 -1.0260044    Low    Low        Low
+#> 4 S4 53.098027      0 -0.7288912    Low    Low        Low
+#> 5 S5 56.487570      0 -0.6250393    Low    Low        Low
+#> 6 S6  3.687833      0 -1.6866933    Low    Low        Low
 ```

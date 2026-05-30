@@ -138,8 +138,4 @@ sig_box(
   jitter = TRUE,
   palette = "jco"
 )
-#> Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-#> ℹ Please use the `linewidth` argument instead.
-#> ℹ The deprecated feature was likely used in the IOBR package.
-#>   Please report the issue at <https://github.com/IOBR/IOBR/issues>.
 ```
