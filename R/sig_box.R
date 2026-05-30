@@ -175,7 +175,7 @@ sig_box <- function(data,
         hjust = hjust,
         color = "black"
       ),
-      axis.line = ggplot2::element_line(color = "grey", size = 0.05),
+      axis.line = ggplot2::element_line(color = "grey", linewidth = 0.05),
       legend.position = "none"
     )
 
