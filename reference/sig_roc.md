@@ -109,12 +109,13 @@ Dongqiang Zeng
 ``` r
 set.seed(123)
 test_data <- data.frame(
-  OS_status = sample(c(0, 1), 30, replace = TRUE),
-  Marker1 = rnorm(30),
-  Marker2 = rnorm(30)
+  OS_status = sample(c(0, 1), 20, replace = TRUE),
+  Marker1 = rnorm(20),
+  Marker2 = rnorm(20)
 )
 result <- sig_roc(data = test_data, response = "OS_status",
-                  variables = c("Marker1", "Marker2"))
+                  variables = c("Marker1", "Marker2"),
+                  smooth = FALSE)
 #> ℹ Input data preview:
 #> Registered S3 method overwritten by 'pROC':
 #>   method   from            
@@ -126,6 +127,6 @@ result <- sig_roc(data = test_data, response = "OS_status",
 
 if (!is.null(result)) print(result$auc.out)
 #>             Name   AUC      AUC CI
-#> auc.ci   Marker1 0.529  0.322-0.71
-#> auc.ci.1 Marker2 0.563 0.385-0.775
+#> auc.ci   Marker1 0.545 0.272-0.819
+#> auc.ci.1 Marker2 0.475 0.202-0.747
 ```
