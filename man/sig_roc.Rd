@@ -68,12 +68,13 @@ predictors and optionally performs statistical comparisons between them.
 \examples{
 set.seed(123)
 test_data <- data.frame(
-  OS_status = sample(c(0, 1), 30, replace = TRUE),
-  Marker1 = rnorm(30),
-  Marker2 = rnorm(30)
+  OS_status = sample(c(0, 1), 20, replace = TRUE),
+  Marker1 = rnorm(20),
+  Marker2 = rnorm(20)
 )
 result <- sig_roc(data = test_data, response = "OS_status",
-                  variables = c("Marker1", "Marker2"))
+                  variables = c("Marker1", "Marker2"),
+                  smooth = FALSE)
 if (!is.null(result)) print(result$auc.out)
 }
 \author{
