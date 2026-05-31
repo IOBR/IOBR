@@ -1,6 +1,10 @@
 # Changelog
 
+## IOBR (development version)
+
 ## IOBR 2.2.3
+
+CRAN release: 2026-05-30
 
 ### Improvements
 

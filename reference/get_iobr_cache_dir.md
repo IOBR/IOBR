@@ -33,10 +33,10 @@ Character string with the cache directory path.
 ``` r
 # Get current cache directory (defaults to tempdir)
 get_iobr_cache_dir()
-#> [1] "/tmp/RtmpRGChSj/IOBR_cache"
+#> [1] "/tmp/Rtmpl6GOnm/IOBR_cache"
 
 # Set custom cache directory via options (use tempdir() for examples)
 options(IOBR.cache_dir = tempdir())
 get_iobr_cache_dir()
-#> [1] "/tmp/RtmpRGChSj"
+#> [1] "/tmp/Rtmpl6GOnm"
 ```
