@@ -59,10 +59,15 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
   # Check for internet connection if no local file exists
   if (!file.exists(cache_file)) {
     has_internet <- function() {
-      # Test both Google and Baidu, return TRUE if either works
-      # Using sequential approach to avoid fork() issues on macOS
-      urls <- c("https://www.google.com", "https://www.baidu.com")
+      # Test both Baidu and Google, return TRUE if either works.
+      # Baidu first: faster for users in China where Google is blocked.
+      # Each attempt is capped at 5 seconds to avoid hanging.
+      # Using sequential approach to avoid fork() issues on macOS.
+      urls <- c("https://www.baidu.com", "https://www.google.com")
       for (url_str in urls) {
+        # Save current timeout and set a short one
+        old_timeout <- getOption("timeout")
+        options(timeout = 5L)
         result <- tryCatch({
           con <- url(url_str)
           tryCatch({
@@ -73,6 +78,8 @@ download_iobr_data <- function(name, force = FALSE, verbose = TRUE,
               tryCatch(close(con), error = function(e) NULL)
             })
         }, error = function(e) FALSE)
+        # Restore original timeout
+        options(timeout = old_timeout)
         if (result) return(TRUE)
       }
       FALSE
