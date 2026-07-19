@@ -411,9 +411,15 @@ iobr_cor_plot <- function(pdata_group,
     pf_long_group$value <- pmin(pmax(pf_long_group$value, -2.5), 2.5)
 
     height_heatmap <- length(features) * 0.2 + 3
-    heatmap_col <- palettes(
-      category = "tidyheatmap", palette = palette_heatmap,
-      show_col = show_col, show_message = show_palettes
+    # heatmap_col <- palettes(
+    #   category = "tidyheatmap", palette = palette_heatmap,
+    #   show_col = show_col, show_message = show_palettes
+    # )
+    heatmap_col <- .build_heatmap_colors(
+      cols_heatmap = NULL,
+      palette = palette_heatmap,
+      show_col = show_col,
+      show_palettes = show_palettes
     )
 
     pp <- pf_long_group %>%
