@@ -169,6 +169,9 @@ sig_box_batch(
   path = tempdir()
 )
 #> ℹ Processing feature: "TMEscore_plus"
+#> `stat_compare_means()` with `comparisons` displays *unadjusted* p-values (no correction for multiple comparisons).
+#> ℹ For p-values adjusted for multiple comparisons, use `geom_pwc()`, or `stat_pvalue_manual()` together with `compare_means(..., p.adjust.method = )`.
+#> This message is displayed once per session.
 #> ℹ Processing feature: "GZMB"
-#> ✔ Batch processing complete. Plots saved to: /tmp/Rtmpl6GOnm
+#> ✔ Batch processing complete. Plots saved to: /tmp/RtmprVnmwZ
 ```
