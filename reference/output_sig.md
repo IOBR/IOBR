@@ -48,7 +48,7 @@ output_sig(
   signatures = sim_sigs, format = "csv",
   file.name = tools::file_path_sans_ext(tmpfile)
 )
-#> ✔ Signature data saved to /tmp/Rtmp9Q6MDe/file1cc67f47380a.csv
+#> ✔ Signature data saved to /tmp/Rtmp5rSdYv/file1cc53a0c36f4.csv
 #>    Signature1 Signature2 Signature3
 #> 1       Gene1     Gene51    Gene101
 #> 2       Gene2     Gene52    Gene102
