@@ -1,6 +1,6 @@
 Package: IOBR
 Title: Immune Oncology Biological Research
-Version: 2.2.3.9000
+Version: 2.2.4
 Authors@R: c(
     person("Dongqiang", "Zeng", , "interlaken@smu.edu.cn", role = "aut"),
     person("Yiran", "Fang", , "fyr_nate@163.com", role = "aut"),
@@ -113,4 +113,4 @@ biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: FALSE
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.1.1
