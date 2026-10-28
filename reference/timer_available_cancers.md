@@ -9,10 +9,6 @@ signatures are cancer-specific.
 timer_available_cancers
 ```
 
-## Format
-
-An object of class `character` of length 32.
-
 ## Value
 
 Character vector of available cancer type abbreviations.

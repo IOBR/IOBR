@@ -228,24 +228,27 @@ signature <- list(
   )
 )
 # \donttest{
-res <- sig_gsea(
-  deg = deg,
-  genesets = signature,
-  path = tempdir(),
-  show_plot = FALSE,
-  print_bar = FALSE
-)
-#> ℹ Mapping gene symbols to Entrez IDs for "hsa"
+if (rlang::is_installed("clusterProfiler") && rlang::is_installed("org.Hs.eg.db")) {
+  res <- sig_gsea(
+    deg = deg,
+    genesets = signature,
+    path = tempdir(),
+    show_plot = FALSE,
+    print_bar = FALSE
+  )
+  print(names(res))
+}
 #> 
+#> ℹ Mapping gene symbols to Entrez IDs for "hsa"
 #> 'select()' returned 1:1 mapping between keys and columns
 #> Warning: number of columns of result is not a multiple of vector length (arg 1)
-#> ✔ Signature data saved to /tmp/Rtmp5rSdYv/file1cc549b9ee2e.csv
+#> ✔ Signature data saved to /tmp/RtmpR1P9BL/file573a47dca500.csv
 #> 'select()' returned 1:1 mapping between keys and columns
 #> Warning: 3.57% of input gene IDs are fail to map...
 #> ℹ Running GSEA analysis...
-#> ✔ GSEA results written to: /tmp/Rtmp5rSdYv/1-H_GSEA_significant_results.csv
+#> Warning: qvalue::qvalue() failed, returning NA for qvalue. Error: missing values and NaN's not allowed if 'na.rm' is FALSE
+#> ✔ GSEA results written to: /tmp/RtmpR1P9BL/1-H_GSEA_significant_results.csv
 #> ℹ Most significant gene sets: Cell_Cycle
-print(names(res))
 #> [1] "up"       "down"     "all"      "plot_top"
 # }
 ```

@@ -101,26 +101,26 @@ if (requireNamespace("Seurat", quietly = TRUE) && requireNamespace("Matrix", qui
 #>     Gene88, Gene57, Gene38, Gene61, Gene87, Gene76, Gene93, Gene37, Gene66, Gene63 
 #>     Gene47, Gene94, Gene30, Gene50, Gene24, Gene21, Gene5, Gene89, Gene55, Gene45 
 #> PC_ 2 
-#> Positive:  Gene18, Gene17, Gene85, Gene11, Gene14, Gene68, Gene5, Gene48, Gene6, Gene89 
-#>     Gene84, Gene28, Gene94, Gene88, Gene91, Gene12, Gene73, Gene70, Gene61, Gene75 
-#>     Gene62, Gene97, Gene40, Gene92, Gene23, Gene81, Gene1, Gene8, Gene27, Gene24 
-#> Negative:  Gene96, Gene15, Gene69, Gene80, Gene39, Gene30, Gene71, Gene74, Gene64, Gene79 
+#> Positive:  Gene96, Gene15, Gene69, Gene80, Gene39, Gene30, Gene71, Gene74, Gene64, Gene79 
 #>     Gene83, Gene10, Gene13, Gene99, Gene22, Gene63, Gene82, Gene100, Gene93, Gene19 
 #>     Gene7, Gene52, Gene26, Gene50, Gene38, Gene25, Gene95, Gene78, Gene33, Gene51 
+#> Negative:  Gene18, Gene17, Gene85, Gene11, Gene14, Gene68, Gene5, Gene48, Gene6, Gene89 
+#>     Gene84, Gene28, Gene94, Gene88, Gene91, Gene12, Gene73, Gene70, Gene61, Gene75 
+#>     Gene62, Gene97, Gene40, Gene92, Gene23, Gene81, Gene1, Gene8, Gene27, Gene24 
 #> PC_ 3 
-#> Positive:  Gene54, Gene35, Gene58, Gene45, Gene3, Gene44, Gene76, Gene63, Gene49, Gene75 
-#>     Gene37, Gene87, Gene8, Gene31, Gene86, Gene53, Gene25, Gene89, Gene98, Gene57 
-#>     Gene79, Gene100, Gene94, Gene72, Gene47, Gene24, Gene12, Gene51, Gene5, Gene91 
-#> Negative:  Gene68, Gene41, Gene50, Gene92, Gene20, Gene88, Gene36, Gene11, Gene2, Gene71 
+#> Positive:  Gene68, Gene41, Gene50, Gene92, Gene20, Gene88, Gene36, Gene11, Gene2, Gene71 
 #>     Gene21, Gene39, Gene34, Gene16, Gene29, Gene4, Gene85, Gene62, Gene55, Gene80 
 #>     Gene10, Gene60, Gene59, Gene67, Gene40, Gene84, Gene82, Gene43, Gene7, Gene66 
+#> Negative:  Gene54, Gene35, Gene58, Gene45, Gene3, Gene44, Gene76, Gene63, Gene49, Gene75 
+#>     Gene37, Gene87, Gene8, Gene31, Gene86, Gene53, Gene25, Gene89, Gene98, Gene57 
+#>     Gene79, Gene100, Gene94, Gene72, Gene47, Gene24, Gene12, Gene51, Gene5, Gene91 
 #> PC_ 4 
-#> Positive:  Gene49, Gene64, Gene8, Gene5, Gene47, Gene31, Gene27, Gene67, Gene2, Gene40 
-#>     Gene74, Gene84, Gene41, Gene83, Gene81, Gene88, Gene15, Gene33, Gene71, Gene57 
-#>     Gene10, Gene44, Gene91, Gene46, Gene87, Gene43, Gene100, Gene99, Gene51, Gene25 
-#> Negative:  Gene26, Gene38, Gene86, Gene19, Gene4, Gene77, Gene72, Gene23, Gene9, Gene13 
+#> Positive:  Gene26, Gene38, Gene86, Gene19, Gene4, Gene77, Gene72, Gene23, Gene9, Gene13 
 #>     Gene90, Gene48, Gene58, Gene30, Gene69, Gene79, Gene93, Gene20, Gene68, Gene65 
 #>     Gene97, Gene39, Gene1, Gene3, Gene17, Gene60, Gene95, Gene61, Gene45, Gene37 
+#> Negative:  Gene49, Gene64, Gene8, Gene5, Gene47, Gene31, Gene27, Gene67, Gene2, Gene40 
+#>     Gene74, Gene84, Gene41, Gene83, Gene81, Gene88, Gene15, Gene33, Gene71, Gene57 
+#>     Gene10, Gene44, Gene91, Gene46, Gene87, Gene43, Gene100, Gene99, Gene51, Gene25 
 #> PC_ 5 
 #> Positive:  Gene63, Gene78, Gene50, Gene40, Gene62, Gene25, Gene96, Gene21, Gene95, Gene54 
 #>     Gene90, Gene29, Gene87, Gene41, Gene100, Gene6, Gene17, Gene8, Gene16, Gene35 

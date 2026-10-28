@@ -1,6 +1,42 @@
 # Changelog
 
-## IOBR (development version)
+## IOBR 2.2.4
+
+### Improvements
+
+- **purrr compatibility**: Confirmed compatibility with the upcoming
+  purrr release that makes functions deprecated in purrr 1.0.0 defunct
+  (e.g., `when()`). IOBR does not use any of these functions
+  ([\#139](https://github.com/IOBR/IOBR/issues/139)).
+- [`download_iobr_data()`](https://iobr.github.io/IOBR/reference/download_iobr_data.md):
+  The internet connectivity check now tries Baidu before Google (faster
+  for users in China) and caps each attempt at 5 seconds to avoid
+  hanging.
+- [`palettes()`](https://iobr.github.io/IOBR/reference/palettes.md):
+  Diverging palettes (palettes 2-5) now use 5 colors instead of 3 for
+  finer color resolution.
+
+### Bug Fixes
+
+- Fixed
+  [`sig_gsea()`](https://iobr.github.io/IOBR/reference/sig_gsea.md)
+  failing with newer clusterProfiler versions that removed the `by`
+  argument from `GSEA()` (`unused argument (by = "fgsea")`).
+- Examples of
+  [`format_msigdb()`](https://iobr.github.io/IOBR/reference/format_msigdb.md)
+  and [`sig_gsea()`](https://iobr.github.io/IOBR/reference/sig_gsea.md)
+  now skip gracefully when the suggested clusterProfiler or organism
+  annotation package is unavailable.
+- Fixed
+  [`iobr_cor_plot()`](https://iobr.github.io/IOBR/reference/iobr_cor_plot.md)
+  five-color heatmap palette handling.
+- Fixed
+  [`sig_heatmap()`](https://iobr.github.io/IOBR/reference/sig_heatmap.md)
+  color scale anchors to span (-2, 2) instead of (-3, 3), matching the
+  displayed value clipping.
+- Fixed
+  [`surv_group()`](https://iobr.github.io/IOBR/reference/surv_group.md)
+  legend labels when no reference group is specified.
 
 ## IOBR 2.2.3
 

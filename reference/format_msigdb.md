@@ -33,19 +33,20 @@ belonging to one signature.
 ## Examples
 
 ``` r
-tf <- tempfile(fileext = ".gmt")
-writeLines(
-  c(
-    "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
-    "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
-  ),
-  con = tf
-)
+if (rlang::is_installed("clusterProfiler")) {
+  tf <- tempfile(fileext = ".gmt")
+  writeLines(
+    c(
+      "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
+      "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
+    ),
+    con = tf
+  )
 
-sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+  sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+  names(sig_list)
+  sig_list[[1]]
+}
 #> 
-names(sig_list)
-#> [1] "HALLMARK_TNFA_SIGNALING_VIA_NFKB" "HALLMARK_P53_PATHWAY"            
-sig_list[[1]]
 #> [1] "TNF"   "NFKB1" "NFKB2"
 ```
