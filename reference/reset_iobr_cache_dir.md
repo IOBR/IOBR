@@ -17,5 +17,5 @@ Invisibly returns the default cache directory path.
 
 ``` r
 reset_iobr_cache_dir()
-#> ✔ Cache directory reset to session-specific temporary directory: /tmp/RtmpR1P9BL/IOBR_cache
+#> ✔ Cache directory reset to session-specific temporary directory: /tmp/RtmpeaTBB5/IOBR_cache
 ```
