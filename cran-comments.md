@@ -4,6 +4,9 @@
 * windows-latest (on GitHub Actions), R-release
 * macos-latest (on GitHub Actions), R-release
 
+## Resubmission
+Minor release to ship small bug fixes for plotting and data-download functions. This release was requested in response to the upcoming purrr release (https://github.com/IOBR/IOBR/issues/139); we verified that IOBR uses none of the purrr functions deprecated in purrr 1.0.0 (e.g., `when()`), so the package is unaffected by the API removals.
+
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes

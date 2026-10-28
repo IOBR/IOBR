@@ -1,4 +1,16 @@
-# IOBR (development version)
+# IOBR 2.2.4
+
+## Improvements
+
+* **purrr compatibility**: Confirmed compatibility with the upcoming purrr release that makes functions deprecated in purrr 1.0.0 defunct (e.g., `when()`). IOBR does not use any of these functions (#139).
+* `download_iobr_data()`: The internet connectivity check now tries Baidu before Google (faster for users in China) and caps each attempt at 5 seconds to avoid hanging.
+* `palettes()`: Diverging palettes (palettes 2-5) now use 5 colors instead of 3 for finer color resolution.
+
+## Bug Fixes
+
+* Fixed `iobr_cor_plot()` five-color heatmap palette handling.
+* Fixed `sig_heatmap()` color scale anchors to span (-2, 2) instead of (-3, 3), matching the displayed value clipping.
+* Fixed `surv_group()` legend labels when no reference group is specified.
 
 # IOBR 2.2.3
 
