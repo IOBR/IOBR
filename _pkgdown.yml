@@ -41,7 +41,7 @@ authors:
 
 navbar:
   structure:
-    left:  [intro, reference, articles, book, news]
+    left:  [intro, reference, articles, book, portal, news]
     right: [search, github]
   components:
     articles:
@@ -50,6 +50,9 @@ navbar:
     book:
       text: Book
       href: https://iobr.github.io/book/
+    portal:
+      text: IOBRportal
+      href: https://github.com/IOBR/IOBRportal
 
 reference:
   - title: "Data Input & Validation"
