@@ -158,14 +158,16 @@ signature <- list(
   )
 )
 \donttest{
-res <- sig_gsea(
-  deg = deg,
-  genesets = signature,
-  path = tempdir(),
-  show_plot = FALSE,
-  print_bar = FALSE
-)
-print(names(res))
+if (rlang::is_installed("clusterProfiler") && rlang::is_installed("org.Hs.eg.db")) {
+  res <- sig_gsea(
+    deg = deg,
+    genesets = signature,
+    path = tempdir(),
+    show_plot = FALSE,
+    print_bar = FALSE
+  )
+  print(names(res))
+}
 }
 }
 \author{

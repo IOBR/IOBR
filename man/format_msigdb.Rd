@@ -24,16 +24,18 @@ Reads a GMT file from MSigDB and converts it into a named list of gene sets
 suitable for IOBR functions.
 }
 \examples{
-tf <- tempfile(fileext = ".gmt")
-writeLines(
-  c(
-    "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
-    "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
-  ),
-  con = tf
-)
+if (rlang::is_installed("clusterProfiler")) {
+  tf <- tempfile(fileext = ".gmt")
+  writeLines(
+    c(
+      "HALLMARK_TNFA_SIGNALING_VIA_NFKB\tNA\tTNF\tNFKB1\tNFKB2",
+      "HALLMARK_P53_PATHWAY\tNA\tTP53\tMDM2\tCDKN1A"
+    ),
+    con = tf
+  )
 
-sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
-names(sig_list)
-sig_list[[1]]
+  sig_list <- format_msigdb(tf, ont = "term", gene = "gene")
+  names(sig_list)
+  sig_list[[1]]
+}
 }

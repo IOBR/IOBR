@@ -8,6 +8,8 @@
 
 ## Bug Fixes
 
+* Fixed `sig_gsea()` failing with newer clusterProfiler versions that removed the `by` argument from `GSEA()` (`unused argument (by = "fgsea")`).
+* Examples of `format_msigdb()` and `sig_gsea()` now skip gracefully when the suggested clusterProfiler or organism annotation package is unavailable.
 * Fixed `iobr_cor_plot()` five-color heatmap palette handling.
 * Fixed `sig_heatmap()` color scale anchors to span (-2, 2) instead of (-3, 3), matching the displayed value clipping.
 * Fixed `surv_group()` legend labels when no reference group is specified.
