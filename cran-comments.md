@@ -4,8 +4,12 @@
 * windows-latest (on GitHub Actions), R-release
 * macos-latest (on GitHub Actions), R-release
 
-## Resubmission
+## Resubmission notes
 Minor release to ship small bug fixes for plotting and data-download functions. This release was requested in response to the upcoming purrr release (https://github.com/IOBR/IOBR/issues/139); we verified that IOBR uses none of the purrr functions deprecated in purrr 1.0.0 (e.g., `when()`), so the package is unaffected by the API removals.
+
+Changes made in response to Uwe Ligges' comments:
+* Dropped the `Additional_repositories` field from `DESCRIPTION` as requested; Bioconductor dependencies are resolved via the standard BiocManager repository setup, so the field was unnecessary.
+* Fixed an invalid URL in `README.md` (the GitHub stars badge pointed to a 404 `stargazers` page; it now links to the repository homepage).
 
 ## R CMD check results
 

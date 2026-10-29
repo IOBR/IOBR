@@ -99,15 +99,8 @@ Suggests:
     timeROC,
     webr,
     WGCNA
-VignetteBuilder: 
+VignetteBuilder:
     knitr
-Additional_repositories: 
-    https://bioconductor.org/packages/3.22/bioc,
-    https://bioconductor.org/packages/3.22/data/annotation,
-    https://bioconductor.org/packages/3.22/data/experiment,
-    https://bioconductor.org/packages/3.23/bioc,
-    https://bioconductor.org/packages/3.23/data/annotation,
-    https://bioconductor.org/packages/3.23/data/experiment
 biocViews: GeneExpression, DifferentialExpression, ImmunoOncology,
     Transcriptomics, Clustering, Survival, Visualization
 Config/testthat/edition: 3
