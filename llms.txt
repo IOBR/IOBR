@@ -6,7 +6,7 @@ status](https://www.r-pkg.org/badges/version/IOBR)](https://cran.r-project.org/p
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/IOBR?color=blue)](https://cran.r-project.org/package=IOBR)
 [![GitHub
-stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/stargazers/)
+stars](https://img.shields.io/github/stars/IOBR/IOBR.svg)](https://github.com/IOBR/IOBR)
 [![GitHub
 issues](https://img.shields.io/github/issues/IOBR/IOBR.svg)](https://GitHub.com/IOBR/IOBR/issues/)
 [![License](https://img.shields.io/badge/license-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
